@@ -64,6 +64,8 @@ router_bgp:
     - prefix: 2.2.1.0/24
     - prefix: 1.12.1.0/24
       as_set: true
+      advertise_map: ADV-MAP
+      supress_map: SUP-MAP
       summary_only: true
       attribute_map: RM-ATTRIBUTE
       match_map: RM-MATCH
@@ -133,6 +135,10 @@ router_bgp:
       session_tracker: ST1
       # Testing bfd true OUTSIDE a peer group that should render
       bfd: true
+      bfd_timers:
+        interval: 2000
+        min_rx: 2000
+        multiplier: 3
     - ip_address: 192.0.3.2
       remote_as: 65433
       send_community: extended

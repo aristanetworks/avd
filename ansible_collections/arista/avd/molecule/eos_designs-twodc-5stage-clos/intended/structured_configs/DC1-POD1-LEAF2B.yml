@@ -816,5 +816,7 @@ virtual_source_nat_vrfs:
   ip_address: 10.100.0.5
 - name: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.101.5
+metadata:
+  platform: vEOS-LAB
 domain_list:
 - structured-config.set.under.vrf.common-vrf

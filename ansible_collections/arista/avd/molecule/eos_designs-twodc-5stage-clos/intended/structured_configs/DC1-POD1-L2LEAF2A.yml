@@ -152,3 +152,5 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-LAB

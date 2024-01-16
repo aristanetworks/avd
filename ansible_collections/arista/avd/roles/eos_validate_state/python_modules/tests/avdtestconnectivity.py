@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -29,12 +29,13 @@ class AvdTestP2PIPReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces")) is None:
+        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
             return None
 
         required_keys = ["name", "peer", "peer_interface", "ip_address"]
 
         for idx, interface in enumerate(ethernet_interfaces):
+            self.update_interface_shutdown(interface=interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, type="routed", shutdown=False):
                 continue
 
@@ -80,10 +81,11 @@ class AvdTestInbandReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (management_interfaces := self.logged_get(key="management_interfaces")) is None:
+        if (management_interfaces := self.logged_get(key="management_interfaces", logging_level="WARNING")) is None:
             return None
 
         for idx, interface in enumerate(management_interfaces):
+            self.update_interface_shutdown(interface=interface)
             if not self.validate_data(data=interface, data_path=f"management_interface.[{idx}]", required_keys="name", type="inband", shutdown=False):
                 continue
 
@@ -167,12 +169,13 @@ class AvdTestLLDPTopology(AvdTestBase):
         """
         anta_tests = []
 
-        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces")) is None:
+        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
             return None
 
         required_keys = ["name", "peer", "peer_interface"]
 
         for idx, interface in enumerate(ethernet_interfaces):
+            self.update_interface_shutdown(interface=interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, shutdown=False):
                 continue
 

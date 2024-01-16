@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -15,7 +15,6 @@ class AvdTestHardware(AvdTestBase):
     """
 
     anta_module = "anta.tests.hardware"
-    categories = ["Hardware"]
 
     @cached_property
     def test_definition(self) -> dict:
@@ -25,12 +24,12 @@ class AvdTestHardware(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-        xcvr_manufacturers = get(self.hostvars[self.device_name], "validation_role.xcvr_own_manufacturers", ["Arista Networks", "Arastra, Inc."])
+        xcvr_manufacturers = get(self.structured_config, "validation_role.xcvr_own_manufacturers", ["Arista Networks", "Arastra, Inc."])
         xcvr_manufacturers.append("Not Present")
 
         anta_tests = [
-            {"VerifyEnvironmentPower": {"states": get(self.hostvars[self.device_name], "validation_role.pwr_supply_states", ["ok"])}},
-            {"VerifyEnvironmentCooling": {"states": get(self.hostvars[self.device_name], "validation_role.fan_states", ["ok"])}},
+            {"VerifyEnvironmentPower": {"states": get(self.structured_config, "validation_role.pwr_supply_states", ["ok"])}},
+            {"VerifyEnvironmentCooling": {"states": get(self.structured_config, "validation_role.fan_states", ["ok"])}},
             {"VerifyTemperature": {}},
             {"VerifyTransceiversManufacturers": {"manufacturers": xcvr_manufacturers}},
         ]

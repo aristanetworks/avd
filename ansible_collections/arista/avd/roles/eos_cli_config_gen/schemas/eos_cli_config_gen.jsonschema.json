@@ -709,6 +709,338 @@
       "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
       "title": "Aliases"
     },
+    "application_traffic_recognition": {
+      "type": "object",
+      "description": "Application traffic recognition configuration.",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "description": "List of categories.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Category name.",
+                "title": "Name"
+              },
+              "applications": {
+                "type": "array",
+                "description": "List of applications.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Application name.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Applications"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Categories"
+        },
+        "field_sets": {
+          "type": "object",
+          "properties": {
+            "l4_ports": {
+              "type": "array",
+              "description": "L4 port field-set.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "L4 port field-set name.",
+                    "title": "Name"
+                  },
+                  "port_values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Port values or range of port values.\nPort values are between 0 and 65535."
+                    },
+                    "title": "Port Values"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "L4 Ports"
+            },
+            "ipv4_prefixes": {
+              "type": "array",
+              "description": "IPv4 prefix field set.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv4 prefix field-set name.",
+                    "title": "Name"
+                  },
+                  "prefix_values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "IP prefix (ex 1.2.3.0/24)."
+                    },
+                    "title": "Prefix Values"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "IPv4 Prefixes"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Field Sets"
+        },
+        "applications": {
+          "type": "object",
+          "properties": {
+            "ipv4_applications": {
+              "type": "array",
+              "description": "List of user defined IPv4 applications.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Application name.",
+                    "title": "Name"
+                  },
+                  "src_prefix_set_name": {
+                    "type": "string",
+                    "description": "Source prefix set name.",
+                    "title": "Src Prefix Set Name"
+                  },
+                  "dest_prefix_set_name": {
+                    "type": "string",
+                    "description": "Destination prefix set name.",
+                    "title": "Dest Prefix Set Name"
+                  },
+                  "protocols": {
+                    "type": "array",
+                    "description": "List of protocols to consider for this application.\n\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "ahp",
+                        "esp",
+                        "icmp",
+                        "igmp",
+                        "ospf",
+                        "pim",
+                        "rsvp",
+                        "tcp",
+                        "udp",
+                        "vrrp"
+                      ]
+                    },
+                    "title": "Protocols"
+                  },
+                  "protocol_ranges": {
+                    "type": "array",
+                    "description": "Acccept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Protocol Ranges"
+                  },
+                  "udp_src_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for UDP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
+                    "title": "UDP Src Port Set Name"
+                  },
+                  "tcp_src_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for TCP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
+                    "title": "TCP Src Port Set Name"
+                  },
+                  "udp_dest_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for UDP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
+                    "title": "UDP Dest Port Set Name"
+                  },
+                  "tcp_dest_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for TCP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
+                    "title": "TCP Dest Port Set Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "IPv4 Applications"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Applications"
+        },
+        "application_profiles": {
+          "type": "array",
+          "description": "Group of applications.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Application Profile name.",
+                "title": "Name"
+              },
+              "applications": {
+                "type": "array",
+                "description": "List of applications part of the application profile.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Application Name.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Applications"
+              },
+              "application_transports": {
+                "type": "array",
+                "description": "List of transport protocols.",
+                "items": {
+                  "type": "string",
+                  "description": "Transport name.",
+                  "enum": [
+                    "http",
+                    "https",
+                    "udp",
+                    "tcp",
+                    "ip",
+                    "ip6",
+                    "ssl",
+                    "rtp",
+                    "sctp",
+                    "quic"
+                  ]
+                },
+                "title": "Application Transports"
+              },
+              "categories": {
+                "type": "array",
+                "description": "Categories under this application profile.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of a category.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Categories"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Application Profiles"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Application Traffic Recognition"
+    },
     "arp": {
       "type": "object",
       "properties": {
@@ -1537,6 +1869,192 @@
         "^_.+$": {}
       },
       "title": "DHCP Relay"
+    },
+    "dhcp_servers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "type": "boolean",
+            "title": "Disabled"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF in which to configure the DHCP server, use `default` to indicate default VRF.",
+            "title": "VRF"
+          },
+          "dns_domain_name_ipv4": {
+            "type": "string",
+            "title": "DNS Domain Name IPv4"
+          },
+          "dns_domain_name_ipv6": {
+            "type": "string",
+            "title": "DNS Domain Name IPv6"
+          },
+          "ipv4_vendor_options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "vendor_id": {
+                  "type": "string",
+                  "title": "Vendor ID"
+                },
+                "sub_options": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 254,
+                        "title": "Code"
+                      },
+                      "string": {
+                        "type": "string",
+                        "description": "String value for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
+                        "title": "String"
+                      },
+                      "ipv4_address": {
+                        "type": "string",
+                        "description": "IPv4 address value for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
+                        "title": "IPv4 Address"
+                      },
+                      "array_ipv4_address": {
+                        "type": "array",
+                        "description": "Array of IPv4 addresses for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Array IPv4 Address"
+                      }
+                    },
+                    "required": [
+                      "code"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Sub Options"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "vendor_id"
+              ]
+            },
+            "title": "IPv4 Vendor Options"
+          },
+          "subnets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "subnet": {
+                  "type": "string",
+                  "title": "Subnet"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "default_gateway": {
+                  "type": "string",
+                  "title": "Default Gateway"
+                },
+                "dns_servers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "DNS Servers"
+                },
+                "ranges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string",
+                        "title": "Start"
+                      },
+                      "end": {
+                        "type": "string",
+                        "title": "End"
+                      }
+                    },
+                    "required": [
+                      "start",
+                      "end"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Ranges"
+                },
+                "lease_time": {
+                  "type": "object",
+                  "properties": {
+                    "days": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 2000,
+                      "title": "Days"
+                    },
+                    "hours": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 23,
+                      "title": "Hours"
+                    },
+                    "minutes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 59,
+                      "title": "Minutes"
+                    }
+                  },
+                  "required": [
+                    "days",
+                    "hours",
+                    "minutes"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Lease Time"
+                }
+              },
+              "required": [
+                "subnet"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Subnets"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "vrf"
+        ]
+      },
+      "title": "DHCP Servers"
     },
     "dns_domain": {
       "type": "string",
@@ -6738,7 +7256,7 @@
                       "aes128gcm128",
                       "aes128gcm64",
                       "aes256",
-                      "aes256gcm256",
+                      "aes256gcm128",
                       "null"
                     ],
                     "title": "Encryption"
@@ -9301,6 +9819,14 @@
                   "^_.+$": {}
                 },
                 "title": "Certificate"
+              },
+              "certificate_revocation_lists": {
+                "type": "array",
+                "description": "List of CRLs (Certificate Revocation List).\nIf specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.\n",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Certificate Revocation Lists"
               }
             },
             "additionalProperties": false,
@@ -9670,6 +10196,403 @@
         "^_.+$": {}
       },
       "title": "MCS Client"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "The data under `metadata` is used for documentation, validation or integration purposes.\nIt will not affect the generated EOS configuration.",
+      "properties": {
+        "platform": {
+          "type": "string",
+          "title": "Platform"
+        },
+        "cv_tags": {
+          "type": "object",
+          "properties": {
+            "device_tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "value": {
+                    "type": "string",
+                    "title": "Value"
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Device Tags"
+            },
+            "interface_tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "interface": {
+                    "type": "string",
+                    "title": "Interface"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "value": {
+                          "type": "string",
+                          "title": "Value"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Tags"
+                  }
+                },
+                "required": [
+                  "interface"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Interface Tags"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Cv Tags"
+        },
+        "cv_pathfinder": {
+          "type": "object",
+          "description": "Metadata used for CV Pathfinder visualization on CloudVision",
+          "properties": {
+            "role": {
+              "type": "string",
+              "title": "Role"
+            },
+            "region": {
+              "type": "string",
+              "title": "Region"
+            },
+            "zone": {
+              "type": "string",
+              "title": "Zone"
+            },
+            "site": {
+              "type": "string",
+              "title": "Site"
+            },
+            "vtep_ip": {
+              "type": "string",
+              "title": "Vtep IP"
+            },
+            "ssl_profile": {
+              "type": "string",
+              "title": "SSL Profile"
+            },
+            "pathfinders": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "vtep_ip": {
+                    "type": "string",
+                    "title": "Vtep IP"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Pathfinders"
+            },
+            "interfaces": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "carrier": {
+                    "type": "string",
+                    "title": "Carrier"
+                  },
+                  "circuit_id": {
+                    "type": "string",
+                    "title": "Circuit ID"
+                  },
+                  "pathgroup": {
+                    "type": "string",
+                    "title": "Pathgroup"
+                  },
+                  "public_ip": {
+                    "type": "string",
+                    "title": "Public IP"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Interfaces"
+            },
+            "pathgroups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "carriers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Carriers"
+                  },
+                  "imported_carriers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Imported Carriers"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Pathgroups"
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "title": "ID"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "zones": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "title": "ID"
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "sites": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "title": "ID"
+                              },
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "location": {
+                                "type": "object",
+                                "properties": {
+                                  "address": {
+                                    "type": "string",
+                                    "title": "Address"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Location"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Sites"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Zones"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Regions"
+            },
+            "vrfs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "vni": {
+                    "type": "integer",
+                    "title": "Vni"
+                  },
+                  "avts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "constraints": {
+                          "type": "object",
+                          "properties": {
+                            "jitter": {
+                              "type": "integer",
+                              "title": "Jitter"
+                            },
+                            "latency": {
+                              "type": "integer",
+                              "title": "Latency"
+                            },
+                            "lossrate": {
+                              "type": "string",
+                              "title": "Lossrate"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Constraints"
+                        },
+                        "description": {
+                          "type": "string",
+                          "title": "Description"
+                        },
+                        "id": {
+                          "type": "integer",
+                          "title": "ID"
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "pathgroups": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "preference": {
+                                "type": "string",
+                                "title": "Preference"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Pathgroups"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Avts"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "VRFs"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Cv Pathfinder"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Metadata"
     },
     "mlag_configuration": {
       "type": "object",
@@ -10674,6 +11597,19 @@
                 "^_.+$": {}
               },
               "title": "Multicast Replication"
+            },
+            "mdb_profile": {
+              "type": "string",
+              "description": "Sand platforms MDB Profile configuration. Note: l3-xxxl does not support MLAG.",
+              "enum": [
+                "balanced",
+                "balanced-xl",
+                "l3",
+                "l3-xl",
+                "l3-xxl",
+                "l3-xxxl"
+              ],
+              "title": "MDB Profile"
             }
           },
           "additionalProperties": false,
@@ -13567,6 +14503,11 @@
             "^_.+$": {}
           },
           "title": "CPU"
+        },
+        "tx_latency": {
+          "type": "boolean",
+          "description": "Enable tx-latency mode",
+          "title": "TX Latency"
         }
       },
       "required": [
@@ -14645,7 +15586,44 @@
               },
               "bfd": {
                 "type": "boolean",
+                "description": "Enable BFD.",
                 "title": "BFD"
+              },
+              "bfd_timers": {
+                "type": "object",
+                "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Interval in milliseconds.",
+                    "title": "Interval"
+                  },
+                  "min_rx": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Rate in milliseconds.",
+                    "title": "Min RX"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "minimum": 3,
+                    "maximum": 50,
+                    "title": "Multiplier"
+                  }
+                },
+                "required": [
+                  "interval",
+                  "min_rx",
+                  "multiplier"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BFD Timers"
               },
               "ebgp_multihop": {
                 "type": "integer",
@@ -14886,7 +15864,44 @@
               },
               "bfd": {
                 "type": "boolean",
+                "description": "Enable BFD.",
                 "title": "BFD"
+              },
+              "bfd_timers": {
+                "type": "object",
+                "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Interval in milliseconds.",
+                    "title": "Interval"
+                  },
+                  "min_rx": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Rate in milliseconds.",
+                    "title": "Min RX"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "minimum": 3,
+                    "maximum": 50,
+                    "title": "Multiplier"
+                  }
+                },
+                "required": [
+                  "interval",
+                  "min_rx",
+                  "multiplier"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BFD Timers"
               },
               "weight": {
                 "type": "integer",
@@ -15138,6 +16153,16 @@
               "as_set": {
                 "type": "boolean",
                 "title": "As Set"
+              },
+              "advertise_map": {
+                "type": "string",
+                "description": "Route-map name",
+                "title": "Advertise Map"
+              },
+              "supress_map": {
+                "type": "string",
+                "description": "Route-map name",
+                "title": "Supress Map"
               },
               "summary_only": {
                 "type": "boolean",
@@ -17853,7 +18878,44 @@
                     },
                     "bfd": {
                       "type": "boolean",
+                      "description": "Enable BFD.",
                       "title": "BFD"
+                    },
+                    "bfd_timers": {
+                      "type": "object",
+                      "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                      "properties": {
+                        "interval": {
+                          "type": "integer",
+                          "minimum": 50,
+                          "maximum": 60000,
+                          "description": "Interval in milliseconds.",
+                          "title": "Interval"
+                        },
+                        "min_rx": {
+                          "type": "integer",
+                          "minimum": 50,
+                          "maximum": 60000,
+                          "description": "Rate in milliseconds.",
+                          "title": "Min RX"
+                        },
+                        "multiplier": {
+                          "type": "integer",
+                          "minimum": 3,
+                          "maximum": 50,
+                          "title": "Multiplier"
+                        }
+                      },
+                      "required": [
+                        "interval",
+                        "min_rx",
+                        "multiplier"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "BFD Timers"
                     },
                     "timers": {
                       "type": "string",
@@ -18061,6 +19123,16 @@
                     "as_set": {
                       "type": "boolean",
                       "title": "As Set"
+                    },
+                    "advertise_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Advertise Map"
+                    },
+                    "supress_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Supress Map"
                     },
                     "summary_only": {
                       "type": "boolean",
@@ -21504,6 +22576,10 @@
         "sample": {
           "type": "integer",
           "title": "Sample"
+        },
+        "sample_input_subinterface": {
+          "type": "boolean",
+          "title": "Sample Input Subinterface"
         },
         "dangerous": {
           "type": "boolean",

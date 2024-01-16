@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -257,3 +257,34 @@ class UtilsMixin:
                 org_key=f"switch.overlay.peering_address for {peer_name}",
             ),
         }
+
+    @cached_property
+    def _is_wan_server_with_peers(self) -> bool:
+        return self.shared_utils.wan_role == "server" and len(self.shared_utils.filtered_wan_route_servers) > 0
+
+    @cached_property
+    def _wan_listen_ranges(self):
+        return get(self.shared_utils.bgp_peer_groups["wan_overlay_peers"], "listen_range_prefixes", required=True)
+
+    def _stun_server_profile_name(self, wan_route_server_name: str, path_group_name: str, interface_name: str) -> str:
+        """
+        Return a string to use as the name of the stun server_profile
+        """
+        return f"{path_group_name}-{wan_route_server_name}-{interface_name}"
+
+    @cached_property
+    def _stun_server_profiles(self) -> list:
+        """
+        Return a dictionary of _stun_server_profiles with ip_address per local path_group
+        """
+        stun_server_profiles = {}
+        for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
+            for path_group in data.get("wan_path_groups", []):
+                stun_server_profiles.setdefault(path_group["name"], []).extend(
+                    {
+                        "name": self._stun_server_profile_name(wan_route_server, path_group["name"], get(interface_dict, "name", required=True)),
+                        "ip_address": get(interface_dict, "ip_address", required=True).split("/")[0],
+                    }
+                    for interface_dict in get(path_group, "interfaces", required=True)
+                )
+        return stun_server_profiles

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -56,7 +56,7 @@ class AvdTestRoutingTable(AvdTestBase):
 
         add_test(mapping=self.loopback0_mapping, description="Remote Lo0 address")
 
-        if get(self.hostvars[self.device_name], "vxlan_interface.Vxlan1.vxlan.source_interface") is not None:
+        if get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface") is not None:
             add_test(mapping=self.vtep_mapping, description="Remote VTEP address")
 
         return {self.anta_module: anta_tests} if anta_tests else None
@@ -90,7 +90,7 @@ class AvdTestBGP(AvdTestBase):
             if safi:
                 address_family["safi"] = safi
 
-            anta_tests.setdefault("bgp", []).append(
+            anta_tests.setdefault(f"{self.anta_module}.bgp", []).append(
                 {
                     "VerifyBGPSpecificPeers": {
                         "address_families": [address_family],
@@ -99,12 +99,10 @@ class AvdTestBGP(AvdTestBase):
                 }
             )
 
-        if self.logged_get(key="router_bgp", logging_level="INFO") is None or not self.validate_data(
-            service_routing_protocols_model="multi-agent", logging_level="WARNING"
-        ):
+        if self.logged_get(key="router_bgp") is None or not self.validate_data(service_routing_protocols_model="multi-agent", logging_level="WARNING"):
             return None
 
-        anta_tests.setdefault("generic", []).append(
+        anta_tests.setdefault(f"{self.anta_module}.generic", []).append(
             {
                 "VerifyRoutingProtocolModel": {
                     "model": "multi-agent",
@@ -113,8 +111,8 @@ class AvdTestBGP(AvdTestBase):
             }
         )
 
-        bgp_peer_groups = get(self.hostvars[self.device_name], "router_bgp.peer_groups", [])
-        bgp_neighbors = get(self.hostvars[self.device_name], "router_bgp.neighbors", [])
+        bgp_peer_groups = get(self.structured_config, "router_bgp.peer_groups", [])
+        bgp_neighbors = get(self.structured_config, "router_bgp.neighbors", [])
 
         for idx, bgp_neighbor in enumerate(bgp_neighbors):
             # TODO - this matches legacy eos_validate_state BUT works only for neighbors in peer groups...
@@ -136,4 +134,4 @@ class AvdTestBGP(AvdTestBase):
             elif neighbor_peer_group["type"] == "evpn":
                 add_test(description="bgp evpn peer state established (evpn)", afi="evpn", bgp_neighbor_ip=str(bgp_neighbor["ip_address"]))
 
-        return {self.anta_module: anta_tests} if anta_tests.get("bgp") else None
+        return anta_tests if anta_tests.get(f"{self.anta_module}.bgp") else None

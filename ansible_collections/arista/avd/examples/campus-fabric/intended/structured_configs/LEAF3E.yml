@@ -42,6 +42,16 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ntp:
+  local_interface:
+    name: Management0
+    vrf: MGMT
+  servers:
+  - name: time.google.com
+    vrf: MGMT
+    preferred: true
+  - name: pool.ntp.org
+    vrf: MGMT
 ethernet_interfaces:
 - name: Ethernet97/1
   peer: LEAF3A
@@ -3068,3 +3078,5 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.10.10.13/24
   type: inband_mgmt
+metadata:
+  platform: cEOSLab

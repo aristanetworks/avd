@@ -36,6 +36,9 @@
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
+- [Queue Monitor](#queue-monitor)
+  - [Queue Monitor Length](#queue-monitor-length)
+  - [Queue Monitor Configuration](#queue-monitor-configuration)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
@@ -56,7 +59,7 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 192.168.200.111/24 | 192.168.200.5 |
 
@@ -818,6 +821,23 @@ router bgp 65105
 !
 router bfd
    multihop interval 1200 min-rx 1200 multiplier 3
+```
+
+## Queue Monitor
+
+### Queue Monitor Length
+
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| True | 5 | - | - | enabled | disabled | - | - |
+
+### Queue Monitor Configuration
+
+```eos
+!
+queue-monitor length
+queue-monitor length log 5
+queue-monitor length notifying
 ```
 
 ## Multicast

@@ -61,6 +61,14 @@ management_api_http:
 link_tracking_groups:
 - name: l2leaf-server02
   recovery_delay: 300
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MH-L2LEAF1A
@@ -101,3 +109,5 @@ vlans:
   tenant: Tenant_X
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-LAB

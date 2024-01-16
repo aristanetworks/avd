@@ -236,3 +236,5 @@ router_ospf:
     - Ethernet4.10
     redistribute:
       bgp: {}
+metadata:
+  platform: vEOS-lab

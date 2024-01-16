@@ -48,7 +48,7 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | oob_management | oob | MGMT | 172.100.100.101/24 | 172.100.100.1 |
 
@@ -89,6 +89,12 @@ ip name-server vrf MGMT 8.8.8.8
 
 #### NTP Summary
 
+##### NTP Local Interface
+
+| Interface | VRF |
+| --------- | --- |
+| Management0 | MGMT |
+
 ##### NTP Servers
 
 | Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
@@ -100,6 +106,7 @@ ip name-server vrf MGMT 8.8.8.8
 
 ```eos
 !
+ntp local-interface vrf MGMT Management0
 ntp server vrf MGMT pool.ntp.org
 ntp server vrf MGMT time.google.com prefer
 ```

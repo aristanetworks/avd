@@ -6,14 +6,14 @@ on:
     branches:
       - devel
     paths:
-      - avd-containers/universal/**
+      - containers/universal/**
       - .github/workflows/container_build_template.yml
       - .github/workflows/container_build_universal.yml
   workflow_dispatch:
     branches:
       - devel
   release:
-    types: [published]
+    types: [published, prereleased]
 
 jobs:
   build_universal_container:

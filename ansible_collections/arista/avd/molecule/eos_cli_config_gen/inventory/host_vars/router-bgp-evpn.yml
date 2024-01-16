@@ -16,6 +16,10 @@ router_bgp:
       remote_as: 65001
       update_source: Loopback0
       bfd: true
+      bfd_timers:
+        interval: 2000
+        min_rx: 2000
+        multiplier: 3
       ebgp_multihop: 3
       password: "q+VNViP5i4rVjW1cxFv2wA=="
       send_community: all

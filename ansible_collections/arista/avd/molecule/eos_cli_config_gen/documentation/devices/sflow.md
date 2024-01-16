@@ -15,7 +15,7 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
@@ -60,6 +60,8 @@ interface Management1
 
 sFlow Sample Rate: 1000
 
+sFlow Sample Input Subinterface is enabled.
+
 sFlow Polling Interval: 10
 
 sFlow is enabled.
@@ -94,6 +96,7 @@ sFlow hardware accelerated Sample Rate: 1024
 ```eos
 !
 sflow sample dangerous 1000
+sflow sample input subinterface
 sflow polling-interval 10
 sflow vrf AAA destination 10.6.75.62 123
 sflow vrf AAA destination 10.6.75.63 333

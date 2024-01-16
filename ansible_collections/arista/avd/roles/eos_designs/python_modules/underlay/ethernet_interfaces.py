@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -8,6 +8,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
+from ..interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 
@@ -31,7 +32,15 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "peer": link["peer"],
                 "peer_interface": link["peer_interface"],
                 "peer_type": link["peer_type"],
-                "description": self.shared_utils.interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
+                "description": self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                    InterfaceDescriptionData(
+                        shared_utils=self.shared_utils,
+                        interface=link["interface"],
+                        link_type=link["type"],
+                        peer=link["peer"],
+                        peer_interface=link["peer_interface"],
+                    )
+                ),
                 "speed": link.get("speed"),
                 "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
             }
@@ -79,7 +88,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     if "unnumbered" in link["ip_address"].lower():
                         ethernet_interface["ip_address"] = link["ip_address"]
                     else:
-                        ethernet_interface["ip_address"] = f"{link['ip_address']}/31"
+                        ethernet_interface["ip_address"] = f"{link['ip_address']}/{link['prefix_length']}"
 
                 if self.shared_utils.underlay_ospf is True:
                     ethernet_interface["ospf_network_point_to_point"] = True
@@ -132,6 +141,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                 primary_key="name",
                 new_dict=ethernet_interface,
                 context="Ethernet Interfaces defined for underlay",
+                context_keys=["name", "peer", "peer_interface"],
+            )
+
+        for l3_interface in self.shared_utils.l3_interfaces:
+            # Ethernet interface
+            ethernet_interface = self._get_l3_interface_cfg(l3_interface)
+
+            append_if_not_duplicate(
+                list_of_dicts=ethernet_interfaces,
+                primary_key="name",
+                new_dict=ethernet_interface,
+                context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} l3_interfaces",
                 context_keys=["name", "peer", "peer_interface"],
             )
 

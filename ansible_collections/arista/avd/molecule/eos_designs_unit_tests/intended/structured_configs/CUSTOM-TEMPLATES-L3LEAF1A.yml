@@ -265,3 +265,5 @@ vxlan_interface:
       vrfs:
       - name: TEST_VRF
         vni: 1
+metadata:
+  platform: vEOS-LAB

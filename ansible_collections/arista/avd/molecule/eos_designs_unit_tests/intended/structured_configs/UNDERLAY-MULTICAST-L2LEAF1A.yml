@@ -45,3 +45,5 @@ port_channel_interfaces:
   vlans: none
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-LAB

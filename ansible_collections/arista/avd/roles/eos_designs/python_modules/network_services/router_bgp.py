@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -662,12 +662,25 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return a string with the route-destinguisher for one VRF
         """
+        rd_override = default(vrf.get("rd_override"))
+
+        if ":" in str(rd_override):
+            return rd_override
+
+        if rd_override is not None:
+            return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{rd_override}"
+
         return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{self.get_vrf_id(vrf)}"
 
     def get_vrf_rt(self, vrf: dict) -> str:
         """
         Return a string with the route-target for one VRF
         """
+        rt_override = default(vrf.get("rt_override"))
+
+        if ":" in str(rt_override):
+            return rt_override
+
         if self._vrf_rt_admin_subfield is not None:
             admin_subfield = self._vrf_rt_admin_subfield
         elif self.shared_utils.overlay_rt_type["vrf_admin_subfield"] == "vrf_vni":
@@ -675,6 +688,9 @@ class RouterBgpMixin(UtilsMixin):
         else:
             # Both for 'id' and 'vrf_id' options.
             admin_subfield = self.get_vrf_id(vrf)
+
+        if rt_override is not None:
+            return f"{admin_subfield}:{rt_override}"
 
         return f"{admin_subfield}:{self.get_vrf_id(vrf)}"
 

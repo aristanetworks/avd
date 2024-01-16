@@ -1,0 +1,26 @@
+---
+wan_mode: cv-pathfinder
+type: wan_rr
+
+bgp_as: 65000
+
+wan_carriers:
+  - name: MPLS
+    path_group: MPLS
+
+wan_path_groups:
+  - name: MPLS
+    id: 42
+
+wan_rr:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+  nodes:
+    - name: invalid-wan-role-cv-pathfinder-role-2
+      # Trying to set pathfinder as RR client
+      wan_role: client
+      evpn_role: client
+      id: 1
+
+expected_error_message: >-
+  'wan_role' must be 'server' when 'cv_pathfinder_role' is set to 'pathfinder'

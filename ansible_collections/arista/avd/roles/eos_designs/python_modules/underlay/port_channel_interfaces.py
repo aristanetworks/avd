@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -10,6 +10,7 @@ from ansible_collections.arista.avd.plugins.filter.generate_lacp_id import gener
 from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from ..interface_descriptions.models import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 
@@ -39,8 +40,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
             port_channel_interface = {
                 "name": port_channel_name,
-                "description": self.shared_utils.interface_descriptions.underlay_port_channel_interfaces(
-                    link["peer"], link["peer_channel_group_id"], link.get("channel_description")
+                "description": self.shared_utils.interface_descriptions.underlay_port_channel_interface(
+                    InterfaceDescriptionData(
+                        shared_utils=self.shared_utils,
+                        interface=port_channel_name,
+                        peer=link["peer"],
+                        peer_channel_group_id=link["peer_channel_group_id"],
+                        port_channel_description=link.get("channel_description"),
+                    )
                 ),
                 "type": "switched",
                 "shutdown": False,

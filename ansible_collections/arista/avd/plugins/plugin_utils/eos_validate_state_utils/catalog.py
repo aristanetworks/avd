@@ -1,9 +1,10 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import logging
+from typing import TYPE_CHECKING, Mapping
 
 from yaml import Dumper, dump, safe_load
 
@@ -28,13 +29,17 @@ except ImportError:
 if TYPE_CHECKING:
     from .avdtestbase import AvdTestBase
 
+LOGGER = logging.getLogger(__name__)
+
 
 class Catalog:
     """
     Catalog class that handles management of ANTA catalogs from AVD.
     """
 
-    def __init__(self, device_name: str, hostvars: dict, skipped_tests: dict, custom_catalog: dict | None = None, custom_catalog_path: str | None = None):
+    def __init__(
+        self, device_name: str, hostvars: Mapping, skipped_tests: list[dict], custom_catalog: dict | None = None, custom_catalog_path: str | None = None
+    ):
         """
         Initialize the Catalog class.
 
@@ -42,8 +47,8 @@ class Catalog:
 
         Args:
             device_name (str): The device for which this catalog is built
-            hostvars (dict): A dictionnary that contains a key for each device with a value of the structured_config
-                         when using Ansible, this is the equivalent of `task_vars['hostvars']`
+            hostvars (Mapping): A mapping that contains a key for each device with a value of the structured_config.
+                                      When using Ansible, this is the `task_vars['hostvars']` object.
             skipped_tests (list[dict]): Dictionary of AVD test classes to be skipped.
             custom_catalog (dict): An optional dictionary representing an ANTA Catalog
             custom_catalog_path (str): An optional string representing a path to an Anta Catalog
@@ -110,6 +115,8 @@ class Catalog:
             # Check if the whole class is to be skipped
             class_skip_config = get_item(self.skipped_tests, "category", avd_test_class.__name__)
             if class_skip_config is not None and not class_skip_config.get("tests"):
+                msg = f"Skipping all tests of {avd_test_class.__name__} per the `skipped_tests` input variable."
+                LOGGER.info(msg)
                 continue
 
             # Initialize the test class
@@ -118,8 +125,11 @@ class Catalog:
 
             # Remove the individual tests that are to be skipped
             if class_skip_config is not None and (avd_test_class_skipped_tests := class_skip_config.get("tests")) is not None:
+                msg = f"Skipping the following tests of {avd_test_class.__name__} per the `skipped_tests` input variable: "
+                msg += ", ".join(avd_test_class_skipped_tests)
+                LOGGER.info(msg)
                 for anta_tests in generated_tests.values():
-                    anta_tests[:] = [test for test in anta_tests if list(test.keys())[0] not in avd_test_class_skipped_tests]
+                    anta_tests[:] = [test for test in anta_tests if next(iter(test.keys())) not in avd_test_class_skipped_tests]
 
             default_catalog = self.merge_catalogs(default_catalog, generated_tests)
 

@@ -39,7 +39,7 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.30.30.109/24 | 192.168.200.5 |
 

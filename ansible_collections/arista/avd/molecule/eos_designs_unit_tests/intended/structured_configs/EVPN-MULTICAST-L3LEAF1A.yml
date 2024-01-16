@@ -1640,3 +1640,5 @@ standard_access_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 232.0.136.0/21
+metadata:
+  platform: vEOS-LAB

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -14,6 +14,7 @@ from ansible_collections.arista.avd.plugins.filter.range_expand import range_exp
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
+from ..interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 
@@ -124,8 +125,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
         # Common port_channel_interface settings
         port_channel_interface = {
             "name": port_channel_interface_name,
-            "description": self.shared_utils.interface_descriptions.connected_endpoints_port_channel_interfaces(
-                peer, adapter_description, adapter_port_channel_description
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_port_channel_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=port_channel_interface_name,
+                    peer=peer,
+                    description=adapter_description,
+                    port_channel_description=adapter_port_channel_description,
+                )
             ),
             "type": port_channel_type,
             "shutdown": not get(adapter, "port_channel.enabled", default=True),
@@ -149,6 +156,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
                     "native_vlan_tag": adapter.get("native_vlan_tag"),
                     "native_vlan": adapter.get("native_vlan"),
+                    "phone": self._get_adapter_phone(adapter, connected_endpoint),
                     "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
                     "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
                     "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
@@ -175,7 +183,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 }
             )
 
-        return strip_null_from_data(port_channel_interface)
+        return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))
 
     def _get_port_channel_subinterface_cfg(self, subinterface: dict, adapter: dict, port_channel_subinterface_name: str, channel_group_id: int) -> dict:
         """
@@ -207,4 +215,4 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "route_target": generate_route_target(short_esi),
             }
 
-        return strip_null_from_data(port_channel_interface)
+        return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))

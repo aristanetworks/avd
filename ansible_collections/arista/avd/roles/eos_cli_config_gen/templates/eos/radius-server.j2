@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -12,7 +12,7 @@
 {%         if radius_server.attribute_32_include_in_access_req.hostname is arista.avd.defined (true) %}
 {%             set attribute_32_include_in_access_cli = attribute_32_include_in_access_cli ~ " hostname" %}
 {%         elif radius_server.attribute_32_include_in_access_req.format is arista.avd.defined %}
-{%             set attribute_32_include_in_access_cli = attribute_32_include_in_access_cli ~ " format " ~ radius_server.attribute_32_include_in_access.format %}
+{%             set attribute_32_include_in_access_cli = attribute_32_include_in_access_cli ~ " format " ~ radius_server.attribute_32_include_in_access_req.format %}
 {%         endif %}
 {{ attribute_32_include_in_access_cli }}
 {%     endif %}

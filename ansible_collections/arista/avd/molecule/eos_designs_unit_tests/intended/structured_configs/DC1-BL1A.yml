@@ -391,6 +391,7 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+ntp: null
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS DC1-BL1A
@@ -620,6 +621,16 @@ vxlan_interface:
         vni: 21
       - name: Tenant_C_WAN_Zone
         vni: 31
+metadata:
+  platform: 7280R
+  cv_tags:
+    device_tags:
+    - name: topology_hint_fabric
+      value: EOS_DESIGNS_UNIT_TESTS
+    - name: topology_hint_type
+      value: leaf
+    - name: topology_hint_rack
+      value: DC1_BL1
 sflow:
   vrfs:
   - name: OOB
@@ -627,4 +638,3 @@ sflow:
     - destination: 192.168.200.10
     - destination: 10.0.200.90
     source_interface: Management1
-ntp: null

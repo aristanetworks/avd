@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_pool</samp>](## "core_interfaces.p2p_links_ip_pools.[].ipv4_pool") | String |  |  |  | IPv4 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_size</samp>](## "core_interfaces.p2p_links_ip_pools.[].prefix_size") | Integer |  | `31` | Min: 8<br>Max: 31 | Subnet mask size. |
     | [<samp>&nbsp;&nbsp;p2p_links_profiles</samp>](## "core_interfaces.p2p_links_profiles") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "core_interfaces.p2p_links_profiles.[].name") | String | Required, Unique |  |  | P2P profile name. Any variable supported under p2p_links can be inherited from a profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "core_interfaces.p2p_links_profiles.[].name") | String | Required, Unique |  |  | P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "core_interfaces.p2p_links_profiles.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.p2p_links_profiles.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "core_interfaces.p2p_links_profiles.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link. |
@@ -109,7 +109,7 @@
           prefix_size: <int; 8-31; default=31>
       p2p_links_profiles:
 
-          # P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
+          # P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile.
         - name: <str; required; unique>
 
           # Unique id per subnet_summary. Used to calculate ip addresses.

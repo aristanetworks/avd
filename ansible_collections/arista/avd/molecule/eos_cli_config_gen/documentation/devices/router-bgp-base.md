@@ -15,7 +15,7 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
@@ -98,7 +98,7 @@ interface Management1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 192.0.3.1 | 65432 | default | - | all | - | - | True | True | - | True |
+| 192.0.3.1 | 65432 | default | - | all | - | - | True(interval: 2000, min_rx: 2000, multiplier: 3) | True | - | True |
 | 192.0.3.2 | 65433 | default | - | extended | 10000 | - | False | True (All) | - | - |
 | 192.0.3.3 | 65434 | default | - | standard | - | - | - | True | - | - |
 | 192.0.3.4 | 65435 | default | - | large | - | - | - | False | - | - |
@@ -117,11 +117,11 @@ interface Management1
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False | - | - | False |
+| Prefix | AS Set | Advertise Map | Supress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------- | ----------- | ------------ | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | - | - | False | - | - | True |
+| 1.12.1.0/24 | True | ADV-MAP | SUP-MAP | True | RM-ATTRIBUTE | RM-MATCH | True |
+| 2.2.1.0/24 | False | - | - | False | - | - | False |
 
 #### Router BGP Session Trackers
 
@@ -165,6 +165,7 @@ router bgp 65101
    neighbor 192.0.3.1 as-path remote-as replace out
    neighbor 192.0.3.1 as-path prepend-own disabled
    neighbor 192.0.3.1 bfd
+   neighbor 192.0.3.1 bfd interval 2000 min-rx 2000 multiplier 3
    neighbor 192.0.3.1 rib-in pre-policy retain
    neighbor 192.0.3.1 passive
    neighbor 192.0.3.1 session tracker ST1
@@ -205,7 +206,7 @@ router bgp 65101
    neighbor 192.0.3.9 remote-as 65438
    no neighbor 192.0.3.9 bfd
    aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
+   aggregate-address 1.12.1.0/24 as-set advertise-map ADV-MAP supress-map SUP-MAP summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
    redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
    redistribute ospf include leaked

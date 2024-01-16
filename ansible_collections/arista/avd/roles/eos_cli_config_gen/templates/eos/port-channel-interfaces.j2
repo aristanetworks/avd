@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -78,7 +78,7 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.phone.trunk is arista.avd.defined %}
    switchport phone trunk {{ port_channel_interface.phone.trunk }}
 {%     endif %}
-{%     if port_channel_interface.mode is arista.avd.defined("trunk") %}
+{%     if port_channel_interface.mode is arista.avd.defined and port_channel_interface.mode != "access" %}
    switchport mode {{ port_channel_interface.mode }}
 {%     endif %}
 {%     for  trunk_group in port_channel_interface.trunk_groups | arista.avd.natural_sort %}

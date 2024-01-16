@@ -130,3 +130,5 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
+metadata:
+  platform: 7280SR

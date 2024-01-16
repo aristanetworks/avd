@@ -351,5 +351,7 @@ vlan_interfaces:
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+metadata:
+  platform: vEOS-LAB
 domain_list:
 - structured-config.set.under.vrf.common-vrf

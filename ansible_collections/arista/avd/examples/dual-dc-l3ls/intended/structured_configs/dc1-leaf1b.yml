@@ -463,3 +463,5 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.10.4
 - name: VRF11
   ip_address: 10.255.11.4
+metadata:
+  platform: vEOS-lab

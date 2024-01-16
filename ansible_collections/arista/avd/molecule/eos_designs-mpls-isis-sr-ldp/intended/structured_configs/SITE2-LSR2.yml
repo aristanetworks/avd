@@ -152,3 +152,5 @@ port_channel_interfaces:
     ldp:
       interface: true
       igp_sync: true
+metadata:
+  platform: 7280SR

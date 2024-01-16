@@ -3,7 +3,7 @@
 title: Input variables for eos_cli_config_gen
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -729,6 +729,12 @@ roles/eos_cli_config_gen/docs/tables/queue-monitor-length.md
 roles/eos_cli_config_gen/docs/tables/queue-monitor-streaming.md
 --8<--
 
+### Application traffic recognition
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/application-traffic-recognition.md
+--8<--
+
 ## Routing
 
 ### ARP
@@ -753,6 +759,11 @@ roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-dhcp-snooping.md
+
+### DHCP Servers
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/dhcp-servers.md
 --8<--
 
 ### IP ICMP redirect
@@ -1011,4 +1022,12 @@ roles/eos_cli_config_gen/docs/tables/system.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/tcam-profile.md
+--8<--
+
+## Metadata
+
+These fields are not generating any configuration. They are meant to be used by tools that parse structured configuration.
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/metadata.md
 --8<--

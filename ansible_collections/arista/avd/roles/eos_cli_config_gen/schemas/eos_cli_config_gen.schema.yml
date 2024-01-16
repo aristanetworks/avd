@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 $id: eos_cli_config_gen
@@ -421,6 +421,262 @@ keys:
     description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
       |\n  alias wr copy running-config startup-config\n  alias siib show ip interface
       brief\n```"
+  application_traffic_recognition:
+    type: dict
+    description: Application traffic recognition configuration.
+    keys:
+      categories:
+        type: list
+        description: List of categories.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Category name.
+            applications:
+              type: list
+              description: List of applications.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Application name.
+                  service:
+                    type: str
+                    description: 'Service Name.
+
+                      Specific service to target for this application.
+
+                      If no service is specified, all supported services of the application
+                      are matched.
+
+                      Not all valid values are valid for all applications, check on
+                      EOS CLI.'
+                    valid_values:
+                    - audio-video
+                    - chat
+                    - default
+                    - file-transfer
+                    - networking-protocols
+                    - peer-to-peer
+                    - software-update
+      field_sets:
+        type: dict
+        keys:
+          l4_ports:
+            type: list
+            primary_key: name
+            description: L4 port field-set.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: L4 port field-set name.
+                port_values:
+                  type: list
+                  items:
+                    type: str
+                    convert_types:
+                    - int
+                    description: 'Port values or range of port values.
+
+                      Port values are between 0 and 65535.'
+          ipv4_prefixes:
+            type: list
+            primary_key: name
+            description: IPv4 prefix field set.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv4 prefix field-set name.
+                prefix_values:
+                  type: list
+                  items:
+                    type: str
+                    description: IP prefix (ex 1.2.3.0/24).
+      applications:
+        type: dict
+        keys:
+          ipv4_applications:
+            type: list
+            description: List of user defined IPv4 applications.
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Application name.
+                src_prefix_set_name:
+                  type: str
+                  description: Source prefix set name.
+                dest_prefix_set_name:
+                  type: str
+                  description: Destination prefix set name.
+                protocols:
+                  type: list
+                  description: 'List of protocols to consider for this application.
+
+
+                    To use port field-sets (source, destination or both), the list
+
+                    must contain only one or two protocols, either `tcp` or `udp`.
+
+                    When using both protocols, one line is rendered for each in the
+                    configuration,
+
+                    hence the field-sets must have the same value for `tcp_src_port_set_name`
+                    and
+
+                    `udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`
+
+                    if set in order to generate valid configuration in EOS.'
+                  items:
+                    type: str
+                    valid_values:
+                    - ahp
+                    - esp
+                    - icmp
+                    - igmp
+                    - ospf
+                    - pim
+                    - rsvp
+                    - tcp
+                    - udp
+                    - vrrp
+                protocol_ranges:
+                  type: list
+                  description: 'Acccept protocol value(s) or range(s).
+
+                    Protocol values can be between 1 and 255.'
+                  items:
+                    type: str
+                    convert_types:
+                    - int
+                udp_src_port_set_name:
+                  type: str
+                  description: 'Name of field set for UDP source ports.
+
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key
+                    value
+
+                    must be the same as `tcp_src_port_set_name`.'
+                tcp_src_port_set_name:
+                  type: str
+                  description: 'Name of field set for TCP source ports.
+
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key
+                    value
+
+                    must be the same as `udp_src_port_set_name`.'
+                udp_dest_port_set_name:
+                  type: str
+                  description: 'Name of field set for UDP destination ports.
+
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key
+                    value
+
+                    must be the same as `tcp_dest_port_set_name`.'
+                tcp_dest_port_set_name:
+                  type: str
+                  description: 'Name of field set for TCP destination ports.
+
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key
+                    value
+
+                    must be the same as `udp_dest_port_set_name`.'
+      application_profiles:
+        type: list
+        description: Group of applications.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Application Profile name.
+            applications:
+              type: list
+              description: List of applications part of the application profile.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Application Name.
+                  service:
+                    type: str
+                    description: 'Service Name.
+
+                      Specific service to target for this application.
+
+                      If no service is specified, all supported services of the application
+                      are matched.
+
+                      Not all valid values are valid for all applications, check on
+                      EOS CLI.'
+                    valid_values:
+                    - audio-video
+                    - chat
+                    - default
+                    - file-transfer
+                    - networking-protocols
+                    - peer-to-peer
+                    - software-update
+            application_transports:
+              type: list
+              description: List of transport protocols.
+              items:
+                type: str
+                description: Transport name.
+                valid_values:
+                - http
+                - https
+                - udp
+                - tcp
+                - ip
+                - ip6
+                - ssl
+                - rtp
+                - sctp
+                - quic
+            categories:
+              type: list
+              description: Categories under this application profile.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Name of a category.
+                  service:
+                    type: str
+                    description: 'Service Name.
+
+                      Specific service to target for this application.
+
+                      If no service is specified, all supported services of the application
+                      are matched.
+
+                      Not all valid values are valid for all applications, check on
+                      EOS CLI.'
+                    valid_values:
+                    - audio-video
+                    - chat
+                    - default
+                    - file-transfer
+                    - networking-protocols
+                    - peer-to-peer
+                    - software-update
   arp:
     type: dict
     keys:
@@ -1071,6 +1327,130 @@ keys:
         type: bool
       mlag_peerlink_requests_disabled:
         type: bool
+  dhcp_servers:
+    type: list
+    primary_key: vrf
+    items:
+      type: dict
+      keys:
+        disabled:
+          type: bool
+        vrf:
+          type: str
+          description: VRF in which to configure the DHCP server, use `default` to
+            indicate default VRF.
+          convert_types:
+          - int
+        dns_domain_name_ipv4:
+          type: str
+        dns_domain_name_ipv6:
+          type: str
+        ipv4_vendor_options:
+          type: list
+          primary_key: vendor_id
+          items:
+            type: dict
+            keys:
+              vendor_id:
+                type: str
+                convert_types:
+                - int
+              sub_options:
+                type: list
+                primary_key: code
+                items:
+                  type: dict
+                  keys:
+                    code:
+                      type: int
+                      required: true
+                      min: 1
+                      max: 254
+                      convert_types:
+                      - str
+                    string:
+                      type: str
+                      description: 'String value for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
+                    ipv4_address:
+                      type: str
+                      description: 'IPv4 address value for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
+                    array_ipv4_address:
+                      type: list
+                      description: 'Array of IPv4 addresses for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
+                      items:
+                        type: str
+        subnets:
+          type: list
+          primary_key: subnet
+          items:
+            type: dict
+            keys:
+              subnet:
+                type: str
+                required: true
+              name:
+                type: str
+                convert_types:
+                - int
+              default_gateway:
+                type: str
+              dns_servers:
+                type: list
+                items:
+                  type: str
+              ranges:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    start:
+                      type: str
+                      required: true
+                    end:
+                      type: str
+                      required: true
+              lease_time:
+                type: dict
+                keys:
+                  days:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 2000
+                    convert_types:
+                    - str
+                  hours:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 23
+                    convert_types:
+                    - str
+                  minutes:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 59
+                    convert_types:
+                    - str
   dns_domain:
     type: str
     description: Domain Name
@@ -3911,7 +4291,7 @@ keys:
                   - aes128gcm128
                   - aes128gcm64
                   - aes256
-                  - aes256gcm256
+                  - aes256gcm128
                   - 'null'
             pfs_dh_group:
               type: int
@@ -5443,6 +5823,16 @@ keys:
                   type: str
                 key:
                   type: str
+            certificate_revocation_lists:
+              type: list
+              description: 'List of CRLs (Certificate Revocation List).
+
+                If specified, one CRL needs to be provided for every certificate in
+                the chain, even if the revocation list in the CRL is empty.
+
+                '
+              items:
+                type: str
   management_ssh:
     type: dict
     keys:
@@ -5638,6 +6028,177 @@ keys:
             items:
               type: str
               description: IP or hostname
+  metadata:
+    type: dict
+    description: 'The data under `metadata` is used for documentation, validation
+      or integration purposes.
+
+      It will not affect the generated EOS configuration.'
+    keys:
+      platform:
+        type: str
+      cv_tags:
+        type: dict
+        keys:
+          device_tags:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  required: true
+                value:
+                  type: str
+                  required: true
+          interface_tags:
+            type: list
+            items:
+              type: dict
+              keys:
+                interface:
+                  type: str
+                  required: true
+                tags:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        required: true
+                      value:
+                        type: str
+                        required: true
+      cv_pathfinder:
+        type: dict
+        description: Metadata used for CV Pathfinder visualization on CloudVision
+        keys:
+          role:
+            type: str
+          region:
+            type: str
+          zone:
+            type: str
+          site:
+            type: str
+          vtep_ip:
+            type: str
+          ssl_profile:
+            type: str
+          pathfinders:
+            type: list
+            items:
+              type: dict
+              keys:
+                vtep_ip:
+                  type: str
+          interfaces:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                carrier:
+                  type: str
+                circuit_id:
+                  type: str
+                pathgroup:
+                  type: str
+                public_ip:
+                  type: str
+          pathgroups:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                carriers:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                imported_carriers:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+          regions:
+            type: list
+            items:
+              type: dict
+              keys:
+                id:
+                  type: int
+                name:
+                  type: str
+                zones:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      id:
+                        type: int
+                      name:
+                        type: str
+                      sites:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            id:
+                              type: int
+                            name:
+                              type: str
+                            location:
+                              type: dict
+                              keys:
+                                address:
+                                  type: str
+          vrfs:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                vni:
+                  type: int
+                avts:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      constraints:
+                        type: dict
+                        keys:
+                          jitter:
+                            type: int
+                          latency:
+                            type: int
+                          lossrate:
+                            type: str
+                      description:
+                        type: str
+                      id:
+                        type: int
+                      name:
+                        type: str
+                      pathgroups:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            name:
+                              type: str
+                            preference:
+                              type: str
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -6005,6 +6566,8 @@ keys:
       trusted_keys:
         type: str
         description: List of trusted-keys as string ex. 10-12,15
+        convert_types:
+        - int
   patch_panel:
     type: dict
     keys:
@@ -6282,6 +6845,17 @@ keys:
                 valid_values:
                 - ingress
                 - egress
+          mdb_profile:
+            type: str
+            description: 'Sand platforms MDB Profile configuration. Note: l3-xxxl
+              does not support MLAG.'
+            valid_values:
+            - balanced
+            - balanced-xl
+            - l3
+            - l3-xl
+            - l3-xxl
+            - l3-xxxl
       sfe:
         type: dict
         description: Sfe (Software Forwarding Engine) settings.
@@ -8033,6 +8607,9 @@ keys:
                 type: int
                 convert_types:
                 - str
+      tx_latency:
+        type: bool
+        description: Enable tx-latency mode
   queue_monitor_streaming:
     type: dict
     keys:
@@ -8682,6 +9259,35 @@ keys:
               type: bool
             bfd:
               type: bool
+              description: Enable BFD.
+            bfd_timers:
+              type: dict
+              description: 'Override default BFD timers. BFD must be enabled with
+                `bfd: true`.'
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  required: true
+                  convert_types:
+                  - str
             ebgp_multihop:
               type: int
               min: 1
@@ -8838,6 +9444,35 @@ keys:
               description: Source Interface
             bfd:
               type: bool
+              description: Enable BFD.
+            bfd_timers:
+              type: dict
+              description: 'Override default BFD timers. BFD must be enabled with
+                `bfd: true`.'
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  required: true
+                  convert_types:
+                  - str
             weight:
               type: int
               min: 0
@@ -8983,6 +9618,12 @@ keys:
               type: bool
             as_set:
               type: bool
+            advertise_map:
+              type: str
+              description: Route-map name
+            supress_map:
+              type: str
+              description: Route-map name
             summary_only:
               type: bool
             attribute_map:
@@ -10381,6 +11022,35 @@ keys:
                     type: bool
                   bfd:
                     type: bool
+                    description: Enable BFD.
+                  bfd_timers:
+                    type: dict
+                    description: 'Override default BFD timers. BFD must be enabled
+                      with `bfd: true`.'
+                    keys:
+                      interval:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 50
+                        max: 60000
+                        required: true
+                        description: Interval in milliseconds.
+                      min_rx:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 50
+                        max: 60000
+                        required: true
+                        description: Rate in milliseconds.
+                      multiplier:
+                        type: int
+                        min: 3
+                        max: 50
+                        convert_types:
+                        - str
+                        required: true
                   timers:
                     type: str
                     description: BGP Keepalive and Hold Timer values in seconds as
@@ -10513,6 +11183,12 @@ keys:
                     type: bool
                   as_set:
                     type: bool
+                  advertise_map:
+                    type: str
+                    description: Route-map name
+                  supress_map:
+                    type: str
+                    description: Route-map name
                   summary_only:
                     type: bool
                   attribute_map:
@@ -12337,6 +13013,8 @@ keys:
         type: int
         convert_types:
         - str
+      sample_input_subinterface:
+        type: bool
       dangerous:
         type: bool
       polling_interval:

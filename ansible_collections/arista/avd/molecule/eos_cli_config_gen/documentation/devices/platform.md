@@ -16,7 +16,7 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
@@ -104,5 +104,6 @@ platform sand lag hardware-only
 platform sand lag mode 512x32
 platform sand forwarding mode arad
 platform sand multicast replication default ingress
+platform sand mdb profile l3-xxl
 platform sfe data-plane cpu allocation maximum 42
 ```

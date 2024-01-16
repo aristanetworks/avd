@@ -43,7 +43,7 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 172.16.1.12/24 | 172.16.1.1 |
 
@@ -92,14 +92,14 @@ ip name-server vrf MGMT 192.168.1.1
 
 | Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
 | ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | MGMT | - | - | - | - | - | - | - | - |
+| 0.pool.ntp.org | MGMT | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
 ```eos
 !
 ntp local-interface vrf MGMT Management1
-ntp server vrf MGMT 0.pool.ntp.org
+ntp server vrf MGMT 0.pool.ntp.org prefer
 ```
 
 ### Management API HTTP

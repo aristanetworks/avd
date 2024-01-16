@@ -535,3 +535,5 @@ router_ospf:
     max_lsa: 10000
     redistribute:
       bgp: {}
+metadata:
+  platform: 7280SR3

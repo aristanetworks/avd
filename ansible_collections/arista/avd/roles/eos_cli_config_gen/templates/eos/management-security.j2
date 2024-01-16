@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -92,5 +92,8 @@ management security
 {%         if ssl_profile.certificate is arista.avd.defined %}
       certificate {{ ssl_profile.certificate.file }} key {{ ssl_profile.certificate.key }}
 {%         endif %}
+{%         for crl in ssl_profile.certificate_revocation_lists | arista.avd.natural_sort %}
+      crl {{ crl }}
+{%         endfor %}
 {%     endfor %}
 {% endif %}

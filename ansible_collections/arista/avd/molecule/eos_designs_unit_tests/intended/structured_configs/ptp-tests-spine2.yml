@@ -187,3 +187,5 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
+metadata:
+  platform: vEOS-LAB

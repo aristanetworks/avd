@@ -15,7 +15,7 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
@@ -46,6 +46,7 @@ interface Management1
 #### IP Access-lists Device Configuration
 
 ```eos
+!
 ip access-list ACL_SEQUENCE_AND_COUNTERS
    counters per-entry
    10 remark test acl with sequence numbers
@@ -54,6 +55,7 @@ ip access-list ACL_SEQUENCE_AND_COUNTERS
    40 permit tcp any gt 1023 host 172.16.16.16 eq 22
    50 permit tcp any range 1000 1100 any range 10 20
    4294967295 deny ip any any
+!
 ip access-list ACL_NO_SEQUENCE
    remark test acl without sequence numbers
    deny udp any any log

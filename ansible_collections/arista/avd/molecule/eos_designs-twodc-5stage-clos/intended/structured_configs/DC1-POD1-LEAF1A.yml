@@ -254,3 +254,5 @@ vlan_interfaces:
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+metadata:
+  platform: vEOS-LAB

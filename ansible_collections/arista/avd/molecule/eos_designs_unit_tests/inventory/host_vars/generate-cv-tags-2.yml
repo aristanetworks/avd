@@ -1,0 +1,13 @@
+type: spine
+
+spine:
+  nodes:
+    - name: generate-cv-tags-2
+      id: 1
+      loopback_ipv4_pool: 10.10.255.0/24
+      bgp_as: 65000
+
+cv_tags_topology_type: edge
+
+generate_cv_tags:
+  topology_hints: true

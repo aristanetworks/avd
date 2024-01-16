@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -16,6 +16,12 @@ class AvdTestInterfacesState(AvdTestBase):
 
     anta_module = "anta.tests.interfaces"
     categories = ["Interface State"]
+    interface_types = [
+        ("ethernet_interfaces", "Ethernet Interface & Line Protocol == '{state}'"),
+        ("port_channel_interfaces", "Port-Channel Interface & Line Protocol == '{state}'"),
+        ("vlan_interfaces", "Vlan Interface & Line Protocol == '{state}'"),
+        ("loopback_interfaces", "Loopback Interface Status & Line Protocol == 'up'"),
+    ]
 
     @cached_property
     def test_definition(self) -> dict | None:
@@ -58,30 +64,26 @@ class AvdTestInterfacesState(AvdTestBase):
             Returns:
                 tuple[str, str, str]: A tuple containing the state, protocol status and description.
             """
-            if "Loopback" in description_template:
-                return "up", "up", description_template
-            elif interface["shutdown"]:
+            if interface["shutdown"]:
                 return "adminDown", "down", description_template.format(state="adminDown")
-            else:
-                return "up", "up", description_template.format(state="up")
+            return "up", "up", description_template.format(state="up")
 
-        interface_types = [
-            ("ethernet_interfaces", r"Ethernet Interface & Line Protocol == \"{state}\""),
-            ("port_channel_interfaces", r"Port-Channel Interface & Line Protocol == \"{state}\""),
-            ("vlan_interfaces", r"Vlan Interface & Line Protocol == \"{state}\""),
-            ("loopback_interfaces", r"Loopback Interface Status & Line Protocol == \"up\""),
-        ]
+        required_keys = ["name", "shutdown"]
 
-        for interface_key, description_template in interface_types:
-            interfaces = get(self.hostvars[self.device_name], interface_key, [])
+        for interface_key, description_template in self.interface_types:
+            interfaces = get(self.structured_config, interface_key, [])
 
-            for interface in interfaces:
+            for idx, interface in enumerate(interfaces):
+                self.update_interface_shutdown(interface=interface)
+                if not self.validate_data(data=interface, data_path=f"{interface_key}.[{idx}]", required_keys=required_keys):
+                    continue
                 state, proto, description = generate_test_details(interface, description_template)
-                custom_field = f"{interface['name']} - {interface['description']}"
+                intf_description = interface.get("description")
+                custom_field = interface["name"] if not intf_description else f"{interface['name']} - {intf_description}"
 
                 add_test(str(interface["name"]), state, proto, description, custom_field)
 
         if get(self.hostvars[self.device_name], "vxlan_interface.Vxlan1") is not None:
-            add_test("Vxlan1", "up", "up", r"Vxlan Interface Status & Line Protocol == \"up\"", "Vxlan1")
+            add_test("Vxlan1", "up", "up", "Vxlan Interface Status & Line Protocol == 'up'", "Vxlan1")
 
         return {self.anta_module: anta_tests} if anta_tests else None
