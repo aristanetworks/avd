@@ -64,7 +64,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                         list_of_dicts=loopback_interfaces,
                         primary_key="name",
                         new_dict=interface,
-                        context="Loopback Interfaces defined under loopback_interfaces",
+                        context="Loopback Interfaces defined under network_services, vrfs, loopback_interfaces",
                         context_keys=["name", "vrf"],
                     )
 
