@@ -56,7 +56,6 @@ tenant_a:
           enabled: true
           nodes:
             - DC1-LEAF1A
-
       - name: Tenant_A_WEB_Zone
         vrf_vni: 11
         mlag_ibgp_peering_ipv4_pool: 172.31.11.0/24
@@ -275,8 +274,8 @@ tenant_a:
               enabled: true
               point_to_point: true
               area: 0
-        loopback_interfaces:
-          - interface: Loopback123
+        loopbacks:
+          - loopback: 123
             ip_address: 10.1.53.0/32
             node: DC1-LEAF2A
             description: Test-Loopback
@@ -284,7 +283,7 @@ tenant_a:
             ospf:
               enabled: true
               area: 1
-          - interface: Loopback123
+          - loopback: 123
             ip_address: 10.1.53.1/32
             node: DC1-LEAF2B
             enabled: false
