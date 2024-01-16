@@ -12,7 +12,7 @@ from .models import CVDevice, CVPathfinderMetadata, DeployToCvResult
 
 LOGGER = getLogger(__name__)
 
-CV_PATHFINDER_METADATA_STUDIO_ID = "cv-pathfinder-metadata"
+CV_PATHFINDER_METADATA_STUDIO_ID = "studio-caravan"
 CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {"pathfinders": [], "pathgroups": [], "regions": [], "routers": [], "vrfs": [], "version": 3}
 
 
