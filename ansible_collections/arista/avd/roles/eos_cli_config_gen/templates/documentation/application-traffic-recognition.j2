@@ -23,8 +23,8 @@
 {%                 set tcp_dest_port = application.tcp_dest_port_set_name | arista.avd.default("-") %}
 {%                 set udp_src_port = application.udp_src_port_set_name | arista.avd.default("-") %}
 {%                 set udp_dest_port = application.udp_dest_port_set_name | arista.avd.default("-") %}
-{%                 set protocol_ranges = ", ".join(application.protocol_ranges) | arista.avd.default("-") %}
-{%                 set protocol = ", ".join(application.protocols) | arista.avd.default("-") %}
+{%                 set protocol_ranges = ", ".join(application.protocol_ranges | arista.avd.default([])) | arista.avd.default("-") %}
+{%                 set protocol = ", ".join(application.protocols | arista.avd.default([])) | arista.avd.default("-") %}
 | {{ application.name }} | {{ src_prefix }} | {{ dest_prefix }} | {{ protocol }} | {{ protocol_ranges }} | {{ tcp_src_port }} | {{ tcp_dest_port }} | {{ udp_src_port }} | {{ udp_dest_port }} |
 {%             endfor %}
 {%         endif %}
@@ -79,8 +79,7 @@
 | Name | Ports |
 | ---- | ----- |
 {%             for port_set in application_traffic_recognition.field_sets.l4_ports | arista.avd.natural_sort('name') %}
-{%                 do port_set.port_values.sort() %}
-| {{ port_set.name }} | {{ port_set.port_values | arista.avd.default([]) | join(', ') }} |
+| {{ port_set.name }} | {{ port_set.port_values | arista.avd.natural_sort | join(', ') }} |
 {%             endfor %}
 {%         endif %}
 {%         if application_traffic_recognition.field_sets.ipv4_prefixes is arista.avd.defined %}
@@ -90,8 +89,7 @@
 | Name | Prefixes |
 | ---- | -------- |
 {%             for prefix_set in application_traffic_recognition.field_sets.ipv4_prefixes | arista.avd.natural_sort('name') %}
-{%                 do prefix_set.prefix_values.sort() %}
-| {{ prefix_set.name }} | {{ prefix_set.prefix_values | arista.avd.default([]) | join('<br>') }} |
+| {{ prefix_set.name }} | {{ prefix_set.prefix_values | arista.avd.natural_sort | join('<br>') }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
