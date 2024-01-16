@@ -5336,6 +5336,8 @@ $defs:
                     loopback:
                       type: int
                       required: true
+                      min: 0
+                      max: 8191
                     ip_address:
                       type: str
                       required: true
@@ -5350,6 +5352,7 @@ $defs:
                       keys:
                         enabled:
                           type: bool
+                          default: false
                         area:
                           type: str
                           convert_types:
