@@ -25,7 +25,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         if not self.shared_utils.wan_role:
             return None
 
-        filtered_application_traffic_recognition = self._filtered_application_traffic_recognition
+        filtered_application_traffic_recognition = self._filtered_application_traffic_recognition()
 
         self._generate_control_plane_application_profile(filtered_application_traffic_recognition)
 
@@ -99,7 +99,6 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
             }
         )
 
-    @cached_property
     def _filtered_application_traffic_recognition(self) -> dict:
         """
         Based on the filtered policies local to the device, filter which application profiles should be configured on the device.
