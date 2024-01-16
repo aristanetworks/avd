@@ -21936,7 +21936,7 @@
                 "properties": {
                   "auto": {
                     "type": "boolean",
-                    "description": "Adaptive keepalive and feedback interval.\nSet this to true to enable it.",
+                    "description": "Adaptive keepalive and feedback interval.\nSet this to true to enable it.\nIf \"auto\" is enabled the interval values are ignored.",
                     "title": "Auto"
                   },
                   "interval": {

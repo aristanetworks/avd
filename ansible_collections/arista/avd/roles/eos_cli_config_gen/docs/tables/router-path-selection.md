@@ -36,7 +36,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_addresses</samp>](## "router_path_selection.path_groups.[].static_peers.[].ipv4_addresses") | List, items: String |  |  |  | Static IPv4 addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_path_selection.path_groups.[].static_peers.[].ipv4_addresses.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keep_alive</samp>](## "router_path_selection.path_groups.[].keep_alive") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto</samp>](## "router_path_selection.path_groups.[].keep_alive.auto") | Boolean |  |  |  | Adaptive keepalive and feedback interval.<br>Set this to true to enable it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto</samp>](## "router_path_selection.path_groups.[].keep_alive.auto") | Boolean |  |  |  | Adaptive keepalive and feedback interval.<br>Set this to true to enable it.<br>If "auto" is enabled the interval values are ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_path_selection.path_groups.[].keep_alive.interval") | Integer |  |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval_count</samp>](## "router_path_selection.path_groups.[].keep_alive.interval_count") | Integer |  |  | Min: 2<br>Max: 100 |  |
     | [<samp>&nbsp;&nbsp;load_balance_policies</samp>](## "router_path_selection.load_balance_policies") | List, items: Dictionary |  |  |  |  |
@@ -130,6 +130,7 @@
 
             # Adaptive keepalive and feedback interval.
             # Set this to true to enable it.
+            # If "auto" is enabled the interval values are ignored.
             auto: <bool>
 
             # Interval in milliseconds.
