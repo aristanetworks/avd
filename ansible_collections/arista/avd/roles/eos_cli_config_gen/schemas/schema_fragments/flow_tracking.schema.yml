@@ -13,6 +13,13 @@ keys:
         type: dict
         $ref: "eos_cli_config_gen#/$defs/flow_tracking"
         keys:
+          encapsulation:
+            type: dict
+            keys:
+              ipv4:
+                type: bool
+              ipv6:
+                type: bool
           sample:
             type: int
             convert_types:

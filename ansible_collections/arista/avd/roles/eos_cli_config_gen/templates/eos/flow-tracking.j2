@@ -8,6 +8,18 @@
 {% if flow_tracking.sampled is arista.avd.defined %}
 !
 flow tracking sampled
+{%     if flow_tracking.sampled.encapsulation is arista.avd.defined %}
+{%         set encapsulation_protocols = [] %}
+{%         if flow_tracking.sampled.encapsulation.ipv4 is arista.avd.defined(true) %}
+{%             do encapsulation_protocols.append('ipv4') %}
+{%         endif %}
+{%         if flow_tracking.sampled.encapsulation.ipv6 is arista.avd.defined(true) %}
+{%             do encapsulation_protocols.append('ipv6') %}
+{%         endif %}
+{%         if encapsulation_protocols | length > 0 %}
+   encapsulation {{ encapsulation_protocols | join(' ') }}
+{%         endif %}
+{%     endif %}
 {%     if flow_tracking.sampled.sample is arista.avd.defined %}
    sample {{ flow_tracking.sampled.sample }}
 {%     endif %}
