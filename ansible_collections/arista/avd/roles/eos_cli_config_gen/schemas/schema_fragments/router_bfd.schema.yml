@@ -32,6 +32,11 @@ keys:
             type: int
             min: 3
             max: 50
+      session_snapshot_interval:
+        type: int
+        description: Range <10-3600>
+      session_snapshot_interval_dangerous:
+        type: bool
       sbfd:
         type: dict
         keys:

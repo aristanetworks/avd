@@ -1,4 +1,4 @@
-# router-bfd
+# router-bfd-dangerous-interval-false
 
 ## Table of Contents
 
@@ -64,6 +64,7 @@ interface Management1
 router bfd
    interval 900 min-rx 900 multiplier 50 default
    multihop interval 300 min-rx 300 multiplier 3
+   session stats snapshot interval 51
    !
    sbfd
       local-interface Loopback0 ipv4 ipv6

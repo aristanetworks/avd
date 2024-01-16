@@ -1,0 +1,7 @@
+# Negative test to catch dangerous interval true for router bfd and make sure the
+# error message makes sense to the user
+router_bfd:
+  session_snapshot_interval: 555
+  session_snapshot_interval_dangerous: true
+
+expected_error_message: "router_bfd.session_snapshot_interval_dangerous was set to True but we expected False!"
