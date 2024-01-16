@@ -5331,30 +5331,17 @@ $defs:
                 items:
                   type: dict
                   keys:
-                    interfaces:
-                      type: list
-                      items:
-                        type: str
-                        description: Interface name.
-                    ip_addresses:
-                      type: list
-                      items:
-                        type: str
-                        description: IPv4_address/Mask.
-                    nodes:
-                      type: list
-                      items:
-                        type: str
-                        description: Node.
+                    interface:
+                      type: str
+                      required: true
+                    ip_address:
+                      type: str
+                      required: true
+                    node:
+                      type: str
+                      required: true
                     description:
                       type: str
-                    descriptions:
-                      type: list
-                      items:
-                        type: str
-                      description: '"descriptions" has precedence over "description".
-
-                        '
                     enabled:
                       type: bool
                     ospf:
@@ -5369,33 +5356,6 @@ $defs:
                           - int
                           description: OSPF area ID.
                           default: '0'
-                        cost:
-                          type: int
-                          convert_types:
-                          - str
-                          description: OSPF link cost.
-                    pim:
-                      type: dict
-                      description: 'Enable PIM sparse-mode on the interface; requires
-                        "evpn_l3_multicast" to be enabled on the VRF/Tenant
-
-                        Enabling this implicitly makes the device a PIM External Gateway
-                        (PEG) in EVPN designs only.
-
-                        At least one RP address must be configured for EVPN PEG to
-                        be configured.
-
-                        '
-                      keys:
-                        enabled:
-                          type: bool
-                    structured_config:
-                      type: dict
-                      description: Custom structured config added under loopback_interfaces.[name=<interface>]
-                        for eos_cli_config_gen.
-                      documentation_options:
-                        hide_keys: true
-                      $ref: eos_cli_config_gen#/keys/loopback_interfaces/items/
                     raw_eos_cli:
                       type: str
                       description: 'EOS CLI rendered directly on the Loopback interface

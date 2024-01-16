@@ -1227,3 +1227,5 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.1.10
 - name: Tenant_A_OSPF
   ip_address: 10.255.11.10
+metadata:
+  platform: 7280R
