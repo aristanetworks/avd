@@ -1,0 +1,35 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+---
+- name: Preview Mode
+  ansible.builtin.fail:
+    msg: arista.avd.deploy_to_cv is in 'preview mode'. Set 'deploy_to_cv_accept_preview' to use.
+  when: deploy_to_cv_accept_preview is not arista.avd.defined
+
+- name: Deploy device configurations and tags to CloudVision
+  run_once: true
+  delegate_to: localhost
+  arista.avd.deploy_to_cv:
+    cv_servers: [ "{{ cv_server }}" ]
+    cv_token: "{{ cv_token }}"
+    cv_verify_certs: "{{ cv_verify_certs }}"
+    configuration_dir: "{{ eos_config_dir }}"
+    structured_config_dir: "{{ structured_dir }}"
+    structured_config_suffix: "{{ avd_structured_config_file_format }}"
+    device_list: "{{ cv_devices }}"
+    strict_tags: "{{ cv_strict_tags }}"
+    skip_missing_devices: "{{ cv_skip_missing_devices }}"
+    configlet_name_template: "{{ cv_configlet_name_template | arista.avd.default }}"
+    workspace:
+      name: "{{ cv_workspace_name | arista.avd.default }}"
+      description: "{{ cv_workspace_description | arista.avd.default }}"
+      requested_state: "{{ 'submitted' if cv_submit_workspace else 'pending' }}"
+      force: "{{ cv_submit_workspace_force }}"
+    change_control:
+      name: "{{ cv_change_control_name | arista.avd.default }}"
+      description: "{{ cv_change_control_description | arista.avd.default }}"
+      requested_state: "{{ 'started' if cv_run_change_control else 'pending approval' }}"
+    timeouts:
+      workspace_build_timeout: "{{ cv_workspace_build_timeout }}"
+    return_details: "{{ cv_register_detailed_results }}"

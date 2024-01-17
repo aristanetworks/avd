@@ -27,7 +27,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.deploy_to_cv.
     CVTimeOuts,
     CVWorkspace,
 )
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, get
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
@@ -87,8 +87,9 @@ class ActionModule(ActionBase):
         setup_module_logging(result)
 
         # Get task arguments and validate them
+        validated_args = strip_empties_from_dict(self._task.args)
         validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
-        validated_args = strip_null_from_data(validated_args)
+        validated_args = strip_empties_from_dict(validated_args)
 
         # Running asyncio coroutine to deploy everything.
         return run(self.deploy(validated_args, result))
@@ -97,7 +98,7 @@ class ActionModule(ActionBase):
         """
         Prepare data, perform deployment and convert result data.
         """
-        LOGGER.info("deploy: %s", validated_args)
+        LOGGER.info("deploy: %s", {**validated_args, "cv_token": "<removed>"})
         try:
             # Create CloudVision object
             cloudvision = CloudVision(
