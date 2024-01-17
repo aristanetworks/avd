@@ -8,9 +8,9 @@ from collections import ChainMap
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, replace_or_append_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item, replace_or_append_item
 
 from ..interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
@@ -139,8 +139,23 @@ class EthernetInterfacesMixin(UtilsMixin):
                     },
                 }
             )
-            if get(adapter, "port_channel.lacp_fallback.mode") == "static":
+            if get(adapter, "port_channel.lacp_fallback.mode") == "static" or get(adapter, "port_channel.lacp_fallback.mode") == "individual":
                 ethernet_interface["lacp_port_priority"] = 8192 if node_index == 0 else 32768
+                if get(adapter, "port_channel.lacp_fallback.mode") == "individual" and get(adapter, "port_channel.lacp_fallback.individual") is not None:
+                    # check if the referred name exists in the global evpn_vlan_bundles
+                    if (profile := get_item(self._hostvars["port_profiles"], "profile", get(adapter, "port_channel.lacp_fallback.individual.profile"))) is None:
+                        raise AristaAvdMissingVariableError(
+                            "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurence seen"
+                            f" of a missing profile is '{get(adapter, 'port_channel.lacp_fallback.individual.profile')}' for the connected endpoint with the"
+                            f" name '{connected_endpoint['name']}'."
+                        )
+
+                    ethernet_interface["type"] = "switched"
+                    ethernet_interface["mode"] = profile.get("mode")
+                    ethernet_interface["vlans"] = profile.get("vlans")
+                    ethernet_interface["native_vlan_tag"] = profile.get("native_vlan_tag")
+                    ethernet_interface["native_vlan"] = profile.get("native_vlan")
+
             if port_channel_mode != "on" and get(adapter, "port_channel.lacp_timer") is not None:
                 ethernet_interface["lacp_timer"] = {
                     "mode": get(adapter, "port_channel.lacp_timer.mode"),

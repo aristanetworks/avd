@@ -478,7 +478,17 @@ $defs:
                 type: str
                 valid_values:
                   - static
-                description: Currently only static mode is supported.
+                  - individual
+                description: Either static or individual mode is supported.
+              individual:
+                type: dict
+                description: Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to "individual".
+                keys:
+                  profile:
+                    type: str
+                    description: |
+                      Port-profile name to inherit configuration.
+                      Currently the "mode", "vlans", "native_vlan" and "native_vlan_tag" from the profile are supported to be inherited.
               timeout:
                 type: int
                 convert_types:
