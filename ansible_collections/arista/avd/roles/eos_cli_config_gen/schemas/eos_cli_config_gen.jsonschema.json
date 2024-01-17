@@ -7256,7 +7256,7 @@
                       "aes128gcm128",
                       "aes128gcm64",
                       "aes256",
-                      "aes256gcm256",
+                      "aes256gcm128",
                       "null"
                     ],
                     "title": "Encryption"
@@ -10199,11 +10199,393 @@
     },
     "metadata": {
       "type": "object",
-      "description": "Key only used for documentation or validation purposes",
+      "description": "The data under `metadata` is used for documentation, validation or integration purposes.\nIt will not affect the generated EOS configuration.",
       "properties": {
         "platform": {
           "type": "string",
           "title": "Platform"
+        },
+        "cv_tags": {
+          "type": "object",
+          "properties": {
+            "device_tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "value": {
+                    "type": "string",
+                    "title": "Value"
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Device Tags"
+            },
+            "interface_tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "interface": {
+                    "type": "string",
+                    "title": "Interface"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "value": {
+                          "type": "string",
+                          "title": "Value"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Tags"
+                  }
+                },
+                "required": [
+                  "interface"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Interface Tags"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Cv Tags"
+        },
+        "cv_pathfinder": {
+          "type": "object",
+          "description": "Metadata used for CV Pathfinder visualization on CloudVision",
+          "properties": {
+            "role": {
+              "type": "string",
+              "title": "Role"
+            },
+            "region": {
+              "type": "string",
+              "title": "Region"
+            },
+            "zone": {
+              "type": "string",
+              "title": "Zone"
+            },
+            "site": {
+              "type": "string",
+              "title": "Site"
+            },
+            "vtep_ip": {
+              "type": "string",
+              "title": "Vtep IP"
+            },
+            "ssl_profile": {
+              "type": "string",
+              "title": "SSL Profile"
+            },
+            "pathfinders": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "vtep_ip": {
+                    "type": "string",
+                    "title": "Vtep IP"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Pathfinders"
+            },
+            "interfaces": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "carrier": {
+                    "type": "string",
+                    "title": "Carrier"
+                  },
+                  "circuit_id": {
+                    "type": "string",
+                    "title": "Circuit ID"
+                  },
+                  "pathgroup": {
+                    "type": "string",
+                    "title": "Pathgroup"
+                  },
+                  "public_ip": {
+                    "type": "string",
+                    "title": "Public IP"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Interfaces"
+            },
+            "pathgroups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "carriers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Carriers"
+                  },
+                  "imported_carriers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Imported Carriers"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Pathgroups"
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "title": "ID"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "zones": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "title": "ID"
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "sites": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "title": "ID"
+                              },
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "location": {
+                                "type": "object",
+                                "properties": {
+                                  "address": {
+                                    "type": "string",
+                                    "title": "Address"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Location"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Sites"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Zones"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Regions"
+            },
+            "vrfs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "vni": {
+                    "type": "integer",
+                    "title": "Vni"
+                  },
+                  "avts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "constraints": {
+                          "type": "object",
+                          "properties": {
+                            "jitter": {
+                              "type": "integer",
+                              "title": "Jitter"
+                            },
+                            "latency": {
+                              "type": "integer",
+                              "title": "Latency"
+                            },
+                            "lossrate": {
+                              "type": "string",
+                              "title": "Lossrate"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Constraints"
+                        },
+                        "description": {
+                          "type": "string",
+                          "title": "Description"
+                        },
+                        "id": {
+                          "type": "integer",
+                          "title": "ID"
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "pathgroups": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "preference": {
+                                "type": "string",
+                                "title": "Preference"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Pathgroups"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Avts"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "VRFs"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Cv Pathfinder"
         }
       },
       "additionalProperties": false,
@@ -14121,6 +14503,11 @@
             "^_.+$": {}
           },
           "title": "CPU"
+        },
+        "tx_latency": {
+          "type": "boolean",
+          "description": "Enable tx-latency mode",
+          "title": "TX Latency"
         }
       },
       "required": [
@@ -14574,7 +14961,7 @@
         },
         "policies": {
           "type": "array",
-          "description": "A sequence of application profiles mapped to some virtual topologies.",
+          "description": "A sequence of application profiles mapped to some virtual topologies.\n\nWhen `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index> in the list.",
           "items": {
             "type": "object",
             "properties": {
@@ -15389,6 +15776,13 @@
               "session_tracker": {
                 "type": "string",
                 "title": "Session Tracker"
+              },
+              "ttl_maximum_hops": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 254,
+                "description": "Maximum number of hops.",
+                "title": "TTL Maximum Hops"
               }
             },
             "additionalProperties": false,
@@ -15693,6 +16087,13 @@
               "session_tracker": {
                 "type": "string",
                 "title": "Session Tracker"
+              },
+              "ttl_maximum_hops": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 254,
+                "description": "Maximum number of hops.",
+                "title": "TTL Maximum Hops"
               }
             },
             "additionalProperties": false,
@@ -15766,6 +16167,16 @@
               "as_set": {
                 "type": "boolean",
                 "title": "As Set"
+              },
+              "advertise_map": {
+                "type": "string",
+                "description": "Route-map name",
+                "title": "Advertise Map"
+              },
+              "supress_map": {
+                "type": "string",
+                "description": "Route-map name",
+                "title": "Supress Map"
               },
               "summary_only": {
                 "type": "boolean",
@@ -18726,6 +19137,16 @@
                     "as_set": {
                       "type": "boolean",
                       "title": "As Set"
+                    },
+                    "advertise_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Advertise Map"
+                    },
+                    "supress_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Supress Map"
                     },
                     "summary_only": {
                       "type": "boolean",

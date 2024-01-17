@@ -1,6 +1,4 @@
 hostname: mgmt_interface_host
-metadata:
-  platform: 7500R2
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -174,3 +172,5 @@ ip_igmp_snooping:
   vlans:
   - id: 120
     enabled: false
+metadata:
+  platform: 7500R2

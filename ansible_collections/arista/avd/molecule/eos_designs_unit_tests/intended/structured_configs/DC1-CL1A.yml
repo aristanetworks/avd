@@ -1,6 +1,4 @@
 hostname: DC1-CL1A
-metadata:
-  platform: 7368X4
 is_deployed: true
 router_bgp:
   as: '65108'
@@ -498,3 +496,5 @@ vxlan_interface:
         vni: 30311
       - id: 350
         vni: 30350
+metadata:
+  platform: 7368X4

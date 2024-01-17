@@ -1,6 +1,4 @@
 hostname: ISIS-SPINE1
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -89,3 +87,5 @@ vlan_interfaces:
   description: SVI_110
   shutdown: false
   ip_address_virtual: 10.0.110.1/24
+metadata:
+  platform: vEOS-LAB

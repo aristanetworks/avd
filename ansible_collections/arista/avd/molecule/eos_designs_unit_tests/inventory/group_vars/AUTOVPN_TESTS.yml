@@ -38,6 +38,9 @@ default_node_types:
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.30.0/24
+    filter:
+      # TODO find a way to not need this
+      always_include_vrfs_in_tenants: [TenantA]
   nodes:
     - name: autovpn-edge
       id: 1
@@ -84,3 +87,51 @@ wan_carriers:
     path_group: INET
   - name: ATT
     path_group: INET
+
+tenants:
+  - name: TenantA
+    vrfs:
+      - name: default
+        vrf_id: 1
+      - name: PROD
+        vrf_id: 42
+      - name: IT
+        vrf_id: 100
+
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      policy: DEFAULT-AVT-POLICY
+    - name: PROD
+      policy: PROD-AVT-POLICY
+  policies:
+    - name: PROD-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET]
+            preference: preferred
+      application_virtual_topologies:
+        - application_profile: VOICE
+          path_groups:
+            - names: [INET]
+              preference: preferred
+        - application_profile: VIDEO
+          path_groups:
+            - names: [INET]
+              preference: preferred
+    - name: DEFAULT-AVT-POLICY
+      default_virtual_topology:
+        drop_unmatched: true
+      application_virtual_topologies:
+        - application_profile: IT
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+            - names: [INET]
+              preference: alternate
+
+application_traffic_recognition:
+  application_profiles:
+    - name: VIDEO
+    - name: IT
+    - name: VOICE

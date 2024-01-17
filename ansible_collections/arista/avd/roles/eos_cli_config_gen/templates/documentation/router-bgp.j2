@@ -202,6 +202,9 @@
 {%             if peer_group.ebgp_multihop is arista.avd.defined %}
 | Ebgp multihop | {{ peer_group.ebgp_multihop }} |
 {%             endif %}
+{%             if peer_group.ttl_maximum_hops is arista.avd.defined %}
+| TTL Max Hops | {{ peer_group.ttl_maximum_hops }} |
+{%             endif %}
 {%             if peer_group.default_originate.enabled is arista.avd.defined(true) %}
 | Default originate | True |
 {%             endif %}
@@ -259,8 +262,8 @@
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 {%         for neighbor in router_bgp.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.peer_group is arista.avd.defined %}
 {%                 set inherited = namespace() %}
@@ -300,6 +303,9 @@
 {%                 endif %}
 {%                 if peer_group.passive is arista.avd.defined(true) %}
 {%                     set inherited.passive = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                 endif %}
+{%                 if peer_group.ttl_maximum_hops is arista.avd.defined %}
+{%                     set inherited.ttl_maximum_hops = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
 {%             endif %}
 {%             set active_parameter = namespace() %}
@@ -353,8 +359,9 @@
 {%                     set value_allowas = "Allowed, allowed 3 (default) times" %}
 {%                 endif %}
 {%             endif %}
+{%             set ttl_maximum_hops = neighbor.ttl_maximum_hops | arista.avd.default(inherited.ttl_maximum_hops, "-") %}
 {%             set active_parameter.allowas_in = value_allowas | arista.avd.default(inherited.allowas_in, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} | {{ active_parameter.route_reflector_client }} | {{ active_parameter.passive }} |
+| {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} | {{ active_parameter.route_reflector_client }} | {{ active_parameter.passive }} | {{ ttl_maximum_hops }} |
 {%         endfor %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.neighbors is arista.avd.defined %}
@@ -480,14 +487,16 @@
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
+| Prefix | AS Set | Advertise Map | Supress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------- | ----------- | ------------ | ------------- | --------- | -------------- |
 {%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort('prefix') %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}
 {%                 set as_set = true %}
 {%             else %}
 {%                 set as_set = false %}
 {%             endif %}
+{%             set advertise_map = aggregate_address.advertise_map | arista.avd.default('-') %}
+{%             set supress_map = aggregate_address.supress_map | arista.avd.default('-') %}
 {%             if aggregate_address.summary_only is arista.avd.defined(true) %}
 {%                 set summary_only = true %}
 {%             else %}
@@ -500,7 +509,7 @@
 {%             else %}
 {%                 set advertise_only = false %}
 {%             endif %}
-| {{ aggregate_address.prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ advertise_only }} |
+| {{ aggregate_address.prefix }} | {{ as_set }} | {{ advertise_map }} | {{ supress_map }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ advertise_only }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}

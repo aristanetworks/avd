@@ -52,3 +52,6 @@ keys:
                 type: int
                 convert_types:
                   - str
+      tx_latency:
+        type: bool
+        description: "Enable tx-latency mode"

@@ -5,6 +5,7 @@ queue_monitor_length:
     high: 100
   log: 100
   notifying: true
+  tx_latency: true
   cpu:
     thresholds:
       # "high" threshold is mandatory

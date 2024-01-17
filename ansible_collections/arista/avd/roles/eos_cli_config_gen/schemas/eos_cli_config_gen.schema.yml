@@ -4291,7 +4291,7 @@ keys:
                   - aes128gcm128
                   - aes128gcm64
                   - aes256
-                  - aes256gcm256
+                  - aes256gcm128
                   - 'null'
             pfs_dh_group:
               type: int
@@ -6030,10 +6030,175 @@ keys:
               description: IP or hostname
   metadata:
     type: dict
-    description: Key only used for documentation or validation purposes
+    description: 'The data under `metadata` is used for documentation, validation
+      or integration purposes.
+
+      It will not affect the generated EOS configuration.'
     keys:
       platform:
         type: str
+      cv_tags:
+        type: dict
+        keys:
+          device_tags:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  required: true
+                value:
+                  type: str
+                  required: true
+          interface_tags:
+            type: list
+            items:
+              type: dict
+              keys:
+                interface:
+                  type: str
+                  required: true
+                tags:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        required: true
+                      value:
+                        type: str
+                        required: true
+      cv_pathfinder:
+        type: dict
+        description: Metadata used for CV Pathfinder visualization on CloudVision
+        keys:
+          role:
+            type: str
+          region:
+            type: str
+          zone:
+            type: str
+          site:
+            type: str
+          vtep_ip:
+            type: str
+          ssl_profile:
+            type: str
+          pathfinders:
+            type: list
+            items:
+              type: dict
+              keys:
+                vtep_ip:
+                  type: str
+          interfaces:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                carrier:
+                  type: str
+                circuit_id:
+                  type: str
+                pathgroup:
+                  type: str
+                public_ip:
+                  type: str
+          pathgroups:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                carriers:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                imported_carriers:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+          regions:
+            type: list
+            items:
+              type: dict
+              keys:
+                id:
+                  type: int
+                name:
+                  type: str
+                zones:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      id:
+                        type: int
+                      name:
+                        type: str
+                      sites:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            id:
+                              type: int
+                            name:
+                              type: str
+                            location:
+                              type: dict
+                              keys:
+                                address:
+                                  type: str
+          vrfs:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                vni:
+                  type: int
+                avts:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      constraints:
+                        type: dict
+                        keys:
+                          jitter:
+                            type: int
+                          latency:
+                            type: int
+                          lossrate:
+                            type: str
+                      description:
+                        type: str
+                      id:
+                        type: int
+                      name:
+                        type: str
+                      pathgroups:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            name:
+                              type: str
+                            preference:
+                              type: str
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -8442,6 +8607,9 @@ keys:
                 type: int
                 convert_types:
                 - str
+      tx_latency:
+        type: bool
+        description: Enable tx-latency mode
   queue_monitor_streaming:
     type: dict
     keys:
@@ -8708,7 +8876,11 @@ keys:
       policies:
         type: list
         primary_key: name
-        description: A sequence of application profiles mapped to some virtual topologies.
+        description: 'A sequence of application profiles mapped to some virtual topologies.
+
+
+          When `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index>
+          in the list.'
         items:
           type: dict
           keys:
@@ -9226,6 +9398,13 @@ keys:
                 new_key: listen_ranges
             session_tracker:
               type: str
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbors:
         type: list
         primary_key: ip_address
@@ -9409,6 +9588,13 @@ keys:
                   type: bool
             session_tracker:
               type: str
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbor_interfaces:
         type: list
         primary_key: name
@@ -9450,6 +9636,12 @@ keys:
               type: bool
             as_set:
               type: bool
+            advertise_map:
+              type: str
+              description: Route-map name
+            supress_map:
+              type: str
+              description: Route-map name
             summary_only:
               type: bool
             attribute_map:
@@ -11009,6 +11201,12 @@ keys:
                     type: bool
                   as_set:
                     type: bool
+                  advertise_map:
+                    type: str
+                    description: Route-map name
+                  supress_map:
+                    type: str
+                    description: Route-map name
                   summary_only:
                     type: bool
                   attribute_map:

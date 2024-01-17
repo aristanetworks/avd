@@ -1,6 +1,4 @@
 hostname: dc2-leaf1a
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65201'
@@ -466,3 +464,5 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.10.13
 - name: VRF11
   ip_address: 10.255.11.13
+metadata:
+  platform: vEOS-lab

@@ -1,6 +1,4 @@
 hostname: SITE2-LER1
-metadata:
-  platform: 7280SR3
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -537,3 +535,5 @@ router_ospf:
     max_lsa: 10000
     redistribute:
       bgp: {}
+metadata:
+  platform: 7280SR3

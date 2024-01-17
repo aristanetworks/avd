@@ -1,6 +1,4 @@
 hostname: DC1-BL2B
-metadata:
-  platform: 7280R3
 is_deployed: true
 router_bgp:
   as: '65107'
@@ -473,3 +471,5 @@ vxlan_interface:
         vni: 21
       - name: Tenant_C_WAN_Zone
         vni: 31
+metadata:
+  platform: 7280R3

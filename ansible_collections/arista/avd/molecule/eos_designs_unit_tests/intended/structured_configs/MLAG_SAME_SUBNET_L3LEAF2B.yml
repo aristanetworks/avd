@@ -1,6 +1,4 @@
 hostname: MLAG_SAME_SUBNET_L3LEAF2B
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '923'
@@ -242,3 +240,5 @@ vxlan_interface:
       vrfs:
       - name: TEST
         vni: 1
+metadata:
+  platform: vEOS-LAB

@@ -1,6 +1,4 @@
 hostname: OVERRIDE_VTEP_L3LEAF1B
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '923'
@@ -168,3 +166,5 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-LAB
