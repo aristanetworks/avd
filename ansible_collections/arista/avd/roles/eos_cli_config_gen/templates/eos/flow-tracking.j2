@@ -16,6 +16,9 @@ flow tracking sampled
 {%         if flow_tracking.sampled.encapsulation.ipv6 is arista.avd.defined(true) %}
 {%             do encapsulation_protocols.append('ipv6') %}
 {%         endif %}
+{%         if flow_tracking.sampled.encapsulation.mpls is arista.avd.defined(true) %}
+{%             do encapsulation_protocols.append('mpls') %}
+{%         endif %}
 {%         if encapsulation_protocols | length > 0 %}
    encapsulation {{ encapsulation_protocols | join(' ') }}
 {%         endif %}

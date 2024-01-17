@@ -20,6 +20,8 @@ keys:
                 type: bool
               ipv6:
                 type: bool
+              mpls:
+                type: bool
           sample:
             type: int
             convert_types:

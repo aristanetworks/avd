@@ -91,7 +91,7 @@ interface Management1
 ```eos
 !
 flow tracking sampled
-   encapsulation ipv4
+   encapsulation ipv4 mpls
    sample 666
    hardware offload ipv4
    hardware offload threshold minimum 2 samples
