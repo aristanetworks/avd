@@ -7255,6 +7255,14 @@ keys:
               - str
               min: 3
               max: 50
+            neighbor:
+              type: str
+              description: IPv4 or IPv6 address
+            per_link:
+              type: dict
+              keys:
+                rfc_7130:
+                  type: bool
         service_policy:
           type: dict
           keys:

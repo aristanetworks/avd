@@ -130,6 +130,9 @@ port_channel_interfaces:
       interval: 500
       min_rx: 500
       multiplier: 5
+      neighbor: 10.1.2.4
+      per_link:
+        rfc_7130: true
     spanning_tree_guard: root
 
   - name: Port-Channel20

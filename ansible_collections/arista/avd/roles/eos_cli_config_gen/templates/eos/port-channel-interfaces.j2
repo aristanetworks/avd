@@ -355,6 +355,14 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.bfd.echo is arista.avd.defined(false) %}
    no bfd echo
 {%     endif %}
+{%     if port_channel_interface.bfd.neighbor is arista.avd.defined %}
+   bfd neighbor {{ port_channel_interface.bfd.neighbor }}
+{%     endif %}
+{%     if port_channel_interface.bfd.per_link.rfc_7130 is arista.avd.defined(true) %}
+   bfd per-link rfc-7130
+{%     elif port_channel_interface.bfd.per_link.rfc_7130 is arista.avd.defined(false) %}
+   bfd per-link
+{%     endif %}
 {%     for link_tracking_group in port_channel_interface.link_tracking_groups | arista.avd.natural_sort('name') %}
 {%         if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}

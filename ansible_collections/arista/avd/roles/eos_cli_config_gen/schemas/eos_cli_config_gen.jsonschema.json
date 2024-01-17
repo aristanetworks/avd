@@ -12227,6 +12227,25 @@
                 "minimum": 3,
                 "maximum": 50,
                 "title": "Multiplier"
+              },
+              "neighbor": {
+                "type": "string",
+                "description": "IPv4 or IPv6 address",
+                "title": "Neighbor"
+              },
+              "per_link": {
+                "type": "object",
+                "properties": {
+                  "rfc_7130": {
+                    "type": "boolean",
+                    "title": "Rfc 7130"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Per Link"
               }
             },
             "additionalProperties": false,
