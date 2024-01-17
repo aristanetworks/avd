@@ -166,6 +166,7 @@ nav:
       - eos_snapshot: roles/eos_snapshot/README.md
       - dhcp_provisioner: roles/dhcp_provisioner/README.md
       - build_output_folders: roles/build_output_folders/README.md
+      - deploy_to_cv: roles/deploy_to_cv/README.md
   - Ansible Collection Plugins: docs/plugins/
   - Contributing to AVD:
       - Overview: docs/contribution/overview.md
