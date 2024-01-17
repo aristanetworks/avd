@@ -15125,6 +15125,15 @@
           },
           "title": "Multihop"
         },
+        "session_snapshot_interval": {
+          "type": "integer",
+          "description": "Range <10-3600>",
+          "title": "Session Snapshot Interval"
+        },
+        "session_snapshot_interval_dangerous": {
+          "type": "boolean",
+          "title": "Session Snapshot Interval Dangerous"
+        },
         "sbfd": {
           "type": "object",
           "properties": {
