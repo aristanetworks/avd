@@ -1,6 +1,4 @@
 hostname: UPLINK_P2P_VRFS_TESTS_LEAF1
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -178,3 +176,5 @@ vlan_interfaces:
   description: TEST-L2VLAN-ATTRACTION
   shutdown: true
   vrf: ONLY-ON-L2LEAF
+metadata:
+  platform: vEOS-LAB

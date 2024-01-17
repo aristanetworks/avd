@@ -1,6 +1,4 @@
 hostname: UPLINK_P2P_VRFS_TESTS_SPINE2
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -121,3 +119,5 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
+metadata:
+  platform: vEOS-LAB

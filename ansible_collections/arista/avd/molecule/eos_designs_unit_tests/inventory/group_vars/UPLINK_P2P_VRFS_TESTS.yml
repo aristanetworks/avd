@@ -77,5 +77,8 @@ tenants:
         svis:
           - id: 66
             name: TEST-L2VLAN-ATTRACTION
-            nodes:
-              - node: UPLINK_P2P_VRFS_TESTS_L2LEAF1
+
+network_ports:
+  - switches: [ UPLINK_P2P_VRFS_TESTS_L2LEAF1 ]
+    switch_ports: [ Ethernet10 ]
+    vlans: 66

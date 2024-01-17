@@ -1,6 +1,4 @@
 hostname: UPLINK_P2P_VRFS_TESTS_L2LEAF1
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
@@ -36,6 +34,11 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
+- name: Ethernet10
+  peer_type: network_port
+  shutdown: false
+  type: switched
+  vlans: '66'
 port_channel_interfaces:
 - name: Port-Channel1
   description: UPLINK_P2P_VRFS_TESTS_LEAF1_Po51
@@ -49,3 +52,5 @@ vlans:
   tenant: TenantC
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-LAB
