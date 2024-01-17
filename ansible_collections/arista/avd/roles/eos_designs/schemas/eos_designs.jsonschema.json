@@ -9142,10 +9142,27 @@
                   "mode": {
                     "type": "string",
                     "enum": [
-                      "static"
+                      "static",
+                      "individual"
                     ],
-                    "description": "Currently only static mode is supported.",
+                    "description": "Either static or individual mode is supported.",
                     "title": "Mode"
+                  },
+                  "individual": {
+                    "type": "object",
+                    "description": "Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to \"individual\".",
+                    "properties": {
+                      "profile": {
+                        "type": "string",
+                        "description": "Port-profile name to inherit configuration.\nCurrently the \"mode\", \"vlans\", \"native_vlan\" and \"native_vlan_tag\" from the profile are supported to be inherited.\n",
+                        "title": "Profile"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Individual"
                   },
                   "timeout": {
                     "type": "integer",
@@ -15155,10 +15172,27 @@
                   "mode": {
                     "type": "string",
                     "enum": [
-                      "static"
+                      "static",
+                      "individual"
                     ],
-                    "description": "Currently only static mode is supported.",
+                    "description": "Either static or individual mode is supported.",
                     "title": "Mode"
+                  },
+                  "individual": {
+                    "type": "object",
+                    "description": "Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to \"individual\".",
+                    "properties": {
+                      "profile": {
+                        "type": "string",
+                        "description": "Port-profile name to inherit configuration.\nCurrently the \"mode\", \"vlans\", \"native_vlan\" and \"native_vlan_tag\" from the profile are supported to be inherited.\n",
+                        "title": "Profile"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Individual"
                   },
                   "timeout": {
                     "type": "integer",
