@@ -14997,8 +14997,11 @@ keys:
               source_interface:
                 type: str
                 description: Source Interface Name
-              multicast_headend_replication:
-                type: bool
+              multicast:
+                type: dict
+                keys:
+                  headend_replication:
+                    type: bool
               controller_client:
                 type: dict
                 description: Client to CVX Controllers

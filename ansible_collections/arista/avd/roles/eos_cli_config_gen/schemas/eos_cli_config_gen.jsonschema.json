@@ -26078,9 +26078,19 @@
                   "description": "Source Interface Name",
                   "title": "Source Interface"
                 },
-                "multicast_headend_replication": {
-                  "type": "boolean",
-                  "title": "Multicast Headend Replication"
+                "multicast": {
+                  "type": "object",
+                  "properties": {
+                    "headend_replication": {
+                      "type": "boolean",
+                      "title": "Headend Replication"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Multicast"
                 },
                 "controller_client": {
                   "type": "object",
