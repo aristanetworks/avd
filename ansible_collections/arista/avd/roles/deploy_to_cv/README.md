@@ -55,7 +55,7 @@ This basic example will deploy configurations and tags for all devices in the in
       ansible.builtin.import_role:
         name: arista.avd.deploy_to_cv
       vars:
-        cv_server: arista.io
+        cv_server: www.arista.io
         cv_token: <insert service_account token here - use Ansible Vault>
         deploy_to_cv_accept_preview: true
 ```
@@ -91,7 +91,7 @@ By default this role will read information about the CloudVision server from the
 all:
   hosts:
     cloudvision:
-      ansible_host: <hostname or IP address of CloudVision host. Ex. "arista.io" for CVaaS>
+      ansible_host: <hostname or IP address of CloudVision host. Ex. "www.arista.io" for CVaaS>
       ansible_password: <service account token as defined on CloudVision. This value should be using Ansible Vault>
 ```
 
