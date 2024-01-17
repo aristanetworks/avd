@@ -44,9 +44,9 @@ interface Management1
 
 #### Flow Tracking Sampled
 
-| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 |
-| ----------- | ------------------- | ------------------------- | ------------------------- |
-| 666 | 2 | enabled | disabled |
+| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 | Encapsulation for IPv4 | Encapsulation for IPv6 | Encapsulation for MPLS |
+| ----------- | ------------------- | ------------------------- | ------------------------- | ---------------------- | ---------------------- | ---------------------- |
+| 666 | 2 | enabled | disabled | enabled | disabled | enabled |
 
 ##### Trackers Summary
 
