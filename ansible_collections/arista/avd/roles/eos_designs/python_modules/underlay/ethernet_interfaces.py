@@ -139,8 +139,25 @@ class EthernetInterfacesMixin(UtilsMixin):
                     {
                         "mtu": self.shared_utils.p2p_uplinks_mtu,
                         "type": "routed",
+                        "mac_security": link.get("mac_security"),
+                        "link_tracking_groups": link.get("link_tracking_groups"),
                     }
                 )
+
+                # PTP
+                # TODO check if this cannot be made here
+                if get(link, "ptp.enable") is True:
+                    ptp_config = {}
+
+                    # Apply PTP profile config if using the new ptp config style
+                    if self.shared_utils.ptp_enabled:
+                        ptp_config.update(self.shared_utils.ptp_profile)
+
+                    ptp_config["enable"] = True
+                    ptp_config.pop("profile", None)
+
+                    ethernet_interface["ptp"] = ptp_config
+
                 for subinterface in get(link, "subinterfaces", default=[]):
                     ethernet_subinterface = {
                         "name": subinterface["interface"],
@@ -154,6 +171,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "encapsulation_dot1q_vlan": subinterface.get("encapsulation_dot1q_vlan", []),
                         "ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}",
                     }
+
+                    if subinterface.get("underlay_multicast") is True:
+                        ethernet_subinterface["pim"] = {"ipv4": {"sparse_mode": True}}
+
                     ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
                     append_if_not_duplicate(
                         list_of_dicts=ethernet_interfaces,

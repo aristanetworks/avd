@@ -345,21 +345,18 @@ class UplinksMixin:
         if self.shared_utils.uplink_switch_interface_speed is not None:
             uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
 
-        # if self.shared_utils.uplink_ptp is not None:
-        #    uplink["ptp"] = self.shared_utils.uplink_ptp
-        # elif self.shared_utils.ptp_enabled:
-        #    uplink["ptp"] = {"enable": True}
+        if self.shared_utils.uplink_ptp is not None:
+            uplink["ptp"] = self.shared_utils.uplink_ptp
+        elif self.shared_utils.ptp_enabled:
+            uplink["ptp"] = {"enable": True}
 
-        # if self.shared_utils.uplink_macsec is not None:
-        #    uplink["mac_security"] = self.shared_utils.uplink_macsec
+        if self.shared_utils.uplink_macsec is not None:
+            uplink["mac_security"] = self.shared_utils.uplink_macsec
 
-        # if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
-        #    uplink["underlay_multicast"] = True
-
-        # if self.shared_utils.link_tracking_groups is not None:
-        #    uplink["link_tracking_groups"] = []
-        #    for lt_group in self.shared_utils.link_tracking_groups:
-        #        uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
+        if self.shared_utils.link_tracking_groups is not None:
+            uplink["link_tracking_groups"] = []
+            for lt_group in self.shared_utils.link_tracking_groups:
+                uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
 
         uplink["subinterfaces"] = self._uplink_sub_interfaces(
             uplink_interface, uplink_switch, uplink_switch_interface, uplink_switch_facts, uplink_index, self.shared_utils.uplink_structured_config
@@ -383,7 +380,6 @@ class UplinksMixin:
                 # Only keep VRFs present in the uplink as well
                 if (vrf_name := get(vrf, "name", required=True)) not in get(uplink_switch_facts, "vrfs", []):
                     continue
-                # TODO should ptp / multicast be here ?
                 vrf_id = get(
                     vrf,
                     "vrf_id",
@@ -396,6 +392,10 @@ class UplinksMixin:
                     "vrf": vrf_name,
                     "encapsulation_dot1q_vlan": vrf_id,
                 }
+
+                if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
+                    subinterface["underlay_multicast"] = True
+
                 if self.shared_utils.underlay_rfc5549:
                     subinterface["ipv6_enable"] = True
                 else:

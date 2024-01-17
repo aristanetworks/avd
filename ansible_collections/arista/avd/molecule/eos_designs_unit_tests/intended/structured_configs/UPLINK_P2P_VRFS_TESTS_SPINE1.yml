@@ -88,6 +88,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   type: routed
+  mac_security:
+    profile: TEST
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

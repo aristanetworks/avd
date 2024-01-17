@@ -90,6 +90,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   type: routed
+  mac_security:
+    profile: TEST
 - name: Ethernet2.1
   peer: UPLINK_P2P_VRFS_TESTS_SPINE2
   peer_interface: Ethernet2.1
@@ -127,6 +129,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   type: routed
+  mac_security:
+    profile: TEST
 - name: Ethernet51
   peer: UPLINK_P2P_VRFS_TESTS_L2LEAF1
   peer_interface: Ethernet1

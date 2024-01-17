@@ -23,6 +23,8 @@ l3leaf:
     uplink_switches: [ UPLINK_P2P_VRFS_TESTS_SPINE1, UPLINK_P2P_VRFS_TESTS_SPINE2 ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     uplink_type: p2p-vrfs
+    uplink_macsec:
+      profile: TEST
     filter:
       always_include_vrfs_in_tenants: [TenantA, TenantB]
   nodes:
@@ -33,7 +35,6 @@ l3leaf:
 l2leaf:
   defaults:
     platform: vEOS-LAB
-    loopback_ipv4_pool: 192.168.42.0/24
     uplink_switches: [ UPLINK_P2P_VRFS_TESTS_LEAF1, UPLINK_P2P_VRFS_TESTS_LEAF1]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
   nodes:
