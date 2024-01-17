@@ -26,8 +26,8 @@ router path-selection
 {%             if path_group.keep_alive.auto is arista.avd.defined(true) %}
 {%                 set interval_cli = "auto" %}
 {%             elif path_group.keep_alive.interval is arista.avd.defined and
-                    path_group.keep_alive.interval_count is arista.avd.defined %}
-{%                 set interval_cli = path_group.keep_alive.interval ~ " milliseconds failure-threshold " ~ path_group.keep_alive.interval_count ~ " interval" %}
+                    path_group.keep_alive.failure_threshold is arista.avd.defined %}
+{%                 set interval_cli = path_group.keep_alive.interval ~ " milliseconds failure-threshold " ~ path_group.keep_alive.failure_threshold ~ " intervals" %}
 {%             endif %}
       keepalive interval {{ interval_cli }}
 {%         endif %}

@@ -12670,9 +12670,10 @@ keys:
                   type: bool
                   description: 'Adaptive keepalive and feedback interval.
 
-                    Set this to true to enable it.
+                    Set this to `true` to enable it.
 
-                    If "auto" is enabled the interval values are ignored.'
+                    If `auto` is enabled the interval values are ignored.'
+                  default: false
                 interval:
                   type: int
                   description: Interval in milliseconds.
@@ -12680,10 +12681,12 @@ keys:
                   max: 60000
                   convert_types:
                   - str
-                interval_count:
+                failure_threshold:
                   type: int
                   min: 2
                   max: 100
+                  description: Failure threshold in number of intervals. Required
+                    when `interval` is set.
                   convert_types:
                   - str
       load_balance_policies:

@@ -33,10 +33,10 @@
 {%                 if path_group.keep_alive.auto is arista.avd.defined(true) %}
 {%                     set interval = "auto" %}
 {%                 elif path_group.keep_alive.interval is arista.avd.defined and
-                        path_group.keep_alive.interval_count is arista.avd.defined %}
-{%                     set interval = path_group.keep_alive.interval ~ "(" ~ path_group.keep_alive.interval_count ~ ")" %}
+                        path_group.keep_alive.failure_threshold is arista.avd.defined %}
+{%                     set interval = path_group.keep_alive.interval ~ "(" ~ path_group.keep_alive.failure_threshold ~ ")" %}
 {%                 endif %}
-| keepalive interval(interval count) | {{ interval }} |
+| keepalive interval(failure threshold) | {{ interval }} |
 {%             endif %}
 {%             if path_group.flow_assignment is arista.avd.defined %}
 | Flow assignment | {{ path_group.flow_assignment | upper }} |

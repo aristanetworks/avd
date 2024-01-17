@@ -55,7 +55,7 @@ router_path_selection:
         ipsec: true
       keep_alive:
         interval: 200
-        interval_count: 3
+        failure_threshold: 3
       static_peers:
         # Out of order to test sorting
         - router_ip: 172.16.42.42

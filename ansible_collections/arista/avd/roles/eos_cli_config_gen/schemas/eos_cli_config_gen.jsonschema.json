@@ -21936,7 +21936,8 @@
                 "properties": {
                   "auto": {
                     "type": "boolean",
-                    "description": "Adaptive keepalive and feedback interval.\nSet this to true to enable it.\nIf \"auto\" is enabled the interval values are ignored.",
+                    "description": "Adaptive keepalive and feedback interval.\nSet this to `true` to enable it.\nIf `auto` is enabled the interval values are ignored.",
+                    "default": false,
                     "title": "Auto"
                   },
                   "interval": {
@@ -21946,11 +21947,12 @@
                     "maximum": 60000,
                     "title": "Interval"
                   },
-                  "interval_count": {
+                  "failure_threshold": {
                     "type": "integer",
                     "minimum": 2,
                     "maximum": 100,
-                    "title": "Interval Count"
+                    "description": "Failure threshold in number of intervals. Required when `interval` is set.",
+                    "title": "Failure Threshold"
                   }
                 },
                 "additionalProperties": false,
