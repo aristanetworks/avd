@@ -82,6 +82,54 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
+- name: Ethernet12
+  peer: INDIVIDUAL_1
+  peer_type: server
+  description: INDIVIDUAL_1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 12
+    mode: active
+  lacp_port_priority: 8192
+- name: Ethernet13
+  peer: INDIVIDUAL_1
+  peer_type: server
+  description: INDIVIDUAL_1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 12
+    mode: active
+  lacp_port_priority: 32768
+- name: Ethernet14
+  peer: INDIVIDUAL_2
+  peer_type: server
+  description: INDIVIDUAL_2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 14
+    mode: active
+  lacp_port_priority: 8192
+  mode: trunk
+  vlans: 1,2,3,4,5,6,7,123,234
+  native_vlan_tag: false
+  native_vlan: 123
+- name: Ethernet15
+  peer: INDIVIDUAL_2
+  peer_type: server
+  description: INDIVIDUAL_2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 14
+    mode: active
+  lacp_port_priority: 32768
+  mode: trunk
+  vlans: 1,2,3,4,5,6,7,123,234
+  native_vlan_tag: false
+  native_vlan: 123
 port_channel_interfaces:
 - name: Port-Channel5
   description: OLD_SW-1/5_PORT_CHANNEL_DESCRIPTION
@@ -95,3 +143,15 @@ port_channel_interfaces:
   description: OLD_SW-1/7_PORT_CHANNEL_DESCRIPTION
   type: switched
   shutdown: false
+- name: Port-Channel12
+  description: INDIVIDUAL_1_INDIVIDUAL_1
+  type: switched
+  shutdown: false
+  lacp_fallback_mode: individual
+  lacp_fallback_timeout: 90
+- name: Port-Channel14
+  description: INDIVIDUAL_2_INDIVIDUAL_2
+  type: switched
+  shutdown: false
+  lacp_fallback_mode: individual
+  lacp_fallback_timeout: 90
