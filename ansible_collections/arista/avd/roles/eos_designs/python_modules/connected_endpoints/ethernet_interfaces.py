@@ -172,7 +172,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             if get(adapter, "port_channel.lacp_fallback.mode") == "static":
                 ethernet_interface["lacp_port_priority"] = 8192 if node_index == 0 else 32768
 
-            if get(adapter, "port_channel.lacp_fallback.mode") == "individual":
+            elif get(adapter, "port_channel.lacp_fallback.mode") == "individual":
                 # if fallback is set to individual a profile has to be defined
                 if (profile_name := get(adapter, "port_channel.lacp_fallback.individual.profile")) is None:
                     raise AristaAvdMissingVariableError(
