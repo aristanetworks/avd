@@ -8133,6 +8133,10 @@
             "type": "string",
             "title": "SSH Key"
           },
+          "secondary_ssh_key": {
+            "type": "string",
+            "title": "Secondary SSH Key"
+          },
           "shell": {
             "type": "string",
             "description": "Specify shell for the user\n",
