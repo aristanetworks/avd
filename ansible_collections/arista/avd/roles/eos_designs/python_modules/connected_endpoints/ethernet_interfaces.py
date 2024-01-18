@@ -174,7 +174,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
             if get(adapter, "port_channel.lacp_fallback.mode") == "individual":
                 # if fallback is set to individual a profile has to be defined
-                if get(adapter, "port_channel.lacp_fallback.individual") is None or get(adapter, "port_channel.lacp_fallback.individual.profile") is None:
+                if (profile_name := get(adapter, "port_channel.lacp_fallback.individual.profile")) is None:
                     raise AristaAvdMissingVariableError(
                         "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for"
                         f" the connected endpoint with the name '{connected_endpoint['name']}'."
