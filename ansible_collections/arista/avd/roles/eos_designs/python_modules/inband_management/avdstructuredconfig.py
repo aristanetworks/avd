@@ -200,10 +200,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
-        route_map = {
-            "name": "RM-CONN-2-BGP",
-            "sequence_numbers": []
-            }
+        route_map = {"name": "RM-CONN-2-BGP", "sequence_numbers": []}
 
         if self._inband_mgmt_ipv4_parent:
             route_map["sequence_numbers"].append({"sequence": 20, "type": "permit", "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"]})
