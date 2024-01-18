@@ -52,5 +52,6 @@ interface Management1
 !
 no username admin
 username shell shell /sbin/nologin nopassword
+username shell ssh-key SSH_KEY
 username shell ssh-key secondary SECONDARY_SSH_KEY
 ```
