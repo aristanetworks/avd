@@ -181,7 +181,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     )
 
                 # Verify that the referred profile exists under port_profiles
-                if (profile := get_item(self._hostvars["port_profiles"], "profile", get(adapter, "port_channel.lacp_fallback.individual.profile"))) is None:
+                if not (profile := self.shared_utils.get_merged_profile(profile_name)):
                     raise AristaAvdMissingVariableError(
                         "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurence seen"
                         f" of a missing profile is '{get(adapter, 'port_channel.lacp_fallback.individual.profile')}' for the connected endpoint with the"
