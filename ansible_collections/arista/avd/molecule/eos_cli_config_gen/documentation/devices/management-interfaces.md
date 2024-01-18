@@ -22,7 +22,7 @@
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management0 | - | oob | default | - | - |
 | Management1 | oob_management | oob | MGMT | - | - |
