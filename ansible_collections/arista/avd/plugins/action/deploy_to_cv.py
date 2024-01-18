@@ -173,6 +173,8 @@ class ActionModule(ActionBase):
             device_list: List of device hostnames.
             structured_config_dir: Path to structured config files.
             structured_config_suffix: Suffix for structured config files.
+            configuration_dir: Path to EOS config files.
+            configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
         Return:
             Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>)
 
@@ -208,6 +210,8 @@ class ActionModule(ActionBase):
             device_list: List of device hostnames.
             structured_config_dir: Path to structured config files.
             structured_config_suffix: Suffix for structured config files.
+            configuration_dir: Path to EOS config files.
+            configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
         Return:
             Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>)
 
@@ -218,7 +222,8 @@ class ActionModule(ActionBase):
               - Read serial_number & system_mac from structured config.
               - Create CVDevice object and add to list of device_objects.
 
-        TODO: Custom loader for JSON
+        TODO: Support for JSON
+        TODO: Refactor into smaller functions.
         """
         LOGGER.info("build_object_for_device: %s", hostname)
         with Path(structured_config_dir, f"{hostname}.{structured_config_suffix}").open(mode="r", encoding="UTF-8") as structured_config_stream:

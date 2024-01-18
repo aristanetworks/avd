@@ -51,7 +51,7 @@ class ConfigletMixin:
         self: CVClient,
         workspace_id: str,
         container_ids: list[str] | None = None,
-        time: datetime = None,
+        time: datetime | None = None,
         timeout: float = 10.0,
     ) -> list[ConfigletAssignment]:
         """
@@ -209,7 +209,7 @@ class ConfigletMixin:
         self: CVClient,
         workspace_id: str,
         configlet_ids: list[str] | None = None,
-        time: datetime = None,
+        time: datetime | None = None,
         timeout: float = 10.0,
     ) -> list[Configlet]:
         """
@@ -358,10 +358,3 @@ class ConfigletMixin:
             return configlet_configs
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet IDs '{configlet_ids}'") or e
-
-    @staticmethod
-    def _match_configlet_assignments(a: ConfigletAssignment, b: ConfigletAssignment) -> bool:
-        """
-        Match up the properties of two configlet assignments. Only matching on the assignment ID field.
-        """
-        return all([a.key.configlet_assignment_id == b.key.configlet_assignment_id])

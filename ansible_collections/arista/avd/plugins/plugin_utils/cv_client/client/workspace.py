@@ -49,7 +49,7 @@ class WorkspaceMixin:
     async def get_workspace(
         self: CVClient,
         workspace_id: str,
-        time: datetime = None,
+        time: datetime | None = None,
         timeout: float = 10.0,
     ) -> Workspace:
         """

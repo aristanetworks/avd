@@ -58,7 +58,7 @@ class TagMixin:
         workspace_id: str,
         element_type: Literal["device", "interface"] | None = None,
         creator_type: Literal["user", "system", "external"] | None = None,
-        time: datetime = None,
+        time: datetime | None = None,
         timeout: float = 10.0,
     ) -> list[Tag]:
         """
@@ -178,7 +178,7 @@ class TagMixin:
         workspace_id: str,
         element_type: Literal["device", "interface"] | None = None,
         creator_type: Literal["user", "system", "external"] | None = None,
-        time: datetime = None,
+        time: datetime | None = None,
         timeout: float = 10.0,
     ) -> list[TagAssignment]:
         """

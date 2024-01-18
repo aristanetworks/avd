@@ -66,7 +66,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
 
     # For all other requested states we first need to approve.
     if not change_control.final_state == "approved":
-        await cv_client.approve_chance_control(
+        await cv_client.approve_change_control(
             change_control_id=change_control.id, timestamp=cv_change_control.change.time, description="Automatic approval by AVD"
         )
         change_control.final_state = "approved"

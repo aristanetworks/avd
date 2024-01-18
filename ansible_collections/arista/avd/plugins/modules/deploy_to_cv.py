@@ -14,7 +14,7 @@ version_added: "4.6.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Deploy various objects to CloudVision
 description: |-
-  The `arista.avd.deploy_to_cv` module is an Ansible Action Plugin providing the following capabilities:
+  The C(arista.avd.deploy_to_cv) module is an Ansible Action Plugin providing the following capabilities:
 
   - Verify Devices are in the CloudVision inventory.
   - Verify Devices are in the Inventory & Topology Studio.
@@ -44,7 +44,7 @@ options:
   structured_config_dir:
     description: |-
       Path to directory containing files with AVD structured configurations.
-      If found, the `serial_number` or `system_mac_address` will be used to identify the Device on CloudVision.
+      If found, the C(serial_number) or C(system_mac_address) will be used to identify the Device on CloudVision.
       Any tags found in the structured configuration metadata will be applied to the Device and/or Interfaces.
     required: true
     type: str
@@ -58,11 +58,11 @@ options:
     required: true
     elements: str
   strict_tags:
-    description: If `True` other tags associated with the devices will get removed. Otherwise other tags will be left as-is.
+    description: If C(true) other tags associated with the devices will get removed. Otherwise other tags will be left as-is.
     type: bool
     default: false
   skip_missing_devices:
-    description: If `True` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue.
+    description: If C(true) anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue.
     type: bool
     default: false
   configlet_name_template:
@@ -74,7 +74,7 @@ options:
     type: dict
     suboptions:
       name:
-        description: Optional name to use for the created Workspace. By default the name will be `AVD <timestamp>`.
+        description: Optional name to use for the created Workspace. By default the name will be C(AVD <timestamp>).
         type: str
       description:
         description: Optional description to use for the created Workspace.
@@ -86,12 +86,12 @@ options:
         description: |-
           The requested state for the Workspace.
 
-          - `"pending"`: Leave the Workspace in pending state.
-          - `"built"`: Build the Workspace but do not submit.
-          - `"submitted"` (default): Build and submit the Workspace.
-          - `"abandoned"`: Build and then abandon the Workspace.
+          - C("pending"): Leave the Workspace in pending state.
+          - C("built"): Build the Workspace but do not submit.
+          - C("submitted") (default): Build and submit the Workspace.
+          - C("abandoned"): Build and then abandon the Workspace.
               Used for dry-run where no changes will be committed to CloudVision.
-          - `"deleted"`: Build, abort and then delete the Workspace.
+          - C("deleted"): Build, abort and then delete the Workspace.
               Used for dry-run where no changes will be committed to CloudVision and the temporary Workspace will be removed to avoid "clutter".
         type: str
         default: built
@@ -114,10 +114,10 @@ options:
         description: |-
           The requested state for the Change Control.
 
-          - `"pending approval"` (default): Leave the Change Control in "pending approval" state.
-          - `"approved"`: Approve the Change Control but do not start.
-          - `"running"`: Approve and start the Change Control. Do not wait for the Change Control to be completed or failed.
-          - `"completed"`: Approve and start the Change Control. Wait for the Change Control to be completed.
+          - C("pending approval") (default): Leave the Change Control in "pending approval" state.
+          - C("approved"): Approve the Change Control but do not start.
+          - C("running"): Approve and start the Change Control. Do not wait for the Change Control to be completed or failed.
+          - C("completed"): Approve and start the Change Control. Wait for the Change Control to be completed.
         type: str
         default: pending approval
         choices: ["pending approval", "approved", "running", "completed"]
@@ -135,7 +135,7 @@ options:
         default: 300.0
   return_details:
     description: |-
-      If `True` all details will be returned to Ansible and can be registered.
+      If C(true) all details will be returned to Ansible and can be registered.
       For large inventories this can affect performance, so it is disabled by default.
     type: bool
     default: false

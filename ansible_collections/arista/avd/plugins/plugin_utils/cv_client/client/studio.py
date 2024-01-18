@@ -45,7 +45,7 @@ class StudioMixin:
         studio_id: str,
         workspace_id: str,
         default_value: Any = None,
-        time: datetime = None,
+        time: datetime | None = None,
         timeout: float = 10.0,
     ) -> Any:
         """
@@ -152,7 +152,7 @@ class StudioMixin:
         workspace_id: str,
         input_path: list[str],
         default_value: Any = None,
-        time: datetime = None,
+        time: datetime | None = None,
         timeout: float = 10.0,
     ) -> Any:
         """
@@ -296,7 +296,7 @@ class StudioMixin:
         self: CVClient,
         workspace_id: str,
         device_ids: list[str] | None = None,
-        time: datetime = None,
+        time: datetime | None = None,
         timeout: float = 10.0,
     ) -> list[TopologyInput]:
         """
@@ -407,7 +407,7 @@ class StudioMixin:
     #     self: CVClient,
     #     workspace_id: str,
     #     device_ids: list[str] | None = None,
-    #     time: datetime = None,
+    #     time: datetime | None = None,
     #     timeout: float = 10.0,
     # ) -> list[TopologyInput]:
     #     """

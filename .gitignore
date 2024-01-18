@@ -30,6 +30,9 @@ python-avd/.mypy_cache/
 # ansible_collections/arista/avd/tests ignores
 ansible_collections/arista/avd/tests/.mypy_cache/
 
+# Ignore cloned cloudvision-python repo created during generation of cv_client/api
+ansible_collections/arista/avd/plugins/plugin_utils/cv_client/cloudvision-apis/
+
 # Development
 ## pyenv
 .python-version

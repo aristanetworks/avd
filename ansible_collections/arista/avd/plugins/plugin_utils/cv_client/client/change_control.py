@@ -39,7 +39,7 @@ class ChangeControlMixin:
     async def get_change_control(
         self: CVClient,
         change_control_id: str,
-        time: datetime = None,
+        time: datetime | None = None,
         timeout: float = 10.0,
     ) -> ChangeControl:
         """
@@ -101,7 +101,7 @@ class ChangeControlMixin:
         except Exception as e:
             raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
 
-    async def approve_chance_control(
+    async def approve_change_control(
         self: CVClient,
         change_control_id: str,
         timestamp: _DateTime,

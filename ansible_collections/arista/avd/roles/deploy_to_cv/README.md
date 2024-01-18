@@ -31,7 +31,7 @@ Depending on the configured options, the role supports multiple operations:
 - Deploys special metadata for CV Pathfinder solution.
 
 Devices will be identified using `serial_number`, `system_mac_address` or `hostname` (in prioritized order).
-The avilable identification depends on the configured AVD variables.
+The available identification depends on the configured AVD variables.
 
 The API to CloudVision is using gRPC over encrypted HTTP/2.
 
