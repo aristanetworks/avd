@@ -17,14 +17,5 @@ servers:
           description: "INDIVIDUAL_1"
           lacp_fallback:
             mode: individual
-            individual:
-              profile: INDIVIDUAL_TRUNK
 
-port_profiles:
-  - profile: INDIVIDUAL_TRUNKS
-    mode: trunk
-    vlans: "1,2,3,4,5,6,7,123,234"
-    native_vlan_tag: False
-    native_vlan: 123
-
-expected_error_message: "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurence seen of a missing profile is 'INDIVIDUAL_TRUNK' for the connected endpoint with the name 'INDIVIDUAL_1'."
+expected_error_message: "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for the connected endpoint with the name 'INDIVIDUAL_1'."

@@ -4177,7 +4177,12 @@ $defs:
                 valid_values:
                 - static
                 - individual
-                description: Either static or individual mode is supported.
+                description: 'Either static or individual mode is supported.
+
+                  If the mode is set to "individual" the "individual.profile" setting
+                  must be defined.
+
+                  '
               individual:
                 type: dict
                 description: Define parameters for port-channel member interfaces.
@@ -4185,12 +4190,7 @@ $defs:
                 keys:
                   profile:
                     type: str
-                    description: 'Port-profile name to inherit configuration.
-
-                      Currently the "mode", "vlans", "native_vlan" and "native_vlan_tag"
-                      from the profile are supported to be inherited.
-
-                      '
+                    description: Port-profile name to inherit configuration.
               timeout:
                 type: int
                 convert_types:

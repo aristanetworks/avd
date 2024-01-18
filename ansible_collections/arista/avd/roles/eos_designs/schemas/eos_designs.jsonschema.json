@@ -9145,7 +9145,7 @@
                       "static",
                       "individual"
                     ],
-                    "description": "Either static or individual mode is supported.",
+                    "description": "Either static or individual mode is supported.\nIf the mode is set to \"individual\" the \"individual.profile\" setting must be defined.\n",
                     "title": "Mode"
                   },
                   "individual": {
@@ -9154,7 +9154,7 @@
                     "properties": {
                       "profile": {
                         "type": "string",
-                        "description": "Port-profile name to inherit configuration.\nCurrently the \"mode\", \"vlans\", \"native_vlan\" and \"native_vlan_tag\" from the profile are supported to be inherited.\n",
+                        "description": "Port-profile name to inherit configuration.",
                         "title": "Profile"
                       }
                     },
@@ -15175,7 +15175,7 @@
                       "static",
                       "individual"
                     ],
-                    "description": "Either static or individual mode is supported.",
+                    "description": "Either static or individual mode is supported.\nIf the mode is set to \"individual\" the \"individual.profile\" setting must be defined.\n",
                     "title": "Mode"
                   },
                   "individual": {
@@ -15184,7 +15184,7 @@
                     "properties": {
                       "profile": {
                         "type": "string",
-                        "description": "Port-profile name to inherit configuration.\nCurrently the \"mode\", \"vlans\", \"native_vlan\" and \"native_vlan_tag\" from the profile are supported to be inherited.\n",
+                        "description": "Port-profile name to inherit configuration.",
                         "title": "Profile"
                       }
                     },

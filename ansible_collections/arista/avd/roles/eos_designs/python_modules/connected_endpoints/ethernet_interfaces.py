@@ -78,6 +78,36 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         return None
 
+    def _update_ethernet_interface_cfg(self, adapter: dict, ethernet_interface: dict, connected_endpoint: dict, short_esi: str, node_index: int) -> dict:
+        ethernet_interface.update(
+            {
+                "type": "switched",
+                "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
+                "l2_mtu": adapter.get("l2_mtu"),
+                "l2_mru": adapter.get("l2_mru"),
+                "mode": adapter.get("mode"),
+                "vlans": adapter.get("vlans"),
+                "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
+                "native_vlan_tag": adapter.get("native_vlan_tag"),
+                "native_vlan": adapter.get("native_vlan"),
+                "phone": self._get_adapter_phone(adapter, connected_endpoint),
+                "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
+                "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
+                "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
+                "storm_control": self._get_adapter_storm_control(adapter),
+                "service_profile": adapter.get("qos_profile"),
+                "dot1x": adapter.get("dot1x"),
+                "poe": self._get_adapter_poe(adapter),
+                "ptp": self._get_adapter_ptp(adapter),
+                "sflow": self._get_adapter_sflow(adapter),
+                "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
+                    adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
+                ),
+                "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
+            }
+        )
+        return ethernet_interface
+
     def _get_ethernet_interface_cfg(self, adapter: dict, node_index: int, connected_endpoint: dict) -> dict:
         """
         Return structured_config for one ethernet_interface
@@ -139,22 +169,26 @@ class EthernetInterfacesMixin(UtilsMixin):
                     },
                 }
             )
-            if get(adapter, "port_channel.lacp_fallback.mode") == "static" or get(adapter, "port_channel.lacp_fallback.mode") == "individual":
+            if get(adapter, "port_channel.lacp_fallback.mode") == "static":
                 ethernet_interface["lacp_port_priority"] = 8192 if node_index == 0 else 32768
-                if get(adapter, "port_channel.lacp_fallback.mode") == "individual" and get(adapter, "port_channel.lacp_fallback.individual") is not None:
-                    # check if the referred name exists in the global evpn_vlan_bundles
-                    if (profile := get_item(self._hostvars["port_profiles"], "profile", get(adapter, "port_channel.lacp_fallback.individual.profile"))) is None:
-                        raise AristaAvdMissingVariableError(
-                            "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurence seen"
-                            f" of a missing profile is '{get(adapter, 'port_channel.lacp_fallback.individual.profile')}' for the connected endpoint with the"
-                            f" name '{connected_endpoint['name']}'."
-                        )
 
-                    ethernet_interface["type"] = "switched"
-                    ethernet_interface["mode"] = profile.get("mode")
-                    ethernet_interface["vlans"] = profile.get("vlans")
-                    ethernet_interface["native_vlan_tag"] = profile.get("native_vlan_tag")
-                    ethernet_interface["native_vlan"] = profile.get("native_vlan")
+            if get(adapter, "port_channel.lacp_fallback.mode") == "individual":
+                # if fallback is set to individual a profile has to be defined
+                if get(adapter, "port_channel.lacp_fallback.individual") is None or get(adapter, "port_channel.lacp_fallback.individual.profile") is None:
+                    raise AristaAvdMissingVariableError(
+                        "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for"
+                        f" the connected endpoint with the name '{connected_endpoint['name']}'."
+                    )
+
+                # check if the referred name exists in the global evpn_vlan_bundles
+                if (profile := get_item(self._hostvars["port_profiles"], "profile", get(adapter, "port_channel.lacp_fallback.individual.profile"))) is None:
+                    raise AristaAvdMissingVariableError(
+                        "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurence seen"
+                        f" of a missing profile is '{get(adapter, 'port_channel.lacp_fallback.individual.profile')}' for the connected endpoint with the"
+                        f" name '{connected_endpoint['name']}'."
+                    )
+
+                ethernet_interface = self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint, short_esi, node_index)
 
             if port_channel_mode != "on" and get(adapter, "port_channel.lacp_timer") is not None:
                 ethernet_interface["lacp_timer"] = {
@@ -164,33 +198,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         # NOT a port-channel member
         else:
-            ethernet_interface.update(
-                {
-                    "type": "switched",
-                    "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
-                    "l2_mtu": adapter.get("l2_mtu"),
-                    "l2_mru": adapter.get("l2_mru"),
-                    "mode": adapter.get("mode"),
-                    "vlans": adapter.get("vlans"),
-                    "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
-                    "native_vlan_tag": adapter.get("native_vlan_tag"),
-                    "native_vlan": adapter.get("native_vlan"),
-                    "phone": self._get_adapter_phone(adapter, connected_endpoint),
-                    "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
-                    "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
-                    "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
-                    "storm_control": self._get_adapter_storm_control(adapter),
-                    "service_profile": adapter.get("qos_profile"),
-                    "dot1x": adapter.get("dot1x"),
-                    "poe": self._get_adapter_poe(adapter),
-                    "ptp": self._get_adapter_ptp(adapter),
-                    "sflow": self._get_adapter_sflow(adapter),
-                    "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
-                        adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
-                    ),
-                    "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
-                }
-            )
+            ethernet_interface = self._update_ethernet_interface_cfg(adapter, ethernet_interface, connected_endpoint, short_esi, node_index)
 
         # More common ethernet_interface settings
         if (flowcontrol_received := get(adapter, "flowcontrol.received")) is not None:
