@@ -32,5 +32,10 @@ no {{ local_user_cli }}
 {%             set local_ssh_key_cli = local_ssh_key_cli ~ " ssh-key " ~ local_user.ssh_key %}
 {{ local_ssh_key_cli }}
 {%         endif %}
+{%         if local_user.secondary_ssh_key is arista.avd.defined %}
+{%             set local_secondary_ssh_key_cli = "username " ~ local_user.name %}
+{%             set local_secondary_ssh_key_cli = local_secondary_ssh_key_cli ~ " ssh-key secondary " ~ local_user.secondary_ssh_key %}
+{{ local_secondary_ssh_key_cli }}
+{%         endif %}
 {%     endfor %}
 {% endif %}

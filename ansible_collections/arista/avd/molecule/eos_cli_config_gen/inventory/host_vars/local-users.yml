@@ -5,3 +5,4 @@ local_users:
   - name: shell
     shell: /sbin/nologin
     no_password: true
+    secondary_ssh_key: SECONDARY_SSH_KEY
