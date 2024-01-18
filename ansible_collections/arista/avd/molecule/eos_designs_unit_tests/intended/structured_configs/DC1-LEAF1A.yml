@@ -320,13 +320,13 @@ ethernet_interfaces:
   description: server02_SINGLE_NODE_TRUNK_Eth1
   shutdown: false
   type: switched
-  l2_mtu: 8000
-  l2_mru: 9000
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'False'
   spanning_tree_bpduguard: 'False'
+  l2_mtu: 8000
+  l2_mru: 9000
 - name: Ethernet7
   peer: server02_SINGLE_NODE
   peer_interface: Eth1

@@ -10,7 +10,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item, replace_or_append_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, replace_or_append_item
 
 from ..interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
@@ -78,32 +78,20 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         return None
 
-    def _update_ethernet_interface_cfg(self, adapter: dict, ethernet_interface: dict, connected_endpoint: dict, short_esi: str, node_index: int) -> dict:
+    def _update_ethernet_interface_cfg(self, adapter: dict, ethernet_interface: dict, connected_endpoint: dict) -> dict:
         ethernet_interface.update(
             {
                 "type": "switched",
                 "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
-                "l2_mtu": adapter.get("l2_mtu"),
-                "l2_mru": adapter.get("l2_mru"),
                 "mode": adapter.get("mode"),
                 "vlans": adapter.get("vlans"),
                 "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
                 "native_vlan_tag": adapter.get("native_vlan_tag"),
                 "native_vlan": adapter.get("native_vlan"),
-                "phone": self._get_adapter_phone(adapter, connected_endpoint),
                 "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
                 "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
                 "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
                 "storm_control": self._get_adapter_storm_control(adapter),
-                "service_profile": adapter.get("qos_profile"),
-                "dot1x": adapter.get("dot1x"),
-                "poe": self._get_adapter_poe(adapter),
-                "ptp": self._get_adapter_ptp(adapter),
-                "sflow": self._get_adapter_sflow(adapter),
-                "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
-                    adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
-                ),
-                "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
             }
         )
         return ethernet_interface
@@ -181,14 +169,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                     )
 
                 # Verify that the referred profile exists under port_profiles
-                if not (profile := self.shared_utils.get_merged_profile(profile_name)):
+                if not (profile := self.shared_utils.get_merged_port_profile(profile_name)):
                     raise AristaAvdMissingVariableError(
                         "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurence seen"
                         f" of a missing profile is '{get(adapter, 'port_channel.lacp_fallback.individual.profile')}' for the connected endpoint with the"
                         f" name '{connected_endpoint['name']}'."
                     )
 
-                ethernet_interface = self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint, short_esi, node_index)
+                ethernet_interface = self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint)
 
             if port_channel_mode != "on" and get(adapter, "port_channel.lacp_timer") is not None:
                 ethernet_interface["lacp_timer"] = {
@@ -198,7 +186,23 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         # NOT a port-channel member
         else:
-            ethernet_interface = self._update_ethernet_interface_cfg(adapter, ethernet_interface, connected_endpoint, short_esi, node_index)
+            ethernet_interface = self._update_ethernet_interface_cfg(adapter, ethernet_interface, connected_endpoint)
+            ethernet_interface.update(
+                {
+                    "l2_mtu": adapter.get("l2_mtu"),
+                    "l2_mru": adapter.get("l2_mru"),
+                    "dot1x": adapter.get("dot1x"),
+                    "phone": self._get_adapter_phone(adapter, connected_endpoint),
+                    "poe": self._get_adapter_poe(adapter),
+                    "ptp": self._get_adapter_ptp(adapter),
+                    "service_profile": adapter.get("qos_profile"),
+                    "sflow": self._get_adapter_sflow(adapter),
+                    "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
+                        adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
+                    ),
+                    "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
+                }
+            )
 
         # More common ethernet_interface settings
         if (flowcontrol_received := get(adapter, "flowcontrol.received")) is not None:
