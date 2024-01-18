@@ -63,7 +63,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             elif (vlans := link.get("vlans")) is not None:
                 port_channel_interface["vlans"] = vlans
 
-            if link.get("mlag"):
+            if self.shared_utils.mlag is True and link.get("mlag", True):
                 port_channel_interface["mlag"] = int(link.get("channel_group_id"))
 
             if (short_esi := link.get("short_esi")) is not None:

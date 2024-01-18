@@ -1,0 +1,96 @@
+hostname: SL-LEAF0B
+is_deployed: true
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+spanning_tree:
+  no_spanning_tree_vlan: '4094'
+vlans:
+- id: 4094
+  tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
+vlan_interfaces:
+- name: Vlan4094
+  description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.10.255.1/31
+  no_autostate: true
+  mtu: 9214
+port_channel_interfaces:
+- name: Port-Channel25
+  description: MLAG_PEER_SL-LEAF0A_Po25
+  type: switched
+  shutdown: false
+  mode: trunk
+  trunk_groups:
+  - MLAG
+- name: Port-Channel27
+  description: SL-LEAF1_Po27
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: none
+ethernet_interfaces:
+- name: Ethernet25
+  peer: SL-LEAF0A
+  peer_interface: Ethernet25
+  peer_type: mlag_peer
+  description: MLAG_PEER_SL-LEAF0A_Ethernet25
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 25
+    mode: active
+- name: Ethernet26
+  peer: SL-LEAF0A
+  peer_interface: Ethernet26
+  peer_type: mlag_peer
+  description: MLAG_PEER_SL-LEAF0A_Ethernet26
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 25
+    mode: active
+- name: Ethernet27
+  peer: SL-LEAF1A
+  peer_interface: Ethernet27
+  peer_type: leaf
+  description: SL-LEAF1A_Ethernet27
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 27
+    mode: active
+- name: Ethernet28
+  peer: SL-LEAF1B
+  peer_interface: Ethernet27
+  peer_type: leaf
+  description: SL-LEAF1B_Ethernet27
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 27
+    mode: active
+mlag_configuration:
+  domain_id: SL-LEAF0
+  local_interface: Vlan4094
+  peer_address: 10.10.255.0
+  peer_link: Port-Channel25
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  platform: vEOS-LAB
