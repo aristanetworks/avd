@@ -425,6 +425,9 @@ metadata:
       carriers:
       - name: Comcast-5G
     - name: Equinix
+    - name: Satellite
+      carriers:
+      - name: Inmrasat
     regions:
     - name: AVD_Land_West
       id: 42
@@ -444,3 +447,5 @@ metadata:
         sites:
         - name: Site511
           id: 511
+        - name: Site512
+          id: 512

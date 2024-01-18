@@ -116,7 +116,7 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         static_peers = []
         for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
-            if (path_group := get_item(data["wan_path_groups"], "name", path_group_name)) is not None:
+            if (path_group := get_item(get(data, "wan_path_groups", default=[]), "name", path_group_name)) is not None:
                 ipv4_addresses = []
 
                 for interface_dict in get(path_group, "interfaces", required=True):
