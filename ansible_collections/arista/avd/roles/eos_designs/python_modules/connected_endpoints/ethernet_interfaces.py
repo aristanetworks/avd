@@ -180,7 +180,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         f" the connected endpoint with the name '{connected_endpoint['name']}'."
                     )
 
-                # check if the referred name exists in the global evpn_vlan_bundles
+                # Verify that the referred profile exists under port_profiles
                 if (profile := get_item(self._hostvars["port_profiles"], "profile", get(adapter, "port_channel.lacp_fallback.individual.profile"))) is None:
                     raise AristaAvdMissingVariableError(
                         "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurence seen"
