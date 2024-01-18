@@ -39,37 +39,10 @@ interface Management1
 
 ### Router BFD
 
-#### Router BFD Singlehop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 900 | 900 | 50 |
-
-#### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-#### Router BFD SBFD Summary
-
-| Initiator Interval | Initiator Multiplier | Initiator Round-Trip | Reflector Minimum RX | Reflector Local-Discriminator |
-| ------------------ | -------------------- | -------------------- | ----------------------------- |
-| 500 | 3 | True | 600 | 155.1.3.1 |
-
 #### Router BFD Device Configuration
 
 ```eos
 !
 router bfd
-   interval 900 min-rx 900 multiplier 50 default
-   multihop interval 300 min-rx 300 multiplier 3
    session stats snapshot interval dangerous 8
-   !
-   sbfd
-      local-interface Loopback0 ipv4 ipv6
-      initiator interval 500 multiplier 3
-      initiator measurement delay round-trip
-      reflector min-rx 600
-      reflector local-discriminator 155.1.3.1
 ```
