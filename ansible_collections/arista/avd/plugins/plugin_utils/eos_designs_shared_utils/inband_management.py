@@ -168,7 +168,7 @@ class InbandManagementMixin:
         if (inband_mgmt_interface := get(self.switch_data_combined, "inband_mgmt_interface")) is not None:
             return inband_mgmt_interface
 
-        if self.configure_inband_mgmt:
+        if self.configure_inband_mgmt or self.configure_inband_mgmt_ipv6:
             return f"Vlan{self.inband_mgmt_vlan}"
 
         return None

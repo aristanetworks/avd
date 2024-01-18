@@ -55,6 +55,14 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         return False
 
     @cached_property
+    def _inband_mgmt_ipv4_parent(self) -> bool:
+        if self._inband_management_parent_vlans:
+            for vlan, subnet in self._inband_management_parent_vlans.items():
+                if subnet["ipv4"]:
+                    return True
+        return False
+
+    @cached_property
     def static_routes(self) -> list | None:
         if not self.shared_utils.configure_inband_mgmt or self.shared_utils.inband_mgmt_gateway is None:
             return None
@@ -130,6 +138,9 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
+        if not self._inband_mgmt_ipv4_parent:
+            return None
+
         sequence_numbers = [
             {
                 "sequence": (index + 1) * 10,
@@ -191,15 +202,23 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
 
         route_map = {
             "name": "RM-CONN-2-BGP",
-            "sequence_numbers": [
-                {
-                    # sequence 10 is set in underlay so avoid setting it here
-                    "sequence": 20,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"],
-                }
-            ],
-        }
+            "sequence_numbers": []
+            }
+
+        if self._inband_mgmt_ipv4_parent:
+            route_map["sequence_numbers"].append({"sequence": 20, "type": "permit", "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"]})
+
+        # route_map = {
+        #     "name": "RM-CONN-2-BGP",
+        #     "sequence_numbers": [
+        #         {
+        #             # sequence 10 is set in underlay so avoid setting it here
+        #             "sequence": 20,
+        #             "type": "permit",
+        #             "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"],
+        #         }
+        #     ],
+        # }
 
         if self._inband_mgmt_ipv6_parent:
             route_map["sequence_numbers"].append({"sequence": 50, "type": "permit", "match": ["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]})
