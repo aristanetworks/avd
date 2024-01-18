@@ -33,16 +33,21 @@ router_bgp:
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   neighbors:
+  - ip_address: 10.42.42.9
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+    description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1
   - ip_address: 192.168.42.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: UPLINK_P2P_VRFS_TESTS_LEAF1
     description: UPLINK_P2P_VRFS_TESTS_LEAF1
     remote_as: '65000'
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -60,26 +65,6 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- name: Ethernet1.42
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-  peer_interface: Ethernet1.42
-  peer_type: l3leaf
-  vrf: PROD
-  description: 'P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1 vrf: PROD'
-  shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 42
-  ip_address: 10.42.42.8/31
-- name: Ethernet1.66
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-  peer_interface: Ethernet1.66
-  peer_type: l3leaf
-  vrf: ONLY-ON-L2LEAF
-  description: 'P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1 vrf: ONLY-ON-L2LEAF'
-  shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 66
-  ip_address: 10.42.42.8/31
 - name: Ethernet1
   peer: UPLINK_P2P_VRFS_TESTS_LEAF1
   peer_interface: Ethernet1
@@ -87,9 +72,32 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
   mac_security:
     profile: TEST
+  type: routed
+  ip_address: 10.42.42.8/31
+- name: Ethernet1.42
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+  peer_interface: Ethernet1.42
+  peer_type: l3leaf
+  vrf: PROD
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1 vrf PROD
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 42
+  ip_address: 10.42.42.8/31
+  mtu: 9214
+- name: Ethernet1.66
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+  peer_interface: Ethernet1.66
+  peer_type: l3leaf
+  vrf: ONLY-ON-L2LEAF
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1 vrf ONLY-ON-L2LEAF
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 66
+  ip_address: 10.42.42.8/31
+  mtu: 9214
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

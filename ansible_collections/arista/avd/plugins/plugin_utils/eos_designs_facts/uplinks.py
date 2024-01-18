@@ -188,7 +188,7 @@ class UplinksMixin:
         elif self.shared_utils.uplink_type == "p2p-vrfs":
             get_uplink = self._get_p2p_vrfs_uplink
         else:
-            raise AristaAvdError(f"Wrong uplink_type '{self.shared_utils.uplink_type}'.")
+            raise AristaAvdError(f"Invalid uplink_type '{self.shared_utils.uplink_type}'.")
 
         uplinks = []
         uplink_switches = self.shared_utils.uplink_switches
@@ -327,63 +327,23 @@ class UplinksMixin:
         Return a single uplink dictionnary for uplink_type p2p-vrfs
         """
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
-        uplink = {
-            "interface": uplink_interface,
-            "peer": uplink_switch,
-            "peer_interface": uplink_switch_interface,
-            "peer_type": uplink_switch_facts.type,
-            "peer_is_deployed": uplink_switch_facts.is_deployed,
-            "peer_bgp_as": uplink_switch_facts.bgp_as,
-            "type": "p2p_vrfs",
-        }
-        if self.shared_utils.uplink_interface_speed is not None:
-            uplink["speed"] = self.shared_utils.uplink_interface_speed
 
-        if self.shared_utils.uplink_bfd:
-            uplink["bfd"] = True
-
-        if self.shared_utils.uplink_switch_interface_speed is not None:
-            uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
-
-        if self.shared_utils.uplink_ptp is not None:
-            uplink["ptp"] = self.shared_utils.uplink_ptp
-        elif self.shared_utils.ptp_enabled:
-            uplink["ptp"] = {"enable": True}
-
-        if self.shared_utils.uplink_macsec is not None:
-            uplink["mac_security"] = self.shared_utils.uplink_macsec
-
-        if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
-            uplink["underlay_multicast"] = True
-
-        if self.shared_utils.link_tracking_groups is not None:
-            uplink["link_tracking_groups"] = []
-            for lt_group in self.shared_utils.link_tracking_groups:
-                uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
-
-        uplink["subinterfaces"] = self._uplink_sub_interfaces(uplink_interface, uplink_switch_interface, uplink_switch_facts, uplink_index)
-
-        return uplink
-
-    def _uplink_sub_interfaces(
-        self: EosDesignsFacts,
-        uplink_interface: str,
-        uplink_switch_interface: str,
-        uplink_switch_facts: EosDesignsFacts,
-        uplink_index: int,
-    ) -> list:
-        subinterfaces = []
+        # Reusing regular p2p logic for main interface.
+        uplink = self._get_p2p_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)
+        uplink["subinterfaces"] = []
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
-                # Only keep VRFs present on the uplink switch as well
-                if (vrf_name := get(vrf, "name", required=True)) not in get(uplink_switch_facts, "vrfs", []):
+                # Only keep VRFs present on the uplink switch as well.
+                # Also skip VRF default since it is covered on the parent interface.
+                uplink_switch_vrfs = get(uplink_switch_facts, "vrfs", [])
+                if vrf["name"] == "default" or vrf["name"] not in uplink_switch_vrfs:
                     continue
 
                 vrf_id = self.shared_utils.get_vrf_id(vrf)
                 subinterface = {
                     "interface": f"{uplink_interface}.{vrf_id}",
                     "peer_interface": f"{uplink_switch_interface}.{vrf_id}",
-                    "vrf": vrf_name,
+                    "vrf": vrf["name"],
                     "encapsulation_dot1q_vlan": vrf_id,
                 }
 
@@ -398,9 +358,10 @@ class UplinksMixin:
                     subinterface["structured_config"] = self.shared_utils.uplink_structured_config
 
                 append_if_not_duplicate(
-                    subinterfaces, "vrf", subinterface, context="Uplink subinterfaces", context_keys=["interface", "vrf"], ignore_same_dict=True
+                    uplink["subinterfaces"], "vrf", subinterface, context="Uplink subinterfaces", context_keys=["interface", "vrf"], ignore_same_dict=True
                 )
-        return subinterfaces
+
+        return uplink
 
     @cached_property
     def uplink_peers(self: EosDesignsFacts) -> list:

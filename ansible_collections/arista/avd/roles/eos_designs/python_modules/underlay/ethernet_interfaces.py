@@ -47,7 +47,8 @@ class EthernetInterfacesMixin(UtilsMixin):
             }
 
             # L3 interface
-            if link["type"] == "underlay_p2p":
+            # Used for p2p uplinks as well as main interface for p2p_vrfs.
+            if link["type"] in ["underlay_p2p", "p2p_vrfs"]:
                 ethernet_interface.update(
                     {
                         "mtu": self.shared_utils.p2p_uplinks_mtu,
@@ -134,54 +135,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                             "link_tracking_groups": link.get("link_tracking_groups"),
                         }
                     )
-            elif link["type"] == "p2p_vrfs":
-                ethernet_interface.update(
-                    {
-                        "mtu": self.shared_utils.p2p_uplinks_mtu,
-                        "type": "routed",
-                        "mac_security": link.get("mac_security"),
-                        "link_tracking_groups": link.get("link_tracking_groups"),
-                    }
-                )
-
-                # PTP
-                if get(link, "ptp.enable") is True:
-                    ptp_config = {}
-
-                    # Apply PTP profile config if using the new ptp config style
-                    if self.shared_utils.ptp_enabled:
-                        ptp_config.update(self.shared_utils.ptp_profile)
-
-                    ptp_config["enable"] = True
-                    ptp_config.pop("profile", None)
-
-                    ethernet_interface["ptp"] = ptp_config
-
-                for subinterface in get(link, "subinterfaces", default=[]):
-                    ethernet_subinterface = {
-                        "name": subinterface["interface"],
-                        "peer": link["peer"],
-                        "peer_interface": subinterface["peer_interface"],
-                        "peer_type": link["peer_type"],
-                        "vrf": vrf if (vrf := subinterface["vrf"]) != "default" else None,
-                        "description": f"{description} vrf: {subinterface['vrf']}",
-                        "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
-                        "type": "l3dot1q",
-                        "encapsulation_dot1q_vlan": subinterface["encapsulation_dot1q_vlan"],
-                        "ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}",
-                    }
-
-                    if subinterface["vrf"] == "default" and link.get("underlay_multicast") is True:
-                        ethernet_subinterface["pim"] = {"ipv4": {"sparse_mode": True}}
-
-                    ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
-                    append_if_not_duplicate(
-                        list_of_dicts=ethernet_interfaces,
-                        primary_key="name",
-                        new_dict=ethernet_subinterface,
-                        context="Ethernet sub-interfaces defined for underlay",
-                        context_keys=["name", "peer", "peer_interface"],
-                    )
 
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
@@ -192,6 +145,33 @@ class EthernetInterfacesMixin(UtilsMixin):
                 context="Ethernet Interfaces defined for underlay",
                 context_keys=["name", "peer", "peer_interface"],
             )
+
+            # Adding subinterfaces for each VRF after the main interface.
+            if link["type"] == "underlay_p2p" and "subinterfaces" in link:
+                for subinterface in get(link, "subinterfaces", default=[]):
+                    ethernet_subinterface = {
+                        "name": subinterface["interface"],
+                        "peer": link["peer"],
+                        "peer_interface": subinterface["peer_interface"],
+                        "peer_type": link["peer_type"],
+                        "vrf": subinterface["vrf"],
+                        "description": f"{description} vrf {subinterface['vrf']}",
+                        "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
+                        "type": "l3dot1q",
+                        "encapsulation_dot1q_vlan": subinterface["encapsulation_dot1q_vlan"],
+                        "ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}",
+                        "sflow": link.get("sflow"),
+                        "mtu": self.shared_utils.p2p_uplinks_mtu,
+                    }
+
+                    ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
+                    append_if_not_duplicate(
+                        list_of_dicts=ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=ethernet_subinterface,
+                        context="Ethernet sub-interfaces defined for underlay",
+                        context_keys=["name", "peer", "peer_interface"],
+                    )
 
         for l3_interface in self.shared_utils.l3_interfaces:
             # Ethernet interface

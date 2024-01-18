@@ -62,26 +62,6 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- name: Ethernet1.42
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
-  peer_interface: Ethernet1.42
-  peer_type: spine
-  vrf: PROD
-  description: 'P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1 vrf: PROD'
-  shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 42
-  ip_address: 10.42.42.9/31
-- name: Ethernet1.66
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
-  peer_interface: Ethernet1.66
-  peer_type: spine
-  vrf: ONLY-ON-L2LEAF
-  description: 'P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1 vrf: ONLY-ON-L2LEAF'
-  shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 66
-  ip_address: 10.42.42.9/31
 - name: Ethernet1
   peer: UPLINK_P2P_VRFS_TESTS_SPINE1
   peer_interface: Ethernet1
@@ -89,38 +69,32 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
   mac_security:
     profile: TEST
-- name: Ethernet2.1
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-  peer_interface: Ethernet2.1
-  peer_type: spine
-  description: 'P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2 vrf: default'
-  shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 1
-  ip_address: 10.42.42.11/31
-- name: Ethernet2.100
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-  peer_interface: Ethernet2.100
-  peer_type: spine
-  vrf: IT
-  description: 'P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2 vrf: IT'
-  shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
-  ip_address: 10.42.42.11/31
-- name: Ethernet2.42
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-  peer_interface: Ethernet2.42
+  type: routed
+  ip_address: 10.42.42.9/31
+- name: Ethernet1.42
+  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+  peer_interface: Ethernet1.42
   peer_type: spine
   vrf: PROD
-  description: 'P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2 vrf: PROD'
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1 vrf PROD
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
-  ip_address: 10.42.42.11/31
+  ip_address: 10.42.42.9/31
+  mtu: 9214
+- name: Ethernet1.66
+  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+  peer_interface: Ethernet1.66
+  peer_type: spine
+  vrf: ONLY-ON-L2LEAF
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1 vrf ONLY-ON-L2LEAF
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 66
+  ip_address: 10.42.42.9/31
+  mtu: 9214
 - name: Ethernet2
   peer: UPLINK_P2P_VRFS_TESTS_SPINE2
   peer_interface: Ethernet2
@@ -128,9 +102,32 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
   mac_security:
     profile: TEST
+  type: routed
+  ip_address: 10.42.42.11/31
+- name: Ethernet2.100
+  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+  peer_interface: Ethernet2.100
+  peer_type: spine
+  vrf: IT
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2 vrf IT
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 100
+  ip_address: 10.42.42.11/31
+  mtu: 9214
+- name: Ethernet2.42
+  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+  peer_interface: Ethernet2.42
+  peer_type: spine
+  vrf: PROD
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2 vrf PROD
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 42
+  ip_address: 10.42.42.11/31
+  mtu: 9214
 - name: Ethernet51
   peer: UPLINK_P2P_VRFS_TESTS_L2LEAF1
   peer_interface: Ethernet1
