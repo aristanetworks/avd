@@ -286,9 +286,17 @@ class UplinksMixin:
             # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
             uplink["channel_description"] = uplink_switch_facts.shared_utils.group
 
+        # Used to determine whether or not port-channel towards uplink switch should have an mlag id
+        unique_uplink_switches = set(self.shared_utils.uplink_switches)
         if self.shared_utils.mlag is True:
             # Override the peer's description on port-channel to be our group name if we are mlag pair #}
             uplink["peer_channel_description"] = self.shared_utils.group
+
+            # Updating unique_uplink_switches with this switch's mlag peer's uplink switches
+            unique_uplink_switches.update(self.shared_utils.mlag_peer_facts.shared_utils.uplink_switches)
+
+        # Only enable mlag for this port-channel on the uplink switch if there are multiple unique uplink switches
+        uplink["peer_mlag"] = len(unique_uplink_switches) > 1
 
         uplink["channel_group_id"] = str(self._uplink_port_channel_id)
         uplink["peer_channel_group_id"] = str(self._uplink_switch_port_channel_id)

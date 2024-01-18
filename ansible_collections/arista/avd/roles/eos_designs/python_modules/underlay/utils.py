@@ -98,21 +98,6 @@ class UtilsMixin:
                             for subinterface in subinterfaces
                         ]
 
-                    if self.shared_utils.mlag:
-                        # Determine whether or not to make the port-channel towards the downlink switch an mlag port-channel
-                        # by checking to see if either the downlink switch or its mlag peer have the uplink switch's mlag peer
-                        # in their uplink neighbors
-                        logical_downlink_switches = [peer_facts]
-                        # Add downlink_switch's mlag peer to logical_downlink_switches
-                        if get(peer_facts, "mlag") and (downlink_mlag_peer := get(peer_facts, "mlag_peer")):
-                            logical_downlink_switches.append(self.shared_utils.get_peer_facts(downlink_mlag_peer, required=True))
-                        # Check to see if the downlink switch or the mlag peer of the downlink switch
-                        # uplink to the mlag peer of this switch
-                        for logical_downlink_switch_facts in logical_downlink_switches:
-                            if self.shared_utils.mlag_peer in get(logical_downlink_switch_facts, "uplink_peers"):
-                                link["mlag"] = True
-                                break
-
                     underlay_links.append(strip_empties_from_dict(link))
 
         return natural_sort(underlay_links, "interface")
