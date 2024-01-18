@@ -17,7 +17,7 @@ on:
 
 jobs:
   build_universal_container:
-    if: github.repository == 'aristanetworks/ansible-avd'
+    if: github.repository == 'aristanetworks/avd'
     uses: ./.github/workflows/container_build_template.yml
     strategy:
       matrix:

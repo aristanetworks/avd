@@ -49,7 +49,7 @@ You can specify multiple range identifiers which are split by `,`. For example, 
 ### Install latest `devel` version from AVD GitHub
 
 ```shell
-ansible-galaxy collection install git+https://github.com/aristanetworks/ansible-avd.git#/ansible_collections/arista/avd/,devel
+ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel
 ```
 
 !!! note
@@ -111,7 +111,7 @@ pip3 install -r ${ARISTA_AVD_DIR}/arista/avd/requirements.txt
 If the collection is cloned from GitHub, we can reference the requirements file directly:
 
 ```shell
-pip3 install -r ansible-avd/ansible_collections/arista/avd/requirements.txt
+pip3 install -r avd/ansible_collections/arista/avd/requirements.txt
 ```
 
 !!! warning

@@ -1,6 +1,6 @@
 ---
 
-# Ansible Playbook to export vars from ansible-avd molecule scenarios
+# Ansible Playbook to export vars from avd molecule scenarios
 # Must load inventory from file in source molecule scenario
 # Must give destination path as extra-var like "-e testdir=eos_designs_unit_tests"
 

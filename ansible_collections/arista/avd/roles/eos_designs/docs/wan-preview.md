@@ -16,7 +16,7 @@ title: Ansible Collection Role eos_designs - WAN preview
 
     Everything is subject to change, is not supported and may not be complete.
 
-    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
+    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
 ## Overview
 
@@ -87,11 +87,11 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 The following table indicates the settings:
 
-| Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default CV Pathfinder Role |
-| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | -------------------------- |
-| wan_rr             | ✅              | p2p          | server            | ✘                   | ✅                  | ✘    | ✘            | ✘                   | server          | pathfinder                 |
-| wan_edge           | ✅              | p2p          | client            | ✘                   | ✅                  | ✘    | ✘            | ✘                   | client          | edge                       |
-| wan_transit        | ✅              | p2p          | client            | ✘                   | ✅                  | ✘    | ✘            | ✘                   | client          | transit region             |
+| Node Type Key | Underlay Router | Uplink Type | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default CV Pathfinder Role |
+| ------------- | --------------- | ----------- | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | -------------------------- |
+| wan_rr        | ✅               | p2p         | server            | ✘                   | ✅                   | ✘    | ✘            | ✘                   | server          | pathfinder                 |
+| wan_edge      | ✅               | p2p         | client            | ✘                   | ✅                   | ✘    | ✘            | ✘                   | client          | edge                       |
+| wan_transit   | ✅               | p2p         | client            | ✘                   | ✅                   | ✘    | ✘            | ✘                   | client          | transit region             |
 
 All these node types are defined with `default_underlay_routing_protocol: none` and `default_overlay_routing_protocol: ibgp`.
 
@@ -167,18 +167,18 @@ roles/eos_designs/docs/tables/node-type-key-wan-configuration.md
 
 #### Device Tags
 
-| Tag Name | Source of information |
-| -------- | --------------------- |
-| `Region` | `cv_pathfinder_region` if `cv_pathfinder_role` is set but not `pathfinder` |
-| `Zone` | `DEFAULT-ZONE` if `cv_pathfinder_role` is set but not `pathfinder` |
-| `Site` | `cv_pathfinder_site` if `cv_pathfinder_role` is set but not `pathfinder` |
+| Tag Name        | Source of information                                                                 |
+| --------------- | ------------------------------------------------------------------------------------- |
+| `Region`        | `cv_pathfinder_region` if `cv_pathfinder_role` is set but not `pathfinder`            |
+| `Zone`          | `DEFAULT-ZONE` if `cv_pathfinder_role` is set but not `pathfinder`                    |
+| `Site`          | `cv_pathfinder_site` if `cv_pathfinder_role` is set but not `pathfinder`              |
 | `PathfinderSet` | name of `node_group` or default `PATHFINDERS` if `cv_pathfinder_role` is `pathfinder` |
-| `Role` | `cv_pathfinder_role` if set |
+| `Role`          | `cv_pathfinder_role` if set                                                           |
 
 #### Interface Tags
 
-| Hint Tag Name | Source of information |
-| ------------- | --------------------- |
-| `Type` | `lan` or `wan` if `cv_pathfinder_role` is set |
-| `Carrier` | `wan_carrier` if `cv_pathfinder_role` is set and this is a WAN interface |
-| `Circuit` | `wan_circiot_id` if `cv_pathfinder_role` is set and this is a LAN interface |
+| Hint Tag Name | Source of information                                                       |
+| ------------- | --------------------------------------------------------------------------- |
+| `Type`        | `lan` or `wan` if `cv_pathfinder_role` is set                               |
+| `Carrier`     | `wan_carrier` if `cv_pathfinder_role` is set and this is a WAN interface    |
+| `Circuit`     | `wan_circiot_id` if `cv_pathfinder_role` is set and this is a LAN interface |

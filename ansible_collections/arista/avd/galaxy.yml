@@ -41,13 +41,13 @@ dependencies:
     "ansible.utils": ">=3.0.0"
 
 # The URL of the originating SCM repository
-repository: https://github.com/aristanetworks/ansible-avd
+repository: https://github.com/aristanetworks/avd
 
 # The URL to any online docs
-documentation: https://www.avd.sh/
+documentation: https://avd.arista.com
 
 # The URL to the homepage of the collection/project
-homepage: https://www.avd.sh/
+homepage: https://avd.arista.com
 
 # The URL to the collection issue tracker
-issues: https://github.com/aristanetworks/ansible-avd/issues
+issues: https://github.com/aristanetworks/avd/issues
