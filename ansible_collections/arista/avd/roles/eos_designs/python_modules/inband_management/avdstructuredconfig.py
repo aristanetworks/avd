@@ -47,6 +47,14 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             return [self.get_parent_svi_cfg(vlan, subnet["ipv4"], subnet["ipv6"]) for vlan, subnet in self._inband_management_parent_vlans.items()]
 
     @cached_property
+    def _inband_mgmt_ipv6_parent(self) -> bool:
+        if self._inband_management_parent_vlans:
+            for vlan, subnet in self._inband_management_parent_vlans.items():
+                if subnet["ipv6"]:
+                    return True
+        return False
+
+    @cached_property
     def static_routes(self) -> list | None:
         if not self.shared_utils.configure_inband_mgmt or self.shared_utils.inband_mgmt_gateway is None:
             return None
@@ -150,7 +158,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
-        if not self.shared_utils.configure_inband_mgmt_ipv6:
+        if not self._inband_mgmt_ipv6_parent:
             return None
 
         sequence_numbers = [
@@ -193,7 +201,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             ],
         }
 
-        if self.shared_utils.configure_inband_mgmt_ipv6:
+        if self._inband_mgmt_ipv6_parent:
             route_map["sequence_numbers"].append({"sequence": 50, "type": "permit", "match": ["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]})
 
         return [route_map]

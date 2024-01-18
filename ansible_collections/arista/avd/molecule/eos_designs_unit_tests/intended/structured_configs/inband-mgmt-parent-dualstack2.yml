@@ -329,6 +329,10 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
+  - sequence: 50
+    type: permit
+    match:
+    - ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -367,3 +371,8 @@ vxlan_interface:
       vrfs:
       - name: INBANDMGMT
         vni: 1
+ipv6_prefix_lists:
+- name: IPv6-PL-L2LEAF-INBAND-MGMT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2a00:104::/64
