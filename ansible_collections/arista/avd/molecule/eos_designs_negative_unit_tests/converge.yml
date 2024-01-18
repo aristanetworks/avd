@@ -162,27 +162,6 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: duplicate_vrfs_vni_conflict
-  connection: local
-  tasks:
-    - name: Run failure scenario Test
-      block:
-        - name: Trigger Error
-          ansible.builtin.import_role:
-            name: arista.avd.eos_designs
-      rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
-        - name: Assert eos_designs failed with the expected error message
-          run_once: true
-          ansible.builtin.assert:
-            that:
-              - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
-
-- name: Converge Negative tests for 'eos_designs_facts'
   hosts: failure_missing_evpn_multicast_l3
   connection: local
   tasks:

@@ -145,7 +145,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                 )
 
                 # PTP
-                # TODO check if this cannot be made here
                 if get(link, "ptp.enable") is True:
                     ptp_config = {}
 
@@ -168,11 +167,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "description": f"{description} vrf: {subinterface['vrf']}",
                         "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
                         "type": "l3dot1q",
-                        "encapsulation_dot1q_vlan": subinterface.get("encapsulation_dot1q_vlan", []),
+                        "encapsulation_dot1q_vlan": subinterface["encapsulation_dot1q_vlan"],
                         "ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}",
                     }
 
-                    if subinterface.get("underlay_multicast") is True:
+                    if subinterface["vrf"] == "default" and link.get("underlay_multicast") is True:
                         ethernet_subinterface["pim"] = {"ipv4": {"sparse_mode": True}}
 
                     ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
@@ -180,7 +179,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         list_of_dicts=ethernet_interfaces,
                         primary_key="name",
                         new_dict=ethernet_subinterface,
-                        context="Ethernet sub interfaces defined for underlay",
+                        context="Ethernet sub-interfaces defined for underlay",
                         context_keys=["name", "peer", "peer_interface"],
                     )
 

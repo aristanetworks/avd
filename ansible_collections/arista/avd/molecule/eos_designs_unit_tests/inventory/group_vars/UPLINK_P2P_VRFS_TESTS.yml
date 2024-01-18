@@ -1,4 +1,5 @@
 ---
+# TODO: Add tests for rfc5549
 
 default_node_types:
   - node_type: spine
@@ -69,6 +70,7 @@ tenants:
         vrf_id: 100
   - name: TenantB
     vrfs:
+      # Testing duplicate VRF with consistent ID. Silently ignored since it leads to the same subinterface config.
       - name: PROD
         vrf_id: 42
   - name: TenantC

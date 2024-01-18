@@ -10,7 +10,7 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.default import default
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item, unique
 
@@ -327,8 +327,16 @@ class FilteredTenantsMixin:
         return svis
 
     @cached_property
-    def endpoint_vlans(self) -> list:
+    def endpoint_vlans(self: SharedUtils) -> list:
         endpoint_vlans = get(self.hostvars, "switch.endpoint_vlans", default="")
         if not endpoint_vlans:
             return []
         return [int(id) for id in range_expand(endpoint_vlans)]
+
+    def get_vrf_id(self: SharedUtils, vrf, required: bool = True) -> int | None:
+        vrf_id = default(vrf.get("vrf_id"), vrf.get("vrf_vni"))
+        if vrf_id is None:
+            if required:
+                raise AristaAvdMissingVariableError(f"'vrf_id' or 'vrf_vni' for VRF '{vrf['name']} must be set.")
+            return None
+        return int(vrf_id)

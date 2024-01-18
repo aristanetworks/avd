@@ -505,8 +505,8 @@ class RouterBgpMixin(UtilsMixin):
         return self._router_bgp_vlan_aware_bundle(
             name=vrf["name"],
             vlans=vrf["svis"],
-            rd=self.get_vlan_aware_bundle_rd(id=self.get_vrf_id(vrf), tenant=tenant, is_vrf=True),
-            rt=self.get_vlan_aware_bundle_rt(id=self.get_vrf_id(vrf), vni=self.get_vrf_vni(vrf), tenant=tenant, is_vrf=True),
+            rd=self.get_vlan_aware_bundle_rd(id=self.shared_utils.get_vrf_id(vrf), tenant=tenant, is_vrf=True),
+            rt=self.get_vlan_aware_bundle_rt(id=self.shared_utils.get_vrf_id(vrf), vni=self.get_vrf_vni(vrf), tenant=tenant, is_vrf=True),
             evpn_l2_multi_domain=default(vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain", True)) is True,
             tenant=tenant,
         )
@@ -646,12 +646,6 @@ class RouterBgpMixin(UtilsMixin):
 
         return None
 
-    def get_vrf_id(self, vrf) -> int:
-        vrf_id = default(vrf.get("vrf_id"), vrf.get("vrf_vni"))
-        if vrf_id is None:
-            raise AristaAvdMissingVariableError(f"'vrf_id' or 'vrf_vni' for VRF '{vrf['name']} must be set.")
-        return int(vrf_id)
-
     def get_vrf_vni(self, vrf) -> int:
         vrf_vni = default(vrf.get("vrf_vni"), vrf.get("vrf_id"))
         if vrf_vni is None:
@@ -670,7 +664,7 @@ class RouterBgpMixin(UtilsMixin):
         if rd_override is not None:
             return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{rd_override}"
 
-        return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{self.get_vrf_id(vrf)}"
+        return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{self.shared_utils.get_vrf_id(vrf)}"
 
     def get_vrf_rt(self, vrf: dict) -> str:
         """
@@ -687,12 +681,12 @@ class RouterBgpMixin(UtilsMixin):
             admin_subfield = self.get_vrf_vni(vrf)
         else:
             # Both for 'id' and 'vrf_id' options.
-            admin_subfield = self.get_vrf_id(vrf)
+            admin_subfield = self.shared_utils.get_vrf_id(vrf)
 
         if rt_override is not None:
             return f"{admin_subfield}:{rt_override}"
 
-        return f"{admin_subfield}:{self.get_vrf_id(vrf)}"
+        return f"{admin_subfield}:{self.shared_utils.get_vrf_id(vrf)}"
 
     def get_vlan_aware_bundle_rd(self, id: int, tenant: dict, is_vrf: bool, rd_override: str = None) -> str:
         """

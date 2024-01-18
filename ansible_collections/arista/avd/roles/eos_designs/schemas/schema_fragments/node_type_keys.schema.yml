@@ -171,8 +171,8 @@ keys:
           description: |-
             `uplink_type` must be `p2p` if `vtep` or `underlay_router` is true.
 
-            For `p2p-vrfs`, the uplink are configured as l3 interface with a subinterface created for each VRF
-            in `network_services` present in both the uplink and the downlink switch.
+            For `p2p-vrfs`, the uplink are configured as an L3 interface with a subinterface for each VRF
+            in `network_services` present on both the uplink and the downlink switch.
             The subinterface ID is the `vrf_id`.
         vtep:
           type: bool

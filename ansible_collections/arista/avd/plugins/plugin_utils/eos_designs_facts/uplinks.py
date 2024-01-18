@@ -11,7 +11,7 @@ from ansible_collections.arista.avd.plugins.filter.list_compress import list_com
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, unique
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, unique
 
 if TYPE_CHECKING:
     from .eos_designs_facts import EosDesignsFacts
@@ -353,48 +353,39 @@ class UplinksMixin:
         if self.shared_utils.uplink_macsec is not None:
             uplink["mac_security"] = self.shared_utils.uplink_macsec
 
+        if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
+            uplink["underlay_multicast"] = True
+
         if self.shared_utils.link_tracking_groups is not None:
             uplink["link_tracking_groups"] = []
             for lt_group in self.shared_utils.link_tracking_groups:
                 uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
 
-        uplink["subinterfaces"] = self._uplink_sub_interfaces(
-            uplink_interface, uplink_switch, uplink_switch_interface, uplink_switch_facts, uplink_index, self.shared_utils.uplink_structured_config
-        )
+        uplink["subinterfaces"] = self._uplink_sub_interfaces(uplink_interface, uplink_switch_interface, uplink_switch_facts, uplink_index)
 
         return uplink
 
     def _uplink_sub_interfaces(
         self: EosDesignsFacts,
         uplink_interface: str,
-        uplink_switch: str,
         uplink_switch_interface: str,
         uplink_switch_facts: EosDesignsFacts,
         uplink_index: int,
-        struct_cfg: dict | None,
     ) -> list:
         subinterfaces = []
         for tenant in self.shared_utils.filtered_tenants:
-            # TODO this could lead to duplicates maybe - maybe use VRF names
             for vrf in tenant["vrfs"]:
-                # Only keep VRFs present in the uplink as well
+                # Only keep VRFs present on the uplink switch as well
                 if (vrf_name := get(vrf, "name", required=True)) not in get(uplink_switch_facts, "vrfs", []):
                     continue
-                vrf_id = get(
-                    vrf,
-                    "vrf_id",
-                    required=True,
-                    org_key=f"'vrf_id' is required when using uplink type 'p2p-vrfs'. It is missing for VRF {vrf_name} in tenant {tenant['name']}.",
-                )
+
+                vrf_id = self.shared_utils.get_vrf_id(vrf)
                 subinterface = {
                     "interface": f"{uplink_interface}.{vrf_id}",
                     "peer_interface": f"{uplink_switch_interface}.{vrf_id}",
                     "vrf": vrf_name,
                     "encapsulation_dot1q_vlan": vrf_id,
                 }
-
-                if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
-                    subinterface["underlay_multicast"] = True
 
                 if self.shared_utils.underlay_rfc5549:
                     subinterface["ipv6_enable"] = True
@@ -403,9 +394,12 @@ class UplinksMixin:
                     subinterface["ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_ip(uplink_index)
                     subinterface["peer_ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_peer_ip(uplink_index)
 
-                if struct_cfg is not None:
-                    subinterface["structured_config"] = struct_cfg
-                subinterfaces.append(subinterface)
+                if self.shared_utils.uplink_structured_config is not None:
+                    subinterface["structured_config"] = self.shared_utils.uplink_structured_config
+
+                append_if_not_duplicate(
+                    subinterfaces, "vrf", subinterface, context="Uplink subinterfaces", context_keys=["interface", "vrf"], ignore_same_dict=True
+                )
         return subinterfaces
 
     @cached_property

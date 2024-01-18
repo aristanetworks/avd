@@ -4,8 +4,6 @@
 # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
 # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
 
-fabric_name: duplicate_vrfs_id_conflict
-
 type: l3leaf
 l3leaf:
   defaults:
@@ -46,4 +44,8 @@ tenants:
             ip_address_virtual: 10.0.100.1/24
 
 expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for VRFs in multiple tenants. {'name': 'VRF1', 'vrf_id': 1} conflicts with {'name': 'VRF1', 'vrf_id': 2}.
+  Found duplicate objects with conflicting data while generating configuration for BGP VRFs defined under network services.
+  {'name': 'VRF1', 'rd': '192.168.255.101:1', 'route_targets': {'import': [{'address_family': 'evpn', 'route_targets': ['1:1']}],
+  'export': [{'address_family': 'evpn', 'route_targets': ['1:1']}]}} conflicts with {'name': 'VRF1', 'rd': '192.168.255.101:2',
+  'route_targets': {'import': [{'address_family': 'evpn', 'route_targets': ['2:2']}], 'export': [{'address_family': 'evpn',
+  'route_targets': ['2:2']}]}}.
