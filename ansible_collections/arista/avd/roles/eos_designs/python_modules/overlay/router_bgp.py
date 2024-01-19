@@ -66,7 +66,7 @@ class RouterBgpMixin(UtilsMixin):
                 "peer_group": self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"],
                 "remote_as": self.shared_utils.bgp_as,
             }
-            for prefix in self._wan_listen_ranges
+            for prefix in self.shared_utils.wan_listen_ranges
         ] or None
 
     def _generate_base_peer_group(self, pg_type: str, pg_name: str, maximum_routes: int = 0) -> dict:
@@ -479,7 +479,7 @@ class RouterBgpMixin(UtilsMixin):
                     neighbors.append(neighbor)
 
             if self.shared_utils.wan_role == "client":
-                if not self._router_id_in_listen_ranges(self._wan_listen_ranges):
+                if not self._router_id_in_listen_ranges(self.shared_utils.wan_listen_ranges):
                     raise AristaAvdError(
                         f"Loopback0 IP {self.shared_utils.router_id} is not in the Route Reflector listen range prefixes"
                         " 'bgp_peer_groups.wan_overlay_peers.listen_range_prefixes'."

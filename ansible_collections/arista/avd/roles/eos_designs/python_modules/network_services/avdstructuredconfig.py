@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
+from .application_traffic_recognition import ApplicationTrafficRecognitionMixin
 from .dps_interfaces import DpsInterfacesMixin
 from .eos_cli import EosCliMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
@@ -14,10 +15,12 @@ from .patch_panel import PatchPanelMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
 from .prefix_lists import PrefixListsMixin
 from .route_maps import RouteMapsMixin
+from .router_adaptive_virtual_topology import RouterAdaptiveVirtualTopologyMixin
 from .router_bgp import RouterBgpMixin
 from .router_isis import RouterIsisMixin
 from .router_multicast import RouterMulticastMixin
 from .router_ospf import RouterOspfMixin
+from .router_path_selection import RouterPathSelectionMixin
 from .router_pim_sparse_mode import RouterPimSparseModeMixin
 from .spanning_tree import SpanningTreeMixin
 from .standard_access_lists import StandardAccessListsMixin
@@ -32,6 +35,7 @@ from .vxlan_interface import VxlanInterfaceMixin
 
 class AvdStructuredConfigNetworkServices(
     AvdFacts,
+    ApplicationTrafficRecognitionMixin,
     SpanningTreeMixin,
     PatchPanelMixin,
     VlansMixin,
@@ -44,8 +48,10 @@ class AvdStructuredConfigNetworkServices(
     RouteMapsMixin,
     Ipv6StaticRoutesMixin,
     StaticRoutesMixin,
+    RouterAdaptiveVirtualTopologyMixin,
     RouterBgpMixin,
     RouterOspfMixin,
+    RouterPathSelectionMixin,
     DpsInterfacesMixin,
     VrfsMixin,
     EosCliMixin,

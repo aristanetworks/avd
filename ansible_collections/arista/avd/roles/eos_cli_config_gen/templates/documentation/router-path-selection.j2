@@ -95,11 +95,7 @@
 {%             set latency = load_balance_policy.latency | arista.avd.default("-") %}
 {%             set loss_rate = load_balance_policy.loss_rate | arista.avd.default("-") %}
 {%             set path_groups_list = [] %}
-{# TODO remove inplace update once Ansible 2.13 is dropped and use groupby default instead #}
-{%             for path_group in load_balance_policy.path_groups | arista.avd.default([]) %}
-{%                 do path_group.update({"_priority": path_group.priority | arista.avd.default(1)}) %}
-{%             endfor %}
-{%             for priority, entries in load_balance_policy.path_groups | groupby("_priority") %}
+{%             for priority, entries in load_balance_policy.path_groups | arista.avd.default([]) | groupby("priority", default=1) %}
 {%                 for entry in entries | arista.avd.natural_sort("name") %}
 {%                     do path_groups_list.append(entry.name ~ " (" ~ priority ~ ")") %}
 {%                 endfor %}

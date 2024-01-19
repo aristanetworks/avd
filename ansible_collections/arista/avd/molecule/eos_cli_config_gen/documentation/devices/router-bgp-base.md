@@ -21,7 +21,7 @@
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -70,10 +70,17 @@ interface Management1
 
 #### Router BGP Peer Groups
 
+##### TEST
+
+| Settings | Value |
+| -------- | ----- |
+| TTL Max Hops | 42 |
+
 ##### test-link-bandwidth1
 
 | Settings | Value |
 | -------- | ----- |
+| TTL Max Hops | 1 |
 | Link-Bandwidth | default 100G |
 
 ##### test-link-bandwidth2
@@ -96,17 +103,17 @@ interface Management1
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 192.0.3.1 | 65432 | default | - | all | - | - | True(interval: 2000, min_rx: 2000, multiplier: 3) | True | - | True |
-| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | False | True (All) | - | - |
-| 192.0.3.3 | 65434 | default | - | standard | - | - | - | True | - | - |
-| 192.0.3.4 | 65435 | default | - | large | - | - | - | False | - | - |
-| 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - | - | - |
-| 192.0.3.6 | 65437 | default | - | - | - | - | - | - | False | - |
-| 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True | - |
-| 192.0.3.8 | 65438 | default | - | - | - | - | True | - | - | - |
-| 192.0.3.9 | 65438 | default | - | - | - | - | False | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 192.0.3.1 | 65432 | default | - | all | - | - | True(interval: 2000, min_rx: 2000, multiplier: 3) | True | - | True | - |
+| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | False | True (All) | - | - | - |
+| 192.0.3.3 | 65434 | default | - | standard | - | - | - | True | - | - | - |
+| 192.0.3.4 | 65435 | default | - | large | - | - | - | False | - | - | 1 |
+| 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - | - | - | - |
+| 192.0.3.6 | 65437 | default | - | - | - | - | - | - | False | - | - |
+| 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True | - | - |
+| 192.0.3.8 | 65438 | default | - | - | - | - | True | - | - | - | Inherited from peer group TEST |
+| 192.0.3.9 | 65438 | default | - | - | - | - | False | - | - | - | Inherited from peer group TEST |
 
 #### BGP Neighbor Interfaces
 
@@ -151,7 +158,10 @@ router bgp 65101
    bgp listen range 10.10.10.0/24 peer-group my-peer-group1 peer-filter my-peer-filter
    bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444
    bgp listen range 13.10.10.0/24 peer-group my-peer-group4 peer-filter my-peer-filter
+   neighbor TEST peer group
+   neighbor TEST ttl maximum-hops 42
    neighbor test-link-bandwidth1 peer group
+   neighbor test-link-bandwidth1 ttl maximum-hops 1
    neighbor test-link-bandwidth1 link-bandwidth default 100G
    neighbor test-link-bandwidth2 peer group
    neighbor test-link-bandwidth2 link-bandwidth
@@ -182,6 +192,7 @@ router bgp 65101
    neighbor 192.0.3.3 rib-in pre-policy retain
    neighbor 192.0.3.3 send-community standard
    neighbor 192.0.3.4 remote-as 65435
+   neighbor 192.0.3.4 ttl maximum-hops 1
    no neighbor 192.0.3.4 rib-in pre-policy retain
    neighbor 192.0.3.4 send-community large
    neighbor 192.0.3.5 remote-as 65436

@@ -42,6 +42,15 @@ class WanMixin:
         return wan_role
 
     @cached_property
+    def wan_listen_ranges(self) -> list:
+        return get(
+            self.bgp_peer_groups["wan_overlay_peers"],
+            "listen_range_prefixes",
+            required=True,
+            org_key="bgp_peer_groups.wan_overlay_peers.listen_range_prefixes",
+        )
+
+    @cached_property
     def cv_pathfinder_role(self: SharedUtils) -> str | None:
         if self.underlay_router is False or self.wan_mode != "cv-pathfinder":
             return None
@@ -176,7 +185,7 @@ class WanMixin:
 
         if interface["ip"] == "dhcp":
             raise AristaAvdError(
-                f"The IP address for WAN interface '{interface['name']}' on Route Server '{self.hostname}' is set 'dhcp'."
+                f"The IP address for WAN interface '{interface['name']}' on Route Server '{self.hostname}' is set to 'dhcp'. "
                 "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
             )
 
