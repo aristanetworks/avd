@@ -57,7 +57,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_selection_policy</samp>](## "router_path_selection.vrfs.[].path_selection_policy") | String |  |  |  | DPS policy name to use for this VRF. |
     | [<samp>&nbsp;&nbsp;tcp_mss_ceiling</samp>](## "router_path_selection.tcp_mss_ceiling") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "router_path_selection.tcp_mss_ceiling.ipv4_segment_size") | Integer |  |  | Min: 64<br>Max: 65515 | Segment Size for IPv4. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "router_path_selection.tcp_mss_ceiling.direction") | String |  |  | Valid Values:<br>- <code>ingress</code> | Enforce on packets through DPS tunnel for a specific direction.<br>Only 'ingress' direction is supported today. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "router_path_selection.tcp_mss_ceiling.direction") | String |  | `ingress` | Valid Values:<br>- <code>ingress</code> | Enforce on packets through DPS tunnel for a specific direction.<br>Only 'ingress' direction is supported today. |
 
 === "YAML"
 
@@ -182,5 +182,5 @@
 
         # Enforce on packets through DPS tunnel for a specific direction.
         # Only 'ingress' direction is supported today.
-        direction: <str; "ingress">
+        direction: <str; "ingress"; default="ingress">
     ```

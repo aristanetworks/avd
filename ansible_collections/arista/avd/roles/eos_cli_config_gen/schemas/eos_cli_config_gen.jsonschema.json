@@ -22145,6 +22145,7 @@
               "enum": [
                 "ingress"
               ],
+              "default": "ingress",
               "description": "Enforce on packets through DPS tunnel for a specific direction.\nOnly 'ingress' direction is supported today.",
               "title": "Direction"
             }

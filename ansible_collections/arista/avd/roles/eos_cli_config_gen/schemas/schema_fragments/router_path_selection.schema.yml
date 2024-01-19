@@ -228,6 +228,7 @@ keys:
           direction:
             type: str
             valid_values: ["ingress"]
+            default: ingress
             description: |
               Enforce on packets through DPS tunnel for a specific direction.
               Only 'ingress' direction is supported today.
