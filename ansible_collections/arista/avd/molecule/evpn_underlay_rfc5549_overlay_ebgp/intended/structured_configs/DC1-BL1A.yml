@@ -100,6 +100,11 @@ router_bgp:
     peer: DC1-SPINE4
     description: DC1-SPINE4
     remote_as: '65001'
+  - ip_address: 10.23.23.2
+    remote_as: '64900'
+    peer: outside-r1
+    description: outside-r1
+    peer_group: UNDERLAY_PEERS
   vrfs:
   - name: Tenant_A_WAN_Zone
     router_id: 192.168.255.10
@@ -335,6 +340,16 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
+  ipv6_enable: true
+- name: Ethernet11
+  peer: outside-r1
+  peer_interface: other1
+  peer_type: other
+  description: P2P_LINK_TO_outside-r1_other1
+  type: routed
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.23.23.1/30
   ipv6_enable: true
 - name: Ethernet4000
   description: My test

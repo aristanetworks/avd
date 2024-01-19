@@ -7769,6 +7769,14 @@ $defs:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in
             the final EOS configuration.
+        routing_protocol:
+          type: str
+          valid_values:
+          - ebgp
+          description: 'Enables deviation of the routing protocol used on this link
+            from the fabric underlay default.
+
+            - ebgp: Enforce plain IPv4 BGP peering'
         structured_config:
           type: dict
           documentation_options:
