@@ -9618,6 +9618,10 @@
                       "per_link": {
                         "type": "object",
                         "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
                           "rfc_7130": {
                             "type": "boolean",
                             "title": "Rfc 7130"
@@ -15666,6 +15670,10 @@
                       "per_link": {
                         "type": "object",
                         "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
                           "rfc_7130": {
                             "type": "boolean",
                             "title": "Rfc 7130"

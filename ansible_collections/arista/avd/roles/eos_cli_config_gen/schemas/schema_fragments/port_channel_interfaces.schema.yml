@@ -261,6 +261,8 @@ keys:
             per_link:
               type: dict
               keys:
+                enabled:
+                  type: bool
                 rfc_7130:
                   type: bool
         service_policy:

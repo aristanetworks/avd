@@ -132,6 +132,7 @@ port_channel_interfaces:
       multiplier: 5
       neighbor: 10.1.2.4
       per_link:
+        enabled: true
         rfc_7130: true
     spanning_tree_guard: root
 
