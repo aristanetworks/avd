@@ -16,7 +16,7 @@ title: Generate Cloudvision Tags with eos_designs - Preview
 
     Everything is subject to change, is not supported and may not be complete.
 
-    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
+    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
 `arista.avd.eos_designs` can generate CloudVision Tags that can be applied to interfaces and/or devices. These tags can be used on CloudVision for during Topology view generation,
 or used in searches/filters to select devices based on tags values.
@@ -39,13 +39,13 @@ generate_cv_tags:
   topology_hints: true
 ```
 
-| Hint Tag Name | Description | Source of information |
-| ------------- | ----------- |---------------------- |
-| `topology_hint_type` | Indicates whether the node is a leaf, spine, core device etc. | `cv_tags_topology_type` if set, else `node_type_keys.[].cv_tags_topology_type`. |
-| `topology_hint_fabric` | The overall fabric that the devices pertains to. Useful for multi-fabric deployments. | `fabric_name` |
-| `topology_hint_datacenter` | The datacenter to which the devices belongs. Helpful for multi-dc deployments. | `dc_name` |
-| `topology_hint_pod` | The pod to which the devices belongs. | `pod_name` |
-| `topology_hint_rack` | The physical rack in which the device is located. | `rack` defined on `node` or `node_group` |
+| Hint Tag Name              | Description                                                                           | Source of information                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `topology_hint_type`       | Indicates whether the node is a leaf, spine, core device etc.                         | `cv_tags_topology_type` if set, else `node_type_keys.[].cv_tags_topology_type`. |
+| `topology_hint_fabric`     | The overall fabric that the devices pertains to. Useful for multi-fabric deployments. | `fabric_name`                                                                   |
+| `topology_hint_datacenter` | The datacenter to which the devices belongs. Helpful for multi-dc deployments.        | `dc_name`                                                                       |
+| `topology_hint_pod`        | The pod to which the devices belongs.                                                 | `pod_name`                                                                      |
+| `topology_hint_rack`       | The physical rack in which the device is located.                                     | `rack` defined on `node` or `node_group`                                        |
 
 ## CloudVision Custom Tags
 

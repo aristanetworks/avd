@@ -192,7 +192,7 @@ function display-release {
     case "$output" in
     raw) printf "$hash" ;;
     text) printf "\e[33m$hash\e[0m" ;; # red
-    md) printf "[\`$hash\`](https://github.com/aristanetworks/ansible-avd/commit/$hash)" ;;
+    md) printf "[\`$hash\`](https://github.com/aristanetworks/avd/commit/$hash)" ;;
     esac
   }
 
@@ -262,7 +262,7 @@ function display-release {
     # In text mode, highlight (#<issue>) and dim text between `backticks`
     text) sed -E $'s|#([0-9]+)|\e[32m#\\1\e[0m|g;s|`([^`]+)`|`\e[2m\\1\e[0m`|g' <<< "$subject" ;;
     # In markdown mode, link to (#<issue>) issues
-    md) sed -E 's|#([0-9]+)|[#\1](https://github.com/aristanetworks/ansible-avd/issues/\1)|g' <<< "$subject" ;;
+    md) sed -E 's|#([0-9]+)|[#\1](https://github.com/aristanetworks/avd/issues/\1)|g' <<< "$subject" ;;
     esac
   }
 
@@ -368,7 +368,7 @@ function main {
     # If $since is not specified:
     # 1) try to find the version used before updating
     # 2) try to find the first version tag before $until
-    since=$(command git config --get ansible-avd.lastVersion 2>/dev/null) || \
+    since=$(command git config --get avd.lastVersion 2>/dev/null) || \
     since=$(command git describe --abbrev=0 --tags "$until^" 2>/dev/null) || \
     unset since
   elif [[ "$since" = --all ]]; then
