@@ -188,9 +188,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '33:33'
+    evpn_multicast: false
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: false
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -208,9 +208,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '31:31'
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: true
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -228,9 +228,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '32:32'
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: true
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -248,9 +248,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '42:42'
+    evpn_multicast: false
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: false
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -268,9 +268,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '41:41'
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: true
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -288,9 +288,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '55:55'
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: true
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -308,15 +308,15 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 60:60
-    redistribute_routes:
-    - source_protocol: connected
     evpn_multicast: true
-    neighbors:
-    - ip_address: 10.255.251.0
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
     evpn_multicast_address_family:
       ipv4:
         transit: true
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
     updates:
       wait_install: true
   - name: TEN_E_L3_MULTICAST_TRANSIT
@@ -331,15 +331,15 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '52:52'
-    redistribute_routes:
-    - source_protocol: connected
     evpn_multicast: true
-    neighbors:
-    - ip_address: 10.255.251.0
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
     evpn_multicast_address_family:
       ipv4:
         transit: true
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
     updates:
       wait_install: true
   - name: TEN_E_PEG_L3_MULTICAST_ENABLED
@@ -354,9 +354,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '51:51'
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: true
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER

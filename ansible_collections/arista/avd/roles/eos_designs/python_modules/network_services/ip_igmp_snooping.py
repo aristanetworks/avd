@@ -83,7 +83,7 @@ class IpIgmpSnoopingMixin(UtilsMixin):
 
         else:
             igmp_snooping_enabled = vlan.get("igmp_snooping_enabled")
-            if self.shared_utils.network_services_l3 and self.shared_utils.uplink_type == "p2p":
+            if self.shared_utils.network_services_l3 and self.shared_utils.uplink_type in ["p2p", "p2p-vrfs"]:
                 igmp_snooping_querier_enabled = default(
                     igmp_snooping_querier.get("enabled"),
                     tenant_igmp_snooping_querier.get("enabled"),

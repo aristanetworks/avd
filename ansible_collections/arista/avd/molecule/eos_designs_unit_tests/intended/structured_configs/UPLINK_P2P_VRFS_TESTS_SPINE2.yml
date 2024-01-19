@@ -44,6 +44,21 @@ router_bgp:
     peer: UPLINK_P2P_VRFS_TESTS_LEAF1
     description: UPLINK_P2P_VRFS_TESTS_LEAF1
     remote_as: '65000'
+  vrfs:
+  - name: IT
+    router_id: 192.168.42.2
+    neighbors:
+    - ip_address: 10.42.42.11
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.100
+  - name: PROD
+    router_id: 192.168.42.2
+    neighbors:
+    - ip_address: 10.42.42.11
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.42
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -85,8 +100,8 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 100
-  ip_address: 10.42.42.10/31
   mtu: 9214
+  ip_address: 10.42.42.10/31
 - name: Ethernet2.42
   peer: UPLINK_P2P_VRFS_TESTS_LEAF1
   peer_interface: Ethernet2.42
@@ -96,8 +111,8 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
-  ip_address: 10.42.42.10/31
   mtu: 9214
+  ip_address: 10.42.42.10/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

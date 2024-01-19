@@ -90,8 +90,8 @@ class UtilsMixin:
                                 **subinterface,
                                 "interface": subinterface["peer_interface"],
                                 "peer_interface": subinterface["interface"],
-                                "ip_address": subinterface["peer_ip_address"],
-                                "peer_ip_address": subinterface["ip_address"],
+                                "ip_address": subinterface.get("peer_ip_address"),
+                                "peer_ip_address": subinterface.get("ip_address"),
                             }
                             for subinterface in subinterfaces
                         ]

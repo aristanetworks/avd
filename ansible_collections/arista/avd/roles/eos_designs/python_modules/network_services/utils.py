@@ -341,7 +341,7 @@ class UtilsMixin:
         """
         wan_vrfs = []
         # TODO replace this with VRFs fact once it has been implemented
-        network_services_vrfs = {vrf["name"] for tenant in self._filtered_tenants for vrf in tenant["vrfs"]}
+        network_services_vrfs = {vrf["name"] for tenant in self.shared_utils.filtered_tenants for vrf in tenant["vrfs"]}
 
         for avt_vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
             vrf_name = avt_vrf["name"]

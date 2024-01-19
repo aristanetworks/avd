@@ -1,5 +1,5 @@
 ---
-# TODO: Add tests for rfc5549
+# TODO: Add tests for rfc5549, overlay_routing_protocol: none with bgp peers etc under network services (since this uplink type expands bgp support there)
 
 default_node_types:
   - node_type: spine
@@ -20,6 +20,7 @@ l3leaf:
     platform: vEOS-LAB
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 172.16.0.0/24
+    virtual_router_mac_address: cafe:cafe:cafe
     uplink_ipv4_pool: 10.42.42.0/24
     uplink_switches: [ UPLINK_P2P_VRFS_TESTS_SPINE1, UPLINK_P2P_VRFS_TESTS_SPINE2 ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
@@ -62,6 +63,7 @@ spine:
 tenants:
   - name: TenantA
     vrfs:
+      # Testing VRF default is not added as subinterface.
       - name: default
         vrf_id: 1
       - name: PROD
@@ -74,12 +76,15 @@ tenants:
       - name: PROD
         vrf_id: 42
   - name: TenantC
+    mac_vrf_vni_base: 10000
     vrfs:
       - name: ONLY-ON-L2LEAF
         vrf_id: 66
         svis:
           - id: 66
             name: TEST-L2VLAN-ATTRACTION
+            enabled: true
+            ip_address_virtual: 172.16.0.1/24
 
 network_ports:
   - switches: [ UPLINK_P2P_VRFS_TESTS_L2LEAF1 ]
