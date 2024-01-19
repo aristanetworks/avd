@@ -5,6 +5,7 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
+import json
 import logging
 from asyncio import gather, run
 from dataclasses import asdict
@@ -90,6 +91,9 @@ class ActionModule(ActionBase):
         validated_args = strip_empties_from_dict(self._task.args)
         validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
         validated_args = strip_empties_from_dict(validated_args)
+
+        # Converting to json and back to remove any AnsibeUnsafe types
+        validated_args = json.loads(json.dumps(validated_args))
 
         # Running asyncio coroutine to deploy everything.
         return run(self.deploy(validated_args, result))
@@ -227,17 +231,21 @@ class ActionModule(ActionBase):
         """
         LOGGER.info("build_object_for_device: %s", hostname)
         with Path(structured_config_dir, f"{hostname}.{structured_config_suffix}").open(mode="r", encoding="UTF-8") as structured_config_stream:
-            interesting_keys = ("is_deployed", "serial_number", "metadata")
-            in_interesting_context = False
-            structured_config_lines = []
-            for line in structured_config_stream.readlines():
-                if line.startswith(interesting_keys) or (in_interesting_context and line.startswith(" ")):
-                    structured_config_lines.append(line)
-                    in_interesting_context = True
-                else:
-                    in_interesting_context = False
+            if structured_config_suffix in ["yml", "yaml"]:
+                interesting_keys = ("is_deployed", "serial_number", "metadata")
+                in_interesting_context = False
+                structured_config_lines = []
+                for line in structured_config_stream.readlines():
+                    if line.startswith(interesting_keys) or (in_interesting_context and line.startswith(" ")):
+                        structured_config_lines.append(line)
+                        in_interesting_context = True
+                    else:
+                        in_interesting_context = False
 
-            structured_config = load("".join(structured_config_lines), Loader=CLoader)
+                structured_config = load("".join(structured_config_lines), Loader=CLoader)
+            else:
+                # Load as JSON
+                structured_config = json.load(structured_config_stream)
 
         if not get(structured_config, "is_deployed", default=True):
             del structured_config
