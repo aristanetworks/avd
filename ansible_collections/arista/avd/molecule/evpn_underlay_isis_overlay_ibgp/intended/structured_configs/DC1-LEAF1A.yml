@@ -1,6 +1,4 @@
 hostname: DC1-LEAF1A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -209,3 +207,5 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback0
+metadata:
+  platform: vEOS-LAB

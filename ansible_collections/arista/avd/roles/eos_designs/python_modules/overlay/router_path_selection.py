@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
@@ -31,9 +30,6 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         router_path_selection = {
             "path_groups": path_groups,
-            "load_balance_policies": self._get_load_balance_policies(path_groups),
-            "policies": self._get_policies(),
-            "vrfs": self._get_vrfs(),
         }
 
         if self.shared_utils.wan_role == "server":
@@ -72,40 +68,6 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         return path_groups
 
-    def _get_load_balance_policies(self, path_groups: dict) -> dict | None:
-        """ """
-        unique_path_groups = natural_sort({path_group.get("name") for path_group in path_groups}, "name")
-        return [
-            {
-                "name": "LBPOLICY",
-                "path_groups": [{"name": pg_name} for pg_name in unique_path_groups],
-            }
-        ]
-
-    def _get_policies(self) -> list | None:
-        """
-        Only configure a default DPS policy for the default VRF if wan_mode is autovpn
-        for cv-pathfinder, the VRFs are confgured under adaptive_virtual_topology.
-        """
-        policies = []
-        if self.shared_utils.wan_mode == "autovpn":
-            # TODO DPS policies - for now adding one default one - MAYBE NEED TO REMOVED
-            policies = [{"name": "dps-policy-default", "default_match": {"load_balance": "LBPOLICY"}}]
-            return policies
-        return None
-
-    def _get_vrfs(self) -> list | None:
-        """
-        Only configure a default VRF if wan_mode is autovpn
-        for cv-pathfinder, the VRFs are confgured under adaptive_virtual_topology.
-        """
-        vrfs = []
-        if self.shared_utils.wan_mode == "autovpn":
-            # TODO - Adding default VRF here - check if it makes sense later
-            vrfs = [{"name": "default", "path_selection_policy": "dps-policy-default"}]
-            return vrfs
-        return None
-
     def _get_path_group_id(self, path_group_name: str, config_id: int | None = None) -> int:
         """
         TODO - implement algorithm to auto assign IDs - cf internal documenation
@@ -128,7 +90,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         for interface in path_group.get("interfaces", []):
             local_interface = {"name": get(interface, "name", required=True)}
 
-            if self.shared_utils.wan_role == "client" and self._should_connect_to_wan_rs([path_group_name]):
+            if self.shared_utils.wan_role == "client" and self.shared_utils.should_connect_to_wan_rs([path_group_name]):
                 stun_server_profiles = self._stun_server_profiles.get(path_group_name, [])
                 if stun_server_profiles:
                     local_interface["stun"] = {"server_profiles": [profile["name"] for profile in stun_server_profiles]}
@@ -153,8 +115,8 @@ class RouterPathSelectionMixin(UtilsMixin):
             return None
 
         static_peers = []
-        for wan_route_server, data in self._filtered_wan_route_servers.items():
-            if (path_group := get_item(data["wan_path_groups"], "name", path_group_name)) is not None:
+        for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
+            if (path_group := get_item(get(data, "wan_path_groups", default=[]), "name", path_group_name)) is not None:
                 ipv4_addresses = []
 
                 for interface_dict in get(path_group, "interfaces", required=True):

@@ -1,6 +1,4 @@
 hostname: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -76,3 +74,5 @@ vlans:
   tenant: PTP
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-lab

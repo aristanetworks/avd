@@ -14,13 +14,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -120,6 +120,7 @@ interface Management1
 
 | Policy Name | Jitter (ms) | Latency (ms) | Loss Rate (%) | Path Groups (priority) | Lowest Hop Count |
 | ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
+| LB-EMPTY | - | - | - |  | False |
 | LB-P-1 | - | - | 17 | PG-5 (1)<br>PG-2 (42)<br>PG-4 (42)<br>PG-3 (666) | True |
 | LB-P-2 | 666 | 42 | 42.42 | PG-1 (1)<br>PG-3 (1) | False |
 
@@ -207,6 +208,8 @@ router path-selection
    path-group PG-3 id 888
    !
    path-group PG-4
+   !
+   load-balance policy LB-EMPTY
    !
    load-balance policy LB-P-1
       hop count lowest

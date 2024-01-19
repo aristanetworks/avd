@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Ansible Collection Role eos_design - WAN preview
+title: Ansible Collection Role eos_designs - WAN preview
 ---
 <!--
   ~ Copyright (c) 2023-2024 Arista Networks, Inc.
@@ -29,6 +29,13 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 3. On the AutoVPN Route Reflectors and Pathfinders, a listen range statement is used for BGP to allow for point number 1.
 4. The default VRF is being configured by default on all WAN devices with a `vni_id` of 1. To override this, it is necessary to configure the `default` VRF in a tenant in `network_services`.
 5. When configuring HA on a site, the path-group ID `65535` is reserved for the path-group called `LAN_HA`.
+6. The policies definition works as follow:
+     - The policies are defined under `wan_virtual_topologies.policies`. For AutoVPN mode, the policies are configured under `router path-selection`, for CV Pathfinder, they are configured under `router adaptive-virtual-topology`.
+     - A policy is composed of a list of `application_virtual_topologies` and one `default_virtual_topology`.
+     - The `application_virtual_topologies` entries and the `default_virtual_topology` key are used to create the policy match statement, the AVT profile (when `wan_mode` is CV Pathfinder) and the load balancing policy.
+     - The `default_virtual_topology` is used as the default match in the policy.  To prevent configuring it, the `drop_unmatched` boolean must be set to `true` otherwise, at least one `path-group` must be configured or AVD will raise an error.
+     - Policies are assigned to VRFs using the list `wan_virtual_topologies.vrfs`. A policy can be reused in multiple VRFs.
+     - AVD requires that a policy is assigned for the `default` VRF policy. An extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `CONTROL-PLANE-APPLICATION-PROFILE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
 
 ## Known limitations
 
@@ -58,8 +65,6 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 - As of now, only the fundations of the `eos_designs` functionality for WAN is
     being introduced without any support for LAN interfaces.
 - Auto generation of Path-group IDs and other IDs.
-- The configuration of AVT policies is not supported yet and will be introduced
-    later.
 - HA for sites will be covered in a future PR
 
 ## `eos_cli_config_gen` support
@@ -126,6 +131,18 @@ roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
 roles/eos_designs/docs/tables/wan-interfaces-settings.md
 --8<--
 
+#### WAN Virtual topologies
+
+--8<--
+roles/eos_designs/docs/tables/wan-virtual-topologies.md
+--8<--
+
+#### Application traffic recognition
+
+--8<--
+roles/eos_designs/docs/tables/application-traffic-recognition.md
+--8<--
+
 #### New BGP peer-group
 
 --8<--
@@ -143,3 +160,25 @@ roles/eos_designs/docs/tables/node-type-wan-configuration.md
 --8<--
 roles/eos_designs/docs/tables/node-type-key-wan-configuration.md
 --8<--
+
+### CloudVision Tags
+
+`arista.avd.eos_designs` will generate CloudVision Tags that assist CloudVision with visualizing the WAN.
+
+#### Device Tags
+
+| Tag Name | Source of information |
+| -------- | --------------------- |
+| `Region` | `cv_pathfinder_region` if `cv_pathfinder_role` is set but not `pathfinder` |
+| `Zone` | `DEFAULT-ZONE` if `cv_pathfinder_role` is set but not `pathfinder` |
+| `Site` | `cv_pathfinder_site` if `cv_pathfinder_role` is set but not `pathfinder` |
+| `PathfinderSet` | name of `node_group` or default `PATHFINDERS` if `cv_pathfinder_role` is `pathfinder` |
+| `Role` | `cv_pathfinder_role` if set |
+
+#### Interface Tags
+
+| Hint Tag Name | Source of information |
+| ------------- | --------------------- |
+| `Type` | `lan` or `wan` if `cv_pathfinder_role` is set |
+| `Carrier` | `wan_carrier` if `cv_pathfinder_role` is set and this is a WAN interface |
+| `Circuit` | `wan_circiot_id` if `cv_pathfinder_role` is set and this is a LAN interface |

@@ -5,6 +5,10 @@ $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
+  application_traffic_recognition:
+    type: dict
+    description: 'PREVIEW: WAN Preview'
+    $ref: eos_cli_config_gen#/keys/application_traffic_recognition
   avd_data_conversion_mode:
     documentation_options:
       table: role-input-validation
@@ -552,6 +556,19 @@ keys:
                 type: str
               site_after_hours_contact:
                 type: str
+  cv_tags_topology_type:
+    documentation_options:
+      table: cloudvision-tags
+    description: 'PREVIEW: This key is currently not supported
+
+      Device type that CloudVision should use when generating the Topology. Defaults
+      to the setting under node_type_keys.'
+    type: str
+    valid_values:
+    - leaf
+    - spine
+    - core
+    - edge
   cv_topology:
     documentation_options:
       table: cv-topology
@@ -1090,6 +1107,75 @@ keys:
       in the Fabric, **must** be an inventory group name.
     type: str
     required: true
+  generate_cv_tags:
+    documentation_options:
+      table: cloudvision-tags
+    type: dict
+    description: 'PREVIEW: This key is currently not supported
+
+      Generate CloudVision Tags based on AVD data.'
+    keys:
+      topology_hints:
+        type: bool
+        default: false
+        description: Enable the generation of CloudVision Topology Tags (hints).
+      interface_tags:
+        description: List of interface tags that should be generated.
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          description: Each tag can either have a static value or a dynamic value
+            sourced from structured configuration.
+          keys:
+            name:
+              description: Tag name to be assigned to generated tags. Tag names must
+                be lower case.
+              convert_to_lower_case: true
+              required: true
+              type: str
+            data_path:
+              description: 'Structured config field/key path to be used to find the
+                value for the tag. Dot notation is supported to reference values inside
+                dictionaries.
+
+                For Example: ''data_path: channel_group.id'' would set the tag with
+                the value of the channel id of the interface. If there is no channel
+                id, the tag is not created.
+
+                `data_path` is ignored if `value` is set.'
+              type: str
+            value:
+              description: Value to be assigned to the tag.
+              type: str
+      device_tags:
+        description: List of device tags that should be generated.
+        type: list
+        items:
+          type: dict
+          description: Each tag can either have a static value or a dynamic value
+            sourced from structured configuration.
+          keys:
+            name:
+              description: Tag name to be assigned to generated tags. Tag names must
+                be lower case.
+              convert_to_lower_case: true
+              required: true
+              type: str
+            data_path:
+              description: 'Structured config field/key path to be used to find the
+                value for the tag. Dot notation is supported to reference values inside
+                dictionaries.
+
+                For Example: ''data_path: router_bfd.multihop.interval'' would set
+                the tag with the value of the interval for multihop bfd. If this value
+                is not specified in the structured config, the tag is not created.
+
+                `data_path` is ignored if `value` is set.'
+              type: str
+            value:
+              description: Value to be assigned to the tag.
+              type: str
   hardware_counters:
     documentation_options:
       table: system-settings
@@ -1715,6 +1801,18 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to Custom J2 template.
+        cv_tags_topology_type:
+          documentation_options:
+            table: cloudvision-tags
+          description: 'PREVIEW: This key is currently not supported
+
+            Type that CloudVision should use when generating the Topology.'
+          type: str
+          valid_values:
+          - leaf
+          - spine
+          - core
+          - edge
   ntp_settings:
     documentation_options:
       table: management-settings
@@ -3418,6 +3516,125 @@ keys:
                       type: str
                       description: The public IP address of the Route Reflector for
                         this path-group.
+  wan_virtual_topologies:
+    type: dict
+    description: 'PREVIEW: WAN Preview
+
+
+      Configure Virtual Topologies for CV Pathfinder and AutoVPN.
+
+
+      Auto create a control plane profile/policy/application and enforce it being
+      first in the default VRF.'
+    keys:
+      vrfs:
+        type: list
+        description: 'Map a VRF that exists in network_services to an AVT policy.
+
+          TODO: missing default VRF behavior'
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+              - int
+              description: VRF name.
+            policy:
+              type: str
+              description: Name of the AVT policy to apply to this VRF.
+      control_plane_virtual_topology:
+        type: dict
+        description: 'Always injected into the default VRF policy as the first entry.
+
+
+          By default, if no path-groups are specified, all locally available path-groups
+
+          are used in the generated load-balance policy.
+
+          ID is hardcoded to 254 for the AVT profile in CV Pathfinder mode.'
+        $ref: eos_designs#/$defs/virtual_topology
+        keys:
+          name:
+            type: str
+            description: Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
+      policies:
+        type: list
+        description: "List of virtual toplogies policies.\n\nFor AutoVPN, each item
+          in the list creates:\n  * one policy with:\n      * one `match` entry per
+          `application_virtual_topologies` item\n        they are indexed using `10
+          * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n
+          \ * one load-balance policy per `application_virtual_topologies` and one
+          for the `default_virtual_topology`.\n  * if the policy is associated with
+          the default VRF, a special control-plane rule is injected\n    in the policy
+          with index `1` referring to a control-plane load-balance policy as defined
+          under\n    `control_plane_virtual_topology`.\n\n\nFor CV Pathfinder, each
+          item in the list creates:\n  * one policy with:\n      * one `match` entry
+          per `application_virtual_topologies` item ordered as in the model.\n      *
+          one last match entry for the `default` application-profile using `default_virtual_topology`
+          information.\n  * one profile per `application_virtual_topologies` item.\n
+          \ * one profile for the `default_virtual_topology`..\n  * one load-balance
+          policy per `application_virtual_topologies`.\n  * one load_balance policy
+          for the `default_virtual_topology`.\n  * if the policy is associated with
+          the default VRF, a special control-plane profile is configured\n    and
+          injected first in the policy assigned to the `default` VRF. This profile
+          points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`."
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the AVT policy.
+            application_virtual_topologies:
+              type: list
+              description: List of application specific virtual topologies.
+              primary_key: application_profile
+              items:
+                type: dict
+                $ref: eos_designs#/$defs/virtual_topology
+                keys:
+                  application_profile:
+                    type: str
+                    description: The application profile to use for this virtual topology.
+                      It must be a defined `application_profile`.
+                  name:
+                    type: str
+                    description: Optional name, if not set `<policy_name>-<application_profile>`
+                      is used.
+                  id:
+                    type: int
+                    $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id
+                    min: 2
+                    max: 253
+                    description: 'ID of the AVT in each VRFs. ID must be unique across
+                      all virtual topologies in a policy.
+
+                      ID 1 is reserved for the default_virtual_toplogy.
+
+                      ID 254 is reserved for the control_plane_virtual_topology.'
+            default_virtual_topology:
+              type: dict
+              description: 'Default match for the policy.
+
+                If no default match should be configured, set `drop_unmatched` to
+                `true`.
+
+                Otherwise, in CV Pathfinder mode, a default AVT profile will be configured
+                with ID 1.'
+              $ref: eos_designs#/$defs/virtual_topology
+              required: true
+              keys:
+                name:
+                  type: str
+                  description: Optional name, if not set `<policy_name>-DEFAULT` is
+                    used.
+                drop_unmatched:
+                  type: bool
+                  description: When set, no `catch-all` match is configured for the
+                    policy and unmatched traffic is dropped.
+                  default: false
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -7742,3 +7959,39 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
+  virtual_topology:
+    type: dict
+    keys:
+      name:
+        type: str
+        description: Optional name.
+      traffic_class:
+        type: int
+        $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/traffic_class
+      dscp:
+        type: int
+        $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp
+      path_groups:
+        type: list
+        min_length: 1
+        items:
+          type: dict
+          keys:
+            names:
+              type: list
+              description: List of path-group names.
+              required: true
+              min_length: 1
+              items:
+                type: str
+            preference:
+              type: str
+              convert_types:
+              - int
+              description: 'Valid values are 1-255 | preferred | alternate.
+
+
+                preferred is converted to priority 1.
+
+                alternate is converted to priority 2.'
+              default: preferred

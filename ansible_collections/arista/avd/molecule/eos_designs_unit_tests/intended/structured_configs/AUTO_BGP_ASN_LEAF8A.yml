@@ -1,6 +1,4 @@
 hostname: AUTO_BGP_ASN_LEAF8A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65222.12'
@@ -107,3 +105,5 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
+metadata:
+  platform: vEOS-LAB

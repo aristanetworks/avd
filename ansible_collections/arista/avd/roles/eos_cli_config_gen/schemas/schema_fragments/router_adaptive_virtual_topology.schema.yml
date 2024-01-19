@@ -77,7 +77,10 @@ keys:
       policies:
         type: list
         primary_key: name
-        description: A sequence of application profiles mapped to some virtual topologies.
+        description: |-
+          A sequence of application profiles mapped to some virtual topologies.
+
+          When `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index> in the list.
         items:
           type: dict
           keys:

@@ -259,3 +259,15 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to Custom J2 template.
+        cv_tags_topology_type:
+          documentation_options:
+            table: cloudvision-tags
+          description: |-
+            PREVIEW: This key is currently not supported
+            Type that CloudVision should use when generating the Topology.
+          type: str
+          valid_values:
+            - "leaf"
+            - "spine"
+            - "core"
+            - "edge"

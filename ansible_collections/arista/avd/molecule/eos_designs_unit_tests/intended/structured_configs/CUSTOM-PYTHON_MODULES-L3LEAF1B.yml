@@ -1,6 +1,4 @@
 hostname: CUSTOM-PYTHON_MODULES-L3LEAF1B
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65101'
@@ -267,3 +265,5 @@ vxlan_interface:
       vrfs:
       - name: TEST_VRF
         vni: 1
+metadata:
+  platform: vEOS-LAB

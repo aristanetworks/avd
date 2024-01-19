@@ -1,6 +1,4 @@
 hostname: AUTO_NODE_TYPE_SPINE02
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65100'
@@ -131,3 +129,5 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
+metadata:
+  platform: vEOS-LAB

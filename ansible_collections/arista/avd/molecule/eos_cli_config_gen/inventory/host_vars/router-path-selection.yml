@@ -91,6 +91,7 @@ router_path_selection:
           priority: 42
         - name: PG-2
           priority: 42
+    - name: LB-EMPTY
   policies:
     # Out of order to test sorting
     - name: DPS-P-2

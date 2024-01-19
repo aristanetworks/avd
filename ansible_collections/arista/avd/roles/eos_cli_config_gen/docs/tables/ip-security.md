@@ -18,7 +18,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_security.sa_policies.[].name") | String | Required, Unique |  |  | Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esp</samp>](## "ip_security.sa_policies.[].esp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;integrity</samp>](## "ip_security.sa_policies.[].esp.integrity") | String |  |  | Valid Values:<br>- <code>disabled</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>null</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryption</samp>](## "ip_security.sa_policies.[].esp.encryption") | String |  |  | Valid Values:<br>- <code>disabled</code><br>- <code>aes128</code><br>- <code>aes128gcm128</code><br>- <code>aes128gcm64</code><br>- <code>aes256</code><br>- <code>aes256gcm256</code><br>- <code>null</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryption</samp>](## "ip_security.sa_policies.[].esp.encryption") | String |  |  | Valid Values:<br>- <code>disabled</code><br>- <code>aes128</code><br>- <code>aes128gcm128</code><br>- <code>aes128gcm64</code><br>- <code>aes256</code><br>- <code>aes256gcm128</code><br>- <code>null</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pfs_dh_group</samp>](## "ip_security.sa_policies.[].pfs_dh_group") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>5</code><br>- <code>14</code><br>- <code>15</code><br>- <code>16</code><br>- <code>17</code><br>- <code>20</code><br>- <code>21</code><br>- <code>24</code> |  |
     | [<samp>&nbsp;&nbsp;profiles</samp>](## "ip_security.profiles") | List, items: Dictionary |  |  |  | IPSec profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_security.profiles.[].name") | String | Required, Unique |  |  | Name of the IPsec profile. |
@@ -65,7 +65,7 @@
         - name: <str; required; unique>
           esp:
             integrity: <str; "disabled" | "sha1" | "sha256" | "null">
-            encryption: <str; "disabled" | "aes128" | "aes128gcm128" | "aes128gcm64" | "aes256" | "aes256gcm256" | "null">
+            encryption: <str; "disabled" | "aes128" | "aes128gcm128" | "aes128gcm64" | "aes256" | "aes256gcm128" | "null">
           pfs_dh_group: <int; 1 | 2 | 5 | 14 | 15 | 16 | 17 | 20 | 21 | 24>
 
       # IPSec profiles.

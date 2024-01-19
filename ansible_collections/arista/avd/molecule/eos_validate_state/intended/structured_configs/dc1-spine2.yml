@@ -1,6 +1,4 @@
 hostname: dc1-spine2
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65100'
@@ -177,4 +175,6 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
+metadata:
+  platform: vEOS-lab
 dns_domain: dc1.local

@@ -1,6 +1,4 @@
 hostname: p2
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -151,3 +149,5 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+metadata:
+  platform: vEOS-lab
