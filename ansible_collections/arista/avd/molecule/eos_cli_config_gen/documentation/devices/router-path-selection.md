@@ -49,7 +49,7 @@ interface Management1
 | Setting | Value |
 | ------  | ----- |
 | Path Group ID | 666 |
-| keepalive interval(failure threshold) | 200(3) |
+| Keepalive interval(failure threshold) | 200(3) |
 
 ###### Dynamic Peers Settings
 
@@ -72,7 +72,7 @@ interface Management1
 | ------  | ----- |
 | Path Group ID | 42 |
 | IPSec profile | IPSEC-P-1 |
-| keepalive interval(failure threshold) | auto |
+| Keepalive interval | auto |
 | Flow assignment | LAN |
 
 ###### Local Interfaces

@@ -45,7 +45,7 @@ router_path_selection:
       dynamic_peers:
         enabled: true
         ipsec: false
-      keep_alive:
+      keepalive:
         auto: true
     - name: PG-1
       id: 666
@@ -53,7 +53,7 @@ router_path_selection:
         enabled: true
         ip_local: true
         ipsec: true
-      keep_alive:
+      keepalive:
         interval: 200
         failure_threshold: 3
       static_peers:

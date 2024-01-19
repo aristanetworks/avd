@@ -21949,12 +21949,12 @@
                 },
                 "title": "Static Peers"
               },
-              "keep_alive": {
+              "keepalive": {
                 "type": "object",
                 "properties": {
                   "auto": {
                     "type": "boolean",
-                    "description": "Adaptive keepalive and feedback interval.\nSet this to `true` to enable it.\nIf `auto` is enabled the interval values are ignored.",
+                    "description": "Enable adaptive keepalive and feedback interval.",
                     "default": false,
                     "title": "Auto"
                   },
@@ -21977,7 +21977,7 @@
                 "patternProperties": {
                   "^_.+$": {}
                 },
-                "title": "Keep Alive"
+                "title": "Keepalive"
               }
             },
             "additionalProperties": false,

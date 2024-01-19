@@ -115,15 +115,13 @@ keys:
                     description: Static IPv4 addresses.
                     items:
                       type: str
-            keep_alive:
+            keepalive:
               type: dict
               keys:
                 auto:
                   type: bool
                   description: |-
-                    Adaptive keepalive and feedback interval.
-                    Set this to `true` to enable it.
-                    If `auto` is enabled the interval values are ignored.
+                    Enable adaptive keepalive and feedback interval.
                   default: false
                 interval:
                   type: int

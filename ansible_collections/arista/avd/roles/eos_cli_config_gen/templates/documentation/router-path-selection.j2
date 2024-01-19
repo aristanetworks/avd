@@ -28,15 +28,11 @@
 {%             if path_group.ipsec_profile is arista.avd.defined %}
 | IPSec profile | {{ path_group.ipsec_profile }} |
 {%             endif %}
-{%             if path_group.keep_alive is arista.avd.defined %}
-{%                 set interval = "" %}
-{%                 if path_group.keep_alive.auto is arista.avd.defined(true) %}
-{%                     set interval = "auto" %}
-{%                 elif path_group.keep_alive.interval is arista.avd.defined and
-                        path_group.keep_alive.failure_threshold is arista.avd.defined %}
-{%                     set interval = path_group.keep_alive.interval ~ "(" ~ path_group.keep_alive.failure_threshold ~ ")" %}
-{%                 endif %}
-| keepalive interval(failure threshold) | {{ interval }} |
+{%             if path_group.keepalive.auto is arista.avd.defined(true) %}
+| Keepalive interval | auto |
+{%             elif path_group.keepalive.interval is arista.avd.defined and
+                    path_group.keepalive.failure_threshold is arista.avd.defined %}
+| Keepalive interval(failure threshold) | {{ path_group.keepalive.interval }}({{ path_group.keepalive.failure_threshold }}) |
 {%             endif %}
 {%             if path_group.flow_assignment is arista.avd.defined %}
 | Flow assignment | {{ path_group.flow_assignment | upper }} |
