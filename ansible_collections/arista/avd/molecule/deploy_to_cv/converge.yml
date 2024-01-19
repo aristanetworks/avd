@@ -6,14 +6,14 @@
   vars:
     # cv_server: staticstudio-1-cfec4cc2-eos.topo.testdrive.arista.com
     cv_server: www.cv-staging.corp.arista.io
-    token: "{{ lookup('file', '/Users/sugethakch/work/AVD/claus_AVD/ansible-avd/ansible_collections/arista/avd/molecule/deploy_to_cv/token-cvaas.tok')}}"
+    token: "{{ lookup('file', playbook_dir ~ '/token-cvaas.tok')}}"
     # url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceBuildDetails/all
     url: https://{{ cv_server }}/api/v3/services/arista.configlet.v1.ConfigletService/GetOne
     # url: "https://{{ cvp }}/api/resources/studio/v1/StudioConfig?key.studioId=studio-static-configlet&key.workspaceId="
-    configuration_dir: "/Users/sugethakch/work/AVD/claus_AVD/ansible-avd/ansible_collections/arista/avd/molecule/deploy_to_cv/intended/configs"
-    structured_config_dir: "/Users/sugethakch/work/AVD/claus_AVD/ansible-avd/ansible_collections/arista/avd/molecule/deploy_to_cv/intended/structured_configs"
+    configuration_dir: "{{ playbook_dir }}/intended/configs"
+    structured_config_dir: "{{ playbook_dir }}/intended/structured_configs"
 
-    ws_name: avd-static-studios-3
+    ws_name: avd-static-studios-4
     ws_description: sample description
     ws_req_state: submitted
     ws_force: true
@@ -29,8 +29,8 @@
       run_once: true
       delegate_to: localhost
       arista.avd.deploy_to_cv:
-        configuration_dir: "/Users/sugethakch/work/AVD/claus_AVD/ansible-avd/ansible_collections/arista/avd/molecule/deploy_to_cv/intended/configs"
-        structured_config_dir: "/Users/sugethakch/work/AVD/claus_AVD/ansible-avd/ansible_collections/arista/avd/molecule/deploy_to_cv/intended/structured_configs"
+        configuration_dir: "{{ configuration_dir }}"
+        structured_config_dir: "{{ structured_config_dir }}"
         # structured_config_suffix: "yml"
         # device_list: "{{ ansible_play_hosts }}"
         device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
@@ -90,12 +90,10 @@
           Cookie: "access_token={{ token }}"
         method: POST
         body_format: json
-        body:  {
-          "key": {
-          "workspace_id": '{{ ws_name }}',
-          "configlet_id": '{{ item }}'
-          }
-        }
+        body:
+          key:
+            workspace_id: '{{ ws_name }}'
+            configlet_id: '{{ item }}'
       loop:
         - "avd-s1-leaf1"
         - "avd-s1-leaf2"
