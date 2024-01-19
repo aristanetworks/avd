@@ -271,6 +271,13 @@ class MiscMixin:
         default_default_interface_mtu = get(self.hostvars, "default_interface_mtu")
         return get(self.platform_settings, "default_interface_mtu", default=default_default_interface_mtu)
 
+    def get_switch_fact(self: SharedUtils, key, required=True):
+        """
+        Return facts from EosDesignsFacts.
+        We need to go via avd_switch_facts since PyAVD does not expose "switch.*" in get_avdfacts.
+        """
+        return get(self.hostvars, f"avd_switch_facts..{self.hostname}..switch..{key}", required=required, org_key=f"switch.{key}", separator="..")
+
     @cached_property
     def evpn_multicast(self: SharedUtils) -> bool:
-        return get(self.hostvars, "switch.evpn_multicast") is True
+        return self.get_switch_fact("evpn_multicast", required=False) is True

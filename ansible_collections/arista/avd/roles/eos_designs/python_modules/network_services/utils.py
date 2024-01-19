@@ -188,10 +188,6 @@ class UtilsMixin:
         return False
 
     @cached_property
-    def _evpn_multicast(self) -> bool:
-        return get(self._hostvars, "switch.evpn_multicast") is True
-
-    @cached_property
     def _wan_control_plane_profile(self) -> str:
         """
         Control plane profile name

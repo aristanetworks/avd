@@ -28,7 +28,7 @@ class FilteredTenantsMixin:
     @cached_property
     def filtered_tenants(self: SharedUtils) -> list[dict]:
         """
-        Return sorted tenants list from all network_services_keys and filtered based on switch.filter_tenants
+        Return sorted tenants list from all network_services_keys and filtered based on filter_tenants.
         Keys of Tenant data model will be converted to lists.
         All sub data models like vrfs and l2vlans are also converted and filtered.
         """
@@ -115,7 +115,7 @@ class FilteredTenantsMixin:
 
         # Picking this up from facts so this would fail if accessed when shared_utils is run before facts
         # TODO see if this can be optimized
-        endpoint_trunk_groups = set(get(self.hostvars, "switch.endpoint_trunk_groups", default=[]))
+        endpoint_trunk_groups = set(self.get_switch_fact("endpoint_trunk_groups", required=False) or [])
         if self.enable_trunk_groups and vlan.get("trunk_groups") and endpoint_trunk_groups.intersection(vlan["trunk_groups"]):
             return True
 
@@ -124,11 +124,11 @@ class FilteredTenantsMixin:
     @cached_property
     def accepted_vlans(self: SharedUtils) -> list[int]:
         """
-        switch.vlans is a string representing a vlan range (ex. "1-200")
-        For l2 switches return intersection of switch.vlans and switch.vlans from uplink switches
-        For anything else return the expanded switch.vlans
+        The 'vlans' switch fact is a string representing a vlan range (ex. "1-200").
+        For l2 switches return intersection of vlans from this switch and vlans from uplink switches.
+        For anything else return the expanded vlans from this switch.
         """
-        switch_vlans = get(self.hostvars, "switch.vlans")
+        switch_vlans = self.get_switch_fact("vlans", required=False)
         if not switch_vlans:
             return []
         switch_vlans_list = range_expand(switch_vlans)
@@ -180,7 +180,7 @@ class FilteredTenantsMixin:
 
             if self.vtep is True:
                 evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
-                if evpn_l3_multicast_enabled is True and self.evpn_multicast is not True:
+                if evpn_l3_multicast_enabled is True and not self.evpn_multicast:
                     raise AristaAvdError(
                         f"'evpn_l3_multicast: true' under VRF {vrf['name']} or Tenant {tenant['name']}; this requires 'evpn_multicast' to also be set to true."
                     )
@@ -328,7 +328,7 @@ class FilteredTenantsMixin:
 
     @cached_property
     def endpoint_vlans(self: SharedUtils) -> list:
-        endpoint_vlans = get(self.hostvars, "switch.endpoint_vlans", default="")
+        endpoint_vlans = self.get_switch_fact("endpoint_vlans", required=False)
         if not endpoint_vlans:
             return []
         return [int(id) for id in range_expand(endpoint_vlans)]

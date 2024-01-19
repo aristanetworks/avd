@@ -399,7 +399,7 @@ class RouterBgpMixin(UtilsMixin):
             bgp_vlan["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": vlan_rt}]
 
         vlan_evpn_l2_multicast_enabled = default(get(vlan, "evpn_l2_multicast.enabled"), get(tenant, "evpn_l2_multicast.enabled"))
-        if vlan_evpn_l2_multicast_enabled is True and self._evpn_multicast is not True:
+        if vlan_evpn_l2_multicast_enabled is True and not self.shared_utils.evpn_multicast:
             raise AristaAvdError(
                 f"'evpn_l2_multicast: true' under VLAN {vlan['id']}({vlan['name']}) or Tenant {tenant['name']}; this requires 'evpn_multicast' to also be set"
                 " to true."
