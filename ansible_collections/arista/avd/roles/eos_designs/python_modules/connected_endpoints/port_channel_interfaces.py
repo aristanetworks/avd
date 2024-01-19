@@ -175,7 +175,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             port_channel_interface["mlag"] = channel_group_id
 
         # LACP Fallback
-        if port_channel_mode in ["active", "passive"] and             (lacp_fallback_mode := get(adapter, "port_channel.lacp_fallback.mode")) in ["static", "individual"]:
+        if port_channel_mode in ["active", "passive"] and (lacp_fallback_mode := get(adapter, "port_channel.lacp_fallback.mode")) in ["static", "individual"]:
             port_channel_interface.update(
                 {
                     "lacp_fallback_mode": lacp_fallback_mode,
