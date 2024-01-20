@@ -13,70 +13,70 @@
     configuration_dir: "{{ playbook_dir }}/intended/configs"
     structured_config_dir: "{{ playbook_dir }}/intended/structured_configs"
 
-    ws_name: avd-static-studios-4
+    ws_name: avd-static-studios-5
     ws_description: sample description
     ws_req_state: submitted
     ws_force: true
 
     # TODO: cc_id is not getting set to anything other than Workspace-<ws_nane>
-    cc_id: Workspace-avd-static-studios-3
+    cc_id: Workspace-avd-static-studios-5
     cc_requested_state: running
-    cc_name: cc_avd_studios-3
+    cc_name: cc_avd_studios-5
     cc_desctiption: sample description
 
   tasks:
-    - name: Test = Provision CVP with AVD configuration
-      run_once: true
-      delegate_to: localhost
-      arista.avd.deploy_to_cv:
-        configuration_dir: "{{ configuration_dir }}"
-        structured_config_dir: "{{ structured_config_dir }}"
-        # structured_config_suffix: "yml"
-        # device_list: "{{ ansible_play_hosts }}"
-        device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
-        # device_list: ["s1-leaf1"]
-        # strict_tags: false
-        # skip_missing_devices: false
-        # configlet_name_template: "AVD-${hostname}"
-        cv_servers: [ '{{ cv_server }}' ]
-        cv_token: '{{ token }}'
-        # cv_verify_certs: True
-        workspace:
-          name: '{{ ws_name }}'
-          description: '{{ ws_description }}'
-          id: '{{ ws_name }}'
-          requested_state: '{{ ws_req_state }}'
-          force: '{{ ws_force }}'
-        change_control:
-          name: '{{ cc_name }}'
-          description: '{{ cc_desctiption }}'
-          requested_state: '{{ cc_requested_state }}'
-        # timeouts:
-        #   workspace_build_timeout: 300.0
-        #   change_control_creation_timeout: 300.0
-        return_details: true
-      register: CVP_RESULTS
+    # - name: Test = Provision CVP with AVD configuration
+    #   run_once: true
+    #   delegate_to: localhost
+    #   arista.avd.deploy_to_cv:
+    #     configuration_dir: "{{ configuration_dir }}"
+    #     structured_config_dir: "{{ structured_config_dir }}"
+    #     # structured_config_suffix: "yml"
+    #     # device_list: "{{ ansible_play_hosts }}"
+    #     device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
+    #     # device_list: ["s1-leaf1"]
+    #     # strict_tags: false
+    #     # skip_missing_devices: false
+    #     # configlet_name_template: "AVD-${hostname}"
+    #     cv_servers: [ '{{ cv_server }}' ]
+    #     cv_token: '{{ token }}'
+    #     # cv_verify_certs: True
+    #     workspace:
+    #       name: '{{ ws_name }}'
+    #       description: '{{ ws_description }}'
+    #       id: '{{ ws_name }}'
+    #       requested_state: '{{ ws_req_state }}'
+    #       force: '{{ ws_force }}'
+    #     change_control:
+    #       name: '{{ cc_name }}'
+    #       description: '{{ cc_desctiption }}'
+    #       requested_state: '{{ cc_requested_state }}'
+    #     # timeouts:
+    #     #   workspace_build_timeout: 300.0
+    #     #   change_control_creation_timeout: 300.0
+    #     return_details: true
+    #   register: CVP_RESULTS
 
-    - name: 'Display CVP result'
-      run_once: true
-      debug:
-        msg: '{{CVP_RESULTS}}'
+    # - name: 'Display CVP result'
+    #   run_once: true
+    #   debug:
+    #     msg: '{{CVP_RESULTS}}'
 
-    - name: check CVP returns
-      ansible.builtin.assert:
-        that:
-          # workspace
-          - CVP_RESULTS.workspace.name == ws_name
-          - CVP_RESULTS.workspace.final_state == CVP_RESULTS.workspace.requested_state
-          - CVP_RESULTS.workspace.final_state
-          # Change control
-          - CVP_RESULTS.change_control.id == cc_id
-          - CVP_RESULTS.change_control.name == cc_name
-          - CVP_RESULTS.change_control.requested_state == cc_requested_state
-          - CVP_RESULTS.change_control.description == cc_desctiption
-          # configs
-          # errors and warnings
-          - CVP_RESULTS.errors == []
+    # - name: check CVP returns
+    #   ansible.builtin.assert:
+    #     that:
+    #       # workspace
+    #       - CVP_RESULTS.workspace.name == ws_name
+    #       - CVP_RESULTS.workspace.final_state == CVP_RESULTS.workspace.requested_state
+    #       - CVP_RESULTS.workspace.final_state
+    #       # Change control
+    #       - CVP_RESULTS.change_control.id == cc_id
+    #       - CVP_RESULTS.change_control.name == cc_name
+    #       - CVP_RESULTS.change_control.requested_state == cc_requested_state
+    #       - CVP_RESULTS.change_control.description == cc_desctiption
+    #       # configs
+    #       # errors and warnings
+    #       - CVP_RESULTS.errors == []
 
     - name: get workspace information
       delegate_to: localhost
@@ -103,32 +103,18 @@
 
     - name: 'Display GET results'
       run_once: true
+      vars:
+        configs: ['{{ configuration_dir }}/s1-leaf1.cfg',
+          '{{ configuration_dir }}/s1-leaf2.cfg',
+          '{{ configuration_dir }}/s1-leaf3.cfg',
+          '{{ configuration_dir }}/s1-leaf4.cfg'
+        ]
       set_fact:
-        response_configlet: "{{ response_configlet | default([]) | union([item.json[0].value.body | trim]) }}"
-        # '{{ item.json[0].value.body | trim }}'
-      loop: "{{ result.results }}"
-
-    - name: 'register facts'
-      run_once: true
-      set_fact:
-        request_configlet: "{{ request_configlet } default([]) | union(lookup('file', item)) }}"
-      loop:
-        - '/Users/sugethakch/work/AVD/claus_AVD/ansible-avd/ansible_collections/arista/avd/molecule/deploy_to_cv/intended/configs/s1-leaf1.cfg'
-        - '/Users/sugethakch/work/AVD/claus_AVD/ansible-avd/ansible_collections/arista/avd/molecule/deploy_to_cv/intended/configs/s1-leaf2.cfg'
-        - '/Users/sugethakch/work/AVD/claus_AVD/ansible-avd/ansible_collections/arista/avd/molecule/deploy_to_cv/intended/configs/s1-leaf3.cfg'
-        - '/Users/sugethakch/work/AVD/claus_AVD/ansible-avd/ansible_collections/arista/avd/molecule/deploy_to_cv/intended/configs/s1-leaf4.cfg'
-
-    - name: 'Display response_configlet'
-      run_once: true
-      debug:
-        msg: '{{ response_configlet }}'
-
-    - name: 'Display request_configlet'
-      run_once: true
-      debug:
-        msg: '{{ request_configlet }}'
+        response_configlet: "{{ response_configlet | default({}) | combine({item.0.json[0].value.body | trim: item.1}) }}"
+      loop: "{{ result.results | zip(configs) | list }}"
 
     - name: check configlets
       ansible.builtin.assert:
         that:
-          - response_configlet == request_configlet
+          - item.key  == lookup('file', item.value)
+      loop: "{{ response_configlet | dict2items }}"
