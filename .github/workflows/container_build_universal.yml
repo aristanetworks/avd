@@ -9,11 +9,12 @@ on:
       - containers/universal/**
       - .github/workflows/container_build_template.yml
       - .github/workflows/container_build_universal.yml
+      - ansible_collections/arista/avd/**
   workflow_dispatch:
     branches:
       - devel
   release:
-    types: [published, prereleased]
+    types: [published]
 
 jobs:
   build_universal_container:
