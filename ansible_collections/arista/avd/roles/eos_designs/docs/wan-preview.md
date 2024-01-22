@@ -30,6 +30,7 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 4. The default VRF is being configured by default on all WAN devices with a `vni_id` of 1. To override this, it is necessary to configure the `default` VRF in a tenant in `network_services`.
 5. When configuring HA on a site, the path-group ID `65535` is reserved for the path-group called `LAN_HA`.
 6. The policies definition works as follow:
+
   - The policies are defined under `wan_virtual_topologies.policies`. For AutoVPN mode, the policies are configured under `router path-selection`, for CV Pathfinder, they are configured under `router adaptive-virtual-topology`.
   - A policy is composed of a list of `application_virtual_topologies` and one `default_virtual_topology`.
   - The `application_virtual_topologies` entries and the `default_virtual_topology` key are used to create the policy match statement, the AVT profile (when `wan_mode` is CV Pathfinder) and the load balancing policy.
