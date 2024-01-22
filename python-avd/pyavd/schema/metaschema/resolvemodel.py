@@ -8,7 +8,9 @@ from functools import lru_cache
 
 from deepmerge import conservative_merger
 
-from ..constants import STORE
+from ..store import create_store
+
+STORE = create_store()
 
 
 def merge_schema_from_ref(schema: dict) -> dict:

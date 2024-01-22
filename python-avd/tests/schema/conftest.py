@@ -11,8 +11,6 @@ from yaml import safe_load
 # Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
 path.insert(0, str(Path(__file__).parents[2].joinpath("pyavd")))
 
-import schema.constants
-
 ARTIFACTS_PATH = Path(__file__).parent.joinpath("artifacts")
 EOS_DESIGNS_SCHEMA_PATH = ARTIFACTS_PATH.joinpath("eos_designs.schema.yml")
 EOS_CLI_CONFIG_GEN_SCHEMA_PATH = ARTIFACTS_PATH.joinpath("eos_cli_config_gen.schema.yml")
@@ -29,7 +27,7 @@ STORE = {
 }
 
 # Overriding schema store directly in the loaded module (cached so imports inside the code will also get this)
-schema.constants.STORE = STORE
+# removed... not sure how to handle that now...
 
 
 @pytest.fixture(scope="module")

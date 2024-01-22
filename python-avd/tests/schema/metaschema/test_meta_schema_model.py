@@ -11,8 +11,8 @@ import yaml
 # Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
 path.insert(0, str(Path(__file__).parents[3].joinpath("pyavd")))
 
-from schema.constants import STORE
 from schema.metaschema.meta_schema_model import AristaAvdSchema
+from schema.store import create_store
 
 
 class NoAliasDumper(yaml.Dumper):
@@ -22,7 +22,7 @@ class NoAliasDumper(yaml.Dumper):
         return True
 
 
-raw_schema = STORE["eos_designs"]
+raw_schema = create_store()["eos_designs"]
 
 
 def test_pydantic_dump_matches_original_yaml():
