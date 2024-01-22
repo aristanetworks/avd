@@ -10,7 +10,7 @@ DEFAULT_SCHEMAS = {
     "eos_designs": collection_dir.joinpath("roles", "eos_designs", "schemas", "eos_designs.schema.yml"),
 }
 DEFAULT_PICKLED_SCHEMAS = {
-    "avd_meta_schema": collection_dir.joinpath("plugins", "plugin_utils", "schema", "avd_meta_schema.schema.pickle"),
+    "avd_meta_schema": collection_dir.joinpath("plugins", "plugin_utils", "schema", "avd_meta_schema.pickle"),
     "eos_cli_config_gen": collection_dir.joinpath("roles", "eos_cli_config_gen", "schemas", "eos_cli_config_gen.schema.pickle"),
     "eos_designs": collection_dir.joinpath("roles", "eos_designs", "schemas", "eos_designs.schema.pickle"),
 }

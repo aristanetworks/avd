@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from pathlib import Path
 from sys import path
+from unittest.mock import patch
 
 import pytest
 
@@ -26,8 +27,13 @@ def test_get_md_tabs(table_name: str, schema_store, artifacts_path, output_path)
     output_file = output_path.joinpath(f"{table_name}.md")
     expected_file = artifacts_path.joinpath(f"expected-{table_name}.md")
 
-    schema = AristaAvdSchema(resolve_schema=True, **raw_schema)
-    md_tabs = get_md_tabs(schema, table_name)
+    def mocked_create_store():
+        return schema_store
+
+    with patch("schema.metaschema.resolvemodel.create_store", new=mocked_create_store):
+        schema = AristaAvdSchema(resolve_schema=True, **raw_schema)
+        md_tabs = get_md_tabs(schema, table_name)
+
     with open(output_file, mode="w", encoding="UTF-8") as file:
         file.write(md_tabs)
     with open(expected_file, mode="r", encoding="UTF-8") as file:

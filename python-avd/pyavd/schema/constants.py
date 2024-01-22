@@ -18,7 +18,7 @@ EOS_CLI_CONFIG_GEN_JSONSCHEMA_PATH = EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("eos
 
 METASCHEMA_DIR = REPO_ROOT.joinpath("ansible_collections/arista/avd/plugins/plugin_utils/schema")
 METASCHEMA_PATH = METASCHEMA_DIR.joinpath("avd_meta_schema.json")
-METASCHEMA_PICKLED_SCHEMA_PATH = METASCHEMA_DIR.joinpath("avd_meta_schema.schema.pickle")
+METASCHEMA_PICKLED_SCHEMA_PATH = METASCHEMA_DIR.joinpath("avd_meta_schema.pickle")
 
 SCHEMA_PATHS = {
     "avd_meta_schema": METASCHEMA_PATH,
