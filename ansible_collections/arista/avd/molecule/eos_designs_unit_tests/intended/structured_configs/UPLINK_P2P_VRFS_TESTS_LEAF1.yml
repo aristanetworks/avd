@@ -16,22 +16,12 @@ router_bgp:
     type: ipv4
     maximum_routes: 12000
     send_community: all
-  - name: EVPN-OVERLAY-PEERS
-    type: evpn
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-    ebgp_multihop: 3
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   redistribute_routes:
   - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 10.42.42.8
     peer_group: IPv4-UNDERLAY-PEERS
@@ -43,16 +33,6 @@ router_bgp:
     remote_as: '65000'
     peer: UPLINK_P2P_VRFS_TESTS_SPINE2
     description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2
-  - ip_address: 192.168.42.1
-    peer_group: EVPN-OVERLAY-PEERS
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
-    description: UPLINK_P2P_VRFS_TESTS_SPINE1
-    remote_as: '65000'
-  - ip_address: 192.168.42.2
-    peer_group: EVPN-OVERLAY-PEERS
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-    description: UPLINK_P2P_VRFS_TESTS_SPINE2
-    remote_as: '65000'
   vrfs:
   - name: PROD
     router_id: 192.168.42.3
@@ -65,16 +45,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
       description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42
-    rd: 192.168.42.3:42
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '42:42'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '42:42'
     redistribute_routes:
     - source_protocol: connected
   - name: ONLY-ON-L2LEAF
@@ -84,16 +54,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
       description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66
-    rd: 192.168.42.3:66
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 66:66
-      export:
-      - address_family: evpn
-        route_targets:
-        - 66:66
     redistribute_routes:
     - source_protocol: connected
   - name: IT
@@ -103,42 +63,8 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
       description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100
-    rd: 192.168.42.3:100
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-      export:
-      - address_family: evpn
-        route_targets:
-        - 100:100
     redistribute_routes:
     - source_protocol: connected
-  - name: default
-    rd: 192.168.42.3:1
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  vlans:
-  - id: 66
-    tenant: TenantC
-    rd: 192.168.42.3:10066
-    route_targets:
-      both:
-      - 10066:10066
-    redistribute_routes:
-    - learned
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -258,32 +184,9 @@ port_channel_interfaces:
   vlans: '66'
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: Router_ID
   shutdown: false
   ip_address: 192.168.42.3/32
-- name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
-  shutdown: false
-  ip_address: 172.16.0.3/32
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 192.168.42.0/24 eq 32
-  - sequence: 20
-    action: permit 172.16.0.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
 vlans:
 - id: 66
   name: TEST-L2VLAN-ATTRACTION
@@ -298,23 +201,5 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 172.16.0.1/24
   vrf: ONLY-ON-L2LEAF
-vxlan_interface:
-  Vxlan1:
-    description: UPLINK_P2P_VRFS_TESTS_LEAF1_VTEP
-    vxlan:
-      udp_port: 4789
-      source_interface: Loopback1
-      vlans:
-      - id: 66
-        vni: 10066
-      vrfs:
-      - name: default
-        vni: 1
-      - name: IT
-        vni: 100
-      - name: PROD
-        vni: 42
-      - name: ONLY-ON-L2LEAF
-        vni: 66
 metadata:
   platform: vEOS-LAB

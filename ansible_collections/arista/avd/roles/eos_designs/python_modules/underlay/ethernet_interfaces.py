@@ -47,8 +47,8 @@ class EthernetInterfacesMixin(UtilsMixin):
             }
 
             # L3 interface
-            # Used for p2p uplinks as well as main interface for p2p_vrfs.
-            if link["type"] in ["underlay_p2p", "p2p_vrfs"]:
+            # Used for p2p uplinks as well as main interface for p2p-vrfs.
+            if link["type"] == "underlay_p2p":
                 ethernet_interface.update(
                     {
                         "mtu": self.shared_utils.p2p_uplinks_mtu,

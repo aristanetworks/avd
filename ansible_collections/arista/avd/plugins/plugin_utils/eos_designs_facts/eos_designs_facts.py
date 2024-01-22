@@ -14,11 +14,10 @@ from .overlay import OverlayMixin
 from .short_esi import ShortEsiMixin
 from .uplinks import UplinksMixin
 from .vlans import VlansMixin
-from .vrfs import VrfsMixin
 from .wan import WanMixin
 
 
-class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin, UplinksMixin, VlansMixin, VrfsMixin):
+class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin, UplinksMixin, VlansMixin):
     """
     `EosDesignsFacts` is based on `AvdFacts`, so make sure to read the description there first.
 
@@ -96,7 +95,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
         if "evpn" not in self.shared_utils.overlay_address_families:
             return None
         if get(self._hostvars, "evpn_multicast") is True and self.shared_utils.vtep is True:
-            if not (self.shared_utils.underlay_multicast is True and self.shared_utils.igmp_snooping_enabled is not False):
+            if self.shared_utils.underlay_multicast is not True or self.shared_utils.igmp_snooping_enabled is False:
                 raise AristaAvdError(
                     "'evpn_multicast: True' is only supported in combination with 'underlay_multicast: True' and 'igmp_snooping_enabled : True'"
                 )

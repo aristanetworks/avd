@@ -281,3 +281,13 @@ class MiscMixin:
     @cached_property
     def evpn_multicast(self: SharedUtils) -> bool:
         return self.get_switch_fact("evpn_multicast", required=False) is True
+
+    @cached_property
+    def new_network_services_bgp_vrf_config(self: SharedUtils) -> bool:
+        """
+        Return whether or not to use the new behavior when generating
+        BGP VRF configuration
+
+        TODO: Change default to True in AVD 5.0.0 and remove in AVD 6.0.0
+        """
+        return get(self.hostvars, "new_network_services_bgp_vrf_config", default=False)

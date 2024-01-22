@@ -335,7 +335,8 @@ class UplinksMixin:
             for vrf in tenant["vrfs"]:
                 # Only keep VRFs present on the uplink switch as well.
                 # Also skip VRF default since it is covered on the parent interface.
-                uplink_switch_vrfs = get(uplink_switch_facts, "vrfs", [])
+                # ok to use like this because this is only ever called inside EosDesignsFacts
+                uplink_switch_vrfs = uplink_switch_facts.shared_utils.vrfs
                 if vrf["name"] == "default" or vrf["name"] not in uplink_switch_vrfs:
                     continue
 

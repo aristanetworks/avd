@@ -126,7 +126,7 @@ class RouterBgpMixin(UtilsMixin):
 
         TODO: Optimize this to allow bgp VRF config without overlays (vtep or mpls)
         """
-        if not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler or self.shared_utils.uplink_type == "p2p-vrfs"):
+        if not self.shared_utils.overlay_vtep and not self.shared_utils.overlay_ler and not self.shared_utils.new_network_services_bgp_vrf_config:
             return None
 
         if not self.shared_utils.network_services_l3:
@@ -148,19 +148,17 @@ class RouterBgpMixin(UtilsMixin):
                 if vrf_address_families := [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]:
                     # For EVPN configs get evpn keys and continue after the elif block below.
                     self._update_router_bgp_vrf_evpn_or_mpls_cfg(bgp_vrf, vrf, vrf_address_families)
-                elif self.shared_utils.uplink_type != "p2p-vrfs":
-                    # To be non-breaking we only support wide BGP configs for uplink_type: p2p-vrfs for now.
-                    # TODO: Add some other knob for user to get the new behavior
-                    # TODO: AVD 5.0 make p2p_vrfs behavior the new default.
+                elif self.shared_utils.new_network_services_bgp_vrf_config is False:
+                    # To be non-breaking we only support wide BGP configs when the knob
+                    # `new_network_services_bgp_vrf_config` is set to True. The default is False.
+                    # TODO: AVD 5.0 make True the default behavior.
                     continue
 
                 if vrf_name != "default":
-                    bgp_vrf.update(
-                        {
-                            "router_id": self.shared_utils.router_id,
-                            "redistribute_routes": [{"source_protocol": "connected"}],
-                        }
-                    )
+                    bgp_vrf |= {
+                        "router_id": self.shared_utils.router_id,
+                        "redistribute_routes": [{"source_protocol": "connected"}],
+                    }
                     bgp_vrf_redistribute_static = vrf.get("redistribute_static")
                     if bgp_vrf_redistribute_static is True or (vrf["static_routes"] and bgp_vrf_redistribute_static is not False):
                         bgp_vrf.setdefault("redistribute_routes", []).append({"source_protocol": "static"})
@@ -225,10 +223,7 @@ class RouterBgpMixin(UtilsMixin):
                     context_keys=["name"],
                 )
 
-        if vrfs:
-            return vrfs
-
-        return None
+        return vrfs or None
 
     def _update_router_bgp_vrf_evpn_or_mpls_cfg(self, bgp_vrf: dict, vrf: dict, vrf_address_families: list) -> None:
         """
@@ -297,13 +292,12 @@ class RouterBgpMixin(UtilsMixin):
                 }
             )
         else:
-            if (mlag_ibgp_peering_ipv4_pool := vrf.get("mlag_ibgp_peering_ipv4_pool")) is not None:
-                if self.shared_utils.mlag_role == "primary":
-                    ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)
-                else:
-                    ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)
-            else:
+            if (mlag_ibgp_peering_ipv4_pool := vrf.get("mlag_ibgp_peering_ipv4_pool")) is None:
                 ip_address = self.shared_utils.mlag_peer_ibgp_ip
+            elif self.shared_utils.mlag_role == "primary":
+                ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)
+            else:
+                ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)
 
             bgp_vrf.setdefault("neighbors", []).append(
                 {
@@ -368,10 +362,7 @@ class RouterBgpMixin(UtilsMixin):
                         ignore_keys={"tenant"},
                     )
 
-        if vlans:
-            return vlans
-
-        return None
+        return vlans or None
 
     def _router_bgp_vlans_vlan(self, vlan, tenant, vrf) -> dict | None:
         """
@@ -429,7 +420,7 @@ class RouterBgpMixin(UtilsMixin):
         Return structured config for router_bgp.vlan_aware_bundles
         """
 
-        if not (self.shared_utils.network_services_l2 and self.shared_utils.overlay_evpn):
+        if not self.shared_utils.network_services_l2 or not self.shared_utils.overlay_evpn:
             return None
 
         if not self._evpn_vlan_aware_bundles:
@@ -510,10 +501,7 @@ class RouterBgpMixin(UtilsMixin):
                     context_keys=["name"],
                 )
 
-        if bundles:
-            return bundles
-
-        return None
+        return bundles or None
 
     def _router_bgp_vlan_aware_bundles_vrf(self, vrf, tenant) -> dict | None:
         """
@@ -550,8 +538,7 @@ class RouterBgpMixin(UtilsMixin):
             bundle["rd_evpn_domain"] = {"domain": "remote", "rd": rd}
             bundle["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": rt}]
 
-        evpn_l2_multicast_enabled_vlans = [vlan for vlan in vlans if get(vlan, "evpn_l2_multicast.enabled", get(tenant, "evpn_l2_multicast.enabled")) is True]
-        if evpn_l2_multicast_enabled_vlans:
+        if any(get(vlan, "evpn_l2_multicast.enabled", get(tenant, "evpn_l2_multicast.enabled")) is True for vlan in vlans):
             bundle["redistribute_routes"].append("igmp")
 
         return bundle

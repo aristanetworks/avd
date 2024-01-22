@@ -340,3 +340,16 @@ class FilteredTenantsMixin:
                 raise AristaAvdMissingVariableError(f"'vrf_id' or 'vrf_vni' for VRF '{vrf['name']} must be set.")
             return None
         return int(vrf_id)
+
+    @cached_property
+    def vrfs(self: SharedUtils) -> list:
+        """
+        Return the list of vrfs to be defined on this switch
+
+        Ex. ["default", "prod"]
+        """
+        vrfs = set()
+        for tenant in self.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                vrfs.add(vrf["name"])
+        return natural_sort(vrfs)

@@ -16,34 +16,18 @@ router_bgp:
     type: ipv4
     maximum_routes: 12000
     send_community: all
-  - name: EVPN-OVERLAY-PEERS
-    type: evpn
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-    ebgp_multihop: 3
-    next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   redistribute_routes:
   - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 10.42.42.9
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     peer: UPLINK_P2P_VRFS_TESTS_LEAF1
     description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1
-  - ip_address: 192.168.42.3
-    peer_group: EVPN-OVERLAY-PEERS
-    peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-    description: UPLINK_P2P_VRFS_TESTS_LEAF1
-    remote_as: '65000'
   vrfs:
   - name: PROD
     router_id: 192.168.42.1
@@ -59,10 +43,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
       description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1.66
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -115,25 +95,8 @@ ethernet_interfaces:
   ip_address: 10.42.42.8/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: Router_ID
   shutdown: false
   ip_address: 192.168.42.1/32
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 192.168.42.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
 metadata:
   platform: vEOS-LAB

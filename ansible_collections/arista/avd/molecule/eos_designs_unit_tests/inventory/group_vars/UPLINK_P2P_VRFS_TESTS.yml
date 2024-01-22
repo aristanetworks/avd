@@ -1,5 +1,7 @@
 ---
 # TODO: Add tests for rfc5549, overlay_routing_protocol: none with bgp peers etc under network services (since this uplink type expands bgp support there)
+overlay_routing_protocol: none
+new_network_services_bgp_vrf_config: true
 
 default_node_types:
   - node_type: spine

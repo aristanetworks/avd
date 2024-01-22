@@ -1517,6 +1517,20 @@ keys:
           type: str
     default:
     - name: tenants
+  new_network_services_bgp_vrf_config:
+    type: bool
+    default: false
+    description: 'PREVIEW: This key is currently not supported
+
+
+      Set this key to `true` in the node type to generate full BGP configuration
+
+      for network services even when `evpn` is not in the address families
+
+      (`evpn` is the default address family).
+
+
+      This may introduce breaking changes to your configruration.'
   node_type_keys:
     type: list
     description: 'Define Node Type Keys, to specify the properties of each node type
@@ -1716,7 +1730,11 @@ keys:
 
             in `network_services` present on both the uplink and the downlink switch.
 
-            The subinterface ID is the `vrf_id`.'
+            The subinterface ID is the `vrf_id`.
+
+            The default VRF is configured on the physical interface.
+
+            All interfaces use the same IP address on each end.'
         vtep:
           type: bool
           default: false

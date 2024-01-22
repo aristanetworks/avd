@@ -336,12 +336,10 @@ class UtilsMixin:
         Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of mode
         """
         wan_vrfs = []
-        # TODO replace this with VRFs fact once it has been implemented
-        network_services_vrfs = {vrf["name"] for tenant in self.shared_utils.filtered_tenants for vrf in tenant["vrfs"]}
 
         for avt_vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
             vrf_name = avt_vrf["name"]
-            if vrf_name in network_services_vrfs or self.shared_utils.wan_role == "server":
+            if vrf_name in self.shared_utils.vrfs or self.shared_utils.wan_role == "server":
                 # TODO check that the policy exists or raise
                 wan_vrf = {
                     "name": vrf_name,

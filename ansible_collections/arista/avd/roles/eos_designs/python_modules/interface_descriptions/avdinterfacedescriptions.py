@@ -58,7 +58,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
             )
 
         link_peer = str(link_peer).upper()
-        if link_type in ["underlay_p2p", "p2p_vrfs"]:
+        if link_type == "underlay_p2p":
             return f"P2P_LINK_TO_{link_peer}_{link_peer_interface}"
 
         if link_type == "underlay_l2":
