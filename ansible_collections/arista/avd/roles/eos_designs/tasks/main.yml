@@ -51,7 +51,7 @@
   arista.avd.eos_designs_structured_config:
     eos_designs_custom_templates: "{{ eos_designs_custom_templates | arista.avd.default([]) }}"
     dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
-    # cprofile_file: "structured-{{inventory_hostname}}.prof"
+    #cprofile_file: "structured-{{inventory_hostname}}.prof"
     template_output: true
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
