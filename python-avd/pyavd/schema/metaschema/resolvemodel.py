@@ -10,8 +10,6 @@ from deepmerge import conservative_merger
 
 from ..store import create_store
 
-STORE = create_store()
-
 
 def merge_schema_from_ref(schema: dict) -> dict:
     """
@@ -45,14 +43,16 @@ def get_schema_from_ref(ref: str) -> dict:
 
     The ref is in the style "schema_name#/path/to/schema/element"
     """
+    schema_store = create_store()
+
     if "#" not in ref:
         raise ValueError("Missing # in ref")
 
     schema_name, ref = ref.split("#", maxsplit=1)
-    if schema_name not in STORE:
+    if schema_name not in schema_store:
         raise KeyError(f"Invalid schema name '{schema_name}'")
 
-    schema = STORE[schema_name]
+    schema = schema_store[schema_name]
     path = ref.split("/")
     ref_schema = walk_schema(schema, path)
     if ref_schema is None:

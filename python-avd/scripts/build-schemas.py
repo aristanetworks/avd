@@ -56,23 +56,30 @@ def compile_schemas() -> dict:
     create a temporary "store",
     resolve all $refs and save the resulting schemas as pickles
     """
-    schema_store = {}
-    for schema_name, schema_file in SCHEMA_PATHS.items():
-        print(f"Loading schema {schema_name}: {schema_file}")
-        with open(schema_file, "r", encoding="UTF-8") as file:
-            schema_store[schema_name] = yaml_load(file, Loader=CSafeLoader)
+    resolved_schema_store = {}
 
-    for schema_name in schema_store:
+    # We rely on eos_cli_config_gen being before eos_designs,
+    # so anything in eos_cli_config_gen can be resolved and $def popped before resolving from eos_designs.
+    for schema_name, pickle_file in PICKLED_SCHEMAS.items():
         print("Resolving schema", schema_name)
         avdschema = AvdSchema(schema_id=schema_name, load_store_from_yaml=True)
-        resolved_schema = avdschema.resolved_schema
-        pickle_file = PICKLED_SCHEMAS[schema_name]
+
+        # Copying so we can pop below.
+        resolved_schema = avdschema.resolved_schema.copy()
+
+        # Since the schema is now fully resolved we can drop the $defs.
+        resolved_schema.pop("$defs", None)
+
+        # Inplace update the schema store with the resolved variant without $def.
+        avdschema.store[schema_name] = resolved_schema
 
         print("Saving pickled schema", schema_name)
         with open(pickle_file, "wb") as pickle_stream:
             pickle_dump(resolved_schema, pickle_stream, HIGHEST_PROTOCOL)
 
-    return schema_store
+        resolved_schema_store[schema_name] = resolved_schema
+
+    return resolved_schema_store
 
 
 def convert_to_jsonschema(schema_store):
@@ -85,13 +92,12 @@ def convert_to_jsonschema(schema_store):
             json_dump(AvdToJsonSchemaConverter().convert_schema(schema_store[schema_name]), file_stream, sort_keys=False, indent=2)
 
 
-def build_schema_tables():
+def build_schema_tables(schema_store):
     for schema_name, schema_path in SCHEMA_PATHS.items():
         if schema_name not in SCHEMA_FRAGMENTS_PATHS:
             continue
 
-        # Notice we load the schema from the yaml files here to avoid having resolved $ref.
-        schema = AristaAvdSchema(**yaml_load(schema_path.read_text(), Loader=CSafeLoader))
+        schema = AristaAvdSchema(**schema_store[schema_name])
         table_names = sorted(schema._descendant_tables)
         output_dir = schema_path.parents[1].joinpath("docs/tables")
         for table_name in table_names:
@@ -111,7 +117,7 @@ def main():
     combine_schemas()
     schema_store = compile_schemas()
     convert_to_jsonschema(schema_store)
-    build_schema_tables()
+    build_schema_tables(schema_store)
 
 
 if __name__ == "__main__":
