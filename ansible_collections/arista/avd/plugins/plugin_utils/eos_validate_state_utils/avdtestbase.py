@@ -253,7 +253,7 @@ class AvdTestBase:
                 - "loopback0_mapping": a list of tuples where each tuple contains a hostname and its Loopback0 IP address.
                 - "vtep_mapping": a list of tuples where each tuple contains a hostname and its VTEP IP address if `Vxlan1` is the source_interface.
 
-        # FIXME @cbaillar: Need to refactor this: https://github.com/aristanetworks/ansible-avd/issues/3304
+        # FIXME @cbaillar: Need to refactor this: https://github.com/aristanetworks/avd/issues/3304
         """
         results = {"loopback0_mapping": [], "vtep_mapping": []}
 

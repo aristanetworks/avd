@@ -25,9 +25,11 @@ fi
 if ! [ -z "${ANSIBLE_CORE_VERSION}" ]; then
   pip3 install "${ANSIBLE_CORE_VERSION}"
   if ! [ -z "${AVD_INSTALL_PATH}" ]; then
-    ansible-galaxy collection install ${AVD_INSTALL_PATH}
+    ansible-galaxy collection install --force ${AVD_INSTALL_PATH}
+  else
+    # if collection was mounted and not installed - add requirements
+    ansible-galaxy collection install -r ${AVD_COLLECTION_PATH}/collections.yml
   fi
-  ansible-galaxy collection install -r ${AVD_COLLECTION_PATH}/collections.yml
   pip3 install -r ${AVD_COLLECTION_PATH}/requirements.txt -r ${AVD_COLLECTION_PATH}/requirements-dev.txt
 fi
 

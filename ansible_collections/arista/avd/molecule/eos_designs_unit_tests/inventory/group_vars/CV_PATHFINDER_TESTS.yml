@@ -18,6 +18,8 @@ cv_pathfinder_regions:
     sites:
       - name: Site511
         id: 511
+      - name: Site512
+        id: 512
 
 bgp_peer_groups:
   wan_overlay_peers:
@@ -45,7 +47,7 @@ default_node_types:
       - "cv-pathfinder-transit"
   - node_type: wan_edge
     match_hostnames:
-      - "cv-pathfinder-edge"
+      - "cv-pathfinder-edge.*"
 
 wan_edge:
   defaults:
@@ -72,6 +74,16 @@ wan_edge:
           wan_circuit_id: AF830
           ip: 172.20.20.20/31
           connected_to_pathfinder: False
+    - name: cv-pathfinder-edge-no-common-path-group
+      cv_pathfinder_region: AVD_Land_East
+      cv_pathfinder_site: Site512
+      id: 6
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Inmrasat
+          wan_circuit_id: S512
+          set_default_route: true
+          ip: dhcp
 
 wan_transit:
   defaults:
@@ -145,6 +157,8 @@ wan_path_groups:
     id: 102
   - name: Equinix
     id: 103
+  - name: Satellite
+    id: 104
 
 wan_carriers:
   - name: Comcast
@@ -165,6 +179,8 @@ wan_carriers:
     path_group: MPLS
   - name: Comcast-5G
     path_group: LTE
+  - name: Inmrasat
+    path_group: Satellite
 
 tenants:
   - name: TenantA

@@ -25,7 +25,7 @@
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 {%     for management_interface in management_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = management_interface.description | arista.avd.default('-') %}

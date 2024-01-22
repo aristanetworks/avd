@@ -4763,6 +4763,8 @@ keys:
             '
         ssh_key:
           type: str
+        secondary_ssh_key:
+          type: str
         shell:
           type: str
           description: 'Specify shell for the user
