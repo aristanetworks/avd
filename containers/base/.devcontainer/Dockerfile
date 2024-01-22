@@ -13,6 +13,11 @@ RUN apt-get update \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
     && apt-get clean
 
+# set ANSIBLE_CONFIG to ansible.cfg in local directory
+# this is required to address Ansible ignoring config in a world writable directory
+# on Codespaces, Gitlab Runner, etc.
+ENV ANSIBLE_CONFIG="ansible.cfg"
+
 # Add entrypoint script.
 COPY ./entrypoint.sh /bin/entrypoint.sh
 RUN chmod +x /bin/entrypoint.sh
