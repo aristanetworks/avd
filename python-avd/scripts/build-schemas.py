@@ -61,17 +61,20 @@ def compile_schemas() -> dict:
     # We rely on eos_cli_config_gen being before eos_designs,
     # so anything in eos_cli_config_gen can be resolved and $def popped before resolving from eos_designs.
     for schema_name, pickle_file in PICKLED_SCHEMAS.items():
-        print("Resolving schema", schema_name)
-        avdschema = AvdSchema(schema_id=schema_name, load_store_from_yaml=True)
+        if schema_name == "avd_meta_schema":
+            resolved_schema = AvdSchema(load_store_from_yaml=True).store["avd_meta_schema"]
+        else:
+            print("Resolving schema", schema_name)
+            avdschema = AvdSchema(schema_id=schema_name, load_store_from_yaml=True)
 
-        # Copying so we can pop below.
-        resolved_schema = avdschema.resolved_schema.copy()
+            # Copying so we can pop below.
+            resolved_schema = avdschema.resolved_schema.copy()
 
-        # Since the schema is now fully resolved we can drop the $defs.
-        resolved_schema.pop("$defs", None)
+            # Since the schema is now fully resolved we can drop the $defs.
+            resolved_schema.pop("$defs", None)
 
-        # Inplace update the schema store with the resolved variant without $def.
-        avdschema.store[schema_name] = resolved_schema
+            # Inplace update the schema store with the resolved variant without $def.
+            avdschema.store[schema_name] = resolved_schema
 
         print("Saving pickled schema", schema_name)
         with open(pickle_file, "wb") as pickle_stream:
