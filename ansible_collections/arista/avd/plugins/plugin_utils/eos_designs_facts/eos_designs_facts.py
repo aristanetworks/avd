@@ -95,7 +95,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
         if "evpn" not in self.shared_utils.overlay_address_families:
             return None
         if get(self._hostvars, "evpn_multicast") is True and self.shared_utils.vtep is True:
-            if self.shared_utils.underlay_multicast is not True or self.shared_utils.igmp_snooping_enabled is False:
+            if not (self.shared_utils.underlay_multicast is True and self.shared_utils.igmp_snooping_enabled is not False):
                 raise AristaAvdError(
                     "'evpn_multicast: True' is only supported in combination with 'underlay_multicast: True' and 'igmp_snooping_enabled : True'"
                 )
