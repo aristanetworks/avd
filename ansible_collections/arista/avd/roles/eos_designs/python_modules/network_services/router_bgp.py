@@ -139,11 +139,21 @@ class RouterBgpMixin(UtilsMixin):
                 vrf_name = vrf["name"]
                 bgp_vrf = {
                     "name": vrf_name,
-                    # Adding router_id here to avoid reordering structured config for all hosts. TODO: Remove router_id.
-                    "router_id": None,
+                    "router_id": self.shared_utils.router_id,
+                    "rd": vrf_rd,
+                    "route_targets": route_targets,
+                    "redistribute_routes": [],
                     "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                     "struct_cfg": get(vrf, "bgp.structured_config"),
                 }
+
+                if self.shared_utils.wan_role is None:
+                    bgp_vrf["redistribute_routes"].append({"source_protocol": "connected"})
+
+                # MLAG IBGP Peering VLANs per VRF
+                if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
+                    if not self._mlag_ibgp_peering_redistribute(vrf, tenant):
+                        bgp_vrf["redistribute_routes"][0]["route_map"] = "RM-CONN-2-BGP-VRFS"
 
                 if vrf_address_families := [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]:
                     # For EVPN configs get evpn keys and continue after the elif block below.
@@ -209,7 +219,7 @@ class RouterBgpMixin(UtilsMixin):
                         bgp_vrf.setdefault("updates", {})["wait_install"] = True
 
                 # Strip None values from vlan before appending
-                bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}
+                bgp_vrf = strip_empties_from_dict(bgp_vrf)
 
                 # Skip adding the VRF if we have no config.
                 if bgp_vrf == {"name": vrf_name}:

@@ -54,7 +54,9 @@ class IpAddressingMixin:
         """
         if self.mlag is True:
             return self.ip_addressing.vtep_ip_mlag()
-
+        # TODO make this better
+        elif self.wan_role is not None:
+            return self.ip_addressing.router_id()
         else:
             return self.ip_addressing.vtep_ip()
 

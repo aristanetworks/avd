@@ -229,7 +229,8 @@ class RouterBgpMixin(UtilsMixin):
                     address_family_evpn["neighbor_default"]["next_hop_self_source_interface"] = "Loopback0"
 
             # partly duplicate with ebgp
-            if self.shared_utils.overlay_vtep is True:
+            # Do not render the route-maps if it is a WAN router
+            if self.shared_utils.overlay_vtep is True and self.shared_utils.wan_role is None:
                 if (peer_group := get_item(peer_groups, "name", overlay_peer_group_name)) is not None:
                     peer_group.update(
                         {

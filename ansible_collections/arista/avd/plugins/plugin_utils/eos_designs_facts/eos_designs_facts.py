@@ -146,6 +146,8 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
         """
         Exposed in avd_switch_facts
         """
+        if self.shared_utils.wan_role is not None:
+            return None
         if self.shared_utils.vtep is True:
             return self.shared_utils.vtep_loopback_ipv4_pool
         return None
