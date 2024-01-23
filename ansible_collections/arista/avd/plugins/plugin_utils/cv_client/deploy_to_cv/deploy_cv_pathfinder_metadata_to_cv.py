@@ -44,9 +44,9 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
 
     pathfinder_metadata = {
         "inputs": {
-            "router": {
+            "value": {
                 "sslProfileName": metadata.get("ssl_profile", ""),
-                "vtepIP": metadata.get("vtep_ip", ""),
+                "vtepIp": metadata.get("vtep_ip", ""),
                 "wanInterfaces": [
                     {
                         "inputs": {
@@ -67,7 +67,7 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
     }
 
     found_index = None
-    for index, router in enumerate(studio_inputs["routers"]):
+    for index, router in enumerate(studio_inputs["pathfinders"]):
         if get(router, "tags.query") == f"device:{device.serial_number}":
             found_index = index
             break
