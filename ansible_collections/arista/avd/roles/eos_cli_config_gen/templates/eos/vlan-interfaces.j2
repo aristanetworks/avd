@@ -39,6 +39,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
+{%     if vlan_interface.ip_directed_broadcast is arista.avd.defined(true) %}
+   ip directed-broadcast
+{%     endif %}
 {%     if vlan_interface.ip_address is arista.avd.defined %}
    ip address {{ vlan_interface.ip_address }}
 {%         if vlan_interface.ip_address_secondaries is arista.avd.defined %}
@@ -47,11 +50,8 @@ interface {{ vlan_interface.name }}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-{%     if vlan_interface.ip_verify.unicast_source.reachable_via is arista.avd.defined %}
-   ip verify unicast source reachable-via {{ vlan_interface.ip_verify.unicast_source.reachable_via }}
-{%     endif %}
-{%     if vlan_interface.ip_directed_broadcast is arista.avd.defined(true) %}
-   ip directed-broadcast
+{%     if vlan_interface.ip_verify_unicast_source_reachable_via is arista.avd.defined %}
+   ip verify unicast source reachable-via {{ vlan_interface.ip_verify_unicast_source_reachable_via }}
 {%     endif %}
 {%     for ip_helper in vlan_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}

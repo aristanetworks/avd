@@ -5962,33 +5962,13 @@
                 },
                 "title": "IP Address Secondaries"
               },
-              "ip_verify": {
-                "type": "object",
-                "properties": {
-                  "unicast_source": {
-                    "type": "object",
-                    "properties": {
-                      "reachable_via": {
-                        "type": "string",
-                        "enum": [
-                          "any",
-                          "rx"
-                        ],
-                        "title": "Reachable Via"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "title": "Unicast Source"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "IP Verify"
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
@@ -10184,33 +10164,13 @@
                     "description": "IPv4 address/mask",
                     "title": "IP Address"
                   },
-                  "ip_verify": {
-                    "type": "object",
-                    "properties": {
-                      "unicast_source": {
-                        "type": "object",
-                        "properties": {
-                          "reachable_via": {
-                            "type": "string",
-                            "enum": [
-                              "any",
-                              "rx"
-                            ],
-                            "title": "Reachable Via"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
-                        },
-                        "title": "Unicast Source"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "title": "IP Verify"
+                  "ip_verify_unicast_source_reachable_via": {
+                    "type": "string",
+                    "enum": [
+                      "any",
+                      "rx"
+                    ],
+                    "title": "IP Verify Unicast Source Reachable Via"
                   },
                   "ip_nat": {
                     "type": "object",
@@ -11229,33 +11189,13 @@
                 },
                 "title": "IP Address Secondaries"
               },
-              "ip_verify": {
-                "type": "object",
-                "properties": {
-                  "unicast_source": {
-                    "type": "object",
-                    "properties": {
-                      "reachable_via": {
-                        "type": "string",
-                        "enum": [
-                          "any",
-                          "rx"
-                        ],
-                        "title": "Reachable Via"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "title": "Unicast Source"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "IP Verify"
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
@@ -16253,33 +16193,13 @@
                     "description": "IPv4 address/mask",
                     "title": "IP Address"
                   },
-                  "ip_verify": {
-                    "type": "object",
-                    "properties": {
-                      "unicast_source": {
-                        "type": "object",
-                        "properties": {
-                          "reachable_via": {
-                            "type": "string",
-                            "enum": [
-                              "any",
-                              "rx"
-                            ],
-                            "title": "Reachable Via"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
-                        },
-                        "title": "Unicast Source"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "title": "IP Verify"
+                  "ip_verify_unicast_source_reachable_via": {
+                    "type": "string",
+                    "enum": [
+                      "any",
+                      "rx"
+                    ],
+                    "title": "IP Verify Unicast Source Reachable Via"
                   },
                   "ip_nat": {
                     "type": "object",
@@ -17298,33 +17218,13 @@
                 },
                 "title": "IP Address Secondaries"
               },
-              "ip_verify": {
-                "type": "object",
-                "properties": {
-                  "unicast_source": {
-                    "type": "object",
-                    "properties": {
-                      "reachable_via": {
-                        "type": "string",
-                        "enum": [
-                          "any",
-                          "rx"
-                        ],
-                        "title": "Reachable Via"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "title": "Unicast Source"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "IP Verify"
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
@@ -20895,33 +20795,13 @@
                       },
                       "title": "IP Address Virtual Secondaries"
                     },
-                    "ip_verify": {
-                      "type": "object",
-                      "properties": {
-                        "unicast_source": {
-                          "type": "object",
-                          "properties": {
-                            "reachable_via": {
-                              "type": "string",
-                              "enum": [
-                                "any",
-                                "rx"
-                              ],
-                              "title": "Reachable Via"
-                            }
-                          },
-                          "additionalProperties": false,
-                          "patternProperties": {
-                            "^_.+$": {}
-                          },
-                          "title": "Unicast Source"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "title": "IP Verify"
+                    "ip_verify_unicast_source_reachable_via": {
+                      "type": "string",
+                      "enum": [
+                        "any",
+                        "rx"
+                      ],
+                      "title": "IP Verify Unicast Source Reachable Via"
                     },
                     "ip_igmp": {
                       "type": "boolean",
@@ -22560,33 +22440,13 @@
                 },
                 "title": "IP Address Virtual Secondaries"
               },
-              "ip_verify": {
-                "type": "object",
-                "properties": {
-                  "unicast_source": {
-                    "type": "object",
-                    "properties": {
-                      "reachable_via": {
-                        "type": "string",
-                        "enum": [
-                          "any",
-                          "rx"
-                        ],
-                        "title": "Reachable Via"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "title": "Unicast Source"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "IP Verify"
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
               },
               "ip_igmp": {
                 "type": "boolean",

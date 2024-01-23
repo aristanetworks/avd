@@ -28,9 +28,7 @@ ethernet_interfaces:
       multiplier: 5
     bgp:
       session_tracker: ST1
-    ip_verify:
-      unicast_source:
-        reachable_via: rx
+    ip_verify_unicast_source_reachable_via: rx
     eos_cli: |
       comment
       Comment created from eos_cli under ethernet_interfaces.Ethernet1

@@ -26,9 +26,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_virtual</samp>](## "vlan_interfaces.[].ip_address_virtual") | String |  |  |  | IPv4_address/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_virtual_secondaries</samp>](## "vlan_interfaces.[].ip_address_virtual_secondaries") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].ip_address_virtual_secondaries.[]") | String |  |  |  | IPv4_address/Mask |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_verify</samp>](## "vlan_interfaces.[].ip_verify") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicast_source</samp>](## "vlan_interfaces.[].ip_verify.unicast_source") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reachable_via</samp>](## "vlan_interfaces.[].ip_verify.unicast_source.reachable_via") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>rx</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_verify_unicast_source_reachable_via</samp>](## "vlan_interfaces.[].ip_verify_unicast_source_reachable_via") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>rx</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_igmp</samp>](## "vlan_interfaces.[].ip_igmp") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_igmp_version</samp>](## "vlan_interfaces.[].ip_igmp_version") | Integer |  |  | Min: 1<br>Max: 3 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "vlan_interfaces.[].ip_helpers") | List, items: Dictionary |  |  |  | List of DHCP servers |
@@ -218,9 +216,7 @@
 
             # IPv4_address/Mask
           - <str>
-        ip_verify:
-          unicast_source:
-            reachable_via: <str; "any" | "rx">
+        ip_verify_unicast_source_reachable_via: <str; "any" | "rx">
         ip_igmp: <bool>
         ip_igmp_version: <int; 1-3>
 

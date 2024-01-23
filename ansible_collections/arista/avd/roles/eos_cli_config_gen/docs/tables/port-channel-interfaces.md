@@ -140,9 +140,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "port_channel_interfaces.[].ptp.vlan") | String |  |  |  | VLAN can be 'all' or list of vlans as string |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transport</samp>](## "port_channel_interfaces.[].ptp.transport") | String |  |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code><br>- <code>layer2</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "port_channel_interfaces.[].ip_address") | String |  |  |  | IPv4 address/mask |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_verify</samp>](## "port_channel_interfaces.[].ip_verify") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicast_source</samp>](## "port_channel_interfaces.[].ip_verify.unicast_source") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reachable_via</samp>](## "port_channel_interfaces.[].ip_verify.unicast_source.reachable_via") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>rx</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_verify_unicast_source_reachable_via</samp>](## "port_channel_interfaces.[].ip_verify_unicast_source_reachable_via") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>rx</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_nat</samp>](## "port_channel_interfaces.[].ip_nat") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "port_channel_interfaces.[].ip_nat.destination") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "port_channel_interfaces.[].ip_nat.destination.dynamic") | List, items: Dictionary |  |  |  |  |
@@ -478,9 +476,7 @@
 
         # IPv4 address/mask
         ip_address: <str>
-        ip_verify:
-          unicast_source:
-            reachable_via: <str; "any" | "rx">
+        ip_verify_unicast_source_reachable_via: <str; "any" | "rx">
         ip_nat:
           destination:
             dynamic:

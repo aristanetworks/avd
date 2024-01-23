@@ -335,8 +335,8 @@ interface Vlan91
 interface Vlan92
    description SVI Description
    ip proxy-arp
-   ip address 10.10.92.1/24
    ip directed-broadcast
+   ip address 10.10.92.1/24
 !
 interface Vlan110
    description PVLAN Primary with vlan mapping
