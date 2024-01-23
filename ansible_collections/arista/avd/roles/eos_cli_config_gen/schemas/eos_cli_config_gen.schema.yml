@@ -8970,6 +8970,18 @@ keys:
             type: int
             min: 3
             max: 50
+      session_snapshot_interval:
+        type: int
+        convert_types:
+        - str
+        min: 1
+        max: 3600
+        description: 'Interval in seconds.
+
+          Intervals below 10 are considered "dangerous" on EOS and must have `session_snapshot_interval_dangerous`
+          set to `true`.'
+      session_snapshot_interval_dangerous:
+        type: bool
       sbfd:
         type: dict
         keys:
@@ -12683,6 +12695,28 @@ keys:
                     description: Static IPv4 addresses.
                     items:
                       type: str
+            keepalive:
+              type: dict
+              keys:
+                auto:
+                  type: bool
+                  description: Enable adaptive keepalive and feedback interval.
+                  default: false
+                interval:
+                  type: int
+                  description: Interval in milliseconds.
+                  min: 50
+                  max: 60000
+                  convert_types:
+                  - str
+                failure_threshold:
+                  type: int
+                  min: 2
+                  max: 100
+                  description: Failure threshold in number of intervals. Required
+                    when `interval` is set.
+                  convert_types:
+                  - str
       load_balance_policies:
         type: list
         primary_key: name
@@ -14205,6 +14239,12 @@ keys:
                     log:
                       type: bool
                       description: Only supported when action is set to drop
+  transceiver_qsfp_default_mode_4x10:
+    type: bool
+    default: true
+    description: On all front panel ports which support this feature, the following
+      global configuration command changes the QSFP mode from 40G to 4x10G (default).
+      When set to false the command reverts the default QSFP mode back to 40G.
   tunnel_interfaces:
     type: list
     primary_key: name

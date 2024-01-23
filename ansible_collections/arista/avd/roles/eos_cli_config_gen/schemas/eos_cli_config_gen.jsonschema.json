@@ -15129,6 +15129,17 @@
           },
           "title": "Multihop"
         },
+        "session_snapshot_interval": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600,
+          "description": "Interval in seconds.\nIntervals below 10 are considered \"dangerous\" on EOS and must have `session_snapshot_interval_dangerous` set to `true`.",
+          "title": "Session Snapshot Interval"
+        },
+        "session_snapshot_interval_dangerous": {
+          "type": "boolean",
+          "title": "Session Snapshot Interval Dangerous"
+        },
         "sbfd": {
           "type": "object",
           "properties": {
@@ -21948,6 +21959,36 @@
                   ]
                 },
                 "title": "Static Peers"
+              },
+              "keepalive": {
+                "type": "object",
+                "properties": {
+                  "auto": {
+                    "type": "boolean",
+                    "description": "Enable adaptive keepalive and feedback interval.",
+                    "default": false,
+                    "title": "Auto"
+                  },
+                  "interval": {
+                    "type": "integer",
+                    "description": "Interval in milliseconds.",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "title": "Interval"
+                  },
+                  "failure_threshold": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "maximum": 100,
+                    "description": "Failure threshold in number of intervals. Required when `interval` is set.",
+                    "title": "Failure Threshold"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Keepalive"
               }
             },
             "additionalProperties": false,
@@ -24550,6 +24591,12 @@
         "^_.+$": {}
       },
       "title": "Traffic Policies"
+    },
+    "transceiver_qsfp_default_mode_4x10": {
+      "type": "boolean",
+      "default": true,
+      "description": "On all front panel ports which support this feature, the following global configuration command changes the QSFP mode from 40G to 4x10G (default). When set to false the command reverts the default QSFP mode back to 40G.",
+      "title": "Transceiver Qsfp Default Mode 4X10"
     },
     "tunnel_interfaces": {
       "type": "array",

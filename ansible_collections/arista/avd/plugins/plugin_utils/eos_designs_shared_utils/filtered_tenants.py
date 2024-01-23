@@ -56,6 +56,7 @@ class FilteredTenantsMixin:
                             "bgp_peers": [],
                             "ipv6_static_routes": [],
                             "static_routes": [],
+                            "loopbacks": [],
                         }
                     ],
                     "l2vlans": [],
@@ -177,6 +178,7 @@ class FilteredTenantsMixin:
                     and l3_interface.get("interfaces") is not None
                 )
             ]
+            vrf["loopbacks"] = [loopback for loopback in get(vrf, "loopbacks", default=[]) if self.hostname == get(loopback, "node")]
 
             if self.vtep is True:
                 evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
@@ -214,7 +216,13 @@ class FilteredTenantsMixin:
                             vrf["_evpn_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
                             break
 
-            if vrf["svis"] or vrf["l3_interfaces"] or "all" in always_include_vrfs_in_tenants or tenant["name"] in always_include_vrfs_in_tenants:
+            if (
+                vrf["svis"]
+                or vrf["l3_interfaces"]
+                or vrf["loopbacks"]
+                or "all" in always_include_vrfs_in_tenants
+                or tenant["name"] in always_include_vrfs_in_tenants
+            ):
                 filtered_vrfs.append(vrf)
 
             vrf["additional_route_targets"] = [

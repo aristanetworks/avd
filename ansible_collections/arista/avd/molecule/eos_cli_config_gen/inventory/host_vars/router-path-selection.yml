@@ -45,12 +45,17 @@ router_path_selection:
       dynamic_peers:
         enabled: true
         ipsec: false
+      keepalive:
+        auto: true
     - name: PG-1
       id: 666
       dynamic_peers:
         enabled: true
         ip_local: true
         ipsec: true
+      keepalive:
+        interval: 200
+        failure_threshold: 3
       static_peers:
         # Out of order to test sorting
         - router_ip: 172.16.42.42
