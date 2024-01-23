@@ -5318,6 +5318,53 @@ $defs:
                         in the final EOS configuration.
 
                         '
+              loopbacks:
+                documentation_options:
+                  table: network-services-vrfs-loopbacks-settings
+                type: list
+                description: 'List of Loopback interfaces.
+
+                  This will create Loopback interfaces inside the VRF.
+
+                  '
+                items:
+                  type: dict
+                  keys:
+                    node:
+                      type: str
+                      required: true
+                    loopback:
+                      type: int
+                      required: true
+                      min: 0
+                      max: 8191
+                    ip_address:
+                      type: str
+                      required: true
+                    description:
+                      type: str
+                    enabled:
+                      type: bool
+                      default: true
+                    ospf:
+                      type: dict
+                      description: OSPF interface configuration.
+                      keys:
+                        enabled:
+                          type: bool
+                          default: false
+                        area:
+                          type: str
+                          convert_types:
+                          - int
+                          description: OSPF area ID.
+                          default: '0'
+                    raw_eos_cli:
+                      type: str
+                      description: 'EOS CLI rendered directly on the Loopback interface
+                        in the final EOS configuration.
+
+                        '
               static_routes:
                 type: list
                 description: 'List of static routes for v4 and/or v6.
