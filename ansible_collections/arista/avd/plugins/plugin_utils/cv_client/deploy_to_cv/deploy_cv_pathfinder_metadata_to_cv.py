@@ -206,7 +206,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
 
     # Get existing studio inputs
     existing_studio_inputs = await cv_client.get_studio_inputs(
-        studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, default=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS
+        studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS
     )
     studio_inputs = deepcopy(existing_studio_inputs)
 
