@@ -31,7 +31,7 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
                 for pathgroup in get(metadata, "pathgroups", required=True)
             ],
             "regions": get(metadata, "regions", required=True),
-            "vrfs": get(metadata, "vrfs", required=True),
+            "vrfs": get(metadata, "vrfs", default=[]),
         }
     )
 
