@@ -25,7 +25,7 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
             "pathgroups": [
                 {
                     "carriers": get(pathgroup, "carriers", required=True),
-                    "importedCarriers": get(pathgroup, "imported_carriers", required=True),
+                    "importedCarriers": get(pathgroup, "imported_carriers", default=[]),
                     "name": get(pathgroup, "name", required=True),
                 }
                 for pathgroup in get(metadata, "pathgroups", required=True)
