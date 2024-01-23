@@ -8018,6 +8018,18 @@ $defs:
       dscp:
         type: int
         $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp
+      constraints:
+        type: dict
+        keys:
+          jitter:
+            type: int
+            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/jitter
+          latency:
+            type: int
+            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/latency
+          loss_rate:
+            type: str
+            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/loss_rate
       path_groups:
         type: list
         min_length: 1

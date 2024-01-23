@@ -232,7 +232,9 @@ router_path_selection:
     path_groups:
     - name: Satellite
   - name: LB-PROD-AVT-POLICY-VOICE
+    jitter: 42
   - name: LB-PROD-AVT-POLICY-VIDEO
+    loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT

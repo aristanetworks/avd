@@ -246,6 +246,9 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
         wan_load_balance_policy = {"name": name, "path_groups": []}
 
+        # Handle constraints
+        wan_load_balance_policy |= get(input_dict, "constraints", default={})
+
         # An entry is composed of a list of path-groups in `names` and a `priority`
         policy_entries = get(input_dict, "path_groups", [])
         if not policy_entries and default_all:

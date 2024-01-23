@@ -60,6 +60,7 @@ class UtilsFilteredTenantsMixin(object):
                             "ipv6_static_routes": [],
                             "static_routes": [],
                             "loopbacks": [],
+                            "additional_route_targets": [],
                         }
                     ],
                     "l2vlans": [],
