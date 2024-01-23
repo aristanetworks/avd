@@ -75,6 +75,12 @@ options:
     default: "warning"
     type: str
     choices: [ "error", "warning", "info", "debug", "disabled" ]
+  cprofile_file:
+    description:
+      - Filename for storing cprofile data used to debug performance issues.
+      - Running cprofile will slow down performance in it self, so only set this while troubleshooting.
+    required: false
+    type: str
 """
 
 EXAMPLES = r"""
