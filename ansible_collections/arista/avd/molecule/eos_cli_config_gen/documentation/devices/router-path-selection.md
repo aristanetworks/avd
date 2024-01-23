@@ -160,7 +160,7 @@ interface Management1
 !
 router path-selection
    peer dynamic source stun
-   tcp mss ceiling 200 ingress
+   tcp mss ceiling ipv4 200 ingress
    !
    path-group PG-1 id 666
       !
