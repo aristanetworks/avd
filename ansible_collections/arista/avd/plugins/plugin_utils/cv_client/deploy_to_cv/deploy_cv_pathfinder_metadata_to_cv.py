@@ -89,7 +89,7 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
     edge_metadata = {
         "inputs": {
             "router": {
-                "pathfinders": [{"VtepIP": pathfinder["vtep_ip"]} for pathfinder in metadata.get("pathfinders", [])],
+                "pathfinders": [{"vtepIp": pathfinder["vtep_ip"]} for pathfinder in metadata.get("pathfinders", [])],
                 "region": metadata.get("region", ""),
                 "role": metadata.get("role", ""),
                 "site": metadata.get("site", ""),
