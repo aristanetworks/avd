@@ -226,6 +226,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ip_address is arista.avd.defined %}
    ip address {{ port_channel_interface.ip_address }}
 {%     endif %}
+{%     if port_channel_interface.ip_verify_unicast_source_reachable_via is arista.avd.defined %}
+   ip verify unicast source reachable-via {{ port_channel_interface.ip_verify_unicast_source_reachable_via }}
+{%     endif %}
 {%     if port_channel_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
