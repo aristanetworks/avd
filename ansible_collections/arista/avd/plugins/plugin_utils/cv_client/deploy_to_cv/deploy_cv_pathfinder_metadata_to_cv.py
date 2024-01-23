@@ -74,10 +74,10 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
 
     if found_index is None:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New pathfinder device, adding %s", device.hostname)
-        studio_inputs["routers"].append(pathfinder_metadata)
+        studio_inputs["pathfinders"].append(pathfinder_metadata)
     else:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing pathfinder device, updating %s", device.hostname)
-        studio_inputs["routers"][found_index] = pathfinder_metadata
+        studio_inputs["pathfinders"][found_index] = pathfinder_metadata
 
 
 def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
