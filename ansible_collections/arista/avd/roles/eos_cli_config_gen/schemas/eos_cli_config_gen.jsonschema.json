@@ -24562,6 +24562,12 @@
       },
       "title": "Traffic Policies"
     },
+    "transceiver_qsfp_default_mode_4x10": {
+      "type": "boolean",
+      "default": true,
+      "description": "On all front panel ports which support this feature, the following global configuration command changes the QSFP mode from 40G to 4x10G (default). When set to false the command reverts the default QSFP mode back to 40G.",
+      "title": "Transceiver Qsfp Default Mode 4X10"
+    },
     "tunnel_interfaces": {
       "type": "array",
       "items": {

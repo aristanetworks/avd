@@ -7,7 +7,7 @@ jobs:
     name: 'One liner installation'
     runs-on: ubuntu-20.04
     container: avdteam/base:3.8-v2.0
-    if: github.repository == 'aristanetworks/ansible-avd'
+    if: github.repository == 'aristanetworks/avd'
     steps:
       - uses: actions/checkout@v3
       - name: Execute one-liner installation

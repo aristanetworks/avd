@@ -1,6 +1,6 @@
 ---
 # This workflow is conditionned to only run on the main repo
-# aristanetworks/ansible-avd and not on forks
+# aristanetworks/avd and not on forks
 # cf - https://github.com/actions/runner/issues/859
 # TODO - revisist if a feature is ever published
 name: "Devel Code Management"
@@ -28,7 +28,7 @@ jobs:
       docs: ${{ steps.filter.outputs.docs }}
     if: |
       github.event_name != 'workflow_dispatch' &&
-      github.repository == 'aristanetworks/ansible-avd'
+      github.repository == 'aristanetworks/avd'
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -94,7 +94,7 @@ jobs:
     #   * either there is a file change
     #   * or it is a manually triggered workflow on devel
     if: |
-      github.repository == 'aristanetworks/ansible-avd' &&
+      github.repository == 'aristanetworks/avd' &&
       (needs.file-changes.outputs.requirements == 'true' ||
        (github.ref == 'refs/heads/devel' && github.event_name == 'workflow_dispatch'))
     steps:
