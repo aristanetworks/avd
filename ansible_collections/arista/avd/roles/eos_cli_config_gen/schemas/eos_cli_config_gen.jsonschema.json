@@ -22134,10 +22134,8 @@
           "type": "object",
           "properties": {
             "ipv4_segment_size": {
-              "type": "integer",
-              "description": "Segment Size for IPv4.",
-              "minimum": 64,
-              "maximum": 65515,
+              "type": "string",
+              "description": "Segment Size for IPv4.\nCan be an integer in the range 64-65515 or \"auto\".\n\"auto\" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths\nand multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).",
               "title": "IPv4 Segment Size"
             },
             "direction": {
@@ -22146,7 +22144,7 @@
                 "ingress"
               ],
               "default": "ingress",
-              "description": "Enforce on packets through DPS tunnel for a specific direction.\nOnly 'ingress' direction is supported today.",
+              "description": "Enforce on packets through DPS tunnel for a specific direction.\nOnly 'ingress' direction is supported.",
               "title": "Direction"
             }
           },
