@@ -56,6 +56,7 @@ interface Management1
 | Remote VTEPs EVPN BFD expected minimum incoming rate (min-rx) | 300ms |
 | Remote VTEPs EVPN BFD multiplier | 3 |
 | Remote VTEPs EVPN BFD prefix-list | PL-TEST |
+| Multicast headend-replication | Enabled |
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
