@@ -108,7 +108,7 @@ It is also possible to define the hostname and token directly without defining t
 
 ```yaml
 # Manually override the CV server hostname and token if CloudVision is not part of the inventory.
-cv_server: <hostname or IP address of CloudVision host. Ex. "arista.io" for CVaaS>
+cv_server: <hostname or IP address of CloudVision host. Ex. "www.arista.io" for CVaaS>
 cv_token: <service account token as defined on CloudVision. This value should be using Ansible Vault>
 ```
 
