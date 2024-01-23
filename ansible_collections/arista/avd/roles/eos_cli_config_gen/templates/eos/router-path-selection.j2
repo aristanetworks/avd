@@ -21,6 +21,12 @@ router path-selection
 {%         if path_group.ipsec_profile is arista.avd.defined %}
       ipsec profile {{ path_group.ipsec_profile }}
 {%         endif %}
+{%         if path_group.keepalive.auto is arista.avd.defined(true) %}
+      keepalive interval auto
+{%         elif path_group.keepalive.interval is arista.avd.defined and
+                path_group.keepalive.failure_threshold is arista.avd.defined %}
+      keepalive interval {{ path_group.keepalive.interval }} milliseconds failure-threshold {{ path_group.keepalive.failure_threshold }} intervals
+{%         endif %}
 {%         if path_group.flow_assignment is arista.avd.defined %}
       flow assignment {{ path_group.flow_assignment }}
 {%         endif %}

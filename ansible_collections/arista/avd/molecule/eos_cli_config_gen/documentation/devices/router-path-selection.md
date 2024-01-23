@@ -49,6 +49,7 @@ interface Management1
 | Setting | Value |
 | ------  | ----- |
 | Path Group ID | 666 |
+| Keepalive interval(failure threshold) | 200(3) |
 
 ###### Dynamic Peers Settings
 
@@ -71,6 +72,7 @@ interface Management1
 | ------  | ----- |
 | Path Group ID | 42 |
 | IPSec profile | IPSEC-P-1 |
+| Keepalive interval | auto |
 | Flow assignment | LAN |
 
 ###### Local Interfaces
@@ -156,6 +158,7 @@ router path-selection
    peer dynamic source stun
    !
    path-group PG-1 id 666
+      keepalive interval 200 milliseconds failure-threshold 3 intervals
       !
       peer dynamic
          ip local
@@ -173,6 +176,7 @@ router path-selection
    !
    path-group PG-2 id 42
       ipsec profile IPSEC-P-1
+      keepalive interval auto
       flow assignment lan
       !
       local interface Ethernet1/1
