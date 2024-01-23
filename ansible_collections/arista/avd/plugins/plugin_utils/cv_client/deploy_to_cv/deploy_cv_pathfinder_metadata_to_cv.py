@@ -231,7 +231,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
 
     if pathfinders:
         # All pathfinders must have the same be general metadata, so we just set it in the studio based on the first one.
-        update_general_metadata(metadata=pathfinders[0], studio_inputs=studio_inputs)
+        update_general_metadata(metadata=pathfinders[0].metadata, studio_inputs=studio_inputs)
 
     for pathfinder in pathfinders:
         upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs)
