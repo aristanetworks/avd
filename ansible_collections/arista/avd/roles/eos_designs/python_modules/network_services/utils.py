@@ -390,7 +390,20 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         """
         policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
         # Need to handle VRF default differently
-        filtered_policies = [get_item(policies, "name", wan_vrf[self._wan_policy_key]) for wan_vrf in self._filtered_wan_vrfs if wan_vrf["name"] != "default"]
+        filtered_policies = [
+            get_item(
+                policies,
+                "name",
+                wan_vrf[self._wan_policy_key],
+                required=True,
+                custom_error_msg=(
+                    f"The policy {wan_vrf[self._wan_policy_key]} applied to vrf {wan_vrf['name']} under `wan_virtual_topologies.vrfs` is not "
+                    "defined under `wan_virtual_topologies.policies`."
+                ),
+            )
+            for wan_vrf in self._filtered_wan_vrfs
+            if wan_vrf["name"] != "default"
+        ]
         filtered_policies.append(self._default_vrf_policy)
         return filtered_policies
 
