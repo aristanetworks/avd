@@ -226,7 +226,6 @@ class ActionModule(ActionBase):
               - Read serial_number & system_mac from structured config.
               - Create CVDevice object and add to list of device_objects.
 
-        TODO: Support for JSON
         TODO: Refactor into smaller functions.
         """
         LOGGER.info("build_object_for_device: %s", hostname)

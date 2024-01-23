@@ -32,6 +32,8 @@ async def deploy_tags_to_cv(
     TODO: Refactor CVDeviceTag / CVInterfaceTag to produce a stable hash so we can use it with set() methods.
           Then improve logic below using sets.
 
+    TODO: Always remove other tag assignments with the same label as given tags.
+
     In-place updates skipped_tags, deployed_tags, removed_tags, warnings so they can be given directly from the results object.
     """
     LOGGER.info("deploy_tags_to_cv: %s", len(tags))
