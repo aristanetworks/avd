@@ -423,6 +423,7 @@ interface Vlan2002
    description SVI Description
    no autostate
    vrf Tenant_B
+   ip verify unicast source reachable-via rx
    isis enable EVPN_UNDERLAY
    ip address virtual 10.2.2.1/24
 !

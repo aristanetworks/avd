@@ -1974,6 +1974,11 @@ keys:
           type: list
           items:
             type: str
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+          - any
+          - rx
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP
@@ -7600,6 +7605,11 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+          - any
+          - rx
         ip_nat:
           type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
@@ -8970,6 +8980,18 @@ keys:
             type: int
             min: 3
             max: 50
+      session_snapshot_interval:
+        type: int
+        convert_types:
+        - str
+        min: 1
+        max: 3600
+        description: 'Interval in seconds.
+
+          Intervals below 10 are considered "dangerous" on EOS and must have `session_snapshot_interval_dangerous`
+          set to `true`.'
+      session_snapshot_interval_dangerous:
+        type: bool
       sbfd:
         type: dict
         keys:
@@ -12683,6 +12705,28 @@ keys:
                     description: Static IPv4 addresses.
                     items:
                       type: str
+            keepalive:
+              type: dict
+              keys:
+                auto:
+                  type: bool
+                  description: Enable adaptive keepalive and feedback interval.
+                  default: false
+                interval:
+                  type: int
+                  description: Interval in milliseconds.
+                  min: 50
+                  max: 60000
+                  convert_types:
+                  - str
+                failure_threshold:
+                  type: int
+                  min: 2
+                  max: 100
+                  description: Failure threshold in number of intervals. Required
+                    when `interval` is set.
+                  convert_types:
+                  - str
       load_balance_policies:
         type: list
         primary_key: name
@@ -14376,6 +14420,11 @@ keys:
           items:
             type: str
             description: IPv4_address/Mask
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+          - any
+          - rx
         ip_igmp:
           type: bool
         ip_igmp_version:

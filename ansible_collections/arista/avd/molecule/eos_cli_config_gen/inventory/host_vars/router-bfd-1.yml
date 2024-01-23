@@ -8,6 +8,7 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
+  session_snapshot_interval: 51
   sbfd:
     local_interface:
       name: Loopback0

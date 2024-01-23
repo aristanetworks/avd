@@ -2882,6 +2882,14 @@
             },
             "title": "IP Address Secondaries"
           },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
+          },
           "dhcp_client_accept_default_route": {
             "type": "boolean",
             "description": "Install default-route obtained via DHCP",
@@ -12774,6 +12782,14 @@
             "description": "IPv4 address/mask",
             "title": "IP Address"
           },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
+          },
           "ip_nat": {
             "type": "object",
             "properties": {
@@ -15128,6 +15144,17 @@
             "^_.+$": {}
           },
           "title": "Multihop"
+        },
+        "session_snapshot_interval": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600,
+          "description": "Interval in seconds.\nIntervals below 10 are considered \"dangerous\" on EOS and must have `session_snapshot_interval_dangerous` set to `true`.",
+          "title": "Session Snapshot Interval"
+        },
+        "session_snapshot_interval_dangerous": {
+          "type": "boolean",
+          "title": "Session Snapshot Interval Dangerous"
         },
         "sbfd": {
           "type": "object",
@@ -21948,6 +21975,36 @@
                   ]
                 },
                 "title": "Static Peers"
+              },
+              "keepalive": {
+                "type": "object",
+                "properties": {
+                  "auto": {
+                    "type": "boolean",
+                    "description": "Enable adaptive keepalive and feedback interval.",
+                    "default": false,
+                    "title": "Auto"
+                  },
+                  "interval": {
+                    "type": "integer",
+                    "description": "Interval in milliseconds.",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "title": "Interval"
+                  },
+                  "failure_threshold": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "maximum": 100,
+                    "description": "Failure threshold in number of intervals. Required when `interval` is set.",
+                    "title": "Failure Threshold"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Keepalive"
               }
             },
             "additionalProperties": false,
@@ -24795,6 +24852,14 @@
               "description": "IPv4_address/Mask"
             },
             "title": "IP Address Virtual Secondaries"
+          },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
           },
           "ip_igmp": {
             "type": "boolean",

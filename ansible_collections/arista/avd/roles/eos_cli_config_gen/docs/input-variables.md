@@ -765,6 +765,7 @@ roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-dhcp-snooping.md
+--8<--
 
 ### DHCP Servers
 

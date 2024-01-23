@@ -1074,6 +1074,7 @@ The supported network services for each tenant cover:
 - VRFs
   - SVIs
   - L3 Interfaces
+  - Loopbacks
   - BGP routing
   - OSPF routing
 - L2 VLANs
@@ -1105,6 +1106,17 @@ roles/eos_designs/docs/tables/network-services-vrfs-svis-settings.md
 
 --8<--
 roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
+--8<--
+
+#### Network services VRF Loopbacks configuration
+
+Loopbacks are usually configured with `vtep_diagnostic` which supports IP pools etc.
+
+`loopbacks` is used to provision extra loopback interfaces with manually assigned
+IP addresses on individual nodes.
+
+--8<--
+roles/eos_designs/docs/tables/network-services-vrfs-loopbacks-settings.md
 --8<--
 
 #### Network services VRF BGP configuration
