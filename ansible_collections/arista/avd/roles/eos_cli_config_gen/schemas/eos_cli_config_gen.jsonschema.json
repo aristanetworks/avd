@@ -15131,7 +15131,9 @@
         },
         "session_snapshot_interval": {
           "type": "integer",
-          "description": "Range <10-3600>",
+          "minimum": 1,
+          "maximum": 3600,
+          "description": "Interval in seconds.\nIntervals below 10 are considered \"dangerous\" on EOS and must have `session_snapshot_interval_dangerous` set to `true`.",
           "title": "Session Snapshot Interval"
         },
         "session_snapshot_interval_dangerous": {

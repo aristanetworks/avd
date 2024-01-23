@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_bfd.multihop.interval") | Integer |  |  |  | Rate in milliseconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bfd.multihop.min_rx") | Integer |  |  |  | Rate in milliseconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "router_bfd.multihop.multiplier") | Integer |  |  | Min: 3<br>Max: 50 |  |
-    | [<samp>&nbsp;&nbsp;session_snapshot_interval</samp>](## "router_bfd.session_snapshot_interval") | Integer |  |  |  | Range <10-3600> |
+    | [<samp>&nbsp;&nbsp;session_snapshot_interval</samp>](## "router_bfd.session_snapshot_interval") | Integer |  |  | Min: 1<br>Max: 3600 | Interval in seconds.<br>Intervals below 10 are considered "dangerous" on EOS and must have `session_snapshot_interval_dangerous` set to `true`. |
     | [<samp>&nbsp;&nbsp;session_snapshot_interval_dangerous</samp>](## "router_bfd.session_snapshot_interval_dangerous") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;sbfd</samp>](## "router_bfd.sbfd") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "router_bfd.sbfd.local_interface") | Dictionary |  |  |  |  |
@@ -50,8 +50,9 @@
         min_rx: <int>
         multiplier: <int; 3-50>
 
-      # Range <10-3600>
-      session_snapshot_interval: <int>
+      # Interval in seconds.
+      # Intervals below 10 are considered "dangerous" on EOS and must have `session_snapshot_interval_dangerous` set to `true`.
+      session_snapshot_interval: <int; 1-3600>
       session_snapshot_interval_dangerous: <bool>
       sbfd:
         local_interface:
