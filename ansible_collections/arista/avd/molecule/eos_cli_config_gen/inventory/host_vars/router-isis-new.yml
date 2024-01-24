@@ -38,6 +38,7 @@ router_isis:
       route_map: RM-OSPF-NSSA_EXT-TO-ISIS
   address_family_ipv4:
     maximum_paths: 4
+    bfd_all_interfaces: true
     fast_reroute_ti_lfa:
       mode: link-protection
       level: level-2
@@ -49,6 +50,7 @@ router_isis:
       rcf: lu_2_sr_pfx()
   address_family_ipv6:
     maximum_paths: 4
+    bfd_all_interfaces: true
     fast_reroute_ti_lfa:
       mode: node-protection
       srlg:

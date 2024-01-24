@@ -113,6 +113,9 @@ router isis {{ router_isis.instance }}
 {%             endif %}
       {{ lu_cli }}
 {%         endif %}
+{%         if router_isis.address_family_ipv4.bfd_all_interfaces is arista.avd.defined(true) %}
+      bfd all-interfaces
+{%         endif %}
 {%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode is arista.avd.defined %}
 {%             set ti_lfa_cli = "fast-reroute ti-lfa mode " ~ router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode %}
 {%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.level is arista.avd.defined %}
@@ -133,6 +136,9 @@ router isis {{ router_isis.instance }}
    address-family ipv6 unicast
 {%         if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
       maximum-paths {{ router_isis.address_family_ipv6.maximum_paths }}
+{%         endif %}
+{%         if router_isis.address_family_ipv4.bfd_all_interfaces is arista.avd.defined(true) %}
+      bfd all-interfaces
 {%         endif %}
 {%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode is arista.avd.defined %}
 {%             set ti_lfa_cli = "fast-reroute ti-lfa mode " ~ router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode %}

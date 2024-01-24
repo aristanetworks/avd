@@ -20494,6 +20494,11 @@
               "maximum": 128,
               "title": "Maximum Paths"
             },
+            "bfd_all_interfaces": {
+              "type": "boolean",
+              "description": "Enable BFD on all interfaces",
+              "title": "BFD All Interfaces"
+            },
             "fast_reroute_ti_lfa": {
               "type": "object",
               "properties": {
@@ -20577,6 +20582,11 @@
               "minimum": 1,
               "maximum": 128,
               "title": "Maximum Paths"
+            },
+            "bfd_all_interfaces": {
+              "type": "boolean",
+              "description": "Enable BFD on all interfaces",
+              "title": "BFD All Interfaces"
             },
             "fast_reroute_ti_lfa": {
               "type": "object",

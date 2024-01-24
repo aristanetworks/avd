@@ -11897,6 +11897,9 @@ keys:
             - str
             min: 1
             max: 128
+          bfd_all_interfaces:
+            type: bool
+            description: Enable BFD on all interfaces
           fast_reroute_ti_lfa:
             type: dict
             keys:
@@ -11937,6 +11940,9 @@ keys:
             - str
             min: 1
             max: 128
+          bfd_all_interfaces:
+            type: bool
+            description: Enable BFD on all interfaces
           fast_reroute_ti_lfa:
             type: dict
             keys:
