@@ -20496,7 +20496,7 @@
             },
             "bfd_all_interfaces": {
               "type": "boolean",
-              "description": "Enable BFD on all interfaces",
+              "description": "Enable BFD on all interfaces.",
               "title": "BFD All Interfaces"
             },
             "fast_reroute_ti_lfa": {
@@ -20585,7 +20585,7 @@
             },
             "bfd_all_interfaces": {
               "type": "boolean",
-              "description": "Enable BFD on all interfaces",
+              "description": "Enable BFD on all interfaces.",
               "title": "BFD All Interfaces"
             },
             "fast_reroute_ti_lfa": {
@@ -20605,7 +20605,7 @@
                     "level-1",
                     "level-2"
                   ],
-                  "description": "Optional, default is to protect all levels",
+                  "description": "Optional, default is to protect all levels.",
                   "title": "Level"
                 },
                 "srlg": {
@@ -20687,14 +20687,14 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 300,
-              "description": "Maximum interval between two SPFs in seconds",
+              "description": "Maximum interval between two SPFs in seconds.",
               "title": "Interval"
             },
             "wait_interval": {
               "type": "integer",
               "minimum": 1,
               "maximum": 300000,
-              "description": "Initial wait interval for SPF in milliseconds",
+              "description": "Initial wait interval for SPF in milliseconds.",
               "title": "Wait Interval"
             }
           },
@@ -20715,7 +20715,7 @@
               "type": "integer",
               "minimum": 5,
               "maximum": 300,
-              "description": "Number of seconds",
+              "description": "Number of seconds.",
               "title": "Restart Hold Time"
             },
             "t2": {
@@ -20725,14 +20725,14 @@
                   "type": "integer",
                   "minimum": 5,
                   "maximum": 300,
-                  "description": "Level-1 LSP database sync wait time in seconds",
+                  "description": "Level-1 LSP database sync wait time in seconds.",
                   "title": "Level 1 Wait Time"
                 },
                 "level_2_wait_time": {
                   "type": "integer",
                   "minimum": 5,
                   "maximum": 300,
-                  "description": "Level-2 LSP database sync wait time in seconds",
+                  "description": "Level-2 LSP database sync wait time in seconds.",
                   "title": "Level 2 Wait Time"
                 }
               },
