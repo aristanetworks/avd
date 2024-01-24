@@ -28,7 +28,7 @@
 {%         if flow_tracking.sampled.encapsulation.mpls is arista.avd.defined(true) %}
 {%             do encapsulations_list.append('mpls') %}
 {%         endif %}
-{%         set encapsulations = (encapsulations_list | select("arista.avd.defined") or ["-"]) | join(", ") %}
+{%         set encapsulations = (encapsulations_list or ["-"]) | join(", ") %}
 {%         if flow_tracking.sampled.hardware_offload.ipv4 is arista.avd.defined(true) %}
 {%             set hardware_offload_ipv4 = 'enabled' %}
 {%         endif %}
