@@ -211,3 +211,39 @@ keys:
             min: 1
             max: 300000
             description: Initial wait interval for SPF in milliseconds
+      graceful_restart:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          restart_hold_time:
+            type: int
+            convert_types:
+              - str
+            min: 5
+            max: 300
+            description: Number of seconds
+          t2:
+            type: dict
+            keys:
+              wait_time:
+                type: int
+                convert_types:
+                  - str
+                min: 5
+                max: 300
+                description: LSP database sync wait time in seconds
+              level_1_wait_time:
+                type: int
+                convert_types:
+                  - str
+                min: 5
+                max: 300
+                description: Number of seconds
+              level_2_wait_time:
+                type: int
+                convert_types:
+                  - str
+                min: 5
+                max: 300
+                description: Number of seconds

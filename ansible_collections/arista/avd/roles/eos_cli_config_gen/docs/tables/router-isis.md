@@ -59,6 +59,13 @@
     | [<samp>&nbsp;&nbsp;spf_interval</samp>](## "router_isis.spf_interval") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_isis.spf_interval.interval") | Integer |  |  | Min: 1<br>Max: 300 | Maximum interval between two SPFs in seconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wait_interval</samp>](## "router_isis.spf_interval.wait_interval") | Integer |  |  | Min: 1<br>Max: 300000 | Initial wait interval for SPF in milliseconds |
+    | [<samp>&nbsp;&nbsp;graceful_restart</samp>](## "router_isis.graceful_restart") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.graceful_restart.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;restart_hold_time</samp>](## "router_isis.graceful_restart.restart_hold_time") | Integer |  |  | Min: 5<br>Max: 300 | Number of seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;t2</samp>](## "router_isis.graceful_restart.t2") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wait_time</samp>](## "router_isis.graceful_restart.t2.wait_time") | Integer |  |  | Min: 5<br>Max: 300 | LSP database sync wait time in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1_wait_time</samp>](## "router_isis.graceful_restart.t2.level_1_wait_time") | Integer |  |  | Min: 5<br>Max: 300 | Number of seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2_wait_time</samp>](## "router_isis.graceful_restart.t2.level_2_wait_time") | Integer |  |  | Min: 5<br>Max: 300 | Number of seconds |
 
 === "YAML"
 
@@ -150,4 +157,19 @@
 
         # Initial wait interval for SPF in milliseconds
         wait_interval: <int; 1-300000>
+      graceful_restart:
+        enabled: <bool>
+
+        # Number of seconds
+        restart_hold_time: <int; 5-300>
+        t2:
+
+          # LSP database sync wait time in seconds
+          wait_time: <int; 5-300>
+
+          # Number of seconds
+          level_1_wait_time: <int; 5-300>
+
+          # Number of seconds
+          level_2_wait_time: <int; 5-300>
     ```

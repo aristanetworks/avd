@@ -20693,6 +20693,58 @@
             "^_.+$": {}
           },
           "title": "SPF Interval"
+        },
+        "graceful_restart": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "restart_hold_time": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 300,
+              "description": "Number of seconds",
+              "title": "Restart Hold Time"
+            },
+            "t2": {
+              "type": "object",
+              "properties": {
+                "wait_time": {
+                  "type": "integer",
+                  "minimum": 5,
+                  "maximum": 300,
+                  "description": "LSP database sync wait time in seconds",
+                  "title": "Wait Time"
+                },
+                "level_1_wait_time": {
+                  "type": "integer",
+                  "minimum": 5,
+                  "maximum": 300,
+                  "description": "Number of seconds",
+                  "title": "Level 1 Wait Time"
+                },
+                "level_2_wait_time": {
+                  "type": "integer",
+                  "minimum": 5,
+                  "maximum": 300,
+                  "description": "Number of seconds",
+                  "title": "Level 2 Wait Time"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "T2"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Graceful Restart"
         }
       },
       "required": [
