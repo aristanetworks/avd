@@ -42,4 +42,4 @@ tenants:
             tags: ['evpn-multicast-l3']
 
 expected_error_message: >-
-  Unexpected failure during module execution: 'evpn_l3_multicast: true' under VRF Tenant_A_OP_Zone_MC or Tenant FABRIC; this requires 'evpn_multicast' to also be set to true.
+  'evpn_l3_multicast: true' under VRF Tenant_A_OP_Zone_MC or Tenant FABRIC; this requires 'evpn_multicast' to also be set to true.
