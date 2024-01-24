@@ -140,15 +140,10 @@ class RouterBgpMixin(UtilsMixin):
                 bgp_vrf = {
                     "name": vrf_name,
                     "router_id": self.shared_utils.router_id,
-                    "rd": vrf_rd,
-                    "route_targets": route_targets,
-                    "redistribute_routes": [],
+                    "redistribute_routes": [{"source_protocol": "connected"}],
                     "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                     "struct_cfg": get(vrf, "bgp.structured_config"),
                 }
-
-                if self.shared_utils.wan_role is None:
-                    bgp_vrf["redistribute_routes"].append({"source_protocol": "connected"})
 
                 # MLAG IBGP Peering VLANs per VRF
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
@@ -218,7 +213,7 @@ class RouterBgpMixin(UtilsMixin):
                     if get(self._hostvars, "bgp_update_wait_install", default=True) is True and platform_bgp_update_wait_install:
                         bgp_vrf.setdefault("updates", {})["wait_install"] = True
 
-                # Strip None values from vlan before appending
+                # Strip None, [] and {}  values from vlan before appending
                 bgp_vrf = strip_empties_from_dict(bgp_vrf)
 
                 # Skip adding the VRF if we have no config.

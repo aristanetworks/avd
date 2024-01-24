@@ -100,6 +100,8 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    redistribute_routes:
+    - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
