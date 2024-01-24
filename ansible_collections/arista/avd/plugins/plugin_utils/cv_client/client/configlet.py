@@ -134,7 +134,7 @@ class ConfigletMixin:
         self: CVClient,
         workspace_id: str,
         containers: list[tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, str | None]],
-        timeout: float = 10.0,
+        timeout: float = 30.0,
     ) -> list[ConfigletAssignmentKey]:
         """
         Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.Set API.
@@ -326,7 +326,7 @@ class ConfigletMixin:
         self: CVClient,
         workspace_id: str,
         configlet_ids: list[str],
-        timeout: float = 10.0,
+        timeout: float = 30.0,
     ) -> list[ConfigletKey]:
         """
         Delete a Configlet using arista.configlet.v1.ConfigletServiceStub.SetSome API.

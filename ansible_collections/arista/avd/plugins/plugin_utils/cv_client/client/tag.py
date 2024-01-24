@@ -132,7 +132,7 @@ class TagMixin:
         workspace_id: str,
         tags: list[tuple[str, str]],
         element_type: Literal["device", "interface"],
-        timeout: float = 10.0,
+        timeout: float = 30.0,
     ) -> list[TagKey]:
         """
         Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
@@ -252,7 +252,7 @@ class TagMixin:
         workspace_id: str,
         tag_assignments: list[tuple[str, str, str, str | None]],
         element_type: Literal["device", "interface"],
-        timeout: float = 10.0,
+        timeout: float = 30.0,
     ) -> list[TagAssignment]:
         """
         Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
@@ -299,7 +299,7 @@ class TagMixin:
         workspace_id: str,
         tag_assignments: list[tuple[str, str, str, str | None]],
         element_type: Literal["device", "interface"],
-        timeout: float = 10.0,
+        timeout: float = 30.0,
     ) -> list[TagAssignmentKey]:
         """
         Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.

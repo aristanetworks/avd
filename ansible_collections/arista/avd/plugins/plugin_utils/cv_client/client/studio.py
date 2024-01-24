@@ -453,7 +453,7 @@ class StudioMixin:
     #     self: CVClient,
     #     workspace_id: str,
     #     device_inputs: list[tuple[str, str]],
-    #     timeout: float = 10.0,
+    #     timeout: float = 30.0,
     # ) -> list[TopologyInputKey]:
     #     """
     #     TODO: Once the topology studio inputs API is public, this function can be put in place.
