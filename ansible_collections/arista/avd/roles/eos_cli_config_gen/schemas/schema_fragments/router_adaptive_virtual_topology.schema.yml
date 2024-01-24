@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -77,7 +77,10 @@ keys:
       policies:
         type: list
         primary_key: name
-        description: A sequence of application profiles mapped to some virtual topologies.
+        description: |-
+          A sequence of application profiles mapped to some virtual topologies.
+
+          When `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index> in the list.
         items:
           type: dict
           keys:

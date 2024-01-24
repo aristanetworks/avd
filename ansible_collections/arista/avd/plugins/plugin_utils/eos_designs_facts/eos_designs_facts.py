@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -14,9 +14,10 @@ from .overlay import OverlayMixin
 from .short_esi import ShortEsiMixin
 from .uplinks import UplinksMixin
 from .vlans import VlansMixin
+from .wan import WanMixin
 
 
-class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksMixin, VlansMixin):
+class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin, UplinksMixin, VlansMixin):
     """
     `EosDesignsFacts` is based on `AvdFacts`, so make sure to read the description there first.
 

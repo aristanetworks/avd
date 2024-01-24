@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -26,13 +26,13 @@
     - converts
 
       ```md
-      * Fix(eos_designs): Fix schema for BGP peers to allow shutdown key by @ClausHolbechArista in https://github.com/aristanetworks/ansible-avd/pull/3100
+      * Fix(eos_designs): Fix schema for BGP peers to allow shutdown key by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3100
       ```
 
     - to
 
       ```md
-      - Fix(eos_designs) - Fix schema for BGP peers to allow shutdown key (https://github.com/aristanetworks/ansible-avd/pull/3100)
+      - Fix(eos_designs) - Fix schema for BGP peers to allow shutdown key (https://github.com/aristanetworks/avd/pull/3100)
       ```
 
 - Copy the fragment to `changelogs/fragments_backup` *before* generating the changelog

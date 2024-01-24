@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -67,7 +67,7 @@ See the section "Ansible Collection Plugins" on the menu to the left.
 
 ## Ask a question
 
-Support for the `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions).
+Support for the `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ### Official Arista support
 
@@ -77,8 +77,8 @@ AVD version 4.x releases with full support from Arista TAC. If your organization
 
 Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](https://avd.arista.com/stable/docs/contribution/overview.html) for additional details.
 
-You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problems or submit enhancements.
+You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit enhancements.
 
 ## License
 
-The project is published under [Apache 2.0 License](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/LICENSE)
+The project is published under [Apache 2.0 License](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/LICENSE)

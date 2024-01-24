@@ -13,8 +13,8 @@ VSCODE_CONTAINER = $(VSCODE_CONTAINER_NAME):$(VSCODE_DOCKER_TAG)
 # To change it: make vscode VSCODE_PORT=<port to use>
 VSCODE_PORT ?= 8080
 # Path to compose stack -- should not be changed
-COMPOSE_FILE ?= ansible-avd/development/docker-compose.yml
-COMPOSE_ENV_FILE ?= ansible-avd/development/docker-stack.env
+COMPOSE_FILE ?= avd/development/docker-compose.yml
+COMPOSE_ENV_FILE ?= avd/development/docker-stack.env
 # Option to pass custom requirements and custom ansible version to provision in container
 PIP_REQ ?=
 ANSIBLE_VERSION ?=
@@ -45,10 +45,10 @@ help: ## Display help message
 .PHONY: update
 update: ## Get latest version of AVD runner and MKDOCs server
 	docker pull $(CONTAINER_NAME):$(DOCKER_TAG) && \
-	docker-compose -f ansible-avd/development/docker-compose.yml pull
+	docker-compose -f avd/development/docker-compose.yml pull
 
 .PHONY: run
-run: ## Run ansible-avd container
+run: ## Run avd container
 	docker pull $(CONTAINER) && \
 	docker run --rm -it \
 		-e AVD_REQUIREMENTS=$(PIP_REQ) \
@@ -141,5 +141,5 @@ check-cvp-404: ## Check local 404 links for AVD documentation
 
 .PHONY: refresh
 refresh: ## Refresh Makefile with new version from AVD
-	cp ansible-avd/development/Makefile Makefile
+	cp avd/development/Makefile Makefile
 	@echo "Makefile updated from AVD repository"

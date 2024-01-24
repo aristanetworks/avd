@@ -6,7 +6,7 @@ on:
     branches:
       - devel
     paths:
-      - avd-containers/base/**
+      - containers/base/**
       - .github/workflows/container_build_template.yml
       - .github/workflows/container_build_base.yml
   workflow_dispatch:
@@ -15,7 +15,7 @@ on:
 
 jobs:
   build_base:
-    if: github.repository == 'aristanetworks/ansible-avd'
+    if: github.repository == 'aristanetworks/avd'
     uses: ./.github/workflows/container_build_template.yml
     strategy:
       matrix:

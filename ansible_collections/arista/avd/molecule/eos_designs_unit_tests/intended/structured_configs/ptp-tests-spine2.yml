@@ -1,6 +1,4 @@
 hostname: ptp-tests-spine2
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65200'
@@ -189,3 +187,5 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
+metadata:
+  platform: vEOS-LAB

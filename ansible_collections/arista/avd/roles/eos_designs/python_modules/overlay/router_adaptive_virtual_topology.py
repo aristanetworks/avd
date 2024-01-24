@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -28,13 +28,13 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
             router_adaptive_virtual_topology.update(
                 {
                     "region": {
-                        "name": self._wan_region["name"],
-                        "id": self._wan_region["id"],
+                        "name": self.shared_utils.wan_region["name"],
+                        "id": self.shared_utils.wan_region["id"],
                     },
-                    "zone": self._wan_zone,
+                    "zone": self.shared_utils.wan_zone,
                     "site": {
-                        "name": self._wan_site["name"],
-                        "id": self._wan_site["id"],
+                        "name": self.shared_utils.wan_site["name"],
+                        "id": self.shared_utils.wan_site["id"],
                     },
                 }
             )

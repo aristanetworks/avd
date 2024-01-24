@@ -1,8 +1,9 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
+from .application_traffic_recognition import ApplicationTrafficRecognitionMixin
 from .dps_interfaces import DpsInterfacesMixin
 from .eos_cli import EosCliMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
@@ -14,11 +15,14 @@ from .patch_panel import PatchPanelMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
 from .prefix_lists import PrefixListsMixin
 from .route_maps import RouteMapsMixin
+from .router_adaptive_virtual_topology import RouterAdaptiveVirtualTopologyMixin
 from .router_bgp import RouterBgpMixin
 from .router_isis import RouterIsisMixin
 from .router_multicast import RouterMulticastMixin
 from .router_ospf import RouterOspfMixin
+from .router_path_selection import RouterPathSelectionMixin
 from .router_pim_sparse_mode import RouterPimSparseModeMixin
+from .spanning_tree import SpanningTreeMixin
 from .standard_access_lists import StandardAccessListsMixin
 from .static_routes import StaticRoutesMixin
 from .struct_cfgs import StructCfgsMixin
@@ -31,6 +35,8 @@ from .vxlan_interface import VxlanInterfaceMixin
 
 class AvdStructuredConfigNetworkServices(
     AvdFacts,
+    ApplicationTrafficRecognitionMixin,
+    SpanningTreeMixin,
     PatchPanelMixin,
     VlansMixin,
     IpIgmpSnoopingMixin,
@@ -42,8 +48,10 @@ class AvdStructuredConfigNetworkServices(
     RouteMapsMixin,
     Ipv6StaticRoutesMixin,
     StaticRoutesMixin,
+    RouterAdaptiveVirtualTopologyMixin,
     RouterBgpMixin,
     RouterOspfMixin,
+    RouterPathSelectionMixin,
     DpsInterfacesMixin,
     VrfsMixin,
     EosCliMixin,

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -21,6 +21,7 @@ DEFAULT_NODE_TYPE_KEYS = {
             "type": "spine",
             "default_evpn_role": "server",
             "default_ptp_priority1": 20,
+            "cv_tags_topology_type": "spine",
         },
         {
             "key": "l3leaf",
@@ -34,6 +35,7 @@ DEFAULT_NODE_TYPE_KEYS = {
             },
             "vtep": True,
             "default_ptp_priority1": 30,
+            "cv_tags_topology_type": "leaf",
         },
         {
             "key": "l2leaf",
@@ -45,15 +47,18 @@ DEFAULT_NODE_TYPE_KEYS = {
             },
             "underlay_router": False,
             "uplink_type": "port-channel",
+            "cv_tags_topology_type": "leaf",
         },
         {
             "key": "super_spine",
             "type": "super-spine",
+            "cv_tags_topology_type": "core",
         },
         {
             "key": "overlay_controller",
             "type": "overlay-controller",
             "default_evpn_role": "server",
+            "cv_tags_topology_type": "spine",
         },
         {
             "key": "wan_edge",

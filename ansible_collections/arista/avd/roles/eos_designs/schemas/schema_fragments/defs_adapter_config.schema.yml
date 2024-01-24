@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -478,7 +478,17 @@ $defs:
                 type: str
                 valid_values:
                   - static
-                description: Currently only static mode is supported.
+                  - individual
+                description: |
+                  Either static or individual mode is supported.
+                  If the mode is set to "individual" the "individual.profile" setting must be defined.
+              individual:
+                type: dict
+                description: Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to "individual".
+                keys:
+                  profile:
+                    type: str
+                    description: Port-profile name to inherit configuration.
               timeout:
                 type: int
                 convert_types:

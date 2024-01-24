@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -357,7 +357,7 @@ $defs:
                   - str
                 description: |
                   Manually define the VLAN used on the MLAG pair for the iBGP session.
-                  By default this parameter is calculated using the following formula: <mlag_ibgp_peering_vrfs.base_vlan> + <vrf_id> - 1.
+                  By default this parameter is calculated using the following formula: `<mlag_ibgp_peering_vrfs.base_vlan>` + `<vrf_id>` - 1.
                 min: 1
                 max: 4096
               vtep_diagnostic:
@@ -703,6 +703,49 @@ $defs:
                       type: str
                       description: |
                         EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.
+              loopbacks:
+                documentation_options:
+                  table: network-services-vrfs-loopbacks-settings
+                type: list
+                description: |
+                  List of Loopback interfaces.
+                  This will create Loopback interfaces inside the VRF.
+                items:
+                  type: dict
+                  keys:
+                    node:
+                      type: str
+                      required: true
+                    loopback:
+                      type: int
+                      required: true
+                      min: 0
+                      max: 8191
+                    ip_address:
+                      type: str
+                      required: true
+                    description:
+                      type: str
+                    enabled:
+                      type: bool
+                      default: True
+                    ospf:
+                      type: dict
+                      description: OSPF interface configuration.
+                      keys:
+                        enabled:
+                          type: bool
+                          default: False
+                        area:
+                          type: str
+                          convert_types:
+                            - int
+                          description: OSPF area ID.
+                          default: "0"
+                    raw_eos_cli:
+                      type: str
+                      description: |
+                        EOS CLI rendered directly on the Loopback interface in the final EOS configuration.
               static_routes:
                 type: list
                 description: |
@@ -1040,6 +1083,13 @@ $defs:
                 type: bool
                 default: true
                 description: Extend this L2VLAN over VXLAN.
+              spanning_tree_priority:
+                type: int
+                convert_types:
+                  - str
+                description: |-
+                  Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.
+                  The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).
               evpn_vlan_bundle:
                 type: str
                 description: |

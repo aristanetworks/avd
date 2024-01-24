@@ -3,7 +3,7 @@
 title: Ansible Collection Role eos_valudate_state - Preview Integration with ANTA
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -12,7 +12,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 
 !!! warning
     eos_validate_state intergration with ANTA is in preview. Everything is subject to change.
-    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
+    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
 ## Overview
 
@@ -41,7 +41,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 
 ## Expected changes
 
-- You should expect faster execution, and if not please report on the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
+- You should expect faster execution, and if not please report on the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 - Hardware tests are now collapsed.
 - Some description of tests have been updated to be more precise.
 - Sorting of the test results is now done per device as opposed to per category.

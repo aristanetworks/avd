@@ -1,6 +1,4 @@
 hostname: SITE2-LSR2
-metadata:
-  platform: 7280SR
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -154,3 +152,5 @@ port_channel_interfaces:
     ldp:
       interface: true
       igp_sync: true
+metadata:
+  platform: 7280SR

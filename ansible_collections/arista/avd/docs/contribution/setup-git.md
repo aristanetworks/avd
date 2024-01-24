@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -16,15 +16,15 @@ In this setup, the Git repository will be used by Ansible as a collection. It's 
 
 ```shell
 # Clone repository
-git clone https://github.com/aristanetworks/ansible-avd.git
+git clone https://github.com/aristanetworks/avd.git
 
 # Move to git folder
-cd ansible-avd
+cd avd
 ```
 
 ### Update your `ansible.cfg`
 
-In your project, update your `ansible.cfg` file to point **collection_paths** to your local version of ansible-avd
+In your project, update your `ansible.cfg` file to point **collection_paths** to your local version of the `arista.avd` collection
 
 - Get the full path to your newly cloned AVD repository.
 
@@ -52,8 +52,8 @@ This approach uses an Ansible collection package built from the current Git vers
 ### Clone repository
 
 ```shell
-git clone https://github.com/aristanetworks/ansible-avd.git
-cd ansible-avd
+git clone https://github.com/aristanetworks/avd.git
+cd avd
 ```
 
 ### Build and install collection

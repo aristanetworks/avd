@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -35,12 +35,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "router_path_selection.path_groups.[].static_peers.[].name") | String |  |  |  | Name of the site. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_addresses</samp>](## "router_path_selection.path_groups.[].static_peers.[].ipv4_addresses") | List, items: String |  |  |  | Static IPv4 addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_path_selection.path_groups.[].static_peers.[].ipv4_addresses.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keepalive</samp>](## "router_path_selection.path_groups.[].keepalive") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto</samp>](## "router_path_selection.path_groups.[].keepalive.auto") | Boolean |  | `False` |  | Enable adaptive keepalive and feedback interval. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_path_selection.path_groups.[].keepalive.interval") | Integer |  |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;failure_threshold</samp>](## "router_path_selection.path_groups.[].keepalive.failure_threshold") | Integer |  |  | Min: 2<br>Max: 100 | Failure threshold in number of intervals. Required when `interval` is set. |
     | [<samp>&nbsp;&nbsp;load_balance_policies</samp>](## "router_path_selection.load_balance_policies") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.load_balance_policies.[].name") | String | Required, Unique |  |  | Load-balance policy name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "router_path_selection.load_balance_policies.[].lowest_hop_count") | Boolean |  |  |  | Prefer paths with lowest hop-count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "router_path_selection.load_balance_policies.[].jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "router_path_selection.load_balance_policies.[].latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "router_path_selection.load_balance_policies.[].loss_rate") | String |  |  | Pattern: ^\d+(\.\d{1,2})?$ | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00 % |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "router_path_selection.load_balance_policies.[].loss_rate") | String |  |  | Pattern: ^\d+(\.\d{1,2})?$ | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "router_path_selection.load_balance_policies.[].path_groups") | List, items: Dictionary |  |  |  | List of path-groups to use for this load balance policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.load_balance_policies.[].path_groups.[].name") | String | Required, Unique |  |  | Path-group name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "router_path_selection.load_balance_policies.[].path_groups.[].priority") | Integer |  |  | Min: 1<br>Max: 65535 | Priority for this path-group.<br>The EOS default value is 1. |
@@ -55,6 +59,9 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_path_selection.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_selection_policy</samp>](## "router_path_selection.vrfs.[].path_selection_policy") | String |  |  |  | DPS policy name to use for this VRF. |
+    | [<samp>&nbsp;&nbsp;tcp_mss_ceiling</samp>](## "router_path_selection.tcp_mss_ceiling") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "router_path_selection.tcp_mss_ceiling.ipv4_segment_size") | String |  |  |  | Segment Size for IPv4.<br>Can be an integer in the range 64-65515 or "auto".<br>"auto" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths<br>and multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "router_path_selection.tcp_mss_ceiling.direction") | String |  | `ingress` | Valid Values:<br>- <code>ingress</code> | Enforce on packets through DPS tunnel for a specific direction.<br>Only 'ingress' direction is supported. |
 
 === "YAML"
 
@@ -122,6 +129,16 @@
               # Static IPv4 addresses.
               ipv4_addresses:
                 - <str>
+          keepalive:
+
+            # Enable adaptive keepalive and feedback interval.
+            auto: <bool; default=False>
+
+            # Interval in milliseconds.
+            interval: <int; 50-60000>
+
+            # Failure threshold in number of intervals. Required when `interval` is set.
+            failure_threshold: <int; 2-100>
       load_balance_policies:
 
           # Load-balance policy name.
@@ -137,7 +154,7 @@
           latency: <int; 0-10000>
 
           # Loss Rate requirement in percentage for this load balance policy.
-          # Value between 0.00 and 100.00 %
+          # Value between 0.00 and 100.00.
           loss_rate: <str>
 
           # List of path-groups to use for this load balance policy.
@@ -172,4 +189,15 @@
 
           # DPS policy name to use for this VRF.
           path_selection_policy: <str>
+      tcp_mss_ceiling:
+
+        # Segment Size for IPv4.
+        # Can be an integer in the range 64-65515 or "auto".
+        # "auto" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths
+        # and multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
+        ipv4_segment_size: <str>
+
+        # Enforce on packets through DPS tunnel for a specific direction.
+        # Only 'ingress' direction is supported.
+        direction: <str; "ingress"; default="ingress">
     ```

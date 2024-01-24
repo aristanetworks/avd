@@ -23,6 +23,7 @@ port_channel_interfaces:
       session_tracker: ST2
     l2_mtu: 8000
     l2_mru: 8000
+    ip_verify_unicast_source_reachable_via: rx
     eos_cli: |
       comment
       Comment created from eos_cli under port_channel_interfaces.Port-Channel5
@@ -129,6 +130,10 @@ port_channel_interfaces:
       interval: 500
       min_rx: 500
       multiplier: 5
+      neighbor: 10.1.2.4
+      per_link:
+        enabled: true
+        rfc_7130: true
     spanning_tree_guard: root
 
   - name: Port-Channel20

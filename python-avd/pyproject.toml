@@ -21,7 +21,7 @@ requires-python = ">=3.10"
 
 [project.urls]
 homepage = "https://avd.arista.com"
-repository = "https://github.com/aristanetworks/ansible-avd"
+repository = "https://github.com/aristanetworks/avd"
 
 [build-system]
 requires = [
@@ -60,15 +60,43 @@ optional-dependencies = {"mdtoc" = { file = ["requirements-mdtoc.txt"] }}
 [tool.black]
 line-length = 160
 
-# Default in black is "false", but the code generator for Pydantic needs this forced.
-skip-string-normalization = false
-
-# Version is locked to 22.8.0 where preview features are all something we like.
-# If the version is changed later, we have to reconsider preview.
-preview = true
-
 [tool.isort]
 profile = "black"
 skip_gitignore = true
 line_length = 160
 known_third_party = ["pyavd"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 89
+include = [
+  "pyavd/*"
+]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Have to re-enable the standard pragma
+    "pragma: no cover",
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+    # Don't complain about TYPE_CHECKING blocks
+    "if TYPE_CHECKING:",
+    # Dont' complain about Jinja2 internalcode
+    # Note that except KeyError is a bit sad but this is the pattern
+    "except KeyError:",
+    "@internalcode",
+    "raise TemplateRuntimeError",
+    "^blocks = {}",
+    "^debug_info =.*",
+]

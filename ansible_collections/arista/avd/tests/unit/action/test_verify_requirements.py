@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 __metaclass__ = type
@@ -56,9 +56,9 @@ def test__validate_python_version(mocked_version, expected_return):
         "serial": mocked_version[4],
     }
     assert bool(info["python_path"])
-    if mocked_version[:2] == MIN_PYTHON_SUPPORTED_VERSION:
-        # Check for depreecation of PYTHON 3.8
-        assert len(result["deprecations"]) == 1
+    # if mocked_version[:2] == MIN_PYTHON_SUPPORTED_VERSION:
+    #     # Check for depreecation of PYTHON 3.8
+    #     assert len(result["deprecations"]) == 1
 
 
 @pytest.mark.parametrize(

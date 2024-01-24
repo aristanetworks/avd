@@ -1,12 +1,12 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
 
 # Arista Validated Designs
 
-![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
+![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/avd) ![License](https://img.shields.io/github/license/aristanetworks/avd)
 
 <center><img src="ansible_collections/arista/avd/media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
 
@@ -45,13 +45,13 @@ AVD Documentation:
 
 ## Ask a question
 
-Support for this `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions).
+Support for this `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ## Contributing
 
 Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](./ansible_collections/arista/avd/docs/contribution/overview.md) for additional details.
 
-You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problems or submit requests for enhancements.
+You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit requests for enhancements.
 
 ## License
 

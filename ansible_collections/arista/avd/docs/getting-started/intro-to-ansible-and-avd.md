@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -52,14 +52,14 @@ Ansible can run on almost anything, but in production scenarios, Ansible is typi
 ## What is the arista.avd collection?
 
 [Arista.avd](https://galaxy.ansible.com/arista/avd) is an Ansible collection for Arista Validated Designs. It's maintained by
-Arista and accepts third-party contributions on GitHub at [aristanetworks/ansible-avd](https://github.com/aristanetworks/ansible-avd).
+Arista and accepts third-party contributions on GitHub at [aristanetworks/avd](https://github.com/aristanetworks/avd).
 
 While Ansible is the core automation engine, AVD is an Ansible Collection described above. It provides roles, modules, and plugins
 that allows the user to generate and deploy best-practice configurations to a layer three leaf-spine network.
 
 ![Figure: Arista Leaf Spine topology](../_media/getting-started/ansible-avd.png)
 
-The illustration above shows the AVD collection as a box with a red background on the right-hand side.
+The illustration above shows the arista.avd collection as a box with a red background on the right-hand side.
 
 When designing an EVPN/VXLAN L3LS fabric, you don't need to spend hours reading through the [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides). Instead, the AVD collection will implement those rules and guidelines.
 

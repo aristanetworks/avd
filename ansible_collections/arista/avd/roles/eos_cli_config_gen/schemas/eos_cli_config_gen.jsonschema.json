@@ -1870,6 +1870,192 @@
       },
       "title": "DHCP Relay"
     },
+    "dhcp_servers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "type": "boolean",
+            "title": "Disabled"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF in which to configure the DHCP server, use `default` to indicate default VRF.",
+            "title": "VRF"
+          },
+          "dns_domain_name_ipv4": {
+            "type": "string",
+            "title": "DNS Domain Name IPv4"
+          },
+          "dns_domain_name_ipv6": {
+            "type": "string",
+            "title": "DNS Domain Name IPv6"
+          },
+          "ipv4_vendor_options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "vendor_id": {
+                  "type": "string",
+                  "title": "Vendor ID"
+                },
+                "sub_options": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 254,
+                        "title": "Code"
+                      },
+                      "string": {
+                        "type": "string",
+                        "description": "String value for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
+                        "title": "String"
+                      },
+                      "ipv4_address": {
+                        "type": "string",
+                        "description": "IPv4 address value for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
+                        "title": "IPv4 Address"
+                      },
+                      "array_ipv4_address": {
+                        "type": "array",
+                        "description": "Array of IPv4 addresses for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Array IPv4 Address"
+                      }
+                    },
+                    "required": [
+                      "code"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Sub Options"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "vendor_id"
+              ]
+            },
+            "title": "IPv4 Vendor Options"
+          },
+          "subnets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "subnet": {
+                  "type": "string",
+                  "title": "Subnet"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "default_gateway": {
+                  "type": "string",
+                  "title": "Default Gateway"
+                },
+                "dns_servers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "DNS Servers"
+                },
+                "ranges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string",
+                        "title": "Start"
+                      },
+                      "end": {
+                        "type": "string",
+                        "title": "End"
+                      }
+                    },
+                    "required": [
+                      "start",
+                      "end"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Ranges"
+                },
+                "lease_time": {
+                  "type": "object",
+                  "properties": {
+                    "days": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 2000,
+                      "title": "Days"
+                    },
+                    "hours": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 23,
+                      "title": "Hours"
+                    },
+                    "minutes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 59,
+                      "title": "Minutes"
+                    }
+                  },
+                  "required": [
+                    "days",
+                    "hours",
+                    "minutes"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Lease Time"
+                }
+              },
+              "required": [
+                "subnet"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Subnets"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "vrf"
+        ]
+      },
+      "title": "DHCP Servers"
+    },
     "dns_domain": {
       "type": "string",
       "description": "Domain Name",
@@ -2695,6 +2881,14 @@
               "type": "string"
             },
             "title": "IP Address Secondaries"
+          },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
           },
           "dhcp_client_accept_default_route": {
             "type": "boolean",
@@ -7070,7 +7264,7 @@
                       "aes128gcm128",
                       "aes128gcm64",
                       "aes256",
-                      "aes256gcm256",
+                      "aes256gcm128",
                       "null"
                     ],
                     "title": "Encryption"
@@ -7849,6 +8043,10 @@
           "ssh_key": {
             "type": "string",
             "title": "SSH Key"
+          },
+          "secondary_ssh_key": {
+            "type": "string",
+            "title": "Secondary SSH Key"
           },
           "shell": {
             "type": "string",
@@ -10013,11 +10211,393 @@
     },
     "metadata": {
       "type": "object",
-      "description": "Key only used for documentation or validation purposes",
+      "description": "The data under `metadata` is used for documentation, validation or integration purposes.\nIt will not affect the generated EOS configuration.",
       "properties": {
         "platform": {
           "type": "string",
           "title": "Platform"
+        },
+        "cv_tags": {
+          "type": "object",
+          "properties": {
+            "device_tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "value": {
+                    "type": "string",
+                    "title": "Value"
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Device Tags"
+            },
+            "interface_tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "interface": {
+                    "type": "string",
+                    "title": "Interface"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "value": {
+                          "type": "string",
+                          "title": "Value"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Tags"
+                  }
+                },
+                "required": [
+                  "interface"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Interface Tags"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Cv Tags"
+        },
+        "cv_pathfinder": {
+          "type": "object",
+          "description": "Metadata used for CV Pathfinder visualization on CloudVision",
+          "properties": {
+            "role": {
+              "type": "string",
+              "title": "Role"
+            },
+            "region": {
+              "type": "string",
+              "title": "Region"
+            },
+            "zone": {
+              "type": "string",
+              "title": "Zone"
+            },
+            "site": {
+              "type": "string",
+              "title": "Site"
+            },
+            "vtep_ip": {
+              "type": "string",
+              "title": "Vtep IP"
+            },
+            "ssl_profile": {
+              "type": "string",
+              "title": "SSL Profile"
+            },
+            "pathfinders": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "vtep_ip": {
+                    "type": "string",
+                    "title": "Vtep IP"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Pathfinders"
+            },
+            "interfaces": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "carrier": {
+                    "type": "string",
+                    "title": "Carrier"
+                  },
+                  "circuit_id": {
+                    "type": "string",
+                    "title": "Circuit ID"
+                  },
+                  "pathgroup": {
+                    "type": "string",
+                    "title": "Pathgroup"
+                  },
+                  "public_ip": {
+                    "type": "string",
+                    "title": "Public IP"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Interfaces"
+            },
+            "pathgroups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "carriers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Carriers"
+                  },
+                  "imported_carriers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Imported Carriers"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Pathgroups"
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "title": "ID"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "zones": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "title": "ID"
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "sites": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "title": "ID"
+                              },
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "location": {
+                                "type": "object",
+                                "properties": {
+                                  "address": {
+                                    "type": "string",
+                                    "title": "Address"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Location"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Sites"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Zones"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Regions"
+            },
+            "vrfs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "vni": {
+                    "type": "integer",
+                    "title": "Vni"
+                  },
+                  "avts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "constraints": {
+                          "type": "object",
+                          "properties": {
+                            "jitter": {
+                              "type": "integer",
+                              "title": "Jitter"
+                            },
+                            "latency": {
+                              "type": "integer",
+                              "title": "Latency"
+                            },
+                            "lossrate": {
+                              "type": "string",
+                              "title": "Lossrate"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Constraints"
+                        },
+                        "description": {
+                          "type": "string",
+                          "title": "Description"
+                        },
+                        "id": {
+                          "type": "integer",
+                          "title": "ID"
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "pathgroups": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "preference": {
+                                "type": "string",
+                                "title": "Preference"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Pathgroups"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Avts"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "VRFs"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Cv Pathfinder"
         }
       },
       "additionalProperties": false,
@@ -11692,6 +12272,29 @@
                 "minimum": 3,
                 "maximum": 50,
                 "title": "Multiplier"
+              },
+              "neighbor": {
+                "type": "string",
+                "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch.",
+                "title": "Neighbor"
+              },
+              "per_link": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "rfc_7130": {
+                    "type": "boolean",
+                    "title": "Rfc 7130"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Per Link"
               }
             },
             "additionalProperties": false,
@@ -12246,6 +12849,14 @@
             "type": "string",
             "description": "IPv4 address/mask",
             "title": "IP Address"
+          },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
           },
           "ip_nat": {
             "type": "object",
@@ -13980,6 +14591,11 @@
             "^_.+$": {}
           },
           "title": "CPU"
+        },
+        "tx_latency": {
+          "type": "boolean",
+          "description": "Enable tx-latency mode",
+          "title": "TX Latency"
         }
       },
       "required": [
@@ -14433,7 +15049,7 @@
         },
         "policies": {
           "type": "array",
-          "description": "A sequence of application profiles mapped to some virtual topologies.",
+          "description": "A sequence of application profiles mapped to some virtual topologies.\n\nWhen `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index> in the list.",
           "items": {
             "type": "object",
             "properties": {
@@ -14560,6 +15176,11 @@
           "description": "Rate in milliseconds",
           "title": "Interval"
         },
+        "local_address": {
+          "type": "string",
+          "description": "Configure BFD local IP/IPv6 address",
+          "title": "Local Address"
+        },
         "min_rx": {
           "type": "integer",
           "description": "Rate in milliseconds",
@@ -14596,6 +15217,17 @@
             "^_.+$": {}
           },
           "title": "Multihop"
+        },
+        "session_snapshot_interval": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600,
+          "description": "Interval in seconds.\nIntervals below 10 are considered \"dangerous\" on EOS and must have `session_snapshot_interval_dangerous` set to `true`.",
+          "title": "Session Snapshot Interval"
+        },
+        "session_snapshot_interval_dangerous": {
+          "type": "boolean",
+          "title": "Session Snapshot Interval Dangerous"
         },
         "sbfd": {
           "type": "object",
@@ -15058,7 +15690,44 @@
               },
               "bfd": {
                 "type": "boolean",
+                "description": "Enable BFD.",
                 "title": "BFD"
+              },
+              "bfd_timers": {
+                "type": "object",
+                "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Interval in milliseconds.",
+                    "title": "Interval"
+                  },
+                  "min_rx": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Rate in milliseconds.",
+                    "title": "Min RX"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "minimum": 3,
+                    "maximum": 50,
+                    "title": "Multiplier"
+                  }
+                },
+                "required": [
+                  "interval",
+                  "min_rx",
+                  "multiplier"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BFD Timers"
               },
               "ebgp_multihop": {
                 "type": "integer",
@@ -15211,6 +15880,13 @@
               "session_tracker": {
                 "type": "string",
                 "title": "Session Tracker"
+              },
+              "ttl_maximum_hops": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 254,
+                "description": "Maximum number of hops.",
+                "title": "TTL Maximum Hops"
               }
             },
             "additionalProperties": false,
@@ -15299,7 +15975,44 @@
               },
               "bfd": {
                 "type": "boolean",
+                "description": "Enable BFD.",
                 "title": "BFD"
+              },
+              "bfd_timers": {
+                "type": "object",
+                "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Interval in milliseconds.",
+                    "title": "Interval"
+                  },
+                  "min_rx": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Rate in milliseconds.",
+                    "title": "Min RX"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "minimum": 3,
+                    "maximum": 50,
+                    "title": "Multiplier"
+                  }
+                },
+                "required": [
+                  "interval",
+                  "min_rx",
+                  "multiplier"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BFD Timers"
               },
               "weight": {
                 "type": "integer",
@@ -15478,6 +16191,13 @@
               "session_tracker": {
                 "type": "string",
                 "title": "Session Tracker"
+              },
+              "ttl_maximum_hops": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 254,
+                "description": "Maximum number of hops.",
+                "title": "TTL Maximum Hops"
               }
             },
             "additionalProperties": false,
@@ -15551,6 +16271,16 @@
               "as_set": {
                 "type": "boolean",
                 "title": "As Set"
+              },
+              "advertise_map": {
+                "type": "string",
+                "description": "Route-map name",
+                "title": "Advertise Map"
+              },
+              "supress_map": {
+                "type": "string",
+                "description": "Route-map name",
+                "title": "Supress Map"
               },
               "summary_only": {
                 "type": "boolean",
@@ -18266,7 +18996,44 @@
                     },
                     "bfd": {
                       "type": "boolean",
+                      "description": "Enable BFD.",
                       "title": "BFD"
+                    },
+                    "bfd_timers": {
+                      "type": "object",
+                      "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                      "properties": {
+                        "interval": {
+                          "type": "integer",
+                          "minimum": 50,
+                          "maximum": 60000,
+                          "description": "Interval in milliseconds.",
+                          "title": "Interval"
+                        },
+                        "min_rx": {
+                          "type": "integer",
+                          "minimum": 50,
+                          "maximum": 60000,
+                          "description": "Rate in milliseconds.",
+                          "title": "Min RX"
+                        },
+                        "multiplier": {
+                          "type": "integer",
+                          "minimum": 3,
+                          "maximum": 50,
+                          "title": "Multiplier"
+                        }
+                      },
+                      "required": [
+                        "interval",
+                        "min_rx",
+                        "multiplier"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "BFD Timers"
                     },
                     "timers": {
                       "type": "string",
@@ -18474,6 +19241,16 @@
                     "as_set": {
                       "type": "boolean",
                       "title": "As Set"
+                    },
+                    "advertise_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Advertise Map"
+                    },
+                    "supress_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Supress Map"
                     },
                     "summary_only": {
                       "type": "boolean",
@@ -21271,6 +22048,36 @@
                   ]
                 },
                 "title": "Static Peers"
+              },
+              "keepalive": {
+                "type": "object",
+                "properties": {
+                  "auto": {
+                    "type": "boolean",
+                    "description": "Enable adaptive keepalive and feedback interval.",
+                    "default": false,
+                    "title": "Auto"
+                  },
+                  "interval": {
+                    "type": "integer",
+                    "description": "Interval in milliseconds.",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "title": "Interval"
+                  },
+                  "failure_threshold": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "maximum": 100,
+                    "description": "Failure threshold in number of intervals. Required when `interval` is set.",
+                    "title": "Failure Threshold"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Keepalive"
               }
             },
             "additionalProperties": false,
@@ -21314,7 +22121,7 @@
               },
               "loss_rate": {
                 "type": "string",
-                "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00 %",
+                "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
                 "pattern": "^\\d+(\\.\\d{1,2})?$",
                 "title": "Loss Rate"
               },
@@ -21452,6 +22259,30 @@
             ]
           },
           "title": "VRFs"
+        },
+        "tcp_mss_ceiling": {
+          "type": "object",
+          "properties": {
+            "ipv4_segment_size": {
+              "type": "string",
+              "description": "Segment Size for IPv4.\nCan be an integer in the range 64-65515 or \"auto\".\n\"auto\" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths\nand multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).",
+              "title": "IPv4 Segment Size"
+            },
+            "direction": {
+              "type": "string",
+              "enum": [
+                "ingress"
+              ],
+              "default": "ingress",
+              "description": "Enforce on packets through DPS tunnel for a specific direction.\nOnly 'ingress' direction is supported.",
+              "title": "Direction"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "TCP Mss Ceiling"
         }
       },
       "additionalProperties": false,
@@ -21889,6 +22720,10 @@
         "sample": {
           "type": "integer",
           "title": "Sample"
+        },
+        "sample_input_subinterface": {
+          "type": "boolean",
+          "title": "Sample Input Subinterface"
         },
         "dangerous": {
           "type": "boolean",
@@ -23870,6 +24705,12 @@
       },
       "title": "Traffic Policies"
     },
+    "transceiver_qsfp_default_mode_4x10": {
+      "type": "boolean",
+      "default": true,
+      "description": "On all front panel ports which support this feature, the following global configuration command changes the QSFP mode from 40G to 4x10G (default). When set to false the command reverts the default QSFP mode back to 40G.",
+      "title": "Transceiver Qsfp Default Mode 4X10"
+    },
     "tunnel_interfaces": {
       "type": "array",
       "items": {
@@ -24108,6 +24949,14 @@
               "description": "IPv4_address/Mask"
             },
             "title": "IP Address Virtual Secondaries"
+          },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
           },
           "ip_igmp": {
             "type": "boolean",

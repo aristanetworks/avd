@@ -1,6 +1,4 @@
 hostname: SITE3-LER1
-metadata:
-  platform: 7280SR3
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -85,3 +83,5 @@ mpls:
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:00
+metadata:
+  platform: 7280SR3

@@ -1,6 +1,4 @@
 hostname: dc2-leaf2c
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -101,3 +99,5 @@ vlans:
   tenant: TENANT1
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-lab

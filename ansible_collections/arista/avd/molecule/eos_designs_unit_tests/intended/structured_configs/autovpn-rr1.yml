@@ -79,6 +79,13 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: dhcp
+  shutdown: false
+  type: routed
+  dhcp_client_accept_default_route: true
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -107,19 +114,82 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_path_selection:
+  path_groups:
+  - name: INET
+    id: 101
+    local_interfaces:
+    - name: Ethernet1
+    static_peers:
+    - router_ip: 192.168.31.2
+      name: autovpn-rr2
+      ipv4_addresses:
+      - 10.8.8.8
+    ipsec_profile: AUTOVPN
+  peer_dynamic_source: stun
   load_balance_policies:
-  - name: LBPOLICY
+  - name: LB-CONTROL-PLANE-PROFILE
+    path_groups:
+    - name: INET
+  - name: LB-PROD-AVT-POLICY-VOICE
+    path_groups:
+    - name: INET
+  - name: LB-PROD-AVT-POLICY-VIDEO
+    path_groups:
+    - name: INET
+  - name: LB-PROD-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
+  - name: LB-DEFAULT-AVT-POLICY-IT
+    path_groups:
+    - name: MPLS
+    - name: INET
+      priority: 2
   policies:
-  - name: dps-policy-default
+  - name: PROD-AVT-POLICY
+    rules:
+    - id: 10
+      application_profile: VOICE
+      load_balance: LB-PROD-AVT-POLICY-VOICE
+    - id: 20
+      application_profile: VIDEO
+      load_balance: LB-PROD-AVT-POLICY-VIDEO
     default_match:
-      load_balance: LBPOLICY
+      load_balance: LB-PROD-AVT-POLICY-DEFAULT
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    rules:
+    - id: 10
+      application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      load_balance: LB-CONTROL-PLANE-PROFILE
+    - id: 20
+      application_profile: IT
+      load_balance: LB-DEFAULT-AVT-POLICY-IT
   vrfs:
   - name: default
-    path_selection_policy: dps-policy-default
-  peer_dynamic_source: stun
+    path_selection_policy: DEFAULT-AVT-POLICY-WITH-CP
+  - name: PROD
+    path_selection_policy: PROD-AVT-POLICY
 stun:
   server:
-    local_interfaces: []
+    local_interfaces:
+    - Ethernet1
+application_traffic_recognition:
+  application_profiles:
+  - name: VOICE
+  - name: VIDEO
+  - name: IT
+  - name: CONTROL-PLANE-APPLICATION-PROFILE
+    applications:
+    - name: CONTROL-PLANE-APPLICATION
+  applications:
+    ipv4_applications:
+    - name: CONTROL-PLANE-APPLICATION
+      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+  field_sets:
+    ipv4_prefixes:
+    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+      prefix_values:
+      - 192.168.31.2/32
+      - 192.168.30.0/24
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

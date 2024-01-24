@@ -104,6 +104,21 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 10.9.9.9/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 172.19.9.9/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -160,18 +175,219 @@ ip_security:
     mode: transport
 router_adaptive_virtual_topology:
   topology_role: pathfinder
+  profiles:
+  - name: CONTROL-PLANE-PROFILE
+    load_balance_policy: LB-CONTROL-PLANE-PROFILE
+  - name: PROD-AVT-POLICY-VOICE
+    load_balance_policy: LB-PROD-AVT-POLICY-VOICE
+  - name: PROD-AVT-POLICY-VIDEO
+    load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
+  - name: PROD-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
+  - name: DEFAULT-AVT-POLICY-VIDEO
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
+  - name: DEFAULT-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
+  - name: TRANSIT-AVT-POLICY-VOICE
+    load_balance_policy: LB-TRANSIT-AVT-POLICY-VOICE
+  - name: TRANSIT-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-TRANSIT-AVT-POLICY-DEFAULT
+  vrfs:
+  - name: default
+    policy: DEFAULT-AVT-POLICY-WITH-CP
+    profiles:
+    - name: CONTROL-PLANE-PROFILE
+      id: 254
+    - name: DEFAULT-AVT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-AVT-POLICY-DEFAULT
+      id: 1
+  - name: PROD
+    policy: PROD-AVT-POLICY
+    profiles:
+    - name: PROD-AVT-POLICY-VOICE
+      id: 2
+    - name: PROD-AVT-POLICY-VIDEO
+      id: 4
+    - name: PROD-AVT-POLICY-DEFAULT
+      id: 1
+  - name: IT
+    policy: DEFAULT-AVT-POLICY
+    profiles:
+    - name: DEFAULT-AVT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-AVT-POLICY-DEFAULT
+      id: 1
+  - name: TRANSIT
+    policy: TRANSIT-AVT-POLICY
+    profiles:
+    - name: TRANSIT-AVT-POLICY-VOICE
+      id: 42
+    - name: TRANSIT-AVT-POLICY-DEFAULT
+      id: 1
+  policies:
+  - name: PROD-AVT-POLICY
+    matches:
+    - application_profile: VOICE
+      avt_profile: PROD-AVT-POLICY-VOICE
+    - application_profile: VIDEO
+      avt_profile: PROD-AVT-POLICY-VIDEO
+    - application_profile: default
+      avt_profile: PROD-AVT-POLICY-DEFAULT
+  - name: DEFAULT-AVT-POLICY
+    matches:
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-AVT-POLICY-VIDEO
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
+  - name: TRANSIT-AVT-POLICY
+    matches:
+    - application_profile: VOICE
+      avt_profile: TRANSIT-AVT-POLICY-VOICE
+    - application_profile: default
+      avt_profile: TRANSIT-AVT-POLICY-DEFAULT
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    matches:
+    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-AVT-POLICY-VIDEO
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 router_path_selection:
-  load_balance_policies:
-  - name: LBPOLICY
+  path_groups:
+  - name: INET
+    id: 101
+    local_interfaces:
+    - name: Ethernet1
+    static_peers:
+    - router_ip: 192.168.44.2
+      name: cv-pathfinder-pathfinder1
+      ipv4_addresses:
+      - 10.8.8.8
+    - router_ip: 6.6.6.6
+      name: cv-pathfinder-pathfinder3
+      ipv4_addresses:
+      - 10.50.50.50
+    ipsec_profile: CP-PROFILE
+  - name: MPLS
+    id: 100
+    local_interfaces:
+    - name: Ethernet2
+    static_peers:
+    - router_ip: 6.6.6.6
+      name: cv-pathfinder-pathfinder3
+      ipv4_addresses:
+      - 172.17.17.17
   peer_dynamic_source: stun
+  load_balance_policies:
+  - name: LB-CONTROL-PLANE-PROFILE
+    path_groups:
+    - name: INET
+    - name: MPLS
+  - name: LB-PROD-AVT-POLICY-VOICE
+    path_groups:
+    - name: MPLS
+    - name: INET
+      priority: 2
+    jitter: 42
+  - name: LB-PROD-AVT-POLICY-VIDEO
+    path_groups:
+    - name: MPLS
+    - name: LTE
+    - name: INET
+      priority: 2
+    loss_rate: '42.0'
+  - name: LB-PROD-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
+    - name: MPLS
+      priority: 2
+  - name: LB-DEFAULT-AVT-POLICY-VIDEO
+    path_groups:
+    - name: MPLS
+    - name: INET
+  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
+    - name: Equinix
+    - name: MPLS
+      priority: 42
+  - name: LB-TRANSIT-AVT-POLICY-VOICE
+    path_groups:
+    - name: MPLS
+    - name: INET
+      priority: 2
+  - name: LB-TRANSIT-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
+    - name: MPLS
+      priority: 2
 stun:
   server:
-    local_interfaces: []
+    local_interfaces:
+    - Ethernet1
+    - Ethernet2
+application_traffic_recognition:
+  application_profiles:
+  - name: VOICE
+    applications:
+    - name: CUSTOM-VOICE-APPLICATION
+  - name: VIDEO
+    categories:
+    - name: VIDEO1
+    applications:
+    - name: CUSTOM-APPLICATION-1
+    - name: skype
+  - name: CONTROL-PLANE-APPLICATION-PROFILE
+    applications:
+    - name: CONTROL-PLANE-APPLICATION
+  categories:
+  - name: VIDEO1
+    applications:
+    - name: CUSTOM-APPLICATION-2
+    - name: microsoft-teams
+  applications:
+    ipv4_applications:
+    - name: CUSTOM-APPLICATION-1
+      protocols:
+      - tcp
+      src_prefix_set_name: CUSTOM-SRC-PREFIX-1
+      dest_prefix_set_name: CUSTOM-DEST-PREFIX-1
+    - name: CUSTOM-APPLICATION-2
+      protocols:
+      - tcp
+      tcp_src_port_set_name: TCP-SRC-2
+      tcp_dest_port_set_name: TCP-DEST-2
+    - name: CONTROL-PLANE-APPLICATION
+      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+  field_sets:
+    l4_ports:
+    - name: TCP-SRC-2
+      port_values:
+      - '42'
+    - name: TCP-DEST-2
+      port_values:
+      - '666'
+      - '777'
+    ipv4_prefixes:
+    - name: CUSTOM-SRC-PREFIX-1
+      prefix_values:
+      - 42.42.42.0/24
+    - name: CUSTOM-DEST-PREFIX-1
+      prefix_values:
+      - 6.6.6.0/24
+    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+      prefix_values:
+      - 192.168.44.2/32
+      - 6.6.6.6/32
+      - 192.168.42.0/24
+      - 192.168.43.0/24
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -188,3 +404,80 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: pathfinder
+    - name: PathfinderSet
+      value: PATHFINDERS
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: SFR
+      - name: Circuit
+        value: '999'
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: ATT-MPLS
+      - name: Circuit
+        value: '10999'
+  cv_pathfinder:
+    role: pathfinder
+    vtep_ip: 192.168.44.3
+    interfaces:
+    - name: Ethernet1
+      carrier: SFR
+      pathgroup: INET
+      public_ip: 10.9.9.9
+    - name: Ethernet2
+      carrier: ATT-MPLS
+      pathgroup: MPLS
+      public_ip: 172.19.9.9
+    pathgroups:
+    - name: MPLS
+      carriers:
+      - name: Colt
+      - name: ATT-MPLS
+    - name: INET
+      carriers:
+      - name: Comcast
+      - name: ATT
+      - name: Bouygues_Telecom
+      - name: SFR
+      - name: Orange
+      - name: Another-ISP
+    - name: LTE
+      carriers:
+      - name: Comcast-5G
+    - name: Equinix
+    - name: Satellite
+      carriers:
+      - name: Inmrasat
+    regions:
+    - name: AVD_Land_West
+      id: 42
+      zones:
+      - name: DEFAULT-ZONE
+        id: 1
+        sites:
+        - name: Site422
+          id: 422
+          location:
+            address: Somewhere
+    - name: AVD_Land_East
+      id: 43
+      zones:
+      - name: DEFAULT-ZONE
+        id: 1
+        sites:
+        - name: Site511
+          id: 511
+        - name: Site512
+          id: 512

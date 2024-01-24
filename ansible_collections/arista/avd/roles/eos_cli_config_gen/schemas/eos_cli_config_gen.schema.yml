@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 $id: eos_cli_config_gen
@@ -1327,6 +1327,130 @@ keys:
         type: bool
       mlag_peerlink_requests_disabled:
         type: bool
+  dhcp_servers:
+    type: list
+    primary_key: vrf
+    items:
+      type: dict
+      keys:
+        disabled:
+          type: bool
+        vrf:
+          type: str
+          description: VRF in which to configure the DHCP server, use `default` to
+            indicate default VRF.
+          convert_types:
+          - int
+        dns_domain_name_ipv4:
+          type: str
+        dns_domain_name_ipv6:
+          type: str
+        ipv4_vendor_options:
+          type: list
+          primary_key: vendor_id
+          items:
+            type: dict
+            keys:
+              vendor_id:
+                type: str
+                convert_types:
+                - int
+              sub_options:
+                type: list
+                primary_key: code
+                items:
+                  type: dict
+                  keys:
+                    code:
+                      type: int
+                      required: true
+                      min: 1
+                      max: 254
+                      convert_types:
+                      - str
+                    string:
+                      type: str
+                      description: 'String value for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
+                    ipv4_address:
+                      type: str
+                      description: 'IPv4 address value for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
+                    array_ipv4_address:
+                      type: list
+                      description: 'Array of IPv4 addresses for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
+                      items:
+                        type: str
+        subnets:
+          type: list
+          primary_key: subnet
+          items:
+            type: dict
+            keys:
+              subnet:
+                type: str
+                required: true
+              name:
+                type: str
+                convert_types:
+                - int
+              default_gateway:
+                type: str
+              dns_servers:
+                type: list
+                items:
+                  type: str
+              ranges:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    start:
+                      type: str
+                      required: true
+                    end:
+                      type: str
+                      required: true
+              lease_time:
+                type: dict
+                keys:
+                  days:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 2000
+                    convert_types:
+                    - str
+                  hours:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 23
+                    convert_types:
+                    - str
+                  minutes:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 59
+                    convert_types:
+                    - str
   dns_domain:
     type: str
     description: Domain Name
@@ -1850,6 +1974,11 @@ keys:
           type: list
           items:
             type: str
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+          - any
+          - rx
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP
@@ -4167,7 +4296,7 @@ keys:
                   - aes128gcm128
                   - aes128gcm64
                   - aes256
-                  - aes256gcm256
+                  - aes256gcm128
                   - 'null'
             pfs_dh_group:
               type: int
@@ -4638,6 +4767,8 @@ keys:
 
             '
         ssh_key:
+          type: str
+        secondary_ssh_key:
           type: str
         shell:
           type: str
@@ -5906,10 +6037,175 @@ keys:
               description: IP or hostname
   metadata:
     type: dict
-    description: Key only used for documentation or validation purposes
+    description: 'The data under `metadata` is used for documentation, validation
+      or integration purposes.
+
+      It will not affect the generated EOS configuration.'
     keys:
       platform:
         type: str
+      cv_tags:
+        type: dict
+        keys:
+          device_tags:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  required: true
+                value:
+                  type: str
+                  required: true
+          interface_tags:
+            type: list
+            items:
+              type: dict
+              keys:
+                interface:
+                  type: str
+                  required: true
+                tags:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        required: true
+                      value:
+                        type: str
+                        required: true
+      cv_pathfinder:
+        type: dict
+        description: Metadata used for CV Pathfinder visualization on CloudVision
+        keys:
+          role:
+            type: str
+          region:
+            type: str
+          zone:
+            type: str
+          site:
+            type: str
+          vtep_ip:
+            type: str
+          ssl_profile:
+            type: str
+          pathfinders:
+            type: list
+            items:
+              type: dict
+              keys:
+                vtep_ip:
+                  type: str
+          interfaces:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                carrier:
+                  type: str
+                circuit_id:
+                  type: str
+                pathgroup:
+                  type: str
+                public_ip:
+                  type: str
+          pathgroups:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                carriers:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                imported_carriers:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+          regions:
+            type: list
+            items:
+              type: dict
+              keys:
+                id:
+                  type: int
+                name:
+                  type: str
+                zones:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      id:
+                        type: int
+                      name:
+                        type: str
+                      sites:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            id:
+                              type: int
+                            name:
+                              type: str
+                            location:
+                              type: dict
+                              keys:
+                                address:
+                                  type: str
+          vrfs:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                vni:
+                  type: int
+                avts:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      constraints:
+                        type: dict
+                        keys:
+                          jitter:
+                            type: int
+                          latency:
+                            type: int
+                          lossrate:
+                            type: str
+                      description:
+                        type: str
+                      id:
+                        type: int
+                      name:
+                        type: str
+                      pathgroups:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            name:
+                              type: str
+                            preference:
+                              type: str
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -6980,6 +7276,18 @@ keys:
               - str
               min: 3
               max: 50
+            neighbor:
+              type: str
+              description: IPv4 or IPv6 address. When the Port-channel is a L2 interface,
+                a local L3 BFD address (router_bfd.local_address) has to be defined
+                globally on the switch.
+            per_link:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                rfc_7130:
+                  type: bool
         service_policy:
           type: dict
           keys:
@@ -7330,6 +7638,11 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+          - any
+          - rx
         ip_nat:
           type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
@@ -8339,6 +8652,9 @@ keys:
                 type: int
                 convert_types:
                 - str
+      tx_latency:
+        type: bool
+        description: Enable tx-latency mode
   queue_monitor_streaming:
     type: dict
     keys:
@@ -8605,7 +8921,11 @@ keys:
       policies:
         type: list
         primary_key: name
-        description: A sequence of application profiles mapped to some virtual topologies.
+        description: 'A sequence of application profiles mapped to some virtual topologies.
+
+
+          When `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index>
+          in the list.'
         items:
           type: dict
           keys:
@@ -8673,6 +8993,9 @@ keys:
       interval:
         type: int
         description: Rate in milliseconds
+      local_address:
+        type: str
+        description: Configure BFD local IP/IPv6 address
       min_rx:
         type: int
         description: Rate in milliseconds
@@ -8693,6 +9016,18 @@ keys:
             type: int
             min: 3
             max: 50
+      session_snapshot_interval:
+        type: int
+        convert_types:
+        - str
+        min: 1
+        max: 3600
+        description: 'Interval in seconds.
+
+          Intervals below 10 are considered "dangerous" on EOS and must have `session_snapshot_interval_dangerous`
+          set to `true`.'
+      session_snapshot_interval_dangerous:
+        type: bool
       sbfd:
         type: dict
         keys:
@@ -8988,6 +9323,35 @@ keys:
               type: bool
             bfd:
               type: bool
+              description: Enable BFD.
+            bfd_timers:
+              type: dict
+              description: 'Override default BFD timers. BFD must be enabled with
+                `bfd: true`.'
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  required: true
+                  convert_types:
+                  - str
             ebgp_multihop:
               type: int
               min: 1
@@ -9094,6 +9458,13 @@ keys:
                 new_key: listen_ranges
             session_tracker:
               type: str
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbors:
         type: list
         primary_key: ip_address
@@ -9144,6 +9515,35 @@ keys:
               description: Source Interface
             bfd:
               type: bool
+              description: Enable BFD.
+            bfd_timers:
+              type: dict
+              description: 'Override default BFD timers. BFD must be enabled with
+                `bfd: true`.'
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  required: true
+                  convert_types:
+                  - str
             weight:
               type: int
               min: 0
@@ -9248,6 +9648,13 @@ keys:
                   type: bool
             session_tracker:
               type: str
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbor_interfaces:
         type: list
         primary_key: name
@@ -9289,6 +9696,12 @@ keys:
               type: bool
             as_set:
               type: bool
+            advertise_map:
+              type: str
+              description: Route-map name
+            supress_map:
+              type: str
+              description: Route-map name
             summary_only:
               type: bool
             attribute_map:
@@ -10687,6 +11100,35 @@ keys:
                     type: bool
                   bfd:
                     type: bool
+                    description: Enable BFD.
+                  bfd_timers:
+                    type: dict
+                    description: 'Override default BFD timers. BFD must be enabled
+                      with `bfd: true`.'
+                    keys:
+                      interval:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 50
+                        max: 60000
+                        required: true
+                        description: Interval in milliseconds.
+                      min_rx:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 50
+                        max: 60000
+                        required: true
+                        description: Rate in milliseconds.
+                      multiplier:
+                        type: int
+                        min: 3
+                        max: 50
+                        convert_types:
+                        - str
+                        required: true
                   timers:
                     type: str
                     description: BGP Keepalive and Hold Timer values in seconds as
@@ -10819,6 +11261,12 @@ keys:
                     type: bool
                   as_set:
                     type: bool
+                  advertise_map:
+                    type: str
+                    description: Route-map name
+                  supress_map:
+                    type: str
+                    description: Route-map name
                   summary_only:
                     type: bool
                   attribute_map:
@@ -12293,6 +12741,28 @@ keys:
                     description: Static IPv4 addresses.
                     items:
                       type: str
+            keepalive:
+              type: dict
+              keys:
+                auto:
+                  type: bool
+                  description: Enable adaptive keepalive and feedback interval.
+                  default: false
+                interval:
+                  type: int
+                  description: Interval in milliseconds.
+                  min: 50
+                  max: 60000
+                  convert_types:
+                  - str
+                failure_threshold:
+                  type: int
+                  min: 2
+                  max: 100
+                  description: Failure threshold in number of intervals. Required
+                    when `interval` is set.
+                  convert_types:
+                  - str
       load_balance_policies:
         type: list
         primary_key: name
@@ -12325,7 +12795,7 @@ keys:
               description: 'Loss Rate requirement in percentage for this load balance
                 policy.
 
-                Value between 0.00 and 100.00 %'
+                Value between 0.00 and 100.00.'
               convert_types:
               - int
               - float
@@ -12395,6 +12865,30 @@ keys:
             path_selection_policy:
               type: str
               description: DPS policy name to use for this VRF.
+      tcp_mss_ceiling:
+        type: dict
+        keys:
+          ipv4_segment_size:
+            type: str
+            description: 'Segment Size for IPv4.
+
+              Can be an integer in the range 64-65515 or "auto".
+
+              "auto" will enable auto-discovery which clamps the TCP MSS value to
+              the minimum of all the direct paths
+
+              and multi-hop path MTU towards a remote VTEP (minus 40bytes to account
+              for IP + TCP header).'
+            convert_types:
+            - int
+          direction:
+            type: str
+            valid_values:
+            - ingress
+            default: ingress
+            description: 'Enforce on packets through DPS tunnel for a specific direction.
+
+              Only ''ingress'' direction is supported.'
   router_pim_sparse_mode:
     type: dict
     keys:
@@ -12626,6 +13120,8 @@ keys:
         type: int
         convert_types:
         - str
+      sample_input_subinterface:
+        type: bool
       dangerous:
         type: bool
       polling_interval:
@@ -13813,6 +14309,12 @@ keys:
                     log:
                       type: bool
                       description: Only supported when action is set to drop
+  transceiver_qsfp_default_mode_4x10:
+    type: bool
+    default: true
+    description: On all front panel ports which support this feature, the following
+      global configuration command changes the QSFP mode from 40G to 4x10G (default).
+      When set to false the command reverts the default QSFP mode back to 40G.
   tunnel_interfaces:
     type: list
     primary_key: name
@@ -13978,6 +14480,11 @@ keys:
           items:
             type: str
             description: IPv4_address/Mask
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+          - any
+          - rx
         ip_igmp:
           type: bool
         ip_igmp_version:

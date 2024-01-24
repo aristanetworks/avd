@@ -3,7 +3,7 @@
 title: arista.avd.is_in_filter
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -25,8 +25,8 @@ The filter matches if any filter strings are found in the input hostname.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None |  | One hostname to match with <em>hostname\_filter</em>. |
-| hostname_filter | any | True | None |  | Filter as a list of strings or <code>None</code>. |
+| <samp>_input</samp> | string | True | None |  | One hostname to match with <em>hostname\_filter</em>. |
+| <samp>hostname_filter</samp> | any | True | None |  | Filter as a list of strings or <code>None</code>. |
 
 ## Examples
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -7,9 +7,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
 class UtilsMixin:
@@ -262,149 +260,27 @@ class UtilsMixin:
 
     @cached_property
     def _is_wan_server_with_peers(self) -> bool:
-        return self.shared_utils.wan_role == "server" and len(self._wan_route_servers) > 0
+        return self.shared_utils.wan_role == "server" and len(self.shared_utils.filtered_wan_route_servers) > 0
+
+    def _stun_server_profile_name(self, wan_route_server_name: str, path_group_name: str, interface_name: str) -> str:
+        """
+        Return a string to use as the name of the stun server_profile
+        """
+        return f"{path_group_name}-{wan_route_server_name}-{interface_name}"
 
     @cached_property
-    def _wan_listen_ranges(self):
-        return get(self.shared_utils.bgp_peer_groups["wan_overlay_peers"], "listen_range_prefixes", required=True)
-
-    @cached_property
-    def _wan_site(self) -> dict | None:
+    def _stun_server_profiles(self) -> list:
         """
-        Here assuming that cv_pathfinder_name is unique across zones and regions
+        Return a dictionary of _stun_server_profiles with ip_address per local path_group
         """
-        if not self.shared_utils.cv_pathfinder_role:
-            return None
-
-        node_defined_site = get(
-            self.shared_utils.switch_data_combined,
-            "cv_pathfinder_site",
-            required=True,
-            org_key="A node variable 'cv_pathfinder_site' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
-        )
-        sites = get(self._wan_region, "sites", required=True, org_key=f"The CV Pathfinder region '{self._wan_region['name']}' is missing a list of sites")
-        return get_item(
-            sites,
-            "name",
-            node_defined_site,
-            required=True,
-            custom_error_msg=(
-                f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'sites' list for the region"
-                f" '{self._wan_region['name']}'."
-            ),
-        )
-
-    @cached_property
-    def _wan_region(self) -> dict | None:
-        """
-        WAN region for Pathfinder
-        """
-        if not self.shared_utils.cv_pathfinder_role:
-            return None
-
-        node_defined_region = get(
-            self.shared_utils.switch_data_combined,
-            "cv_pathfinder_region",
-            required=True,
-            org_key="A node variable 'cv_pathfinder_region' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
-        )
-        regions = get(
-            self._hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
-        )
-
-        return get_item(
-            regions,
-            "name",
-            node_defined_region,
-            required=True,
-            custom_error_msg="The 'cv_pathfinder_region' defined at the node level could not be found under the 'cv_pathfinder_regions' key.",
-        )
-
-    @cached_property
-    def _wan_zone(self) -> dict | None:
-        """
-        WAN zone for Pathfinder
-
-        Currently, only default zone DEFAULT-ZONE with ID 1 is supported.
-        """
-        if not self.shared_utils.cv_pathfinder_role:
-            return None
-
-        # Injecting zone DEFAULT-ZONE with id 1.
-        return {"name": "DEFAULT-ZONE", "id": 1}
-
-    @cached_property
-    def _wan_route_servers(self) -> dict:
-        """
-        Return a dict keyed by Wan RR based on the the wan_mode type.
-
-        It the RR is part of the inventory, the peer_facts are read..
-        If any key is specified in the variables, it overwrites whatever is in the peer_facts.
-
-        If no peer_fact is found the variables are required in the inventory.
-        """
-        # TODO - need to factor this with other function once we fix
-        # https://github.com/aristanetworks/ansible-avd/issues/3392
-        if not self.shared_utils.wan_mode:
-            return {}
-
-        wan_route_servers = {}
-
-        wan_route_servers_list = get(self._hostvars, "wan_route_servers", default=[])
-
-        for wan_rr_dict in natural_sort(wan_route_servers_list, sort_key="hostname"):
-            # These remote gw can be outside of the inventory
-            wan_rr = wan_rr_dict["hostname"]
-
-            if wan_rr == self.shared_utils.hostname:
-                # Don't add yourself
-                continue
-
-            if (peer_facts := self.shared_utils.get_peer_facts(wan_rr, required=False)) is not None:
-                # Found a matching server in inventory
-                bgp_as = peer_facts.get("bgp_as")
-                # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
-                if bgp_as != self.shared_utils.bgp_as:
-                    raise AristaAvdError(
-                        f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rr} is different from our own: {self.shared_utils.bgp_as}."
-                    )
-
-                # Prefer values coming from the input variables over peer facts
-                router_id = get(wan_rr_dict, "router_id", default=peer_facts.get("router_id"))
-                wan_path_groups = get(wan_rr_dict, "path_groups", default=peer_facts.get("wan_path_groups"))
-
-                if router_id is None:
-                    raise AristaAvdMissingVariableError(
-                        f"'router_id' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers' or something is wrong with the peer"
-                        " facts."
-                    )
-                # TODO - enable this once the wan_path_groups peer fact is implemented as this requires WAN interfaces not
-                # covered in this PR.
-                # if wan_path_groups is None:
-                #    raise AristaAvdMissingVariableError(
-                #        f"'wan_path_groups' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers'"
-                #        " or something is wrong with the peer"
-                #        " facts."
-                #    )
-
-            else:
-                # Retrieve the values from the dictionary, making them required if the peer_facts were not found
-                router_id = get(wan_rr_dict, "router_id", required=True)
-                wan_path_groups = get(
-                    wan_rr_dict,
-                    "path_groups",
-                    required=True,
-                    org_key=(
-                        f"'path_groups' is missing for peering with {wan_rr} which was not found in the inventory, either set it in under 'wan_route_servers'"
-                        " or check your inventory."
-                    ),
+        stun_server_profiles = {}
+        for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
+            for path_group in data.get("wan_path_groups", []):
+                stun_server_profiles.setdefault(path_group["name"], []).extend(
+                    {
+                        "name": self._stun_server_profile_name(wan_route_server, path_group["name"], get(interface_dict, "name", required=True)),
+                        "ip_address": get(interface_dict, "ip_address", required=True).split("/")[0],
+                    }
+                    for interface_dict in get(path_group, "interfaces", required=True)
                 )
-
-            wan_rr_result_dict = {
-                "router_id": router_id,
-                "wan_path_groups": wan_path_groups,
-            }
-
-            wan_route_servers[wan_rr] = strip_empties_from_dict(wan_rr_result_dict)
-
-        return wan_route_servers
+        return stun_server_profiles

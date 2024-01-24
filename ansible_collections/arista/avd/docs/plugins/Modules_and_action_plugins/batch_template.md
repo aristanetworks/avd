@@ -3,7 +3,7 @@
 title: arista.avd.batch_template
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -25,9 +25,9 @@ Destination file mode is hardcoded to 0o664.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| template | str | True | None |  | Path to Jinja2 Template file |
-| dest_format_string | str | True | None |  | Format string used to specify target file for each item. \'item\' is the current item from \'items\'. Like \"mypath/\{item\}.md\" |
-| items | list | True | None |  | List of strings. Each list item is passed to \'dest\_format\_string\' as \'item\' and passed to templater as \'item\' |
+| <samp>template</samp> | str | True | None |  | Path to Jinja2 Template file |
+| <samp>dest_format_string</samp> | str | True | None |  | Format string used to specify target file for each item. \'item\' is the current item from \'items\'. Like \"mypath/\{item\}.md\" |
+| <samp>items</samp> | list | True | None |  | List of strings. Each list item is passed to \'dest\_format\_string\' as \'item\' and passed to templater as \'item\' |
 
 ## Examples
 

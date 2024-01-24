@@ -3,7 +3,7 @@
 title: arista.avd.convert_schema
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -23,8 +23,8 @@ Only for internal use.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None | Valid values:<br>- <code>eos_cli_config_gen</code><br>- <code>eos_designs</code> | ID of AVD Schema. |
-| type | string | True | None | Valid values:<br>- <code>documentation_tables</code><br>- <code>jsonschema</code> | Type of schema to convert to. |
+| <samp>_input</samp> | string | True | None | Valid values:<br>- <code>eos_cli_config_gen</code><br>- <code>eos_designs</code> | ID of AVD Schema. |
+| <samp>type</samp> | string | True | None | Valid values:<br>- <code>documentation_tables</code><br>- <code>jsonschema</code> | Type of schema to convert to. |
 
 ## Return Values
 

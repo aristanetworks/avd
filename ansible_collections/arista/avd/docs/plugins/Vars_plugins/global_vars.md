@@ -3,7 +3,7 @@
 title: arista.avd.global_vars
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -69,9 +69,9 @@ The below requirements are needed on the host that executes this module.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| paths | list | True | None |  | List of relative paths relative to the inventory file.<br>If path is a directory, all the valid files inside are loaded alphabetically.<br>If the environment variable is set, it takes precedence over ansible.cfg. |
-| stage | any | optional | inventory | Valid values:<br>- <code>inventory</code> | The stage during which executing the plugin. It could be \'inventory\' or \'task\'<br>Given the expected usage of this plugin at the beginning of the run. It is hard\-coded to \'inventory\' |
-| _valid_extensions | list | optional | ['.yml', '.yaml', '.json'] |  | Check all of these extensions when looking for \'variable\' files, which should be YAML, JSON, or vaulted versions.<br>This affects vars\_files, include\_vars, inventory, and vars plugins, among others. |
+| <samp>paths</samp> | list | True | None |  | List of relative paths relative to the inventory file.<br>If path is a directory, all the valid files inside are loaded alphabetically.<br>If the environment variable is set, it takes precedence over ansible.cfg. |
+| <samp>stage</samp> | any | optional | inventory | Valid values:<br>- <code>inventory</code> | The stage during which executing the plugin. It could be \'inventory\' or \'task\'<br>Given the expected usage of this plugin at the beginning of the run. It is hard\-coded to \'inventory\' |
+| <samp>_valid_extensions</samp> | list | optional | ['.yml', '.yaml', '.json'] |  | Check all of these extensions when looking for \'variable\' files, which should be YAML, JSON, or vaulted versions.<br>This affects vars\_files, include\_vars, inventory, and vars plugins, among others. |
 
 ## Authors
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -753,6 +753,9 @@ $defs:
             convert_types:
               - str
             default: 32768
+            description: |-
+              Spanning-tree priority configured for the selected mode.
+              For `rapid-pvst` the priority can also be set per VLAN under network services.
           spanning_tree_root_super:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -1156,6 +1159,22 @@ $defs:
 
               MSS value for IPv4 the DPS interface.
               If not set, and the device is WAN device, a default value of 1000 is used.
+          l3_interfaces:
+            type: list
+            $ref: "eos_designs#/$defs/node_type_l3_interfaces"
+            documentation_options:
+              table: wan-interfaces-settings
+            description: |-
+              PREVIEW: This key is currently not supported
+
+              L3 Interfaces currently only use for WAN interfaces.
+            items:
+              type: dict
+              keys:
+                profile:
+                  type: str
+                  description: |
+                    L3 interface profile name. Profile defined under `l3_interface_profiles`.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

@@ -1,19 +1,19 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
 
 # Setup Ansible AVD Environment
 
-Two methods can be used to get Ansible up and running quickly with all the requirements to leverage **ansible-avd**:
+Two methods can be used to get Ansible up and running quickly with all the requirements to leverage **arista.avd**:
 A Python Virtual Environment or [Docker container](https://hub.docker.com/repository/docker/avdteam/base).
 
 In both scenarios, this document will leverage the git approach to create a local environment with collections installed in their respective folders and additional folders for all your content. All examples will be based on the following folder structure:
 
 ```shell
 ├── git_projects
-│   ├── ansible-avd
+│   ├── avd
 │   ├── ansible-cvp
 │   ├── ansible-avd-cloudvision-demo
 │   ├── Makefile
@@ -35,25 +35,25 @@ $ git config --global user.email johndoe@example.com
 
 ## Create a local folder structure
 
-To build a local folder structure, you manually run all the following commands to git clone [ansible-avd](https://github.com/aristanetworks/ansible-avd), [ansible-cvp collection](https://github.com/aristanetworks/ansible-cvp) and a [repository with demo content](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo)
+To build a local folder structure, you manually run all the following commands to git clone [avd](https://github.com/aristanetworks/avd), [ansible-cvp collection](https://github.com/aristanetworks/ansible-cvp) and a [repository with demo content](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo)
 
-In addition to these three git clones, you can also deploy a [Makefile](https://github.com/aristanetworks/ansible-avd/blob/devel/development/Makefile) built to provide some shortcuts we will discuss in a second stage.
+In addition to these three git clones, you can also deploy a [Makefile](https://github.com/aristanetworks/avd/blob/devel/development/Makefile) built to provide some shortcuts we will discuss in a second stage.
 
 ```shell
 $ mkdir git_projects
 
 $ cd git_projects
 
-$ git clone https://github.com/aristanetworks/ansible-avd.git
+$ git clone https://github.com/aristanetworks/avd.git
 $ git clone https://github.com/aristanetworks/ansible-cvp.git
 $ git clone https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo.git
 
 # Copy Makefile at the root position
-$ cp ansible-avd/development/Makefile ./
+$ cp avd/development/Makefile ./
 $ make start
 ```
 
-Or you can use a one-liner script available in ansible-avd repository to create this structure for you. This script accomplishes the following actions:
+Or you can use a one-liner script available in avd repository to create this structure for you. This script accomplishes the following actions:
 
 - Create a local folder for development
 - Instantiate a local git repository (no remote)
@@ -87,11 +87,11 @@ This approach will leverage a Docker container to provide all the AVD requiremen
 
 This approach will make the run process easier as all libraries are pre-configured in the container, and you can continue to use your preferred text editor to edit and build your content.
 
-Considering you have deployed [Makefile](https://github.com/aristanetworks/ansible-avd/blob/devel/development/Makefile) described in the previous section, all the outputs will provide native Docker command and the Make command.
+Considering you have deployed [Makefile](https://github.com/aristanetworks/avd/blob/devel/development/Makefile) described in the previous section, all the outputs will provide native Docker command and the Make command.
 
 ### AVD environment commands
 
-When using the installation script to create your own AVD environment, a [`Makefile`](https://github.com/aristanetworks/ansible-avd/blob/devel/development/Makefile) is deployed under `./ansible-arista` to automate some common commands:
+When using the installation script to create your own AVD environment, a [`Makefile`](https://github.com/aristanetworks/avd/blob/devel/development/Makefile) is deployed under `./ansible-arista` to automate some common commands:
 
 ```shell
 make <your command>
@@ -110,13 +110,13 @@ make <your command>
 
 ```shell
 $ make ansible-upgrade ANSIBLE_VERSION=2.10.7
-docker-compose -f ansible-avd/development/docker-compose.yml exec -u avd ansible pip install --user --upgrade ansible==2.10.7
+docker-compose -f avd/development/docker-compose.yml exec -u avd ansible pip install --user --upgrade ansible==2.10.7
 Collecting ansible==2.10.7
   Downloading ansible-2.10.7.tar.gz (14.2 MB)
      |████████████████████████████████| 14.2 MB 475 kB/s
 ...
 $ make shell
-docker-compose -f ansible-avd/development/docker-compose.yml exec -u avd ansible zsh
+docker-compose -f avd/development/docker-compose.yml exec -u avd ansible zsh
 
 Agent pid 109
 ➜  /projects ansible --version
@@ -203,7 +203,7 @@ Then you can move to your content folder as the structure remains the same:
 
 ```shell
 ➜  /projects ls -l
-drwxr-xr-x 24 root root  768 Sep  4 15:47 ansible-avd
+drwxr-xr-x 24 root root  768 Sep  4 15:47 avd
 drwxr-xr-x 24 root root  768 Sep  4 15:47 ansible-cvp
 drwxr-xr-x 24 root root  768 Sep  4 15:47 ansible-avd-cloudvision-demo
 drwxr-xr-x 24 root root  768 Sep  4 15:47 Makefile
@@ -246,11 +246,11 @@ bd6eece0221e: Downloading [===================>                               ] 
 036c486feecb: Waiting
 ```
 
-Your environment is now ready, and you can start to build your project leveraging ansible-avd and ansible-cvp collections.
+Your environment is now ready, and you can start to build your project leveraging arista.avd and arista.cvp Ansible collections.
 
 ## Using Python 3 Virtual Environment feature
 
-This section describes how to configure Python to run the ansible-AVD.
+This section describes how to configure Python to run AVD.
 
 As a requirement, we consider python3 as the default Python interpreter and pip3 as the package manager for python3. Some differences can be spotted depending on your operating system and how they package Python.
 
@@ -274,6 +274,6 @@ $ virtualenv -p python3 .venv
 $ source .venv/bin/activate
 
 # Install Python requirements
-$ pip3 install -r ansible-avd/ansible_collections/arista/avd/requirements.txt
+$ pip3 install -r avd/ansible_collections/arista/avd/requirements.txt
 ...
 ```

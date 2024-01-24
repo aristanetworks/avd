@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -241,6 +241,35 @@ keys:
               type: bool
             bfd:
               type: bool
+              description: Enable BFD.
+            bfd_timers:
+              type: dict
+              description: |-
+                Override default BFD timers. BFD must be enabled with `bfd: true`.
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  required: true
+                  convert_types:
+                    - str
             ebgp_multihop:
               type: int
               min: 1
@@ -337,6 +366,13 @@ keys:
                 new_key: listen_ranges
             session_tracker:
               type: str
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbors:
         type: list
         primary_key: ip_address
@@ -387,6 +423,35 @@ keys:
               description: Source Interface
             bfd:
               type: bool
+              description: Enable BFD.
+            bfd_timers:
+              type: dict
+              description: |-
+                Override default BFD timers. BFD must be enabled with `bfd: true`.
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  required: true
+                  convert_types:
+                    - str
             weight:
               type: int
               min: 0
@@ -485,6 +550,13 @@ keys:
                   type: bool
             session_tracker:
               type: str
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbor_interfaces:
         type: list
         primary_key: name
@@ -526,6 +598,12 @@ keys:
               type: bool
             as_set:
               type: bool
+            advertise_map:
+              type: str
+              description: Route-map name
+            supress_map:
+              type: str
+              description: Route-map name
             summary_only:
               type: bool
             attribute_map:
@@ -1903,6 +1981,35 @@ keys:
                     type: bool
                   bfd:
                     type: bool
+                    description: Enable BFD.
+                  bfd_timers:
+                    type: dict
+                    description: |-
+                      Override default BFD timers. BFD must be enabled with `bfd: true`.
+                    keys:
+                      interval:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 50
+                        max: 60000
+                        required: true
+                        description: Interval in milliseconds.
+                      min_rx:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 50
+                        max: 60000
+                        required: true
+                        description: Rate in milliseconds.
+                      multiplier:
+                        type: int
+                        min: 3
+                        max: 50
+                        convert_types:
+                          - str
+                        required: true
                   timers:
                     type: str
                     description: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
@@ -2026,6 +2133,12 @@ keys:
                     type: bool
                   as_set:
                     type: bool
+                  advertise_map:
+                    type: str
+                    description: Route-map name
+                  supress_map:
+                    type: str
+                    description: Route-map name
                   summary_only:
                     type: bool
                   attribute_map:

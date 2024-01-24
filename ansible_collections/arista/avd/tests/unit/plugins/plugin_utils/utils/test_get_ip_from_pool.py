@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import pytest
@@ -33,7 +33,7 @@ def test_get_ip_from_pool_invalid(pool, prefixlen, subnet_offset, ip_offset, exp
     "pool, prefixlen, subnet_offset, ip_offset, expected",
     [
         ("1.2.3.0/31", PREFIXLEN, SUBNET_OFFSET, IP_OFFSET, "1.2.3.1"),
-        (POOL, 25, SUBNET_OFFSET, IP_OFFSET, "1.2.3.128"),
+        (POOL, 25, SUBNET_OFFSET, IP_OFFSET, "1.2.3.129"),
         (POOL, PREFIXLEN, 0, IP_OFFSET, "1.2.3.0"),
         (POOL, PREFIXLEN, 255, IP_OFFSET, "1.2.3.255"),
         (POOL, 31, SUBNET_OFFSET, 1, "1.2.3.3"),

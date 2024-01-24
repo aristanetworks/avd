@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -13,7 +13,7 @@
 
 ## Pull requests
 
-- **Before** you start working on a pull request, open an issue and discuss your ideas with the **ansible-avd** maintainers. This will help prevent wasting time on something we might be unable to implement. When suggesting a new feature, ensure it will be consistent with all work already in progress.
+- **Before** you start working on a pull request, open an issue and discuss your ideas with the **AVD** maintainers. This will help prevent wasting time on something we might be unable to implement. When suggesting a new feature, ensure it will be consistent with all work already in progress.
 
 - Any pull request which *doesn't* relate to an accepted issue will not be approved.
 
@@ -34,13 +34,13 @@ Adhering to the following process is the best way to get your work merged:
 
   ```bash
   # Clone your fork of the repo into the current directory
-  git clone https://github.com/<your-username>/ansible-avd
+  git clone https://github.com/<your-username>/avd
 
   # Navigate to the newly cloned directory
-  cd ansible-avd
+  cd avd
 
   # Assign the original repo to a remote called "upstream"
-  git remote add upstream https://github.com/aristanetworks/ansible-avd.git
+  git remote add upstream https://github.com/aristanetworks/avd.git
   ```
 
 - If you cloned a while ago, get the latest changes from upstream:
@@ -70,4 +70,4 @@ Adhering to the following process is the best way to get your work merged:
   git push origin <topic-branch-name>
   ```
 
-- [Open a Pull Request](https://github.com/aristanetworks/ansible-avd/pulls) with a clear title, description, and following the template.
+- [Open a Pull Request](https://github.com/aristanetworks/avd/pulls) with a clear title, description, and following the template.

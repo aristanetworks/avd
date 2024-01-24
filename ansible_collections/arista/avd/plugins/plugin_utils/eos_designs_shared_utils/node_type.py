@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -47,6 +47,14 @@ class NodeTypeMixin:
                     return default_node_type["node_type"]
 
         return None
+
+    @cached_property
+    def cvp_tag_topology_hint_type(self: SharedUtils) -> str:
+        """
+        topology_tag_type set based on
+        node_type_keys.<node_type_key>.cvp_tags.topology_hint_type
+        """
+        return get(self.node_type_key_data, "cvp_tags.topology_hint_type", default="endpoint")
 
     @cached_property
     def connected_endpoints(self: SharedUtils) -> bool:

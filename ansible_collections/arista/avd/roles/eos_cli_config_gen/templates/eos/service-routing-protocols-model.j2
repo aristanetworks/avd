@@ -1,10 +1,10 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - service routing protocols model #}
-{% if service_routing_protocols_model is arista.avd.defined("multi-agent") %}
+{% if service_routing_protocols_model is arista.avd.defined %}
 !
-service routing protocols model multi-agent
+service routing protocols model {{ service_routing_protocols_model }}
 {% endif %}

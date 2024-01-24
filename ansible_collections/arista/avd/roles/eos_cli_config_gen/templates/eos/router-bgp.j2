@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -150,6 +150,11 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if peer_group.bfd is arista.avd.defined(true) %}
    neighbor {{ peer_group.name }} bfd
+{%             if peer_group.bfd_timers.interval is arista.avd.defined and
+                  peer_group.bfd_timers.min_rx is arista.avd.defined and
+                  peer_group.bfd_timers.multiplier is arista.avd.defined %}
+   neighbor {{ peer_group.name }} bfd interval {{ peer_group.bfd_timers.interval }} min-rx {{ peer_group.bfd_timers.min_rx }} multiplier {{ peer_group.bfd_timers.multiplier }}
+{%             endif %}
 {%         endif %}
 {%         if peer_group.allowas_in.enabled is arista.avd.defined(true) %}
 {%             set allowas_in_cli = "neighbor " ~ peer_group.name ~ " allowas-in" %}
@@ -170,6 +175,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if peer_group.ebgp_multihop is arista.avd.defined %}
    neighbor {{ peer_group.name }} ebgp-multihop {{ peer_group.ebgp_multihop }}
+{%         endif %}
+{%         if peer_group.ttl_maximum_hops is arista.avd.defined %}
+   neighbor {{ peer_group.name }} ttl maximum-hops {{ peer_group.ttl_maximum_hops }}
 {%         endif %}
 {%         if peer_group.password is arista.avd.defined %}
    neighbor {{ peer_group.name }} password 7 {{ peer_group.password | arista.avd.hide_passwords(hide_passwords) }}
@@ -286,11 +294,19 @@ router bgp {{ router_bgp.as }}
 {%         if neighbor.ebgp_multihop is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} ebgp-multihop {{ neighbor.ebgp_multihop }}
 {%         endif %}
+{%         if neighbor.ttl_maximum_hops is arista.avd.defined %}
+   neighbor {{ neighbor.ip_address }} ttl maximum-hops {{ neighbor.ttl_maximum_hops }}
+{%         endif %}
 {%         if neighbor.update_source is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} update-source {{ neighbor.update_source }}
 {%         endif %}
 {%         if neighbor.bfd is arista.avd.defined(true) %}
    neighbor {{ neighbor.ip_address }} bfd
+{%             if neighbor.bfd_timers.interval is arista.avd.defined and
+                  neighbor.bfd_timers.min_rx is arista.avd.defined and
+                  neighbor.bfd_timers.multiplier is arista.avd.defined %}
+   neighbor {{ neighbor.ip_address }} bfd interval {{ neighbor.bfd_timers.interval }} min-rx {{ neighbor.bfd_timers.min_rx }} multiplier {{ neighbor.bfd_timers.multiplier }}
+{%             endif %}
 {%         elif neighbor.bfd is arista.avd.defined(false) and neighbor.peer_group is arista.avd.defined %}
    no neighbor {{ neighbor.ip_address }} bfd
 {%         endif %}
@@ -369,6 +385,12 @@ router bgp {{ router_bgp.as }}
 {%         set aggregate_address_cli = "aggregate-address " ~ aggregate_address.prefix %}
 {%         if aggregate_address.as_set is arista.avd.defined(true) %}
 {%             set aggregate_address_cli = aggregate_address_cli ~ " as-set" %}
+{%         endif %}
+{%         if aggregate_address.advertise_map is arista.avd.defined %}
+{%             set aggregate_address_cli = aggregate_address_cli ~ " advertise-map " ~ aggregate_address.advertise_map %}
+{%         endif %}
+{%         if aggregate_address.supress_map is arista.avd.defined %}
+{%             set aggregate_address_cli = aggregate_address_cli ~ " supress-map " ~ aggregate_address.supress_map %}
 {%         endif %}
 {%         if aggregate_address.summary_only is arista.avd.defined(true) %}
 {%             set aggregate_address_cli = aggregate_address_cli ~ " summary-only" %}
@@ -1281,6 +1303,11 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.bfd is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} bfd
+{%                 if neighbor.bfd_timers.interval is arista.avd.defined and
+                      neighbor.bfd_timers.min_rx is arista.avd.defined and
+                      neighbor.bfd_timers.multiplier is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} bfd interval {{ neighbor.bfd_timers.interval }} min-rx {{ neighbor.bfd_timers.min_rx }} multiplier {{ neighbor.bfd_timers.multiplier }}
+{%                 endif %}
 {%             elif neighbor.bfd is arista.avd.defined(false) and neighbor.peer_group is arista.avd.defined %}
       no neighbor {{ neighbor.ip_address }} bfd
 {%             endif %}
@@ -1368,6 +1395,12 @@ router bgp {{ router_bgp.as }}
 {%             set aggregate_address_cli = "aggregate-address " ~ aggregate_address.prefix %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}
 {%                 set  aggregate_address_cli = aggregate_address_cli ~ " as-set" %}
+{%             endif %}
+{%             if aggregate_address.advertise_map is arista.avd.defined %}
+{%                 set  aggregate_address_cli = aggregate_address_cli ~ " advertise-map " ~ aggregate_address.advertise_map %}
+{%             endif %}
+{%             if aggregate_address.supress_map is arista.avd.defined %}
+{%                 set  aggregate_address_cli = aggregate_address_cli ~ " supress-map " ~ aggregate_address.supress_map %}
 {%             endif %}
 {%             if aggregate_address.summary_only is arista.avd.defined(true) %}
 {%                 set aggregate_address_cli = aggregate_address_cli ~ " summary-only" %}

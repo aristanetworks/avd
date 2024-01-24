@@ -1,0 +1,51 @@
+hostname: spanning-tree-mode-rapid-pvst
+is_deployed: true
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: rapid-pvst
+  rapid_pvst_instances:
+  - id: 11,21
+    priority: 16384
+  - id: 12,22
+    priority: 32768
+  - id: 1-10,13-20,23-4093
+    priority: 8192
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+vlans:
+- id: 10
+  name: DEFAULTPRIORITY
+  tenant: test
+- id: 11
+  name: PRIORITY16384
+  tenant: test
+- id: 12
+  name: PRIORITY32768
+  tenant: test
+- id: 13
+  name: PRIORITY8192
+  tenant: test
+- id: 20
+  name: DEFAULTPRIORITY
+  tenant: test
+- id: 21
+  name: PRIORITY16384
+  tenant: test
+- id: 22
+  name: PRIORITY32768
+  tenant: test
+- id: 23
+  name: PRIORITY8192
+  tenant: test
+ip_igmp_snooping:
+  globally_enabled: true

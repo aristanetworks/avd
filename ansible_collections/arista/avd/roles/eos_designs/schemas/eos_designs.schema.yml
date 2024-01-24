@@ -1,10 +1,14 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
+  application_traffic_recognition:
+    type: dict
+    description: 'PREVIEW: WAN Preview'
+    $ref: eos_cli_config_gen#/keys/application_traffic_recognition
   avd_data_conversion_mode:
     documentation_options:
       table: role-input-validation
@@ -552,6 +556,19 @@ keys:
                 type: str
               site_after_hours_contact:
                 type: str
+  cv_tags_topology_type:
+    documentation_options:
+      table: cloudvision-tags
+    description: 'PREVIEW: This key is currently not supported
+
+      Device type that CloudVision should use when generating the Topology. Defaults
+      to the setting under node_type_keys.'
+    type: str
+    valid_values:
+    - leaf
+    - spine
+    - core
+    - edge
   cv_topology:
     documentation_options:
       table: cv-topology
@@ -1048,20 +1065,41 @@ keys:
             type: str
             default: first_id
             description: "This variable defines the Multi-chassis Link Aggregation
-              (MLAG) algorithm used.\nEach MLAG link will have a /31 subnet with each
-              subnet allocated from the relevant MLAG pool via a calculated offset.\nThe
+              (MLAG) algorithm used.\nEach MLAG link will have a /31* subnet with
+              each subnet allocated from the relevant MLAG pool via a calculated offset.\nThe
               offset is calculated using one of the following algorithms:\n  - first_id:
               `(mlag_primary_id - 1) * 2` where `mlag_primary_id` is the ID of the
               first node defined under the node_group.\n    This allocation method
-              will skip every other /31 subnet making it less space efficient than
+              will skip every other /31* subnet making it less space efficient than
               `odd_id`.\n  - odd_id: `(odd_id - 1) / 2`. Requires the node_group to
               have a node with an odd ID and a node with an even ID.\n  - same_subnet:
               the offset will always be zero.\n    This allocation method will cause
-              every MLAG link to be addressed with the same /31 subnet.\n"
+              every MLAG link to be addressed with the same /31* subnet.\n\\* - The
+              prefix length is configurable with a default of /31."
             valid_values:
             - first_id
             - odd_id
             - same_subnet
+          ipv4_prefix_length:
+            type: int
+            default: 31
+            min: 1
+            max: 31
+            convert_types:
+            - str
+            description: IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point
+              SVIs over the MLAG peer-link.
+      p2p_uplinks:
+        type: dict
+        keys:
+          ipv4_prefix_length:
+            type: int
+            default: 31
+            min: 1
+            max: 31
+            convert_types:
+            - str
+            description: IPv4 prefix length used for L3 point-to-point uplinks.
   fabric_name:
     documentation_options:
       table: fabric-topology
@@ -1069,6 +1107,75 @@ keys:
       in the Fabric, **must** be an inventory group name.
     type: str
     required: true
+  generate_cv_tags:
+    documentation_options:
+      table: cloudvision-tags
+    type: dict
+    description: 'PREVIEW: This key is currently not supported
+
+      Generate CloudVision Tags based on AVD data.'
+    keys:
+      topology_hints:
+        type: bool
+        default: false
+        description: Enable the generation of CloudVision Topology Tags (hints).
+      interface_tags:
+        description: List of interface tags that should be generated.
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          description: Each tag can either have a static value or a dynamic value
+            sourced from structured configuration.
+          keys:
+            name:
+              description: Tag name to be assigned to generated tags. Tag names must
+                be lower case.
+              convert_to_lower_case: true
+              required: true
+              type: str
+            data_path:
+              description: 'Structured config field/key path to be used to find the
+                value for the tag. Dot notation is supported to reference values inside
+                dictionaries.
+
+                For Example: ''data_path: channel_group.id'' would set the tag with
+                the value of the channel id of the interface. If there is no channel
+                id, the tag is not created.
+
+                `data_path` is ignored if `value` is set.'
+              type: str
+            value:
+              description: Value to be assigned to the tag.
+              type: str
+      device_tags:
+        description: List of device tags that should be generated.
+        type: list
+        items:
+          type: dict
+          description: Each tag can either have a static value or a dynamic value
+            sourced from structured configuration.
+          keys:
+            name:
+              description: Tag name to be assigned to generated tags. Tag names must
+                be lower case.
+              convert_to_lower_case: true
+              required: true
+              type: str
+            data_path:
+              description: 'Structured config field/key path to be used to find the
+                value for the tag. Dot notation is supported to reference values inside
+                dictionaries.
+
+                For Example: ''data_path: router_bfd.multihop.interval'' would set
+                the tag with the value of the interval for multihop bfd. If this value
+                is not specified in the structured config, the tag is not created.
+
+                `data_path` is ignored if `value` is set.'
+              type: str
+            value:
+              description: Value to be assigned to the tag.
+              type: str
   hardware_counters:
     documentation_options:
       table: system-settings
@@ -1217,6 +1324,26 @@ keys:
   l3_edge:
     type: dict
     $ref: eos_designs#/$defs/l3_edge
+  l3_interface_profiles:
+    type: list
+    documentation_options:
+      table: wan-interfaces-settings
+    description: 'PREVIEW: This key is currently not supported
+
+
+      Profiles to inherit common settings for l3_interfaces defined under the node
+      type key.
+
+      These profiles will *not* work for `l3_interfaces` defined under `vrfs`.'
+    primary_key: profile
+    $ref: eos_designs#/$defs/node_type_l3_interfaces
+    items:
+      type: dict
+      keys:
+        profile:
+          type: str
+          description: L3 interface profile name. Any variable supported under `l3_interfaces`
+            can be inherited from a profile.
   local_users:
     documentation_options:
       table: management-settings
@@ -1674,6 +1801,18 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to Custom J2 template.
+        cv_tags_topology_type:
+          documentation_options:
+            table: cloudvision-tags
+          description: 'PREVIEW: This key is currently not supported
+
+            Type that CloudVision should use when generating the Topology.'
+          type: str
+          valid_values:
+          - leaf
+          - spine
+          - core
+          - edge
   ntp_settings:
     documentation_options:
       table: management-settings
@@ -2201,8 +2340,6 @@ keys:
         non_mlag: 330
     - platforms:
       - 7050X3
-      - 720XP
-      - 722XP
       feature_support:
         queue_monitor_length_notify: false
       reload_delay:
@@ -2210,6 +2347,29 @@ keys:
         non_mlag: 330
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
+    - platforms:
+      - 720XP
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
+        l3-shared 131072
+    - platforms:
+      - '750'
+      - '755'
+      - '758'
+      - 720DP
+      - 722XP
+      - 710P
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
     - platforms:
       - 7280R
       - 7280R2
@@ -3182,6 +3342,27 @@ keys:
       remove_in_version: 4.0.0
     type: bool
     default: false
+  wan_carriers:
+    description: 'PREVIEW: This key is currently not supported
+
+
+      List of carriers used for the WAN configuration and their mapping to path-groups.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Carrier name.
+        description:
+          type: str
+          description: Additional information about the carrier for documentation
+            purposes.
+        path_group:
+          type: str
+          description: The path-group to which this carrier belongs.
+          required: true
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
@@ -3240,8 +3421,6 @@ keys:
     - autovpn
     - cv-pathfinder
   wan_path_groups:
-    documentation_options:
-      table: wan-settings
     description: 'PREVIEW: This key is currently not supported
 
       List of path-groups used for the WAN configuration.'
@@ -3254,15 +3433,25 @@ keys:
           type: str
           description: Path-group name.
         id:
-          type: str
-          description: Path-group id.
+          type: int
+          convert_types:
+          - str
+          description: 'Path-group id.
+
+
+            TODO: Required until an auto ID algorithm is implemented.'
+          required: true
         description:
           type: str
           description: Additional information about the path-group for documentation
             purposes.
         ipsec:
           type: bool
-          description: Flag to configure IPsec on the carrier (default is True).
+          description: 'Flag to configure IPsec at the path-group level.
+
+
+            When set to `true`, IPsec is enabled for both the static and dynamic peers.'
+          default: true
         import_path_groups:
           type: list
           description: List of [ath-groups to import in this path-group.
@@ -3305,16 +3494,147 @@ keys:
           type: list
           description: Path-groups through which the Route Reflector/Pathfinder is
             reached.
+          primary_key: name
           items:
             type: dict
             keys:
               name:
                 type: str
                 description: Path-group name.
-              ip_address:
-                type: str
-                description: The public IP address of the Route Reflector for this
-                  path-group.
+              interfaces:
+                type: list
+                primary_key: name
+                required: true
+                min_length: 1
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      description: Interface name.
+                    ip_address:
+                      type: str
+                      description: The public IP address of the Route Reflector for
+                        this path-group.
+  wan_virtual_topologies:
+    type: dict
+    description: 'PREVIEW: WAN Preview
+
+
+      Configure Virtual Topologies for CV Pathfinder and AutoVPN.
+
+
+      Auto create a control plane profile/policy/application and enforce it being
+      first in the default VRF.'
+    keys:
+      vrfs:
+        type: list
+        description: 'Map a VRF that exists in network_services to an AVT policy.
+
+          TODO: missing default VRF behavior'
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+              - int
+              description: VRF name.
+            policy:
+              type: str
+              description: Name of the AVT policy to apply to this VRF.
+      control_plane_virtual_topology:
+        type: dict
+        description: 'Always injected into the default VRF policy as the first entry.
+
+
+          By default, if no path-groups are specified, all locally available path-groups
+
+          are used in the generated load-balance policy.
+
+          ID is hardcoded to 254 for the AVT profile in CV Pathfinder mode.'
+        $ref: eos_designs#/$defs/virtual_topology
+        keys:
+          name:
+            type: str
+            description: Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
+      policies:
+        type: list
+        description: "List of virtual toplogies policies.\n\nFor AutoVPN, each item
+          in the list creates:\n  * one policy with:\n      * one `match` entry per
+          `application_virtual_topologies` item\n        they are indexed using `10
+          * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n
+          \ * one load-balance policy per `application_virtual_topologies` and one
+          for the `default_virtual_topology`.\n  * if the policy is associated with
+          the default VRF, a special control-plane rule is injected\n    in the policy
+          with index `1` referring to a control-plane load-balance policy as defined
+          under\n    `control_plane_virtual_topology`.\n\n\nFor CV Pathfinder, each
+          item in the list creates:\n  * one policy with:\n      * one `match` entry
+          per `application_virtual_topologies` item ordered as in the model.\n      *
+          one last match entry for the `default` application-profile using `default_virtual_topology`
+          information.\n  * one profile per `application_virtual_topologies` item.\n
+          \ * one profile for the `default_virtual_topology`..\n  * one load-balance
+          policy per `application_virtual_topologies`.\n  * one load_balance policy
+          for the `default_virtual_topology`.\n  * if the policy is associated with
+          the default VRF, a special control-plane profile is configured\n    and
+          injected first in the policy assigned to the `default` VRF. This profile
+          points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`."
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the AVT policy.
+            application_virtual_topologies:
+              type: list
+              description: List of application specific virtual topologies.
+              primary_key: application_profile
+              items:
+                type: dict
+                $ref: eos_designs#/$defs/virtual_topology
+                keys:
+                  application_profile:
+                    type: str
+                    description: The application profile to use for this virtual topology.
+                      It must be a defined `application_profile`.
+                  name:
+                    type: str
+                    description: Optional name, if not set `<policy_name>-<application_profile>`
+                      is used.
+                  id:
+                    type: int
+                    $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id
+                    min: 2
+                    max: 253
+                    description: 'ID of the AVT in each VRFs. ID must be unique across
+                      all virtual topologies in a policy.
+
+                      ID 1 is reserved for the default_virtual_toplogy.
+
+                      ID 254 is reserved for the control_plane_virtual_topology.'
+            default_virtual_topology:
+              type: dict
+              description: 'Default match for the policy.
+
+                If no default match should be configured, set `drop_unmatched` to
+                `true`.
+
+                Otherwise, in CV Pathfinder mode, a default AVT profile will be configured
+                with ID 1.'
+              $ref: eos_designs#/$defs/virtual_topology
+              required: true
+              keys:
+                name:
+                  type: str
+                  description: Optional name, if not set `<policy_name>-DEFAULT` is
+                    used.
+                drop_unmatched:
+                  type: bool
+                  description: When set, no `catch-all` match is configured for the
+                    policy and unmatched traffic is dropped.
+                  default: false
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -3856,7 +4176,21 @@ $defs:
                 type: str
                 valid_values:
                 - static
-                description: Currently only static mode is supported.
+                - individual
+                description: 'Either static or individual mode is supported.
+
+                  If the mode is set to "individual" the "individual.profile" setting
+                  must be defined.
+
+                  '
+              individual:
+                type: dict
+                description: Define parameters for port-channel member interfaces.
+                  Applies only if LACP fallback is set to "individual".
+                keys:
+                  profile:
+                    type: str
+                    description: Port-profile name to inherit configuration.
               timeout:
                 type: int
                 convert_types:
@@ -4109,84 +4443,6 @@ $defs:
             profile:
               type: str
               description: P2P profile name. Profile defined under p2p_profiles.
-      l3_interfaces_profiles:
-        type: list
-        convert_types:
-        - dict
-        primary_key: profile
-        $ref: eos_designs#/$defs/l3_edge_l3_interfaces
-        items:
-          type: dict
-          keys:
-            profile:
-              type: str
-              description: L3 interface profile name. Any variable supported under
-                `l3_interfaces` can be inherited from a profile.
-      l3_interfaces:
-        type: list
-        $ref: eos_designs#/$defs/l3_edge_l3_interfaces
-        items:
-          type: dict
-          keys:
-            node:
-              type: str
-              description: Device on which the interface should be configured.
-            profile:
-              type: str
-              description: L3 interface profile name. Profile defined under l3_interfaces_profiles.
-  l3_edge_l3_interfaces:
-    type: list
-    items:
-      type: dict
-      keys:
-        interface:
-          type: str
-          description: Ethernet interface name like 'Ethernet2'.
-          pattern: Ethernet[\d/]+
-        description:
-          type: str
-          description: 'Interface description.
-
-            If not set a default description will be configured with ''[<peer>[ <peer_interface>]]'''
-        ip:
-          type: str
-          description: Node IPv4 address/Mask or 'dhcp'.
-        dhcp_client_accept_default_route:
-          type: bool
-          default: false
-          description: 'Supported if `ip` is `dhcp`.
-
-            Accepts default route from DHCP.'
-        enabled:
-          type: bool
-          default: true
-          description: Enable or Shutdown the interface.
-        speed:
-          type: str
-          description: Speed should be set in the format `<interface_speed>` or `forced
-            <interface_speed>` or `auto <interface_speed>`.
-        peer:
-          type: str
-          description: The peer device name. Used for description and documentation
-        peer_interface:
-          type: str
-          description: The peer device interface. Used for description and documentation
-        peer_ip:
-          type: str
-          description: The peer device IP. Used for description and documentation
-        qos_profile:
-          type: str
-          description: QOS service profile.
-        raw_eos_cli:
-          type: str
-          description: EOS CLI rendered directly on the interface in the final EOS
-            configuration.
-        structured_config:
-          type: dict
-          documentation_options:
-            hide_keys: true
-          description: Custom structured config for the Ethernet interface.
-          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
   network_services:
     documentation_options:
       table: network-services-common-settings
@@ -4651,7 +4907,7 @@ $defs:
                   iBGP session.
 
                   By default this parameter is calculated using the following formula:
-                  <mlag_ibgp_peering_vrfs.base_vlan> + <vrf_id> - 1.
+                  `<mlag_ibgp_peering_vrfs.base_vlan>` + `<vrf_id>` - 1.
 
                   '
                 min: 1
@@ -5076,6 +5332,53 @@ $defs:
                         in the final EOS configuration.
 
                         '
+              loopbacks:
+                documentation_options:
+                  table: network-services-vrfs-loopbacks-settings
+                type: list
+                description: 'List of Loopback interfaces.
+
+                  This will create Loopback interfaces inside the VRF.
+
+                  '
+                items:
+                  type: dict
+                  keys:
+                    node:
+                      type: str
+                      required: true
+                    loopback:
+                      type: int
+                      required: true
+                      min: 0
+                      max: 8191
+                    ip_address:
+                      type: str
+                      required: true
+                    description:
+                      type: str
+                    enabled:
+                      type: bool
+                      default: true
+                    ospf:
+                      type: dict
+                      description: OSPF interface configuration.
+                      keys:
+                        enabled:
+                          type: bool
+                          default: false
+                        area:
+                          type: str
+                          convert_types:
+                          - int
+                          description: OSPF area ID.
+                          default: '0'
+                    raw_eos_cli:
+                      type: str
+                      description: 'EOS CLI rendered directly on the Loopback interface
+                        in the final EOS configuration.
+
+                        '
               static_routes:
                 type: list
                 description: 'List of static routes for v4 and/or v6.
@@ -5472,6 +5775,15 @@ $defs:
                 type: bool
                 default: true
                 description: Extend this L2VLAN over VXLAN.
+              spanning_tree_priority:
+                type: int
+                convert_types:
+                - str
+                description: 'Setting spanning-tree priority per VLAN is only supported
+                  with `spanning_tree_mode: rapid-pvst` under node type settings.
+
+                  The default priority for rapid-PVST is set under the node type settings
+                  with `spanning_tree_priority` (default=32768).'
               evpn_vlan_bundle:
                 type: str
                 description: 'Name of a bundle defined under ''evpn_vlan_bundles''
@@ -6564,6 +6876,10 @@ $defs:
             convert_types:
             - str
             default: 32768
+            description: 'Spanning-tree priority configured for the selected mode.
+
+              For `rapid-pvst` the priority can also be set per VLAN under network
+              services.'
           spanning_tree_root_super:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -7052,6 +7368,23 @@ $defs:
 
               If not set, and the device is WAN device, a default value of 1000 is
               used.'
+          l3_interfaces:
+            type: list
+            $ref: eos_designs#/$defs/node_type_l3_interfaces
+            documentation_options:
+              table: wan-interfaces-settings
+            description: 'PREVIEW: This key is currently not supported
+
+
+              L3 Interfaces currently only use for WAN interfaces.'
+            items:
+              type: dict
+              keys:
+                profile:
+                  type: str
+                  description: 'L3 interface profile name. Profile defined under `l3_interface_profiles`.
+
+                    '
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -7088,6 +7421,83 @@ $defs:
             name:
               type: str
               description: The Node Name is used as "hostname".
+  node_type_l3_interfaces:
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Ethernet interface name like 'Ethernet2'.
+          pattern: Ethernet[\d/]+
+        description:
+          type: str
+          description: 'Interface description.
+
+            If not set a default description will be configured with ''[<peer>[ <peer_interface>]]'''
+        ip:
+          type: str
+          description: Node IPv4 address/Mask or 'dhcp'.
+        set_default_route:
+          type: bool
+          default: false
+          description: 'Insert a default route to the `peer_ip` if `ip` is an ip address
+
+            or configure to accept a default route from DHCP if `ip` is `dhcp`.
+
+
+            AVD will error out if set to true, `ip` is an ip address and `peer_ip`
+            is missing.'
+        enabled:
+          type: bool
+          default: true
+          description: Enable or Shutdown the interface.
+        speed:
+          type: str
+          description: Speed should be set in the format `<interface_speed>` or `forced
+            <interface_speed>` or `auto <interface_speed>`.
+        peer:
+          type: str
+          description: The peer device name. Used for description and documentation
+        peer_interface:
+          type: str
+          description: The peer device interface. Used for description and documentation
+        peer_ip:
+          type: str
+          description: The peer device IPv4 address (no mask). Used as default route
+            gateway if `set_default_route` is true and `ip` is an IP address.
+        qos_profile:
+          type: str
+          description: QOS service profile.
+        wan_carrier:
+          type: str
+          description: 'The WAN Carrier this interface is connected to.
+
+            This is used to infer the path-groups in which this interface should be
+            configured.'
+        wan_circuit_id:
+          type: str
+          convert_types:
+          - int
+          description: 'The WAN Circuit ID for this interface.
+
+            This is not rendered in the configuration but used for WAN designs.'
+        connected_to_pathfinder:
+          type: bool
+          default: true
+          description: For a WAN interface (`wan_path_group` is set), allow to disable
+            the static tunnel towards Pathfinders.
+        raw_eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the interface in the final EOS
+            configuration.
+        structured_config:
+          type: dict
+          documentation_options:
+            hide_keys: true
+          description: Custom structured config for the Ethernet interface.
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
   p2p_links:
     type: list
     items:
@@ -7510,6 +7920,15 @@ $defs:
         type: bool
         default: true
         description: Extend this SVI over VXLAN.
+      spanning_tree_priority:
+        type: int
+        convert_types:
+        - str
+        description: 'Setting spanning-tree priority per VLAN is only supported with
+          `spanning_tree_mode: rapid-pvst` under node type settings.
+
+          The default priority for rapid-PVST is set under the node type settings
+          with `spanning_tree_priority` (default=32768).'
       mtu:
         type: int
         convert_types:
@@ -7601,3 +8020,51 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
+  virtual_topology:
+    type: dict
+    keys:
+      name:
+        type: str
+        description: Optional name.
+      traffic_class:
+        type: int
+        $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/traffic_class
+      dscp:
+        type: int
+        $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp
+      constraints:
+        type: dict
+        keys:
+          jitter:
+            type: int
+            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/jitter
+          latency:
+            type: int
+            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/latency
+          loss_rate:
+            type: str
+            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/loss_rate
+      path_groups:
+        type: list
+        min_length: 1
+        items:
+          type: dict
+          keys:
+            names:
+              type: list
+              description: List of path-group names.
+              required: true
+              min_length: 1
+              items:
+                type: str
+            preference:
+              type: str
+              convert_types:
+              - int
+              description: 'Valid values are 1-255 | preferred | alternate.
+
+
+                preferred is converted to priority 1.
+
+                alternate is converted to priority 2.'
+              default: preferred

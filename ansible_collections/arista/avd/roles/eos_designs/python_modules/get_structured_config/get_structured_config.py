@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -16,6 +16,7 @@ from ..connected_endpoints import AvdStructuredConfigConnectedEndpoints
 from ..core_interfaces_and_l3_edge import AvdStructuredConfigCoreInterfacesAndL3Edge
 from ..custom_structured_configuration import AvdStructuredConfigCustomStructuredConfiguration
 from ..inband_management import AvdStructuredConfigInbandManagement
+from ..metadata import AvdStructuredConfigMetadata
 from ..mlag import AvdStructuredConfigMlag
 from ..network_services import AvdStructuredConfigNetworkServices
 from ..overlay import AvdStructuredConfigOverlay
@@ -30,6 +31,8 @@ AVD_STRUCTURED_CONFIG_CLASSES = [
     AvdStructuredConfigNetworkServices,
     AvdStructuredConfigConnectedEndpoints,
     AvdStructuredConfigInbandManagement,
+    # Metadata must be after anything else that can generate structured config, since CV tags can consume from structured config.
+    AvdStructuredConfigMetadata,
     AvdStructuredConfigCustomStructuredConfiguration,
 ]
 """

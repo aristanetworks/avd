@@ -1,6 +1,4 @@
 hostname: DC1-BL1B
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65104'
@@ -481,3 +479,5 @@ vxlan_interface:
         vni: 21
       - name: Tenant_C_WAN_Zone
         vni: 31
+metadata:
+  platform: vEOS-LAB

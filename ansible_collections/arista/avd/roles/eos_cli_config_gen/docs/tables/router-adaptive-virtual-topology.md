@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -22,7 +22,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.profiles.[].name") | String | Required, Unique |  |  | AVT Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load_balance_policy</samp>](## "router_adaptive_virtual_topology.profiles.[].load_balance_policy") | String |  |  |  | Name of the load-balance policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internet_exit_policy</samp>](## "router_adaptive_virtual_topology.profiles.[].internet_exit_policy") | String |  |  |  | Name of the internet exit policy. |
-    | [<samp>&nbsp;&nbsp;policies</samp>](## "router_adaptive_virtual_topology.policies") | List, items: Dictionary |  |  |  | A sequence of application profiles mapped to some virtual topologies. |
+    | [<samp>&nbsp;&nbsp;policies</samp>](## "router_adaptive_virtual_topology.policies") | List, items: Dictionary |  |  |  | A sequence of application profiles mapped to some virtual topologies.<br><br>When `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index> in the list. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.policies.[].name") | String | Required, Unique |  |  | Policy name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matches</samp>](## "router_adaptive_virtual_topology.policies.[].matches") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_profile</samp>](## "router_adaptive_virtual_topology.policies.[].matches.[].application_profile") | String |  |  |  | Application profile name. |
@@ -70,6 +70,8 @@
           internet_exit_policy: <str>
 
       # A sequence of application profiles mapped to some virtual topologies.
+
+      # When `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index> in the list.
       policies:
 
           # Policy name.

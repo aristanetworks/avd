@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -169,6 +169,14 @@ class MiscMixin:
         return get(self.hostvars, "dc_name")
 
     @cached_property
+    def fabric_name(self: SharedUtils) -> str:
+        return get(self.hostvars, "fabric_name", required=True)
+
+    @cached_property
+    def rack(self: SharedUtils) -> str | None:
+        return get(self.switch_data_combined, "rack")
+
+    @cached_property
     def network_services_keys(self: SharedUtils) -> list[dict]:
         """
         Return sorted network_services_keys filtered for invalid entries and unused keys
@@ -233,6 +241,14 @@ class MiscMixin:
         It defaults to 'first_id' if the variable is not defined.
         """
         return get(self.hostvars, "fabric_ip_addressing.mlag.algorithm", default="first_id")
+
+    @cached_property
+    def fabric_ip_addressing_mlag_ipv4_prefix_length(self: SharedUtils) -> int:
+        return get(self.hostvars, "fabric_ip_addressing.mlag.ipv4_prefix_length", default=31)
+
+    @cached_property
+    def fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length(self: SharedUtils) -> int:
+        return get(self.hostvars, "fabric_ip_addressing.p2p_uplinks.ipv4_prefix_length", default=31)
 
     @cached_property
     def fabric_sflow_uplinks(self: SharedUtils) -> bool | None:

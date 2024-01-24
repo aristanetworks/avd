@@ -6,7 +6,7 @@ copyright: Copyright &copy; 2019 - 2023 Arista Networks
 
 # Repository information
 repo_name: AVD on Github
-repo_url: https://github.com/aristanetworks/ansible-avd
+repo_url: https://github.com/aristanetworks/avd
 
 # Configuration
 use_directory_urls: false
@@ -50,7 +50,7 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/github-alt
-      link: https://github.com/aristanetworks/ansible-avd
+      link: https://github.com/aristanetworks/avd
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/AristaNetworks
     - icon: fontawesome/solid/globe
@@ -147,6 +147,7 @@ nav:
               - Configuring PTP: roles/eos_designs/docs/how-to/ptp.md
               - Custom Structured Configuration: roles/eos_designs/docs/how-to/custom-structured-configuration.md
               - Custom Templates: roles/eos_designs/docs/how-to/custom-templates.md
+              - Generate CloudVision Tags Preview: roles/eos_designs/docs/how-to/cloudvision-tags-preview.md
           - WAN Preview: roles/eos_designs/docs/wan-preview.md
       - eos_cli_config_gen:
           - Overview: roles/eos_cli_config_gen/README.md
