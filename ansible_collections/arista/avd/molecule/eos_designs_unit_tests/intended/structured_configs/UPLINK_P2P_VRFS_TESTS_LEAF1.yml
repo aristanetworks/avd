@@ -40,11 +40,11 @@ router_bgp:
     - ip_address: 10.42.42.8
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42
+      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42 vrf PROD
     - ip_address: 10.42.42.10
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42
+      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42 vrf PROD
     redistribute_routes:
     - source_protocol: connected
   - name: ONLY-ON-L2LEAF
@@ -53,7 +53,7 @@ router_bgp:
     - ip_address: 10.42.42.8
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66
+      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66 vrf ONLY-ON-L2LEAF
     redistribute_routes:
     - source_protocol: connected
   - name: IT
@@ -62,7 +62,7 @@ router_bgp:
     - ip_address: 10.42.42.10
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100
+      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100 vrf IT
     redistribute_routes:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent

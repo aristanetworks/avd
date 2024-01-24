@@ -35,14 +35,14 @@ router_bgp:
     - ip_address: 10.42.42.9
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1.42
+      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1.42 vrf PROD
   - name: ONLY-ON-L2LEAF
     router_id: 192.168.42.1
     neighbors:
     - ip_address: 10.42.42.9
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1.66
+      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1.66 vrf ONLY-ON-L2LEAF
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
