@@ -2882,6 +2882,14 @@
             },
             "title": "IP Address Secondaries"
           },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
+          },
           "dhcp_client_accept_default_route": {
             "type": "boolean",
             "description": "Install default-route obtained via DHCP",
@@ -12773,6 +12781,14 @@
             "type": "string",
             "description": "IPv4 address/mask",
             "title": "IP Address"
+          },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
           },
           "ip_nat": {
             "type": "object",
@@ -24836,6 +24852,14 @@
               "description": "IPv4_address/Mask"
             },
             "title": "IP Address Virtual Secondaries"
+          },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
           },
           "ip_igmp": {
             "type": "boolean",

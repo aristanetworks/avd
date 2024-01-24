@@ -580,6 +580,11 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+            - any
+            - rx
         ip_nat:
           type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"

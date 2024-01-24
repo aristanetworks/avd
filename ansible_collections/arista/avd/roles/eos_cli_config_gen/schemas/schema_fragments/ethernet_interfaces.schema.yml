@@ -276,6 +276,11 @@ keys:
           type: list
           items:
             type: str
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+            - any
+            - rx
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP

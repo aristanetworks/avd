@@ -5962,6 +5962,14 @@
                 },
                 "title": "IP Address Secondaries"
               },
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
+              },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
                 "description": "Install default-route obtained via DHCP",
@@ -9146,10 +9154,27 @@
                   "mode": {
                     "type": "string",
                     "enum": [
-                      "static"
+                      "static",
+                      "individual"
                     ],
-                    "description": "Currently only static mode is supported.",
+                    "description": "Either static or individual mode is supported.\nIf the mode is set to \"individual\" the \"individual.profile\" setting must be defined.\n",
                     "title": "Mode"
+                  },
+                  "individual": {
+                    "type": "object",
+                    "description": "Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to \"individual\".",
+                    "properties": {
+                      "profile": {
+                        "type": "string",
+                        "description": "Port-profile name to inherit configuration.",
+                        "title": "Profile"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Individual"
                   },
                   "timeout": {
                     "type": "integer",
@@ -10155,6 +10180,14 @@
                     "type": "string",
                     "description": "IPv4 address/mask",
                     "title": "IP Address"
+                  },
+                  "ip_verify_unicast_source_reachable_via": {
+                    "type": "string",
+                    "enum": [
+                      "any",
+                      "rx"
+                    ],
+                    "title": "IP Verify Unicast Source Reachable Via"
                   },
                   "ip_nat": {
                     "type": "object",
@@ -11172,6 +11205,14 @@
                   "type": "string"
                 },
                 "title": "IP Address Secondaries"
+              },
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
@@ -15166,10 +15207,27 @@
                   "mode": {
                     "type": "string",
                     "enum": [
-                      "static"
+                      "static",
+                      "individual"
                     ],
-                    "description": "Currently only static mode is supported.",
+                    "description": "Either static or individual mode is supported.\nIf the mode is set to \"individual\" the \"individual.profile\" setting must be defined.\n",
                     "title": "Mode"
+                  },
+                  "individual": {
+                    "type": "object",
+                    "description": "Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to \"individual\".",
+                    "properties": {
+                      "profile": {
+                        "type": "string",
+                        "description": "Port-profile name to inherit configuration.",
+                        "title": "Profile"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Individual"
                   },
                   "timeout": {
                     "type": "integer",
@@ -16175,6 +16233,14 @@
                     "type": "string",
                     "description": "IPv4 address/mask",
                     "title": "IP Address"
+                  },
+                  "ip_verify_unicast_source_reachable_via": {
+                    "type": "string",
+                    "enum": [
+                      "any",
+                      "rx"
+                    ],
+                    "title": "IP Verify Unicast Source Reachable Via"
                   },
                   "ip_nat": {
                     "type": "object",
@@ -17192,6 +17258,14 @@
                   "type": "string"
                 },
                 "title": "IP Address Secondaries"
+              },
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
@@ -20762,6 +20836,14 @@
                       },
                       "title": "IP Address Virtual Secondaries"
                     },
+                    "ip_verify_unicast_source_reachable_via": {
+                      "type": "string",
+                      "enum": [
+                        "any",
+                        "rx"
+                      ],
+                      "title": "IP Verify Unicast Source Reachable Via"
+                    },
                     "ip_igmp": {
                       "type": "boolean",
                       "title": "IP IGMP"
@@ -22398,6 +22480,14 @@
                   "description": "IPv4_address/Mask"
                 },
                 "title": "IP Address Virtual Secondaries"
+              },
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
               },
               "ip_igmp": {
                 "type": "boolean",

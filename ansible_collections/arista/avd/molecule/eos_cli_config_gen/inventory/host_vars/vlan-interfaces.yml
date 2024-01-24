@@ -16,6 +16,7 @@ vlan_interfaces:
     ip_address_virtual: 10.2.2.1/24
     no_autostate: true
     isis_enable: "EVPN_UNDERLAY"
+    ip_verify_unicast_source_reachable_via: rx
 
   - name: Vlan81
     description: IPv6 Virtual Address
