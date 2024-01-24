@@ -9626,6 +9626,29 @@
                         "minimum": 3,
                         "maximum": 50,
                         "title": "Multiplier"
+                      },
+                      "neighbor": {
+                        "type": "string",
+                        "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch.",
+                        "title": "Neighbor"
+                      },
+                      "per_link": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "rfc_7130": {
+                            "type": "boolean",
+                            "title": "Rfc 7130"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Per Link"
                       }
                     },
                     "additionalProperties": false,
@@ -15672,6 +15695,29 @@
                         "minimum": 3,
                         "maximum": 50,
                         "title": "Multiplier"
+                      },
+                      "neighbor": {
+                        "type": "string",
+                        "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch.",
+                        "title": "Neighbor"
+                      },
+                      "per_link": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "rfc_7130": {
+                            "type": "boolean",
+                            "title": "Rfc 7130"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Per Link"
                       }
                     },
                     "additionalProperties": false,

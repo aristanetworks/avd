@@ -7255,6 +7255,18 @@ keys:
               - str
               min: 3
               max: 50
+            neighbor:
+              type: str
+              description: IPv4 or IPv6 address. When the Port-channel is a L2 interface,
+                a local L3 BFD address (router_bfd.local_address) has to be defined
+                globally on the switch.
+            per_link:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                rfc_7130:
+                  type: bool
         service_policy:
           type: dict
           keys:
@@ -8960,6 +8972,9 @@ keys:
       interval:
         type: int
         description: Rate in milliseconds
+      local_address:
+        type: str
+        description: Configure BFD local IP/IPv6 address
       min_rx:
         type: int
         description: Rate in milliseconds

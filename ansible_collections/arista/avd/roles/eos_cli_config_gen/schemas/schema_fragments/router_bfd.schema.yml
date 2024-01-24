@@ -12,6 +12,9 @@ keys:
       interval:
         type: int
         description: Rate in milliseconds
+      local_address:
+        type: str
+        description: Configure BFD local IP/IPv6 address
       min_rx:
         type: int
         description: Rate in milliseconds

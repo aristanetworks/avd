@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>router_bfd</samp>](## "router_bfd") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;interval</samp>](## "router_bfd.interval") | Integer |  |  |  | Rate in milliseconds |
+    | [<samp>&nbsp;&nbsp;local_address</samp>](## "router_bfd.local_address") | String |  |  |  | Configure BFD local IP/IPv6 address |
     | [<samp>&nbsp;&nbsp;min_rx</samp>](## "router_bfd.min_rx") | Integer |  |  |  | Rate in milliseconds |
     | [<samp>&nbsp;&nbsp;multiplier</samp>](## "router_bfd.multiplier") | Integer |  |  | Min: 3<br>Max: 50 |  |
     | [<samp>&nbsp;&nbsp;multihop</samp>](## "router_bfd.multihop") | Dictionary |  |  |  |  |
@@ -37,6 +38,9 @@
 
       # Rate in milliseconds
       interval: <int>
+
+      # Configure BFD local IP/IPv6 address
+      local_address: <str>
 
       # Rate in milliseconds
       min_rx: <int>
