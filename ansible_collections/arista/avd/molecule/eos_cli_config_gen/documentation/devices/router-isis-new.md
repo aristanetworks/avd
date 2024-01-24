@@ -201,6 +201,12 @@ interface Vlan4094
 | Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
+| SPF Interval | 250 |
+| SPF Interval Wait Time| 10 |
+| Graceful-restart Enabled | True |
+| Graceful-restart Restart-hold-time | 10 |
+| Graceful-restart t2 Level-1 | 10 |
+| Graceful-restart t2 Level-2 | 20 |
 
 #### ISIS Route Redistribution
 
@@ -235,6 +241,7 @@ interface Vlan4094
 | -------- | ----- |
 | IPv4 Address-family Enabled | True |
 | Maximum-paths | 4 |
+| BFD All-interfaces | True |
 | TI-LFA Mode | link-protection |
 | TI-LFA Level | level-2 |
 | TI-LFA SRLG Enabled | True |
@@ -252,6 +259,7 @@ interface Vlan4094
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
 | Maximum-paths | 4 |
+| BFD All-interfaces | True |
 | TI-LFA Mode | node-protection |
 | TI-LFA SRLG Enabled | True |
 
