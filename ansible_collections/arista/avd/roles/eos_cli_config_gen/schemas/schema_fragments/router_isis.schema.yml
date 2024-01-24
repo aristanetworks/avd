@@ -232,13 +232,6 @@ keys:
           t2:
             type: dict
             keys:
-              wait_time:
-                type: int
-                convert_types:
-                  - str
-                min: 5
-                max: 300
-                description: LSP database sync wait time in seconds
               level_1_wait_time:
                 type: int
                 convert_types:

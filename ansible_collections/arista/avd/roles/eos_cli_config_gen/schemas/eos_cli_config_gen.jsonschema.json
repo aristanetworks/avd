@@ -20721,25 +20721,18 @@
             "t2": {
               "type": "object",
               "properties": {
-                "wait_time": {
-                  "type": "integer",
-                  "minimum": 5,
-                  "maximum": 300,
-                  "description": "LSP database sync wait time in seconds",
-                  "title": "Wait Time"
-                },
                 "level_1_wait_time": {
                   "type": "integer",
                   "minimum": 5,
                   "maximum": 300,
-                  "description": "Number of seconds",
+                  "description": "Level-1 LSP database sync wait time in seconds.",
                   "title": "Level 1 Wait Time"
                 },
                 "level_2_wait_time": {
                   "type": "integer",
                   "minimum": 5,
                   "maximum": 300,
-                  "description": "Number of seconds",
+                  "description": "Level-2 LSP database sync wait time in seconds.",
                   "title": "Level 2 Wait Time"
                 }
               },

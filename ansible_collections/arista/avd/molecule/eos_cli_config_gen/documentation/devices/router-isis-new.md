@@ -276,7 +276,7 @@ router isis EVPN_UNDERLAY
    graceful-restart
    graceful-restart restart-hold-time 10
    graceful-restart t2 level-1 10
-   graceful-restart t2 level-1 20
+   graceful-restart t2 level-2 20
    !
    address-family ipv4 unicast
       maximum-paths 4

@@ -12017,27 +12017,20 @@ keys:
           t2:
             type: dict
             keys:
-              wait_time:
-                type: int
-                convert_types:
-                - str
-                min: 5
-                max: 300
-                description: LSP database sync wait time in seconds
               level_1_wait_time:
                 type: int
                 convert_types:
                 - str
                 min: 5
                 max: 300
-                description: Number of seconds
+                description: Level-1 LSP database sync wait time in seconds.
               level_2_wait_time:
                 type: int
                 convert_types:
                 - str
                 min: 5
                 max: 300
-                description: Number of seconds
+                description: Level-2 LSP database sync wait time in seconds.
   router_l2_vpn:
     type: dict
     keys:
