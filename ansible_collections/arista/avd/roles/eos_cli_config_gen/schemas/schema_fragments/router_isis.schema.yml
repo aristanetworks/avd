@@ -194,3 +194,20 @@ keys:
                   type: int
                   convert_types:
                     - str
+      spf_interval:
+        type: dict
+        keys:
+          interval:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 300
+            description: Maximum interval between two SPFs in seconds
+          wait_interval:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 300000
+            description: Initial wait interval for SPF in milliseconds

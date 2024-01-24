@@ -272,6 +272,7 @@ router isis EVPN_UNDERLAY
    mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
    advertise passive-only
+   spf-interval 250 10
    !
    address-family ipv4 unicast
       maximum-paths 4

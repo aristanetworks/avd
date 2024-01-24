@@ -20669,6 +20669,30 @@
             "^_.+$": {}
           },
           "title": "Segment Routing MPLS"
+        },
+        "spf_interval": {
+          "type": "object",
+          "properties": {
+            "interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300,
+              "description": "Maximum interval between two SPFs in seconds",
+              "title": "Interval"
+            },
+            "wait_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300000,
+              "description": "Initial wait interval for SPF in milliseconds",
+              "title": "Wait Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "SPF Interval"
         }
       },
       "required": [

@@ -56,6 +56,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_segments</samp>](## "router_isis.segment_routing_mpls.prefix_segments") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].prefix") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].index") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;spf_interval</samp>](## "router_isis.spf_interval") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_isis.spf_interval.interval") | Integer |  |  | Min: 1<br>Max: 300 | Maximum interval between two SPFs in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wait_interval</samp>](## "router_isis.spf_interval.wait_interval") | Integer |  |  | Min: 1<br>Max: 300000 | Initial wait interval for SPF in milliseconds |
 
 === "YAML"
 
@@ -140,4 +143,11 @@
         prefix_segments:
           - prefix: <str>
             index: <int>
+      spf_interval:
+
+        # Maximum interval between two SPFs in seconds
+        interval: <int; 1-300>
+
+        # Initial wait interval for SPF in milliseconds
+        wait_interval: <int; 1-300000>
     ```

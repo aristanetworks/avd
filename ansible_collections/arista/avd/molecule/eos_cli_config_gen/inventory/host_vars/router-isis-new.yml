@@ -6,6 +6,9 @@ router_isis:
   is_type: level-2
   log_adjacency_changes: true
   mpls_ldp_sync_default: true
+  spf_interval:
+    interval: 250
+    wait_interval: 10
   timers:
     local_convergence:
       protected_prefixes: true

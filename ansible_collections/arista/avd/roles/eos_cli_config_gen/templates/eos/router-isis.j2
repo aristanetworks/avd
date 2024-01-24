@@ -63,6 +63,13 @@ router isis {{ router_isis.instance }}
 {%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
    advertise passive-only
 {%     endif %}
+{%     if router_isis.spf_interval.interval is arista.avd.defined %}
+{%         if router_isis.spf_interval.wait_interval is arista.avd.defined %}
+   spf-interval {{ router_isis.spf_interval.interval }} {{ router_isis.spf_interval.wait_interval }}
+{%         else %}
+   spf-interval {{ router_isis.spf_interval.interval }}
+{%         endif %}
+{%     endif %}
    !
 {%     if router_isis.address_family is arista.avd.defined %}
 {%         for address_family in router_isis.address_family %}
