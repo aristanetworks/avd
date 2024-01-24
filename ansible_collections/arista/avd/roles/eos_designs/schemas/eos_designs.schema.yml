@@ -1530,7 +1530,7 @@ keys:
       (`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).
 
 
-      This may introduce breaking changes to your configruration.'
+      This may introduce breaking changes to your configuration.'
   node_type_keys:
     type: list
     description: 'Define Node Type Keys, to specify the properties of each node type
