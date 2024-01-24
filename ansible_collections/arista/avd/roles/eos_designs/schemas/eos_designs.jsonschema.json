@@ -9612,7 +9612,7 @@
                       },
                       "neighbor": {
                         "type": "string",
-                        "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address has to be defined globally on the switch.",
+                        "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address `router_bfd.local_address` has to be defined globally on the switch.",
                         "title": "Neighbor"
                       },
                       "per_link": {
@@ -15664,7 +15664,7 @@
                       },
                       "neighbor": {
                         "type": "string",
-                        "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address has to be defined globally on the switch.",
+                        "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address `router_bfd.local_address` has to be defined globally on the switch.",
                         "title": "Neighbor"
                       },
                       "per_link": {

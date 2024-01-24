@@ -2,6 +2,7 @@
 
 router_bfd:
   interval: 900
+  local_address: 192.168.255.1
   min_rx: 900
   multiplier: 50
   multihop:
