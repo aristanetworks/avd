@@ -156,7 +156,7 @@ class RouterBgpMixin(UtilsMixin):
                     else:
                         target["route_targets"].append(vrf_rt)
 
-                for rt in get(vrf, "additional_route_targets", default=[]):
+                for rt in vrf["additional_route_targets"]:
                     if (target := get_item(route_targets[rt["type"]], "address_family", rt["address_family"])) is None:
                         route_targets[rt["type"]].append({"address_family": rt["address_family"], "route_targets": [rt["route_target"]]})
                     else:

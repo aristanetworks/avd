@@ -44,7 +44,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "router_path_selection.load_balance_policies.[].lowest_hop_count") | Boolean |  |  |  | Prefer paths with lowest hop-count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "router_path_selection.load_balance_policies.[].jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "router_path_selection.load_balance_policies.[].latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "router_path_selection.load_balance_policies.[].loss_rate") | String |  |  | Pattern: ^\d+(\.\d{1,2})?$ | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00 % |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "router_path_selection.load_balance_policies.[].loss_rate") | String |  |  | Pattern: ^\d+(\.\d{1,2})?$ | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "router_path_selection.load_balance_policies.[].path_groups") | List, items: Dictionary |  |  |  | List of path-groups to use for this load balance policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.load_balance_policies.[].path_groups.[].name") | String | Required, Unique |  |  | Path-group name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "router_path_selection.load_balance_policies.[].path_groups.[].priority") | Integer |  |  | Min: 1<br>Max: 65535 | Priority for this path-group.<br>The EOS default value is 1. |
@@ -151,7 +151,7 @@
           latency: <int; 0-10000>
 
           # Loss Rate requirement in percentage for this load balance policy.
-          # Value between 0.00 and 100.00 %
+          # Value between 0.00 and 100.00.
           loss_rate: <str>
 
           # List of path-groups to use for this load balance policy.

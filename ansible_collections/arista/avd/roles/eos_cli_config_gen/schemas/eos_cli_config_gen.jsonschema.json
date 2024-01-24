@@ -22048,7 +22048,7 @@
               },
               "loss_rate": {
                 "type": "string",
-                "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00 %",
+                "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
                 "pattern": "^\\d+(\\.\\d{1,2})?$",
                 "title": "Loss Rate"
               },
