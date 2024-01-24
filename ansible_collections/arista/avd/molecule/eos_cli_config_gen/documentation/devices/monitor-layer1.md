@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitor Layer 1 Logging](#monitor-layer-1-logging)
-  - [Monitor Layer1 Device Configuration](#monitor-layer1-device-configuration)
+  - [Monitor Layer 1 Device Configuration](#monitor-layer-1-device-configuration)
 
 ## Management
 
@@ -15,13 +15,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -43,7 +43,7 @@ interface Management1
 | transceiver dom | True |
 | transceiver communication | True |
 
-### Monitor Layer1 Device Configuration
+### Monitor Layer 1 Device Configuration
 
 ```eos
 !
