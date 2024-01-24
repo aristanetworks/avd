@@ -76,7 +76,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.42
   peer_type: l3leaf
   vrf: PROD
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1 vrf PROD
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1.42 vrf PROD
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
@@ -87,7 +87,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.66
   peer_type: l3leaf
   vrf: ONLY-ON-L2LEAF
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1 vrf ONLY-ON-L2LEAF
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1.66 vrf ONLY-ON-L2LEAF
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 66

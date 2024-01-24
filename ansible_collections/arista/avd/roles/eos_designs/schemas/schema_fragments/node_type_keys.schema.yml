@@ -177,6 +177,7 @@ keys:
             VRF `default` is always configured on the physical interface, using the underlay routing protocol.
             All subinterfaces use the same IP address as the physical interface.
             Multicast is not supported.
+            Only BGP is supported for subinterfaces.
         vtep:
           type: bool
           default: false

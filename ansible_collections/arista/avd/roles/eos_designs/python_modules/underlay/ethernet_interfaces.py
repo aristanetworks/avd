@@ -149,13 +149,25 @@ class EthernetInterfacesMixin(UtilsMixin):
             # Adding subinterfaces for each VRF after the main interface.
             if link["type"] == "underlay_p2p" and "subinterfaces" in link:
                 for subinterface in get(link, "subinterfaces", default=[]):
+                    description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                        InterfaceDescriptionData(
+                            shared_utils=self.shared_utils,
+                            interface=subinterface["interface"],
+                            link_type=link["type"],
+                            peer=link["peer"],
+                            peer_interface=subinterface["peer_interface"],
+                            vrf=subinterface["vrf"],
+                        )
+                    )
                     ethernet_subinterface = {
                         "name": subinterface["interface"],
                         "peer": link["peer"],
                         "peer_interface": subinterface["peer_interface"],
                         "peer_type": link["peer_type"],
                         "vrf": subinterface["vrf"],
-                        "description": f"{description} vrf {subinterface['vrf']}",
+                        # TODO - for now reusing the encapsulation as it is hardcoded to the VRF ID which is used as
+                        # subinterface name
+                        "description": description,
                         "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
                         "type": "l3dot1q",
                         "encapsulation_dot1q_vlan": subinterface["encapsulation_dot1q_vlan"],

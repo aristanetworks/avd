@@ -1737,7 +1737,9 @@ keys:
 
             All subinterfaces use the same IP address as the physical interface.
 
-            Multicast is not supported.'
+            Multicast is not supported.
+
+            Only BGP is supported for subinterfaces.'
         vtep:
           type: bool
           default: false

@@ -105,7 +105,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.42
   peer_type: spine
   vrf: PROD
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1 vrf PROD
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42 vrf PROD
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
@@ -116,7 +116,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.66
   peer_type: spine
   vrf: ONLY-ON-L2LEAF
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1 vrf ONLY-ON-L2LEAF
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66 vrf ONLY-ON-L2LEAF
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 66
@@ -138,7 +138,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.100
   peer_type: spine
   vrf: IT
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2 vrf IT
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100 vrf IT
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 100
@@ -149,7 +149,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.42
   peer_type: spine
   vrf: PROD
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2 vrf PROD
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42 vrf PROD
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
