@@ -61,21 +61,6 @@ router_bgp:
         receive: true
         send:
           any: true
-  vrfs:
-  - name: default
-    router_id: 192.168.44.1
-    rd: 192.168.44.1:1
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-    redistribute_routes:
-    - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:

@@ -137,6 +137,7 @@ class RouterBgpMixin(UtilsMixin):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrf_name = vrf["name"]
+
                 bgp_vrf = {
                     "name": vrf_name,
                     "router_id": self.shared_utils.router_id,
@@ -157,6 +158,11 @@ class RouterBgpMixin(UtilsMixin):
                     # To be non-breaking we only support wide BGP configs when the knob
                     # `new_network_services_bgp_vrf_config` is set to True. The default is False.
                     # TODO: AVD 5.0 make True the default behavior.
+                    continue
+
+                # TODO this is to prevent rendering BGP vrf default on Pathfinder and AutoVPN RRs.
+                # This may need to be adjusted for more complex use cases.
+                if vrf_name == "default" and self.shared_utils.wan_role == "server":
                     continue
 
                 if vrf_name != "default":

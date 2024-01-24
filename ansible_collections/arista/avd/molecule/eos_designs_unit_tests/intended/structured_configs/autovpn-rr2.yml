@@ -62,21 +62,6 @@ router_bgp:
     peer_group: RR-OVERLAY-PEERS
     peer: autovpn-rr1
     description: autovpn-rr1
-  vrfs:
-  - name: default
-    router_id: 192.168.31.2
-    rd: 192.168.31.2:1
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-    redistribute_routes:
-    - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
