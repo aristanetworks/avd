@@ -21,7 +21,8 @@ from .replace_or_append_item import replace_or_append_item
 from .template import template
 from .template_var import template_var
 from .unique import unique
-from .yaml_dumper import NoAliasDumper
+from .yaml_dumper import NoAliasDumper, YamlDumper
+from .yaml_loader import YamlLoader
 
 __all__ = [
     "append_if_not_duplicate",
@@ -46,4 +47,6 @@ __all__ = [
     "get_validated_path",
     "get_validated_value",
     "cprofile",
+    "YamlDumper",
+    "YamlLoader",
 ]

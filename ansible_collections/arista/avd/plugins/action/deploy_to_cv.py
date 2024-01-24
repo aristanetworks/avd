@@ -14,7 +14,7 @@ from string import Template
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
-from yaml import CLoader, load
+from yaml import load
 
 from ansible_collections.arista.avd.plugins.plugin_utils.cv_client import deploy_to_cv
 from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.deploy_to_cv.models import (
@@ -29,7 +29,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.deploy_to_cv.
     CVWorkspace,
 )
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
@@ -241,7 +241,7 @@ class ActionModule(ActionBase):
                     else:
                         in_interesting_context = False
 
-                structured_config = load("".join(structured_config_lines), Loader=CLoader)
+                structured_config = load("".join(structured_config_lines), Loader=YamlLoader)
             else:
                 # Load as JSON
                 structured_config = json.load(structured_config_stream)
