@@ -14,15 +14,15 @@
     configuration_dir: "{{ playbook_dir }}/intended/configs"
     structured_config_dir: "{{ playbook_dir }}/intended/structured_configs"
 
-    ws_name: avd-static-studios-15
+    ws_name: avd-static-studio-32
     ws_description: sample description
     ws_req_state: submitted
     ws_force: true
 
     # TODO: cc_id is not getting set to anything other than Workspace-<ws_nane>
-    cc_id: Workspace-avd-static-studios-15
+    cc_id: Workspace-avd-static-studio-32
     cc_requested_state: running
-    cc_name: cc_avd_studios-15
+    cc_name: cc_avd_studio-32
     cc_desctiption: sample description
 
   # TODO: change cc stage to `running`, get CC state from cvp and assert
@@ -37,7 +37,7 @@
         # device_list: "{{ ansible_play_hosts }}"
         device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
         # device_list: ["s1-leaf1"]
-        # strict_tags: false
+        strict_tags: true
         # skip_missing_devices: false
         # configlet_name_template: "AVD-${hostname}"
         cv_servers: [ '{{ cv_server }}' ]
@@ -59,10 +59,10 @@
         return_details: true
       register: CVP_RESULTS
 
-    # - name: 'Display CVP result'
-    #   run_once: true
-    #   debug:
-    #     msg: '{{CVP_RESULTS}}'
+    - name: 'Display CVP result'
+      run_once: true
+      debug:
+        msg: '{{CVP_RESULTS}}'
 
     - name: check CVP returns
       ansible.builtin.assert:
@@ -92,7 +92,6 @@
     - name: get workspace information
       delegate_to: localhost
       run_once: true
-      # hosts: localhost
       ansible.builtin.uri:
         url: '{{ ws_url }}'
         return_content: true
@@ -113,26 +112,29 @@
       register: result
 
     # CC information
-    # - name: get CC information
-    #   delegate_to: localhost
-    #   run_once: true
-    #   ansible.builtin.uri:
-    #     url: '{{ cc_url }}'
-    #     return_content: true
-    #     validate_certs: false
-    #     headers:
-    #       Cookie: "access_token={{ token }}"
-    #     method: POST
-    #     body_format: json
-    #     body:
-    #       key:
-    #         id: '{{ cc_id }}'
-    #   register: CC_INFO
+    - name: get CC information
+      delegate_to: localhost
+      run_once: true
+      ansible.builtin.uri:
+        url: '{{ cc_url }}'
+        return_content: true
+        validate_certs: false
+        headers:
+          Cookie: "access_token={{ token }}"
+        method: POST
+        body_format: json
+        body:
+          key:
+            id: '{{ cc_id }}'
+      register: CC_INFO
+      until: CC_INFO.json[0].value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
+      retries: 5
+      delay: 30
 
-    # - name: 'Display CC result'
-    #   run_once: true
-    #   debug:
-    #     msg: '{{ CC_INFO.json[0].value.status }}'
+    - name: 'Display CC result'
+      run_once: true
+      debug:
+        msg: '{{ CC_INFO.json[0].value.status }}'
 
     - name: 'Set configlets facts'
       run_once: true
