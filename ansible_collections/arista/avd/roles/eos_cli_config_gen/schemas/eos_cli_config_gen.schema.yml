@@ -12829,6 +12829,30 @@ keys:
             path_selection_policy:
               type: str
               description: DPS policy name to use for this VRF.
+      tcp_mss_ceiling:
+        type: dict
+        keys:
+          ipv4_segment_size:
+            type: str
+            description: 'Segment Size for IPv4.
+
+              Can be an integer in the range 64-65515 or "auto".
+
+              "auto" will enable auto-discovery which clamps the TCP MSS value to
+              the minimum of all the direct paths
+
+              and multi-hop path MTU towards a remote VTEP (minus 40bytes to account
+              for IP + TCP header).'
+            convert_types:
+            - int
+          direction:
+            type: str
+            valid_values:
+            - ingress
+            default: ingress
+            description: 'Enforce on packets through DPS tunnel for a specific direction.
+
+              Only ''ingress'' direction is supported.'
   router_pim_sparse_mode:
     type: dict
     keys:

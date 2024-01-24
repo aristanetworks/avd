@@ -1,0 +1,21 @@
+loopback_ipv4_pool: 192.168.0.0/24
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: connected-endpoints-missing-profile-lacp-fallback
+
+servers:
+  # port-channel with lacp fallback individual and missing profile for lacp fallback
+  - name: INDIVIDUAL_1
+    adapters:
+      - switches: [connected-endpoints-missing-profile-lacp-fallback, connected-endpoints-missing-profile-lacp-fallback]
+        switch_ports: [Ethernet14, Ethernet15]
+        port_channel:
+          mode: "active"
+          description: "INDIVIDUAL_1"
+          lacp_fallback:
+            mode: individual
+
+expected_error_message: "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for the connected endpoint with the name 'INDIVIDUAL_1'."
