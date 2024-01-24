@@ -4176,7 +4176,21 @@ $defs:
                 type: str
                 valid_values:
                 - static
-                description: Currently only static mode is supported.
+                - individual
+                description: 'Either static or individual mode is supported.
+
+                  If the mode is set to "individual" the "individual.profile" setting
+                  must be defined.
+
+                  '
+              individual:
+                type: dict
+                description: Define parameters for port-channel member interfaces.
+                  Applies only if LACP fallback is set to "individual".
+                keys:
+                  profile:
+                    type: str
+                    description: Port-profile name to inherit configuration.
               timeout:
                 type: int
                 convert_types:
