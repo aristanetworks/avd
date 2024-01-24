@@ -1090,6 +1090,10 @@ The default available keys is `tenants`.
 roles/eos_designs/docs/tables/network-services.md
 --8<--
 
+--8<--
+roles/eos_designs/docs/tables/new-network-services-bgp-vrf-config.md
+--8<--
+
 #### Network services VRFs configuration
 
 --8<--

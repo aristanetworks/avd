@@ -13393,7 +13393,7 @@
     "new_network_services_bgp_vrf_config": {
       "type": "boolean",
       "default": false,
-      "description": "PREVIEW: This key is currently not supported\n\nSet this key to `true` in the node type to generate full BGP configuration\nfor network services even when `evpn` is not in the address families\n(`evpn` is the default address family).\n\nThis may introduce breaking changes to your configruration.",
+      "description": "PREVIEW: This key is currently not supported\n\nSet this key to `true` in the node type to generate full BGP configuration\nfor network services even when `evpn` is not in the address families\n(`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).\n\nThis may introduce breaking changes to your configruration.",
       "title": "New Network Services BGP VRF Config"
     },
     "node_type_keys": {
