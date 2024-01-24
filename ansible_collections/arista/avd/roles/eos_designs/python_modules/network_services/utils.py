@@ -244,7 +244,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         * implement also the jitter / ...
         """
         wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
-        wan_load_balance_policy = {"name": name, "path_groups": []}
+        wan_load_balance_policy = {"name": name, "path_groups": [], **get(input_dict, "constraints", default={})}
 
         # An entry is composed of a list of path-groups in `names` and a `priority`
         policy_entries = get(input_dict, "path_groups", [])
@@ -390,7 +390,20 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         """
         policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
         # Need to handle VRF default differently
-        filtered_policies = [get_item(policies, "name", wan_vrf[self._wan_policy_key]) for wan_vrf in self._filtered_wan_vrfs if wan_vrf["name"] != "default"]
+        filtered_policies = [
+            get_item(
+                policies,
+                "name",
+                wan_vrf[self._wan_policy_key],
+                required=True,
+                custom_error_msg=(
+                    f"The policy {wan_vrf[self._wan_policy_key]} applied to vrf {wan_vrf['name']} under `wan_virtual_topologies.vrfs` is not "
+                    "defined under `wan_virtual_topologies.policies`."
+                ),
+            )
+            for wan_vrf in self._filtered_wan_vrfs
+            if wan_vrf["name"] != "default"
+        ]
         filtered_policies.append(self._default_vrf_policy)
         return filtered_policies
 

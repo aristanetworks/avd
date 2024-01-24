@@ -15,6 +15,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.name") | String |  |  |  | Optional name, if not set `CONTROL-PLANE-PROFILE` is used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.loss_rate") | String |  |  | Pattern: ^\d+(\.\d{1,2})?$ | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names.[]") | String |  |  |  |  |
@@ -27,6 +31,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].id") | Integer |  |  | Min: 2<br>Max: 253 | ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.<br>ID 1 is reserved for the default_virtual_toplogy.<br>ID 254 is reserved for the control_plane_virtual_topology. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.loss_rate") | String |  |  | Pattern: ^\d+(\.\d{1,2})?$ | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].names.[]") | String |  |  |  |  |
@@ -36,6 +44,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_unmatched</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.drop_unmatched") | Boolean |  | `False` |  | When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.loss_rate") | String |  |  | Pattern: ^\d+(\.\d{1,2})?$ | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].names.[]") | String |  |  |  |  |
@@ -76,6 +88,17 @@
 
         # Set DSCP for matched traffic.
         dscp: <int; 0-63>
+        constraints:
+
+          # Jitter requirement for this load balance policy in milliseconds.
+          jitter: <int; 0-10000>
+
+          # One way delay requirement for this load balance policy in milliseconds.
+          latency: <int; 0-10000>
+
+          # Loss Rate requirement in percentage for this load balance policy.
+          # Value between 0.00 and 100.00.
+          loss_rate: <str>
         path_groups: # >=1 items
 
             # List of path-group names.
@@ -136,6 +159,17 @@
 
               # Set DSCP for matched traffic.
               dscp: <int; 0-63>
+              constraints:
+
+                # Jitter requirement for this load balance policy in milliseconds.
+                jitter: <int; 0-10000>
+
+                # One way delay requirement for this load balance policy in milliseconds.
+                latency: <int; 0-10000>
+
+                # Loss Rate requirement in percentage for this load balance policy.
+                # Value between 0.00 and 100.00.
+                loss_rate: <str>
               path_groups: # >=1 items
 
                   # List of path-group names.
@@ -164,6 +198,17 @@
 
             # Set DSCP for matched traffic.
             dscp: <int; 0-63>
+            constraints:
+
+              # Jitter requirement for this load balance policy in milliseconds.
+              jitter: <int; 0-10000>
+
+              # One way delay requirement for this load balance policy in milliseconds.
+              latency: <int; 0-10000>
+
+              # Loss Rate requirement in percentage for this load balance policy.
+              # Value between 0.00 and 100.00.
+              loss_rate: <str>
             path_groups: # >=1 items
 
                 # List of path-group names.

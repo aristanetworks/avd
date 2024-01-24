@@ -42,6 +42,12 @@ interface Management1
 | ------  | ----- |
 | Dynamic peers source | STUN |
 
+#### TCP MSS Ceiling Configuration
+
+| IPV4 segment size | Direction |
+| ----------------- | --------- |
+| 200 | ingress |
+
 #### Path Groups
 
 ##### Path Group PG-1
@@ -49,6 +55,7 @@ interface Management1
 | Setting | Value |
 | ------  | ----- |
 | Path Group ID | 666 |
+| Keepalive interval(failure threshold) | 200(3) |
 
 ###### Dynamic Peers Settings
 
@@ -71,6 +78,7 @@ interface Management1
 | ------  | ----- |
 | Path Group ID | 42 |
 | IPSec profile | IPSEC-P-1 |
+| Keepalive interval | auto |
 | Flow assignment | LAN |
 
 ###### Local Interfaces
@@ -154,8 +162,10 @@ interface Management1
 !
 router path-selection
    peer dynamic source stun
+   tcp mss ceiling ipv4 200 ingress
    !
    path-group PG-1 id 666
+      keepalive interval 200 milliseconds failure-threshold 3 intervals
       !
       peer dynamic
          ip local
@@ -173,6 +183,7 @@ router path-selection
    !
    path-group PG-2 id 42
       ipsec profile IPSEC-P-1
+      keepalive interval auto
       flow assignment lan
       !
       local interface Ethernet1/1
