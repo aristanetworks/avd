@@ -62,7 +62,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "port_channel_interfaces.[].bfd.interval") | Integer |  |  |  | Interval in milliseconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "port_channel_interfaces.[].bfd.min_rx") | Integer |  |  |  | Rate in milliseconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "port_channel_interfaces.[].bfd.multiplier") | Integer |  |  | Min: 3<br>Max: 50 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor</samp>](## "port_channel_interfaces.[].bfd.neighbor") | String |  |  |  | IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address `router_bfd.local_address` has to be defined globally on the switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor</samp>](## "port_channel_interfaces.[].bfd.neighbor") | String |  |  |  | IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_link</samp>](## "port_channel_interfaces.[].bfd.per_link") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].bfd.per_link.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rfc_7130</samp>](## "port_channel_interfaces.[].bfd.per_link.rfc_7130") | Boolean |  |  |  |  |
@@ -336,7 +336,7 @@
           min_rx: <int>
           multiplier: <int; 3-50>
 
-          # IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address `router_bfd.local_address` has to be defined globally on the switch.
+          # IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch.
           neighbor: <str>
           per_link:
             enabled: <bool>
