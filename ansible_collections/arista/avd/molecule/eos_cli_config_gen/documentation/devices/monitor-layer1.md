@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Monitor Layer1 Logging](#monitor-layer1-logging)
+- [Monitor Layer 1 Logging](#monitor-layer-1-logging)
   - [Monitor Layer1 Device Configuration](#monitor-layer1-device-configuration)
 
 ## Management
@@ -35,13 +35,13 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Monitor Layer1 Logging
+## Monitor Layer 1 Logging
 
-| Logging | State |
-| ------- | ----- |
-| mac fault | enabled |
-| transceiver dom | enabled |
-| transceiver communication | enabled |
+| Layer 1 Event | Logging |
+| ------------- | ------- |
+| mac fault | True |
+| transceiver dom | True |
+| transceiver communication | True |
 
 ### Monitor Layer1 Device Configuration
 

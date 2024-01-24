@@ -1,18 +1,18 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# doc - monitor layer1 #}
 {% if monitor_layer1.enabled is arista.avd.defined(true) %}
 
-## Monitor Layer1 Logging
+## Monitor Layer 1 Logging
 
-| Logging | State |
-| ------- | ----- |
-| mac fault | {{ 'enabled' if monitor_layer1.logging_mac_fault is arista.avd.defined(true) else 'disabled' }} |
-| transceiver dom | {{ 'enabled' if monitor_layer1.logging_transceiver.dom  is arista.avd.defined(true) else 'disabled' }} |
-| transceiver communication | {{ 'enabled' if monitor_layer1.logging_transceiver.communication  is arista.avd.defined(true) else 'disabled' }} |
+| Layer 1 Event | Logging |
+| ------------- | ------- |
+| mac fault | {{ monitor_layer1.logging_mac_fault | arista.avd.default(false) }} |
+| transceiver dom | {{ monitor_layer1.logging_transceiver.dom | arista.avd.default(false) }} |
+| transceiver communication | {{ monitor_layer1.logging_transceiver.communication | arista.avd.default(false) }} |
 
 ### Monitor Layer1 Device Configuration
 
