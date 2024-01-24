@@ -64,6 +64,7 @@ interface Management1
 router bfd
    interval 900 min-rx 900 multiplier 50 default
    multihop interval 300 min-rx 300 multiplier 3
+   local-address 192.168.255.1
    session stats snapshot interval 51
    !
    sbfd

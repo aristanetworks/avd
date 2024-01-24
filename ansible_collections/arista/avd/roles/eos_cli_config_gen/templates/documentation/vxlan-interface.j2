@@ -60,6 +60,11 @@
 | Remote VTEPs EVPN BFD prefix-list | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.prefix_list }} |
 {%         endif %}
 {%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.multicast.headend_replication is arista.avd.defined(true) %}
+| Multicast headend-replication | Enabled |
+{%     elif vxlan_interface.Vxlan1.vxlan.multicast.headend_replication is arista.avd.defined(false) %}
+| Multicast headend-replication | Disabled |
+{%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.vlans is arista.avd.defined %}
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings

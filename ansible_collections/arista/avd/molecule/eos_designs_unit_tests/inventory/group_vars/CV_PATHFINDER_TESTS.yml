@@ -225,6 +225,8 @@ wan_virtual_topologies:
               preference: preferred
             - names: [INET]
               preference: alternate
+          constraints:
+            jitter: 42
           id: 2
         - application_profile: VIDEO
           path_groups:
@@ -232,6 +234,8 @@ wan_virtual_topologies:
               preference: preferred
             - names: [INET]
               preference: alternate
+          constraints:
+            loss_rate: 42.0
           id: 4
     - name: DEFAULT-AVT-POLICY
       default_virtual_topology:

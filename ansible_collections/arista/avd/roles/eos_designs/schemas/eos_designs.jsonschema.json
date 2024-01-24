@@ -9626,6 +9626,29 @@
                         "minimum": 3,
                         "maximum": 50,
                         "title": "Multiplier"
+                      },
+                      "neighbor": {
+                        "type": "string",
+                        "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch.",
+                        "title": "Neighbor"
+                      },
+                      "per_link": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "rfc_7130": {
+                            "type": "boolean",
+                            "title": "Rfc 7130"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Per Link"
                       }
                     },
                     "additionalProperties": false,
@@ -15679,6 +15702,29 @@
                         "minimum": 3,
                         "maximum": 50,
                         "title": "Multiplier"
+                      },
+                      "neighbor": {
+                        "type": "string",
+                        "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch.",
+                        "title": "Neighbor"
+                      },
+                      "per_link": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "rfc_7130": {
+                            "type": "boolean",
+                            "title": "Rfc 7130"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Per Link"
                       }
                     },
                     "additionalProperties": false,
@@ -24159,6 +24205,36 @@
               "description": "Set DSCP for matched traffic.",
               "title": "DSCP"
             },
+            "constraints": {
+              "type": "object",
+              "properties": {
+                "jitter": {
+                  "type": "integer",
+                  "description": "Jitter requirement for this load balance policy in milliseconds.",
+                  "minimum": 0,
+                  "maximum": 10000,
+                  "title": "Jitter"
+                },
+                "latency": {
+                  "type": "integer",
+                  "description": "One way delay requirement for this load balance policy in milliseconds.",
+                  "minimum": 0,
+                  "maximum": 10000,
+                  "title": "Latency"
+                },
+                "loss_rate": {
+                  "type": "string",
+                  "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
+                  "pattern": "^\\d+(\\.\\d{1,2})?$",
+                  "title": "Loss Rate"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Constraints"
+            },
             "path_groups": {
               "type": "array",
               "minItems": 1,
@@ -24246,6 +24322,36 @@
                       "description": "Set DSCP for matched traffic.",
                       "title": "DSCP"
                     },
+                    "constraints": {
+                      "type": "object",
+                      "properties": {
+                        "jitter": {
+                          "type": "integer",
+                          "description": "Jitter requirement for this load balance policy in milliseconds.",
+                          "minimum": 0,
+                          "maximum": 10000,
+                          "title": "Jitter"
+                        },
+                        "latency": {
+                          "type": "integer",
+                          "description": "One way delay requirement for this load balance policy in milliseconds.",
+                          "minimum": 0,
+                          "maximum": 10000,
+                          "title": "Latency"
+                        },
+                        "loss_rate": {
+                          "type": "string",
+                          "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
+                          "pattern": "^\\d+(\\.\\d{1,2})?$",
+                          "title": "Loss Rate"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Constraints"
+                    },
                     "path_groups": {
                       "type": "array",
                       "minItems": 1,
@@ -24318,6 +24424,36 @@
                     "maximum": 63,
                     "description": "Set DSCP for matched traffic.",
                     "title": "DSCP"
+                  },
+                  "constraints": {
+                    "type": "object",
+                    "properties": {
+                      "jitter": {
+                        "type": "integer",
+                        "description": "Jitter requirement for this load balance policy in milliseconds.",
+                        "minimum": 0,
+                        "maximum": 10000,
+                        "title": "Jitter"
+                      },
+                      "latency": {
+                        "type": "integer",
+                        "description": "One way delay requirement for this load balance policy in milliseconds.",
+                        "minimum": 0,
+                        "maximum": 10000,
+                        "title": "Latency"
+                      },
+                      "loss_rate": {
+                        "type": "string",
+                        "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
+                        "pattern": "^\\d+(\\.\\d{1,2})?$",
+                        "title": "Loss Rate"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Constraints"
                   },
                   "path_groups": {
                     "type": "array",
