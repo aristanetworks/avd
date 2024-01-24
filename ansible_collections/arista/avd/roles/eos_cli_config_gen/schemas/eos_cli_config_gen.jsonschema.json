@@ -20725,14 +20725,14 @@
                   "type": "integer",
                   "minimum": 5,
                   "maximum": 300,
-                  "description": "Level-1 LSP database sync wait time in seconds.",
+                  "description": "Level-1 LSP database sync wait time in seconds",
                   "title": "Level 1 Wait Time"
                 },
                 "level_2_wait_time": {
                   "type": "integer",
                   "minimum": 5,
                   "maximum": 300,
-                  "description": "Level-2 LSP database sync wait time in seconds.",
+                  "description": "Level-2 LSP database sync wait time in seconds",
                   "title": "Level 2 Wait Time"
                 }
               },

@@ -238,11 +238,11 @@ keys:
                   - str
                 min: 5
                 max: 300
-                description: Level-1 LSP database sync wait time in seconds.
+                description: Level-1 LSP database sync wait time in seconds
               level_2_wait_time:
                 type: int
                 convert_types:
                   - str
                 min: 5
                 max: 300
-                description: Level-2 LSP database sync wait time in seconds.
+                description: Level-2 LSP database sync wait time in seconds

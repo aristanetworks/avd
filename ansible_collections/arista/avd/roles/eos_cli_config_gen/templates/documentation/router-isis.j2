@@ -52,14 +52,14 @@
 {%         if router_isis.graceful_restart.enabled is arista.avd.defined(true) %}
 | Graceful-restart Enabled | {{ router_isis.graceful_restart.enabled }} |
 {%         endif %}
-{%         if router_isis.graceful_restart.restart_hold_time is arista.avd.defined %}
-| Graceful-restart Restart-hold-time | {{ router_isis.graceful_restart.restart_hold_time }} |
-{%         endif %}
 {%         if router_isis.graceful_restart.t2.level_1_wait_time is arista.avd.defined %}
 | Graceful-restart t2 Level-1 | {{ router_isis.graceful_restart.t2.level_1_wait_time }} |
 {%         endif %}
 {%         if router_isis.graceful_restart.t2.level_2_wait_time is arista.avd.defined %}
 | Graceful-restart t2 Level-2 | {{ router_isis.graceful_restart.t2.level_2_wait_time }} |
+{%         endif %}
+{%         if router_isis.graceful_restart.restart_hold_time is arista.avd.defined %}
+| Graceful-restart Restart-hold-time | {{ router_isis.graceful_restart.restart_hold_time }} |
 {%         endif %}
 {%     endif %}
 {%     if router_isis.redistribute_routes is arista.avd.defined %}

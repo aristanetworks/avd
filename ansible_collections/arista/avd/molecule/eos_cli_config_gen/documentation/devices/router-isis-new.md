@@ -204,9 +204,9 @@ interface Vlan4094
 | SPF Interval | 250 |
 | SPF Interval Wait Time| 10 |
 | Graceful-restart Enabled | True |
-| Graceful-restart Restart-hold-time | 10 |
 | Graceful-restart t2 Level-1 | 10 |
 | Graceful-restart t2 Level-2 | 20 |
+| Graceful-restart Restart-hold-time | 10 |
 
 #### ISIS Route Redistribution
 
@@ -282,9 +282,9 @@ router isis EVPN_UNDERLAY
    advertise passive-only
    spf-interval 250 10
    graceful-restart
-   graceful-restart restart-hold-time 10
    graceful-restart t2 level-1 10
    graceful-restart t2 level-2 20
+   graceful-restart restart-hold-time 10
    !
    address-family ipv4 unicast
       maximum-paths 4
