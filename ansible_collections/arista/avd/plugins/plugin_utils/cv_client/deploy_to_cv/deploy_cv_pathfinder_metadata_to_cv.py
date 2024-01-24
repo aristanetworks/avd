@@ -67,14 +67,14 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
     }
 
     found_index = None
-    for index, router in enumerate(studio_inputs["pathfinders"]):
+    for index, router in enumerate(studio_inputs.get("pathfinders", [])):
         if get(router, "tags.query") == f"device:{device.serial_number}":
             found_index = index
             break
 
     if found_index is None:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New pathfinder device, adding %s", device.hostname)
-        studio_inputs["pathfinders"].append(pathfinder_metadata)
+        studio_inputs.setdefault("pathfinders", []).append(pathfinder_metadata)
     else:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing pathfinder device, updating %s", device.hostname)
         studio_inputs["pathfinders"][found_index] = pathfinder_metadata
@@ -114,14 +114,14 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
     }
 
     found_index = None
-    for index, router in enumerate(studio_inputs["routers"]):
+    for index, router in enumerate(studio_inputs.get("routers", [])):
         if get(router, "tags.query") == f"device:{device.serial_number}":
             found_index = index
             break
 
     if found_index is None:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New edge/transit device, adding %s", device.hostname)
-        studio_inputs["routers"].append(edge_metadata)
+        studio_inputs.setdefault("routers", []).append(edge_metadata)
     else:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing edge/transit device, updating %s", device.hostname)
         studio_inputs["routers"][found_index] = edge_metadata
