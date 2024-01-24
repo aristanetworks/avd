@@ -24198,6 +24198,36 @@
               "description": "Set DSCP for matched traffic.",
               "title": "DSCP"
             },
+            "constraints": {
+              "type": "object",
+              "properties": {
+                "jitter": {
+                  "type": "integer",
+                  "description": "Jitter requirement for this load balance policy in milliseconds.",
+                  "minimum": 0,
+                  "maximum": 10000,
+                  "title": "Jitter"
+                },
+                "latency": {
+                  "type": "integer",
+                  "description": "One way delay requirement for this load balance policy in milliseconds.",
+                  "minimum": 0,
+                  "maximum": 10000,
+                  "title": "Latency"
+                },
+                "loss_rate": {
+                  "type": "string",
+                  "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
+                  "pattern": "^\\d+(\\.\\d{1,2})?$",
+                  "title": "Loss Rate"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Constraints"
+            },
             "path_groups": {
               "type": "array",
               "minItems": 1,
@@ -24285,6 +24315,36 @@
                       "description": "Set DSCP for matched traffic.",
                       "title": "DSCP"
                     },
+                    "constraints": {
+                      "type": "object",
+                      "properties": {
+                        "jitter": {
+                          "type": "integer",
+                          "description": "Jitter requirement for this load balance policy in milliseconds.",
+                          "minimum": 0,
+                          "maximum": 10000,
+                          "title": "Jitter"
+                        },
+                        "latency": {
+                          "type": "integer",
+                          "description": "One way delay requirement for this load balance policy in milliseconds.",
+                          "minimum": 0,
+                          "maximum": 10000,
+                          "title": "Latency"
+                        },
+                        "loss_rate": {
+                          "type": "string",
+                          "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
+                          "pattern": "^\\d+(\\.\\d{1,2})?$",
+                          "title": "Loss Rate"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Constraints"
+                    },
                     "path_groups": {
                       "type": "array",
                       "minItems": 1,
@@ -24357,6 +24417,36 @@
                     "maximum": 63,
                     "description": "Set DSCP for matched traffic.",
                     "title": "DSCP"
+                  },
+                  "constraints": {
+                    "type": "object",
+                    "properties": {
+                      "jitter": {
+                        "type": "integer",
+                        "description": "Jitter requirement for this load balance policy in milliseconds.",
+                        "minimum": 0,
+                        "maximum": 10000,
+                        "title": "Jitter"
+                      },
+                      "latency": {
+                        "type": "integer",
+                        "description": "One way delay requirement for this load balance policy in milliseconds.",
+                        "minimum": 0,
+                        "maximum": 10000,
+                        "title": "Latency"
+                      },
+                      "loss_rate": {
+                        "type": "string",
+                        "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
+                        "pattern": "^\\d+(\\.\\d{1,2})?$",
+                        "title": "Loss Rate"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Constraints"
                   },
                   "path_groups": {
                     "type": "array",

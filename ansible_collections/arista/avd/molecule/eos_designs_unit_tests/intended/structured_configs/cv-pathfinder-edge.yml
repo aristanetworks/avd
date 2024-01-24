@@ -282,12 +282,14 @@ router_path_selection:
     - name: MPLS
     - name: INET
       priority: 2
+    jitter: 42
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
     - name: MPLS
     - name: LTE
     - name: INET
       priority: 2
+    loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
     - name: INET

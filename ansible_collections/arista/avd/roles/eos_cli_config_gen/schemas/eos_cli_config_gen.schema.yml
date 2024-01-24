@@ -12774,7 +12774,7 @@ keys:
               description: 'Loss Rate requirement in percentage for this load balance
                 policy.
 
-                Value between 0.00 and 100.00 %'
+                Value between 0.00 and 100.00.'
               convert_types:
               - int
               - float
