@@ -323,8 +323,7 @@ the values are not part of the officially supported data models, and may change 
 ### Context for interface_descriptions templates
 
 !!! warning  "Caveat"
-    In AVD 4.6 and above, it is not possible to completely overwrite the description of
-    the subinterfaces when `uplink_type` is set to `p2p-vrfs`. The string `vrf <VRF>` is always appended to the description.
+    In AVD 4.x, it is not possible to completely overwrite the description of the subinterfaces when `uplink_type` is set to `p2p-vrfs`. The string `vrf <VRF>` is always appended to the description.
 
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
