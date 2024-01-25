@@ -5962,6 +5962,14 @@
                 },
                 "title": "IP Address Secondaries"
               },
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
+              },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
                 "description": "Install default-route obtained via DHCP",
@@ -9146,10 +9154,27 @@
                   "mode": {
                     "type": "string",
                     "enum": [
-                      "static"
+                      "static",
+                      "individual"
                     ],
-                    "description": "Currently only static mode is supported.",
+                    "description": "Either static or individual mode is supported.\nIf the mode is set to \"individual\" the \"individual.profile\" setting must be defined.\n",
                     "title": "Mode"
+                  },
+                  "individual": {
+                    "type": "object",
+                    "description": "Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to \"individual\".",
+                    "properties": {
+                      "profile": {
+                        "type": "string",
+                        "description": "Port-profile name to inherit configuration.",
+                        "title": "Profile"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Individual"
                   },
                   "timeout": {
                     "type": "integer",
@@ -9601,6 +9626,29 @@
                         "minimum": 3,
                         "maximum": 50,
                         "title": "Multiplier"
+                      },
+                      "neighbor": {
+                        "type": "string",
+                        "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch.",
+                        "title": "Neighbor"
+                      },
+                      "per_link": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "rfc_7130": {
+                            "type": "boolean",
+                            "title": "Rfc 7130"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Per Link"
                       }
                     },
                     "additionalProperties": false,
@@ -10155,6 +10203,14 @@
                     "type": "string",
                     "description": "IPv4 address/mask",
                     "title": "IP Address"
+                  },
+                  "ip_verify_unicast_source_reachable_via": {
+                    "type": "string",
+                    "enum": [
+                      "any",
+                      "rx"
+                    ],
+                    "title": "IP Verify Unicast Source Reachable Via"
                   },
                   "ip_nat": {
                     "type": "object",
@@ -11172,6 +11228,14 @@
                   "type": "string"
                 },
                 "title": "IP Address Secondaries"
+              },
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
@@ -15159,10 +15223,27 @@
                   "mode": {
                     "type": "string",
                     "enum": [
-                      "static"
+                      "static",
+                      "individual"
                     ],
-                    "description": "Currently only static mode is supported.",
+                    "description": "Either static or individual mode is supported.\nIf the mode is set to \"individual\" the \"individual.profile\" setting must be defined.\n",
                     "title": "Mode"
+                  },
+                  "individual": {
+                    "type": "object",
+                    "description": "Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to \"individual\".",
+                    "properties": {
+                      "profile": {
+                        "type": "string",
+                        "description": "Port-profile name to inherit configuration.",
+                        "title": "Profile"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Individual"
                   },
                   "timeout": {
                     "type": "integer",
@@ -15614,6 +15695,29 @@
                         "minimum": 3,
                         "maximum": 50,
                         "title": "Multiplier"
+                      },
+                      "neighbor": {
+                        "type": "string",
+                        "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch.",
+                        "title": "Neighbor"
+                      },
+                      "per_link": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "rfc_7130": {
+                            "type": "boolean",
+                            "title": "Rfc 7130"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Per Link"
                       }
                     },
                     "additionalProperties": false,
@@ -16168,6 +16272,14 @@
                     "type": "string",
                     "description": "IPv4 address/mask",
                     "title": "IP Address"
+                  },
+                  "ip_verify_unicast_source_reachable_via": {
+                    "type": "string",
+                    "enum": [
+                      "any",
+                      "rx"
+                    ],
+                    "title": "IP Verify Unicast Source Reachable Via"
                   },
                   "ip_nat": {
                     "type": "object",
@@ -17185,6 +17297,14 @@
                   "type": "string"
                 },
                 "title": "IP Address Secondaries"
+              },
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
@@ -20755,6 +20875,14 @@
                       },
                       "title": "IP Address Virtual Secondaries"
                     },
+                    "ip_verify_unicast_source_reachable_via": {
+                      "type": "string",
+                      "enum": [
+                        "any",
+                        "rx"
+                      ],
+                      "title": "IP Verify Unicast Source Reachable Via"
+                    },
                     "ip_igmp": {
                       "type": "boolean",
                       "title": "IP IGMP"
@@ -22391,6 +22519,14 @@
                   "description": "IPv4_address/Mask"
                 },
                 "title": "IP Address Virtual Secondaries"
+              },
+              "ip_verify_unicast_source_reachable_via": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "rx"
+                ],
+                "title": "IP Verify Unicast Source Reachable Via"
               },
               "ip_igmp": {
                 "type": "boolean",
@@ -24062,6 +24198,36 @@
               "description": "Set DSCP for matched traffic.",
               "title": "DSCP"
             },
+            "constraints": {
+              "type": "object",
+              "properties": {
+                "jitter": {
+                  "type": "integer",
+                  "description": "Jitter requirement for this load balance policy in milliseconds.",
+                  "minimum": 0,
+                  "maximum": 10000,
+                  "title": "Jitter"
+                },
+                "latency": {
+                  "type": "integer",
+                  "description": "One way delay requirement for this load balance policy in milliseconds.",
+                  "minimum": 0,
+                  "maximum": 10000,
+                  "title": "Latency"
+                },
+                "loss_rate": {
+                  "type": "string",
+                  "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
+                  "pattern": "^\\d+(\\.\\d{1,2})?$",
+                  "title": "Loss Rate"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Constraints"
+            },
             "path_groups": {
               "type": "array",
               "minItems": 1,
@@ -24149,6 +24315,36 @@
                       "description": "Set DSCP for matched traffic.",
                       "title": "DSCP"
                     },
+                    "constraints": {
+                      "type": "object",
+                      "properties": {
+                        "jitter": {
+                          "type": "integer",
+                          "description": "Jitter requirement for this load balance policy in milliseconds.",
+                          "minimum": 0,
+                          "maximum": 10000,
+                          "title": "Jitter"
+                        },
+                        "latency": {
+                          "type": "integer",
+                          "description": "One way delay requirement for this load balance policy in milliseconds.",
+                          "minimum": 0,
+                          "maximum": 10000,
+                          "title": "Latency"
+                        },
+                        "loss_rate": {
+                          "type": "string",
+                          "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
+                          "pattern": "^\\d+(\\.\\d{1,2})?$",
+                          "title": "Loss Rate"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Constraints"
+                    },
                     "path_groups": {
                       "type": "array",
                       "minItems": 1,
@@ -24221,6 +24417,36 @@
                     "maximum": 63,
                     "description": "Set DSCP for matched traffic.",
                     "title": "DSCP"
+                  },
+                  "constraints": {
+                    "type": "object",
+                    "properties": {
+                      "jitter": {
+                        "type": "integer",
+                        "description": "Jitter requirement for this load balance policy in milliseconds.",
+                        "minimum": 0,
+                        "maximum": 10000,
+                        "title": "Jitter"
+                      },
+                      "latency": {
+                        "type": "integer",
+                        "description": "One way delay requirement for this load balance policy in milliseconds.",
+                        "minimum": 0,
+                        "maximum": 10000,
+                        "title": "Latency"
+                      },
+                      "loss_rate": {
+                        "type": "string",
+                        "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
+                        "pattern": "^\\d+(\\.\\d{1,2})?$",
+                        "title": "Loss Rate"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Constraints"
                   },
                   "path_groups": {
                     "type": "array",

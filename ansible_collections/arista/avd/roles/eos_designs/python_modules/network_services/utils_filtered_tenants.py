@@ -63,6 +63,8 @@ class UtilsFilteredTenantsMixin(object):
                             "bgp_peers": [],
                             "ipv6_static_routes": [],
                             "static_routes": [],
+                            "loopbacks": [],
+                            "additional_route_targets": [],
                         }
                     ],
                     "l2vlans": [],
@@ -187,6 +189,7 @@ class UtilsFilteredTenantsMixin(object):
                     and l3_interface.get("interfaces") is not None
                 )
             ]
+            vrf["loopbacks"] = [loopback for loopback in get(vrf, "loopbacks", default=[]) if self.shared_utils.hostname == get(loopback, "node")]
 
             if self.shared_utils.vtep is True:
                 evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
@@ -235,7 +238,13 @@ class UtilsFilteredTenantsMixin(object):
                 )
             ]
 
-            if vrf["svis"] or vrf["l3_interfaces"] or "all" in always_include_vrfs_in_tenants or tenant["name"] in always_include_vrfs_in_tenants:
+            if (
+                vrf["svis"]
+                or vrf["l3_interfaces"]
+                or vrf["loopbacks"]
+                or "all" in always_include_vrfs_in_tenants
+                or tenant["name"] in always_include_vrfs_in_tenants
+            ):
                 filtered_vrfs.append(vrf)
 
         return filtered_vrfs

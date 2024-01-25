@@ -50,6 +50,9 @@ interface {{ vlan_interface.name }}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
+{%     if vlan_interface.ip_verify_unicast_source_reachable_via is arista.avd.defined %}
+   ip verify unicast source reachable-via {{ vlan_interface.ip_verify_unicast_source_reachable_via }}
+{%     endif %}
 {%     for ip_helper in vlan_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
 {%         if ip_helper.vrf is arista.avd.defined %}

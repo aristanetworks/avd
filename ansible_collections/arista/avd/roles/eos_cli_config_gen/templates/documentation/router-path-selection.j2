@@ -15,6 +15,14 @@
 | ------  | ----- |
 | Dynamic peers source | {{ router_path_selection.peer_dynamic_source | upper }} |
 {%     endif %}
+{%     if router_path_selection.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
+
+#### TCP MSS Ceiling Configuration
+
+| IPV4 segment size | Direction |
+| ----------------- | --------- |
+| {{ router_path_selection.tcp_mss_ceiling.ipv4_segment_size }} | {{ router_path_selection.tcp_mss_ceiling.direction | arista.avd.default("ingress") }} |
+{%     endif %}
 {%     if router_path_selection.path_groups is arista.avd.defined %}
 
 #### Path Groups
@@ -27,6 +35,12 @@
 | Path Group ID | {{ path_group.id | arista.avd.default("-") }} |
 {%             if path_group.ipsec_profile is arista.avd.defined %}
 | IPSec profile | {{ path_group.ipsec_profile }} |
+{%             endif %}
+{%             if path_group.keepalive.auto is arista.avd.defined(true) %}
+| Keepalive interval | auto |
+{%             elif path_group.keepalive.interval is arista.avd.defined and
+                    path_group.keepalive.failure_threshold is arista.avd.defined %}
+| Keepalive interval(failure threshold) | {{ path_group.keepalive.interval }}({{ path_group.keepalive.failure_threshold }}) |
 {%             endif %}
 {%             if path_group.flow_assignment is arista.avd.defined %}
 | Flow assignment | {{ path_group.flow_assignment | upper }} |
