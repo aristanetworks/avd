@@ -205,18 +205,6 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         if self._inband_mgmt_ipv4_parent:
             route_map["sequence_numbers"].append({"sequence": 20, "type": "permit", "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"]})
 
-        # route_map = {
-        #     "name": "RM-CONN-2-BGP",
-        #     "sequence_numbers": [
-        #         {
-        #             # sequence 10 is set in underlay so avoid setting it here
-        #             "sequence": 20,
-        #             "type": "permit",
-        #             "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"],
-        #         }
-        #     ],
-        # }
-
         if self._inband_mgmt_ipv6_parent:
             route_map["sequence_numbers"].append({"sequence": 50, "type": "permit", "match": ["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]})
 
