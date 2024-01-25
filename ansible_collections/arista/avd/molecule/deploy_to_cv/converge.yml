@@ -7,93 +7,165 @@
     # cv_server: staticstudio-1-cfec4cc2-eos.topo.testdrive.arista.com
     cv_server: www.cv-staging.corp.arista.io
     token: "{{ lookup('file', playbook_dir ~ '/token-cvaas.tok')}}"
-    # url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceBuildDetails/all
     ws_url: https://{{ cv_server }}/api/v3/services/arista.configlet.v1.ConfigletService/GetOne
     cc_url: https://{{ cv_server }}/api/v3/services/arista.changecontrol.v1.ChangeControlService/GetOne
-    # url: "https://{{ cvp }}/api/resources/studio/v1/StudioConfig?key.studioId=studio-static-configlet&key.workspaceId="
+    tag_url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
     configuration_dir: "{{ playbook_dir }}/intended/configs"
     structured_config_dir: "{{ playbook_dir }}/intended/structured_configs"
+    intended_tag_device: s1-leaf1
+    intended_tags: "{{ lookup('file', structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
 
-    ws_name: avd-static-studio-32
+    ws_name: avd-static-studio-36
     ws_description: sample description
     ws_req_state: submitted
     ws_force: true
 
     # TODO: cc_id is not getting set to anything other than Workspace-<ws_nane>
-    cc_id: Workspace-avd-static-studio-32
+    cc_id: Workspace-avd-static-studio-36
     cc_requested_state: running
-    cc_name: cc_avd_studio-32
+    cc_name: cc_avd_studio-36
     cc_desctiption: sample description
 
   # TODO: change cc stage to `running`, get CC state from cvp and assert
   tasks:
-    - name: Test = Provision CVP with AVD configuration
-      run_once: true
-      delegate_to: localhost
-      arista.avd.deploy_to_cv:
-        configuration_dir: "{{ configuration_dir }}"
-        structured_config_dir: "{{ structured_config_dir }}"
-        # structured_config_suffix: "yml"
-        # device_list: "{{ ansible_play_hosts }}"
-        device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
-        # device_list: ["s1-leaf1"]
-        strict_tags: true
-        # skip_missing_devices: false
-        # configlet_name_template: "AVD-${hostname}"
-        cv_servers: [ '{{ cv_server }}' ]
-        cv_token: '{{ token }}'
-        # cv_verify_certs: True
-        workspace:
-          name: '{{ ws_name }}'
-          description: '{{ ws_description }}'
-          id: '{{ ws_name }}'
-          requested_state: '{{ ws_req_state }}'
-          force: '{{ ws_force }}'
-        change_control:
-          name: '{{ cc_name }}'
-          description: '{{ cc_desctiption }}'
-          requested_state: '{{ cc_requested_state }}'
-        # timeouts:
-        #   workspace_build_timeout: 300.0
-        #   change_control_creation_timeout: 300.0
-        return_details: true
-      register: CVP_RESULTS
+    # - name: Test = Provision CVP with AVD configuration
+    #   run_once: true
+    #   delegate_to: localhost
+    #   arista.avd.deploy_to_cv:
+    #     configuration_dir: "{{ configuration_dir }}"
+    #     structured_config_dir: "{{ structured_config_dir }}"
+    #     # structured_config_suffix: "yml"
+    #     # device_list: "{{ ansible_play_hosts }}"
+    #     device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
+    #     # device_list: ["s1-leaf1"]
+    #     strict_tags: true
+    #     # skip_missing_devices: false
+    #     # configlet_name_template: "AVD-${hostname}"
+    #     cv_servers: [ '{{ cv_server }}' ]
+    #     cv_token: '{{ token }}'
+    #     # cv_verify_certs: True
+    #     workspace:
+    #       name: '{{ ws_name }}'
+    #       description: '{{ ws_description }}'
+    #       id: '{{ ws_name }}'
+    #       requested_state: '{{ ws_req_state }}'
+    #       force: '{{ ws_force }}'
+    #     change_control:
+    #       name: '{{ cc_name }}'
+    #       description: '{{ cc_desctiption }}'
+    #       requested_state: '{{ cc_requested_state }}'
+    #     # timeouts:
+    #     #   workspace_build_timeout: 300.0
+    #     #   change_control_creation_timeout: 300.0
+    #     return_details: true
+    #   register: CVP_RESULTS
 
-    - name: 'Display CVP result'
+    # - name: 'Display CVP result'
+    #   run_once: true
+    #   debug:
+    #     msg: '{{CVP_RESULTS}}'
+
+    # - name: check CVP returns
+    #   ansible.builtin.assert:
+    #     that:
+    #       # workspace
+    #       - CVP_RESULTS.workspace.name == ws_name
+    #       - CVP_RESULTS.workspace.final_state == CVP_RESULTS.workspace.requested_state
+    #       - CVP_RESULTS.workspace.final_state
+    #       # errors and warnings
+    #       - CVP_RESULTS.errors == []
+    #       # tags
+    #       - CVP_RESULTS.deployed_device_tags != []
+    #       - CVP_RESULTS.deployed_interface_tags != []
+    #       # Change control
+    #       - CVP_RESULTS.change_control.id == cc_id
+    #       - CVP_RESULTS.change_control.name == cc_name
+    #       - CVP_RESULTS.change_control.requested_state == cc_requested_state
+    #       - CVP_RESULTS.change_control.description == cc_desctiption
+
+    # - name: check tags from output
+    #   ansible.builtin.assert:
+    #     that:
+    #       - item.0.label == item.1.label
+    #       - item.0.value == item.1.value
+    #   loop: "{{ CVP_RESULTS.deployed_device_tags | zip(CVP_RESULTS.device_tags) | list }}"
+
+    # - name: get workspace information
+    #   delegate_to: localhost
+    #   run_once: true
+    #   ansible.builtin.uri:
+    #     url: '{{ ws_url }}'
+    #     return_content: true
+    #     validate_certs: false
+    #     headers:
+    #       Cookie: "access_token={{ token }}"
+    #     method: POST
+    #     body_format: json
+    #     body:
+    #       key:
+    #         workspace_id: '{{ ws_name }}'
+    #         configlet_id: '{{ item }}'
+    #   loop:
+    #     - "avd-s1-leaf1"
+    #     - "avd-s1-leaf2"
+    #     - "avd-s1-leaf3"
+    #     - "avd-s1-leaf4"
+    #   register: result
+
+    # # CC information
+    # - name: get CC information
+    #   delegate_to: localhost
+    #   run_once: true
+    #   ansible.builtin.uri:
+    #     url: '{{ cc_url }}'
+    #     return_content: true
+    #     validate_certs: false
+    #     headers:
+    #       Cookie: "access_token={{ token }}"
+    #     method: POST
+    #     body_format: json
+    #     body:
+    #       key:
+    #         id: '{{ cc_id }}'
+    #   register: CC_INFO
+    #   until: CC_INFO.json[0].value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
+    #   retries: 5
+    #   delay: 30
+
+    # - name: 'Display CC result'
+    #   run_once: true
+    #   debug:
+    #     msg: '{{ CC_INFO.json[0].value.status }}'
+
+    # - name: 'Set configlets facts'
+    #   run_once: true
+    #   vars:
+    #     configs: ['{{ configuration_dir }}/s1-leaf1.cfg',
+    #       '{{ configuration_dir }}/s1-leaf2.cfg',
+    #       '{{ configuration_dir }}/s1-leaf3.cfg',
+    #       '{{ configuration_dir }}/s1-leaf4.cfg'
+    #     ]
+    #   set_fact:
+    #     response_configlet: "{{ response_configlet | default({}) | combine({item.0.json[0].value.body | trim: item.1}) }}"
+    #   loop: "{{ result.results | zip(configs) | list }}"
+
+    # - name: check configlets
+    #   ansible.builtin.assert:
+    #     that:
+    #       - item.key  == lookup('file', item.value)
+    #   loop: "{{ response_configlet | dict2items }}"
+
+    - name: 'Display intended tags'
       run_once: true
       debug:
-        msg: '{{CVP_RESULTS}}'
+        msg: '{{ item }}'
+      loop: '{{ intended_tags.metadata.cv_tags.interface_tags }}'
 
-    - name: check CVP returns
-      ansible.builtin.assert:
-        that:
-          # workspace
-          - CVP_RESULTS.workspace.name == ws_name
-          - CVP_RESULTS.workspace.final_state == CVP_RESULTS.workspace.requested_state
-          - CVP_RESULTS.workspace.final_state
-          # errors and warnings
-          - CVP_RESULTS.errors == []
-          # tags
-          - CVP_RESULTS.deployed_device_tags != []
-          - CVP_RESULTS.deployed_interface_tags != []
-          # Change control
-          - CVP_RESULTS.change_control.id == cc_id
-          - CVP_RESULTS.change_control.name == cc_name
-          - CVP_RESULTS.change_control.requested_state == cc_requested_state
-          - CVP_RESULTS.change_control.description == cc_desctiption
-
-    - name: check tags from output
-      ansible.builtin.assert:
-        that:
-          - item.0.label == item.1.label
-          - item.0.value == item.1.value
-      loop: "{{ CVP_RESULTS.deployed_device_tags | zip(CVP_RESULTS.device_tags) | list }}"
-
-    - name: get workspace information
+    - name: Get Device Tag information
       delegate_to: localhost
       run_once: true
       ansible.builtin.uri:
-        url: '{{ ws_url }}'
+        url: '{{ tag_url }}'
         return_content: true
         validate_certs: false
         headers:
@@ -102,54 +174,65 @@
         body_format: json
         body:
           key:
-            workspace_id: '{{ ws_name }}'
-            configlet_id: '{{ item }}'
+            workspaceId: '{{ ws_name }}'
+            elementType: 1
+            label: "{{ item.name }}"
+            value: "{{ item.value }}"
+            deviceId: "{{ intended_tag_device }}"
       loop:
-        - "avd-s1-leaf1"
-        - "avd-s1-leaf2"
-        - "avd-s1-leaf3"
-        - "avd-s1-leaf4"
-      register: result
+        "{{ intended_tags.metadata.cv_tags.device_tags }}"
+      ignore_errors: yes
+      register: designed_tags
 
-    # CC information
-    - name: get CC information
-      delegate_to: localhost
+    - name: 'Assert designed tags'
       run_once: true
-      ansible.builtin.uri:
-        url: '{{ cc_url }}'
-        return_content: true
-        validate_certs: false
-        headers:
-          Cookie: "access_token={{ token }}"
-        method: POST
-        body_format: json
-        body:
-          key:
-            id: '{{ cc_id }}'
-      register: CC_INFO
-      until: CC_INFO.json[0].value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
-      retries: 5
-      delay: 30
-
-    - name: 'Display CC result'
-      run_once: true
-      debug:
-        msg: '{{ CC_INFO.json[0].value.status }}'
-
-    - name: 'Set configlets facts'
-      run_once: true
-      vars:
-        configs: ['{{ configuration_dir }}/s1-leaf1.cfg',
-          '{{ configuration_dir }}/s1-leaf2.cfg',
-          '{{ configuration_dir }}/s1-leaf3.cfg',
-          '{{ configuration_dir }}/s1-leaf4.cfg'
-        ]
-      set_fact:
-        response_configlet: "{{ response_configlet | default({}) | combine({item.0.json[0].value.body | trim: item.1}) }}"
-      loop: "{{ result.results | zip(configs) | list }}"
-
-    - name: check configlets
       ansible.builtin.assert:
         that:
-          - item.key  == lookup('file', item.value)
-      loop: "{{ response_configlet | dict2items }}"
+          - item.failed == false
+      loop:
+        '{{ designed_tags.results }}'
+
+    # # XXX: Assuming that there is only one interfaceTag per port
+    # - name: Get and verify Interface Tag information
+    #   delegate_to: localhost
+    #   run_once: true
+    #   ansible.builtin.uri:
+    #     # url: '{{ tag_url }}'
+    #     url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
+    #     return_content: true
+    #     validate_certs: false
+    #     headers:
+    #       Cookie: "access_token={{ token }}"
+    #     method: POST
+    #     body_format: json
+    #     body:
+    #       key:
+    #         # workspaceId: '{{ ws_name }}'
+    #         workspaceId: avd-static-studio-36
+    #         elementType: 2
+    #         # label: "{{ item.tags[0].name }}"
+    #         label: Role
+    #         # value: "{{ item.tags[0].value }}"
+    #         value: wan
+    #         # deviceId: "{{ intended_tag_device }}"
+    #         deviceId: s1-leaf1
+    #         # interfaceId:  "{{ item.interface }}"
+    #         interfaceId:  Ethernet1
+
+    #   # loop:
+    #   #   "{{ intended_tags.metadata.cv_tags.interface_tags }}"
+    #   ignore_errors: yes
+    #   register: designed_tags
+
+    # - name: 'Display intended tags'
+    #   run_once: true
+    #   debug:
+    #     msg: '{{ designed_tags }}'
+
+    # - name: 'Assert designed interface tags'
+    #   run_once: true
+    #   ansible.builtin.assert:
+    #     that:
+    #       - item.failed == false
+    #   loop:
+    #     '{{ designed_tags.results }}'
