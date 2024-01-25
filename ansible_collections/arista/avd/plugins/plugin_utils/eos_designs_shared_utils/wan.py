@@ -389,32 +389,11 @@ class WanMixin:
     def wan_ha_path_group_name(self) -> str:
         """
         Return HA path group name for the WAN design.
+        Used in both network services and overlay python modules.
 
         TODO make this configurable
         """
         return "LAN_HA"
-
-    @cached_property
-    def wan_ha_interfaces(self: SharedUtils) -> list:
-        """
-        Return the list of WAN HA interfaces
-        For now only picking up uplink interfaces in VRF default on the router.
-        """
-        # TODO probably does not need the whole uplink
-        return [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
-
-    @cached_property
-    def wan_ha_peer_interfaces(self: SharedUtils) -> str:
-        return self.get_wan_peer_fact("wan_ha_interfaces")
-
-    @cached_property
-    def wan_ha_interfaces(self) -> list:
-        """
-        Return list of interfaces for HA
-
-        TODO: Used in overlay only for now see if needs to be changed
-        """
-        return [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
 
     @cached_property
     def is_first_ha_peer(self) -> bool:

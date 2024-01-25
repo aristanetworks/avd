@@ -1,4 +1,6 @@
 ---
+fabric_name: fabric_wan_role_cv_pathinder_role_1
+
 wan_mode: cv-pathfinder
 type: wan_edge
 

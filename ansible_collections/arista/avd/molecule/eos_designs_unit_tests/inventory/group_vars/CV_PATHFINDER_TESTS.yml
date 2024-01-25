@@ -60,6 +60,7 @@ wan_edge:
     filter:
       always_include_vrfs_in_tenants: [TenantA]
     uplink_ipv4_pool: 172.17.0.0/16
+  # Testing HA and disabling HA
   node_groups:
     # SITE_HA_DISABLED
     - group: Site511
@@ -68,7 +69,6 @@ wan_edge:
       uplink_interfaces: [ Ethernet52 ]
       cv_pathfinder_region: AVD_Land_East
       cv_pathfinder_site: Site511
-      # Disabling HA
       wan_ha:
         enabled: False
       nodes:
@@ -102,12 +102,13 @@ wan_edge:
               wan_circuit_id: S511
               dhcp_accept_default_route: true
               ip_address: dhcp
+    # SITE_HA_ENABLED
     - group: Site423
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site423
       uplink_type: p2p-vrfs
-      uplink_switches: [ site-ha-enabled-leaf ]
-      uplink_interfaces: [ Ethernet52 ]
+      uplink_switches: [ site-ha-enabled-leaf1, site-ha-enabled-leaf2 ]
+      uplink_interfaces: [ Ethernet52, Ethernet53 ]
       # Manual HA disable to try it out..
       # wan_ha:
       #  ipsec: false
@@ -120,6 +121,7 @@ wan_edge:
               wan_circuit_id: 423-01
               dhcp_accept_default_route: true
               ip_address: dhcp
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
         - name: cv-pathfinder-edge3
           id: 3
           l3_interfaces:
@@ -127,6 +129,7 @@ wan_edge:
               wan_carrier: Colt
               wan_circuit_id: 10423
               ip_address: 172.15.6.6/31
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
 
 # Fake DC1
 l3leaf:
@@ -138,7 +141,6 @@ l3leaf:
     filter:
       always_include_vrfs_in_tenants: [TenantA]
   nodes:
-    # Used for HA in HA PR
     - name: site-ha-enabled-leaf1
       id: 1
     - name: site-ha-enabled-leaf2

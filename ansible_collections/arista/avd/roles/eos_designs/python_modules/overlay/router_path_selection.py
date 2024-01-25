@@ -103,12 +103,12 @@ class RouterPathSelectionMixin(UtilsMixin):
         ha_path_group.update(
             {
                 # This should be the LAN interface over which a DPS tunnel is built
-                "local_interfaces": [{"name": interface["interface"]} for interface in self.shared_utils.wan_ha_interfaces],
+                "local_interfaces": [{"name": interface["interface"]} for interface in self._wan_ha_interfaces()],
                 "static_peers": [
                     {
-                        "router_ip": self.shared_utils.wan_ha_peer_router_id,
+                        "router_ip": self._wan_ha_peer_vtep_ip(),
                         "name": self.shared_utils.wan_ha_path_group_name,
-                        "ipv4_addresses": self.shared_utils.wan_ha_peer_ip_addresses,
+                        "ipv4_addresses": self._wan_ha_peer_ip_addresses(),
                     }
                 ],
             }
@@ -117,6 +117,12 @@ class RouterPathSelectionMixin(UtilsMixin):
             ha_path_group["ipsec_profile"] = self._dp_ipsec_profile_name
 
         return ha_path_group
+
+    def _wan_ha_interfaces(self) -> list:
+        """
+        Return list of interfaces for HA
+        """
+        return [uplink for uplink in self.shared_utils.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
 
     def _wan_ha_peer_ip_addresses(self) -> list:
         """

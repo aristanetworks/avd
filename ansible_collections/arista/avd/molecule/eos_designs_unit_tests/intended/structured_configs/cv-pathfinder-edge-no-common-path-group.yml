@@ -118,64 +118,6 @@ router_bgp:
         receive: true
         send:
           any: true
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  neighbors:
-  - ip_address: 192.168.144.1
-    peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
-  vrfs:
-  - name: default
-    rd: 192.168.42.2:1
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
-  - name: IT
-    router_id: 192.168.42.2
-    rd: 192.168.42.2:100
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-      export:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-    redistribute_routes:
-    - source_protocol: connected
-  - name: PROD
-    router_id: 192.168.42.2
-    rd: 192.168.42.2:42
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '42:42'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '42:42'
-    redistribute_routes:
-    - source_protocol: connected
->>>>>>> 5b5a79993 (Refactor: Address some PR comments)
-=======
->>>>>>> 06d11a15d (Feat: Align underlay routing protocols)
->>>>>>> a53a1aba4 (Feat: Align underlay routing protocols)
-=======
->>>>>>> d804f23f5 (Refactor: Use first ha peer loopback0 as SOO)
 service_routing_protocols_model: multi-agent
 ip_routing: true
 transceiver_qsfp_default_mode_4x10: false
@@ -204,26 +146,8 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 172.17.0.3/31
-<<<<<<< HEAD
-<<<<<<< HEAD
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
-=======
->>>>>>> 5b5a79993 (Refactor: Address some PR comments)
-=======
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
->>>>>>> 7de7927a1 (Feat(eos_designs): Add flow tracker on LAN interfaces for edges)
->>>>>>> 339319bd3 (Feat(eos_designs): Add flow tracker on LAN interfaces for edges)
-=======
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
->>>>>>> d804f23f5 (Refactor: Use first ha peer loopback0 as SOO)
 - name: Ethernet52.100
   peer: site-ha-disabled-leaf
   peer_interface: Ethernet2.100
@@ -356,20 +280,6 @@ ip_extcommunity_lists:
     extcommunities: soo 192.168.42.2:511
 ip_security:
   ike_policies:
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  - name: DP-IKE-POLICY
-    local_id: 192.168.142.2
->>>>>>> 5b5a79993 (Refactor: Address some PR comments)
-=======
->>>>>>> 31932a7a6 (Refactor: IPsec profiles for HA using Data plane)
->>>>>>> ae9d0c096 (Refactor: IPsec profiles for HA using Data plane)
-=======
->>>>>>> d804f23f5 (Refactor: Use first ha peer loopback0 as SOO)
   - name: CP-IKE-POLICY
     local_id: 192.168.142.2
   sa_policies:

@@ -517,16 +517,6 @@ metadata:
           id: 423
           location:
             address: Somewhere-warm
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        - name: Site424
-          id: 424
-          location:
-            address: Somewhere-cold
->>>>>>> e5dc3ea72 (Feat(eos_designs): Add HA support for CV Pathfinder)
-=======
->>>>>>> d804f23f5 (Refactor: Use first ha peer loopback0 as SOO)
     - name: AVD_Land_East
       id: 43
       zones:

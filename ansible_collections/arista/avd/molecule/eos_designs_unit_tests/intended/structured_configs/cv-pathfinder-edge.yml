@@ -156,26 +156,8 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 172.17.0.1/31
-<<<<<<< HEAD
-<<<<<<< HEAD
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
-=======
->>>>>>> 5b5a79993 (Refactor: Address some PR comments)
-=======
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
->>>>>>> 7de7927a1 (Feat(eos_designs): Add flow tracker on LAN interfaces for edges)
->>>>>>> 339319bd3 (Feat(eos_designs): Add flow tracker on LAN interfaces for edges)
-=======
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
->>>>>>> d804f23f5 (Refactor: Use first ha peer loopback0 as SOO)
 - name: Ethernet52.100
   peer: site-ha-disabled-leaf
   peer_interface: Ethernet1.100

@@ -1174,7 +1174,7 @@ $defs:
               Maximum 2 devices supported by group for HA.
 
             keys:
-              enabled: 
+              enabled:
                 type: bool
                 default: true
                 description: Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in node group.

@@ -30,19 +30,3 @@ class WanMixin:
             return None
 
         return self.shared_utils.wan_local_path_groups
-
-    @cached_property
-    def wan_ha_interfaces(self: EosDesignsFacts) -> str | None:
-        return self.shared_utils.wan_ha_interfaces if self.shared_utils.wan_ha else None
-
-    @cached_property
-    def wan_ha_peer(self: EosDesignsFacts) -> str | None:
-        return self.shared_utils.wan_ha_peer if self.shared_utils.wan_ha else None
-
-    @cached_property
-    def wan_ha_router_id(self: EosDesignsFacts) -> str | None:
-        return self.shared_utils.wan_ha_router_id if self.shared_utils.wan_ha else None
-
-    @cached_property
-    def wan_ha_ip_addresses(self: EosDesignsFacts) -> list | None:
-        return self.shared_utils.wan_ha_ip_addresses if self.shared_utils.wan_ha else None
