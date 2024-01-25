@@ -245,16 +245,25 @@ router_bfd:
     multiplier: 3
 router_path_selection:
   path_groups:
+  - name: MPLS
+    id: 100
+    local_interfaces:
+    - name: Ethernet2
   - name: INET
     id: 101
     local_interfaces:
     - name: Ethernet1
     - name: Ethernet3
     ipsec_profile: CP-PROFILE
-  - name: MPLS
-    id: 100
-    local_interfaces:
-    - name: Ethernet2
+  - name: LTE
+    id: 102
+    ipsec_profile: CP-PROFILE
+  - name: Equinix
+    id: 103
+    ipsec_profile: CP-PROFILE
+  - name: Satellite
+    id: 104
+    ipsec_profile: CP-PROFILE
   peer_dynamic_source: stun
   load_balance_policies:
   - name: LB-CONTROL-PLANE-PROFILE

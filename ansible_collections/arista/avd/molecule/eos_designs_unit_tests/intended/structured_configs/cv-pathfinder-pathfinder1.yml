@@ -254,6 +254,8 @@ router_bfd:
     multiplier: 3
 router_path_selection:
   path_groups:
+  - name: MPLS
+    id: 100
   - name: INET
     id: 101
     local_interfaces:
@@ -267,6 +269,15 @@ router_path_selection:
       name: cv-pathfinder-pathfinder3
       ipv4_addresses:
       - 10.50.50.50
+    ipsec_profile: CP-PROFILE
+  - name: LTE
+    id: 102
+    ipsec_profile: CP-PROFILE
+  - name: Equinix
+    id: 103
+    ipsec_profile: CP-PROFILE
+  - name: Satellite
+    id: 104
     ipsec_profile: CP-PROFILE
   peer_dynamic_source: stun
   load_balance_policies:
