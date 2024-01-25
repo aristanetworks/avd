@@ -181,13 +181,13 @@ ip_security:
   sa_policies:
   - name: CP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
   - name: CP-PROFILE
     ike_policy: CP-IKE-POLICY
     sa_policy: CP-SA-POLICY
-    connection: start
+    connection: add
     shared_key: ABCDEF1234567890
     dpd:
       interval: 10

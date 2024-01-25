@@ -150,7 +150,7 @@ ip_security:
   - name: AUTOVPN
     ike_policy: AUTOVPN-IKE
     sa_policy: AUTOVPN-SA
-    connection: start
+    connection: add
     shared_key: ABCDEF1234567890
     dpd:
       interval: 10

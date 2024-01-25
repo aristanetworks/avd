@@ -94,11 +94,13 @@ class IpSecurityMixin(UtilsMixin):
     def _sa_policy(self, name: str) -> dict | None:
         """
         Return an SA policy
+
+        By default using aes256gcm128 as GCM variants give higher performance.
         """
         sa_policy = {"name": name}
         if self.shared_utils.cv_pathfinder_role:
             # TODO, provide options to change this cv_pathfinder_wide
-            sa_policy["esp"] = {"encryption": "aes128"}
+            sa_policy["esp"] = {"encryption": "aes256gcm128"}
             sa_policy["pfs_dh_group"] = 14
         return sa_policy
 
@@ -108,11 +110,20 @@ class IpSecurityMixin(UtilsMixin):
 
         The expectation is that potential None values are stripped later.
         """
+        if self.shared_utils.wan_role is None:
+            return None
+
+        # By default allow routers to initiate IPsec connection
+        connection = "start"
+        if self.shared_utils.wan_role == "server":
+            # For RRs, expects the client to initiate the connection
+            connection = "add"
+
         return {
             "name": profile_name,
             "ike_policy": ike_policy_name,
             "sa_policy": sa_policy_name,
-            "connection": "start",
+            "connection": connection,
             "shared_key": key,
             "dpd": {"interval": 10, "time": 50, "action": "clear"},
             "mode": "transport",
