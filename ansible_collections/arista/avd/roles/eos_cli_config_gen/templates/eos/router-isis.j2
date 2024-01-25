@@ -63,6 +63,27 @@ router isis {{ router_isis.instance }}
 {%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
    advertise passive-only
 {%     endif %}
+{%     if router_isis.spf_interval.interval is arista.avd.defined %}
+{%         if router_isis.spf_interval.wait_interval is arista.avd.defined %}
+   spf-interval {{ router_isis.spf_interval.interval }} {{ router_isis.spf_interval.wait_interval }}
+{%         else %}
+   spf-interval {{ router_isis.spf_interval.interval }}
+{%         endif %}
+{%     endif %}
+{%     if router_isis.graceful_restart is arista.avd.defined %}
+{%         if router_isis.graceful_restart.enabled is arista.avd.defined(true) %}
+   graceful-restart
+{%         endif %}
+{%         if router_isis.graceful_restart.t2.level_1_wait_time is arista.avd.defined %}
+   graceful-restart t2 level-1 {{ router_isis.graceful_restart.t2.level_1_wait_time }}
+{%         endif %}
+{%         if router_isis.graceful_restart.t2.level_2_wait_time is arista.avd.defined %}
+   graceful-restart t2 level-2 {{ router_isis.graceful_restart.t2.level_2_wait_time }}
+{%         endif %}
+{%         if router_isis.graceful_restart.restart_hold_time is arista.avd.defined %}
+   graceful-restart restart-hold-time {{ router_isis.graceful_restart.restart_hold_time }}
+{%         endif %}
+{%     endif %}
    !
 {%     if router_isis.address_family is arista.avd.defined %}
 {%         for address_family in router_isis.address_family %}
@@ -87,6 +108,9 @@ router isis {{ router_isis.instance }}
 {%             endif %}
       {{ lu_cli }}
 {%         endif %}
+{%         if router_isis.address_family_ipv4.bfd_all_interfaces is arista.avd.defined(true) %}
+      bfd all-interfaces
+{%         endif %}
 {%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode is arista.avd.defined %}
 {%             set ti_lfa_cli = "fast-reroute ti-lfa mode " ~ router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode %}
 {%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.level is arista.avd.defined %}
@@ -107,6 +131,9 @@ router isis {{ router_isis.instance }}
    address-family ipv6 unicast
 {%         if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
       maximum-paths {{ router_isis.address_family_ipv6.maximum_paths }}
+{%         endif %}
+{%         if router_isis.address_family_ipv6.bfd_all_interfaces is arista.avd.defined(true) %}
+      bfd all-interfaces
 {%         endif %}
 {%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode is arista.avd.defined %}
 {%             set ti_lfa_cli = "fast-reroute ti-lfa mode " ~ router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode %}
