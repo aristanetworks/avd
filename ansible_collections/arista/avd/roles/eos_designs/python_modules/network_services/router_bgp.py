@@ -140,16 +140,11 @@ class RouterBgpMixin(UtilsMixin):
 
                 bgp_vrf = {
                     "name": vrf_name,
+                    # Adding router_id here to avoid reordering structured config for all hosts. TODO: Remove router_id.
                     "router_id": self.shared_utils.router_id,
-                    "redistribute_routes": [{"source_protocol": "connected"}],
                     "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                     "struct_cfg": get(vrf, "bgp.structured_config"),
                 }
-
-                # MLAG IBGP Peering VLANs per VRF
-                if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
-                    if not self._mlag_ibgp_peering_redistribute(vrf, tenant):
-                        bgp_vrf["redistribute_routes"][0]["route_map"] = "RM-CONN-2-BGP-VRFS"
 
                 if vrf_address_families := [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]:
                     # For EVPN configs get evpn keys and continue after the elif block below.
@@ -158,11 +153,6 @@ class RouterBgpMixin(UtilsMixin):
                     # To be non-breaking we only support wide BGP configs when the knob
                     # `new_network_services_bgp_vrf_config` is set to True. The default is False.
                     # TODO: AVD 5.0 make True the default behavior.
-                    continue
-
-                # TODO this is to prevent rendering BGP vrf default on Pathfinder and AutoVPN RRs.
-                # This may need to be adjusted for more complex use cases.
-                if vrf_name == "default" and self.shared_utils.wan_role == "server":
                     continue
 
                 if vrf_name != "default":
@@ -177,6 +167,11 @@ class RouterBgpMixin(UtilsMixin):
                     # MLAG IBGP Peering VLANs per VRF (except VRF default)
                     if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                         self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
+
+                # TODO this is to prevent rendering BGP vrf default on WAN nodes.
+                # This may need to be adjusted for more complex use cases.
+                if vrf_name == "default" and self.shared_utils.wan_role is not None:
+                    continue
 
                 for bgp_peer in vrf["bgp_peers"]:
                     # Below we pop various keys that are not supported by the eos_cli_config_gen schema.

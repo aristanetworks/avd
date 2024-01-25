@@ -53,20 +53,6 @@ router_bgp:
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder
   vrfs:
-  - name: default
-    router_id: 192.168.42.6
-    rd: 192.168.42.6:1
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-    redistribute_routes:
-    - source_protocol: connected
   - name: IT
     router_id: 192.168.42.6
     rd: 192.168.42.6:100
