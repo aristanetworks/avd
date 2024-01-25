@@ -201,6 +201,12 @@ interface Vlan4094
 | Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
+| SPF Interval | 250 |
+| SPF Interval Wait Time| 10 |
+| Graceful-restart Enabled | True |
+| Graceful-restart t2 Level-1 | 10 |
+| Graceful-restart t2 Level-2 | 20 |
+| Graceful-restart Restart-hold-time | 10 |
 
 #### ISIS Route Redistribution
 
@@ -235,6 +241,7 @@ interface Vlan4094
 | -------- | ----- |
 | IPv4 Address-family Enabled | True |
 | Maximum-paths | 4 |
+| BFD All-interfaces | True |
 | TI-LFA Mode | link-protection |
 | TI-LFA Level | level-2 |
 | TI-LFA SRLG Enabled | True |
@@ -252,6 +259,7 @@ interface Vlan4094
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
 | Maximum-paths | 4 |
+| BFD All-interfaces | True |
 | TI-LFA Mode | node-protection |
 | TI-LFA SRLG Enabled | True |
 
@@ -272,15 +280,22 @@ router isis EVPN_UNDERLAY
    mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
    advertise passive-only
+   spf-interval 250 10
+   graceful-restart
+   graceful-restart t2 level-1 10
+   graceful-restart t2 level-2 20
+   graceful-restart restart-hold-time 10
    !
    address-family ipv4 unicast
       maximum-paths 4
       tunnel source-protocol bgp ipv4 labeled-unicast rcf lu_2_sr_pfx()
+      bfd all-interfaces
       fast-reroute ti-lfa mode link-protection level-2
       fast-reroute ti-lfa srlg strict
    !
    address-family ipv6 unicast
       maximum-paths 4
+      bfd all-interfaces
       fast-reroute ti-lfa mode node-protection
       fast-reroute ti-lfa srlg
    !

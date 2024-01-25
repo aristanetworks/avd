@@ -6,6 +6,15 @@ router_isis:
   is_type: level-2
   log_adjacency_changes: true
   mpls_ldp_sync_default: true
+  spf_interval:
+    interval: 250
+    wait_interval: 10
+  graceful_restart:
+    enabled: true
+    restart_hold_time: 10
+    t2:
+      level_1_wait_time: 10
+      level_2_wait_time: 20
   timers:
     local_convergence:
       protected_prefixes: true
@@ -29,6 +38,7 @@ router_isis:
       route_map: RM-OSPF-NSSA_EXT-TO-ISIS
   address_family_ipv4:
     maximum_paths: 4
+    bfd_all_interfaces: true
     fast_reroute_ti_lfa:
       mode: link-protection
       level: level-2
@@ -40,6 +50,7 @@ router_isis:
       rcf: lu_2_sr_pfx()
   address_family_ipv6:
     maximum_paths: 4
+    bfd_all_interfaces: true
     fast_reroute_ti_lfa:
       mode: node-protection
       srlg:
