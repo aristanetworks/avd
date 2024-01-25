@@ -1725,7 +1725,7 @@ keys:
             is true.
 
 
-            For `p2p-vrfs`, the uplink is configured as an L3 interface with a subinterface
+            For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface
             for each VRF
 
             in `network_services` present on both the uplink and the downlink switch.
