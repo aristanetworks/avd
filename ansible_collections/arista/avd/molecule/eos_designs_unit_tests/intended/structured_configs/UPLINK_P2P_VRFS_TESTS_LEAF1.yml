@@ -40,11 +40,11 @@ router_bgp:
     - ip_address: 10.42.42.8
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42 vrf PROD
+      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42_vrf_PROD
     - ip_address: 10.42.42.10
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42 vrf PROD
+      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42_vrf_PROD
     redistribute_routes:
     - source_protocol: connected
   - name: ONLY-ON-L2LEAF
@@ -53,7 +53,7 @@ router_bgp:
     - ip_address: 10.42.42.8
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66 vrf ONLY-ON-L2LEAF
+      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66_vrf_ONLY-ON-L2LEAF
     redistribute_routes:
     - source_protocol: connected
   - name: IT
@@ -62,7 +62,7 @@ router_bgp:
     - ip_address: 10.42.42.10
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100 vrf IT
+      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100_vrf_IT
     redistribute_routes:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent
@@ -105,7 +105,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.42
   peer_type: spine
   vrf: PROD
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42 vrf PROD
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42_vrf_PROD
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
@@ -116,7 +116,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.66
   peer_type: spine
   vrf: ONLY-ON-L2LEAF
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66 vrf ONLY-ON-L2LEAF
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66_vrf_ONLY-ON-L2LEAF
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 66
@@ -138,7 +138,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.100
   peer_type: spine
   vrf: IT
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100 vrf IT
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100_vrf_IT
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 100
@@ -149,7 +149,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.42
   peer_type: spine
   vrf: PROD
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42 vrf PROD
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42_vrf_PROD
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42

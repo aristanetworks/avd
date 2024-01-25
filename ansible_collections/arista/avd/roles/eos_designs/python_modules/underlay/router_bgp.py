@@ -89,7 +89,8 @@ class RouterBgpMixin(UtilsMixin):
                                 "name": subinterface["interface"],
                                 "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
                                 "remote_as": link["peer_bgp_as"],
-                                "description": f"{'_'.join([link['peer'], subinterface['peer_interface']])} vrf {subinterface['vrf']}",
+                                # TODO - implement some centralized way to generate these descriptions
+                                "description": f"{'_'.join([link['peer'], subinterface['peer_interface']])}_vrf_{subinterface['vrf']}",
                             }
                         )
 
@@ -129,7 +130,7 @@ class RouterBgpMixin(UtilsMixin):
                             "ip_address": subinterface["peer_ip_address"],
                             "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
                             "remote_as": get(link, "peer_bgp_as"),
-                            "description": f"{'_'.join([link['peer'], subinterface['peer_interface']])} vrf {subinterface['vrf']}",
+                            "description": f"{'_'.join([link['peer'], subinterface['peer_interface']])}_vrf_{subinterface['vrf']}",
                             "bfd": get(link, "bfd"),
                         }
                         # We need to add basic BGP VRF config in case the device is not covered by network_services. (Like a spine)

@@ -1725,14 +1725,14 @@ keys:
             is true.
 
 
-            For `p2p-vrfs`, the uplink are configured as an L3 interface with a subinterface
+            For `p2p-vrfs`, the uplink is configured as an L3 interface with a subinterface
             for each VRF
 
             in `network_services` present on both the uplink and the downlink switch.
 
             The subinterface ID is the `vrf_id`.
 
-            VRF `default` is always configured on the physical interface, using the
+            VRF `default` is always configured on the physical interface using the
             underlay routing protocol.
 
             All subinterfaces use the same IP address as the physical interface.

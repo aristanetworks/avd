@@ -35,14 +35,14 @@ router_bgp:
     - ip_address: 10.42.42.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.100 vrf IT
+      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.100_vrf_IT
   - name: PROD
     router_id: 192.168.42.2
     neighbors:
     - ip_address: 10.42.42.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.42 vrf PROD
+      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.42_vrf_PROD
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -76,7 +76,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.100
   peer_type: l3leaf
   vrf: IT
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.100 vrf IT
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.100_vrf_IT
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 100
@@ -87,7 +87,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.42
   peer_type: l3leaf
   vrf: PROD
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.42 vrf PROD
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.42_vrf_PROD
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
