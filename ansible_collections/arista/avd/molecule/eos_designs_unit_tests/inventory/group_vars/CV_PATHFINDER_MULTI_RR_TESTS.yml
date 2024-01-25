@@ -27,3 +27,7 @@ bgp_peer_groups:
       - 192.168.143.0/24
   wan_rr_overlay_peers:
     ttl_maximum_hops: 42
+    bfd_timers:
+      interval: 2020
+      min_rx: 2000
+      multiplier: 3
