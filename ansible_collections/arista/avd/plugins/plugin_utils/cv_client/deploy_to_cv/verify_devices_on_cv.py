@@ -14,7 +14,24 @@ LOGGER = getLogger(__name__)
 
 async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_missing_devices: bool, warnings: list[Exception], cv_client: CVClient) -> None:
     """
-    Verify that the given Devices are already present on CloudVision
+    Verify that the given Devices are already present in the CloudVision Inventory & I&T Studio.
+    """
+    LOGGER.info("verify_devices_on_cv: %s", len(devices))
+
+    # Return if we have nothing to do.
+    if not devices:
+        return
+
+    existing_devices = await verify_devices_in_cloudvision_inventory(devices, skip_missing_devices, warnings, cv_client)
+    await verify_devices_in_topology_studio(existing_devices, workspace_id, skip_missing_devices, warnings, cv_client)
+    return
+
+
+async def verify_devices_in_cloudvision_inventory(
+    devices: list[CVDevice], skip_missing_devices: bool, warnings: list[Exception], cv_client: CVClient
+) -> list[CVDevice]:
+    """
+    Verify that the given Devices are already present in the CloudVision Inventory
     and in-place update the given objects with missing information like
     system MAC address and serial number.
 
@@ -23,15 +40,8 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
 
     Skip checks for devices where _exists_on_cv is already filled out on the device.
 
-    Raises if skip_missing_devices is False. In-place appends to warnings if skip_missing_devices is True.
-
-    TODO: Check for duplicate serial_numbers or system_mac_addresses in the input devices list.
+    Returns a list of CVDevice objects found to exist on CloudVision.
     """
-    LOGGER.info("verify_devices_on_cv: %s", len(devices))
-
-    # Return if we have nothing to do.
-    if not devices:
-        return
 
     # Using set to only include a device once.
     device_tuples = set(
@@ -39,10 +49,10 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
         for device in devices
         if device._exists_on_cv is None
     )
-    LOGGER.info("verify_devices_on_cv: %s unique devices.", len(device_tuples))
+    LOGGER.info("verify_devices_in_cloudvision_inventory: %s unique devices.", len(device_tuples))
 
     found_devices = await cv_client.get_inventory_devices(devices=device_tuples)
-    LOGGER.info("verify_devices_on_cv: got %s maching devices on CV.", len(found_devices))
+    LOGGER.info("verify_devices_in_cloudvision_inventory: got %s maching devices on CV.", len(found_devices))
     found_device_dict_by_serial = {found_device.key.device_id: found_device for found_device in found_devices}
     found_device_dict_by_system_mac = {found_device.system_mac_address: found_device for found_device in found_devices}
     found_device_dict_by_hostname = {found_device.hostname: found_device for found_device in found_devices}
@@ -86,13 +96,31 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
     # Using set to only include a device once.
     existing_device_tuples = set((device.serial_number, device.system_mac_address, device.hostname) for device in existing_devices)
 
-    LOGGER.info("verify_devices_on_cv: %s existing device objects for %s unique devices in inventory", len(existing_devices), len(existing_device_tuples))
+    LOGGER.info(
+        "verify_devices_in_cloudvision_inventory: %s existing device objects for %s unique devices in inventory",
+        len(existing_devices),
+        len(existing_device_tuples),
+    )
+
+    if missing_devices := [device for device in devices if not device._exists_on_cv]:
+        warnings.append(missing_devices_handler(missing_devices, skip_missing_devices, "CloudVision Device Inventory"))
+
+    return existing_devices
+
+
+async def verify_devices_in_topology_studio(
+    existing_devices: list[CVDevice], workspace_id: str, skip_missing_devices: bool, warnings: list[Exception], cv_client: CVClient
+) -> None:
+    """
+    Verify that the given Devices are already present in the Inventory & Topology Studio.
+    """
 
     cv_topology_inputs = await cv_client.get_topology_studio_inputs(
         workspace_id=workspace_id,
-        device_ids=[device.serial_number for device in existing_devices],
+        device_ids=list({device.serial_number for device in existing_devices}),
     )
-    LOGGER.info("verify_devices_on_cv: got %s devices from I&T Studio.", len(cv_topology_inputs))
+    LOGGER.info("verify_devices_in_cloudvision_inventory: %s devices.", len(existing_devices))
+    LOGGER.info("verify_devices_in_topology_studio: got %s devices from I&T Studio.", len(cv_topology_inputs))
     topology_inputs_dict_by_serial = {topology_input.key.device_id: topology_input for topology_input in cv_topology_inputs}
 
     # List of tuples holding the info we need to update in I&T Studio
@@ -104,27 +132,31 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
             device._exists_on_cv = False
             continue
             # TODO: Onboard the device to I&T since we know we have it on CV.
-            # TODO: Add an error message if we don't find the device in I&T studios
 
         if device.hostname != topology_inputs_dict_by_serial[device.serial_number].device_info.hostname:
             update_topology_inputs.append((device.serial_number, device.hostname))
 
-    LOGGER.info("verify_devices_on_cv: need hostname updates for %s devices in I&T Studio.", len(update_topology_inputs))
+    LOGGER.info("verify_devices_in_topology_studio: need hostname updates for %s devices in I&T Studio.", len(update_topology_inputs))
     if update_topology_inputs:
         await cv_client.set_topology_studio_inputs(workspace_id=workspace_id, device_inputs=update_topology_inputs)
 
-    if missing_devices := [device for device in devices if not device._exists_on_cv]:
-        warnings.append(missing_devices_handler(missing_devices, skip_missing_devices))
-
-    return
+    if missing_devices := [device for device in existing_devices if not device._exists_on_cv]:
+        warnings.append(missing_devices_handler(missing_devices, skip_missing_devices, "Inventory & Topology Studio"))
 
 
-def missing_devices_handler(missing_devices: list[CVDevice], skip_missing_devices: bool) -> Exception:
+def missing_devices_handler(missing_devices: list[CVDevice], skip_missing_devices: bool, context: str) -> Exception:
+    """
+    Handle missing devices:
+      - Raises if skip_missing_devices is False.
+      - Return Exception if skip_missing_devices is True.
+    """
     # Using set to only include a device once.
     missing_device_tuples = set((device.serial_number, device.system_mac_address, device.hostname) for device in missing_devices)
+    # Notice these are new objects only used for the exception.
     unique_missing_devices = [CVDevice(hostname, serial_number, system_mac_address) for serial_number, system_mac_address, hostname in missing_device_tuples]
     LOGGER.warning(
-        "verify_devices_on_cv: %s missing device objects for %s unique missing devices: %s",
+        "verify_devices_on_cv: %s is %s missing device objects for %s unique missing devices: %s",
+        context,
         len(missing_devices),
         len(missing_device_tuples),
         unique_missing_devices,
