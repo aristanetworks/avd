@@ -26195,6 +26195,20 @@
                   "description": "Source Interface Name",
                   "title": "Source Interface"
                 },
+                "multicast": {
+                  "type": "object",
+                  "properties": {
+                    "headend_replication": {
+                      "type": "boolean",
+                      "title": "Headend Replication"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Multicast"
+                },
                 "controller_client": {
                   "type": "object",
                   "description": "Client to CVX Controllers",
