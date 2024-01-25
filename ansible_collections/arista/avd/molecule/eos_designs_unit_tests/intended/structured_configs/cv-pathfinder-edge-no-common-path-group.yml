@@ -7,8 +7,7 @@ router_bgp:
     default:
       ipv4_unicast: false
   maximum_paths:
-    paths: 4
-    ecmp: 4
+    paths: 16
   updates:
     wait_install: true
   peer_groups:
