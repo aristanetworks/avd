@@ -337,7 +337,7 @@ application_traffic_recognition:
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
     - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+      src_prefix_set_name: CONTROL-PLANE-APP-SRC-PREFIXES
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -354,10 +354,9 @@ application_traffic_recognition:
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: CONTROL-PLANE-APP-SRC-PREFIXES
       prefix_values:
-      - 192.168.42.0/24
-      - 192.168.43.0/24
+      - 192.168.44.1/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
