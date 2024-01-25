@@ -46,6 +46,11 @@ class PrefixListsMixin(UtilsMixin):
             ]
             prefix_lists.append({"name": "PL-LOOPBACKS-PIM-RP", "sequence_numbers": sequence_numbers})
 
+        # TODO - may be needed in other situations
+        if self.shared_utils.wan_ha and self.shared_utils.underlay_routing_protocol == "ebgp":
+            sequence_numbers = [{"sequence": 10, "action": f"permit {self.shared_utils.uplink_ipv4_pool} eq 31"}]
+            prefix_lists.append({"name": "PL-WAN-HA-PREFIXES", "sequence_numbers": sequence_numbers})
+
         return prefix_lists
 
     @cached_property

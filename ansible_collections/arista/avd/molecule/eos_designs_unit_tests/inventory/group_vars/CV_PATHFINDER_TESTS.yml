@@ -68,25 +68,9 @@ wan_edge:
       uplink_interfaces: [ Ethernet52 ]
       cv_pathfinder_region: AVD_Land_East
       cv_pathfinder_site: Site511
-      id: 1
-      l3_interfaces:
-        - name: Ethernet1
-          wan_carrier: ATT
-          wan_circuit_id: 666
-          dhcp_accept_default_route: true
-          ip_address: dhcp
-        - name: Ethernet2
-          wan_carrier: Colt
-          wan_circuit_id: 10555
-          ip_address: 172.15.5.5/31
-        - name: Ethernet3
-          wan_carrier: Comcast-5G
-          wan_circuit_id: AF830
-          ip_address: 172.20.20.20/31
-          connected_to_pathfinder: False
-      # Disabling HA - TODO once implemented, for now it is disabled by default
-      # wan_ha:
-      #  enabled: False
+      # Disabling HA
+      wan_ha:
+        enabled: False
       nodes:
         - name: cv-pathfinder-edge
           id: 1
@@ -118,6 +102,31 @@ wan_edge:
               wan_circuit_id: S511
               dhcp_accept_default_route: true
               ip_address: dhcp
+    - group: Site423
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site423
+      uplink_type: p2p-vrfs
+      uplink_switches: [ site-ha-enabled-leaf ]
+      uplink_interfaces: [ Ethernet52 ]
+      # Manual HA disable to try it out..
+      # wan_ha:
+      #  ipsec: false
+      nodes:
+        - name: cv-pathfinder-edge2
+          id: 2
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: ATT
+              wan_circuit_id: 423-01
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+        - name: cv-pathfinder-edge3
+          id: 3
+          l3_interfaces:
+            - name: Ethernet2
+              wan_carrier: Colt
+              wan_circuit_id: 10423
+              ip_address: 172.15.6.6/31
 
 # Fake DC1
 l3leaf:
@@ -130,10 +139,10 @@ l3leaf:
       always_include_vrfs_in_tenants: [TenantA]
   nodes:
     # Used for HA in HA PR
-    #- name: site-ha-enabled-leaf1
-    #  id: 1
-    #- name: site-ha-enabled-leaf2
-    #  id: 2
+    - name: site-ha-enabled-leaf1
+      id: 1
+    - name: site-ha-enabled-leaf2
+      id: 2
     - name: site-ha-disabled-leaf
       id: 3
 

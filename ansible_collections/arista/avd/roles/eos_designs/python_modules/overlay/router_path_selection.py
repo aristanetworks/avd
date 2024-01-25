@@ -82,18 +82,73 @@ class RouterPathSelectionMixin(UtilsMixin):
 
             path_groups.append(path_group_data)
 
-        if self.shared_utils.cv_pathfinder_role:
-            pass
-            # implement LAN_HA here
+        if (self.shared_utils.cv_pathfinder_role and self.shared_utils.wan_ha) or self.shared_utils.cv_pathfinder_role == "pathfinder":
+            path_groups.append(self._generate_ha_path_group())
 
         return path_groups
+
+    def _generate_ha_path_group(self) -> dict:
+        """
+        Called only when self.shared_utils.wan_ha is True or on Pathfinders
+        """
+        ha_path_group = {
+            "name": self.shared_utils.wan_ha_path_group_name,
+            "id": self._get_path_group_id(self.shared_utils.wan_ha_path_group_name),
+            "flow_assignment": "lan",
+        }
+        if self.shared_utils.cv_pathfinder_role == "pathfinder":
+            return ha_path_group
+
+        # not a pathfinder device
+        ha_path_group.update(
+            {
+                # This should be the LAN interface over which a DPS tunnel is built
+                "local_interfaces": [{"name": interface["interface"]} for interface in self.shared_utils.wan_ha_interfaces],
+                "static_peers": [
+                    {
+                        "router_ip": self.shared_utils.wan_ha_peer_router_id,
+                        "name": self.shared_utils.wan_ha_path_group_name,
+                        "ipv4_addresses": self.shared_utils.wan_ha_peer_ip_addresses,
+                    }
+                ],
+            }
+        )
+        if get(self.shared_utils.switch_data_combined, "wan_ha.ipsec", default=True):
+            ha_path_group["ipsec_profile"] = self._dp_ipsec_profile_name
+
+        return ha_path_group
+
+    def _wan_ha_peer_ip_addresses(self) -> list:
+        """
+        Read the IP addresses from HA peer uplinks
+        """
+        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer, required=True)
+        # For now only picking up uplink interfaces in VRF default on the router.
+        vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
+        return [
+            get(
+                uplink,
+                "ip_address",
+                required=True,
+                org_key=(
+                    f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer "
+                    f"{self.shared_utils.wan_ha_peer} interface does not have an IP address",
+                ),
+            )
+            for uplink in vrf_default_peer_uplinks
+        ]
+
+    def _wan_ha_peer_vtep_ip(self) -> str:
+        """ """
+        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer, required=True)
+        return get(peer_facts, "vtep_ip", required=True)
 
     def _get_path_group_id(self, path_group_name: str, config_id: int | None = None) -> int:
         """
         TODO - implement algorithm to auto assign IDs - cf internal documenation
         TODO - also implement algorithm for cross connects on public path_groups
         """
-        if path_group_name == "LAN_HA":
+        if path_group_name == self.shared_utils.wan_ha_path_group_name:
             return 65535
         if config_id is not None:
             return config_id

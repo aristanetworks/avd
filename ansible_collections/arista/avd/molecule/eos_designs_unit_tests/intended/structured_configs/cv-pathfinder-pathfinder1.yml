@@ -320,19 +320,25 @@ router_path_selection:
     id: 103
   - name: Satellite
     id: 104
+  - name: LAN_HA
+    id: 65535
+    flow_assignment: lan
   peer_dynamic_source: stun
   load_balance_policies:
   - name: LB-CONTROL-PLANE-PROFILE
     path_groups:
+    - name: LAN_HA
     - name: INET
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
     jitter: 42
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: LTE
     - name: INET
@@ -340,26 +346,31 @@ router_path_selection:
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: Equinix
     - name: MPLS
       priority: 42
   - name: LB-TRANSIT-AVT-POLICY-VOICE
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
   - name: LB-TRANSIT-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
@@ -497,6 +508,16 @@ metadata:
           id: 423
           location:
             address: Somewhere-warm
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        - name: Site424
+          id: 424
+          location:
+            address: Somewhere-cold
+>>>>>>> e5dc3ea72 (Feat(eos_designs): Add HA support for CV Pathfinder)
+=======
+>>>>>>> d804f23f5 (Refactor: Use first ha peer loopback0 as SOO)
     - name: AVD_Land_East
       id: 43
       zones:
@@ -512,11 +533,15 @@ metadata:
       - id: 254
         name: CONTROL-PLANE-PROFILE
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -524,6 +549,8 @@ metadata:
       - id: 1
         name: DEFAULT-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: Equinix
@@ -538,6 +565,8 @@ metadata:
         id: 2
         name: PROD-AVT-POLICY-VOICE
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -545,6 +574,8 @@ metadata:
       - id: 4
         name: PROD-AVT-POLICY-VIDEO
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: LTE
@@ -554,6 +585,8 @@ metadata:
       - id: 1
         name: PROD-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: MPLS
@@ -564,6 +597,8 @@ metadata:
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -571,6 +606,8 @@ metadata:
       - id: 1
         name: DEFAULT-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: Equinix
@@ -583,6 +620,8 @@ metadata:
       - id: 42
         name: TRANSIT-AVT-POLICY-VOICE
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -590,6 +629,8 @@ metadata:
       - id: 1
         name: TRANSIT-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: MPLS

@@ -375,3 +375,66 @@ class WanMixin:
         Return True is the current wan_mode is cv-pathfinder and the device is either an edge or a transit device
         """
         return self.wan_mode == "cv-pathfinder" and self.cv_pathfinder_role in ["edge", "transit region"]
+
+    @cached_property
+    def wan_ha(self: SharedUtils) -> bool:
+        """
+        Only trigger HA if 2 devices are in the same group and wan_ha.enabled is true
+        """
+        if self.cv_pathfinder_role in [None, "pathfinder"]:
+            return False
+        return get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
+
+    @cached_property
+    def wan_ha_path_group_name(self) -> str:
+        """
+        Return HA path group name for the WAN design.
+
+        TODO make this configurable
+        """
+        return "LAN_HA"
+
+    @cached_property
+    def wan_ha_interfaces(self: SharedUtils) -> list:
+        """
+        Return the list of WAN HA interfaces
+        For now only picking up uplink interfaces in VRF default on the router.
+        """
+        # TODO probably does not need the whole uplink
+        return [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+
+    @cached_property
+    def wan_ha_peer_interfaces(self: SharedUtils) -> str:
+        return self.get_wan_peer_fact("wan_ha_interfaces")
+
+    @cached_property
+    def wan_ha_interfaces(self) -> list:
+        """
+        Return list of interfaces for HA
+
+        TODO: Used in overlay only for now see if needs to be changed
+        """
+        return [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+
+    @cached_property
+    def is_first_ha_peer(self) -> bool:
+        """
+        Returns True if the device is the first device in the node_group,
+        false otherwise.
+
+        This should be called only from functions which have checked that HA is enabled.
+        """
+        return self.switch_data_node_group_nodes[0]["name"] == self.hostname
+
+    @cached_property
+    def wan_ha_peer(self: SharedUtils) -> str | None:
+        """
+        Return the name of the WAN HA peer.
+        """
+        if not self.wan_ha:
+            return None
+        if self.is_first_ha_peer:
+            return self.switch_data_node_group_nodes[1]["name"]
+        elif self.switch_data_node_group_nodes[1]["name"] == self.hostname:
+            return self.switch_data_node_group_nodes[0]["name"]
+        raise AristaAvdError("Unable to find WAN HA peer within same node group")

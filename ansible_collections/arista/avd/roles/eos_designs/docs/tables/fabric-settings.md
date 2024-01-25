@@ -36,7 +36,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "underlay_multicast_rps.[].groups.[]") | String |  |  |  | Multicast Group IPv4 prefix/mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "underlay_multicast_rps.[].access_list_name") | String |  |  |  | Name of standard Access-List.<br> |
     | [<samp>underlay_rfc5549</samp>](## "underlay_rfc5549") | Boolean |  | `False` |  | Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.<br>Requires "underlay_routing_protocol: ebgp".<br> |
-    | [<samp>underlay_routing_protocol</samp>](## "underlay_routing_protocol") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>ebgp</code><br>- <code>ospf</code><br>- <code>ospf-ldp</code><br>- <code>isis</code><br>- <code>isis-sr</code><br>- <code>isis-ldp</code><br>- <code>isis-sr-ldp</code><br>- <code>none</code> | - The following underlay routing protocols are supported:<br>  - EBGP (default for l3ls-evpn)<br>  - OSPF.<br>  - OSPF-LDP*.<br>  - ISIS.<br>  - ISIS-SR*.<br>  - ISIS-LDP*.<br>  - ISIS-SR-LDP*.<br>  - No underlay routing protocol (none)<br>- The variables should be applied to all devices in the fabric.<br>*Only supported with core_interfaces data model.<br> |
+    | [<samp>underlay_routing_protocol</samp>](## "underlay_routing_protocol") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>ebgp</code><br>- <code>ibgp</code><br>- <code>ospf</code><br>- <code>ospf-ldp</code><br>- <code>isis</code><br>- <code>isis-sr</code><br>- <code>isis-ldp</code><br>- <code>isis-sr-ldp</code><br>- <code>none</code> | - The following underlay routing protocols are supported:<br>  - EBGP (default for l3ls-evpn)<br>  - IBGP<br>  - OSPF.<br>  - OSPF-LDP*.<br>  - ISIS.<br>  - ISIS-SR*.<br>  - ISIS-LDP*.<br>  - ISIS-SR-LDP*.<br>  - No underlay routing protocol (none)<br>- The variables should be applied to all devices in the fabric.<br>*Only supported with core_interfaces data model.<br> |
     | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links. |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "uplink_ptp.enable") | Boolean |  | `False` |  |  |
 
@@ -163,6 +163,7 @@
 
     # - The following underlay routing protocols are supported:
     #   - EBGP (default for l3ls-evpn)
+    #   - IBGP
     #   - OSPF.
     #   - OSPF-LDP*.
     #   - ISIS.
@@ -172,7 +173,7 @@
     #   - No underlay routing protocol (none)
     # - The variables should be applied to all devices in the fabric.
     # *Only supported with core_interfaces data model.
-    underlay_routing_protocol: <str; "ebgp" | "ospf" | "ospf-ldp" | "isis" | "isis-sr" | "isis-ldp" | "isis-sr-ldp" | "none">
+    underlay_routing_protocol: <str; "ebgp" | "ibgp" | "ospf" | "ospf-ldp" | "isis" | "isis-sr" | "isis-ldp" | "isis-sr-ldp" | "none">
 
     # Enable PTP on all infrastructure links.
     uplink_ptp:

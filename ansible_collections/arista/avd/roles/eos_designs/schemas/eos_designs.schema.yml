@@ -3465,12 +3465,13 @@ keys:
     type: str
     convert_to_lower_case: true
     description: "- The following underlay routing protocols are supported:\n  - EBGP
-      (default for l3ls-evpn)\n  - OSPF.\n  - OSPF-LDP*.\n  - ISIS.\n  - ISIS-SR*.\n
-      \ - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - No underlay routing protocol (none)\n-
-      The variables should be applied to all devices in the fabric.\n*Only supported
-      with core_interfaces data model.\n"
+      (default for l3ls-evpn)\n  - IBGP\n  - OSPF.\n  - OSPF-LDP*.\n  - ISIS.\n  -
+      ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - No underlay routing protocol
+      (none)\n- The variables should be applied to all devices in the fabric.\n*Only
+      supported with core_interfaces data model.\n"
     valid_values:
     - ebgp
+    - ibgp
     - ospf
     - ospf-ldp
     - isis
@@ -7559,6 +7560,30 @@ $defs:
 
 
               The CV Pathfinder site name.'
+          wan_ha:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: dict
+            description: 'PREVIEW: This key is currently not supported
+
+
+              The key is supported only if `wan_mode` == `cv-pathfinder`.
+
+              AutoVPN support is still to be determined.
+
+
+              Maximum 2 devices supported by group for HA.'
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable / Disable auto CV-Pathfinder HA, when two nodes
+                  are defined in node group.
+              ipsec:
+                type: bool
+                default: true
+                description: Enable / Disable IPsec over HA path-group when HA is
+                  enabled.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration

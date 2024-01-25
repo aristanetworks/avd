@@ -61,7 +61,14 @@ class RouteMapsMixin(UtilsMixin):
                     }
                 )
 
-            # TODO in WAN HA PR, use 50 for PL-WAN-HA-INTERFACES
+            if self.shared_utils.wan_ha:
+                sequence_numbers.append(
+                    {
+                        "sequence": 50,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
+                    }
+                )
 
             route_maps.append({"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers})
 
@@ -91,8 +98,13 @@ class RouteMapsMixin(UtilsMixin):
                 {
                     "name": "RM-BGP-UNDERLAY-PEERS-IN",
                     "sequence_numbers": [
-                        # TODO sequence 10 is left to match prefixes from HA PEER
-                        # on which SOO will be have been set by peer
+                        # TODO seq 10 maybe only needed when HA is true
+                        {
+                            "sequence": 10,
+                            "type": "deny",
+                            "description": "Deny prefixes with our SoO set",
+                            "match": ["extcommunity ECL-EVPN-SOO"],
+                        },
                         {
                             "sequence": 20,
                             "type": "deny",
@@ -125,7 +137,14 @@ class RouteMapsMixin(UtilsMixin):
                             "description": "Advertise routes received from WAN iBGP towards LAN",
                             "match": ["route-type internal"],
                         },
-                        # TODO match local HA prefix and mark them with SOO
+                        # TODO seq 30 maybe only needed when HA is true
+                        {
+                            "sequence": 30,
+                            "type": "permit",
+                            "description": "Advertise WAN HA prefixes towards LAN and mark them with SoO",
+                            "match": [f"interface {uplink['interface']}" for uplink in self._uplinks],
+                            "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                        },
                     ],
                 }
             )

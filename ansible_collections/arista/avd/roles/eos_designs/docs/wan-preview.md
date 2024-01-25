@@ -75,7 +75,28 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 ###### HA
 
-To Be Implemented.
+for eBGP LAN routing protocol the following is done to enable HA:
+
+- the HA interface(s) is(are) the uplink interface(s).
+- the HA interface(s) subnet(s) are redistributed in BGP via the `RM-CONN-2-BGP` route-map
+- BGP underlay peer group is configured with `allowas-in 1` to be able to learn the HA peer uplink interface subnet coming with the same ASN via eBGP over the LAN.
+- the Underlay peer group is configured with two route-maps
+  - one outbound route-map `RM-WAN-HA-SOO-OUT` to tag all the WAN received routes with the SOO `<bgp_as>:<wan_site_id>` except the uplink interface subnet.
+  - one inbound route-map `RM-WAN-HA-SOO-IN` denying any route with the SOO.
+
+##### OSPF LAN HA
+
+- Configure `underlay_routing_protocol` to OSPF for both the WAN router and the uplink router.
+
+!!! warning
+
+    In the current implementation, OSPF on LAN is not supported as there is no redistribution of route from OSPF to BGP and vice-versa implemented.
+
+###### HA
+
+The HA tunnel will come up properly today but route redistribution will be missing so it is not usable.
+
+- the HA interface(s) is(are) the uplink interface(s) which are automatically included in  OSPF.
 
 ## Known limitations
 
@@ -102,6 +123,7 @@ To Be Implemented.
 - Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
 - The name of the AVT policies and AVT profiles are configurable in the input variables. The Load Balance policies are named `LB-<profile_name>` and are not configurable.
 - For LAN, the current supported funcitonality is to use `uplink_type: p2p-vrfs` on the WAN routers and to have the relevant VRFs present on the uplink switches via `network_services`. Other LAN scenarios will come with time.
+- HA for AutoVPN is not supported
 
 ## Future work
 
