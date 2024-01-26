@@ -284,7 +284,7 @@ class FilteredTenantsMixin:
         }
 
         if (svi_profile_name := filtered_svi.get("profile")) is not None:
-            svi_profile = get_item(self._svi_profiles, "profile", svi_profile_name, default={})
+            svi_profile = get_item(self.svi_profiles, "profile", svi_profile_name, default={})
 
         if (svi_parent_profile_name := svi_profile.get("parent_profile")) is not None:
             svi_parent_profile = get_item(self.svi_profiles, "profile", svi_parent_profile_name, default={})
