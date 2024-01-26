@@ -46,7 +46,13 @@ class RouterPathSelectionMixin(UtilsMixin):
         # TODO - need to have default value in one place only -> maybe facts / shared_utils ?
         ipsec_profile_name = get(self._hostvars, "wan_ipsec_profiles.control_plane.profile_name", default="CP-PROFILE")
 
-        for path_group in self.shared_utils.wan_local_path_groups:
+        if self.shared_utils.wan_role == "server":
+            # Configure all path-groups on Pathfinders and AutoVPN RRs
+            path_groups_to_configure = self.shared_utils.wan_path_groups
+        else:
+            path_groups_to_configure = self.shared_utils.wan_local_path_groups
+
+        for path_group in path_groups_to_configure:
             pg_name = path_group.get("name")
 
             path_group_data = {

@@ -117,6 +117,8 @@ router_bfd:
     multiplier: 3
 router_path_selection:
   path_groups:
+  - name: MPLS
+    id: 100
   - name: INET
     id: 101
     local_interfaces:
@@ -126,6 +128,9 @@ router_path_selection:
       name: autovpn-rr1
       ipv4_addresses:
       - 10.7.7.7
+    ipsec_profile: AUTOVPN
+  - name: LTE
+    id: 102
     ipsec_profile: AUTOVPN
   peer_dynamic_source: stun
   load_balance_policies:
