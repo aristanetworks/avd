@@ -29,7 +29,7 @@
     change_control:
       name: "{{ cv_change_control_name | arista.avd.default }}"
       description: "{{ cv_change_control_description | arista.avd.default }}"
-      requested_state: "{{ 'started' if cv_run_change_control else 'pending approval' }}"
+      requested_state: "{{ 'running' if cv_run_change_control else 'pending approval' }}"
     timeouts:
       workspace_build_timeout: "{{ cv_workspace_build_timeout }}"
     return_details: "{{ cv_register_detailed_results }}"
