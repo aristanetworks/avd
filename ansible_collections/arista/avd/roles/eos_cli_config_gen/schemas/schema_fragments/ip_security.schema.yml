@@ -155,4 +155,4 @@ keys:
         default: False
         description: |-
           Disable hardware encryption.
-          A SFE restart is needed for this change to take effect.
+          An SFE restart is needed for this change to take effect.

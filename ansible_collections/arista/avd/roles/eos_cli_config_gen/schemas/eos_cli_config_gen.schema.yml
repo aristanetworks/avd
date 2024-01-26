@@ -4393,7 +4393,7 @@ keys:
         default: false
         description: 'Disable hardware encryption.
 
-          A SFE restart is needed for this change to take effect.'
+          An SFE restart is needed for this change to take effect.'
   ip_ssh_client_source_interfaces:
     type: list
     items:

@@ -7417,7 +7417,7 @@
         "hardware_encryption_disabled": {
           "type": "boolean",
           "default": false,
-          "description": "Disable hardware encryption.\nA SFE restart is needed for this change to take effect.",
+          "description": "Disable hardware encryption.\nAn SFE restart is needed for this change to take effect.",
           "title": "Hardware Encryption Disabled"
         }
       },
