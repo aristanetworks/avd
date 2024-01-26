@@ -186,6 +186,8 @@ class UplinksMixin:
         elif self.shared_utils.uplink_type == "port-channel":
             get_uplink = self._get_port_channel_uplink
         elif self.shared_utils.uplink_type == "p2p-vrfs":
+            if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
+                raise AristaAvdError("'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'p2p-vrfs' as 'uplink_type'.")
             get_uplink = self._get_p2p_vrfs_uplink
         else:
             raise AristaAvdError(f"Invalid uplink_type '{self.shared_utils.uplink_type}'.")

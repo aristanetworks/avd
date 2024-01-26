@@ -32,6 +32,9 @@ class FilteredTenantsMixin:
         Keys of Tenant data model will be converted to lists.
         All sub data models like vrfs and l2vlans are also converted and filtered.
         """
+        if not self.any_network_services:
+            return []
+
         filtered_tenants = []
         filter_tenants = self.filter_tenants
         for network_services_key in self.network_services_keys:
@@ -357,8 +360,12 @@ class FilteredTenantsMixin:
 
         Ex. ["default", "prod"]
         """
+        if not self.network_services_l3:
+            return []
+
         vrfs = set()
         for tenant in self.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrfs.add(vrf["name"])
+
         return natural_sort(vrfs)

@@ -197,6 +197,8 @@ ip_virtual_router_mac_address: cafe:cafe:cafe
 vlan_interfaces:
 - name: Vlan66
   tenant: TenantC
+  tags:
+  - not-on-spine-2
   description: TEST-L2VLAN-ATTRACTION
   shutdown: false
   ip_address_virtual: 172.16.0.1/24

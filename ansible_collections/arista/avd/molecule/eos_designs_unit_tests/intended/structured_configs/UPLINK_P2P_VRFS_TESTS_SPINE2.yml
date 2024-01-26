@@ -36,6 +36,8 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
       description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.100_vrf_IT
+    redistribute_routes:
+    - source_protocol: connected
   - name: PROD
     router_id: 192.168.42.2
     neighbors:
@@ -43,6 +45,8 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
       description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.42_vrf_PROD
+    redistribute_routes:
+    - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -55,6 +59,12 @@ spanning_tree:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: IT
+  tenant: TenantA
+  ip_routing: true
+- name: PROD
+  tenant: TenantA
+  ip_routing: true
 management_api_http:
   enable_vrfs:
   - name: MGMT

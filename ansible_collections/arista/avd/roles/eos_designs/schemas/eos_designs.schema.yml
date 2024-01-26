@@ -1732,6 +1732,8 @@ keys:
 
             The subinterface ID is the `vrf_id`.
 
+            ''underlay_router'' and ''network_services.l3'' must be set to true.
+
             VRF `default` is always configured on the physical interface using the
             underlay routing protocol.
 

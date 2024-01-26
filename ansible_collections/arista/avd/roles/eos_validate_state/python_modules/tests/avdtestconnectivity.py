@@ -158,6 +158,12 @@ class AvdTestLLDPTopology(AvdTestBase):
     categories = ["LLDP Topology"]
     description = "LLDP topology - validate peer and interface"
 
+    def is_subinterface(self, interface: dict) -> bool:
+        """
+        TODO - check if this cannot be moved to the AvdTestBase
+        """
+        return "." in interface.get("name", "")
+
     @cached_property
     def test_definition(self) -> dict | None:
         """
@@ -175,6 +181,10 @@ class AvdTestLLDPTopology(AvdTestBase):
         required_keys = ["name", "peer", "peer_interface"]
 
         for idx, interface in enumerate(ethernet_interfaces):
+            # ignore subinterfaces for LLDP - TODO makes this better
+            if self.is_subinterface(interface):
+                continue
+
             self.update_interface_shutdown(interface=interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, shutdown=False):
                 continue

@@ -3,6 +3,35 @@
 overlay_routing_protocol: none
 new_network_services_bgp_vrf_config: true
 
+node_type_keys:
+  # modify spine to get l3 network_services
+  - key: spine
+    type: spine
+    default_evpn_role: server
+    default_ptp_priority1: 20
+    network_services:
+      l3: true
+  - key: l3leaf
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    default_ptp_priority1: 30
+    cv_tags_topology_type: leaf
+  - key: l2leaf
+    type: l2leaf
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+    underlay_router: false
+    uplink_type: port-channel
+    cv_tags_topology_type: leaf
+
 default_node_types:
   - node_type: spine
     match_hostnames:
@@ -45,6 +74,8 @@ l2leaf:
     - name: UPLINK_P2P_VRFS_TESTS_L2LEAF1
       id: 4
       uplink_switch_interfaces: [ Ethernet51, Ethernet52 ]
+      filter:
+        tags: [not-on-spine-2]
 
 spine:
   defaults:
@@ -57,10 +88,13 @@ spine:
         # TenantC to check that the VRF attracted from L2LEAF1 on LEAF1 makes it
         # to the uplink
         always_include_vrfs_in_tenants: [TenantB, TenantC]
+        tags: [not-on-spine-2]
     - name: UPLINK_P2P_VRFS_TESTS_SPINE2
       id: 2
       filter:
         always_include_vrfs_in_tenants: [TenantA]
+        # to exclude `not-on-spine-2`
+        tags: [none]
 
 tenants:
   - name: TenantA
@@ -84,6 +118,7 @@ tenants:
         vrf_id: 66
         svis:
           - id: 66
+            tags: [not-on-spine-2]
             name: TEST-L2VLAN-ATTRACTION
             enabled: true
             ip_address_virtual: 172.16.0.1/24
