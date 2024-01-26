@@ -40,25 +40,49 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
     def _wan_cp_app_dst_prefix(self) -> str:
         return "CONTROL-PLANE-APP-DEST-PREFIXES"
 
+    @cached_property
+    def _wan_cp_app_src_prefix(self) -> str:
+        return "CONTROL-PLANE-APP-SRC-PREFIXES"
+
     def _generate_control_plane_application_profile(self, app_dict: dict) -> None:
         """
-        Generate an application profile using a single application matching the device Pathfinders router_ids.
+        Generate an application profile using a single application matching:
+        * the device Pathfinders router_ids  as destination for non Pathfinders.
+        * the device Pathfinder router_id as source
 
         Create a structure as follow. If any object already exist, it is kept as defined by user and override the defaults.
 
-        application_traffic_recognition:
-          application_profiles:
-            - name: CONTROL-PLANE-APPLICATION-PROFILE
+        Edge and Transit:
+
+            application_traffic_recognition:
+              application_profiles:
+                - name: CONTROL-PLANE-APPLICATION-PROFILE
+                  applications:
+                    - name: CONTROL-PLANE-APPLICATION
               applications:
-                - name: CONTROL-PLANE-APPLICATION
-          applications:
-            ipv4_applications:
-              - name: CONTROL-PLANE-APPLICATION
-                dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
-          field_sets:
-            ipv4_prefixes:
-              - name: CONTROL-PLANE-APP-DEST-PREFIXES
-                prefix_values: [Pathfinder to which the router is connected router-ids]
+                ipv4_applications:
+                  - name: CONTROL-PLANE-APPLICATION
+                    dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+              field_sets:
+                ipv4_prefixes:
+                  - name: CONTROL-PLANE-APP-DEST-PREFIXES
+                    prefix_values: [Pathfinder to which the router is connected router-ids]
+
+        Pathfinder:
+
+            application_traffic_recognition:
+              application_profiles:
+                - name: CONTROL-PLANE-APPLICATION-PROFILE
+                  applications:
+                    - name: CONTROL-PLANE-APPLICATION
+              applications:
+                ipv4_applications:
+                  - name: CONTROL-PLANE-APPLICATION
+                    src_prefix_set_name: CONTROL-PLANE-APP-SRC-PREFIXES
+              field_sets:
+                ipv4_prefixes:
+                  - name: CONTROL-PLANE-APP-SRC-PREFIXES
+                    prefix_values: [Pathfinder router_id]
         """
         # Adding the application-profile
         application_profiles = get(app_dict, "application_profiles", [])
@@ -78,26 +102,34 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         ipv4_applications = get(app_dict, "applications.ipv4_applications", [])
         if get_item(ipv4_applications, "name", self._wan_control_plane_application) is not None:
             return
-        app_dict.setdefault("applications", {}).setdefault("ipv4_applications", []).append(
-            {
-                "name": self._wan_control_plane_application,
-                "dest_prefix_set_name": self._wan_cp_app_dst_prefix,
-            }
-        )
-        # Adding the field-set based on the connected Pathfinder router-ids
-        ipv4_prefixes_field_sets = get(app_dict, "field_sets.ipv4_prefixes", [])
-        if get_item(ipv4_prefixes_field_sets, "name", self._wan_cp_app_dst_prefix) is not None:
-            return
-        pathfinder_router_ids = [f"{wan_rs_data.get('router_id')}/32" for wan_rs, wan_rs_data in self.shared_utils.filtered_wan_route_servers.items()]
-        if self.shared_utils.wan_role == "server":
-            pathfinder_router_ids.extend(self.shared_utils.wan_listen_ranges)
-
-        app_dict.setdefault("field_sets", {}).setdefault("ipv4_prefixes", []).append(
-            {
-                "name": self._wan_cp_app_dst_prefix,
-                "prefix_values": pathfinder_router_ids,
-            }
-        )
+        if self.shared_utils.wan_role == "client":
+            app_dict.setdefault("applications", {}).setdefault("ipv4_applications", []).append(
+                {
+                    "name": self._wan_control_plane_application,
+                    "dest_prefix_set_name": self._wan_cp_app_dst_prefix,
+                }
+            )
+            # Adding the field-set based on the connected Pathfinder router-ids
+            ipv4_prefixes_field_sets = get(app_dict, "field_sets.ipv4_prefixes", [])
+            if get_item(ipv4_prefixes_field_sets, "name", self._wan_cp_app_dst_prefix) is not None:
+                return
+            pathfinder_router_ids = [f"{wan_rs_data.get('router_id')}/32" for wan_rs, wan_rs_data in self.shared_utils.filtered_wan_route_servers.items()]
+            app_dict.setdefault("field_sets", {}).setdefault("ipv4_prefixes", []).append(
+                {
+                    "name": self._wan_cp_app_dst_prefix,
+                    "prefix_values": pathfinder_router_ids,
+                }
+            )
+        elif self.shared_utils.wan_role == "server":
+            app_dict.setdefault("applications", {}).setdefault("ipv4_applications", []).append(
+                {
+                    "name": self._wan_control_plane_application,
+                    "src_prefix_set_name": self._wan_cp_app_src_prefix,
+                }
+            )
+            app_dict.setdefault("field_sets", {}).setdefault("ipv4_prefixes", []).append(
+                {"name": self._wan_cp_app_src_prefix, "prefix_values": [f"{self.shared_utils.router_id}/32"]}
+            )
 
     def _filtered_application_traffic_recognition(self) -> dict:
         """

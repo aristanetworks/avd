@@ -41,9 +41,13 @@ class FilteredTenantsMixin:
             tenants = convert_dicts(get(self.hostvars, network_services_key["name"]), "name")
             for tenant in tenants:
                 if tenant["name"] in filter_tenants or "all" in filter_tenants:
-                    tenant["l2vlans"] = self.filtered_l2vlans(tenant)
-                    tenant["vrfs"] = self.filtered_vrfs(tenant)
-                    filtered_tenants.append(tenant)
+                    filtered_tenants.append(
+                        {
+                            **tenant,
+                            "l2vlans": self.filtered_l2vlans(tenant),
+                            "vrfs": self.filtered_vrfs(tenant),
+                        }
+                    )
 
         no_vrf_default = all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"])
         if self.wan_role is not None and no_vrf_default:
@@ -91,13 +95,11 @@ class FilteredTenantsMixin:
 
         l2vlans: list[dict] = natural_sort(convert_dicts(tenant["l2vlans"], "id"), "id")
         l2vlans = [
-            l2vlan
+            # Copy and set tenant key on all l2vlans
+            {**l2vlan, "tenant": tenant["name"]}
             for l2vlan in l2vlans
             if self.is_accepted_vlan(l2vlan) and ("all" in self.filter_tags or set(l2vlan.get("tags", ["all"])).intersection(self.filter_tags))
         ]
-        # Set tenant key on all l2vlans
-        for l2vlan in l2vlans:
-            l2vlan.update({"tenant": tenant["name"]})
 
         return l2vlans
 
@@ -163,9 +165,10 @@ class FilteredTenantsMixin:
         always_include_vrfs_in_tenants = get(self.switch_data_combined, "filter.always_include_vrfs_in_tenants", default=[])
 
         vrfs: list[dict] = natural_sort(convert_dicts(tenant.get("vrfs", []), "name"), "name")
-        for vrf in vrfs:
-            # Storing tenant on VRF for use by child objects like SVIs
-            vrf["tenant"] = tenant["name"]
+        for original_vrf in vrfs:
+            # Copying original_vrf and setting "tenant" for use by child objects like SVIs
+            vrf = {**original_vrf, "tenant": tenant["name"]}
+
             bgp_peers = natural_sort(convert_dicts(vrf.get("bgp_peers"), "ip_address"), "ip_address")
             vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.hostname in bgp_peer.get("nodes", [])]
             vrf["static_routes"] = [route for route in get(vrf, "static_routes", default=[]) if self.hostname in get(route, "nodes", default=[self.hostname])]
@@ -220,15 +223,6 @@ class FilteredTenantsMixin:
                             vrf["_evpn_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
                             break
 
-            if (
-                vrf["svis"]
-                or vrf["l3_interfaces"]
-                or vrf["loopbacks"]
-                or "all" in always_include_vrfs_in_tenants
-                or tenant["name"] in always_include_vrfs_in_tenants
-            ):
-                filtered_vrfs.append(vrf)
-
             vrf["additional_route_targets"] = [
                 rt
                 for rt in get(vrf, "additional_route_targets", default=[])
@@ -240,6 +234,15 @@ class FilteredTenantsMixin:
                 )
             ]
 
+            if (
+                vrf["svis"]
+                or vrf["l3_interfaces"]
+                or vrf["loopbacks"]
+                or "all" in always_include_vrfs_in_tenants
+                or tenant["name"] in always_include_vrfs_in_tenants
+            ):
+                filtered_vrfs.append(vrf)
+
         return filtered_vrfs
 
     @cached_property
@@ -249,12 +252,14 @@ class FilteredTenantsMixin:
 
         The key "nodes" is filtered to only contain one item with the relevant dict from "nodes" or {}
         """
-        svi_profiles = convert_dicts(get(self.hostvars, "svi_profiles", default=[]), "profile")
-        for svi_profile in svi_profiles:
-            svi_profile["nodes"] = convert_dicts(svi_profile.get("nodes", []), "node")
-            svi_profile["nodes"] = [get_item(svi_profile["nodes"], "node", self.hostname, default={})]
-
-        return svi_profiles
+        svi_profiles = convert_dicts(get(self._hostvars, "svi_profiles", default=[]), "profile")
+        return [
+            {
+                **svi_profile,
+                "nodes": [get_item(convert_dicts(svi_profile.get("nodes", []), "node"), "node", self.hostname, default={})],
+            }
+            for svi_profile in svi_profiles
+        ]
 
     def get_merged_svi_config(self: SharedUtils, svi: dict) -> list[dict]:
         """
@@ -273,11 +278,13 @@ class FilteredTenantsMixin:
         svi_profile = {"nodes": [{}]}
         svi_parent_profile = {"nodes": [{}]}
 
-        svi["nodes"] = convert_dicts(svi.get("nodes", []), "node")
-        svi["nodes"] = [get_item(svi["nodes"], "node", self.hostname, default={})]
+        filtered_svi = {
+            **svi,
+            "nodes": [get_item(convert_dicts(svi.get("nodes", []), "node"), "node", self.hostname, default={})],
+        }
 
-        if (svi_profile_name := svi.get("profile")) is not None:
-            svi_profile = get_item(self.svi_profiles, "profile", svi_profile_name, default={})
+        if (svi_profile_name := filtered_svi.get("profile")) is not None:
+            svi_profile = get_item(self._svi_profiles, "profile", svi_profile_name, default={})
 
         if (svi_parent_profile_name := svi_profile.get("parent_profile")) is not None:
             svi_parent_profile = get_item(self.svi_profiles, "profile", svi_parent_profile_name, default={})
@@ -288,30 +295,30 @@ class FilteredTenantsMixin:
         merged_svi = merge(
             svi_parent_profile,
             svi_profile,
-            svi,
+            filtered_svi,
             svi_parent_profile["nodes"][0],
             svi_profile["nodes"][0],
-            svi["nodes"][0],
+            filtered_svi["nodes"][0],
             list_merge="replace",
             destructive_merge=False,
         )
 
         # Override structured configs since we don't want to deep-merge those
         merged_svi["structured_config"] = default(
-            svi["nodes"][0].get("structured_config"),
+            filtered_svi["nodes"][0].get("structured_config"),
             svi_profile["nodes"][0].get("structured_config"),
             svi_parent_profile["nodes"][0].get("structured_config"),
-            svi.get("structured_config"),
+            filtered_svi.get("structured_config"),
             svi_profile.get("structured_config"),
             svi_parent_profile.get("structured_config"),
         )
 
         # Override bgp.structured configs since we don't want to deep-merge those
         merged_svi.setdefault("bgp", {})["structured_config"] = default(
-            get(svi["nodes"][0], "bgp.structured_config"),
+            get(filtered_svi["nodes"][0], "bgp.structured_config"),
             get(svi_profile["nodes"][0], "bgp.structured_config"),
             get(svi_parent_profile["nodes"][0], "bgp.structured_config"),
-            get(svi, "bgp.structured_config"),
+            get(filtered_svi, "bgp.structured_config"),
             get(svi_profile, "bgp.structured_config"),
             get(svi_parent_profile, "bgp.structured_config"),
         )

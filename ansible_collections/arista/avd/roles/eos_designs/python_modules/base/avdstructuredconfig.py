@@ -509,8 +509,10 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
     @cached_property
     def platform(self) -> dict | None:
         """
-        platform set based on platform_settings.lag_hardware_only,
-        platform_settings.trident_forwarding_table_partition and switch.evpn_multicast facts
+        platform set based on:
+        * platform_settings.lag_hardware_only,
+        * platform_settings.trident_forwarding_table_partition and switch.evpn_multicast facts
+        * data_plane_cpu_allocation_max
         """
         platform = {}
         if (lag_hardware_only := get(self.shared_utils.platform_settings, "lag_hardware_only")) is not None:
@@ -519,6 +521,13 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         trident_forwarding_table_partition = get(self.shared_utils.platform_settings, "trident_forwarding_table_partition")
         if trident_forwarding_table_partition is not None and self.shared_utils.evpn_multicast:
             platform["trident"] = {"forwarding_table_partition": trident_forwarding_table_partition}
+
+        if (cpu_max_allocation := get(self._hostvars, "data_plane_cpu_allocation_max")) is not None:
+            platform["sfe"] = {"data_plane_cpu_allocation_max": cpu_max_allocation}
+        elif self.shared_utils.wan_role == "server":
+            # For AutoVPN Route Reflectors and Pathfinders, running on CloudEOS, setting
+            # this value is required for the solution to work.
+            raise AristaAvdMissingVariableError("For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set")
 
         if platform:
             return platform

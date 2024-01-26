@@ -656,6 +656,14 @@ keys:
       If not set the default locations for on-premise or CVaaS will be used.
 
       See cvp_ingestauth_key for details.'
+  data_plane_cpu_allocation_max:
+    documentation_options:
+      table: system-settings
+    type: int
+    $ref: eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max
+    description: 'Set the maximum number of CPU used for the data plane.
+
+      This setting is useful on virtual Route Reflectors and Pathfinders node.'
   dc_name:
     documentation_options:
       table: fabric-topology
