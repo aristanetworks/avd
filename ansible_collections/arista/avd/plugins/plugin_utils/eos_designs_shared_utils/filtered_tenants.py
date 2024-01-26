@@ -252,7 +252,7 @@ class FilteredTenantsMixin:
 
         The key "nodes" is filtered to only contain one item with the relevant dict from "nodes" or {}
         """
-        svi_profiles = convert_dicts(get(self._hostvars, "svi_profiles", default=[]), "profile")
+        svi_profiles = convert_dicts(get(self.hostvars, "svi_profiles", default=[]), "profile")
         return [
             {
                 **svi_profile,

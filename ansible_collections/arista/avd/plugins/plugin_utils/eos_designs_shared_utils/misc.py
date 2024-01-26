@@ -288,6 +288,10 @@ class MiscMixin:
         Return whether or not to use the new behavior when generating
         BGP VRF configuration
 
-        TODO: Change default to True in AVD 5.0.0 and remove in AVD 6.0.0
+        TODO: Change default to True in all cases in AVD 5.0.0 and remove in AVD 6.0.0
         """
-        return get(self.hostvars, "new_network_services_bgp_vrf_config", default=False)
+        if self.uplink_type == "p2p-vrfs":
+            default_value = True
+        else:
+            default_value = False
+        return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
