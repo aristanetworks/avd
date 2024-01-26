@@ -185,13 +185,12 @@ application_traffic_recognition:
   applications:
     ipv4_applications:
     - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+      src_prefix_set_name: CONTROL-PLANE-APP-SRC-PREFIXES
   field_sets:
     ipv4_prefixes:
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: CONTROL-PLANE-APP-SRC-PREFIXES
       prefix_values:
-      - 192.168.31.1/32
-      - 192.168.30.0/24
+      - 192.168.31.2/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
