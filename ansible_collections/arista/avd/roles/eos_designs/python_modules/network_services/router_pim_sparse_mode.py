@@ -27,7 +27,7 @@ class RouterPimSparseModeMixin(UtilsMixin):
             return None
 
         vrfs = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if vrf_rps := get(vrf, "_pim_rp_addresses"):
                     vrf_config = {

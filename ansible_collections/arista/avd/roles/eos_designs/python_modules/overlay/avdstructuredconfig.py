@@ -13,6 +13,7 @@ from .router_adaptive_virtual_topology import RouterAdaptiveVirtualTopologyMixin
 from .router_bfd import RouterBfdMixin
 from .router_bgp import RouterBgpMixin
 from .router_path_selection import RouterPathSelectionMixin
+from .router_traffic_engineering import RouterTrafficEngineering
 from .stun import StunMixin
 
 
@@ -28,6 +29,7 @@ class AvdStructuredConfigOverlay(
     RouterBgpMixin,
     RouteMapsMixin,
     RouterPathSelectionMixin,
+    RouterTrafficEngineering,
     StunMixin,
 ):
     """

@@ -32,6 +32,7 @@
     | [<samp>&nbsp;&nbsp;address_family_ipv4</samp>](## "router_isis.address_family_ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.address_family_ipv4.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_paths</samp>](## "router_isis.address_family_ipv4.maximum_paths") | Integer |  |  | Min: 1<br>Max: 128 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_all_interfaces</samp>](## "router_isis.address_family_ipv4.bfd_all_interfaces") | Boolean |  |  |  | Enable BFD on all interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fast_reroute_ti_lfa</samp>](## "router_isis.address_family_ipv4.fast_reroute_ti_lfa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode") | String |  |  | Valid Values:<br>- <code>link-protection</code><br>- <code>node-protection</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "router_isis.address_family_ipv4.fast_reroute_ti_lfa.level") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code> |  |
@@ -44,9 +45,10 @@
     | [<samp>&nbsp;&nbsp;address_family_ipv6</samp>](## "router_isis.address_family_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.address_family_ipv6.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_paths</samp>](## "router_isis.address_family_ipv6.maximum_paths") | Integer |  |  | Min: 1<br>Max: 128 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_all_interfaces</samp>](## "router_isis.address_family_ipv6.bfd_all_interfaces") | Boolean |  |  |  | Enable BFD on all interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fast_reroute_ti_lfa</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode") | String |  |  | Valid Values:<br>- <code>link-protection</code><br>- <code>node-protection</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.level") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code> | Optional, default is to protect all levels |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.level") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code> | Optional, default is to protect all levels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlg</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg") | Dictionary |  |  |  | Shared Risk Link Group |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strict</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict") | Boolean |  |  |  |  |
@@ -56,6 +58,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_segments</samp>](## "router_isis.segment_routing_mpls.prefix_segments") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].prefix") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].index") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;spf_interval</samp>](## "router_isis.spf_interval") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_isis.spf_interval.interval") | Integer |  |  | Min: 1<br>Max: 300 | Maximum interval between two SPFs in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wait_interval</samp>](## "router_isis.spf_interval.wait_interval") | Integer |  |  | Min: 1<br>Max: 300000 | Initial wait interval for SPF in milliseconds. |
+    | [<samp>&nbsp;&nbsp;graceful_restart</samp>](## "router_isis.graceful_restart") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.graceful_restart.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;restart_hold_time</samp>](## "router_isis.graceful_restart.restart_hold_time") | Integer |  |  | Min: 5<br>Max: 300 | Number of seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;t2</samp>](## "router_isis.graceful_restart.t2") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1_wait_time</samp>](## "router_isis.graceful_restart.t2.level_1_wait_time") | Integer |  |  | Min: 5<br>Max: 300 | Level-1 LSP database sync wait time in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2_wait_time</samp>](## "router_isis.graceful_restart.t2.level_2_wait_time") | Integer |  |  | Min: 5<br>Max: 300 | Level-2 LSP database sync wait time in seconds. |
 
 === "YAML"
 
@@ -108,6 +119,9 @@
       address_family_ipv4:
         enabled: <bool>
         maximum_paths: <int; 1-128>
+
+        # Enable BFD on all interfaces.
+        bfd_all_interfaces: <bool>
         fast_reroute_ti_lfa:
           mode: <str; "link-protection" | "node-protection">
           level: <str; "level-1" | "level-2">
@@ -124,10 +138,13 @@
       address_family_ipv6:
         enabled: <bool>
         maximum_paths: <int; 1-128>
+
+        # Enable BFD on all interfaces.
+        bfd_all_interfaces: <bool>
         fast_reroute_ti_lfa:
           mode: <str; "link-protection" | "node-protection">
 
-          # Optional, default is to protect all levels
+          # Optional, default is to protect all levels.
           level: <str; "level-1" | "level-2">
 
           # Shared Risk Link Group
@@ -140,4 +157,23 @@
         prefix_segments:
           - prefix: <str>
             index: <int>
+      spf_interval:
+
+        # Maximum interval between two SPFs in seconds.
+        interval: <int; 1-300>
+
+        # Initial wait interval for SPF in milliseconds.
+        wait_interval: <int; 1-300000>
+      graceful_restart:
+        enabled: <bool>
+
+        # Number of seconds.
+        restart_hold_time: <int; 5-300>
+        t2:
+
+          # Level-1 LSP database sync wait time in seconds.
+          level_1_wait_time: <int; 5-300>
+
+          # Level-2 LSP database sync wait time in seconds.
+          level_2_wait_time: <int; 5-300>
     ```

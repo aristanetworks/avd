@@ -144,9 +144,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '33:33'
+    evpn_multicast: false
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: false
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
     router_id: 192.168.255.6
     rd: 192.168.255.6:31
@@ -159,9 +159,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '31:31'
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: true
   - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
     router_id: 192.168.255.6
     rd: 192.168.255.6:32
@@ -174,9 +174,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '32:32'
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: true
   - name: TEN_D_L3_MULTICAST_DISABLED_240_241
     router_id: 192.168.255.6
     rd: 192.168.255.6:42
@@ -189,9 +189,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '42:42'
+    evpn_multicast: false
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: false
   - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
     router_id: 192.168.255.6
     rd: 192.168.255.6:41
@@ -204,9 +204,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '41:41'
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: true
   - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
     router_id: 192.168.255.6
     rd: 192.168.255.6:55
@@ -219,9 +219,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '55:55'
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: true
   - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
     router_id: 192.168.255.6
     rd: 192.168.255.6:60
@@ -234,12 +234,12 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 60:60
-    redistribute_routes:
-    - source_protocol: connected
     evpn_multicast: true
     evpn_multicast_address_family:
       ipv4:
         transit: true
+    redistribute_routes:
+    - source_protocol: connected
   - name: TEN_E_L3_MULTICAST_TRANSIT
     router_id: 192.168.255.6
     rd: 192.168.255.6:52
@@ -252,12 +252,12 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '52:52'
-    redistribute_routes:
-    - source_protocol: connected
     evpn_multicast: true
     evpn_multicast_address_family:
       ipv4:
         transit: true
+    redistribute_routes:
+    - source_protocol: connected
   - name: TEN_E_PEG_L3_MULTICAST_ENABLED
     router_id: 192.168.255.6
     rd: 192.168.255.6:51
@@ -270,9 +270,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '51:51'
+    evpn_multicast: true
     redistribute_routes:
     - source_protocol: connected
-    evpn_multicast: true
   vlans:
   - id: 310
     tenant: Tenant_A

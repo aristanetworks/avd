@@ -27,25 +27,27 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         for link in self._underlay_links:
             # common values
+            description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=link["interface"],
+                    link_type=link["type"],
+                    peer=link["peer"],
+                    peer_interface=link["peer_interface"],
+                )
+            )
             ethernet_interface = {
                 "name": link["interface"],
                 "peer": link["peer"],
                 "peer_interface": link["peer_interface"],
                 "peer_type": link["peer_type"],
-                "description": self.shared_utils.interface_descriptions.underlay_ethernet_interface(
-                    InterfaceDescriptionData(
-                        shared_utils=self.shared_utils,
-                        interface=link["interface"],
-                        link_type=link["type"],
-                        peer=link["peer"],
-                        peer_interface=link["peer_interface"],
-                    )
-                ),
+                "description": description,
                 "speed": link.get("speed"),
                 "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
             }
 
             # L3 interface
+            # Used for p2p uplinks as well as main interface for p2p-vrfs.
             if link["type"] == "underlay_p2p":
                 ethernet_interface.update(
                     {
@@ -143,6 +145,47 @@ class EthernetInterfacesMixin(UtilsMixin):
                 context="Ethernet Interfaces defined for underlay",
                 context_keys=["name", "peer", "peer_interface"],
             )
+
+            # Adding subinterfaces for each VRF after the main interface.
+            if link["type"] == "underlay_p2p" and "subinterfaces" in link:
+                for subinterface in get(link, "subinterfaces", default=[]):
+                    description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                        InterfaceDescriptionData(
+                            shared_utils=self.shared_utils,
+                            interface=subinterface["interface"],
+                            link_type=link["type"],
+                            peer=link["peer"],
+                            peer_interface=subinterface["peer_interface"],
+                            vrf=subinterface["vrf"],
+                        )
+                    )
+                    ethernet_subinterface = {
+                        "name": subinterface["interface"],
+                        "peer": link["peer"],
+                        "peer_interface": subinterface["peer_interface"],
+                        "peer_type": link["peer_type"],
+                        "vrf": subinterface["vrf"],
+                        # TODO - for now reusing the encapsulation as it is hardcoded to the VRF ID which is used as
+                        # subinterface name
+                        "description": description,
+                        "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
+                        "type": "l3dot1q",
+                        "encapsulation_dot1q_vlan": subinterface["encapsulation_dot1q_vlan"],
+                        "ipv6_enable": subinterface.get("ipv6_enable"),
+                        "sflow": link.get("sflow"),
+                        "mtu": self.shared_utils.p2p_uplinks_mtu,
+                    }
+                    if subinterface.get("ip_address") is not None:
+                        ethernet_subinterface.update({"ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}"}),
+
+                    ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
+                    append_if_not_duplicate(
+                        list_of_dicts=ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=ethernet_subinterface,
+                        context="Ethernet sub-interfaces defined for underlay",
+                        context_keys=["name", "peer", "peer_interface"],
+                    )
 
         for l3_interface in self.shared_utils.l3_interfaces:
             # Ethernet interface

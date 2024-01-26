@@ -7,8 +7,7 @@ router_bgp:
     default:
       ipv4_unicast: false
   maximum_paths:
-    paths: 4
-    ecmp: 4
+    paths: 16
   updates:
     wait_install: true
   peer_groups:
@@ -304,6 +303,8 @@ router_path_selection:
     - name: INET
     - name: MPLS
       priority: 42
+router_traffic_engineering:
+  enabled: true
 stun:
   client:
     server_profiles:

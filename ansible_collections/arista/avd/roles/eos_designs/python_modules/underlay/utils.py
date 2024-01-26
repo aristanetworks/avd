@@ -84,6 +84,17 @@ class UtilsMixin:
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
                         "structured_config": get(uplink, "structured_config"),
                     }
+                    if (subinterfaces := get(uplink, "subinterfaces")) is not None:
+                        link["subinterfaces"] = [
+                            {
+                                **subinterface,
+                                "interface": subinterface["peer_interface"],
+                                "peer_interface": subinterface["interface"],
+                                "ip_address": subinterface.get("peer_ip_address"),
+                                "peer_ip_address": subinterface.get("ip_address"),
+                            }
+                            for subinterface in subinterfaces
+                        ]
                     underlay_links.append(strip_empties_from_dict(link))
 
         return natural_sort(underlay_links, "interface")

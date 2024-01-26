@@ -444,9 +444,8 @@
       "title": "BGP Distance"
     },
     "bgp_ecmp": {
-      "description": "Maximum ECMP for BGP multi-path.",
+      "description": "Maximum ECMP for BGP multi-path.\nThe default value is 4 except for WAN Routers where the default value is unset (falls back to EOS default).",
       "type": "integer",
-      "default": 4,
       "title": "BGP ECMP"
     },
     "bgp_graceful_restart": {
@@ -478,9 +477,8 @@
       "title": "BGP Graceful Restart"
     },
     "bgp_maximum_paths": {
-      "description": "Maximum Paths for BGP multi-path.",
+      "description": "Maximum Paths for BGP multi-path.\nThe default value is 4 except for WAN Routers where the default value is 16.",
       "type": "integer",
-      "default": 4,
       "minimum": 1,
       "maximum": 512,
       "title": "BGP Maximum Paths"
@@ -4093,6 +4091,13 @@
       "type": "string",
       "description": "cvp_token_file is the path to the token file on the switch.\nIf not set the default locations for on-premise or CVaaS will be used.\nSee cvp_ingestauth_key for details.",
       "title": "CVP Token File"
+    },
+    "data_plane_cpu_allocation_max": {
+      "type": "integer",
+      "description": "Set the maximum number of CPU used for the data plane.\nThis setting is useful on virtual Route Reflectors and Pathfinders node.",
+      "minimum": 1,
+      "maximum": 128,
+      "title": "Data Plane CPU Allocation Max"
     },
     "dc_name": {
       "description": "POD Name is used in:\n- Fabric Documentation (Optional, falls back to fabric_name)\n- SNMP Location: `snmp_settings.location` (Optional)\n- HER Overlay DC scoped flood lists: `overlay_her_flood_list_scope: dc` (Required)\n",
@@ -13390,6 +13395,11 @@
       ],
       "title": "Network Services Keys"
     },
+    "new_network_services_bgp_vrf_config": {
+      "type": "boolean",
+      "description": "Set this key to `true` in the node type to generate full BGP configuration\nfor network services even when `evpn` is not in the address families\n(`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).\n\nThis is `false` by default except if `uplink_type` is set to `p2p-vrfs`, then the default value is `true`.\n\nThis may introduce breaking changes to your configuration.",
+      "title": "New Network Services BGP VRF Config"
+    },
     "node_type_keys": {
       "type": "array",
       "description": "Define Node Type Keys, to specify the properties of each node type in the fabric.\nThis allows for complete customization of the fabric layout and functionality.\n`node_type_keys` should be defined in top level group_var for the fabric.\nThe default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.\n",
@@ -13556,10 +13566,11 @@
             "type": "string",
             "enum": [
               "p2p",
-              "port-channel"
+              "port-channel",
+              "p2p-vrfs"
             ],
             "default": "p2p",
-            "description": "`uplink_type` must be \"p2p\" if `vtep` or `underlay_router` is true.",
+            "description": "`uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router` is true.\n\nFor `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF\nin `network_services` present on both the uplink and the downlink switch.\nThe subinterface ID is the `vrf_id`.\n'underlay_router' and 'network_services.l3' must be set to true.\nVRF `default` is always configured on the physical interface using the underlay routing protocol.\nAll subinterfaces use the same IP address as the physical interface.\nMulticast is not supported.\nOnly BGP is supported for subinterfaces.",
             "title": "Uplink Type"
           },
           "vtep": {

@@ -132,11 +132,13 @@ keys:
   bgp_ecmp:
     documentation_options:
       table: bgp-settings
-    description: Maximum ECMP for BGP multi-path.
+    description: 'Maximum ECMP for BGP multi-path.
+
+      The default value is 4 except for WAN Routers where the default value is unset
+      (falls back to EOS default).'
     type: int
     convert_types:
     - str
-    default: 4
   bgp_graceful_restart:
     documentation_options:
       table: bgp-settings
@@ -167,11 +169,12 @@ keys:
   bgp_maximum_paths:
     documentation_options:
       table: bgp-settings
-    description: Maximum Paths for BGP multi-path.
+    description: 'Maximum Paths for BGP multi-path.
+
+      The default value is 4 except for WAN Routers where the default value is 16.'
     type: int
     convert_types:
     - str
-    default: 4
     min: 1
     max: 512
   bgp_mesh_pes:
@@ -664,6 +667,14 @@ keys:
       If not set the default locations for on-premise or CVaaS will be used.
 
       See cvp_ingestauth_key for details.'
+  data_plane_cpu_allocation_max:
+    documentation_options:
+      table: system-settings
+    type: int
+    $ref: eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max
+    description: 'Set the maximum number of CPU used for the data plane.
+
+      This setting is useful on virtual Route Reflectors and Pathfinders node.'
   dc_name:
     documentation_options:
       table: fabric-topology
@@ -1535,6 +1546,20 @@ keys:
           type: str
     default:
     - name: tenants
+  new_network_services_bgp_vrf_config:
+    type: bool
+    description: 'Set this key to `true` in the node type to generate full BGP configuration
+
+      for network services even when `evpn` is not in the address families
+
+      (`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).
+
+
+      This is `false` by default except if `uplink_type` is set to `p2p-vrfs`, then
+      the default value is `true`.
+
+
+      This may introduce breaking changes to your configuration.'
   node_type_keys:
     type: list
     description: 'Define Node Type Keys, to specify the properties of each node type
@@ -1723,9 +1748,29 @@ keys:
           valid_values:
           - p2p
           - port-channel
+          - p2p-vrfs
           default: p2p
-          description: '`uplink_type` must be "p2p" if `vtep` or `underlay_router`
-            is true.'
+          description: '`uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router`
+            is true.
+
+
+            For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface
+            for each VRF
+
+            in `network_services` present on both the uplink and the downlink switch.
+
+            The subinterface ID is the `vrf_id`.
+
+            ''underlay_router'' and ''network_services.l3'' must be set to true.
+
+            VRF `default` is always configured on the physical interface using the
+            underlay routing protocol.
+
+            All subinterfaces use the same IP address as the physical interface.
+
+            Multicast is not supported.
+
+            Only BGP is supported for subinterfaces.'
         vtep:
           type: bool
           default: false

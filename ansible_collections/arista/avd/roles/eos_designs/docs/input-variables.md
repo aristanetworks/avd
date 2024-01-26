@@ -322,6 +322,9 @@ the values are not part of the officially supported data models, and may change 
 
 ### Context for interface_descriptions templates
 
+!!! warning  "Caveat"
+    In AVD 4.x, it is not possible to completely overwrite the description of the subinterfaces when `uplink_type` is set to `p2p-vrfs`. The string `_vrf_<VRF>` is always appended to the description.
+
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
 underlay_ethernet_interfaces:
@@ -1088,6 +1091,10 @@ The default available keys is `tenants`.
 
 --8<--
 roles/eos_designs/docs/tables/network-services.md
+--8<--
+
+--8<--
+roles/eos_designs/docs/tables/new-network-services-bgp-vrf-config.md
 --8<--
 
 #### Network services VRFs configuration

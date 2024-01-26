@@ -7,8 +7,7 @@ router_bgp:
     default:
       ipv4_unicast: false
   maximum_paths:
-    paths: 4
-    ecmp: 4
+    paths: 16
   updates:
     wait_install: true
   peer_groups:
@@ -238,6 +237,8 @@ router_path_selection:
   - name: LB-PROD-AVT-POLICY-DEFAULT
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+router_traffic_engineering:
+  enabled: true
 application_traffic_recognition:
   application_profiles:
   - name: VOICE
