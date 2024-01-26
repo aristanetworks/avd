@@ -7413,6 +7413,12 @@
             "^_.+$": {}
           },
           "title": "Key Controller"
+        },
+        "hardware_encryption_disabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable hardware encryption.\nA SFE restart is needed for this change to take effect.",
+          "title": "Hardware Encryption Disabled"
         }
       },
       "additionalProperties": false,

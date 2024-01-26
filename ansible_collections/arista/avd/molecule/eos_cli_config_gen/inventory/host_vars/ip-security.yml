@@ -41,3 +41,4 @@ ip_security:
       mode: tunnel
   key_controller:
     profile: Profile-1
+  hardware_encryption_disabled: true

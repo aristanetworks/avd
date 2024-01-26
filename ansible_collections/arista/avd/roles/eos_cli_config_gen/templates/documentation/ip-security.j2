@@ -7,6 +7,10 @@
 {% if ip_security is arista.avd.defined %}
 
 ## IP Security
+{%     if ip_security.hardware_encryption_disabled is arista.avd.defined(true) %}
+
+- Hardware encryption is disabled
+{%     endif %}
 {%     if ip_security.ike_policies is arista.avd.defined %}
 
 ### IKE policies
