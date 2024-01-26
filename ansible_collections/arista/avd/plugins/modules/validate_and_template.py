@@ -78,7 +78,7 @@ options:
   cprofile_file:
     description:
       - Filename for storing cprofile data used to debug performance issues.
-      - Running cprofile will slow down performance in it self, so only set this while troubleshooting.
+      - Running cprofile will slow down performance in itself, so only set this while troubleshooting.
     required: false
     type: str
 """
