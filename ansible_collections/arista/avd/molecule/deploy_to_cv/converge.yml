@@ -15,18 +15,18 @@
     intended_tag_device: s1-leaf1
     intended_tags: "{{ lookup('file', structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
 
-    ws_name: avd-static-studio-36
+    ws_name: avd-static-studio-38
     ws_description: sample description
     ws_req_state: submitted
     ws_force: true
 
     # TODO: cc_id is not getting set to anything other than Workspace-<ws_nane>
-    cc_id: Workspace-avd-static-studio-36
+    cc_id: Workspace-avd-static-studio-38
     cc_requested_state: running
-    cc_name: cc_avd_studio-36
+    cc_name: cc_avd_studio-38
     cc_desctiption: sample description
 
-  # TODO: change cc stage to `running`, get CC state from cvp and assert
+  # TODO: get end state device and assert state
   tasks:
     - name: Test = Provision CVP with AVD configuration
       run_once: true
@@ -90,6 +90,7 @@
           - item.0.value == item.1.value
       loop: "{{ CVP_RESULTS.deployed_device_tags | zip(CVP_RESULTS.device_tags) | list }}"
 
+    # WS asserts
     - name: get workspace information
       delegate_to: localhost
       run_once: true
@@ -131,11 +132,6 @@
       until: CC_INFO.json[0].value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
       retries: 5
       delay: 30
-
-    - name: 'Display CC result'
-      run_once: true
-      debug:
-        msg: '{{ CC_INFO.json[0].value.status }}'
 
     - name: 'Set configlets facts'
       run_once: true
@@ -181,53 +177,39 @@
             deviceId: "{{ intended_tag_device }}"
       loop:
         "{{ intended_tags.metadata.cv_tags.device_tags }}"
-      ignore_errors: yes
       register: designed_tags
 
-    - name: 'Assert designed tags'
-      run_once: true
-      ansible.builtin.assert:
-        that:
-          - item.failed == false
-      loop:
-        '{{ designed_tags.results }}'
+    # - name: 'Assert designed tags'
+    #   run_once: true
+    #   ansible.builtin.assert:
+    #     that:
+    #       - item.failed == false
+    #   loop:
+    #     '{{ designed_tags.results }}'
 
     # # XXX: Assuming that there is only one interfaceTag per port
-    # - name: Get and verify Interface Tag information
-    #   delegate_to: localhost
-    #   run_once: true
-    #   ansible.builtin.uri:
-    #     # url: '{{ tag_url }}'
-    #     url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
-    #     return_content: true
-    #     validate_certs: false
-    #     headers:
-    #       Cookie: "access_token={{ token }}"
-    #     method: POST
-    #     body_format: json
-    #     body:
-    #       key:
-    #         # workspaceId: '{{ ws_name }}'
-    #         workspaceId: avd-static-studio-36
-    #         elementType: 2
-    #         # label: "{{ item.tags[0].name }}"
-    #         label: Role
-    #         # value: "{{ item.tags[0].value }}"
-    #         value: wan
-    #         # deviceId: "{{ intended_tag_device }}"
-    #         deviceId: s1-leaf1
-    #         # interfaceId:  "{{ item.interface }}"
-    #         interfaceId:  Ethernet1
-
-    #   # loop:
-    #   #   "{{ intended_tags.metadata.cv_tags.interface_tags }}"
-    #   ignore_errors: yes
-    #   register: designed_tags
-
-    # - name: 'Display intended tags'
-    #   run_once: true
-    #   debug:
-    #     msg: '{{ designed_tags }}'
+    - name: Get and verify Interface Tag information
+      delegate_to: localhost
+      run_once: true
+      ansible.builtin.uri:
+        url: '{{ tag_url }}'
+        return_content: true
+        validate_certs: false
+        headers:
+          Cookie: "access_token={{ token }}"
+        method: POST
+        body_format: json
+        body:
+          key:
+            workspaceId: '{{ ws_name }}'
+            elementType: 2
+            label: "{{ item.tags[0].name }}"
+            value: "{{ item.tags[0].value }}"
+            deviceId: "{{ intended_tag_device }}"
+            interfaceId:  "{{ item.interface }}"
+      loop:
+        "{{ intended_tags.metadata.cv_tags.interface_tags }}"
+      register: designed_tags
 
     # - name: 'Assert designed interface tags'
     #   run_once: true
