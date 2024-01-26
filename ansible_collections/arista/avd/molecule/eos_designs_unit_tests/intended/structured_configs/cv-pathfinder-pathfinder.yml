@@ -299,6 +299,8 @@ router_path_selection:
     - name: INET
     - name: MPLS
       priority: 2
+router_traffic_engineering:
+  enabled: true
 stun:
   server:
     local_interfaces:

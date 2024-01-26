@@ -238,6 +238,8 @@ router_path_selection:
   - name: LB-PROD-AVT-POLICY-DEFAULT
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+router_traffic_engineering:
+  enabled: true
 application_traffic_recognition:
   application_profiles:
   - name: VOICE
