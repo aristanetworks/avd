@@ -3,9 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 if TYPE_CHECKING:
     from .avdstructuredconfig import AvdStructuredConfigMetadata
@@ -114,9 +117,6 @@ class CvPathfinderMixin:
             for region in regions
         ]
 
-    def _metadata_vrfs(self: AvdStructuredConfigMetadata) -> list:
-        return []  # TODO
-
     def _metadata_pathfinder_vtep_ips(self: AvdStructuredConfigMetadata) -> list:
         return [
             {
@@ -124,3 +124,69 @@ class CvPathfinderMixin:
             }
             for wan_route_server in self.shared_utils.filtered_wan_route_servers.values()
         ]
+
+    def _metadata_vrfs(self: AvdStructuredConfigMetadata) -> list:
+        """
+        Extracting metadata for VRFs by parsing the generated structured config
+        and flatten it a bit (like hiding load-balance policies)
+        """
+        if (avt_vrfs := get(self._hostvars, "router_adaptive_virtual_topology.vrfs")) is None:
+            return []
+
+        if (load_balance_policies := get(self._hostvars, "router_path_selection.load_balance_policies")) is None:
+            return []
+
+        return [
+            {
+                "name": vrf["name"],
+                "vni": self._get_vni_for_vrf_name(vrf["name"]),
+                "avts": [
+                    {
+                        "constraints": {
+                            "jitter": lb_policy.get("jitter"),
+                            "latency": lb_policy.get("latency"),
+                            "lossrate": float(lb_policy["lossrate"]) if "lossrate" in lb_policy else None,
+                        },
+                        "description": "",  # TODO: Not sure we have this field anywhere
+                        "id": profile["id"],
+                        "name": profile["name"],
+                        "pathgroups": [
+                            {
+                                "name": pathgroup["name"],
+                                "preference": "alternate" if pathgroup.get("priority", 1) > 1 else "preferred",
+                            }
+                            for pathgroup in lb_policy["path_groups"]
+                        ],
+                    }
+                    for profile in vrf["profiles"]
+                    for lb_policy in [get_item(load_balance_policies, "name", f"LB-{profile['name']}", required=True)]
+                ],
+            }
+            for vrf in avt_vrfs
+        ]
+
+    @cached_property
+    def _all_vrfs_from_all_tenants(self: AvdStructuredConfigMetadata) -> list[dict]:
+        """
+        Unfiltered list of VRFs found under tenants.
+        Used to find VNI for each VRF used in cv_pathfinder.
+
+        We cannot use filtered_tenants since pathfinders do not necessarily have all VRFs defined in the policies.
+
+        Potential issue with this is if some VRFs are defined multiple times with different information.
+        """
+        all_vrfs = [
+            vrf
+            for network_services_key in self.shared_utils.network_services_keys
+            for tenant in convert_dicts(get(self._hostvars, network_services_key["name"]), "name")
+            for vrf in tenant["vrfs"]
+        ]
+        # Add the default WAN VRF at the end. Will only be reached if default VRF was not defined in inputs
+        all_vrfs.append({"name": "default", "vrf_id": 1})
+        return all_vrfs
+
+    def _get_vni_for_vrf_name(self: AvdStructuredConfigMetadata, vrf_name: str):
+        if (vrf := get_item(self._all_vrfs_from_all_tenants, "name", vrf_name)) is None:
+            raise AristaAvdError(f"Unable to find VNI for VRF {vrf_name} during generation of cv_pathfinder metadata.")
+
+        return self.shared_utils.get_vrf_vni(vrf)

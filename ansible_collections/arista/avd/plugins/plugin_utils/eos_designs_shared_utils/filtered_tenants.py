@@ -352,13 +352,21 @@ class FilteredTenantsMixin:
             return []
         return [int(id) for id in range_expand(endpoint_vlans)]
 
-    def get_vrf_id(self: SharedUtils, vrf, required: bool = True) -> int | None:
+    @staticmethod
+    def get_vrf_id(vrf, required: bool = True) -> int | None:
         vrf_id = default(vrf.get("vrf_id"), vrf.get("vrf_vni"))
         if vrf_id is None:
             if required:
                 raise AristaAvdMissingVariableError(f"'vrf_id' or 'vrf_vni' for VRF '{vrf['name']} must be set.")
             return None
         return int(vrf_id)
+
+    @staticmethod
+    def get_vrf_vni(vrf: dict) -> int:
+        vrf_vni = default(vrf.get("vrf_vni"), vrf.get("vrf_id"))
+        if vrf_vni is None:
+            raise AristaAvdMissingVariableError(f"'vrf_vni' or 'vrf_id' for VRF '{vrf['name']} must be set.")
+        return int(vrf_vni)
 
     @cached_property
     def vrfs(self: SharedUtils) -> list:
