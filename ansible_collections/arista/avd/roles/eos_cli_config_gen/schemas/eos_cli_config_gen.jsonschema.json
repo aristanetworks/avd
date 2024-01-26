@@ -424,7 +424,7 @@
                   },
                   "default": {
                     "type": "string",
-                    "description": "Command authorization method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group tacacs+ group MYGROUP local\"",
+                    "description": "Command authorization method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group tacacs+ group MYGROUP local\"\n",
                     "title": "Default"
                   }
                 },
@@ -550,7 +550,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"deny ip any any\"",
+                  "description": "Action as string\nExample: \"deny ip any any\"\n",
                   "title": "Action"
                 }
               },
@@ -706,7 +706,7 @@
     },
     "aliases": {
       "type": "string",
-      "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
+      "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```\n",
       "title": "Aliases"
     },
     "application_traffic_recognition": {
@@ -1186,7 +1186,7 @@
         "quiet"
       ],
       "default": "debug",
-      "description": "Conversion Mode for AVD input data conversion.\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages",
+      "description": "Conversion Mode for AVD input data conversion.\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages\n",
       "title": "AVD Data Conversion Mode"
     },
     "avd_data_validation_mode": {
@@ -1199,7 +1199,7 @@
         "debug"
       ],
       "default": "warning",
-      "description": "Validation Mode for AVD input data validation.\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
+      "description": "Validation Mode for AVD input data validation.\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n",
       "title": "AVD Data Validation Mode"
     },
     "banners": {
@@ -1431,7 +1431,7 @@
           },
           "action": {
             "type": "string",
-            "description": "Action as string\nExample: \"permit GSHUT 65123:123\"",
+            "description": "Action as string\nExample: \"permit GSHUT 65123:123\"\n",
             "title": "Action"
           }
         },
@@ -1800,7 +1800,7 @@
         },
         "cvcompression": {
           "type": "string",
-          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\nThis key is deprecated. Support will be removed in AVD version v5.0.0.",
+          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\n\nThis key is deprecated. Support will be removed in AVD version v5.0.0.",
           "deprecated": true,
           "title": "Cvcompression"
         }
@@ -2294,7 +2294,7 @@
         },
         "key": {
           "type": "string",
-          "description": "Must be the hash of the password using the specified algorithm.\nBy default EOS salts the password, so the simplest is to generate the hash on an EOS device.",
+          "description": "Must be the hash of the password using the specified algorithm.\nBy default EOS salts the password, so the simplest is to generate the hash on an EOS device.\n",
           "title": "Key"
         }
       },
@@ -5061,7 +5061,7 @@
           "asynchronous": {
             "type": "boolean",
             "default": false,
-            "description": "Set the action to be non-blocking.",
+            "description": "Set the action to be non-blocking.\n",
             "title": "Asynchronous"
           }
         },
@@ -5566,7 +5566,7 @@
     "generate_default_config": {
       "type": "boolean",
       "default": true,
-      "description": "The `generate_default_config` knob allows to omit default EOS configuration.\nThis can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.\n\nThe following commands will be omitted when `generate_default_config` is set to `false`:\n\n- RANCID Content Type\n- Hostname\n- Default configuration for `aaa`\n- Default configuration for `enable password`\n- Transceiver qsfp default mode\n- End of configuration delimiter",
+      "description": "The `generate_default_config` knob allows to omit default EOS configuration.\nThis can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.\n\nThe following commands will be omitted when `generate_default_config` is set to `false`:\n\n- RANCID Content Type\n- Hostname\n- Default configuration for `aaa`\n- Default configuration for `enable password`\n- Transceiver qsfp default mode\n- End of configuration delimiter\n",
       "title": "Generate Default Config"
     },
     "generate_device_documentation": {
@@ -5817,7 +5817,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "description": "EOS CLI interface command\nExample: \"switchport mode access\""
+              "description": "EOS CLI interface command\nExample: \"switchport mode access\"\n"
             },
             "title": "Commands"
           }
@@ -6061,7 +6061,7 @@
                 },
                 "regexp": {
                   "type": "string",
-                  "description": "Regular Expression\nIf defined, a regex community-list will be configured",
+                  "description": "Regular Expression\nIf defined, a regex community-list will be configured\n",
                   "title": "RegExp"
                 }
               },
@@ -6214,7 +6214,7 @@
                 },
                 "extcommunities": {
                   "type": "string",
-                  "description": "Communities as string\nExample: \"65000:65000\"",
+                  "description": "Communities as string\nExample: \"65000:65000\"\n",
                   "title": "Extcommunities"
                 }
               },
@@ -6513,7 +6513,7 @@
               },
               "proxy": {
                 "type": "boolean",
-                "description": "Global proxy settings should be enabled before enabling per-vlan",
+                "description": "Global proxy settings should be enabled before enabling per-vlan\n",
                 "title": "Proxy"
               }
             },
@@ -7504,7 +7504,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"deny ipv6 any any\"",
+                  "description": "Action as string\nExample: \"deny ipv6 any any\"\n",
                   "title": "Action"
                 }
               },
@@ -7601,7 +7601,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"permit 1b11:3a00:22b0:0082::/64 eq 128\"",
+                  "description": "Action as string\nExample: \"permit 1b11:3a00:22b0:0082::/64 eq 128\"\n",
                   "title": "Action"
                 }
               },
@@ -7654,7 +7654,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"deny ipv6 any any\"",
+                  "description": "Action as string\nExample: \"deny ipv6 any any\"\n",
                   "title": "Action"
                 }
               },
@@ -9014,7 +9014,7 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "description": "Name of Interface Group"
+                      "description": "Name of Interface Group\n"
                     },
                     "title": "Interface Groups"
                   }
@@ -9277,7 +9277,7 @@
         },
         "octa": {
           "type": "object",
-          "description": "These should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>provider</samp> instead.",
+          "description": "These should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>provider</samp> instead.",
           "deprecated": true,
           "title": "Octa"
         }
@@ -11330,7 +11330,7 @@
                 },
                 "match": {
                   "type": "string",
-                  "description": "Match as string\nExample: \"as-range 1-100 result accept\"",
+                  "description": "Match as string\nExample: \"as-range 1-100 result accept\"\n",
                   "title": "Match"
                 }
               },
@@ -13391,7 +13391,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"permit 10.255.0.0/27 eq 32\"",
+                  "description": "Action as string\nExample: \"permit 10.255.0.0/27 eq 32\"\n",
                   "title": "Action"
                 }
               },
@@ -13458,7 +13458,7 @@
             },
             "override_action_drop": {
               "type": "boolean",
-              "description": "Override configured action on stuck queue to drop.",
+              "description": "Override configured action on stuck queue to drop.\n",
               "title": "Override Action Drop"
             }
           },
@@ -14449,7 +14449,7 @@
                     },
                     "no_drop": {
                       "type": "boolean",
-                      "description": "Enable Priority Flow Control frames on this queue",
+                      "description": "Enable Priority Flow Control frames on this queue\n",
                       "title": "No Drop"
                     }
                   },
@@ -23665,7 +23665,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"deny ip any any\"",
+                  "description": "Action as string\nExample: \"deny ip any any\"\n",
                   "title": "Action"
                 }
               },
@@ -24262,7 +24262,7 @@
               },
               "source": {
                 "type": "string",
-                "description": "TCAM profile local source path. Used to read the TCAM profile from a local path existing on the device.",
+                "description": "TCAM profile local source path. Used to read the TCAM profile from a local path existing on the device.\n",
                 "title": "Source"
               }
             },
@@ -24748,7 +24748,7 @@
     "transceiver_qsfp_default_mode_4x10": {
       "type": "boolean",
       "default": true,
-      "description": "On all front panel ports which support this feature, the following global configuration command changes the QSFP mode from 40G to 4x10G (default). When set to false the command reverts the default QSFP mode back to 40G.",
+      "description": "On all front panel ports which support this feature, the following global configuration command changes the QSFP mode from 40G to 4x10G (default). When set to false the command reverts the default QSFP mode back to 40G.\n",
       "title": "Transceiver Qsfp Default Mode 4X10"
     },
     "tunnel_interfaces": {
@@ -24864,7 +24864,7 @@
           },
           "eos_cli": {
             "type": "string",
-            "description": "Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.",
+            "description": "Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.\n",
             "title": "EOS CLI"
           }
         },
@@ -26463,7 +26463,7 @@
             },
             "eos_cli": {
               "type": "string",
-              "description": "Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.",
+              "description": "Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.\n",
               "title": "EOS CLI"
             }
           },
