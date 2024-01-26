@@ -444,9 +444,8 @@
       "title": "BGP Distance"
     },
     "bgp_ecmp": {
-      "description": "Maximum ECMP for BGP multi-path.",
+      "description": "Maximum ECMP for BGP multi-path.\nThe default value is 4 except for WAN Routers where the default value is unset (falls back to EOS default).",
       "type": "integer",
-      "default": 4,
       "title": "BGP ECMP"
     },
     "bgp_graceful_restart": {
@@ -478,9 +477,8 @@
       "title": "BGP Graceful Restart"
     },
     "bgp_maximum_paths": {
-      "description": "Maximum Paths for BGP multi-path.",
+      "description": "Maximum Paths for BGP multi-path.\nThe default value is 4 except for WAN Routers where the default value is 16.",
       "type": "integer",
-      "default": 4,
       "minimum": 1,
       "maximum": 512,
       "title": "BGP Maximum Paths"

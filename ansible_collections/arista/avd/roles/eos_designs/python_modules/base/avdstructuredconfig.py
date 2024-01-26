@@ -59,6 +59,14 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         )
         platform_bgp_update_wait_install = get(self.shared_utils.platform_settings, "feature_support.bgp_update_wait_install", default=True) is True
 
+        if self.shared_utils.wan_role is not None:
+            # Special defaults for WAN routers
+            default_maximum_paths = 16
+            default_ecmp = None
+        else:
+            default_maximum_paths = 4
+            default_ecmp = 4
+
         router_bgp = {
             "as": self.shared_utils.bgp_as,
             "router_id": self.shared_utils.router_id,
@@ -70,8 +78,8 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                 },
             },
             "maximum_paths": {
-                "paths": get(self._hostvars, "bgp_maximum_paths", default=4),
-                "ecmp": get(self._hostvars, "bgp_ecmp", default=4),
+                "paths": get(self._hostvars, "bgp_maximum_paths", default=default_maximum_paths),
+                "ecmp": get(self._hostvars, "bgp_ecmp", default=default_ecmp),
             },
         }
         if get(self._hostvars, "bgp_update_wait_for_convergence", default=False) is True and platform_bgp_update_wait_for_convergence:

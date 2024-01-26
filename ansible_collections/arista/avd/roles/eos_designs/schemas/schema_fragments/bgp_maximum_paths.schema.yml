@@ -9,10 +9,11 @@ keys:
   bgp_maximum_paths:
     documentation_options:
       table: bgp-settings
-    description: Maximum Paths for BGP multi-path.
+    description: |-
+      Maximum Paths for BGP multi-path.
+      The default value is 4 except for WAN Routers where the default value is 16.
     type: int
     convert_types:
       - str
-    default: 4
     min: 1
     max: 512
