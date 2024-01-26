@@ -73,4 +73,7 @@ ip security
       profile {{ ip_security.key_controller.profile }}
 {%         endif %}
 {%     endif %}
+{%     if ip_security.hardware_encryption_disabled is arista.avd.defined(true) %}
+   hardware encryption disabled
+{%     endif %}
 {% endif %}

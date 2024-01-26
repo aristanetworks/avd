@@ -33,6 +33,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ip_security.profiles.[].mode") | String |  |  | Valid Values:<br>- <code>transport</code><br>- <code>tunnel</code> | Ipsec mode type. |
     | [<samp>&nbsp;&nbsp;key_controller</samp>](## "ip_security.key_controller") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "ip_security.key_controller.profile") | String |  |  |  | IPsec profile name to use. |
+    | [<samp>&nbsp;&nbsp;hardware_encryption_disabled</samp>](## "ip_security.hardware_encryption_disabled") | Boolean |  | `False` |  | Disable hardware encryption.<br>An SFE restart is needed for this change to take effect. |
 
 === "YAML"
 
@@ -108,4 +109,8 @@
 
         # IPsec profile name to use.
         profile: <str>
+
+      # Disable hardware encryption.
+      # An SFE restart is needed for this change to take effect.
+      hardware_encryption_disabled: <bool; default=False>
     ```

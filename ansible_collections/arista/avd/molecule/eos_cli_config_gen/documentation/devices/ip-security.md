@@ -41,6 +41,8 @@ interface Management1
 
 ## IP Security
 
+- Hardware encryption is disabled
+
 ### IKE policies
 
 | Policy name | IKE lifetime | Encryption | DH group | Local ID |
@@ -112,4 +114,5 @@ ip security
    !
    key controller
       profile Profile-1
+   hardware encryption disabled
 ```
