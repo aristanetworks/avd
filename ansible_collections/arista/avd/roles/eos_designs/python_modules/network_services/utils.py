@@ -6,15 +6,12 @@ from __future__ import annotations
 import ipaddress
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item
 
-from .utils_filtered_tenants import UtilsFilteredTenantsMixin
 
-
-class UtilsMixin(UtilsFilteredTenantsMixin):
+class UtilsMixin:
     """
     Mixin Class with internal functions.
     Class should only be used as Mixin to a AvdStructuredConfig class
@@ -37,19 +34,8 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return get(self.shared_utils.trunk_groups, "uplink.name", required=True)
 
     @cached_property
-    def _endpoint_trunk_groups(self) -> set:
-        return set(get(self._hostvars, "switch.endpoint_trunk_groups", default=[]))
-
-    @cached_property
     def _local_endpoint_trunk_groups(self) -> set:
         return set(get(self._hostvars, "switch.local_endpoint_trunk_groups", default=[]))
-
-    @cached_property
-    def _endpoint_vlans(self) -> list:
-        endpoint_vlans = get(self._hostvars, "switch.endpoint_vlans", default="")
-        if not endpoint_vlans:
-            return []
-        return [int(id) for id in range_expand(endpoint_vlans)]
 
     @cached_property
     def _vrf_default_evpn(self) -> bool:
@@ -59,7 +45,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         if not (self.shared_utils.network_services_l3 and self.shared_utils.overlay_vtep and self.shared_utils.overlay_evpn):
             return False
 
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
                 continue
 
@@ -76,7 +62,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         Return list of ipv4 subnets in VRF "default"
         """
         subnets = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
                 continue
 
@@ -112,7 +98,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         """
         vrf_default_ipv4_static_routes = set()
         vrf_default_redistribute_static = True
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
                 continue
 
@@ -200,10 +186,6 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
                     return True
 
         return False
-
-    @cached_property
-    def _evpn_multicast(self) -> bool:
-        return get(self._hostvars, "switch.evpn_multicast") is True
 
     @cached_property
     def _wan_control_plane_profile(self) -> str:
@@ -354,12 +336,10 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of mode
         """
         wan_vrfs = []
-        # TODO replace this with VRFs fact once it has been implemented
-        network_services_vrfs = {vrf["name"] for tenant in self._filtered_tenants for vrf in tenant["vrfs"]}
 
         for avt_vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
             vrf_name = avt_vrf["name"]
-            if vrf_name in network_services_vrfs or self.shared_utils.wan_role == "server":
+            if vrf_name in self.shared_utils.vrfs or self.shared_utils.wan_role == "server":
                 # TODO check that the policy exists or raise
                 wan_vrf = {
                     "name": vrf_name,

@@ -1,0 +1,56 @@
+hostname: UPLINK_P2P_VRFS_TESTS_L2LEAF1
+is_deployed: true
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+  peer_interface: Ethernet51
+  peer_type: l3leaf
+  description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet51
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 1
+    mode: active
+- name: Ethernet2
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+  peer_interface: Ethernet52
+  peer_type: l3leaf
+  description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet52
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 1
+    mode: active
+- name: Ethernet10
+  peer_type: network_port
+  shutdown: false
+  type: switched
+  vlans: '66'
+port_channel_interfaces:
+- name: Port-Channel1
+  description: UPLINK_P2P_VRFS_TESTS_LEAF1_Po51
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: '66'
+vlans:
+- id: 66
+  name: TEST-L2VLAN-ATTRACTION
+  tenant: TenantC
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  platform: vEOS-LAB

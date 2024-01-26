@@ -163,7 +163,7 @@ class OverlayMixin:
             self.overlay_routing_protocol in ["ebgp", "ibgp", "her", "cvx"]
             and (self.network_services_l2 or self.network_services_l3)
             and self.underlay_router
-            and self.uplink_type == "p2p"
+            and self.uplink_type in ["p2p", "p2p-vrfs"]
             and self.vtep
         )
 

@@ -212,7 +212,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             return None
 
         router_multicast = {"ipv4": {"routing": True}}
-        if get(self._hostvars, "switch.evpn_multicast") is True:
+        if self.shared_utils.evpn_multicast:
             router_multicast["ipv4"]["software_forwarding"] = "sfe"
 
         return router_multicast
@@ -527,7 +527,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             platform["sand"] = {"lag": {"hardware_only": lag_hardware_only}}
 
         trident_forwarding_table_partition = get(self.shared_utils.platform_settings, "trident_forwarding_table_partition")
-        if trident_forwarding_table_partition is not None and get(self._hostvars, "switch.evpn_multicast") is True:
+        if trident_forwarding_table_partition is not None and self.shared_utils.evpn_multicast:
             platform["trident"] = {"forwarding_table_partition": trident_forwarding_table_partition}
 
         if (cpu_max_allocation := get(self._hostvars, "data_plane_cpu_allocation_max")) is not None:

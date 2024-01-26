@@ -28,7 +28,7 @@ class PatchPanelMixin(UtilsMixin):
             return None
 
         patches = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             if "point_to_point_services" not in tenant:
                 continue
 

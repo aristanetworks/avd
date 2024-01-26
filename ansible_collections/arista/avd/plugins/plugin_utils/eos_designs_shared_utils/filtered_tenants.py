@@ -4,53 +4,53 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.default import default
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item, unique
 
+if TYPE_CHECKING:
+    from .shared_utils import SharedUtils
 
-class UtilsFilteredTenantsMixin(object):
+
+class FilteredTenantsMixin:
     """
-    Utils Mixin Class with internal functions.
-    Class should only be used as Mixin to the UtilsMixin class
-
-    These filtered functions should not be moved to shared_utils, since expand a lot more data than needed
-    in EosDesignsFacts.
+    Mixin Class providing a subset of SharedUtils
+    Class should only be used as Mixin to the SharedUtils class
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
-
-    # Set type hints for Attributes of the main class as needed
-    _hostvars: dict
-    shared_utils: SharedUtils
 
     @cached_property
-    def _filtered_tenants(self) -> list[dict]:
+    def filtered_tenants(self: SharedUtils) -> list[dict]:
         """
-        Return sorted tenants list from all network_services_keys and filtered based on switch.filter_tenants
+        Return sorted tenants list from all network_services_keys and filtered based on filter_tenants.
         Keys of Tenant data model will be converted to lists.
         All sub data models like vrfs and l2vlans are also converted and filtered.
         """
+        if not self.any_network_services:
+            return []
+
         filtered_tenants = []
-        filter_tenants = self.shared_utils.filter_tenants
-        for network_services_key in self.shared_utils.network_services_keys:
-            tenants = convert_dicts(get(self._hostvars, network_services_key["name"]), "name")
+        filter_tenants = self.filter_tenants
+        for network_services_key in self.network_services_keys:
+            tenants = convert_dicts(get(self.hostvars, network_services_key["name"]), "name")
             for tenant in tenants:
                 if tenant["name"] in filter_tenants or "all" in filter_tenants:
                     filtered_tenants.append(
                         {
                             **tenant,
-                            "l2vlans": self._filtered_l2vlans(tenant),
-                            "vrfs": self._filtered_vrfs(tenant),
+                            "l2vlans": self.filtered_l2vlans(tenant),
+                            "vrfs": self.filtered_vrfs(tenant),
                         }
                     )
 
         no_vrf_default = all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"])
-        if self.shared_utils.wan_role is not None and no_vrf_default:
+        if self.wan_role is not None and no_vrf_default:
             filtered_tenants.append(
                 {
                     "name": "WAN_DEFAULT",
@@ -70,14 +70,14 @@ class UtilsFilteredTenantsMixin(object):
                     "l2vlans": [],
                 }
             )
-        elif self.shared_utils.wan_role:
+        elif self.wan_role:
             # It is enough to check only the first occurence of default VRF as some other piece of code
             # checks that if the VRF is in multiple tenants, the configuration is consistent.
             for tenant in filtered_tenants:
                 if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
                     continue
                 if "evpn" in vrf_default.get("address_families", ["evpn"]):
-                    if self.shared_utils.underlay_filter_peer_as:
+                    if self.underlay_filter_peer_as:
                         raise AristaAvdError(
                             "WAN configuration requires EVPN to be enabled for VRF 'default'. Got 'address_families: {vrf_default['address_families']}."
                         )
@@ -85,7 +85,7 @@ class UtilsFilteredTenantsMixin(object):
 
         return natural_sort(filtered_tenants, "name")
 
-    def _filtered_l2vlans(self, tenant: dict) -> list[dict]:
+    def filtered_l2vlans(self: SharedUtils, tenant: dict) -> list[dict]:
         """
         Return sorted and filtered l2vlan list from given tenant.
         Filtering based on l2vlan tags.
@@ -98,53 +98,55 @@ class UtilsFilteredTenantsMixin(object):
             # Copy and set tenant key on all l2vlans
             {**l2vlan, "tenant": tenant["name"]}
             for l2vlan in l2vlans
-            if self._is_accepted_vlan(l2vlan)
-            and ("all" in self.shared_utils.filter_tags or set(l2vlan.get("tags", ["all"])).intersection(self.shared_utils.filter_tags))
+            if self.is_accepted_vlan(l2vlan) and ("all" in self.filter_tags or set(l2vlan.get("tags", ["all"])).intersection(self.filter_tags))
         ]
 
         return l2vlans
 
-    def _is_accepted_vlan(self, vlan: dict) -> bool:
+    def is_accepted_vlan(self: SharedUtils, vlan: dict) -> bool:
         """
         Check if vlan is in accepted_vlans list
         If filter.only_vlans_in_use is True also check if vlan id or trunk group is assigned to connected endpoint
         """
         vlan_id = int(vlan["id"])
 
-        if vlan_id not in self._accepted_vlans:
+        if vlan_id not in self.accepted_vlans:
             return False
 
-        if not self.shared_utils.filter_only_vlans_in_use:
+        if not self.filter_only_vlans_in_use:
             # No further filtering
             return True
 
-        if vlan_id in self._endpoint_vlans:
+        if vlan_id in self.endpoint_vlans:
             return True
 
-        if self.shared_utils.enable_trunk_groups and vlan.get("trunk_groups") and self._endpoint_trunk_groups.intersection(vlan["trunk_groups"]):
+        # Picking this up from facts so this would fail if accessed when shared_utils is run before facts
+        # TODO see if this can be optimized
+        endpoint_trunk_groups = set(self.get_switch_fact("endpoint_trunk_groups", required=False) or [])
+        if self.enable_trunk_groups and vlan.get("trunk_groups") and endpoint_trunk_groups.intersection(vlan["trunk_groups"]):
             return True
 
         return False
 
     @cached_property
-    def _accepted_vlans(self) -> list[int]:
+    def accepted_vlans(self: SharedUtils) -> list[int]:
         """
-        switch.vlans is a string representing a vlan range (ex. "1-200")
-        For l2 switches return intersection of switch.vlans and switch.vlans from uplink switches
-        For anything else return the expanded switch.vlans
+        The 'vlans' switch fact is a string representing a vlan range (ex. "1-200").
+        For l2 switches return intersection of vlans from this switch and vlans from uplink switches.
+        For anything else return the expanded vlans from this switch.
         """
-        switch_vlans = get(self._hostvars, "switch.vlans")
+        switch_vlans = self.get_switch_fact("vlans", required=False)
         if not switch_vlans:
             return []
         switch_vlans_list = range_expand(switch_vlans)
         accepted_vlans = [int(vlan) for vlan in switch_vlans_list]
-        if self.shared_utils.uplink_type != "port-channel":
+        if self.uplink_type != "port-channel":
             return accepted_vlans
 
-        uplink_switches = unique(self.shared_utils.uplink_switches)
-        uplink_switches = [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices]
+        uplink_switches = unique(self.uplink_switches)
+        uplink_switches = [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.all_fabric_devices]
         for uplink_switch in uplink_switches:
-            uplink_switch_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
+            uplink_switch_facts = self.get_peer_facts(uplink_switch, required=True)
             uplink_switch_vlans = uplink_switch_facts.get("vlans", [])
             uplink_switch_vlans_list = range_expand(uplink_switch_vlans)
             uplink_switch_vlans_list = [int(vlan) for vlan in uplink_switch_vlans_list]
@@ -152,7 +154,7 @@ class UtilsFilteredTenantsMixin(object):
 
         return accepted_vlans
 
-    def _filtered_vrfs(self, tenant: dict) -> list[dict]:
+    def filtered_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
         """
         Return sorted and filtered vrf list from given tenant.
         Filtering based on svi tags, l3interfaces and filter.always_include_vrfs_in_tenants.
@@ -160,7 +162,7 @@ class UtilsFilteredTenantsMixin(object):
         """
         filtered_vrfs = []
 
-        always_include_vrfs_in_tenants = get(self.shared_utils.switch_data_combined, "filter.always_include_vrfs_in_tenants", default=[])
+        always_include_vrfs_in_tenants = get(self.switch_data_combined, "filter.always_include_vrfs_in_tenants", default=[])
 
         vrfs: list[dict] = natural_sort(convert_dicts(tenant.get("vrfs", []), "name"), "name")
         for original_vrf in vrfs:
@@ -168,42 +170,36 @@ class UtilsFilteredTenantsMixin(object):
             vrf = {**original_vrf, "tenant": tenant["name"]}
 
             bgp_peers = natural_sort(convert_dicts(vrf.get("bgp_peers"), "ip_address"), "ip_address")
-            vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.shared_utils.hostname in bgp_peer.get("nodes", [])]
-            vrf["static_routes"] = [
-                route
-                for route in get(vrf, "static_routes", default=[])
-                if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
-            ]
+            vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.hostname in bgp_peer.get("nodes", [])]
+            vrf["static_routes"] = [route for route in get(vrf, "static_routes", default=[]) if self.hostname in get(route, "nodes", default=[self.hostname])]
             vrf["ipv6_static_routes"] = [
-                route
-                for route in get(vrf, "ipv6_static_routes", default=[])
-                if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
+                route for route in get(vrf, "ipv6_static_routes", default=[]) if self.hostname in get(route, "nodes", default=[self.hostname])
             ]
-            vrf["svis"] = self._filtered_svis(vrf)
+            vrf["svis"] = self.filtered_svis(vrf)
             vrf["l3_interfaces"] = [
                 l3_interface
                 for l3_interface in get(vrf, "l3_interfaces", default=[])
                 if (
-                    self.shared_utils.hostname in get(l3_interface, "nodes", default=[])
+                    self.hostname in get(l3_interface, "nodes", default=[])
                     and l3_interface.get("ip_addresses") is not None
                     and l3_interface.get("interfaces") is not None
                 )
             ]
-            vrf["loopbacks"] = [loopback for loopback in get(vrf, "loopbacks", default=[]) if self.shared_utils.hostname == get(loopback, "node")]
+            vrf["loopbacks"] = [loopback for loopback in get(vrf, "loopbacks", default=[]) if self.hostname == get(loopback, "node")]
 
-            if self.shared_utils.vtep is True:
+            if self.vtep is True:
                 evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
-                if evpn_l3_multicast_enabled is True and self._evpn_multicast is not True:
+                if evpn_l3_multicast_enabled is True and not self.evpn_multicast:
                     raise AristaAvdError(
                         f"'evpn_l3_multicast: true' under VRF {vrf['name']} or Tenant {tenant['name']}; this requires 'evpn_multicast' to also be set to true."
                     )
 
-                if self._evpn_multicast:
+                if self.evpn_multicast:
                     vrf["_evpn_l3_multicast_enabled"] = evpn_l3_multicast_enabled
 
                     rps = []
                     for rp_entry in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):
-                        if self.shared_utils.hostname in get(rp_entry, "nodes", default=[self.shared_utils.hostname]):
+                        if self.hostname in get(rp_entry, "nodes", default=[self.hostname]):
                             for rp_ip in get(
                                 rp_entry,
                                 "rps",
@@ -223,7 +219,7 @@ class UtilsFilteredTenantsMixin(object):
                         vrf["_pim_rp_addresses"] = rps
 
                     for evpn_peg in default(get(vrf, "evpn_l3_multicast.evpn_peg"), get(tenant, "evpn_l3_multicast.evpn_peg"), []):
-                        if self.shared_utils.hostname in evpn_peg.get("nodes", [self.shared_utils.hostname]) and rps:
+                        if self.hostname in evpn_peg.get("nodes", [self.hostname]) and rps:
                             vrf["_evpn_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
                             break
 
@@ -231,7 +227,7 @@ class UtilsFilteredTenantsMixin(object):
                 rt
                 for rt in get(vrf, "additional_route_targets", default=[])
                 if (
-                    self.shared_utils.hostname in get(rt, "nodes", default=[self.shared_utils.hostname])
+                    self.hostname in get(rt, "nodes", default=[self.hostname])
                     and rt.get("address_family") is not None
                     and rt.get("route_target") is not None
                     and rt.get("type") in ["import", "export"]
@@ -250,22 +246,22 @@ class UtilsFilteredTenantsMixin(object):
         return filtered_vrfs
 
     @cached_property
-    def _svi_profiles(self) -> list[dict]:
+    def svi_profiles(self: SharedUtils) -> list[dict]:
         """
         Return list of svi_profiles
 
         The key "nodes" is filtered to only contain one item with the relevant dict from "nodes" or {}
         """
-        svi_profiles = convert_dicts(get(self._hostvars, "svi_profiles", default=[]), "profile")
+        svi_profiles = convert_dicts(get(self.hostvars, "svi_profiles", default=[]), "profile")
         return [
             {
                 **svi_profile,
-                "nodes": [get_item(convert_dicts(svi_profile.get("nodes", []), "node"), "node", self.shared_utils.hostname, default={})],
+                "nodes": [get_item(convert_dicts(svi_profile.get("nodes", []), "node"), "node", self.hostname, default={})],
             }
             for svi_profile in svi_profiles
         ]
 
-    def _get_merged_svi_config(self, svi: dict) -> list[dict]:
+    def get_merged_svi_config(self: SharedUtils, svi: dict) -> list[dict]:
         """
         Return structured config for one svi after inheritance
 
@@ -284,14 +280,14 @@ class UtilsFilteredTenantsMixin(object):
 
         filtered_svi = {
             **svi,
-            "nodes": [get_item(convert_dicts(svi.get("nodes", []), "node"), "node", self.shared_utils.hostname, default={})],
+            "nodes": [get_item(convert_dicts(svi.get("nodes", []), "node"), "node", self.hostname, default={})],
         }
 
         if (svi_profile_name := filtered_svi.get("profile")) is not None:
-            svi_profile = get_item(self._svi_profiles, "profile", svi_profile_name, default={})
+            svi_profile = get_item(self.svi_profiles, "profile", svi_profile_name, default={})
 
         if (svi_parent_profile_name := svi_profile.get("parent_profile")) is not None:
-            svi_parent_profile = get_item(self._svi_profiles, "profile", svi_parent_profile_name, default={})
+            svi_parent_profile = get_item(self.svi_profiles, "profile", svi_parent_profile_name, default={})
 
         # deepmerge all levels of config - later vars override previous.
         # Using destructive_merge=False to avoid having references to profiles and other data.
@@ -328,23 +324,55 @@ class UtilsFilteredTenantsMixin(object):
         )
         return merged_svi
 
-    def _filtered_svis(self, vrf: dict) -> list[dict]:
+    def filtered_svis(self: SharedUtils, vrf: dict) -> list[dict]:
         """
         Return sorted and filtered svi list from given tenant vrf.
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
         """
         svis: list[dict] = natural_sort(convert_dicts(vrf.get("svis", []), "id"), "id")
-        svis = [svi for svi in svis if self._is_accepted_vlan(svi)]
+        svis = [svi for svi in svis if self.is_accepted_vlan(svi)]
 
         # Handle svi_profile inheritance
-        svis = [self._get_merged_svi_config(svi) for svi in svis]
+        svis = [self.get_merged_svi_config(svi) for svi in svis]
 
         # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
-        svis = [svi for svi in svis if "all" in self.shared_utils.filter_tags or set(svi.get("tags", ["all"])).intersection(self.shared_utils.filter_tags)]
+        svis = [svi for svi in svis if "all" in self.filter_tags or set(svi.get("tags", ["all"])).intersection(self.filter_tags)]
 
         # Set tenant key on all SVIs
         for svi in svis:
             svi.update({"tenant": vrf["tenant"]})
 
         return svis
+
+    @cached_property
+    def endpoint_vlans(self: SharedUtils) -> list:
+        endpoint_vlans = self.get_switch_fact("endpoint_vlans", required=False)
+        if not endpoint_vlans:
+            return []
+        return [int(id) for id in range_expand(endpoint_vlans)]
+
+    def get_vrf_id(self: SharedUtils, vrf, required: bool = True) -> int | None:
+        vrf_id = default(vrf.get("vrf_id"), vrf.get("vrf_vni"))
+        if vrf_id is None:
+            if required:
+                raise AristaAvdMissingVariableError(f"'vrf_id' or 'vrf_vni' for VRF '{vrf['name']} must be set.")
+            return None
+        return int(vrf_id)
+
+    @cached_property
+    def vrfs(self: SharedUtils) -> list:
+        """
+        Return the list of vrfs to be defined on this switch
+
+        Ex. ["default", "prod"]
+        """
+        if not self.network_services_l3:
+            return []
+
+        vrfs = set()
+        for tenant in self.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                vrfs.add(vrf["name"])
+
+        return natural_sort(vrfs)

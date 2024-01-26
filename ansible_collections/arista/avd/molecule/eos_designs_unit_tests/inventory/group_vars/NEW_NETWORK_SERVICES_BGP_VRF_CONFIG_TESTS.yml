@@ -1,0 +1,81 @@
+---
+overlay_routing_protocol: none
+default_node_types:
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*bgp.*"
+
+bgp_as: 65000
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 172.16.0.0/24
+    virtual_router_mac_address: cafe:cafe:cafe
+    evpn_role: none
+    filter:
+      tenants: [TenantA]
+  nodes:
+    - name: new_network_services_bgp_vrf_config_true
+      id: 1
+    - name: new_network_services_bgp_vrf_config_false
+      id: 2
+
+tenants:
+  - name: TenantA
+    vrfs:
+      - name: PROD
+        vrf_id: 42
+        bgp_peers:
+          - ip_address: 123.1.1.10
+            remote_as: "1234"
+            password: "oBztv71m2uhR7hh58/OCNA=="
+            description: External IPv4 BGP peer
+            send_community: standard extended
+            maximum_routes: 0
+            default_originate:
+              always: false
+            update_source: Loopback123
+            ebgp_multihop: 3
+            nodes: [new_network_services_bgp_vrf_config_true, new_network_services_bgp_vrf_config_false]
+            set_ipv4_next_hop: 123.1.1.1
+            route_map_in: RM-123-1-1-10-IN
+            shutdown: true
+            # we don't expect this in the output, next_hop takes precedence
+            route_map_out: RM-123-1-1-10-OUT
+            local_as: 123
+          - ip_address: 123.1.1.11
+            remote_as: "65000.100"
+            password: "oBztv71m2uhR7hh58/OCNA=="
+            description: External IPv4 BGP peer
+            send_community: standard extended
+            maximum_routes: 0
+            default_originate:
+              always: false
+            update_source: Loopback123
+            ebgp_multihop: 3
+            nodes: [new_network_services_bgp_vrf_config_true, new_network_services_bgp_vrf_config_false]
+            route_map_in: RM-123-1-1-11-IN
+            route_map_out: RM-123-1-1-11-OUT
+            prefix_list_in: PL-TEST-IN-AF4
+            prefix_list_out: PL-TEST-OUT-AF4
+            local_as: 123
+            bfd: true
+          - ip_address: fd5a:fe45:8831:06c5::a
+            remote_as: 12345
+            send_community: all
+            nodes: [new_network_services_bgp_vrf_config_true, new_network_services_bgp_vrf_config_false]
+            set_ipv6_next_hop: fd5a:fe45:8831:06c5::1
+            prefix_list_in: PL-TEST-IN-AF6
+            prefix_list_out: PL-TEST-OUT-AF6
+          - ip_address: fd5a:fe45:8831:06c5::b
+            remote_as: 12345
+            nodes: [new_network_services_bgp_vrf_config_true, new_network_services_bgp_vrf_config_false]
+        l3_interfaces:
+          - interfaces: [Ethernet7, Ethernet7]
+            ip_addresses: [10.10.10.10/24, 11.11.11.11/24]
+            nodes: [new_network_services_bgp_vrf_config_true, new_network_services_bgp_vrf_config_false]
+            mtu: 9000
+            enabled: True
+            description: "test"
