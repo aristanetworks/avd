@@ -517,7 +517,7 @@ class RouterBgpMixin(UtilsMixin):
             name=vrf["name"],
             vlans=vrf["svis"],
             rd=self.get_vlan_aware_bundle_rd(id=self.shared_utils.get_vrf_id(vrf), tenant=tenant, is_vrf=True),
-            rt=self.get_vlan_aware_bundle_rt(id=self.shared_utils.get_vrf_id(vrf), vni=self.get_vrf_vni(vrf), tenant=tenant, is_vrf=True),
+            rt=self.get_vlan_aware_bundle_rt(id=self.shared_utils.get_vrf_id(vrf), vni=self.shared_utils.get_vrf_vni(vrf), tenant=tenant, is_vrf=True),
             evpn_l2_multi_domain=default(vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain", True)) is True,
             tenant=tenant,
         )
@@ -656,12 +656,6 @@ class RouterBgpMixin(UtilsMixin):
 
         return None
 
-    def get_vrf_vni(self, vrf) -> int:
-        vrf_vni = default(vrf.get("vrf_vni"), vrf.get("vrf_id"))
-        if vrf_vni is None:
-            raise AristaAvdMissingVariableError(f"'vrf_vni' or 'vrf_id' for VRF '{vrf['name']} must be set.")
-        return int(vrf_vni)
-
     def get_vrf_rd(self, vrf) -> str:
         """
         Return a string with the route-destinguisher for one VRF
@@ -688,7 +682,7 @@ class RouterBgpMixin(UtilsMixin):
         if self._vrf_rt_admin_subfield is not None:
             admin_subfield = self._vrf_rt_admin_subfield
         elif self.shared_utils.overlay_rt_type["vrf_admin_subfield"] == "vrf_vni":
-            admin_subfield = self.get_vrf_vni(vrf)
+            admin_subfield = self.shared_utils.get_vrf_vni(vrf)
         else:
             # Both for 'id' and 'vrf_id' options.
             admin_subfield = self.shared_utils.get_vrf_id(vrf)

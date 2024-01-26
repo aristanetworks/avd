@@ -5,6 +5,9 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import cProfile
+import pstats
+
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
@@ -20,6 +23,11 @@ class ActionModule(ActionBase):
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
+
+        cprofile_file = self._task.args.get("cprofile_file")
+        if cprofile_file:
+            profiler = cProfile.Profile()
+            profiler.enable()
 
         # Validate Arguments
         self.templatefile = self._task.args.get("template")
@@ -77,6 +85,11 @@ class ActionModule(ActionBase):
         # Update result from Ansible "copy" operation (setting 'changed' flag accordingly)
         if not result.get("failed"):
             result.update(self.template(task_vars, dest))
+
+        if cprofile_file:
+            profiler.disable()
+            stats = pstats.Stats(profiler).sort_stats("cumtime")
+            stats.dump_stats(cprofile_file)
 
         return result
 

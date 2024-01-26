@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 $id: eos_designs
@@ -43,7 +43,9 @@ keys:
 
       "debug" will produce hidden debug messages viewable with -v.
 
-      "quiet" will not produce any messages'
+      "quiet" will not produce any messages
+
+      '
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -70,7 +72,9 @@ keys:
 
       "info" will produce regular log messages.
 
-      "debug" will produce hidden debug messages viewable with -v.'
+      "debug" will produce hidden debug messages viewable with -v.
+
+      '
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -181,7 +185,9 @@ keys:
     description: 'Configure an iBGP full mesh between PEs, either because there is
       no RR used or other reasons.
 
-      Only supported in combination with MPLS overlay.'
+      Only supported in combination with MPLS overlay.
+
+      '
   bgp_peer_groups:
     documentation_options:
       table: bgp-settings
@@ -633,7 +639,9 @@ keys:
     description: 'IPv4 address or DNS name for CloudVision.
 
       This variable only supports an on-premise single-node cluster or the DNS name
-      of a CloudVision as a Service instance.'
+      of a CloudVision as a Service instance.
+
+      '
   cvp_instance_ips:
     documentation_options:
       table: cloudvision-settings
@@ -1056,7 +1064,9 @@ keys:
           keys:
             raw_eos_cli:
               type: str
-              description: EOS cli commands rendered on router_bgp.vlans-aware-bundle.
+              description: 'EOS cli commands rendered on router_bgp.vlans-aware-bundle.
+
+                '
   fabric_evpn_encapsulation:
     documentation_options:
       table: evpn-settings
@@ -1248,7 +1258,9 @@ keys:
     format: ipv6
     description: 'OOB Management interface gateway in IPv6 format.
 
-      Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks''.'
+      Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks''.
+
+      '
   is_deployed:
     documentation_options:
       table: is-deployed
@@ -1285,8 +1297,10 @@ keys:
     - level-1
     - level-2
     default: level-2
-    description: These fabric level parameters can be used with core_interfaces running
+    description: 'These fabric level parameters can be used with core_interfaces running
       ISIS, and may be overridden on link profile or link level.
+
+      '
   isis_default_is_type:
     display_name: ISIS Default IS Type
     documentation_options:
@@ -1304,8 +1318,10 @@ keys:
     convert_types:
     - str
     default: 50
-    description: These fabric level parameters can be used with core_interfaces running
+    description: 'These fabric level parameters can be used with core_interfaces running
       ISIS, and may be overridden at link profile or link level.
+
+      '
   isis_maximum_paths:
     documentation_options:
       table: isis-settings
@@ -1416,7 +1432,9 @@ keys:
     type: str
     description: 'OOB Management interface gateway in IPv4 format.
 
-      Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks''.'
+      Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks''.
+
+      '
   mgmt_interface:
     documentation_options:
       table: management-interface-settings
@@ -1943,7 +1961,9 @@ keys:
     type: list
     items:
       type: str
-      description: '''inventory_hostname'' of CVX server'
+      description: '''inventory_hostname'' of CVX server
+
+        '
   overlay_her_flood_list_per_vni:
     documentation_options:
       table: overlay-settings
@@ -2116,7 +2136,9 @@ keys:
 
 
           These methods can be overridden per VLAN if either ''rd_override'', ''rt_override''
-          or ''vni_override'' is set (preferred in this order).'
+          or ''vni_override'' is set (preferred in this order).
+
+          '
   overlay_routing_protocol:
     documentation_options:
       table: overlay-settings
@@ -2259,7 +2281,9 @@ keys:
 
 
           These methods can be overridden per VLAN if either ''rt_override'' or ''vni_override''
-          is set (preferred in this order).'
+          is set (preferred in this order).
+
+          '
   p2p_uplinks_mtu:
     documentation_options:
       table: fabric-settings
@@ -2557,7 +2581,9 @@ keys:
           description: 'Parent profile is optional.
 
             Port_profiles can refer to another port_profile to inherit settings in
-            up to two levels (adapter->profile->parent_profile).'
+            up to two levels (adapter->profile->parent_profile).
+
+            '
   ptp:
     documentation_options:
       table: ptp
@@ -2662,7 +2688,9 @@ keys:
         description: 'If True, `eos_designs` will configure `queue-monitor length
           notifying` according to the
 
-          `platform_settings.[].feature_support.queue_monitor_length_notify` setting.'
+          `platform_settings.[].feature_support.queue_monitor_length_notify` setting.
+
+          '
   redundancy:
     documentation_options:
       table: system-settings
@@ -2725,7 +2753,9 @@ keys:
       role interface tests.
 
       - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-      are not present in the network.'
+      are not present in the network.
+
+      '
   snmp_settings:
     documentation_options:
       table: management-snmp-settings
@@ -3054,7 +3084,9 @@ keys:
           description: 'Parent SVI profile name to apply.
 
             svi_profiles can refer to another svi_profile to inherit settings in up
-            to two levels (svi -> svi_profile -> svi_parent_profile).'
+            to two levels (svi -> svi_profile -> svi_parent_profile).
+
+            '
   system_mac_address:
     documentation_options:
       table: system-settings
@@ -3064,7 +3096,9 @@ keys:
 
       "system_mac_address" can also be set under node type settings.
 
-      If both are set, the value under node type settings takes precedence.'
+      If both are set, the value under node type settings takes precedence.
+
+      '
   terminattr_disable_aaa:
     documentation_options:
       table: cloudvision-settings
@@ -3139,7 +3173,9 @@ keys:
     description: 'The `type:` variable needs to be defined for each device in the
       fabric.
 
-      This is leveraged to load the appropriate template to generate the configuration.'
+      This is leveraged to load the appropriate template to generate the configuration.
+
+      '
   underlay_filter_peer_as:
     documentation_options:
       table: fabric-settings
@@ -3296,7 +3332,9 @@ keys:
           type: str
           convert_types:
           - int
-          description: Name of standard Access-List.
+          description: 'Name of standard Access-List.
+
+            '
   underlay_ospf_area:
     documentation_options:
       table: ospf-settings
@@ -3651,6 +3689,7 @@ keys:
                   id:
                     type: int
                     $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id
+                    required: false
                     min: 2
                     max: 253
                     description: 'ID of the AVT in each VRFs. ID must be unique across

@@ -8,7 +8,6 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, unique
@@ -377,7 +376,7 @@ class UplinksMixin:
         """
         uplink_switches = self.shared_utils.uplink_switches
         # Making sure each peer is unique
-        return natural_sort(unique(uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices))
+        return unique(uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices)
 
     @cached_property
     def _default_downlink_interfaces(self: EosDesignsFacts) -> list:

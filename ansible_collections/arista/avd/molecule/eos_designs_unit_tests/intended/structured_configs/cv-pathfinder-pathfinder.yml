@@ -475,3 +475,94 @@ metadata:
           id: 511
         - name: Site512
           id: 512
+    vrfs:
+    - name: default
+      vni: 1
+      avts:
+      - id: 254
+        name: CONTROL-PLANE-PROFILE
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: preferred
+      - id: 3
+        name: DEFAULT-AVT-POLICY-VIDEO
+        pathgroups:
+        - name: MPLS
+          preference: preferred
+        - name: INET
+          preference: preferred
+      - id: 1
+        name: DEFAULT-AVT-POLICY-DEFAULT
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: Equinix
+          preference: preferred
+        - name: MPLS
+          preference: alternate
+    - name: PROD
+      vni: 42
+      avts:
+      - constraints:
+          jitter: 42
+        id: 2
+        name: PROD-AVT-POLICY-VOICE
+        pathgroups:
+        - name: MPLS
+          preference: preferred
+        - name: INET
+          preference: alternate
+      - id: 4
+        name: PROD-AVT-POLICY-VIDEO
+        pathgroups:
+        - name: MPLS
+          preference: preferred
+        - name: LTE
+          preference: preferred
+        - name: INET
+          preference: alternate
+      - id: 1
+        name: PROD-AVT-POLICY-DEFAULT
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: alternate
+    - name: IT
+      vni: 100
+      avts:
+      - id: 3
+        name: DEFAULT-AVT-POLICY-VIDEO
+        pathgroups:
+        - name: MPLS
+          preference: preferred
+        - name: INET
+          preference: preferred
+      - id: 1
+        name: DEFAULT-AVT-POLICY-DEFAULT
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: Equinix
+          preference: preferred
+        - name: MPLS
+          preference: alternate
+    - name: TRANSIT
+      vni: 66
+      avts:
+      - id: 42
+        name: TRANSIT-AVT-POLICY-VOICE
+        pathgroups:
+        - name: MPLS
+          preference: preferred
+        - name: INET
+          preference: alternate
+      - id: 1
+        name: TRANSIT-AVT-POLICY-DEFAULT
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: alternate
