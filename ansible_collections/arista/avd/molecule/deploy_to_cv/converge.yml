@@ -15,15 +15,15 @@
     intended_tag_device: s1-leaf1
     intended_tags: "{{ lookup('file', structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
 
-    ws_name: avd-static-studio-38
+    ws_name: avd-static-studio-42
     ws_description: sample description
     ws_req_state: submitted
     ws_force: true
 
     # TODO: cc_id is not getting set to anything other than Workspace-<ws_nane>
-    cc_id: Workspace-avd-static-studio-38
+    cc_id: Workspace-avd-static-studio-42
     cc_requested_state: running
-    cc_name: cc_avd_studio-38
+    cc_name: cc_avd_studio-42
     cc_desctiption: sample description
 
   # TODO: get end state device and assert state
@@ -37,8 +37,7 @@
         # structured_config_suffix: "yml"
         # device_list: "{{ ansible_play_hosts }}"
         device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
-        # device_list: ["s1-leaf1"]
-        strict_tags: true
+        # strict_tags: true
         # skip_missing_devices: false
         # configlet_name_template: "AVD-${hostname}"
         cv_servers: [ '{{ cv_server }}' ]
@@ -177,7 +176,6 @@
             deviceId: "{{ intended_tag_device }}"
       loop:
         "{{ intended_tags.metadata.cv_tags.device_tags }}"
-      register: designed_tags
 
     # - name: 'Assert designed tags'
     #   run_once: true
@@ -209,7 +207,6 @@
             interfaceId:  "{{ item.interface }}"
       loop:
         "{{ intended_tags.metadata.cv_tags.interface_tags }}"
-      register: designed_tags
 
     # - name: 'Assert designed interface tags'
     #   run_once: true
@@ -218,3 +215,43 @@
     #       - item.failed == false
     #   loop:
     #     '{{ designed_tags.results }}'
+
+    - name: Test = Provision with missing device
+      run_once: true
+      delegate_to: localhost
+      vars:
+        ws_name: missing-device-studio-4
+      arista.avd.deploy_to_cv:
+        configuration_dir: "{{ configuration_dir }}"
+        structured_config_dir: "{{ structured_config_dir }}"
+        # structured_config_suffix: "yml"
+        # device_list: "{{ ansible_play_hosts }}"
+        device_list: ["s1-missing"]
+        strict_tags: true
+        # skip_missing_devices: false
+        # configlet_name_template: "AVD-${hostname}"
+        cv_servers: [ '{{ cv_server }}' ]
+        cv_token: '{{ token }}'
+        # cv_verify_certs: True
+        workspace:
+          name: '{{ ws_name }}'
+          description: '{{ ws_description }}'
+          id: '{{ ws_name }}'
+          requested_state: '{{ ws_req_state }}'
+          force: '{{ ws_force }}'
+        change_control:
+          name: '{{ cc_name }}'
+          description: '{{ cc_desctiption }}'
+          requested_state: '{{ cc_requested_state }}'
+        # timeouts:
+        #   workspace_build_timeout: 300.0
+        #   change_control_creation_timeout: 300.0
+        return_details: true
+      ignore_errors: true
+      register: CVP_RESULTS_MISSING
+
+    - name: Assert missing device errors
+      run_once: true
+      ansible.builtin.assert:
+        that:
+          - CVP_RESULTS_MISSING.errors == ["('Missing devices on CloudVision', CVDevice(hostname='s1-missing', serial_number=None, system_mac_address=None, _exists_on_cv=None))"]
