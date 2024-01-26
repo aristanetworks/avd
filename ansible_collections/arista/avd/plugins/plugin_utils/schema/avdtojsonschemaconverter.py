@@ -15,7 +15,7 @@ def get_deprecation(schema: dict) -> tuple[str, str]:
     Returns
     -------
     deprecation_label : str | None
-        If deprecated or removed this is "removed" or "deprecated". Should be added as label
+        If deprecated or removed this is "deprecated" or "removed" . Should be added as label
         on the key by the calling function.
     deprecation : str | None
         Deprecation or removal message which should be added to the key comment field by the calling function.
