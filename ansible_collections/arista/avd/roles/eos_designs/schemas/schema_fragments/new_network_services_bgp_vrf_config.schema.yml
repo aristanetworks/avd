@@ -8,9 +8,7 @@ type: dict
 keys:
   new_network_services_bgp_vrf_config:
     type: bool
-    description: |
-      PREVIEW: This key is currently not supported
-
+    description: |-
       Set this key to `true` in the node type to generate full BGP configuration
       for network services even when `evpn` is not in the address families
       (`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).
