@@ -59,8 +59,13 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         )
         platform_bgp_update_wait_install = get(self.shared_utils.platform_settings, "feature_support.bgp_update_wait_install", default=True) is True
 
-        default_maximum_paths = 16 if self.shared_utils.wan_role is not None else 4
-        default_ecmp = None if self.shared_utils.wan_role is not None else 4
+        if self.shared_utils.wan_role is not None:
+            # Special defaults for WAN routers
+            default_maximum_paths = 16
+            default_ecmp = None
+        else:
+            default_maximum_paths = 4
+            default_ecmp = 4
 
         router_bgp = {
             "as": self.shared_utils.bgp_as,
