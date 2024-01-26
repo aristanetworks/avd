@@ -75,6 +75,9 @@ spanning_tree:
 vrfs:
 - name: MGMT
   ip_routing: false
+platform:
+  sfe:
+    data_plane_cpu_allocation_max: 2
 management_api_http:
   enable_vrfs:
   - name: MGMT
