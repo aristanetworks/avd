@@ -1,0 +1,11 @@
+type: wan_rr
+bgp_as: 65000
+wan_rr:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+  nodes:
+    - name: missing-data-plane_cpu-allocation-max
+      id: 1
+
+expected_error_message: |
+  For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set
