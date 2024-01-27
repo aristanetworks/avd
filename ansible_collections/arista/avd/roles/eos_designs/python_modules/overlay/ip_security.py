@@ -83,7 +83,7 @@ class IpSecurityMixin(UtilsMixin):
         """
         return {
             "name": name,
-            "local_id": self.shared_utils.router_id,
+            "local_id": self.shared_utils.vtep_ip,
         }
 
     def _sa_policy(self, name: str) -> dict | None:

@@ -43,8 +43,6 @@ class VxlanInterfaceMixin(UtilsMixin):
         if self._multi_vtep:
             vxlan["source_interface"] = "Loopback0"
             vxlan["mlag_source_interface"] = self.shared_utils.vtep_loopback
-        elif self.shared_utils.wan_role:
-            vxlan["source_interface"] = "Loopback0"
         else:
             vxlan["source_interface"] = self.shared_utils.vtep_loopback
 

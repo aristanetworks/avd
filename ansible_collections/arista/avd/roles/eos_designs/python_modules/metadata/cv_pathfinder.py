@@ -33,7 +33,7 @@ class CvPathfinderMixin:
             return {
                 "role": self.shared_utils.cv_pathfinder_role,
                 "ssl_profile": None,  # TODO: Pick up ssl profile from self.shared_utils.this_wan_route_server.ssl_profile_name
-                "vtep_ip": self.shared_utils.router_id,
+                "vtep_ip": self.shared_utils.vtep_ip,
                 "interfaces": self._metadata_interfaces(),
                 "pathgroups": self._metadata_pathgroups(),
                 "regions": self._metadata_regions(),
@@ -43,7 +43,7 @@ class CvPathfinderMixin:
         # Edge or transit
         return {
             "role": self.shared_utils.cv_pathfinder_role,
-            "vtep_ip": self.shared_utils.router_id,
+            "vtep_ip": self.shared_utils.vtep_ip,
             "region": self.shared_utils.wan_region["name"],
             "zone": self.shared_utils.wan_zone["name"],
             "site": self.shared_utils.wan_site["name"],
@@ -120,7 +120,7 @@ class CvPathfinderMixin:
     def _metadata_pathfinder_vtep_ips(self: AvdStructuredConfigMetadata) -> list:
         return [
             {
-                "vtep_ip": wan_route_server["router_id"],
+                "vtep_ip": wan_route_server["vtep_ip"],
             }
             for wan_route_server in self.shared_utils.filtered_wan_route_servers.values()
         ]

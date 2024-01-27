@@ -90,9 +90,9 @@ The following table indicates the settings:
 
 | Node Type Key | Underlay Router | Uplink Type | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default CV Pathfinder Role |
 | ------------- | --------------- | ----------- | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | -------------------------- |
-| wan_rr        | ✅               | p2p         | server            | ✘                   | ✅                   | ✘    | ✘            | ✘                   | server          | pathfinder                 |
-| wan_edge      | ✅               | p2p         | client            | ✘                   | ✅                   | ✘    | ✘            | ✘                   | client          | edge                       |
-| wan_transit   | ✅               | p2p         | client            | ✘                   | ✅                   | ✘    | ✘            | ✘                   | client          | transit region             |
+| wan_rr        | ✅               | p2p         | server            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | server          | pathfinder                 |
+| wan_edge      | ✅               | p2p         | client            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | client          | edge                       |
+| wan_transit   | ✅               | p2p         | client            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | client          | transit region             |
 
 All these node types are defined with `default_underlay_routing_protocol: none` and `default_overlay_routing_protocol: ibgp`.
 

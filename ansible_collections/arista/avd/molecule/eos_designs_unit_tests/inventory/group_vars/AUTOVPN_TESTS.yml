@@ -8,7 +8,7 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
     listen_range_prefixes:
-      - 192.168.30.0/24
+      - 192.168.130.0/24
 
 wan_route_servers:
   # Testing having the interface configured with DHCP
@@ -38,6 +38,7 @@ default_node_types:
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.30.0/24
+    vtep_loopback_ipv4_pool: 192.168.130.0/24
     filter:
       # TODO find a way to not need this
       always_include_vrfs_in_tenants: [TenantA]
@@ -54,6 +55,7 @@ wan_edge:
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.31.0/24
+    vtep_loopback_ipv4_pool: 192.168.131.0/24
   nodes:
     - name: autovpn-rr1
       id: 1

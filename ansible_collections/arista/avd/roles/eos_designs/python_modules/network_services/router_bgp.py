@@ -137,6 +137,7 @@ class RouterBgpMixin(UtilsMixin):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrf_name = vrf["name"]
+
                 bgp_vrf = {
                     "name": vrf_name,
                     # Adding router_id here to avoid reordering structured config for all hosts. TODO: Remove router_id.
@@ -166,6 +167,11 @@ class RouterBgpMixin(UtilsMixin):
                     # MLAG IBGP Peering VLANs per VRF (except VRF default)
                     if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                         self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
+
+                # # TODO this is to prevent rendering BGP vrf default on WAN nodes.
+                # # This may need to be adjusted for more complex use cases.
+                # if vrf_name == "default" and self.shared_utils.wan_role is not None:
+                #     continue
 
                 for bgp_peer in vrf["bgp_peers"]:
                     # Below we pop various keys that are not supported by the eos_cli_config_gen schema.
@@ -208,8 +214,7 @@ class RouterBgpMixin(UtilsMixin):
                     if get(self._hostvars, "bgp_update_wait_install", default=True) is True and platform_bgp_update_wait_install:
                         bgp_vrf.setdefault("updates", {})["wait_install"] = True
 
-                # Strip None values from vlan before appending
-                bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}
+                bgp_vrf = strip_empties_from_dict(bgp_vrf)
 
                 # Skip adding the VRF if we have no config.
                 if bgp_vrf == {"name": vrf_name}:
@@ -253,7 +258,7 @@ class RouterBgpMixin(UtilsMixin):
             else:
                 target["route_targets"].append(rt["route_target"])
 
-        if vrf_name == "default" and self._vrf_default_evpn and self._vrf_default_ipv4_subnets:
+        if vrf_name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default:
             # Special handling of vrf default with evpn.
 
             if (target := get_item(route_targets["export"], "address_family", "evpn")) is None:
@@ -727,7 +732,7 @@ class RouterBgpMixin(UtilsMixin):
         return f"{admin_subfield}:{bundle_number}"
 
     @cached_property
-    def _router_bgp_redistribute_routes(self) -> dict | None:
+    def _router_bgp_redistribute_routes(self) -> list | None:
         """
         Return structured config for router_bgp.redistribute_routes
 

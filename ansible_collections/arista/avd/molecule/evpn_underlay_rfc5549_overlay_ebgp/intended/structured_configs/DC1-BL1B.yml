@@ -135,7 +135,6 @@ router_bgp:
       route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
     - ip_address: fd5a:fe45:8831:06c5::a
       remote_as: '12345'
-      send_community: null
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
     - ip_address: fd5a:fe45:8831:06c5::b
       remote_as: '12345'

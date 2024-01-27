@@ -24089,10 +24089,10 @@
             "description": "Route-Reflector hostname.",
             "title": "Hostname"
           },
-          "router_id": {
+          "vtep_ip": {
             "type": "string",
-            "description": "Route-Reflector router id.",
-            "title": "Router ID"
+            "description": "Route-Reflector VTEP IP Address.",
+            "title": "Vtep IP"
           },
           "path_groups": {
             "type": "array",
