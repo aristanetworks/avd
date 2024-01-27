@@ -13,7 +13,7 @@ from .models import CVDevice, CVPathfinderMetadata, DeployToCvResult
 LOGGER = getLogger(__name__)
 
 CV_PATHFINDER_METADATA_STUDIO_ID = "a219112d-de90-42d3-abb0-796e0c4bde82"  # "studio-caravan"
-CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {"pathfinders": [], "pathgroups": [], "regions": [], "routers": [], "vrfs": [], "version": 3}
+CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {"pathfinders": [], "pathgroups": [], "regions": [], "routers": [], "vrfs": [], "version": "3"}
 
 
 def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
@@ -85,13 +85,14 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
     In-place insert / update metadata for one edge device in studio_inputs.
     """
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_edge %s", device.hostname)
-
+    role = metadata.get("role", "")
+    role = "transit" if "transit" in role else role
     edge_metadata = {
         "inputs": {
             "router": {
-                "pathfinders": [{"vtepIp": pathfinder["vtep_ip"]} for pathfinder in metadata.get("pathfinders", [])],
+                "pathfinders": [pathfinder["vtep_ip"] for pathfinder in metadata.get("pathfinders", [])],
                 "region": metadata.get("region", ""),
-                "role": metadata.get("role", ""),
+                "role": role,
                 "site": metadata.get("site", ""),
                 "vtepIP": metadata.get("vtep_ip", ""),
                 "wanInterfaces": [
