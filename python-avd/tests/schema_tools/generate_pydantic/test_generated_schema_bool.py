@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import sys
@@ -15,9 +15,10 @@ path.insert(0, str(Path(__file__).parents[3]))
 
 import pyavd.schema.models
 import pyavd.schema.types
-from pyavd.schema.generate_pydantic.models import PydanticFileSrc
-from pyavd.schema.generate_pydantic.utils import generate_class_name
-from pyavd.schema.metaschema.meta_schema_model import AristaAvdSchema
+
+from schema_tools.generate_pydantic.models import PydanticFileSrc
+from schema_tools.generate_pydantic.utils import generate_class_name
+from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
 
 # TODO:
 # - Decide to either implement valid values or remove it from meta schema for bools

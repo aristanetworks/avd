@@ -38,4 +38,8 @@ JSONSCHEMA_PATHS = {
     "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_JSONSCHEMA_PATH,
     "eos_designs": EOS_DESIGNS_JSONSCHEMA_PATH,
 }
+PYDANTIC_MODEL_PATHS = {
+    "eos_cli_config_gen": REPO_ROOT.joinpath("python-avd/pyavd/schema/eos_cli_config_gen.py"),
+    "eos_designs": REPO_ROOT.joinpath("python-avd/pyavd/schema/eos_designs.py"),
+}
 LICENSE_HEADER = REPO_ROOT.joinpath("development/license-short.txt").read_text(encoding="UTF-8").strip()

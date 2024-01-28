@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -9,12 +9,9 @@ from textwrap import indent, wrap
 import isort
 from pydantic import BaseModel
 
-PYDANTIC_SRC_HEADER = """\
-# Copyright (c) 2023 Arista Networks, Inc.
-# Use of this source code is governed by the Apache License 2.0
-# that can be found in the LICENSE file.
+from ..constants import LICENSE_HEADER
 
-"""
+PYDANTIC_SRC_HEADER = indent(LICENSE_HEADER + "\n\n", "# ")
 BASE_IMPORTS = """\
 from __future__ import annotations
 from pydantic import BaseModel, ConfigDict, Field

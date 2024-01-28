@@ -49,14 +49,14 @@ def get_schema_from_ref(ref: str) -> dict:
 
     The ref is in the style "schema_name#/path/to/schema/element"
     """
-    schema_store = create_store()
+    schema_store = create_store(load_from_yaml=True)
 
     if "#" not in ref:
         raise ValueError("Missing # in ref")
 
     schema_name, ref = ref.split("#", maxsplit=1)
     if schema_name not in schema_store:
-        raise KeyError(f"Invalid schema name '{schema_name}'")
+        raise KeyError(f"Invalid schema name '{schema_name}' from $ref '{ref}'")
 
     schema = schema_store[schema_name]
     path = ref.split("/")
