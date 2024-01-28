@@ -6,7 +6,8 @@ from json import JSONDecodeError
 from json import loads as json_loads
 from sys import stdin
 
-from yaml import unsafe_load as yaml_load
+from yaml import CLoader
+from yaml import load as yaml_load
 
 
 def read_file(filename: str) -> str:
@@ -24,7 +25,7 @@ def read_vars(filename: str):
     except JSONDecodeError:
         pass
 
-    return yaml_load(data) or {}
+    return yaml_load(data, Loader=CLoader) or {}
 
 
 def write_result(filename, result):

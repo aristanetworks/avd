@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -2243,6 +2243,7 @@ class EosCliConfigGen(BaseModel):
         IPv4 address/mask or "dhcp"
         """
         ip_address_secondaries: list[str] | None = None
+        ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None = None
         dhcp_client_accept_default_route: bool | None = None
         """
         Install default-route obtained via DHCP
@@ -3421,7 +3422,7 @@ class EosCliConfigGen(BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 integrity: Literal["disabled", "sha1", "sha256", "null"] | None = None
-                encryption: Literal["disabled", "aes128", "aes128gcm128", "aes128gcm64", "aes256", "aes256gcm256", "null"] | None = None
+                encryption: Literal["disabled", "aes128", "aes128gcm128", "aes128gcm64", "aes256", "aes256gcm128", "null"] | None = None
 
             name: str = None
             """
@@ -3504,6 +3505,11 @@ class EosCliConfigGen(BaseModel):
         IPSec profiles.
         """
         key_controller: KeyController | None = None
+        hardware_encryption_disabled: bool | None = False
+        """
+        Disable hardware encryption.
+        An SFE restart is needed for this change to take effect.
+        """
 
     class IpSshClientSourceInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -3775,6 +3781,7 @@ class EosCliConfigGen(BaseModel):
         If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
         """
         ssh_key: str | None = None
+        secondary_ssh_key: str | None = None
         shell: Literal["/bin/bash", "/bin/sh", "/sbin/nologin"] | None = None
         """
         Specify shell for the user
@@ -4772,7 +4779,137 @@ class EosCliConfigGen(BaseModel):
     class Metadata(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
+        class CvTags(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class DeviceTagsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str = None
+                value: str = None
+
+            class InterfaceTagsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class TagsItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    name: str = None
+                    value: str = None
+
+                interface: str = None
+                tags: list[TagsItem] | None = None
+
+            device_tags: list[DeviceTagsItem] | None = None
+            interface_tags: list[InterfaceTagsItem] | None = None
+
+        class CvPathfinder(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class PathfindersItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                vtep_ip: str | None = None
+
+            class InterfacesItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str | None = None
+                carrier: str | None = None
+                circuit_id: str | None = None
+                pathgroup: str | None = None
+                public_ip: str | None = None
+
+            class PathgroupsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class CarriersItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    name: str | None = None
+
+                class ImportedCarriersItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    name: str | None = None
+
+                name: str | None = None
+                carriers: list[CarriersItem] | None = None
+                imported_carriers: list[ImportedCarriersItem] | None = None
+
+            class RegionsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class ZonesItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    class SitesItem(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        class Location(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            address: str | None = None
+
+                        id: int | None = None
+                        name: str | None = None
+                        location: Location | None = None
+
+                    id: int | None = None
+                    name: str | None = None
+                    sites: list[SitesItem] | None = None
+
+                id: int | None = None
+                name: str | None = None
+                zones: list[ZonesItem] | None = None
+
+            class VrfsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class AvtsItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    class Constraints(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        jitter: int | None = None
+                        latency: int | None = None
+                        lossrate: str | None = None
+
+                    class PathgroupsItem(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        name: str | None = None
+                        preference: str | None = None
+
+                    constraints: Constraints | None = None
+                    description: str | None = None
+                    id: int | None = None
+                    name: str | None = None
+                    pathgroups: list[PathgroupsItem] | None = None
+
+                name: str | None = None
+                vni: int | None = None
+                avts: list[AvtsItem] | None = None
+
+            role: str | None = None
+            region: str | None = None
+            zone: str | None = None
+            site: str | None = None
+            vtep_ip: str | None = None
+            ssl_profile: str | None = None
+            pathfinders: list[PathfindersItem] | None = None
+            interfaces: list[InterfacesItem] | None = None
+            pathgroups: list[PathgroupsItem] | None = None
+            regions: list[RegionsItem] | None = None
+            vrfs: list[VrfsItem] | None = None
+
         platform: str | None = None
+        cv_tags: CvTags | None = None
+        cv_pathfinder: CvPathfinder | None = None
+        """
+        Metadata used for CV Pathfinder visualization on CloudVision
+        """
 
     class MlagConfiguration(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -5464,6 +5601,12 @@ class EosCliConfigGen(BaseModel):
         class Bfd(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
+            class PerLink(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                enabled: bool | None = None
+                rfc_7130: bool | None = None
+
             echo: bool | None = None
             interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
@@ -5474,6 +5617,12 @@ class EosCliConfigGen(BaseModel):
             Rate in milliseconds
             """
             multiplier: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3, le=50)
+            neighbor: str | None = None
+            """
+            IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to
+            be defined globally on the switch.
+            """
+            per_link: PerLink | None = None
 
         class ServicePolicy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -5955,6 +6104,7 @@ class EosCliConfigGen(BaseModel):
         """
         IPv4 address/mask
         """
+        ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None = None
         ip_nat: IpNat | None = None
         ipv6_enable: bool | None = None
         ipv6_address: str | None = None
@@ -6615,6 +6765,10 @@ class EosCliConfigGen(BaseModel):
         Should only be used for platforms supporting the "queue-monitor length notifying" CLI
         """
         cpu: Cpu | None = None
+        tx_latency: bool | None = None
+        """
+        Enable tx-latency mode
+        """
 
     class QueueMonitorStreaming(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -6873,6 +7027,9 @@ class EosCliConfigGen(BaseModel):
         policies: list[PoliciesItem] | None = None
         """
         A sequence of application profiles mapped to some virtual topologies.
+
+        When `wan_mode` is set to `autovpn`, the rules
+        are indexed using 10*<index> in the list.
         """
         vrfs: list[VrfsItem] | None = None
 
@@ -6938,12 +7095,23 @@ class EosCliConfigGen(BaseModel):
         """
         Rate in milliseconds
         """
+        local_address: str | None = None
+        """
+        Configure BFD local IP/IPv6 address
+        """
         min_rx: int | None = None
         """
         Rate in milliseconds
         """
         multiplier: int | None = Field(None, ge=3, le=50)
         multihop: Multihop | None = None
+        session_snapshot_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=3600)
+        """
+        Interval in seconds.
+        Intervals below 10 are considered "dangerous" on EOS and must have
+        `session_snapshot_interval_dangerous` set to `true`.
+        """
+        session_snapshot_interval_dangerous: bool | None = None
         sbfd: Sbfd | None = None
 
     class RouterBgp(AvdDictBaseModel):
@@ -7236,6 +7404,10 @@ class EosCliConfigGen(BaseModel):
             above to avoid conflicts.
             """
             session_tracker: str | None = None
+            ttl_maximum_hops: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=254)
+            """
+            Maximum number of hops.
+            """
 
         class NeighborsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -7387,6 +7559,10 @@ class EosCliConfigGen(BaseModel):
             """
             remove_private_as_ingress: RemovePrivateAsIngress | None = None
             session_tracker: str | None = None
+            ttl_maximum_hops: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=254)
+            """
+            Maximum number of hops.
+            """
 
         class NeighborInterfacesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -7416,6 +7592,14 @@ class EosCliConfigGen(BaseModel):
             """
             advertise_only: bool | None = None
             as_set: bool | None = None
+            advertise_map: str | None = None
+            """
+            Route-map name
+            """
+            supress_map: str | None = None
+            """
+            Route-map name
+            """
             summary_only: bool | None = None
             attribute_map: str | None = None
             """
@@ -8650,6 +8834,14 @@ class EosCliConfigGen(BaseModel):
                 """
                 advertise_only: bool | None = None
                 as_set: bool | None = None
+                advertise_map: str | None = None
+                """
+                Route-map name
+                """
+                supress_map: str | None = None
+                """
+                Route-map name
+                """
                 summary_only: bool | None = None
                 attribute_map: str | None = None
                 match_map: str | None = None
@@ -9240,6 +9432,10 @@ class EosCliConfigGen(BaseModel):
 
             enabled: bool | None = None
             maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=128)
+            bfd_all_interfaces: bool | None = None
+            """
+            Enable BFD on all interfaces.
+            """
             fast_reroute_ti_lfa: FastRerouteTiLfa | None = None
             tunnel_source_labeled_unicast: TunnelSourceLabeledUnicast | None = None
 
@@ -9258,7 +9454,7 @@ class EosCliConfigGen(BaseModel):
                 mode: Literal["link-protection", "node-protection"] | None = None
                 level: Literal["level-1", "level-2"] | None = None
                 """
-                Optional, default is to protect all levels
+                Optional, default is to protect all levels.
                 """
                 srlg: Srlg | None = None
                 """
@@ -9267,6 +9463,10 @@ class EosCliConfigGen(BaseModel):
 
             enabled: bool | None = None
             maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=128)
+            bfd_all_interfaces: bool | None = None
+            """
+            Enable BFD on all interfaces.
+            """
             fast_reroute_ti_lfa: FastRerouteTiLfa | None = None
 
         class SegmentRoutingMpls(AvdDictBaseModel):
@@ -9281,6 +9481,40 @@ class EosCliConfigGen(BaseModel):
             enabled: bool | None = None
             router_id: str | None = None
             prefix_segments: list[PrefixSegmentsItem] | None = None
+
+        class SpfInterval(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=300)
+            """
+            Maximum interval between two SPFs in seconds.
+            """
+            wait_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=300000)
+            """
+            Initial wait interval for SPF in milliseconds.
+            """
+
+        class GracefulRestart(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class T2(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                level_1_wait_time: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=5, le=300)
+                """
+                Level-1 LSP database sync wait time in seconds.
+                """
+                level_2_wait_time: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=5, le=300)
+                """
+                Level-2 LSP database sync wait time in seconds.
+                """
+
+            enabled: bool | None = None
+            restart_hold_time: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=5, le=300)
+            """
+            Number of seconds.
+            """
+            t2: T2 | None = None
 
         instance: str = None
         """
@@ -9305,6 +9539,8 @@ class EosCliConfigGen(BaseModel):
         address_family_ipv4: AddressFamilyIpv4 | None = None
         address_family_ipv6: AddressFamilyIpv6 | None = None
         segment_routing_mpls: SegmentRoutingMpls | None = None
+        spf_interval: SpfInterval | None = None
+        graceful_restart: GracefulRestart | None = None
 
     class RouterL2Vpn(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -9878,6 +10114,22 @@ class EosCliConfigGen(BaseModel):
                 Static IPv4 addresses.
                 """
 
+            class Keepalive(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                auto: bool | None = False
+                """
+                Enable adaptive keepalive and feedback interval.
+                """
+                interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=50, le=60000)
+                """
+                Interval in milliseconds.
+                """
+                failure_threshold: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=100)
+                """
+                Failure threshold in number of intervals. Required when `interval` is set.
+                """
+
             name: str = None
             """
             Path group name.
@@ -9901,6 +10153,7 @@ class EosCliConfigGen(BaseModel):
             Flow assignement `lan` can not be configured in a path group with dynamic peers.
             """
             static_peers: list[StaticPeersItem] | None = None
+            keepalive: Keepalive | None = None
 
         class LoadBalancePoliciesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -9937,7 +10190,7 @@ class EosCliConfigGen(BaseModel):
             loss_rate: Annotated[str, StrConvert(convert_types=(int, float))] | None = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
             """
             Loss Rate requirement in percentage for this load balance policy.
-            Value between 0.00 and 100.00 %
+            Value between 0.00 and 100.00.
             """
             path_groups: list[PathGroupsItem] | None = None
             """
@@ -9987,6 +10240,24 @@ class EosCliConfigGen(BaseModel):
             DPS policy name to use for this VRF.
             """
 
+        class TcpMssCeiling(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            ipv4_segment_size: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            """
+            Segment Size for IPv4.
+            Can be an integer in the range 64-65515 or "auto".
+            "auto" will enable auto-discovery which clamps
+            the TCP MSS value to the minimum of all the direct paths
+            and multi-hop path MTU towards a remote VTEP (minus 40bytes to
+            account for IP + TCP header).
+            """
+            direction: Literal["ingress"] | None = "ingress"
+            """
+            Enforce on packets through DPS tunnel for a specific direction.
+            Only 'ingress' direction is supported.
+            """
+
         peer_dynamic_source: Literal["stun"] | None = None
         """
         Source of dynamic peer discovery.
@@ -9995,6 +10266,7 @@ class EosCliConfigGen(BaseModel):
         load_balance_policies: list[LoadBalancePoliciesItem] | None = None
         policies: list[PoliciesItem] | None = None
         vrfs: list[VrfsItem] | None = None
+        tcp_mss_ceiling: TcpMssCeiling | None = None
 
     class RouterPimSparseMode(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -11577,6 +11849,7 @@ class EosCliConfigGen(BaseModel):
         IPv4_address/Mask
         """
         ip_address_virtual_secondaries: list[str] | None = None
+        ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None = None
         ip_igmp: bool | None = None
         ip_igmp_version: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=3)
         ip_helpers: list[IpHelpersItem] | None = None
@@ -11774,6 +12047,11 @@ class EosCliConfigGen(BaseModel):
             class Vxlan(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
+                class Multicast(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    headend_replication: bool | None = None
+
                 class ControllerClient(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -11828,6 +12106,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Source Interface Name
                 """
+                multicast: Multicast | None = None
                 controller_client: ControllerClient | None = None
                 """
                 Client to CVX Controllers
@@ -12095,7 +12374,9 @@ class EosCliConfigGen(BaseModel):
     mcs_client: McsClient | None = None
     metadata: Metadata | None = None
     """
-    Key only used for documentation or validation purposes
+    The data under `metadata` is used for documentation, validation or integration purposes.
+    It will not affect the
+    generated EOS configuration.
     """
     mlag_configuration: MlagConfiguration | None = Field(None, title="Multi-Chassis Link Aggregation (MLAG) Configuration")
     monitor_connectivity: MonitorConnectivity | None = None
@@ -12171,6 +12452,11 @@ class EosCliConfigGen(BaseModel):
     terminal: Terminal | None = Field(None, title="Terminal Settings")
     trackers: list[TrackersItem] | None = None
     traffic_policies: TrafficPolicies | None = None
+    transceiver_qsfp_default_mode_4x10: bool | None = True
+    """
+    On all front panel ports which support this feature, the following global configuration command changes the QSFP mode
+    from 40G to 4x10G (default). When set to false the command reverts the default QSFP mode back to 40G.
+    """
     tunnel_interfaces: list[TunnelInterfacesItem] | None = None
     virtual_source_nat_vrfs: list[VirtualSourceNatVrfsItem] | None = None
     vlan_interfaces: list[VlanInterfacesItem] | None = None

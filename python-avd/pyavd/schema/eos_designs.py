@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -16,6 +16,11 @@ from .types import IntConvert, StrConvert
 
 class EosDesigns(AvdEosDesignsRootDictBaseModel):
     model_config = ConfigDict(defer_build=True)
+
+    class ApplicationTrafficRecognition(EosCliConfigGen.ApplicationTrafficRecognition, BaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        pass
 
     class BfdMultihop(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -534,197 +539,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             can be either ethernet_interfaces or port_channel_interfaces.
             """
 
-        class L3InterfacesProfilesItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, extra="forbid")
-
-            class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
-                model_config = ConfigDict(defer_build=True, extra="forbid")
-
-                pass
-
-            profile: str = None
-            """
-            L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.
-            """
-            interface: str | None = Field(None, pattern=r"Ethernet[\d/]+")
-            """
-            Ethernet interface name like 'Ethernet2'.
-            """
-            description: str | None = None
-            """
-            Interface description.
-            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
-            """
-            ip: str | None = None
-            """
-            Node IPv4 address/Mask or 'dhcp'.
-            """
-            set_default_route: bool | None = False
-            """
-            Insert a default route to the `peer_ip` if `ip` is an ip address
-            or configure to accept a default route from DHCP if
-            `ip` is `dhcp`.
-
-            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
-            """
-            enabled: bool | None = True
-            """
-            Enable or Shutdown the interface.
-            """
-            speed: str | None = None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-            """
-            peer: str | None = None
-            """
-            The peer device name. Used for description and documentation
-            """
-            peer_interface: str | None = None
-            """
-            The peer device interface. Used for description and documentation
-            """
-            peer_ip: str | None = None
-            """
-            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
-            address.
-            """
-            qos_profile: str | None = None
-            """
-            QOS service profile.
-            """
-            wan_carrier: str | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            The WAN Carrier this interface is connected to.
-            This is used to infer the
-            path-groups in which this interface should be configured.
-            """
-            wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            The WAN Circuit ID for this interface.
-            This is not rendered in the
-            configuration but used for WAN designs.
-            """
-            connected_to_pathfinder: bool | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            For a WAN interface (`wan_path_group` is set), allow to disable the static
-            tunnel towards Pathfinders.
-            Default True.
-            """
-            raw_eos_cli: str | None = None
-            """
-            EOS CLI rendered directly on the interface in the final EOS configuration.
-            """
-            structured_config: StructuredConfig | None = None
-            """
-            Custom structured config for the Ethernet interface.
-            """
-
-        class L3InterfacesItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, extra="forbid")
-
-            class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
-                model_config = ConfigDict(defer_build=True, extra="forbid")
-
-                pass
-
-            node: str = None
-            """
-            Device on which the interface should be configured.
-            """
-            profile: str | None = None
-            """
-            L3 interface profile name. Profile defined under l3_interfaces_profiles.
-            """
-            interface: str | None = Field(None, pattern=r"Ethernet[\d/]+")
-            """
-            Ethernet interface name like 'Ethernet2'.
-            """
-            description: str | None = None
-            """
-            Interface description.
-            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
-            """
-            ip: str | None = None
-            """
-            Node IPv4 address/Mask or 'dhcp'.
-            """
-            set_default_route: bool | None = False
-            """
-            Insert a default route to the `peer_ip` if `ip` is an ip address
-            or configure to accept a default route from DHCP if
-            `ip` is `dhcp`.
-
-            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
-            """
-            enabled: bool | None = True
-            """
-            Enable or Shutdown the interface.
-            """
-            speed: str | None = None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-            """
-            peer: str | None = None
-            """
-            The peer device name. Used for description and documentation
-            """
-            peer_interface: str | None = None
-            """
-            The peer device interface. Used for description and documentation
-            """
-            peer_ip: str | None = None
-            """
-            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
-            address.
-            """
-            qos_profile: str | None = None
-            """
-            QOS service profile.
-            """
-            wan_carrier: str | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            The WAN Carrier this interface is connected to.
-            This is used to infer the
-            path-groups in which this interface should be configured.
-            """
-            wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            The WAN Circuit ID for this interface.
-            This is not rendered in the
-            configuration but used for WAN designs.
-            """
-            connected_to_pathfinder: bool | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            For a WAN interface (`wan_path_group` is set), allow to disable the static
-            tunnel towards Pathfinders.
-            Default True.
-            """
-            raw_eos_cli: str | None = None
-            """
-            EOS CLI rendered directly on the interface in the final EOS configuration.
-            """
-            structured_config: StructuredConfig | None = None
-            """
-            Custom structured config for the Ethernet interface.
-            """
-
         p2p_links_ip_pools: list[P2pLinksIpPoolsItem] | None = None
         p2p_links_profiles: list[P2pLinksProfilesItem] | None = None
         p2p_links: list[P2pLinksItem] | None = None
-        l3_interfaces_profiles: list[L3InterfacesProfilesItem] | None = None
-        l3_interfaces: list[L3InterfacesItem] | None = None
 
     class CvPathfinderRegionsItem(EosCliConfigGen.RouterAdaptiveVirtualTopology.Region, BaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -990,6 +807,63 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
 
         mlag: Mlag | None = None
         p2p_uplinks: P2pUplinks | None = None
+
+    class GenerateCvTags(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class InterfaceTagsItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            name: Annotated[str, StrConvert(to_lower=True)] = None
+            """
+            Tag name to be assigned to generated tags. Tag names must be lower case.
+            """
+            data_path: str | None = None
+            """
+            Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values
+            inside dictionaries.
+            For Example: 'data_path: channel_group.id' would set the tag with the value of the channel id of
+            the interface. If there is no channel id, the tag is not created.
+            `data_path` is ignored if `value` is set.
+            """
+            value: str | None = None
+            """
+            Value to be assigned to the tag.
+            """
+
+        class DeviceTagsItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            name: Annotated[str, StrConvert(to_lower=True)] = None
+            """
+            Tag name to be assigned to generated tags. Tag names must be lower case.
+            """
+            data_path: str | None = None
+            """
+            Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values
+            inside dictionaries.
+            For Example: 'data_path: router_bfd.multihop.interval' would set the tag with the value of the
+            interval for multihop bfd. If this value is not specified in the structured config, the tag is not created.
+            `data_path`
+            is ignored if `value` is set.
+            """
+            value: str | None = None
+            """
+            Value to be assigned to the tag.
+            """
+
+        topology_hints: bool | None = False
+        """
+        Enable the generation of CloudVision Topology Tags (hints).
+        """
+        interface_tags: list[InterfaceTagsItem] | None = None
+        """
+        List of interface tags that should be generated.
+        """
+        device_tags: list[DeviceTagsItem] | None = None
+        """
+        List of device tags that should be generated.
+        """
 
     class HardwareCounters(EosCliConfigGen.HardwareCounters, BaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -1307,197 +1181,91 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             can be either ethernet_interfaces or port_channel_interfaces.
             """
 
-        class L3InterfacesProfilesItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, extra="forbid")
-
-            class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
-                model_config = ConfigDict(defer_build=True, extra="forbid")
-
-                pass
-
-            profile: str = None
-            """
-            L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.
-            """
-            interface: str | None = Field(None, pattern=r"Ethernet[\d/]+")
-            """
-            Ethernet interface name like 'Ethernet2'.
-            """
-            description: str | None = None
-            """
-            Interface description.
-            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
-            """
-            ip: str | None = None
-            """
-            Node IPv4 address/Mask or 'dhcp'.
-            """
-            set_default_route: bool | None = False
-            """
-            Insert a default route to the `peer_ip` if `ip` is an ip address
-            or configure to accept a default route from DHCP if
-            `ip` is `dhcp`.
-
-            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
-            """
-            enabled: bool | None = True
-            """
-            Enable or Shutdown the interface.
-            """
-            speed: str | None = None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-            """
-            peer: str | None = None
-            """
-            The peer device name. Used for description and documentation
-            """
-            peer_interface: str | None = None
-            """
-            The peer device interface. Used for description and documentation
-            """
-            peer_ip: str | None = None
-            """
-            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
-            address.
-            """
-            qos_profile: str | None = None
-            """
-            QOS service profile.
-            """
-            wan_carrier: str | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            The WAN Carrier this interface is connected to.
-            This is used to infer the
-            path-groups in which this interface should be configured.
-            """
-            wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            The WAN Circuit ID for this interface.
-            This is not rendered in the
-            configuration but used for WAN designs.
-            """
-            connected_to_pathfinder: bool | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            For a WAN interface (`wan_path_group` is set), allow to disable the static
-            tunnel towards Pathfinders.
-            Default True.
-            """
-            raw_eos_cli: str | None = None
-            """
-            EOS CLI rendered directly on the interface in the final EOS configuration.
-            """
-            structured_config: StructuredConfig | None = None
-            """
-            Custom structured config for the Ethernet interface.
-            """
-
-        class L3InterfacesItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, extra="forbid")
-
-            class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
-                model_config = ConfigDict(defer_build=True, extra="forbid")
-
-                pass
-
-            node: str = None
-            """
-            Device on which the interface should be configured.
-            """
-            profile: str | None = None
-            """
-            L3 interface profile name. Profile defined under l3_interfaces_profiles.
-            """
-            interface: str | None = Field(None, pattern=r"Ethernet[\d/]+")
-            """
-            Ethernet interface name like 'Ethernet2'.
-            """
-            description: str | None = None
-            """
-            Interface description.
-            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
-            """
-            ip: str | None = None
-            """
-            Node IPv4 address/Mask or 'dhcp'.
-            """
-            set_default_route: bool | None = False
-            """
-            Insert a default route to the `peer_ip` if `ip` is an ip address
-            or configure to accept a default route from DHCP if
-            `ip` is `dhcp`.
-
-            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
-            """
-            enabled: bool | None = True
-            """
-            Enable or Shutdown the interface.
-            """
-            speed: str | None = None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-            """
-            peer: str | None = None
-            """
-            The peer device name. Used for description and documentation
-            """
-            peer_interface: str | None = None
-            """
-            The peer device interface. Used for description and documentation
-            """
-            peer_ip: str | None = None
-            """
-            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
-            address.
-            """
-            qos_profile: str | None = None
-            """
-            QOS service profile.
-            """
-            wan_carrier: str | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            The WAN Carrier this interface is connected to.
-            This is used to infer the
-            path-groups in which this interface should be configured.
-            """
-            wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            The WAN Circuit ID for this interface.
-            This is not rendered in the
-            configuration but used for WAN designs.
-            """
-            connected_to_pathfinder: bool | None = None
-            """
-            PREVIEW: This key is currently not supported
-
-            For a WAN interface (`wan_path_group` is set), allow to disable the static
-            tunnel towards Pathfinders.
-            Default True.
-            """
-            raw_eos_cli: str | None = None
-            """
-            EOS CLI rendered directly on the interface in the final EOS configuration.
-            """
-            structured_config: StructuredConfig | None = None
-            """
-            Custom structured config for the Ethernet interface.
-            """
-
         p2p_links_ip_pools: list[P2pLinksIpPoolsItem] | None = None
         p2p_links_profiles: list[P2pLinksProfilesItem] | None = None
         p2p_links: list[P2pLinksItem] | None = None
-        l3_interfaces_profiles: list[L3InterfacesProfilesItem] | None = None
-        l3_interfaces: list[L3InterfacesItem] | None = None
+
+    class L3InterfaceProfilesItem(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            pass
+
+        profile: str = None
+        """
+        L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.
+        """
+        name: str | None = Field(None, pattern=r"Ethernet[\d/]+")
+        """
+        Ethernet interface name like 'Ethernet2'.
+        """
+        description: str | None = None
+        """
+        Interface description.
+        If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+        """
+        ip: str | None = None
+        """
+        Node IPv4 address/Mask or 'dhcp'.
+        """
+        set_default_route: bool | None = False
+        """
+        Insert a default route to the `peer_ip` if `ip` is an ip address
+        or configure to accept a default route from DHCP if
+        `ip` is `dhcp`.
+
+        AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+        """
+        enabled: bool | None = True
+        """
+        Enable or Shutdown the interface.
+        """
+        speed: str | None = None
+        """
+        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+        """
+        peer: str | None = None
+        """
+        The peer device name. Used for description and documentation
+        """
+        peer_interface: str | None = None
+        """
+        The peer device interface. Used for description and documentation
+        """
+        peer_ip: str | None = None
+        """
+        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
+        address.
+        """
+        qos_profile: str | None = None
+        """
+        QOS service profile.
+        """
+        wan_carrier: str | None = None
+        """
+        The WAN Carrier this interface is connected to.
+        This is used to infer the path-groups in which this interface should be
+        configured.
+        """
+        wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
+        """
+        The WAN Circuit ID for this interface.
+        This is not rendered in the configuration but used for WAN designs.
+        """
+        connected_to_pathfinder: bool | None = True
+        """
+        For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
+        """
+        raw_eos_cli: str | None = None
+        """
+        EOS CLI rendered directly on the interface in the final EOS configuration.
+        """
+        structured_config: StructuredConfig | None = None
+        """
+        Custom structured config for the Ethernet interface.
+        """
 
     class LocalUsersItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -1530,6 +1298,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
         """
         ssh_key: str | None = None
+        secondary_ssh_key: str | None = None
         shell: Literal["/bin/bash", "/bin/sh", "/sbin/nologin"] | None = None
         """
         Specify shell for the user
@@ -1817,9 +1586,23 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             class LacpFallback(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                mode: Literal["static"] | None = None
+                class Individual(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    profile: str | None = None
+                    """
+                    Port-profile name to inherit configuration.
+                    """
+
+                mode: Literal["static", "individual"] | None = None
                 """
-                Currently only static mode is supported.
+                Either static or individual mode is supported.
+                If the mode is set to "individual" the "individual.profile" setting must
+                be defined.
+                """
+                individual: Individual | None = None
+                """
+                Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to "individual".
                 """
                 timeout: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
@@ -2278,9 +2061,21 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Is this node type a L3 device.
         """
-        uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
+        uplink_type: Literal["p2p", "port-channel", "p2p-vrfs"] | None = "p2p"
         """
-        `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true.
+        `uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router` is true.
+
+        For `p2p-vrfs`, the uplinks are
+        configured as L3 interfaces with a subinterface for each VRF
+        in `network_services` present on both the uplink and the
+        downlink switch.
+        The subinterface ID is the `vrf_id`.
+        'underlay_router' and 'network_services.l3' must be set to true.
+        VRF `default` is always configured on the physical interface using the underlay routing protocol.
+        All subinterfaces use
+        the same IP address as the physical interface.
+        Multicast is not supported.
+        Only BGP is supported for subinterfaces.
         """
         vtep: bool | None = False
         """
@@ -2299,6 +2094,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Override interface_descriptions templates
         If description templates use Jinja2, they have to strip whitespaces using {%-
         -%} on any code blocks.
+        """
+        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None = None
+        """
+        PREVIEW: This key is currently not supported
+        Type that CloudVision should use when generating the Topology.
         """
 
     class NtpSettings(AvdDictBaseModel):
@@ -2814,9 +2614,23 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             class LacpFallback(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                mode: Literal["static"] | None = None
+                class Individual(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    profile: str | None = None
+                    """
+                    Port-profile name to inherit configuration.
+                    """
+
+                mode: Literal["static", "individual"] | None = None
                 """
-                Currently only static mode is supported.
+                Either static or individual mode is supported.
+                If the mode is set to "individual" the "individual.profile" setting must
+                be defined.
+                """
+                individual: Individual | None = None
+                """
+                Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to "individual".
                 """
                 timeout: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
@@ -4204,6 +4018,262 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Path-groups through which the Route Reflector/Pathfinder is reached.
         """
 
+    class WanVirtualTopologies(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class VrfsItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            name: Annotated[str, StrConvert(convert_types=(int))] = None
+            """
+            VRF name.
+            """
+            policy: str | None = None
+            """
+            Name of the AVT policy to apply to this VRF.
+            """
+
+        class ControlPlaneVirtualTopology(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class Constraints(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                jitter: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=10000)
+                """
+                Jitter requirement for this load balance policy in milliseconds.
+                """
+                latency: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=10000)
+                """
+                One way delay requirement for this load balance policy in milliseconds.
+                """
+                loss_rate: Annotated[str, StrConvert(convert_types=(int, float))] | None = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
+                """
+                Loss Rate requirement in percentage for this load balance policy.
+                Value between 0.00 and 100.00.
+                """
+
+            class PathGroupsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                names: list[str] = Field(None, min_length=1)
+                """
+                List of path-group names.
+                """
+                preference: Annotated[str, StrConvert(convert_types=(int))] | None = "preferred"
+                """
+                Valid values are 1-255 | preferred | alternate.
+
+                preferred is converted to priority 1.
+                alternate is converted to
+                priority 2.
+                """
+
+            name: str | None = None
+            """
+            Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
+            """
+            traffic_class: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=7)
+            """
+            Set traffic-class for matched traffic.
+            """
+            dscp: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=63)
+            """
+            Set DSCP for matched traffic.
+            """
+            constraints: Constraints | None = None
+            path_groups: list[PathGroupsItem] | None = Field(None, min_length=1)
+
+        class PoliciesItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class ApplicationVirtualTopologiesItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class Constraints(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    jitter: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=10000)
+                    """
+                    Jitter requirement for this load balance policy in milliseconds.
+                    """
+                    latency: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=10000)
+                    """
+                    One way delay requirement for this load balance policy in milliseconds.
+                    """
+                    loss_rate: Annotated[str, StrConvert(convert_types=(int, float))] | None = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
+                    """
+                    Loss Rate requirement in percentage for this load balance policy.
+                    Value between 0.00 and 100.00.
+                    """
+
+                class PathGroupsItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    names: list[str] = Field(None, min_length=1)
+                    """
+                    List of path-group names.
+                    """
+                    preference: Annotated[str, StrConvert(convert_types=(int))] | None = "preferred"
+                    """
+                    Valid values are 1-255 | preferred | alternate.
+
+                    preferred is converted to priority 1.
+                    alternate is converted to
+                    priority 2.
+                    """
+
+                application_profile: str = None
+                """
+                The application profile to use for this virtual topology. It must be a defined `application_profile`.
+                """
+                name: str | None = None
+                """
+                Optional name, if not set `<policy_name>-<application_profile>` is used.
+                """
+                id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=253)
+                """
+                ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.
+                ID 1 is reserved for the
+                default_virtual_toplogy.
+                ID 254 is reserved for the control_plane_virtual_topology.
+                """
+                traffic_class: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=7)
+                """
+                Set traffic-class for matched traffic.
+                """
+                dscp: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=63)
+                """
+                Set DSCP for matched traffic.
+                """
+                constraints: Constraints | None = None
+                path_groups: list[PathGroupsItem] | None = Field(None, min_length=1)
+
+            class DefaultVirtualTopology(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class Constraints(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    jitter: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=10000)
+                    """
+                    Jitter requirement for this load balance policy in milliseconds.
+                    """
+                    latency: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=10000)
+                    """
+                    One way delay requirement for this load balance policy in milliseconds.
+                    """
+                    loss_rate: Annotated[str, StrConvert(convert_types=(int, float))] | None = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
+                    """
+                    Loss Rate requirement in percentage for this load balance policy.
+                    Value between 0.00 and 100.00.
+                    """
+
+                class PathGroupsItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    names: list[str] = Field(None, min_length=1)
+                    """
+                    List of path-group names.
+                    """
+                    preference: Annotated[str, StrConvert(convert_types=(int))] | None = "preferred"
+                    """
+                    Valid values are 1-255 | preferred | alternate.
+
+                    preferred is converted to priority 1.
+                    alternate is converted to
+                    priority 2.
+                    """
+
+                name: str | None = None
+                """
+                Optional name, if not set `<policy_name>-DEFAULT` is used.
+                """
+                drop_unmatched: bool | None = False
+                """
+                When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped.
+                """
+                traffic_class: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=7)
+                """
+                Set traffic-class for matched traffic.
+                """
+                dscp: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=63)
+                """
+                Set DSCP for matched traffic.
+                """
+                constraints: Constraints | None = None
+                path_groups: list[PathGroupsItem] | None = Field(None, min_length=1)
+
+            name: str = None
+            """
+            Name of the AVT policy.
+            """
+            application_virtual_topologies: list[ApplicationVirtualTopologiesItem] | None = None
+            """
+            List of application specific virtual topologies.
+            """
+            default_virtual_topology: DefaultVirtualTopology = None
+            """
+            Default match for the policy.
+            If no default match should be configured, set `drop_unmatched` to `true`.
+            Otherwise, in CV
+            Pathfinder mode, a default AVT profile will be configured with ID 1.
+            """
+
+        vrfs: list[VrfsItem] | None = None
+        """
+        Map a VRF that exists in network_services to an AVT policy.
+        TODO: missing default VRF behavior
+        """
+        control_plane_virtual_topology: ControlPlaneVirtualTopology | None = None
+        """
+        Always injected into the default VRF policy as the first entry.
+
+        By default, if no path-groups are specified, all
+        locally available path-groups
+        are used in the generated load-balance policy.
+        ID is hardcoded to 254 for the AVT profile
+        in CV Pathfinder mode.
+        """
+        policies: list[PoliciesItem] | None = None
+        """
+        List of virtual toplogies policies.
+
+        For AutoVPN, each item in the list creates:
+          * one policy with:
+              * one
+        `match` entry per `application_virtual_topologies` item
+                they are indexed using `10 * <list_index>` where
+        `list_index` starts at `1`.
+              * one `default-match`
+          * one load-balance policy per `application_virtual_topologies`
+        and one for the `default_virtual_topology`.
+          * if the policy is associated with the default VRF, a special control-
+        plane rule is injected
+            in the policy with index `1` referring to a control-plane load-balance policy as defined
+        under
+            `control_plane_virtual_topology`.
+
+
+        For CV Pathfinder, each item in the list creates:
+          * one policy with:
+        * one `match` entry per `application_virtual_topologies` item ordered as in the model.
+              * one last match entry for
+        the `default` application-profile using `default_virtual_topology` information.
+          * one profile per
+        `application_virtual_topologies` item.
+          * one profile for the `default_virtual_topology`..
+          * one load-balance policy
+        per `application_virtual_topologies`.
+          * one load_balance policy for the `default_virtual_topology`.
+          * if the policy
+        is associated with the default VRF, a special control-plane profile is configured
+            and injected first in the policy
+        assigned to the `default` VRF. This profile points to a
+            control-plane load-balance policy as defined under
+        `control_plane_virtual_topology`.
+        """
+
     class CustomStructuredConfiguration(BaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -4490,9 +4560,23 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         class LacpFallback(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            mode: Literal["static"] | None = None
+                            class Individual(AvdDictBaseModel):
+                                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                                profile: str | None = None
+                                """
+                                Port-profile name to inherit configuration.
+                                """
+
+                            mode: Literal["static", "individual"] | None = None
                             """
-                            Currently only static mode is supported.
+                            Either static or individual mode is supported.
+                            If the mode is set to "individual" the "individual.profile" setting must
+                            be defined.
+                            """
+                            individual: Individual | None = None
+                            """
+                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to "individual".
                             """
                             timeout: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             """
@@ -5607,6 +5691,32 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.
                         """
 
+                    class LoopbacksItem(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        class Ospf(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            enabled: bool | None = False
+                            area: Annotated[str, StrConvert(convert_types=(int))] | None = "0"
+                            """
+                            OSPF area ID.
+                            """
+
+                        node: str = None
+                        loopback: int = Field(None, ge=0, le=8191)
+                        ip_address: str = None
+                        description: str | None = None
+                        enabled: bool | None = True
+                        ospf: Ospf | None = None
+                        """
+                        OSPF interface configuration.
+                        """
+                        raw_eos_cli: str | None = None
+                        """
+                        EOS CLI rendered directly on the Loopback interface in the final EOS configuration.
+                        """
+
                     class StaticRoutesItem(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -5922,6 +6032,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     List of L3 interfaces.
                     This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses
                     must match.
+                    """
+                    loopbacks: list[LoopbacksItem] | None = None
+                    """
+                    List of Loopback interfaces.
+                    This will create Loopback interfaces inside the VRF.
                     """
                     static_routes: list[StaticRoutesItem] | None = None
                     """
@@ -6595,6 +6710,88 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         dscp: Dscp | None = None
                         monitor: Monitor | None = None
 
+                    class L3InterfacesItem(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            pass
+
+                        profile: str | None = None
+                        """
+                        L3 interface profile name. Profile defined under `l3_interface_profiles`.
+                        """
+                        name: str = Field(None, pattern=r"Ethernet[\d/]+")
+                        """
+                        Ethernet interface name like 'Ethernet2'.
+                        """
+                        description: str | None = None
+                        """
+                        Interface description.
+                        If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+                        """
+                        ip: str | None = None
+                        """
+                        Node IPv4 address/Mask or 'dhcp'.
+                        """
+                        set_default_route: bool | None = False
+                        """
+                        Insert a default route to the `peer_ip` if `ip` is an ip address
+                        or configure to accept a default route from DHCP if
+                        `ip` is `dhcp`.
+
+                        AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+                        """
+                        enabled: bool | None = True
+                        """
+                        Enable or Shutdown the interface.
+                        """
+                        speed: str | None = None
+                        """
+                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                        """
+                        peer: str | None = None
+                        """
+                        The peer device name. Used for description and documentation
+                        """
+                        peer_interface: str | None = None
+                        """
+                        The peer device interface. Used for description and documentation
+                        """
+                        peer_ip: str | None = None
+                        """
+                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
+                        address.
+                        """
+                        qos_profile: str | None = None
+                        """
+                        QOS service profile.
+                        """
+                        wan_carrier: str | None = None
+                        """
+                        The WAN Carrier this interface is connected to.
+                        This is used to infer the path-groups in which this interface should be
+                        configured.
+                        """
+                        wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                        """
+                        The WAN Circuit ID for this interface.
+                        This is not rendered in the configuration but used for WAN designs.
+                        """
+                        connected_to_pathfinder: bool | None = True
+                        """
+                        For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
+                        """
+                        raw_eos_cli: str | None = None
+                        """
+                        EOS CLI rendered directly on the interface in the final EOS configuration.
+                        """
+                        structured_config: StructuredConfig | None = None
+                        """
+                        Custom structured config for the Ethernet interface.
+                        """
+
                     id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Unique identifier used for IP addressing and other algorithms.
@@ -6667,7 +6864,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Custom structured config for eos_cli_config_gen.
                     """
-                    uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
+                    uplink_type: Literal["p2p", "port-channel", "p2p-vrfs"] | None = "p2p"
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
                     `uplink_type` must be "p2p" if `vtep` or
@@ -7183,6 +7380,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     If not set, and the device is WAN
                     device, a default value of 1000 is used.
                     """
+                    l3_interfaces: list[L3InterfacesItem] | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    L3 Interfaces currently only use for WAN interfaces.
+                    """
 
                 class NodeGroupsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -7471,6 +7674,88 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             dscp: Dscp | None = None
                             monitor: Monitor | None = None
 
+                        class L3InterfacesItem(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
+                                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                                pass
+
+                            profile: str | None = None
+                            """
+                            L3 interface profile name. Profile defined under `l3_interface_profiles`.
+                            """
+                            name: str = Field(None, pattern=r"Ethernet[\d/]+")
+                            """
+                            Ethernet interface name like 'Ethernet2'.
+                            """
+                            description: str | None = None
+                            """
+                            Interface description.
+                            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+                            """
+                            ip: str | None = None
+                            """
+                            Node IPv4 address/Mask or 'dhcp'.
+                            """
+                            set_default_route: bool | None = False
+                            """
+                            Insert a default route to the `peer_ip` if `ip` is an ip address
+                            or configure to accept a default route from DHCP if
+                            `ip` is `dhcp`.
+
+                            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+                            """
+                            enabled: bool | None = True
+                            """
+                            Enable or Shutdown the interface.
+                            """
+                            speed: str | None = None
+                            """
+                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                            """
+                            peer: str | None = None
+                            """
+                            The peer device name. Used for description and documentation
+                            """
+                            peer_interface: str | None = None
+                            """
+                            The peer device interface. Used for description and documentation
+                            """
+                            peer_ip: str | None = None
+                            """
+                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
+                            address.
+                            """
+                            qos_profile: str | None = None
+                            """
+                            QOS service profile.
+                            """
+                            wan_carrier: str | None = None
+                            """
+                            The WAN Carrier this interface is connected to.
+                            This is used to infer the path-groups in which this interface should be
+                            configured.
+                            """
+                            wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                            """
+                            The WAN Circuit ID for this interface.
+                            This is not rendered in the configuration but used for WAN designs.
+                            """
+                            connected_to_pathfinder: bool | None = True
+                            """
+                            For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
+                            """
+                            raw_eos_cli: str | None = None
+                            """
+                            EOS CLI rendered directly on the interface in the final EOS configuration.
+                            """
+                            structured_config: StructuredConfig | None = None
+                            """
+                            Custom structured config for the Ethernet interface.
+                            """
+
                         name: str = None
                         """
                         The Node Name is used as "hostname".
@@ -7547,7 +7832,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Custom structured config for eos_cli_config_gen.
                         """
-                        uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
+                        uplink_type: Literal["p2p", "port-channel", "p2p-vrfs"] | None = "p2p"
                         """
                         Override the default `uplink_type` set at the `node_type_key` level.
                         `uplink_type` must be "p2p" if `vtep` or
@@ -8063,6 +8348,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         If not set, and the device is WAN
                         device, a default value of 1000 is used.
                         """
+                        l3_interfaces: list[L3InterfacesItem] | None = None
+                        """
+                        PREVIEW: This key is currently not supported
+
+                        L3 Interfaces currently only use for WAN interfaces.
+                        """
 
                     class LinkTracking(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -8345,6 +8636,88 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         dscp: Dscp | None = None
                         monitor: Monitor | None = None
 
+                    class L3InterfacesItem(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            pass
+
+                        profile: str | None = None
+                        """
+                        L3 interface profile name. Profile defined under `l3_interface_profiles`.
+                        """
+                        name: str = Field(None, pattern=r"Ethernet[\d/]+")
+                        """
+                        Ethernet interface name like 'Ethernet2'.
+                        """
+                        description: str | None = None
+                        """
+                        Interface description.
+                        If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+                        """
+                        ip: str | None = None
+                        """
+                        Node IPv4 address/Mask or 'dhcp'.
+                        """
+                        set_default_route: bool | None = False
+                        """
+                        Insert a default route to the `peer_ip` if `ip` is an ip address
+                        or configure to accept a default route from DHCP if
+                        `ip` is `dhcp`.
+
+                        AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+                        """
+                        enabled: bool | None = True
+                        """
+                        Enable or Shutdown the interface.
+                        """
+                        speed: str | None = None
+                        """
+                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                        """
+                        peer: str | None = None
+                        """
+                        The peer device name. Used for description and documentation
+                        """
+                        peer_interface: str | None = None
+                        """
+                        The peer device interface. Used for description and documentation
+                        """
+                        peer_ip: str | None = None
+                        """
+                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
+                        address.
+                        """
+                        qos_profile: str | None = None
+                        """
+                        QOS service profile.
+                        """
+                        wan_carrier: str | None = None
+                        """
+                        The WAN Carrier this interface is connected to.
+                        This is used to infer the path-groups in which this interface should be
+                        configured.
+                        """
+                        wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                        """
+                        The WAN Circuit ID for this interface.
+                        This is not rendered in the configuration but used for WAN designs.
+                        """
+                        connected_to_pathfinder: bool | None = True
+                        """
+                        For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
+                        """
+                        raw_eos_cli: str | None = None
+                        """
+                        EOS CLI rendered directly on the interface in the final EOS configuration.
+                        """
+                        structured_config: StructuredConfig | None = None
+                        """
+                        Custom structured config for the Ethernet interface.
+                        """
+
                     group: str = None
                     """
                     The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
@@ -8427,7 +8800,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Custom structured config for eos_cli_config_gen.
                     """
-                    uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
+                    uplink_type: Literal["p2p", "port-channel", "p2p-vrfs"] | None = "p2p"
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
                     `uplink_type` must be "p2p" if `vtep` or
@@ -8942,6 +9315,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     MSS value for IPv4 the DPS interface.
                     If not set, and the device is WAN
                     device, a default value of 1000 is used.
+                    """
+                    l3_interfaces: list[L3InterfacesItem] | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    L3 Interfaces currently only use for WAN interfaces.
                     """
 
                 class NodesItem(AvdDictBaseModel):
@@ -9228,6 +9607,88 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         dscp: Dscp | None = None
                         monitor: Monitor | None = None
 
+                    class L3InterfacesItem(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            pass
+
+                        profile: str | None = None
+                        """
+                        L3 interface profile name. Profile defined under `l3_interface_profiles`.
+                        """
+                        name: str = Field(None, pattern=r"Ethernet[\d/]+")
+                        """
+                        Ethernet interface name like 'Ethernet2'.
+                        """
+                        description: str | None = None
+                        """
+                        Interface description.
+                        If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+                        """
+                        ip: str | None = None
+                        """
+                        Node IPv4 address/Mask or 'dhcp'.
+                        """
+                        set_default_route: bool | None = False
+                        """
+                        Insert a default route to the `peer_ip` if `ip` is an ip address
+                        or configure to accept a default route from DHCP if
+                        `ip` is `dhcp`.
+
+                        AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+                        """
+                        enabled: bool | None = True
+                        """
+                        Enable or Shutdown the interface.
+                        """
+                        speed: str | None = None
+                        """
+                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                        """
+                        peer: str | None = None
+                        """
+                        The peer device name. Used for description and documentation
+                        """
+                        peer_interface: str | None = None
+                        """
+                        The peer device interface. Used for description and documentation
+                        """
+                        peer_ip: str | None = None
+                        """
+                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
+                        address.
+                        """
+                        qos_profile: str | None = None
+                        """
+                        QOS service profile.
+                        """
+                        wan_carrier: str | None = None
+                        """
+                        The WAN Carrier this interface is connected to.
+                        This is used to infer the path-groups in which this interface should be
+                        configured.
+                        """
+                        wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                        """
+                        The WAN Circuit ID for this interface.
+                        This is not rendered in the configuration but used for WAN designs.
+                        """
+                        connected_to_pathfinder: bool | None = True
+                        """
+                        For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
+                        """
+                        raw_eos_cli: str | None = None
+                        """
+                        EOS CLI rendered directly on the interface in the final EOS configuration.
+                        """
+                        structured_config: StructuredConfig | None = None
+                        """
+                        Custom structured config for the Ethernet interface.
+                        """
+
                     name: str = None
                     """
                     The Node Name is used as "hostname".
@@ -9304,7 +9765,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Custom structured config for eos_cli_config_gen.
                     """
-                    uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
+                    uplink_type: Literal["p2p", "port-channel", "p2p-vrfs"] | None = "p2p"
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
                     `uplink_type` must be "p2p" if `vtep` or
@@ -9820,6 +10281,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     If not set, and the device is WAN
                     device, a default value of 1000 is used.
                     """
+                    l3_interfaces: list[L3InterfacesItem] | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    L3 Interfaces currently only use for WAN interfaces.
+                    """
 
                 defaults: Defaults | None = None
                 """
@@ -9864,6 +10331,10 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Internal list of mappings from dynamic_keys_path to model_key.
         """
 
+    application_traffic_recognition: ApplicationTrafficRecognition | None = None
+    """
+    PREVIEW: WAN Preview
+    """
     avd_data_conversion_mode: Literal["disabled", "error", "warning", "info", "debug", "quiet"] | None = "debug"
     """
     Conversion Mode for AVD input data conversion.
@@ -9910,9 +10381,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     It is best practice to disable activation.
     """
     bgp_distance: BgpDistance | None = None
-    bgp_ecmp: Annotated[int, IntConvert(convert_types=(str))] | None = 4
+    bgp_ecmp: Annotated[int, IntConvert(convert_types=(str))] | None = None
     """
     Maximum ECMP for BGP multi-path.
+    The default value is 4 except for WAN Routers where the default value is unset (falls
+    back to EOS default).
     """
     bgp_graceful_restart: BgpGracefulRestart | None = None
     """
@@ -9921,9 +10394,10 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     Its neighbors (receiving speakers) may retain routing information from the restarting
     speaker while a BGP session with it is being re-established, reducing route flapping.
     """
-    bgp_maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = Field(4, ge=1, le=512)
+    bgp_maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=512)
     """
     Maximum Paths for BGP multi-path.
+    The default value is 4 except for WAN Routers where the default value is 16.
     """
     bgp_mesh_pes: bool | None = False
     """
@@ -10041,6 +10515,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     PREVIEW: This key is currently not supported
     Define the SDWAN hierarchy for the device.
     """
+    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None = None
+    """
+    PREVIEW: This key is currently not supported
+    Device type that CloudVision should use when generating the Topology.
+    Defaults to the setting under node_type_keys.
+    """
     cv_topology: list[CvTopologyItem] | None = None
     """
     Generate AVD configurations directly from the given CloudVision topology.
@@ -10081,6 +10561,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     If not set the default locations for on-premise or CVaaS
     will be used.
     See cvp_ingestauth_key for details.
+    """
+    data_plane_cpu_allocation_max: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=128)
+    """
+    Set the maximum number of CPU used for the data plane.
+    This setting is useful on virtual Route Reflectors and
+    Pathfinders node.
     """
     dc_name: str | None = None
     """
@@ -10214,6 +10700,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group
     name.
     """
+    generate_cv_tags: GenerateCvTags | None = None
+    """
+    PREVIEW: This key is currently not supported
+    Generate CloudVision Tags based on AVD data.
+    """
     hardware_counters: HardwareCounters | None = None
     internal_vlan_order: InternalVlanOrder | None = Field({"allocation": "ascending", "range": {"beginning": 1006, "ending": 1199}}, validate_default=True)
     """
@@ -10258,6 +10749,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     """
     isis_ti_lfa: IsisTiLfa | None = None
     l3_edge: L3Edge | None = None
+    l3_interface_profiles: list[L3InterfaceProfilesItem] | None = None
+    """
+    PREVIEW: This key is currently not supported
+
+    Profiles to inherit common settings for l3_interfaces defined under the
+    node type key.
+    These profiles will *not* work for `l3_interfaces` defined under `vrfs`.
+    """
     local_users: list[LocalUsersItem] | None = None
     mac_address_table: MacAddressTable | None = None
     """
@@ -10321,6 +10820,19 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     fabric.
     The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify
     them.
+    """
+    new_network_services_bgp_vrf_config: bool | None = None
+    """
+    Set this key to `true` in the node type to generate full BGP configuration
+    for network services even when `evpn` is not
+    in the address families
+    (`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).
+
+    This is `false` by
+    default except if `uplink_type` is set to `p2p-vrfs`, then the default value is `true`.
+
+    This may introduce breaking
+    changes to your configuration.
     """
     node_type_keys: list[NodeTypeKeysItem] | None = None
     """
@@ -10778,6 +11290,15 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     When the route server is part
     of the same inventory as the WAN routers,
     only the name is required.
+    """
+    wan_virtual_topologies: WanVirtualTopologies | None = None
+    """
+    PREVIEW: WAN Preview
+
+    Configure Virtual Topologies for CV Pathfinder and AutoVPN.
+
+    Auto create a control plane
+    profile/policy/application and enforce it being first in the default VRF.
     """
     custom_structured_configurations: list[CustomStructuredConfiguration] | None = None
     dynamic_keys: DynamicKeys | None = None

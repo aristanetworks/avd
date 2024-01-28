@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import json
@@ -16,10 +16,11 @@ sys.path.insert(0, str(Path(__file__).parents[3]))
 
 import pyavd.schema.models
 import pyavd.schema.types
-from pyavd.schema.constants import STORE
-from pyavd.schema.generate_pydantic.models import PydanticFileSrc
-from pyavd.schema.generate_pydantic.utils import generate_class_name
-from pyavd.schema.metaschema.meta_schema_model import AristaAvdSchema
+
+from schema_tools.generate_pydantic.models import PydanticFileSrc
+from schema_tools.generate_pydantic.utils import generate_class_name
+from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
+from schema_tools.store import create_store
 
 TEST_DATA = [
     # (schema_name: str, data_file: str | none)
@@ -28,6 +29,8 @@ TEST_DATA = [
     ("eos_cli_config_gen", "ethernet-interfaces.json"),
     ("eos_designs", "DC1-BL1A.json"),
 ]
+
+TEST_SCHEMAS_FROM_STORE = ["eos_cli_config_gen", "eos_designs"]
 
 
 def load_data_file(data_file: Path) -> dict:
@@ -40,7 +43,13 @@ def load_data_file(data_file: Path) -> dict:
     return data
 
 
-@pytest.mark.parametrize("schema_name", STORE.keys())
+# Loading from YAML to get the schema with $refs in it instead of the fully resolved schema stored in the .pickle files.
+STORE = create_store(load_from_yaml=True)
+
+sys.path.insert(0, str(Path(__file__).parent))
+
+
+@pytest.mark.parametrize("schema_name", TEST_SCHEMAS_FROM_STORE)
 def test_generate_pydantic_src(schema_name: str):
     """
     Builds pydantic models from the schemas in the schema store.
@@ -86,7 +95,7 @@ def test_import_and_load_model(schema_name: str, data_file: str, artifacts_path:
     assert model.model_dump(by_alias=True) != data
 
 
-@pytest.mark.parametrize("schema_name", STORE.keys())
+@pytest.mark.parametrize("schema_name", TEST_SCHEMAS_FROM_STORE)
 def test_benchmark_import(schema_name: str, benchmark: BenchmarkFixture):
     """
     Benchmark imports the generated pydantic models.

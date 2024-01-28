@@ -27,7 +27,7 @@ def test_get_md_tabs(table_name: str, schema_store, artifacts_path, output_path)
     output_file = output_path.joinpath(f"{table_name}.md")
     expected_file = artifacts_path.joinpath(f"expected-{table_name}.md")
 
-    def mocked_create_store():
+    def mocked_create_store(**kwargs):
         return schema_store
 
     with patch("schema_tools.metaschema.resolvemodel.create_store", new=mocked_create_store):
