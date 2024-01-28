@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).parents[3]
+REPO_ROOT = Path(__file__).parents[2]
 EOS_DESIGNS_SCHEMA_DIR = REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/eos_designs/schemas")
 EOS_DESIGNS_SCHEMA_PATH = EOS_DESIGNS_SCHEMA_DIR.joinpath("eos_designs.schema.yml")
 EOS_DESIGNS_FRAGMENTS_PATH = EOS_DESIGNS_SCHEMA_DIR.joinpath("schema_fragments")
@@ -37,5 +37,9 @@ PICKLED_SCHEMAS = {
 JSONSCHEMA_PATHS = {
     "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_JSONSCHEMA_PATH,
     "eos_designs": EOS_DESIGNS_JSONSCHEMA_PATH,
+}
+PYDANTIC_MODEL_PATHS = {
+    "eos_cli_config_gen": REPO_ROOT.joinpath("python-avd/pyavd/schema/eos_cli_config_gen.py"),
+    "eos_designs": REPO_ROOT.joinpath("python-avd/pyavd/schema/eos_designs.py"),
 }
 LICENSE_HEADER = REPO_ROOT.joinpath("development/license-short.txt").read_text(encoding="UTF-8").strip()
