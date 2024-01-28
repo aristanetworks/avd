@@ -5,13 +5,12 @@ from glob import iglob
 from pathlib import Path
 
 import pytest
-from pyavd import get_avd_facts
 
-from ..utils import read_file, read_vars
+from ...utils import read_file, read_vars
 
-VARS_PATH = Path(Path(__file__).parent, "../artifacts/eos_designs_unit_tests/vars")
-STRUCTURED_CONFIGS_PATH = Path(Path(__file__).parent, "../artifacts/eos_designs_unit_tests/structured_configs")
-CONFIGS_PATH = Path(Path(__file__).parent, "../artifacts/eos_designs_unit_tests/configs")
+VARS_PATH = Path(Path(__file__).parent, "../artifacts/eos_cli_config_gen/vars")
+CONFIGS_PATH = Path(Path(__file__).parent, "../artifacts/eos_cli_config_gen/configs")
+DOCS_PATH = Path(Path(__file__).parent, "../artifacts/eos_cli_config_gen/documentation")
 
 
 def get_hostnames():
@@ -44,38 +43,10 @@ def all_inputs() -> dict[str, dict]:
     return inputs
 
 
-@pytest.fixture(scope="module")
-def avd_facts(all_inputs: dict):
-    """
-    Test get_avd_facts
-    """
-    return get_avd_facts(all_inputs)
-
-
 @pytest.fixture(scope="module", params=get_hostnames())
 def hostname(request) -> dict:
     hostname = request.param
     return hostname
-
-
-@pytest.fixture(scope="module")
-def structured_configs() -> dict:
-    """
-    Return dict with all structured_configs like
-    {
-        "hostname1": dict
-        "hostname2": dict
-    }
-    The contents are extracted from Ansible molecule scenarios.
-    """
-    assert Path(STRUCTURED_CONFIGS_PATH).is_dir()
-
-    result = {}
-    for filename in iglob(f"{STRUCTURED_CONFIGS_PATH}/*"):
-        hostname = Path(filename).name.removesuffix(".yaml").removesuffix(".yml").removesuffix(".json")
-        result[hostname] = read_vars(filename)
-
-    return result
 
 
 @pytest.fixture(scope="module")
@@ -93,6 +64,26 @@ def configs() -> dict:
     result = {}
     for filename in iglob(f"{CONFIGS_PATH}/*"):
         hostname = Path(filename).name.removesuffix(".cfg")
+        result[hostname] = read_file(filename)
+
+    return result
+
+
+@pytest.fixture(scope="module")
+def device_docs() -> dict:
+    """
+    Return dict with all docs like
+    {
+        "hostname1": str
+        "hostname2": str
+    }
+    The contents are extracted from Ansible molecule scenarios.
+    """
+    assert Path(DOCS_PATH).is_dir()
+
+    result = {}
+    for filename in iglob(f"{DOCS_PATH}/*"):
+        hostname = Path(filename).name.removesuffix(".md")
         result[hostname] = read_file(filename)
 
     return result
