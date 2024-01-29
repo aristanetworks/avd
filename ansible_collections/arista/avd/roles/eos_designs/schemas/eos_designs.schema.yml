@@ -3570,9 +3570,10 @@ keys:
         hostname:
           type: str
           description: Route-Reflector hostname.
-        router_id:
+        vtep_ip:
           type: str
-          description: Route-Reflector router id.
+          description: Route-Reflector VTEP IP Address. This is usually the IP address
+            under `interface Dps1`.
         path_groups:
           type: list
           description: Path-groups through which the Route Reflector/Pathfinder is
@@ -7443,15 +7444,13 @@ $defs:
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration
-            type: int
-            $ref: eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4
+            type: str
+            $ref: eos_cli_config_gen#/keys/router_path_selection/keys/tcp_mss_ceiling/keys/ipv4_segment_size
             description: 'PREVIEW: This key is currently not supported
 
 
-              MSS value for IPv4 the DPS interface.
-
-              If not set, and the device is WAN device, a default value of 1000 is
-              used.'
+              IPv4 MSS value configured under "router path-selection" on WAN Devices.'
+            default: auto
           l3_interfaces:
             type: list
             $ref: eos_designs#/$defs/node_type_l3_interfaces

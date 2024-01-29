@@ -69,11 +69,11 @@ class RouterBgpMixin(UtilsMixin):
             for prefix in self.shared_utils.wan_listen_ranges
         ] or None
 
-    def _generate_base_peer_group(self, pg_type: str, pg_name: str, maximum_routes: int = 0) -> dict:
+    def _generate_base_peer_group(self, pg_type: str, pg_name: str, maximum_routes: int = 0, update_source: str = "Loopback0") -> dict:
         return {
             "name": self.shared_utils.bgp_peer_groups[pg_name]["name"],
             "type": pg_type,
-            "update_source": "Loopback0",
+            "update_source": update_source,
             "bfd": self.shared_utils.bgp_peer_groups[pg_name]["bfd"],
             "password": self.shared_utils.bgp_peer_groups[pg_name]["password"],
             "send_community": "all",
@@ -119,33 +119,40 @@ class RouterBgpMixin(UtilsMixin):
                 peer_groups.append(mpls_peer_group)
 
             if self.shared_utils.overlay_evpn_vxlan is True:
+                peer_group_config = {"remote_as": self.shared_utils.bgp_as}
                 if self.shared_utils.wan_role:
                     # WAN OVERLAY peer group
-                    peer_group_type = "wan"
-                    peer_group_name = "wan_overlay_peers"
-                    is_server = self.shared_utils.wan_role == "server"
                     # TODO Add TTL max hop to the peer group on the Pathfinder once agreed upon
+                    if self.shared_utils.wan_role == "server":
+                        peer_group_config["route_reflector_client"] = True
+                    peer_groups.append(
+                        {
+                            **self._generate_base_peer_group("wan", "wan_overlay_peers", update_source=self.shared_utils.vtep_loopback),
+                            **peer_group_config,
+                        }
+                    )
                 else:
                     # EVPN OVERLAY peer group - also in EBGP..
-                    peer_group_type = "evpn"
-                    peer_group_name = "evpn_overlay_peers"
-                    is_server = self.shared_utils.evpn_role == "server"
-
-                ibgp_peer_group = {
-                    **self._generate_base_peer_group(peer_group_type, peer_group_name),
-                    "remote_as": self.shared_utils.bgp_as,
-                }
-                if is_server:
-                    ibgp_peer_group["route_reflector_client"] = True
-
-                peer_groups.append(ibgp_peer_group)
+                    if self.shared_utils.evpn_role == "server":
+                        peer_group_config["route_reflector_client"] = True
+                    peer_groups.append(
+                        {
+                            **self._generate_base_peer_group("evpn", "evpn_overlay_peers"),
+                            **peer_group_config,
+                        }
+                    )
 
             # RR Overlay peer group rendered either for MPLS ir WAN RRs.
             if self._is_mpls_server is True:
                 peer_groups.append({**self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
 
             if self._is_wan_server_with_peers:
-                peer_groups.append({**self._generate_base_peer_group("wan", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
+                peer_groups.append(
+                    {
+                        **self._generate_base_peer_group("wan", "rr_overlay_peers", update_source=self.shared_utils.vtep_loopback),
+                        "remote_as": self.shared_utils.bgp_as,
+                    }
+                )
 
         # same for ebgp and ibgp
         if self.shared_utils.overlay_ipvpn_gateway is True:
@@ -229,7 +236,8 @@ class RouterBgpMixin(UtilsMixin):
                     address_family_evpn["neighbor_default"]["next_hop_self_source_interface"] = "Loopback0"
 
             # partly duplicate with ebgp
-            if self.shared_utils.overlay_vtep is True:
+            # Do not render the route-maps if it is a WAN router
+            if self.shared_utils.overlay_vtep is True and self.shared_utils.wan_role is None:
                 if (peer_group := get_item(peer_groups, "name", overlay_peer_group_name)) is not None:
                     peer_group.update(
                         {
@@ -479,18 +487,18 @@ class RouterBgpMixin(UtilsMixin):
                     neighbors.append(neighbor)
 
             if self.shared_utils.wan_role == "client":
-                if not self._router_id_in_listen_ranges(self.shared_utils.wan_listen_ranges):
+                if not self._ip_in_listen_ranges(self.shared_utils.vtep_ip, self.shared_utils.wan_listen_ranges):
                     raise AristaAvdError(
-                        f"Loopback0 IP {self.shared_utils.router_id} is not in the Route Reflector listen range prefixes"
+                        f"{self.shared_utils.vtep_loopback} IP {self.shared_utils.vtep_ip} is not in the Route Reflector listen range prefixes"
                         " 'bgp_peer_groups.wan_overlay_peers.listen_range_prefixes'."
                     )
                 for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
-                    neighbor = self._create_neighbor(data["router_id"], wan_route_server, self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"])
+                    neighbor = self._create_neighbor(data["vtep_ip"], wan_route_server, self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"])
                     neighbors.append(neighbor)
             if self.shared_utils.wan_role == "server":
                 # No neighbor configured on the `wan_overlay_peers` peer group as it is covered by listen ranges
                 for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
-                    neighbor = self._create_neighbor(data["router_id"], wan_route_server, self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"])
+                    neighbor = self._create_neighbor(data["vtep_ip"], wan_route_server, self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"])
                     neighbors.append(neighbor)
 
         for ipvpn_gw_peer, data in natural_sort(self._ipvpn_gateway_remote_peers.items()):
@@ -508,11 +516,11 @@ class RouterBgpMixin(UtilsMixin):
 
         return None
 
-    def _router_id_in_listen_ranges(self, listen_range_prefixes: list) -> bool:
+    def _ip_in_listen_ranges(self, source_ip: str, listen_range_prefixes: list) -> bool:
         """
         Check if our source IP is in any of the listen range prefixes
         """
-        source_ip = ipaddress.ip_address(self.shared_utils.router_id)
+        source_ip = ipaddress.ip_address(source_ip)
         return any(source_ip in ipaddress.ip_network(prefix) for prefix in listen_range_prefixes)
 
     def _bgp_overlay_dpath(self) -> dict | None:

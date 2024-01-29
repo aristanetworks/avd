@@ -19,7 +19,7 @@ class PrefixListsMixin(UtilsMixin):
         """
         Return structured config for prefix_lists
         """
-        if self.shared_utils.underlay_bgp is not True:
+        if self.shared_utils.underlay_bgp is not True and not self.shared_utils.wan_role:
             return None
 
         if self.shared_utils.overlay_routing_protocol == "none":
@@ -31,10 +31,10 @@ class PrefixListsMixin(UtilsMixin):
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
         sequence_numbers = [{"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv4_pool} eq 32"}]
 
-        if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0":
+        if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0" and not self.shared_utils.wan_role:
             sequence_numbers.append({"sequence": 20, "action": f"permit {self.shared_utils.vtep_loopback_ipv4_pool} eq 32"})
 
-        if self.shared_utils.vtep_vvtep_ip is not None and self.shared_utils.network_services_l3 is True:
+        if self.shared_utils.vtep_vvtep_ip is not None and self.shared_utils.network_services_l3 is True and not self.shared_utils.wan_role:
             sequence_numbers.append({"sequence": 30, "action": f"permit {self.shared_utils.vtep_vvtep_ip}"})
 
         prefix_lists = [{"name": "PL-LOOPBACKS-EVPN-OVERLAY", "sequence_numbers": sequence_numbers}]
@@ -59,7 +59,7 @@ class PrefixListsMixin(UtilsMixin):
         if self.shared_utils.underlay_ipv6 is not True:
             return None
 
-        if self.shared_utils.overlay_routing_protocol == "none":
+        if self.shared_utils.overlay_routing_protocol == "none" and not self.shared_utils.wan_role:
             return None
 
         if not self.shared_utils.underlay_filter_redistribute_connected:
