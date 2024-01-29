@@ -100,8 +100,7 @@ tenants:
 
 wan_virtual_topologies:
   vrfs:
-    - name: default
-      policy: DEFAULT-AVT-POLICY
+    # Not configuring default VRF policy on purpose to test auto-generation
     - name: PROD
       policy: PROD-AVT-POLICY
   policies:
@@ -119,7 +118,7 @@ wan_virtual_topologies:
           path_groups:
             - names: [INET]
               preference: preferred
-    - name: DEFAULT-AVT-POLICY
+    - name: CUSTOM-DEFAULT-AVT-POLICY
       default_virtual_topology:
         drop_unmatched: true
       application_virtual_topologies:

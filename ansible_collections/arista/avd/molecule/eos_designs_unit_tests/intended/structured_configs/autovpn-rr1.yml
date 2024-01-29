@@ -146,11 +146,9 @@ router_path_selection:
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
     - name: INET
-  - name: LB-DEFAULT-AVT-POLICY-IT
+  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
-    - name: MPLS
     - name: INET
-      priority: 2
   policies:
   - name: PROD-AVT-POLICY
     rules:
@@ -167,14 +165,13 @@ router_path_selection:
     - id: 10
       application_profile: CONTROL-PLANE-APPLICATION-PROFILE
       load_balance: LB-CONTROL-PLANE-PROFILE
-    - id: 20
-      application_profile: IT
-      load_balance: LB-DEFAULT-AVT-POLICY-IT
+    default_match:
+      load_balance: LB-DEFAULT-AVT-POLICY-DEFAULT
   vrfs:
-  - name: default
-    path_selection_policy: DEFAULT-AVT-POLICY-WITH-CP
   - name: PROD
     path_selection_policy: PROD-AVT-POLICY
+  - name: default
+    path_selection_policy: DEFAULT-AVT-POLICY-WITH-CP
 stun:
   server:
     local_interfaces:
@@ -183,7 +180,6 @@ application_traffic_recognition:
   application_profiles:
   - name: VOICE
   - name: VIDEO
-  - name: IT
   - name: CONTROL-PLANE-APPLICATION-PROFILE
     applications:
     - name: CONTROL-PLANE-APPLICATION

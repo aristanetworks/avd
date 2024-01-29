@@ -316,14 +316,21 @@ class UtilsMixin:
                     context_keys=["name"],
                 )
 
-            default_virtual_topology = get(policy, "default_virtual_topology", required=True)
+            default_virtual_topology = get(
+                policy,
+                "default_virtual_topology",
+                required=True,
+                org_key=f"A 'default_virtual_topology must be defined for policy {policy['name']}. It is possible to disable default-match by setting 'drop_unmatched' to 'true'.",
+            )
             if not get(default_virtual_topology, "drop_unmatched", default=False):
                 name = get(default_virtual_topology, "name", default=f"{policy['name']}-DEFAULT")
                 context_path = f"wan_virtual_topologies.policies[{policy['name']}].default_virtual_topology"
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", default_virtual_topology, context_path),
+                    new_dict=self._generate_wan_load_balance_policy(
+                        f"LB-{name}", default_virtual_topology, context_path, default_all=get(default_virtual_topology, "_default_all", default=False)
+                    ),
                     context="Router Path-Selection Load-Balance policies.",
                     context_keys=["name"],
                 )
@@ -391,25 +398,30 @@ class UtilsMixin:
     def _default_vrf_policy(self) -> dict:
         """
         Retrieves the name of the policy used for the default VRF and appending -WITH-CP to its name.
+
+        If not policy is defined for VRF default under 'wan_virtual_topologies.vrfs', use a default policy named DEFAULT-AVT-POLICY-WITH-CP where all
+        traffic is matched in the default category and distributed amongst all path-groups.
         """
         vrfs = get(self._hostvars, "wan_virtual_topologies.vrfs", [])
+        default_vrf = get_item(vrfs, "name", "default", default={})
 
-        if (default_vrf := get_item(vrfs, "name", "default")) is None:
-            # TODO make error message better
-            raise AristaAvdError("A 'default' VRF policy is required")
+        if (vrf_default_policy := get(default_vrf, "policy")) is not None:
+            policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
+            # copy is safe here as we change only the name
+            default_policy = get_item(
+                policies,
+                "name",
+                vrf_default_policy,
+                required=True,
+                custom_error_msg=(
+                    f"The policy {vrf_default_policy} defined for vrf default under 'wan_virtual_topologies.vrfs' "
+                    "is not defined under 'wan_virtual_topologies.policies'."
+                ),
+            ).copy()
+        else:
+            # Injecting a hidden key _default_all, used when generating the relevant Load Balance Policy
+            default_policy = {"name": "DEFAULT-AVT-POLICY", "default_virtual_topology": {"_default_all": True}}
 
-        policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
-        # copy is safe here as we change only the name
-        vrf_default_policy = get(default_vrf, "policy", required=True, org_key="VRF default under 'wan_virtual_topologies.vrfs' is missing a 'policy'.")
-        default_policy = get_item(
-            policies,
-            "name",
-            vrf_default_policy,
-            required=True,
-            custom_error_msg=(
-                f"The policy {vrf_default_policy} defined for vrf default under 'wan_virtual_topologies.vrfs' "
-                "is not defined under 'wan_virtual_topologies.policies'."
-            ),
-        ).copy()
         default_policy["is_default"] = True
+
         return default_policy
