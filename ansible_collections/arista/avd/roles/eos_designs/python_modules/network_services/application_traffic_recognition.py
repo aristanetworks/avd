@@ -47,7 +47,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
     def _generate_control_plane_application_profile(self, app_dict: dict) -> None:
         """
         Generate an application profile using a single application matching:
-        * the device Pathfinders vtep_ips  as destination for non Pathfinders.
+        * the device Pathfinders vtep_ips as destination for non Pathfinders.
         * the device Pathfinder vtep_ip as source
 
         Create a structure as follow. If any object already exist, it is kept as defined by user and override the defaults.
