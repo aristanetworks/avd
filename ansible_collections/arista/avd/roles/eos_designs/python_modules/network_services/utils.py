@@ -320,7 +320,10 @@ class UtilsMixin:
                 policy,
                 "default_virtual_topology",
                 required=True,
-                org_key=f"A 'default_virtual_topology must be defined for policy {policy['name']}. It is possible to disable default-match by setting 'drop_unmatched' to 'true'.",
+                org_key=(
+                    f"A 'default_virtual_topology must be defined for policy {policy['name']}. "
+                    "It is possible to disable default-match by setting 'drop_unmatched' to 'true'."
+                ),
             )
             if not get(default_virtual_topology, "drop_unmatched", default=False):
                 name = get(default_virtual_topology, "name", default=f"{policy['name']}-DEFAULT")
