@@ -11,7 +11,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import st
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
-
 class UtilsMixin:
     """
     Mixin Class with internal functions.
@@ -97,7 +96,6 @@ class UtilsMixin:
                             }
                             for subinterface in subinterfaces
                         ]
-
                     underlay_links.append(strip_empties_from_dict(link))
 
         return natural_sort(underlay_links, "interface")
