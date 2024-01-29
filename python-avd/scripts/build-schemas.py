@@ -15,12 +15,11 @@ from yaml import dump as yaml_dump
 from yaml import load as yaml_load
 
 # Override global path to load schema from source instead of any installed version.
-# Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
-path.insert(0, str(Path(__file__).parents[1].joinpath("pyavd")))
+path.insert(0, str(Path(__file__).parents[1]))
 
-from schema.constants import JSONSCHEMA_PATHS, LICENSE_HEADER, PICKLED_SCHEMAS, REPO_ROOT, SCHEMA_FRAGMENTS_PATHS, SCHEMA_PATHS
-from schema.generate_docs.mdtabsgen import get_md_tabs
-from schema.metaschema.meta_schema_model import AristaAvdSchema
+from schema_tools.constants import JSONSCHEMA_PATHS, LICENSE_HEADER, PICKLED_SCHEMAS, REPO_ROOT, SCHEMA_FRAGMENTS_PATHS, SCHEMA_PATHS
+from schema_tools.generate_docs.mdtabsgen import get_md_tabs
+from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
 
 path.insert(0, str(REPO_ROOT))
 
