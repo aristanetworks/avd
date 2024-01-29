@@ -24605,6 +24605,42 @@
       },
       "title": "Switchport Default"
     },
+    "switchport_port_security": {
+      "type": "object",
+      "properties": {
+        "mac_address": {
+          "type": "object",
+          "properties": {
+            "aging": {
+              "type": "boolean",
+              "title": "Aging"
+            },
+            "moveable": {
+              "type": "boolean",
+              "title": "Moveable"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MAC Address"
+        },
+        "persistence_disabled": {
+          "type": "boolean",
+          "title": "Persistence Disabled"
+        },
+        "violation_protect_chip_based": {
+          "type": "boolean",
+          "title": "Violation Protect Chip Based"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Switchport Port Security"
+    },
     "system": {
       "type": "object",
       "properties": {

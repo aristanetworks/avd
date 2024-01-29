@@ -14229,6 +14229,20 @@ keys:
             - str
             min: 1
             max: 4094
+  switchport_port_security:
+    type: dict
+    keys:
+      mac_address:
+        type: dict
+        keys:
+          aging:
+            type: bool
+          moveable:
+            type: bool
+      persistence_disabled:
+        type: bool
+      violation_protect_chip_based:
+        type: bool
   system:
     type: dict
     keys:
