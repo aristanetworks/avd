@@ -168,11 +168,6 @@ class RouterBgpMixin(UtilsMixin):
                     if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                         self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
 
-                # # TODO this is to prevent rendering BGP vrf default on WAN nodes.
-                # # This may need to be adjusted for more complex use cases.
-                # if vrf_name == "default" and self.shared_utils.wan_role is not None:
-                #     continue
-
                 for bgp_peer in vrf["bgp_peers"]:
                     # Below we pop various keys that are not supported by the eos_cli_config_gen schema.
                     # The rest of the keys are relayed directly to eos_cli_config_gen.
