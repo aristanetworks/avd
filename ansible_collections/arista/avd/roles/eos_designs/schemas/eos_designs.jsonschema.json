@@ -5429,8 +5429,8 @@
           },
           "name": {
             "type": "string",
-            "description": "Ethernet interface name like 'Ethernet2'.",
-            "pattern": "Ethernet[\\d/]+",
+            "description": "Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'\nFor a subinterface, the parent physical interface is automatically created.",
+            "pattern": "Ethernet[\\d/]+(.[\\d]+)?",
             "title": "Name"
           },
           "description": {
@@ -5442,6 +5442,13 @@
             "type": "string",
             "description": "Node IPv4 address/Mask or 'dhcp'.",
             "title": "IP Address"
+          },
+          "encapsulation_dot1q_vlan": {
+            "description": "For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Encapsulation Dot1Q VLAN"
           },
           "set_default_route": {
             "type": "boolean",

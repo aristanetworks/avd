@@ -187,8 +187,15 @@ class EthernetInterfacesMixin(UtilsMixin):
                         context_keys=["name", "peer", "peer_interface"],
                     )
 
+        # Support l3_interface as sub interfaces
+        subif_parent_interface_names = set()
         for l3_interface in self.shared_utils.l3_interfaces:
-            # Ethernet interface
+            interface_name = l3_interface["name"]
+            if "." in interface_name:
+                # This is a subinterface so we need to ensure that the parent is created
+                parent_interface_name, subif_id = interface_name.split(".", maxsplit=1)
+                subif_parent_interface_names.add(parent_interface_name)
+
             ethernet_interface = self._get_l3_interface_cfg(l3_interface)
 
             append_if_not_duplicate(
@@ -198,6 +205,23 @@ class EthernetInterfacesMixin(UtilsMixin):
                 context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} l3_interfaces",
                 context_keys=["name", "peer", "peer_interface"],
             )
+
+        subif_parent_interface_names = subif_parent_interface_names.difference(eth_int["name"] for eth_int in ethernet_interfaces)
+        if subif_parent_interface_names:
+            for interface_name in subif_parent_interface_names:
+                parent_interface = {
+                    "name": interface_name,
+                    "type": "routed",
+                    "peer_type": "l3_interface",
+                    "shutdown": False,
+                }
+                append_if_not_duplicate(
+                    list_of_dicts=ethernet_interfaces,
+                    primary_key="name",
+                    new_dict=parent_interface,
+                    context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} l3_interfaces",
+                    context_keys=["name", "peer", "peer_interface"],
+                )
 
         if ethernet_interfaces:
             return ethernet_interfaces

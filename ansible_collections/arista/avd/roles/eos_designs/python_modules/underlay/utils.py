@@ -137,6 +137,11 @@ class UtilsMixin:
         Returns structured_configuration for one L3 interface
         """
         interface_name = get(l3_interface, "name", required=True, org_key=f"<node_type_key>...[node={self.shared_utils.hostname}].l3_interfaces[].name]")
+        if "." in interface_name:
+            iface_type = "l3dot1q"
+            encapsulation = get(l3_interface, "encapsulation_dot1q_vlan", default=interface_name.split(".")[-1])
+        else:
+            iface_type = "routed"
 
         # TODO move this to description module?
         interface_description = (
@@ -160,13 +165,16 @@ class UtilsMixin:
             "peer_interface": l3_interface.get("peer_interface"),
             "ip_address": ip_address,
             "shutdown": not l3_interface.get("enabled", True),
-            "type": "routed",
+            "type": iface_type,
             "description": interface_description,
             "speed": l3_interface.get("speed"),
             "service_profile": l3_interface.get("qos_profile"),
             "eos_cli": l3_interface.get("raw_eos_cli"),
             "struct_cfg": l3_interface.get("structured_config"),
         }
+
+        if iface_type == "l3dot1q":
+            interface["encapsulation_dot1q_vlan"] = encapsulation
 
         if ip_address == "dhcp" and l3_interface.get("set_default_route", False):
             interface["dhcp_client_accept_default_route"] = True
