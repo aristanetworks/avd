@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from ..interface_descriptions import InterfaceDescriptionData
@@ -208,7 +209,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         subif_parent_interface_names = subif_parent_interface_names.difference(eth_int["name"] for eth_int in ethernet_interfaces)
         if subif_parent_interface_names:
-            for interface_name in subif_parent_interface_names:
+            for interface_name in natural_sort(subif_parent_interface_names):
                 parent_interface = {
                     "name": interface_name,
                     "type": "routed",

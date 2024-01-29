@@ -153,11 +153,11 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
-- name: Ethernet2
+- name: Ethernet1
   type: routed
   peer_type: l3_interface
   shutdown: false
-- name: Ethernet1
+- name: Ethernet2
   type: routed
   peer_type: l3_interface
   shutdown: false
@@ -503,11 +503,11 @@ metadata:
     - name: Site
       value: Site422
     interface_tags:
-    - interface: Ethernet2
+    - interface: Ethernet1
       tags:
       - name: Type
         value: lan
-    - interface: Ethernet1
+    - interface: Ethernet2
       tags:
       - name: Type
         value: lan
