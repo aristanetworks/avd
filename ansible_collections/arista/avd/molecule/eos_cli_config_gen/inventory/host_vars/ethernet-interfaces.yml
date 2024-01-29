@@ -66,6 +66,13 @@ ethernet_interfaces:
           no_drop: true
     spanning_tree_bpduguard: disabled
     spanning_tree_bpdufilter: disabled
+    switchport:
+      port_security:
+        mac_address_maximum:
+          limit: 100
+        violation:
+          protect:
+            log: true
 
   - name: Ethernet3
     peer: DC1-SPINE2

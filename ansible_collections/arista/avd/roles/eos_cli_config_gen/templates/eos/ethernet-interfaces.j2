@@ -553,6 +553,23 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.poe.legacy_detect is arista.avd.defined(true) %}
    poe legacy detect
 {%     endif %}
+{%     if ethernet_interface.switchport is arista.avd.defined %}
+{%         if ethernet_interface.switchport.port_security.enable is arista.avd.defined(true) %}
+   switchport port-security
+{%         endif %}
+{%         if ethernet_interface.switchport.port_security.violation.shutdown is arista.avd.defined(true) %}
+   switchport port-security
+{%         elif ethernet_interface.switchport.port_security.violation.protect.enable is arista.avd.defined(true) %}
+   switchport port-security violation protect
+{%         elif ethernet_interface.switchport.port_security.violation.protect.log is arista.avd.defined(true) %}
+   switchport port-security violation protect log
+{%         endif %}
+{%         if ethernet_interface.switchport.port_security.mac_address_maximum.disabled is arista.avd.defined(true) %}
+   switchport port-security mac-address maximum disabled
+{%         elif ethernet_interface.switchport.port_security.mac_address_maximum.limit is arista.avd.defined %}
+   switchport port-security mac-address maximum {{ ethernet_interface.switchport.port_security.mac_address_maximum.limit }}
+{%         endif %}
+{%     endif %}
 {%     if ethernet_interface.qos.trust is arista.avd.defined %}
 {%         if ethernet_interface.qos.trust == 'disabled' %}
    no qos trust

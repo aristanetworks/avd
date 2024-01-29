@@ -1250,6 +1250,44 @@ keys:
         validate_state:
           type: bool
           description: Set to false to disable interface validation by the `eos_validate_state` role
+        switchport:
+          type: dict
+          keys:
+            port_security:
+              type: dict
+              keys:
+                enable:
+                  type: bool
+                mac_address_maximum:
+                  type: dict
+                  description: Maximum number of MAC addresses allowed on the interface.
+                  keys:
+                    disabled:
+                      type: bool
+                      description: Disable port level check for port security (only in shutdown mode).
+                    limit:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 1
+                      max: 1000
+                      description: MAC address limit.
+                violation:
+                  type: dict
+                  description: Configure violation mode (shutdown or protect).
+                  keys:
+                    protect:
+                      type: dict
+                      description: Configure port security in protect mode.
+                      keys:
+                        enable:
+                          type: bool
+                        log:
+                          type: bool
+                          description: Log new addresses seen after limit is reached in protect mode.
+                    shutdown:
+                      type: bool
+                      description: Configure port security in shutdown mode.
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration

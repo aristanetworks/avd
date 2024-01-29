@@ -8515,6 +8515,89 @@
                 "description": "Set to false to disable interface validation by the `eos_validate_state` role",
                 "title": "Validate State"
               },
+              "switchport": {
+                "type": "object",
+                "properties": {
+                  "port_security": {
+                    "type": "object",
+                    "properties": {
+                      "enable": {
+                        "type": "boolean",
+                        "title": "Enable"
+                      },
+                      "mac_address_maximum": {
+                        "type": "object",
+                        "description": "Maximum number of MAC addresses allowed on the interface.",
+                        "properties": {
+                          "disabled": {
+                            "type": "boolean",
+                            "description": "Disable port level check for port security (only in shutdown mode).",
+                            "title": "Disabled"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 1000,
+                            "description": "MAC address limit.",
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "MAC Address Maximum"
+                      },
+                      "violation": {
+                        "type": "object",
+                        "description": "Configure violation mode (shutdown or protect).",
+                        "properties": {
+                          "protect": {
+                            "type": "object",
+                            "description": "Configure port security in protect mode.",
+                            "properties": {
+                              "enable": {
+                                "type": "boolean",
+                                "title": "Enable"
+                              },
+                              "log": {
+                                "type": "boolean",
+                                "description": "Log new addresses seen after limit is reached in protect mode.",
+                                "title": "Log"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Protect"
+                          },
+                          "shutdown": {
+                            "type": "boolean",
+                            "description": "Configure port security in shutdown mode.",
+                            "title": "Shutdown"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Violation"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Port Security"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Switchport"
+              },
               "eos_cli": {
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -13818,6 +13901,89 @@
                 "type": "boolean",
                 "description": "Set to false to disable interface validation by the `eos_validate_state` role",
                 "title": "Validate State"
+              },
+              "switchport": {
+                "type": "object",
+                "properties": {
+                  "port_security": {
+                    "type": "object",
+                    "properties": {
+                      "enable": {
+                        "type": "boolean",
+                        "title": "Enable"
+                      },
+                      "mac_address_maximum": {
+                        "type": "object",
+                        "description": "Maximum number of MAC addresses allowed on the interface.",
+                        "properties": {
+                          "disabled": {
+                            "type": "boolean",
+                            "description": "Disable port level check for port security (only in shutdown mode).",
+                            "title": "Disabled"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 1000,
+                            "description": "MAC address limit.",
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "MAC Address Maximum"
+                      },
+                      "violation": {
+                        "type": "object",
+                        "description": "Configure violation mode (shutdown or protect).",
+                        "properties": {
+                          "protect": {
+                            "type": "object",
+                            "description": "Configure port security in protect mode.",
+                            "properties": {
+                              "enable": {
+                                "type": "boolean",
+                                "title": "Enable"
+                              },
+                              "log": {
+                                "type": "boolean",
+                                "description": "Log new addresses seen after limit is reached in protect mode.",
+                                "title": "Log"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Protect"
+                          },
+                          "shutdown": {
+                            "type": "boolean",
+                            "description": "Configure port security in shutdown mode.",
+                            "title": "Shutdown"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Violation"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Port Security"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Switchport"
               },
               "eos_cli": {
                 "type": "string",
@@ -19937,6 +20103,89 @@
                 "type": "boolean",
                 "description": "Set to false to disable interface validation by the `eos_validate_state` role",
                 "title": "Validate State"
+              },
+              "switchport": {
+                "type": "object",
+                "properties": {
+                  "port_security": {
+                    "type": "object",
+                    "properties": {
+                      "enable": {
+                        "type": "boolean",
+                        "title": "Enable"
+                      },
+                      "mac_address_maximum": {
+                        "type": "object",
+                        "description": "Maximum number of MAC addresses allowed on the interface.",
+                        "properties": {
+                          "disabled": {
+                            "type": "boolean",
+                            "description": "Disable port level check for port security (only in shutdown mode).",
+                            "title": "Disabled"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 1000,
+                            "description": "MAC address limit.",
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "MAC Address Maximum"
+                      },
+                      "violation": {
+                        "type": "object",
+                        "description": "Configure violation mode (shutdown or protect).",
+                        "properties": {
+                          "protect": {
+                            "type": "object",
+                            "description": "Configure port security in protect mode.",
+                            "properties": {
+                              "enable": {
+                                "type": "boolean",
+                                "title": "Enable"
+                              },
+                              "log": {
+                                "type": "boolean",
+                                "description": "Log new addresses seen after limit is reached in protect mode.",
+                                "title": "Log"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Protect"
+                          },
+                          "shutdown": {
+                            "type": "boolean",
+                            "description": "Configure port security in shutdown mode.",
+                            "title": "Shutdown"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Violation"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Port Security"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Switchport"
               },
               "eos_cli": {
                 "type": "string",
