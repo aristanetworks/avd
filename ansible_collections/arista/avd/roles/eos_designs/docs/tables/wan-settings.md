@@ -21,7 +21,7 @@
     | [<samp>wan_mode</samp>](## "wan_mode") | String |  | `cv-pathfinder` | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | PREVIEW: This key is currently not supported<br><br>Select if the WAN should be run using CV Pathfinder or Auto VPN only. |
     | [<samp>wan_route_servers</samp>](## "wan_route_servers") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders<br>when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.<br><br>When the route server is part of the same inventory as the WAN routers,<br>only the name is required. |
     | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "wan_route_servers.[].hostname") | String | Required, Unique |  |  | Route-Reflector hostname. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip</samp>](## "wan_route_servers.[].vtep_ip") | String |  |  |  | Route-Reflector VTEP IP Address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip</samp>](## "wan_route_servers.[].vtep_ip") | String |  |  |  | Route-Reflector VTEP IP Address. This is usually the IP address under `interface Dps1`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_route_servers.[].path_groups") | List, items: Dictionary |  |  |  | Path-groups through which the Route Reflector/Pathfinder is reached. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].path_groups.[].name") | String | Required, Unique |  |  | Path-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "wan_route_servers.[].path_groups.[].interfaces") | List, items: Dictionary | Required |  | Min Length: 1 |  |
@@ -85,7 +85,7 @@
         # Route-Reflector hostname.
       - hostname: <str; required; unique>
 
-        # Route-Reflector VTEP IP Address.
+        # Route-Reflector VTEP IP Address. This is usually the IP address under `interface Dps1`.
         vtep_ip: <str>
 
         # Path-groups through which the Route Reflector/Pathfinder is reached.

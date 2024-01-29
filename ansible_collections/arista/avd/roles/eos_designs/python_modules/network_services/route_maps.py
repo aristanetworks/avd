@@ -141,6 +141,12 @@ class RouteMapsMixin(UtilsMixin):
         }
 
     def _evpn_export_vrf_default_route_map(self) -> dict | None:
+        """
+        Match the following prefixes to be exported in EVPN for VRF default:
+        * SVI subnets in VRF default
+        * Static routes subnets in VRF default
+        * for WAN routers, the loopbacks in VRF default.
+        """
         sequence_numbers = []
         if self._vrf_default_ipv4_subnets:
             sequence_numbers.append(
@@ -217,6 +223,11 @@ class RouteMapsMixin(UtilsMixin):
         return {"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers}
 
     def _redistribute_connected_to_bgp_route_map(self) -> dict | None:
+        """
+        Append network services relevant entries to the route-map used to redistribute connected subnets in BGP
+
+        sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here
+        """
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
@@ -224,7 +235,6 @@ class RouteMapsMixin(UtilsMixin):
 
         if self._vrf_default_ipv4_subnets:
             # Add subnets to redistribution in default VRF
-            # sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here
             sequence_numbers.append(
                 {
                     "sequence": 30,

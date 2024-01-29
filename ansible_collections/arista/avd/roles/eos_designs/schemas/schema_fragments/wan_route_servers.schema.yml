@@ -27,7 +27,7 @@ keys:
           description: Route-Reflector hostname.
         vtep_ip:
           type: str
-          description: Route-Reflector VTEP IP Address.
+          description: Route-Reflector VTEP IP Address. This is usually the IP address under `interface Dps1`.
         path_groups:
           type: list
           description: Path-groups through which the Route Reflector/Pathfinder is reached.

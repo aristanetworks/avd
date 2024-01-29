@@ -24091,7 +24091,7 @@
           },
           "vtep_ip": {
             "type": "string",
-            "description": "Route-Reflector VTEP IP Address.",
+            "description": "Route-Reflector VTEP IP Address. This is usually the IP address under `interface Dps1`.",
             "title": "Vtep IP"
           },
           "path_groups": {
