@@ -4,7 +4,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Switchport Port-security](#switchport-port-security)
+- [Switchport Port-security](#switchport-port-security)
+  - [Switchport Port-security Summary](#switchport-port-security-summary)
+  - [Switchport Port-security Device Configuration](#switchport-port-security-device-configuration)
 
 ## Management
 
@@ -34,9 +36,9 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-### Switchport Port-security
+## Switchport Port-security
 
-#### Switchport Port-security Summary
+### Switchport Port-security Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -45,7 +47,7 @@ interface Management1
 | Disable Persistence | True |
 | Violation Protect Chip-based | True |
 
-#### Switchport Port-security Device Configuration
+### Switchport Port-security Device Configuration
 
 ```eos
 !
