@@ -141,30 +141,14 @@ flow_tracking:
         template_interval: 5000
 ip_security:
   ike_policies:
-  - name: DP-IKE-POLICY
-    local_id: 192.168.44.3
   - name: CP-IKE-POLICY
     local_id: 192.168.44.3
   sa_policies:
-  - name: DP-SA-POLICY
-    esp:
-      encryption: aes128
-    pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
       encryption: aes128
     pfs_dh_group: 14
   profiles:
-  - name: DP-PROFILE
-    ike_policy: DP-IKE-POLICY
-    sa_policy: DP-SA-POLICY
-    connection: start
-    shared_key: ABCDEF1234567890666
-    dpd:
-      interval: 10
-      time: 50
-      action: clear
-    mode: transport
   - name: CP-PROFILE
     ike_policy: CP-IKE-POLICY
     sa_policy: CP-SA-POLICY
