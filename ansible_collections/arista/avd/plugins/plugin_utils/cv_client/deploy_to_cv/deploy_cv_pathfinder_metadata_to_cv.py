@@ -12,7 +12,7 @@ from .models import CVDevice, CVPathfinderMetadata, DeployToCvResult
 
 LOGGER = getLogger(__name__)
 
-CV_PATHFINDER_METADATA_STUDIO_ID = "a219112d-de90-42d3-abb0-796e0c4bde82"  # "studio-caravan"
+CV_PATHFINDER_METADATA_STUDIO_ID = "studio-caravan"
 CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {"pathfinders": [], "pathgroups": [], "regions": [], "routers": [], "vrfs": [], "version": "3"}
 
 
@@ -54,7 +54,7 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
                                 "carrier": interface.get("carrier", ""),
                                 "circuitId": interface.get("circuit_id", ""),
                                 "pathgroup": interface.get("pathgroup", ""),
-                                "publicIP": interface.get("public_ip", ""),
+                                "publicIp": interface.get("public_ip", ""),
                             }
                         },
                         "tags": {"query": f"interface:{interface.get('name', '')}@{device.serial_number}"},
@@ -90,11 +90,11 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
     edge_metadata = {
         "inputs": {
             "router": {
-                "pathfinders": [pathfinder["vtep_ip"] for pathfinder in metadata.get("pathfinders", [])],
+                "pathfinders": [{"vtepIp": pathfinder["vtep_ip"]} for pathfinder in metadata.get("pathfinders", [])],
                 "region": metadata.get("region", ""),
                 "role": role,
                 "site": metadata.get("site", ""),
-                "vtepIP": metadata.get("vtep_ip", ""),
+                "vtepIp": metadata.get("vtep_ip", ""),
                 "wanInterfaces": [
                     {
                         "inputs": {
