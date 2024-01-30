@@ -19,14 +19,12 @@
 {%         set hardware_offload_ipv4 = 'disabled' %}
 {%         set hardware_offload_ipv6 = 'disabled' %}
 {%         set encapsulations_list = [] %}
-{%         if flow_tracking.sampled.encapsulation.ipv4 is arista.avd.defined(true) %}
+{%         if flow_tracking.sampled.encapsulation.ipv4_ipv6 is arista.avd.defined(true) %}
 {%             do encapsulations_list.append('ipv4') %}
-{%         endif %}
-{%         if flow_tracking.sampled.encapsulation.ipv6 is arista.avd.defined(true) %}
 {%             do encapsulations_list.append('ipv6') %}
-{%         endif %}
-{%         if flow_tracking.sampled.encapsulation.mpls is arista.avd.defined(true) %}
-{%             do encapsulations_list.append('mpls') %}
+{%             if flow_tracking.sampled.encapsulation.mpls is arista.avd.defined(true) %}
+{%                 do encapsulations_list.append('mpls') %}
+{%             endif %}
 {%         endif %}
 {%         set encapsulations = (encapsulations_list or ["-"]) | join(", ") %}
 {%         if flow_tracking.sampled.hardware_offload.ipv4 is arista.avd.defined(true) %}

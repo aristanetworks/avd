@@ -9,19 +9,14 @@
 !
 flow tracking sampled
 {%     if flow_tracking.sampled.encapsulation is arista.avd.defined %}
-{%         set encapsulation_protocols = [] %}
-{%         if flow_tracking.sampled.encapsulation.ipv4 is arista.avd.defined(true) %}
-{%             do encapsulation_protocols.append('ipv4') %}
+{%         set encapsulation = "encapsulation" %}
+{%         if flow_tracking.sampled.encapsulation.ipv4_ipv6 is arista.avd.defined(true) %}
+{%             set  encapsulation =  encapsulation ~ ' ipv4 ipv6' %}
+{%             if flow_tracking.sampled.encapsulation.mpls is arista.avd.defined(true) %}
+{%                 set  encapsulation =  encapsulation ~ ' mpls' %}
+{%             endif %}
 {%         endif %}
-{%         if flow_tracking.sampled.encapsulation.ipv6 is arista.avd.defined(true) %}
-{%             do encapsulation_protocols.append('ipv6') %}
-{%         endif %}
-{%         if flow_tracking.sampled.encapsulation.mpls is arista.avd.defined(true) %}
-{%             do encapsulation_protocols.append('mpls') %}
-{%         endif %}
-{%         if encapsulation_protocols | length > 0 %}
-   encapsulation {{ encapsulation_protocols | join(' ') }}
-{%         endif %}
+   {{ encapsulation }}
 {%     endif %}
 {%     if flow_tracking.sampled.sample is arista.avd.defined %}
    sample {{ flow_tracking.sampled.sample }}

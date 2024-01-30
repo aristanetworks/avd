@@ -16,9 +16,7 @@ keys:
           encapsulation:
             type: dict
             keys:
-              ipv4:
-                type: bool
-              ipv6:
+              ipv4_ipv6:
                 type: bool
               mpls:
                 type: bool

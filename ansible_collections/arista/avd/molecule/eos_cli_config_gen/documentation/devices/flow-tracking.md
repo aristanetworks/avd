@@ -46,7 +46,7 @@ interface Management1
 
 | Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 | Encapsulations |
 | ----------- | ------------------- | ------------------------- | ------------------------- | -------------- |
-| 666 | 2 | enabled | disabled | ipv4, mpls |
+| 666 | 2 | enabled | disabled | ipv4, ipv6, mpls |
 
 ##### Trackers Summary
 
@@ -91,7 +91,7 @@ interface Management1
 ```eos
 !
 flow tracking sampled
-   encapsulation ipv4 mpls
+   encapsulation ipv4 ipv6 mpls
    sample 666
    hardware offload ipv4
    hardware offload threshold minimum 2 samples

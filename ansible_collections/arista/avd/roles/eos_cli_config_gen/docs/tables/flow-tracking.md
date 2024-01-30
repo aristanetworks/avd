@@ -10,8 +10,7 @@
     | [<samp>flow_tracking</samp>](## "flow_tracking") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;sampled</samp>](## "flow_tracking.sampled") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "flow_tracking.sampled.encapsulation") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "flow_tracking.sampled.encapsulation.ipv4") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "flow_tracking.sampled.encapsulation.ipv6") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_ipv6</samp>](## "flow_tracking.sampled.encapsulation.ipv4_ipv6") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "flow_tracking.sampled.encapsulation.mpls") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sample</samp>](## "flow_tracking.sampled.sample") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware_offload</samp>](## "flow_tracking.sampled.hardware_offload") | Dictionary |  |  |  |  |
@@ -78,8 +77,7 @@
     flow_tracking:
       sampled:
         encapsulation:
-          ipv4: <bool>
-          ipv6: <bool>
+          ipv4_ipv6: <bool>
           mpls: <bool>
         sample: <int; 1-4294967295>
         hardware_offload:
