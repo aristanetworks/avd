@@ -13,7 +13,7 @@ bgp_peer_groups:
 
 wan_route_servers:
   - hostname: autovpn-rr3
-    router_id: 2.2.2.2
+    vtep_ip: 2.2.2.2
     path_groups:
       - name: INET
         interfaces:
@@ -35,6 +35,7 @@ default_node_types:
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.30.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
     filter:
       # TODO find a way to not need this
       always_include_vrfs_in_tenants: [TenantA]

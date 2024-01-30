@@ -47,6 +47,7 @@ default_node_types:
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA]
   nodes:
