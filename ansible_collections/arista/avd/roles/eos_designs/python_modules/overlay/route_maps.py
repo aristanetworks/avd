@@ -59,8 +59,8 @@ class RouteMapsMixin(UtilsMixin):
                     )
 
         elif self.shared_utils.overlay_routing_protocol == "ibgp":
-            if self.shared_utils.overlay_vtep:
-                # Route-map IN and OUT for SOO
+            if self.shared_utils.overlay_vtep and self.shared_utils.wan_role is None:
+                # Route-map IN and OUT for SOO, not rendered for WAN routers
                 route_maps.append(
                     {
                         "name": "RM-EVPN-SOO-IN",

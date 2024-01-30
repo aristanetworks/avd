@@ -290,12 +290,12 @@ class WanMixin:
                     raise AristaAvdError(f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs} is different from our own: {self.bgp_as}.")
 
                 # Prefer values coming from the input variables over peer facts
-                router_id = get(wan_rs_dict, "router_id", default=peer_facts.get("router_id"))
+                vtep_ip = get(wan_rs_dict, "vtep_ip", default=peer_facts.get("vtep_ip"))
                 wan_path_groups = get(wan_rs_dict, "path_groups", default=peer_facts.get("wan_path_groups"))
 
-                if router_id is None:
+                if vtep_ip is None:
                     raise AristaAvdMissingVariableError(
-                        f"'router_id' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
+                        f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
                         " facts."
                     )
                 if wan_path_groups is None:
@@ -306,7 +306,7 @@ class WanMixin:
 
             else:
                 # Retrieve the values from the dictionary, making them required if the peer_facts were not found
-                router_id = get(wan_rs_dict, "router_id", required=True)
+                vtep_ip = get(wan_rs_dict, "vtep_ip", required=True)
                 wan_path_groups = get(
                     wan_rs_dict,
                     "path_groups",
@@ -319,7 +319,7 @@ class WanMixin:
 
             # Filtering wan_path_groups to only take the ones this device uses to connect to pathfinders.
             wan_rs_result_dict = {
-                "router_id": router_id,
+                "vtep_ip": vtep_ip,
                 "wan_path_groups": [path_group for path_group in wan_path_groups if self.should_connect_to_wan_rs([path_group["name"]])],
             }
 

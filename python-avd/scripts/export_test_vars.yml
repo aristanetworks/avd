@@ -10,7 +10,7 @@
   hosts: all,!prompt ## Excluding prompt because the unsafe marker is lost during the export of hostvars.
   vars:
     scenario_dir: "{{ inventory_dir }}/.."
-    pyavd_test_artifacts_dir: "{{ playbook_dir }}/../tests/artifacts"
+    pyavd_test_artifacts_dir: "{{ playbook_dir }}/../tests/pyavd/artifacts"
     tacacs_key_set_as_play_var: "071B245F5A" ## setting dummy value to avoid error for key set in molecule playbook
     string_set_as_play_var: "test of var set under play vars" ## setting dummy value to avoid error for key set in molecule playbook
   tasks:

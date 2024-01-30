@@ -15,6 +15,7 @@ wan_path_groups:
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.0.0/24
+    vtep_loopback_ipv4_pool: 192.168.1.0/24
   nodes:
     - name: invalid-wan-role-cv-pathfinder-role-2
       # Trying to set pathfinder as RR client

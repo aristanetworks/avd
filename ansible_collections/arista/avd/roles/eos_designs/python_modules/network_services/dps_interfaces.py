@@ -5,8 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
-
 from .utils import UtilsMixin
 
 
@@ -29,10 +27,10 @@ class DpsInterfacesMixin(UtilsMixin):
         dps1 = {
             "name": "Dps1",
             "description": "DPS Interface",
-            "tcp_mss_ceiling": {
-                "ipv4": get(self.shared_utils.switch_data_combined, "dps_mss_ipv4", default=1000),
-            },
         }
+
+        if self.shared_utils.vtep_loopback.lower().startswith("dps"):
+            dps1["ip_address"] = f"{self.shared_utils.vtep_ip}/32"
 
         # TODO do IPv6 when needed - for now no easy way in AVD to detect if this is needed
         # When needed - need a default value if different than IPv4

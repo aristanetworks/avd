@@ -2,14 +2,9 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from pathlib import Path
-from sys import path
 
 import pytest
 from yaml import safe_load
-
-# Override global path to load schema from source instead of any installed version.
-# Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
-path.insert(0, str(Path(__file__).parents[2].joinpath("pyavd")))
 
 ARTIFACTS_PATH = Path(__file__).parent.joinpath("artifacts")
 EOS_DESIGNS_SCHEMA_PATH = ARTIFACTS_PATH.joinpath("eos_designs.schema.yml")

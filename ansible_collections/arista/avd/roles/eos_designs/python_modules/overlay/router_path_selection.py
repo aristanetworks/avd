@@ -26,10 +26,9 @@ class RouterPathSelectionMixin(UtilsMixin):
         if not self.shared_utils.wan_role:
             return None
 
-        path_groups = self._get_path_groups()
-
         router_path_selection = {
-            "path_groups": path_groups,
+            "tcp_mss_ceiling": {"ipv4_segment_size": get(self.shared_utils.switch_data_combined, "dps_mss_ipv4", default="auto")},
+            "path_groups": self._get_path_groups(),
         }
 
         if self.shared_utils.wan_role == "server":
@@ -121,8 +120,8 @@ class RouterPathSelectionMixin(UtilsMixin):
             return None
 
         static_peers = []
-        for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
-            if (path_group := get_item(get(data, "wan_path_groups", default=[]), "name", path_group_name)) is not None:
+        for wan_route_server_name, wan_route_server in self.shared_utils.filtered_wan_route_servers.items():
+            if (path_group := get_item(get(wan_route_server, "wan_path_groups", default=[]), "name", path_group_name)) is not None:
                 ipv4_addresses = []
 
                 for interface_dict in get(path_group, "interfaces", required=True):
@@ -131,8 +130,8 @@ class RouterPathSelectionMixin(UtilsMixin):
                         ipv4_addresses.append(ip_address.split("/")[0])
                 static_peers.append(
                     {
-                        "router_ip": get(data, "router_id", required=True),
-                        "name": wan_route_server,
+                        "router_ip": get(wan_route_server, "vtep_ip", required=True),
+                        "name": wan_route_server_name,
                         "ipv4_addresses": ipv4_addresses,
                     }
                 )

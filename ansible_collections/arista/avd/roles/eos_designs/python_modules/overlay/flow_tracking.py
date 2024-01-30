@@ -32,6 +32,7 @@ class FlowTrackingMixin(UtilsMixin):
                         "record_export": {"on_inactive_timeout": 70000, "on_interval": 5000},
                         "exporters": [{"name": "DPI-EXPORTER", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 5000}],
                     }
-                ]
-            }
+                ],
+                "shutdown": False,
+            },
         }
