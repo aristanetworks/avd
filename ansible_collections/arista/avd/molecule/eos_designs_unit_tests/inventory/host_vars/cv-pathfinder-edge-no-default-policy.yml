@@ -26,8 +26,7 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
     listen_range_prefixes:
-      - 192.168.42.0/24
-      - 192.168.43.0/24
+      - 192.168.255.0/24
 
 wan_route_servers:
   # Not testing the overloading

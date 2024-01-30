@@ -10,10 +10,13 @@ router_bgp:
     paths: 16
   updates:
     wait_install: true
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   peer_groups:
   - name: WAN-OVERLAY-PEERS
     type: wan
-    update_source: Loopback0
+    update_source: Dps1
     bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
@@ -41,6 +44,47 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: autovpn-rr3
     description: autovpn-rr3
+  vrfs:
+  - name: default
+    rd: 192.168.30.1:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+  - name: IT
+    router_id: 192.168.30.1
+    rd: 192.168.30.1:100
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 100:100
+      export:
+      - address_family: evpn
+        route_targets:
+        - 100:100
+    redistribute_routes:
+    - source_protocol: connected
+  - name: PROD
+    router_id: 192.168.30.1
+    rd: 192.168.30.1:42
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+    redistribute_routes:
+    - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -75,10 +119,28 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.30.1/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.30.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 30
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ip_security:
   ike_policies:
   - name: AUTOVPN-IKE
-    local_id: 192.168.30.1
+    local_id: 192.168.255.1
   sa_policies:
   - name: AUTOVPN-SA
   profiles:
@@ -100,6 +162,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
   path_groups:
   - name: INET
     id: 101
@@ -156,14 +220,13 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  tcp_mss_ceiling:
-    ipv4: 1000
+  ip_address: 192.168.255.1/32
 vxlan_interface:
   Vxlan1:
     description: autovpn-edge-no-default-policy_VTEP
     vxlan:
       udp_port: 4789
-      source_interface: Loopback0
+      source_interface: Dps1
       vrfs:
       - name: default
         vni: 1
