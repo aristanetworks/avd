@@ -4,16 +4,18 @@
  that can be found in the LICENSE file.
 #}
 {# eos - switchport port-security #}
-{% if switchport_port_security.mac_address.aging is arista.avd.defined(true) %}
+{% if switchport_port_security is arista.avd.defined %}
 !
+{%     if switchport_port_security.mac_address.aging is arista.avd.defined(true) %}
 switchport port-security mac-address aging
-{% endif %}
-{% if  switchport_port_security.mac_address.moveable is arista.avd.defined(true) %}
+{%     endif %}
+{%     if  switchport_port_security.mac_address.moveable is arista.avd.defined(true) %}
 switchport port-security mac-address moveable
-{% endif %}
-{% if  switchport_port_security.persistence_disabled is arista.avd.defined(true) %}
+{%     endif %}
+{%     if  switchport_port_security.persistence_disabled is arista.avd.defined(true) %}
 switchport port-security persistence disabled
-{% endif %}
-{% if  switchport_port_security.violation_protect_chip_based is arista.avd.defined(true) %}
+{%     endif %}
+{%     if  switchport_port_security.violation_protect_chip_based is arista.avd.defined(true) %}
 switchport port-security violation protect chip-based
+{%     endif %}
 {% endif %}
