@@ -46,6 +46,7 @@ interface Management1
 | SSM Aware | True | N/A |
 | Host Proxy | iif | BLUE |
 | Host Proxy | all | default |
+
 #### Router IGMP Device Configuration
 
 ```eos
