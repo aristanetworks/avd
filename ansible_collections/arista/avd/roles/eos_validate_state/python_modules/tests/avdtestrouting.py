@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
 class AvdTestRoutingTable(AvdTestBase):
@@ -63,75 +63,89 @@ class AvdTestRoutingTable(AvdTestBase):
 
 
 class AvdTestBGP(AvdTestBase):
-    """
-    AvdTestBGP class for BGP tests.
+    """AvdTestBGP class for BGP tests.
+
+    Supports IPv4 and EVPN address families.
     """
 
     anta_module = "anta.tests.routing"
     categories = ["BGP"]
+    anta_tests = {}
+
+    def add_test(self, afi: str, bgp_neighbor_ip: str, safi: str | None = None) -> dict:
+        """Add a BGP test definition with the proper input parameters."""
+        custom_field = f"BGP {afi.upper() + ' ' + safi.capitalize() if safi else afi.upper()} Peer: {bgp_neighbor_ip}"
+        address_family = {"afi": afi, "peers": [bgp_neighbor_ip]}
+        if safi:
+            address_family["safi"] = safi
+
+        self.anta_tests.setdefault(f"{self.anta_module}.bgp", []).append(
+            {
+                "VerifyBGPSpecificPeers": {
+                    "address_families": [address_family],
+                    "result_overwrite": {"categories": self.categories, "custom_field": custom_field},
+                },
+            },
+        )
+
+    def create_tests(self, afi: str, safi: str | None = None) -> None:
+        """Create BGP tests for the given AFI and SAFI."""
+        bgp_neighbors = get(self.structured_config, "router_bgp.neighbors", [])
+
+        # Retrieve peer groups and direct neighbors
+        peer_groups = get(self.structured_config, f"router_bgp.address_family_{afi}.peer_groups", [])
+        direct_neighbors = get(self.structured_config, f"router_bgp.address_family_{afi}.neighbors", [])
+
+        # If `bgp default ipv4-unicast` is enabled, all addresses are IPv4 address family active unless explicitly deactivated
+        condition = afi == "ipv4" and safi == "unicast" and get(self.structured_config, "router_bgp.bgp.default.ipv4_unicast", default=False)
+
+        filtered_peer_groups = [peer_group["name"] for peer_group in peer_groups if peer_group.get("activate") != condition]
+        filtered_neighbors = [neighbor["ip_address"] for neighbor in direct_neighbors if neighbor.get("activate") != condition]
+
+        # Combine neighbors from peer groups and direct neighbors
+        if condition:
+            all_neighbors = [
+                (neighbor["ip_address"], neighbor.get("peer"))
+                for neighbor in bgp_neighbors
+                if neighbor.get("peer_group") not in filtered_peer_groups and neighbor["ip_address"] not in filtered_neighbors
+            ]
+        else:
+            all_neighbors = [
+                (neighbor["ip_address"], neighbor.get("peer"))
+                for neighbor in bgp_neighbors
+                if neighbor.get("peer_group") in filtered_peer_groups or neighbor["ip_address"] in filtered_neighbors
+            ]
+
+        # Add tests for all neighbors
+        for ip, peer in all_neighbors:
+            # If peer key is present, check if peer is available
+            if peer is not None and not self.is_peer_available(peer):
+                continue
+            self.add_test(afi=afi, safi=safi, bgp_neighbor_ip=str(ip))
 
     @cached_property
     def test_definition(self) -> dict | None:
-        """
-        Generates the proper ANTA test definition for all BGP tests.
+        """Generates the proper ANTA test definition for all BGP tests.
 
-        Returns:
+        Returns
+        -------
             test_definition (dict): ANTA test definition.
 
         """
-        anta_tests = {}
-
-        def add_test(description: str, afi: str, bgp_neighbor_ip: str, safi: str = None) -> None:
-            """
-            Add a test to BGP verify peers with the proper parameters to the anta_tests list.
-            """
-            custom_field = f"bgp_neighbor: {bgp_neighbor_ip}"
-            address_family = {"afi": afi, "peers": [bgp_neighbor_ip]}
-            if safi:
-                address_family["safi"] = safi
-
-            anta_tests.setdefault(f"{self.anta_module}.bgp", []).append(
-                {
-                    "VerifyBGPSpecificPeers": {
-                        "address_families": [address_family],
-                        "result_overwrite": {"categories": self.categories, "description": description, "custom_field": custom_field},
-                    }
-                }
-            )
-
+        # Check if BGP configuration is present with ArBGP model
         if self.logged_get(key="router_bgp") is None or not self.validate_data(service_routing_protocols_model="multi-agent", logging_level="WARNING"):
             return None
 
-        anta_tests.setdefault(f"{self.anta_module}.generic", []).append(
+        self.anta_tests.setdefault(f"{self.anta_module}.generic", []).append(
             {
                 "VerifyRoutingProtocolModel": {
                     "model": "multi-agent",
-                    "result_overwrite": {"categories": self.categories, "description": "ArBGP is configured and operating", "custom_field": "ArBGP"},
-                }
-            }
+                    "result_overwrite": {"categories": self.categories},
+                },
+            },
         )
+        # Create tests for IPv4 and EVPN address families
+        self.create_tests(afi="evpn")
+        self.create_tests(afi="ipv4", safi="unicast")
 
-        bgp_peer_groups = get(self.structured_config, "router_bgp.peer_groups", [])
-        bgp_neighbors = get(self.structured_config, "router_bgp.neighbors", [])
-
-        for idx, bgp_neighbor in enumerate(bgp_neighbors):
-            # TODO - this matches legacy eos_validate_state BUT works only for neighbors in peer groups...
-            if not self.validate_data(data=bgp_neighbor, data_path=f"router_bgp.neighbors.[{idx}]", required_keys=["ip_address", "peer_group", "peer"]):
-                continue
-
-            if not self.is_peer_available(bgp_neighbor["peer"]):
-                continue
-
-            if (neighbor_peer_group := get_item(bgp_peer_groups, "name", bgp_neighbor["peer_group"])) is None:
-                self.log_skip_message(message=f"Peer group '{bgp_neighbor['peer_group']}' not found.", logging_level="WARNING")
-                continue
-
-            if not self.validate_data(data=neighbor_peer_group, data_path=f"router_bgp.peer_groups.{neighbor_peer_group['name']}", required_keys="type"):
-                continue
-
-            if neighbor_peer_group["type"] == "ipv4":
-                add_test(description="ip bgp peer state established (ipv4)", afi="ipv4", safi="unicast", bgp_neighbor_ip=str(bgp_neighbor["ip_address"]))
-            elif neighbor_peer_group["type"] == "evpn":
-                add_test(description="bgp evpn peer state established (evpn)", afi="evpn", bgp_neighbor_ip=str(bgp_neighbor["ip_address"]))
-
-        return anta_tests if anta_tests.get(f"{self.anta_module}.bgp") else None
+        return self.anta_tests if self.anta_tests.get(f"{self.anta_module}.bgp") else None
