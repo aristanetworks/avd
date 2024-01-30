@@ -9,10 +9,10 @@ import yaml
 
 # Override global path to load schema from source instead of any installed version.
 # Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
-path.insert(0, str(Path(__file__).parents[3].joinpath("pyavd")))
+path.insert(0, str(Path(__file__).parents[3]))
 
-from schema.metaschema.meta_schema_model import AristaAvdSchema
-from schema.store import create_store
+from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
+from schema_tools.store import create_store
 
 
 class NoAliasDumper(yaml.Dumper):

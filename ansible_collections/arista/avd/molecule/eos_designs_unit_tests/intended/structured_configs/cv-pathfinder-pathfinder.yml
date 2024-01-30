@@ -10,18 +10,21 @@ router_bgp:
     paths: 16
   updates:
     wait_install: true
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   bgp_cluster_id: 192.168.44.1
   listen_ranges:
-  - prefix: 192.168.42.0/24
+  - prefix: 192.168.142.0/24
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
-  - prefix: 192.168.43.0/24
+  - prefix: 192.168.143.0/24
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
   peer_groups:
   - name: WAN-OVERLAY-PEERS
     type: wan
-    update_source: Loopback0
+    update_source: Dps1
     bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
@@ -61,6 +64,19 @@ router_bgp:
         receive: true
         send:
           any: true
+  vrfs:
+  - name: default
+    rd: 192.168.44.1:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -107,6 +123,24 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.44.1/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.44.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 30
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 static_routes:
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.7.7.6
@@ -123,10 +157,11 @@ flow_tracking:
           host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 5000
+    shutdown: false
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
-    local_id: 192.168.44.1
+    local_id: 192.168.144.1
   sa_policies:
   - name: CP-SA-POLICY
     esp:
@@ -230,6 +265,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
   path_groups:
   - name: MPLS
     id: 100
@@ -353,12 +390,11 @@ application_traffic_recognition:
       - 6.6.6.0/24
     - name: CONTROL-PLANE-APP-SRC-PREFIXES
       prefix_values:
-      - 192.168.44.1/32
+      - 192.168.144.1/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  tcp_mss_ceiling:
-    ipv4: 1000
+  ip_address: 192.168.144.1/32
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 vxlan_interface:
@@ -366,7 +402,7 @@ vxlan_interface:
     description: cv-pathfinder-pathfinder_VTEP
     vxlan:
       udp_port: 4789
-      source_interface: Loopback0
+      source_interface: Dps1
       vrfs:
       - name: default
         vni: 1
@@ -404,7 +440,7 @@ metadata:
         value: '999'
   cv_pathfinder:
     role: pathfinder
-    vtep_ip: 192.168.44.1
+    vtep_ip: 192.168.144.1
     interfaces:
     - name: Ethernet1
       carrier: Bouygues_Telecom

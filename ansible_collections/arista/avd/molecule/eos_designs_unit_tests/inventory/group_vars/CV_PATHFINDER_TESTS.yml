@@ -25,8 +25,8 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
     listen_range_prefixes:
-      - 192.168.42.0/24
-      - 192.168.43.0/24
+      - 192.168.142.0/24
+      - 192.168.143.0/24
 
 wan_route_servers:
   # Not testing the overloading
@@ -52,6 +52,7 @@ default_node_types:
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA]
   nodes:
@@ -88,6 +89,7 @@ wan_edge:
 wan_transit:
   defaults:
     loopback_ipv4_pool: 192.168.43.0/24
+    vtep_loopback_ipv4_pool: 192.168.143.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA, TenantB]
   nodes:
@@ -109,6 +111,7 @@ wan_transit:
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.44.0/24
+    vtep_loopback_ipv4_pool: 192.168.144.0/24
   nodes:
     - name: cv-pathfinder-pathfinder
       id: 1

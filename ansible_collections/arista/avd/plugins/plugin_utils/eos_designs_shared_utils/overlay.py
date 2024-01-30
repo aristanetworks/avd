@@ -24,7 +24,11 @@ class OverlayMixin:
 
     @cached_property
     def vtep_loopback(self: SharedUtils) -> str:
-        return get(self.switch_data_combined, "vtep_loopback", default="Loopback1")
+        """
+        The default is Loopback1 except for WAN devices where the default is Dps1.
+        """
+        default_vtep_loopback = "Dps1" if self.wan_role is not None else "Loopback1"
+        return get(self.switch_data_combined, "vtep_loopback", default=default_vtep_loopback)
 
     @cached_property
     def evpn_role(self: SharedUtils) -> str | None:

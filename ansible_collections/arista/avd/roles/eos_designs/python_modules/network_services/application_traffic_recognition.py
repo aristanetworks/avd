@@ -47,8 +47,8 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
     def _generate_control_plane_application_profile(self, app_dict: dict) -> None:
         """
         Generate an application profile using a single application matching:
-        * the device Pathfinders router_ids  as destination for non Pathfinders.
-        * the device Pathfinder router_id as source
+        * the device Pathfinders vtep_ips as destination for non Pathfinders.
+        * the device Pathfinder vtep_ip as source
 
         Create a structure as follow. If any object already exist, it is kept as defined by user and override the defaults.
 
@@ -66,7 +66,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
               field_sets:
                 ipv4_prefixes:
                   - name: CONTROL-PLANE-APP-DEST-PREFIXES
-                    prefix_values: [Pathfinder to which the router is connected router-ids]
+                    prefix_values: [Pathfinder to which the router is connected vtep_ips]
 
         Pathfinder:
 
@@ -82,7 +82,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
               field_sets:
                 ipv4_prefixes:
                   - name: CONTROL-PLANE-APP-SRC-PREFIXES
-                    prefix_values: [Pathfinder router_id]
+                    prefix_values: [Pathfinder vtep_ip]
         """
         # Adding the application-profile
         application_profiles = get(app_dict, "application_profiles", [])
@@ -113,11 +113,11 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
             ipv4_prefixes_field_sets = get(app_dict, "field_sets.ipv4_prefixes", [])
             if get_item(ipv4_prefixes_field_sets, "name", self._wan_cp_app_dst_prefix) is not None:
                 return
-            pathfinder_router_ids = [f"{wan_rs_data.get('router_id')}/32" for wan_rs, wan_rs_data in self.shared_utils.filtered_wan_route_servers.items()]
+            pathfinder_vtep_ips = [f"{wan_rs_data.get('vtep_ip')}/32" for wan_rs, wan_rs_data in self.shared_utils.filtered_wan_route_servers.items()]
             app_dict.setdefault("field_sets", {}).setdefault("ipv4_prefixes", []).append(
                 {
                     "name": self._wan_cp_app_dst_prefix,
-                    "prefix_values": pathfinder_router_ids,
+                    "prefix_values": pathfinder_vtep_ips,
                 }
             )
         elif self.shared_utils.wan_role == "server":
@@ -128,7 +128,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                 }
             )
             app_dict.setdefault("field_sets", {}).setdefault("ipv4_prefixes", []).append(
-                {"name": self._wan_cp_app_src_prefix, "prefix_values": [f"{self.shared_utils.router_id}/32"]}
+                {"name": self._wan_cp_app_src_prefix, "prefix_values": [f"{self.shared_utils.vtep_ip}/32"]}
             )
 
     def _filtered_application_traffic_recognition(self) -> dict:

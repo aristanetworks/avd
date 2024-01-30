@@ -10,18 +10,21 @@ router_bgp:
     paths: 16
   updates:
     wait_install: true
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   bgp_cluster_id: 192.168.44.2
   listen_ranges:
-  - prefix: 192.168.42.0/24
+  - prefix: 192.168.142.0/24
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
-  - prefix: 192.168.43.0/24
+  - prefix: 192.168.143.0/24
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
   peer_groups:
   - name: WAN-OVERLAY-PEERS
     type: wan
-    update_source: Loopback0
+    update_source: Dps1
     bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
@@ -30,7 +33,7 @@ router_bgp:
     route_reflector_client: true
   - name: RR-OVERLAY-PEERS
     type: wan
-    update_source: Loopback0
+    update_source: Dps1
     bfd: true
     send_community: all
     maximum_routes: 0
@@ -79,7 +82,7 @@ router_bgp:
         send:
           any: true
   neighbors:
-  - ip_address: 192.168.44.3
+  - ip_address: 192.168.144.3
     peer_group: RR-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder2
     description: cv-pathfinder-pathfinder2
@@ -87,6 +90,19 @@ router_bgp:
     peer_group: RR-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder3
     description: cv-pathfinder-pathfinder3
+  vrfs:
+  - name: default
+    rd: 192.168.44.2:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -119,6 +135,24 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.44.2/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.44.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 30
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 flow_tracking:
   hardware:
     trackers:
@@ -132,10 +166,11 @@ flow_tracking:
           host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 5000
+    shutdown: false
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
-    local_id: 192.168.44.2
+    local_id: 192.168.144.2
   sa_policies:
   - name: CP-SA-POLICY
     esp:
@@ -239,6 +274,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
   path_groups:
   - name: MPLS
     id: 100
@@ -247,7 +284,7 @@ router_path_selection:
     local_interfaces:
     - name: Ethernet1
     static_peers:
-    - router_ip: 192.168.44.3
+    - router_ip: 192.168.144.3
       name: cv-pathfinder-pathfinder2
       ipv4_addresses:
       - 10.9.9.9
@@ -365,12 +402,11 @@ application_traffic_recognition:
       - 6.6.6.0/24
     - name: CONTROL-PLANE-APP-SRC-PREFIXES
       prefix_values:
-      - 192.168.44.2/32
+      - 192.168.144.2/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  tcp_mss_ceiling:
-    ipv4: 1000
+  ip_address: 192.168.144.2/32
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 vxlan_interface:
@@ -378,7 +414,7 @@ vxlan_interface:
     description: cv-pathfinder-pathfinder1_VTEP
     vxlan:
       udp_port: 4789
-      source_interface: Loopback0
+      source_interface: Dps1
       vrfs:
       - name: default
         vni: 1
@@ -400,7 +436,7 @@ metadata:
         value: '888'
   cv_pathfinder:
     role: pathfinder
-    vtep_ip: 192.168.44.2
+    vtep_ip: 192.168.144.2
     interfaces:
     - name: Ethernet1
       carrier: Orange
