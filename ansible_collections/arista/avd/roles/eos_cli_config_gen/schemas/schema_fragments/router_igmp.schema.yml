@@ -12,3 +12,27 @@ keys:
     keys:
       ssm_aware:
         type: bool
+      host_proxy:
+        type: dict
+        keys:
+          vrf:
+            type: list
+            description: Configure IGMP in a VRF
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: VRF name
+                match_mroute:
+                  type: str
+                  description: |
+                    Specify conditions for sending IGMP joins for host-proxy
+                    'iif' will enable igmp host-proxy to work in iif aware
+                    'all' will enable igmp host-proxy to work in iif unaware mode
+                  valid_values:
+                    - all
+                    - iif

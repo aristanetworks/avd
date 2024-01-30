@@ -41,14 +41,20 @@ interface Management1
 
 #### Router IGMP Summary
 
-| Settings | Value |
-| -------- | ----- |
-| SSM Aware | True |
+| Settings | Value | VRF |
+| -------- | ----- | --- |
+| SSM Aware | True | N/A |
+| Host Proxy | iif | BLUE |
+| Host Proxy | all | default |
 
 #### Router IGMP Device Configuration
 
 ```eos
 !
 router igmp
+   host-proxy match mroute all
    ssm aware
+   !
+   vrf BLUE
+     host-proxy match mroute iif
 ```

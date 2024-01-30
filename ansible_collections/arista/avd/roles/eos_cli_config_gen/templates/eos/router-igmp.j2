@@ -7,7 +7,23 @@
 {% if router_igmp is arista.avd.defined %}
 !
 router igmp
+{%     if router_igmp.host_proxy is arista.avd.defined %}
+{%         for vrf in router_igmp.host_proxy.vrf %}
+{%             if vrf.name == 'default' %}
+   host-proxy match mroute {{ vrf.match_mroute }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {%     if router_igmp.ssm_aware is arista.avd.defined(true) %}
    ssm aware
+{%     endif %}
+{%     if router_igmp.host_proxy is arista.avd.defined %}
+{%         for vrf in router_igmp.host_proxy.vrf | arista.avd.natural_sort('name') %}
+{%             if vrf.name != 'default' %}
+   !
+   vrf {{ vrf.name }}
+     host-proxy match mroute {{ vrf.match_mroute }}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {% endif %}

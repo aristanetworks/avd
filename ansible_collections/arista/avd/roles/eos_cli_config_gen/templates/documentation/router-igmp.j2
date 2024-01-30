@@ -10,12 +10,16 @@
 
 #### Router IGMP Summary
 
-| Settings | Value |
-| -------- | ----- |
+| Settings | Value | VRF |
+| -------- | ----- | --- |
 {%     if router_igmp.ssm_aware is arista.avd.defined %}
-| SSM Aware | {{ router_igmp.ssm_aware }} |
+| SSM Aware | {{ router_igmp.ssm_aware }} | N/A |
 {%     endif %}
-
+{%     if router_igmp.host_proxy is arista.avd.defined %}
+{%         for vrf in router_igmp.host_proxy.vrf | arista.avd.natural_sort('name') %}
+| Host Proxy | {{ vrf.match_mroute }} | {{ vrf.name }} |
+{%         endfor %}
+{%     endif %}
 #### Router IGMP Device Configuration
 
 ```eos
