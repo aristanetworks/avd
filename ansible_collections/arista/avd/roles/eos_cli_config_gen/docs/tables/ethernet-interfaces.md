@@ -376,11 +376,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum") | Dictionary |  |  |  | Maximum number of MAC addresses allowed on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum.disabled") | Boolean |  |  |  | Disable port level check for port security (only in shutdown mode). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum.limit") | Integer |  |  | Min: 1<br>Max: 1000 | MAC address limit. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violation</samp>](## "ethernet_interfaces.[].switchport.port_security.violation") | Dictionary |  |  |  | Configure violation mode (shutdown or protect). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violation</samp>](## "ethernet_interfaces.[].switchport.port_security.violation") | Dictionary |  |  |  | Configure violation mode (shutdown or protect), default is 'shutdown'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protect</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.protect") | Dictionary |  |  |  | Configure port security in protect mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.protect.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.protect.log") | Boolean |  |  |  | Log new addresses seen after limit is reached in protect mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.shutdown") | Boolean |  |  |  | Configure port security in shutdown mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].switchport.port_security.vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_mac_address_maximum</samp>](## "ethernet_interfaces.[].switchport.port_security.vlan.default_mac_address_maximum") | Integer |  |  | Min: 0<br>Max: 1000 | Select all VLAN on this interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "ethernet_interfaces.[].switchport.port_security.vlan.id") | String |  |  |  | VLAN ID or range(s) of VLAN IDs, <1-4094>.<br>Example:<br>  - 3<br>  - 1,3<br>  - 1-10<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "ethernet_interfaces.[].switchport.port_security.vlan.mac_address_maximum") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "ethernet_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration |
 
 === "YAML"
@@ -1055,7 +1058,7 @@
               # MAC address limit.
               limit: <int; 1-1000>
 
-            # Configure violation mode (shutdown or protect).
+            # Configure violation mode (shutdown or protect), default is 'shutdown'.
             violation:
 
               # Configure port security in protect mode.
@@ -1064,9 +1067,18 @@
 
                 # Log new addresses seen after limit is reached in protect mode.
                 log: <bool>
+            vlan:
 
-              # Configure port security in shutdown mode.
-              shutdown: <bool>
+              # Select all VLAN on this interface.
+              default_mac_address_maximum: <int; 0-1000>
+
+              # VLAN ID or range(s) of VLAN IDs, <1-4094>.
+              # Example:
+              #   - 3
+              #   - 1,3
+              #   - 1-10
+              id: <str>
+              mac_address_maximum: <int>
 
         # Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
         eos_cli: <str>

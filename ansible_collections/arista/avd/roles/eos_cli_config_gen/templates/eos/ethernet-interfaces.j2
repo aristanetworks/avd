@@ -557,9 +557,7 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.switchport.port_security.enabled is arista.avd.defined(true) %}
    switchport port-security
 {%         endif %}
-{%         if ethernet_interface.switchport.port_security.violation.shutdown is arista.avd.defined(true) %}
-   switchport port-security
-{%         elif ethernet_interface.switchport.port_security.violation.protect.enabled is arista.avd.defined(true) %}
+{%         if ethernet_interface.switchport.port_security.violation.protect.enabled is arista.avd.defined(true) %}
 {%             if ethernet_interface.switchport.port_security.violation.protect.log is arista.avd.defined(true) %}
    switchport port-security violation protect log
 {%             else %}
@@ -570,6 +568,15 @@ interface {{ ethernet_interface.name }}
    switchport port-security mac-address maximum disabled
 {%         elif ethernet_interface.switchport.port_security.mac_address_maximum.limit is arista.avd.defined %}
    switchport port-security mac-address maximum {{ ethernet_interface.switchport.port_security.mac_address_maximum.limit }}
+{%         endif %}
+{%         if ethernet_interface.switchport.port_security.vlan.id is arista.avd.defined and ethernet_interface.switchport.port_security.vlan.mac_address_maximum is arista.avd.defined and ethernet_interface.switchport.port_security.violation.protect.enabled is not arista.avd.defined %}
+{%             for id in ethernet_interface.switchport.port_security.vlan.id | arista.avd.range_expand %}
+{%                 set vlan = 'vlan ' ~ id %}
+   switchport port-security {{ vlan }} mac-address maximum {{ ethernet_interface.switchport.port_security.vlan.mac_address_maximum }}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.switchport.port_security.vlan.default_mac_address_maximum is arista.avd.defined %}
+   switchport port-security vlan default mac-address maximum {{ ethernet_interface.switchport.port_security.vlan.default_mac_address_maximum }}
 {%         endif %}
 {%     endif %}
 {%     if ethernet_interface.qos.trust is arista.avd.defined %}

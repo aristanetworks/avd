@@ -5047,7 +5047,7 @@
                   },
                   "violation": {
                     "type": "object",
-                    "description": "Configure violation mode (shutdown or protect).",
+                    "description": "Configure violation mode (shutdown or protect), default is 'shutdown'.",
                     "properties": {
                       "protect": {
                         "type": "object",
@@ -5068,11 +5068,6 @@
                           "^_.+$": {}
                         },
                         "title": "Protect"
-                      },
-                      "shutdown": {
-                        "type": "boolean",
-                        "description": "Configure port security in shutdown mode.",
-                        "title": "Shutdown"
                       }
                     },
                     "additionalProperties": false,
@@ -5080,6 +5075,32 @@
                       "^_.+$": {}
                     },
                     "title": "Violation"
+                  },
+                  "vlan": {
+                    "type": "object",
+                    "properties": {
+                      "default_mac_address_maximum": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000,
+                        "description": "Select all VLAN on this interface.",
+                        "title": "Default MAC Address Maximum"
+                      },
+                      "id": {
+                        "type": "string",
+                        "description": "VLAN ID or range(s) of VLAN IDs, <1-4094>.\nExample:\n  - 3\n  - 1,3\n  - 1-10\n",
+                        "title": "ID"
+                      },
+                      "mac_address_maximum": {
+                        "type": "integer",
+                        "title": "MAC Address Maximum"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "VLAN"
                   }
                 },
                 "additionalProperties": false,

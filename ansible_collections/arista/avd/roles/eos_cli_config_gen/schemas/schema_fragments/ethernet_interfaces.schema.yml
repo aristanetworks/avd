@@ -1274,7 +1274,7 @@ keys:
                       description: MAC address limit.
                 violation:
                   type: dict
-                  description: Configure violation mode (shutdown or protect).
+                  description: Configure violation mode (shutdown or protect), default is 'shutdown'.
                   keys:
                     protect:
                       type: dict
@@ -1285,9 +1285,30 @@ keys:
                         log:
                           type: bool
                           description: Log new addresses seen after limit is reached in protect mode.
-                    shutdown:
-                      type: bool
-                      description: Configure port security in shutdown mode.
+                vlan:
+                  type: dict
+                  keys:
+                    default_mac_address_maximum:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 0
+                      max: 1000
+                      description: Select all VLAN on this interface.
+                    id:
+                      type: str
+                      convert_types:
+                        - int
+                      description: |
+                        VLAN ID or range(s) of VLAN IDs, <1-4094>.
+                        Example:
+                          - 3
+                          - 1,3
+                          - 1-10
+                    mac_address_maximum:
+                      type: int
+                      convert_types:
+                        - str
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
