@@ -384,3 +384,19 @@ vlan_interfaces:
         ipv4:
           address: 100.64.0.1
           version: 3
+
+  - name: Vlan334
+    description: v6 attached host exports
+    ipv6_enable: true
+    ipv6_address: 2a00::1/64
+    ipv6_attached_host_route_export:
+      enabled: true
+      distance: 19
+
+  - name: Vlan335
+    description: v6 attached host exports
+    ipv6_enable: true
+    ipv6_address: 2a00::1/64
+    ipv6_attached_host_route_export:
+      enabled: true
+      prefix_length: 64

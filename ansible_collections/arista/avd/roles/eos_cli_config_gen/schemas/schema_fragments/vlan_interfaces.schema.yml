@@ -491,6 +491,24 @@ keys:
                 - str
               min: 1
               max: 255
+        ipv6_attached_host_route_export:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              required: true
+            distance:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 255
+            prefix_length:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 128
         bfd:
           type: dict
           keys:
