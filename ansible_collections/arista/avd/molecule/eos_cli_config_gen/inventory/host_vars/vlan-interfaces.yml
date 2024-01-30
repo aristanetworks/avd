@@ -400,3 +400,12 @@ vlan_interfaces:
     ipv6_attached_host_route_export:
       enabled: true
       prefix_length: 64
+
+  - name: Vlan336
+    description: v6 attached host exports
+    ipv6_enable: true
+    ipv6_address: 2a00:3::1/64
+    ipv6_attached_host_route_export:
+      enabled: true
+      distance: 18
+      prefix_length: 64
