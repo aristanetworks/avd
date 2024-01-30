@@ -3085,7 +3085,7 @@ keys:
             port_security:
               type: dict
               keys:
-                enable:
+                enabled:
                   type: bool
                 mac_address_maximum:
                   type: dict
@@ -3110,7 +3110,7 @@ keys:
                       type: dict
                       description: Configure port security in protect mode.
                       keys:
-                        enable:
+                        enabled:
                           type: bool
                         log:
                           type: bool

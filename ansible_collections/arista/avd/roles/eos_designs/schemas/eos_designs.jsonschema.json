@@ -8521,9 +8521,9 @@
                   "port_security": {
                     "type": "object",
                     "properties": {
-                      "enable": {
+                      "enabled": {
                         "type": "boolean",
-                        "title": "Enable"
+                        "title": "Enabled"
                       },
                       "mac_address_maximum": {
                         "type": "object",
@@ -8556,9 +8556,9 @@
                             "type": "object",
                             "description": "Configure port security in protect mode.",
                             "properties": {
-                              "enable": {
+                              "enabled": {
                                 "type": "boolean",
-                                "title": "Enable"
+                                "title": "Enabled"
                               },
                               "log": {
                                 "type": "boolean",
@@ -13908,9 +13908,9 @@
                   "port_security": {
                     "type": "object",
                     "properties": {
-                      "enable": {
+                      "enabled": {
                         "type": "boolean",
-                        "title": "Enable"
+                        "title": "Enabled"
                       },
                       "mac_address_maximum": {
                         "type": "object",
@@ -13943,9 +13943,9 @@
                             "type": "object",
                             "description": "Configure port security in protect mode.",
                             "properties": {
-                              "enable": {
+                              "enabled": {
                                 "type": "boolean",
-                                "title": "Enable"
+                                "title": "Enabled"
                               },
                               "log": {
                                 "type": "boolean",
@@ -20110,9 +20110,9 @@
                   "port_security": {
                     "type": "object",
                     "properties": {
-                      "enable": {
+                      "enabled": {
                         "type": "boolean",
-                        "title": "Enable"
+                        "title": "Enabled"
                       },
                       "mac_address_maximum": {
                         "type": "object",
@@ -20145,9 +20145,9 @@
                             "type": "object",
                             "description": "Configure port security in protect mode.",
                             "properties": {
-                              "enable": {
+                              "enabled": {
                                 "type": "boolean",
-                                "title": "Enable"
+                                "title": "Enabled"
                               },
                               "log": {
                                 "type": "boolean",

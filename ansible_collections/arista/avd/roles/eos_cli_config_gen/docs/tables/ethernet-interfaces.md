@@ -372,13 +372,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "ethernet_interfaces.[].validate_state") | Boolean |  |  |  | Set to false to disable interface validation by the `eos_validate_state` role |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchport</samp>](## "ethernet_interfaces.[].switchport") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_security</samp>](## "ethernet_interfaces.[].switchport.port_security") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "ethernet_interfaces.[].switchport.port_security.enable") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].switchport.port_security.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum") | Dictionary |  |  |  | Maximum number of MAC addresses allowed on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum.disabled") | Boolean |  |  |  | Disable port level check for port security (only in shutdown mode). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum.limit") | Integer |  |  | Min: 1<br>Max: 1000 | MAC address limit. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violation</samp>](## "ethernet_interfaces.[].switchport.port_security.violation") | Dictionary |  |  |  | Configure violation mode (shutdown or protect). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protect</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.protect") | Dictionary |  |  |  | Configure port security in protect mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.protect.enable") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.protect.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.protect.log") | Boolean |  |  |  | Log new addresses seen after limit is reached in protect mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.shutdown") | Boolean |  |  |  | Configure port security in shutdown mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "ethernet_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration |
@@ -1044,7 +1044,7 @@
         validate_state: <bool>
         switchport:
           port_security:
-            enable: <bool>
+            enabled: <bool>
 
             # Maximum number of MAC addresses allowed on the interface.
             mac_address_maximum:
@@ -1060,7 +1060,7 @@
 
               # Configure port security in protect mode.
               protect:
-                enable: <bool>
+                enabled: <bool>
 
                 # Log new addresses seen after limit is reached in protect mode.
                 log: <bool>
