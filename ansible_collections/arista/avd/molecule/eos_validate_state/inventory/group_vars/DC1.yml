@@ -27,10 +27,69 @@ spine:
       id: 1
       # Management IP to be assigned to the management interface
       mgmt_ip: 172.16.1.11/24
-
+      # Custom BGP configuration for BGP tests with `bgp_default_ipv4_unicast: true`
+      structured_config:
+        router_bgp:
+          peer_groups:
+            - name: IPv4-EXTERNAL-PEERS
+              type: ipv4
+              remote_as: 577
+            - name: EVPN-EXTERNAL-PEERS
+              type: evpn
+              remote_as: 577
+          neighbors:
+            # This peer will be tested since it is activated by default for the IPv4 AFI
+            - ip_address: 142.112.39.1
+              peer_group: IPv4-EXTERNAL-PEERS
+              description: "Primary_Internet_IPv4"
+            # This peer will NOT be tested since it is explicitly deactivated for the IPv4 AFI
+            - ip_address: 142.112.43.1
+              peer_group: EVPN-EXTERNAL-PEERS
+              description: "Primary_Internet_EVPN"
+            # This peer will NOT be tested since it is explicitly deactivated for the IPv4 AFI
+            - ip_address: 142.112.41.1
+              remote_as: 577
+              description: "Secondary_Internet"
+          address_family_ipv4:
+            neighbors:
+              - ip_address: 142.112.41.1
+                activate: false
+            peer_groups:
+              - name: EVPN-EXTERNAL-PEERS
+                activate: false
     - name: dc1-spine2
       id: 2
       mgmt_ip: 172.16.1.12/24
+      # Custom BGP configuration for BGP tests with `bgp_default_ipv4_unicast: false`
+      structured_config:
+        router_bgp:
+          peer_groups:
+            - name: IPv4-EXTERNAL-PEERS
+              type: ipv4
+              remote_as: 577
+            - name: EVPN-EXTERNAL-PEERS
+              type: evpn
+              remote_as: 577
+          neighbors:
+            # This peer will NOT be tested since it is NOT explicitly activated for the IPv4 AFI
+            - ip_address: 142.112.39.2
+              peer_group: IPv4-EXTERNAL-PEERS
+              description: "Primary_Internet_IPv4"
+            # This peer will NOT be tested since it is explicitly deactivated for the IPv4 AFI
+            - ip_address: 142.112.43.2
+              peer_group: EVPN-EXTERNAL-PEERS
+              description: "Primary_Internet_EVPN"
+            # This peer will be tested since it is explicitly activated for the IPv4 AFI
+            - ip_address: 142.112.41.2
+              remote_as: 577
+              description: "Secondary_Internet"
+          address_family_ipv4:
+            neighbors:
+              - ip_address: 142.112.41.2
+                activate: true
+            peer_groups:
+              - name: EVPN-EXTERNAL-PEERS
+                activate: false
 
 # L3 Leaf switch group
 l3leaf:

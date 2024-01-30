@@ -24,12 +24,23 @@ router_bgp:
     maximum_routes: 0
     ebgp_multihop: 3
     next_hop_unchanged: true
+  - name: IPv4-EXTERNAL-PEERS
+    type: ipv4
+    remote_as: '577'
+  - name: EVPN-EXTERNAL-PEERS
+    type: evpn
+    remote_as: '577'
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+    - name: EVPN-EXTERNAL-PEERS
+      activate: false
+    neighbors:
+    - ip_address: 142.112.41.2
+      activate: true
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -74,6 +85,15 @@ router_bgp:
     peer: dc1-leaf2b
     description: dc1-leaf2b
     remote_as: '65102'
+  - ip_address: 142.112.39.2
+    peer_group: IPv4-EXTERNAL-PEERS
+    description: Primary_Internet_IPv4
+  - ip_address: 142.112.43.2
+    peer_group: EVPN-EXTERNAL-PEERS
+    description: Primary_Internet_EVPN
+  - ip_address: 142.112.41.2
+    remote_as: '577'
+    description: Secondary_Internet
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
