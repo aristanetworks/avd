@@ -257,7 +257,7 @@ class UtilsMixin:
     @cached_property
     def _local_path_groups_connected_to_pathfinder(self) -> list:
         """
-        Return list of local path_groups connected to pathfinder
+        Return list of names of local path_groups connected to pathfinder
         """
         return [
             path_group["name"]
