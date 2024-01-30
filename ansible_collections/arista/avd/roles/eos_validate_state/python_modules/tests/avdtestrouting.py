@@ -102,19 +102,14 @@ class AvdTestBGP(AvdTestBase):
         filtered_peer_groups = [peer_group["name"] for peer_group in peer_groups if peer_group.get("activate") != condition]
         filtered_neighbors = [neighbor["ip_address"] for neighbor in direct_neighbors if neighbor.get("activate") != condition]
 
-        # Combine neighbors from peer groups and direct neighbors
-        if condition:
-            all_neighbors = [
-                (neighbor["ip_address"], neighbor.get("peer"))
-                for neighbor in bgp_neighbors
-                if neighbor.get("peer_group") not in filtered_peer_groups and neighbor["ip_address"] not in filtered_neighbors
-            ]
-        else:
-            all_neighbors = [
-                (neighbor["ip_address"], neighbor.get("peer"))
-                for neighbor in bgp_neighbors
-                if neighbor.get("peer_group") in filtered_peer_groups or neighbor["ip_address"] in filtered_neighbors
-            ]
+        # Combine neighbors from peer groups and direct neighbors.
+        # Depending on the condition, we either keep all the neighbors minus the explicitly deactivated ones, or we keep only the explicitly activated ones.
+        all_neighbors = [
+            (neighbor["ip_address"], neighbor.get("peer"))
+            for neighbor in bgp_neighbors
+            if (condition and neighbor.get("peer_group") not in filtered_peer_groups and neighbor["ip_address"] not in filtered_neighbors)
+            or (not condition and (neighbor.get("peer_group") in filtered_peer_groups or neighbor["ip_address"] in filtered_neighbors))
+        ]
 
         # Add tests for all neighbors
         for ip, peer in all_neighbors:
