@@ -38,6 +38,7 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
   - Policies are assigned to VRFs using the list `wan_virtual_topologies.vrfs`. A policy can be reused in multiple VRFs.
   - If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
   - For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `CONTROL-PLANE-APPLICATION-PROFILE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
+  - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default. It is possible to disable HA at the site level.
 
 #### LAN Designs
 
@@ -118,9 +119,9 @@ The HA tunnel will come up properly today but route redistribution will be missi
 
 - All Pathfinders must be able to create a full mesh
 - No IPv6 support
-- For WAN interfaces only physical interfaces are supported today under `node.l3_interfaces`
 - For WAN interfaces, NAT IP on the Pathfinder side can be supported using the `wan_route_servers.path_groups.interfaces` key.
 - Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
+- It is not yet supported to disable HA on a specific LAN interface on the device, nor is it supported to add HA configuration on a non-uplink interface.
 - The name of the AVT policies and AVT profiles are configurable in the input variables. The Load Balance policies are named `LB-<profile_name>` and are not configurable.
 - For LAN, the current supported funcitonality is to use `uplink_type: p2p-vrfs` on the WAN routers and to have the relevant VRFs present on the uplink switches via `network_services`. Other LAN scenarios will come with time.
 - HA for AutoVPN is not supported
@@ -129,7 +130,6 @@ The HA tunnel will come up properly today but route redistribution will be missi
 
 - Auto generation of Path-group IDs and other IDs.
 - New LAN scenarios (L2, ..)
-- HA for eBGP
 - HA for AutoVPN
 - Proper OSPF-BGP redistribution in VRF default.
 - Support for OSPF subinterfaces.
