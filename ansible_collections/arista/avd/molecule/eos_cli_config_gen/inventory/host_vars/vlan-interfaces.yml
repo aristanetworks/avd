@@ -388,7 +388,7 @@ vlan_interfaces:
   - name: Vlan334
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2a00::1/64
+    ipv6_address: 2a00:1::1/64
     ipv6_attached_host_route_export:
       enabled: true
       distance: 19
@@ -396,7 +396,7 @@ vlan_interfaces:
   - name: Vlan335
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2a00::1/64
+    ipv6_address: 2a00:2::1/64
     ipv6_attached_host_route_export:
       enabled: true
       prefix_length: 64

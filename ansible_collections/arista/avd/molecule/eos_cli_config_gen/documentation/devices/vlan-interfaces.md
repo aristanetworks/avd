@@ -155,8 +155,8 @@ interface Management1
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - |
 | Vlan333 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
-| Vlan334 | default | 2a00::1/64 | - | - | - | - | - | - | - |
-| Vlan335 | default | 2a00::1/64 | - | - | - | - | - | - | - |
+| Vlan334 | default | 2a00:1::1/64 | - | - | - | - | - | - | - |
+| Vlan335 | default | 2a00:2::1/64 | - | - | - | - | - | - | - |
 | Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | True | - | - | - |
 | Vlan667 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
 | Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - |
@@ -379,13 +379,13 @@ interface Vlan333
 interface Vlan334
    description v6 attached host exports
    ipv6 enable
-   ipv6 address 2a00::1/64
+   ipv6 address 2a00:1::1/64
    ipv6 attached-host route export 19
 !
 interface Vlan335
    description v6 attached host exports
    ipv6 enable
-   ipv6 address 2a00::1/64
+   ipv6 address 2a00:2::1/64
    ipv6 attached-host route export prefix-length 64
 !
 interface Vlan501
