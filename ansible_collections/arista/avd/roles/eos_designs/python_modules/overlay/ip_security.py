@@ -35,7 +35,7 @@ class IpSecurityMixin(UtilsMixin):
         # Structure initialization
         ip_security = {"ike_policies": [], "sa_policies": [], "profiles": []}
 
-        if (data_plane := get(wan_ipsec_profiles, "data_plane")) is not None:
+        if self.shared_utils.wan_role == "client" and (data_plane := get(wan_ipsec_profiles, "data_plane")) is not None:
             self._append_data_plane(ip_security, data_plane)
         control_plane = get(wan_ipsec_profiles, "control_plane", required=True)
         self._append_control_plane(ip_security, control_plane)
