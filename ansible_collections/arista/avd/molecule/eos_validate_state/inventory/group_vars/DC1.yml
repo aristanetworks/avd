@@ -106,11 +106,14 @@ spine:
             peer_groups:
               - name: IPv4-EXTERNAL-PEERS
                 activate: true
+          address_family_ipv6:
+            peer_groups:
               - name: IPv6-EXTERNAL-PEERS
                 activate: true
+          address_family_evpn:
+            peer_groups:
               - name: EVPN-EXTERNAL-PEERS
                 activate: true
-
 # L3 Leaf switch group
 l3leaf:
   defaults:
