@@ -39,9 +39,9 @@ interface Management1
 
 | Layer 1 Event | Logging |
 | ------------- | ------- |
-| mac fault | True |
-| transceiver dom | True |
-| transceiver communication | True |
+| MAC fault | True |
+| Transceiver DOM | True |
+| Transceiver communication | True |
 
 ### Monitor Layer 1 Device Configuration
 
