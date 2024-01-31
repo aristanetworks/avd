@@ -15,7 +15,7 @@ keys:
       host_proxy:
         type: dict
         keys:
-          vrf:
+          vrfs:
             type: list
             description: Configure IGMP in a VRF
             primary_key: name
