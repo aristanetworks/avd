@@ -82,14 +82,18 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@v3
-      - name: Install requirements
+      - name: Set up Python 3
+        uses: actions/setup-python@v4
+      - name: Install Python requirements
         run: |
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
-          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: Run pre-commit
-        run: |
-          pre-commit run --all-files --color always
-
+        uses: pre-commit/action@v3
+        with:
+          extra_args: --all-files --color always
+      - name: Apply automatic fixes
+        uses: pre-commit-ci/lite-action@v1
+        if: always()
   # ----------------------------------- #
   # Check Links  offline for dead target
   # ----------------------------------- #
