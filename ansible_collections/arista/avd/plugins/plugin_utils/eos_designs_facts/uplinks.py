@@ -357,61 +357,8 @@ class UplinksMixin:
                     "encapsulation_dot1q_vlan": vrf_id,
                 }
 
-                uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
-                uplink = {}
-                uplink["interface"] = uplink_interface
-                uplink["peer"] = uplink_switch
-                uplink["peer_interface"] = uplink_switch_interfaces[uplink_index]
-                uplink["peer_type"] = uplink_switch_facts.type
-                uplink["peer_is_deployed"] = uplink_switch_facts.is_deployed
-                uplink["type"] = "underlay_l2"
-
-                if self.shared_utils.uplink_interface_speed is not None:
-                    uplink["speed"] = self.shared_utils.uplink_interface_speed
-
-                if self.shared_utils.uplink_switch_interface_speed is not None:
-                    uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
-
-                if self.shared_utils.uplink_ptp is not None:
-                    uplink["ptp"] = self.shared_utils.uplink_ptp
-                elif self.shared_utils.ptp_enabled:
-                    uplink["ptp"] = {"enable": True}
-
-                if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
-                    # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
-                    uplink["channel_description"] = uplink_switch_facts.shared_utils.group
-
-                # Used to determine whether or not port-channel towards uplink switch should have an mlag id
-                unique_uplink_switches = set(self.shared_utils.uplink_switches)
-                if self.shared_utils.mlag is True:
-                    # Override the peer's description on port-channel to be our group name if we are mlag pair #}
-                    uplink["peer_channel_description"] = self.shared_utils.group
-
-                    # Updating unique_uplink_switches with this switch's mlag peer's uplink switches
-                    unique_uplink_switches.update(self.shared_utils.mlag_peer_facts.shared_utils.uplink_switches)
-
-                # Only enable mlag for this port-channel on the uplink switch if there are multiple unique uplink switches
-                uplink["peer_mlag"] = len(unique_uplink_switches) > 1
-                uplink["channel_group_id"] = str(self._uplink_port_channel_id)
-                uplink["peer_channel_group_id"] = str(self._uplink_switch_port_channel_id)
-
-                # Remove vlans if upstream switch does not have them #}
-                if self.shared_utils.enable_trunk_groups:
-                    uplink["trunk_groups"] = ["UPLINK"]
-                    if self.shared_utils.mlag is True:
-                        uplink["peer_trunk_groups"] = [self.shared_utils.group]
-                    else:
-                        uplink["peer_trunk_groups"] = [self.shared_utils.hostname]
-
-                uplink_vlans = set(self._vlans)
-                uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._vlans)
-
-                if self.shared_utils.configure_inband_mgmt:
-                    # Always add inband_mgmt_vlan even if the uplink switch does not have this vlan defined
-                    uplink_vlans.add(self.shared_utils.inband_mgmt_vlan)
-
-                if uplink_vlans:
-                    uplink["vlans"] = list_compress(list(uplink_vlans))
+                if self.shared_utils.underlay_rfc5549:
+                    subinterface["ipv6_enable"] = True
                 else:
                     subinterface["prefix_length"] = self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
                     subinterface["ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_ip(uplink_index)
