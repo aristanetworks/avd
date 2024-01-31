@@ -8,4 +8,4 @@ wan_rr:
     - name: missing-data-plane_cpu-allocation-max
       id: 1
 
-expected_error_message: "For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set."
+expected_error_message: "For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set"
