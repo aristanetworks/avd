@@ -1276,15 +1276,15 @@ keys:
                   type: dict
                   description: Configure violation mode (shutdown or protect), default is 'shutdown'.
                   keys:
-                    protect:
-                      type: dict
-                      description: Configure port security in protect mode.
-                      keys:
-                        enabled:
-                          type: bool
-                        log:
-                          type: bool
-                          description: Log new addresses seen after limit is reached in protect mode.
+                    mode:
+                      type: str
+                      valid_values:
+                        - shutdown
+                        - protect
+                      description: Configure port security mode.
+                    protect_log:
+                      type: bool
+                      description: Log new addresses seen after limit is reached in protect mode.
                 vlan_default_mac_address_maximum:
                   type: int
                   convert_types:
