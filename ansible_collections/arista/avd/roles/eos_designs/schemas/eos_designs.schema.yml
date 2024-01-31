@@ -1480,6 +1480,18 @@ keys:
         min: 1
         max: 4093
         default: 3000
+  mlag_on_orphan_port_channel_downlink:
+    type: bool
+    documentation_options:
+      table: fabric-settings
+    description: 'If `true` (default) an MLAG ID will always be configured on a Port-Channel
+      downlink even if the downlink is only on one node in the MLAG pair.
+
+      If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed
+      to two MLAG switches.
+
+      Note the default value will change to `false` in AVD version 5.0'
+    default: true
   name_servers:
     documentation_options:
       table: management-settings

@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | `False` |  | Enable Trunk Group support across eos_designs.<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
-    | [<samp>mlag_on_orphan_port_channel_downlink</samp>](## "mlag_on_orphan_port_channel_downlink") | Boolean |  | `True` |  | If `true` (default) an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one MLAG switch.<br>If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches.<br>Note the default value will change to `false` in AVD version 5.0 |
+    | [<samp>mlag_on_orphan_port_channel_downlink</samp>](## "mlag_on_orphan_port_channel_downlink") | Boolean |  | `True` |  | If `true` (default) an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.<br>If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches.<br>Note the default value will change to `false` in AVD version 5.0 |
     | [<samp>only_local_vlan_trunk_groups</samp>](## "only_local_vlan_trunk_groups") | Boolean |  | `False` |  | A vlan can have many trunk_groups assigned.<br>To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,<br>this feature will only configure the vlan trunk groups matched with local connected_endpoints.<br>See "Details on only_local_vlan_trunk_groups" below.<br>Requires "enable_trunk_groups: true".<br> |
     | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | `9214` | Min: 68<br>Max: 65535 | Point to Point Links MTU. |
     | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  | QOS Profile assigned on all infrastructure links. |
@@ -50,7 +50,7 @@
     # See "Details on enable_trunk_groups" below before enabling this feature.
     enable_trunk_groups: <bool; default=False>
 
-    # If `true` (default) an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one MLAG switch.
+    # If `true` (default) an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.
     # If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches.
     # Note the default value will change to `false` in AVD version 5.0
     mlag_on_orphan_port_channel_downlink: <bool; default=True>
