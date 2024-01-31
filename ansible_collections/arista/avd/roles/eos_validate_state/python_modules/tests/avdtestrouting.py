@@ -96,24 +96,19 @@ class AvdTestBGP(AvdTestBase):
         peer_groups = get(self.structured_config, f"router_bgp.address_family_{afi}.peer_groups", [])
         direct_neighbors = get(self.structured_config, f"router_bgp.address_family_{afi}.neighbors", [])
 
-        # If `bgp default ipv4-unicast` is enabled, all addresses are IPv4 address family active unless explicitly deactivated
-        condition = afi == "ipv4" and safi == "unicast" and get(self.structured_config, "router_bgp.bgp.default.ipv4_unicast", default=False)
-
-        filtered_peer_groups = [peer_group["name"] for peer_group in peer_groups if peer_group.get("activate") != condition]
-        filtered_neighbors = [neighbor["ip_address"] for neighbor in direct_neighbors if neighbor.get("activate") != condition]
+        filtered_peer_groups = [peer_group["name"] for peer_group in peer_groups if peer_group.get("activate")]
+        filtered_neighbors = [neighbor["ip_address"] for neighbor in direct_neighbors if neighbor.get("activate")]
 
         # Combine neighbors from peer groups and direct neighbors
-        # Depending on the condition, we either keep all the neighbors minus the explicitly deactivated ones, or we keep only the explicitly activated ones
         all_neighbors = [
             (neighbor["ip_address"], neighbor.get("peer"))
             for neighbor in bgp_neighbors
-            if (condition and neighbor.get("peer_group") not in filtered_peer_groups and neighbor["ip_address"] not in filtered_neighbors)
-            or (not condition and (neighbor.get("peer_group") in filtered_peer_groups or neighbor["ip_address"] in filtered_neighbors))
+            if neighbor.get("peer_group") in filtered_peer_groups or neighbor["ip_address"] in filtered_neighbors
         ]
 
         # Add tests for all neighbors
         for ip, peer in all_neighbors:
-            # If peer key is present, check if peer is available
+            # Check peer availability if the 'peer' key exists. Otherwise, still include the test for potential BGP external peers.
             if peer is not None and not self.is_peer_available(peer):
                 continue
             self.add_test(afi=afi, safi=safi, bgp_neighbor_ip=str(ip))
@@ -139,8 +134,8 @@ class AvdTestBGP(AvdTestBase):
                 },
             },
         )
-        # Create tests for IPv4 and EVPN address families
-        self.create_tests(afi="evpn")
-        self.create_tests(afi="ipv4", safi="unicast")
+        # Create tests for IPv4, IPv6 and EVPN address families
+        for afi, safi in [("evpn", None), ("ipv4", "unicast"), ("ipv6", "unicast")]:
+            self.create_tests(afi=afi, safi=safi)
 
         return self.anta_tests if self.anta_tests.get(f"{self.anta_module}.bgp") else None
