@@ -5445,10 +5445,10 @@
             "description": "Interface description.\nIf not set a default description will be configured with '[<peer>[ <peer_interface>]]'",
             "title": "Description"
           },
-          "ip": {
+          "ip_address": {
             "type": "string",
             "description": "Node IPv4 address/Mask or 'dhcp'.",
-            "title": "IP"
+            "title": "IP Address"
           },
           "set_default_route": {
             "type": "boolean",

@@ -49,7 +49,7 @@ wan_edge:
         - name: Ethernet1
           wan_carrier: Comcast
           wan_circuit_id: 666
-          ip: dhcp
+          ip_address: dhcp
           set_default_route: true
 
 wan_rr:
@@ -63,7 +63,7 @@ wan_rr:
         - name: Ethernet1
           wan_carrier: ATT
           wan_circuit_id: 777
-          ip: dhcp
+          ip_address: dhcp
           set_default_route: true
     - name: autovpn-rr2
       id: 2
@@ -71,7 +71,7 @@ wan_rr:
         - name: Ethernet1
           wan_carrier: ATT
           wan_circuit_id: 888
-          ip: 10.8.8.8/31
+          ip_address: 10.8.8.8/31
           set_default_route: true
           peer_ip: 10.8.8.9
 
