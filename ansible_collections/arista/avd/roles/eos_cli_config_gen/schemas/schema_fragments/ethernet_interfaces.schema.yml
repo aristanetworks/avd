@@ -1264,7 +1264,7 @@ keys:
                   keys:
                     disabled:
                       type: bool
-                      description: Disable port level check for port security (only in shutdown mode).
+                      description: Disable port level check for port security (only in violation 'shutdown' mode).
                     limit:
                       type: int
                       convert_types:
@@ -1294,7 +1294,7 @@ keys:
                         - str
                       min: 0
                       max: 1000
-                      description: Select all VLAN on this interface.
+                      description: Default maximum MAC addresses for all VLANs on this interface.
                     id:
                       type: str
                       convert_types:
