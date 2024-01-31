@@ -56,6 +56,7 @@ wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.31.0/24
     vtep_loopback_ipv4_pool: 192.168.131.0/24
+    data_plane_cpu_allocation_max: 2
   nodes:
     - name: autovpn-rr1
       id: 1
