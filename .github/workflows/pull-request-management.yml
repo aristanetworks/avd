@@ -88,9 +88,8 @@ jobs:
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: Run pre-commit
-        uses: pre-commit/action@v3
-        with:
-          extra_args: --all-files --color always
+        run: |
+          pre-commit run --all-files --color always
       - name: Apply automatic fixes
         uses: pre-commit-ci/lite-action@v1
         if: always()
