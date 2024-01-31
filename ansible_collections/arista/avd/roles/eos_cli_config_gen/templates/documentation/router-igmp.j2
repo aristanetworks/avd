@@ -16,7 +16,7 @@
 | SSM Aware | {{ router_igmp.ssm_aware }} | N/A |
 {%     endif %}
 {%     if router_igmp.host_proxy is arista.avd.defined %}
-{%         for vrf in router_igmp.host_proxy.vrf | arista.avd.natural_sort('name') %}
+{%         for vrf in router_igmp.host_proxy.vrfs | arista.avd.natural_sort('name') %}
 | Host Proxy | {{ vrf.match_mroute }} | {{ vrf.name }} |
 {%         endfor %}
 {%     endif %}

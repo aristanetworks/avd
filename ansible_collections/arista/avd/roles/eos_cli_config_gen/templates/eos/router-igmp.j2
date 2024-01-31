@@ -8,7 +8,7 @@
 !
 router igmp
 {%     if router_igmp.host_proxy is arista.avd.defined %}
-{%         for vrf in router_igmp.host_proxy.vrf %}
+{%         for vrf in router_igmp.host_proxy.vrfs %}
 {%             if vrf.name == 'default' %}
    host-proxy match mroute {{ vrf.match_mroute }}
 {%             endif %}
@@ -18,7 +18,7 @@ router igmp
    ssm aware
 {%     endif %}
 {%     if router_igmp.host_proxy is arista.avd.defined %}
-{%         for vrf in router_igmp.host_proxy.vrf | arista.avd.natural_sort('name') %}
+{%         for vrf in router_igmp.host_proxy.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.name != 'default' %}
    !
    vrf {{ vrf.name }}
