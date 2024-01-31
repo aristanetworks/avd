@@ -8,27 +8,31 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>router_igmp</samp>](## "router_igmp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;host_proxy_match_mroute</samp>](## "router_igmp.host_proxy_match_mroute") | String |  |  | Valid Values:<br>- <code>all</code><br>- <code>iif</code> | Specify conditions for sending IGMP joins for host-proxy<br>'iif' will enable igmp host-proxy to work in iif aware<br>'all' will enable igmp host-proxy to work in iif unaware mode<br> |
     | [<samp>&nbsp;&nbsp;ssm_aware</samp>](## "router_igmp.ssm_aware") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;host_proxy</samp>](## "router_igmp.host_proxy") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "router_igmp.host_proxy.vrfs") | List, items: Dictionary |  |  |  | Configure IGMP in a VRF |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_igmp.host_proxy.vrfs.[].name") | String | Required, Unique |  |  | VRF name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_mroute</samp>](## "router_igmp.host_proxy.vrfs.[].match_mroute") | String |  |  | Valid Values:<br>- <code>all</code><br>- <code>iif</code> | Specify conditions for sending IGMP joins for host-proxy<br>'iif' will enable igmp host-proxy to work in iif aware<br>'all' will enable igmp host-proxy to work in iif unaware mode<br> |
+    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_igmp.vrfs") | List, items: Dictionary |  |  |  | Configure IGMP in a VRF |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_igmp.vrfs.[].name") | String | Required, Unique |  |  | VRF name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_proxy_match_mroute</samp>](## "router_igmp.vrfs.[].host_proxy_match_mroute") | String |  |  | Valid Values:<br>- <code>all</code><br>- <code>iif</code> | Specify conditions for sending IGMP joins for host-proxy<br>'iif' will enable igmp host-proxy to work in iif aware<br>'all' will enable igmp host-proxy to work in iif unaware mode<br> |
 
 === "YAML"
 
     ```yaml
     router_igmp:
+
+      # Specify conditions for sending IGMP joins for host-proxy
+      # 'iif' will enable igmp host-proxy to work in iif aware
+      # 'all' will enable igmp host-proxy to work in iif unaware mode
+      host_proxy_match_mroute: <str; "all" | "iif">
       ssm_aware: <bool>
-      host_proxy:
 
-        # Configure IGMP in a VRF
-        vrfs:
+      # Configure IGMP in a VRF
+      vrfs:
 
-            # VRF name
-          - name: <str; required; unique>
+          # VRF name
+        - name: <str; required; unique>
 
-            # Specify conditions for sending IGMP joins for host-proxy
-            # 'iif' will enable igmp host-proxy to work in iif aware
-            # 'all' will enable igmp host-proxy to work in iif unaware mode
-            match_mroute: <str; "all" | "iif">
+          # Specify conditions for sending IGMP joins for host-proxy
+          # 'iif' will enable igmp host-proxy to work in iif aware
+          # 'all' will enable igmp host-proxy to work in iif unaware mode
+          host_proxy_match_mroute: <str; "all" | "iif">
     ```

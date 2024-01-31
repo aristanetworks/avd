@@ -20345,50 +20345,49 @@
       "type": "object",
       "title": "Router IGMP Configuration",
       "properties": {
+        "host_proxy_match_mroute": {
+          "type": "string",
+          "description": "Specify conditions for sending IGMP joins for host-proxy\n'iif' will enable igmp host-proxy to work in iif aware\n'all' will enable igmp host-proxy to work in iif unaware mode\n",
+          "enum": [
+            "all",
+            "iif"
+          ],
+          "title": "Host Proxy Match Mroute"
+        },
         "ssm_aware": {
           "type": "boolean",
           "title": "Ssm Aware"
         },
-        "host_proxy": {
-          "type": "object",
-          "properties": {
-            "vrfs": {
-              "type": "array",
-              "description": "Configure IGMP in a VRF",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "VRF name",
-                    "title": "Name"
-                  },
-                  "match_mroute": {
-                    "type": "string",
-                    "description": "Specify conditions for sending IGMP joins for host-proxy\n'iif' will enable igmp host-proxy to work in iif aware\n'all' will enable igmp host-proxy to work in iif unaware mode\n",
-                    "enum": [
-                      "all",
-                      "iif"
-                    ],
-                    "title": "Match Mroute"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "required": [
-                  "name"
-                ]
+        "vrfs": {
+          "type": "array",
+          "description": "Configure IGMP in a VRF",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name",
+                "title": "Name"
               },
-              "title": "VRFs"
-            }
+              "host_proxy_match_mroute": {
+                "type": "string",
+                "description": "Specify conditions for sending IGMP joins for host-proxy\n'iif' will enable igmp host-proxy to work in iif aware\n'all' will enable igmp host-proxy to work in iif unaware mode\n",
+                "enum": [
+                  "all",
+                  "iif"
+                ],
+                "title": "Host Proxy Match Mroute"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
           },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "Host Proxy"
+          "title": "VRFs"
         }
       },
       "additionalProperties": false,

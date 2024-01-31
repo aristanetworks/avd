@@ -1,8 +1,6 @@
 router_igmp:
+  host_proxy_match_mroute: all
   ssm_aware: true
-  host_proxy:
-    vrfs:
-      - name: default
-        match_mroute: all
-      - name: BLUE
-        match_mroute: iif
+  vrfs:
+    - name: BLUE
+      host_proxy_match_mroute: iif
