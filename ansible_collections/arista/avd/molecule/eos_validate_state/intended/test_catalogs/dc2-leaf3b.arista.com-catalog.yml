@@ -488,6 +488,8 @@ anta.tests.routing.generic:
     result_overwrite:
       categories:
       - BGP
+      custom_field: 'Routing protocol model: multi-agent'
+      description: Verifies the configured routing protocol model.
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:

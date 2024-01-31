@@ -5,11 +5,11 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the configured routing protocol model is the expected one and if there is no mismatch between the configured and operating routing protocol model.",
+    "description": "Verifies the configured routing protocol model.",
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "None"
+    "custom_field": "Routing protocol model: multi-agent"
   },
   {
     "name": "dc2-spine1",
