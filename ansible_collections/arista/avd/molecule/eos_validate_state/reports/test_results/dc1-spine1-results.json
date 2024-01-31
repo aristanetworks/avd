@@ -93,7 +93,43 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 142.112.39.1"
+    "custom_field": "BGP IPV4 Unicast Peer: 123.1.1.10"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "BGP IPV4 Unicast Peer: 123.1.1.11"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "BGP IPV6 Unicast Peer: fd5a:fe45:8831:06c5::a"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "BGP IPV6 Unicast Peer: fd5a:fe45:8831:06c5::b"
   },
   {
     "name": "dc1-spine1",

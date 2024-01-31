@@ -27,6 +27,9 @@ router_bgp:
   - name: IPv4-EXTERNAL-PEERS
     type: ipv4
     remote_as: '577'
+  - name: IPv6-EXTERNAL-PEERS
+    type: ipv6
+    remote_as: '577'
   - name: EVPN-EXTERNAL-PEERS
     type: evpn
     remote_as: '577'
@@ -36,10 +39,11 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+    - name: IPv4-EXTERNAL-PEERS
+      activate: true
+    - name: IPv6-EXTERNAL-PEERS
+      activate: true
     - name: EVPN-EXTERNAL-PEERS
-      activate: false
-    neighbors:
-    - ip_address: 142.112.41.2
       activate: true
   redistribute_routes:
   - source_protocol: connected
@@ -87,13 +91,13 @@ router_bgp:
     remote_as: '65102'
   - ip_address: 142.112.39.2
     peer_group: IPv4-EXTERNAL-PEERS
-    description: Primary_Internet_IPv4
-  - ip_address: 142.112.43.2
-    peer_group: EVPN-EXTERNAL-PEERS
-    description: Primary_Internet_EVPN
+    description: Primary_ISP_IPv4
+  - ip_address: 2001:db8:1::2
+    peer_group: IPv6-EXTERNAL-PEERS
+    description: Primary_ISP_IPv6
   - ip_address: 142.112.41.2
-    remote_as: '577'
-    description: Secondary_Internet
+    peer_group: EVPN-EXTERNAL-PEERS
+    description: Primary_ISP_EVPN
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

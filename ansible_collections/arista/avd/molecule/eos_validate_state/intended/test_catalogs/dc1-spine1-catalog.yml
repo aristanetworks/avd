@@ -188,12 +188,42 @@ anta.tests.routing.bgp:
     address_families:
     - afi: ipv4
       peers:
-      - 142.112.39.1
+      - 123.1.1.10
       safi: unicast
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'BGP IPV4 Unicast Peer: 142.112.39.1'
+      custom_field: 'BGP IPV4 Unicast Peer: 123.1.1.10'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 123.1.1.11
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP IPV4 Unicast Peer: 123.1.1.11'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv6
+      peers:
+      - fd5a:fe45:8831:06c5::a
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP IPV6 Unicast Peer: fd5a:fe45:8831:06c5::a'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv6
+      peers:
+      - fd5a:fe45:8831:06c5::b
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP IPV6 Unicast Peer: fd5a:fe45:8831:06c5::b'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
