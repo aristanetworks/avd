@@ -312,7 +312,7 @@ class UplinksMixin:
         uplink_vlans = set(self._vlans)
         uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._vlans)
 
-        if self.shared_utils.configure_inband_mgmt:
+        if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
             # Always add inband_mgmt_vlan even if the uplink switch does not have this vlan defined
             uplink_vlans.add(self.shared_utils.inband_mgmt_vlan)
 

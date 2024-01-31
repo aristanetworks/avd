@@ -38,6 +38,15 @@ l3leaf:
           id: 3
         - name: inband-mgmt-parent-dualstack2
           id: 4
+    - group: inband-mgmt-parents-ipv6
+      mlag_peer_ipv4_pool: 100.64.0.0/24
+      mlag_peer_l3_ipv4_pool: 100.64.1.0/24
+      nodes:
+        - name: inband-mgmt-parent-ipv6-1
+          id: 5
+        - name: inband-mgmt-parent-ipv6-2
+          id: 6
+
 
 l2leaf:
   defaults:
@@ -77,6 +86,17 @@ l2leaf:
       inband_mgmt_ipv6_address: 2a00:105::123/64
       inband_mgmt_ipv6_gateway: 2a00:105::1
       id: 5
+    - name: inband-mgmt-ipv6-only
+      uplink_switches: [inband-mgmt-parent-ipv6-1, inband-mgmt-parent-ipv6-2]
+      inband_mgmt_vlan: 106
+      inband_mgmt_ipv6_subnet: 2a00:106::/64
+      id: 6
+    - name: inband-mgmt-ipv6-only-vrf
+      uplink_switches: [inband-mgmt-parent-ipv6-1, inband-mgmt-parent-ipv6-2]
+      inband_mgmt_vlan: 107
+      inband_mgmt_ipv6_subnet: 2a00:107::/64
+      inband_mgmt_vrf: INBANDMGMT
+      id: 7
 
 tenants:
   - name: INBAND_MGMT_TESTS
