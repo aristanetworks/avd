@@ -59,7 +59,7 @@ class TagMixin:
         element_type: Literal["device", "interface"] | None = None,
         creator_type: Literal["user", "system", "external"] | None = None,
         time: datetime | None = None,
-        timeout: float = 10.0,
+        timeout: float = 30.0,
     ) -> list[Tag]:
         """
         Get Tags using arista.tag.v2.TagServiceStub.GetAll arista.tag.v2.TagConfigServiceStub.GetAll APIs.
