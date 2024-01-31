@@ -63,8 +63,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
             elif (vlans := link.get("vlans")) is not None:
                 port_channel_interface["vlans"] = vlans
 
-            # Configure MLAG on MLAG switches unless "mlag_on_orphan_port_channel_downlink" is False AND link.mlag is False
-            if self.shared_utils.mlag is True and (get(self._hostvars, "mlag_on_orphan_port_channel_downlink", default=True) or link.get("mlag", True)):
+            # Configure MLAG on MLAG switches if either 'mlag_on_orphan_port_channel_downlink' or 'link.mlag' is True
+            if self.shared_utils.mlag is True and any([get(self._hostvars, "mlag_on_orphan_port_channel_downlink", default=True), link.get("mlag", True)]):
                 port_channel_interface["mlag"] = int(link.get("channel_group_id"))
 
             if (short_esi := link.get("short_esi")) is not None:

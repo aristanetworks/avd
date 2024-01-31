@@ -37,3 +37,13 @@ leaf:
           uplink_interfaces: ['Ethernet16']
           uplink_switches: ['SL-LEAF1A']
           uplink_switch_interfaces: ['Ethernet28']
+    - group: SL-LEAF2
+      uplink_interfaces: [Ethernet41, Ethernet42]
+      uplink_switches: [SL-LEAF0B, SL-LEAF0B]
+      nodes:
+        - name: SL-LEAF2A
+          id: 6
+          uplink_switch_interfaces: [Ethernet41, Ethernet42]
+        - name: SL-LEAF2B
+          id: 7
+          uplink_switch_interfaces: [Ethernet43, Ethernet44]

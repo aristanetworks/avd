@@ -1,4 +1,4 @@
-hostname: SL-LEAF0B
+hostname: SL-LEAF2B
 is_deployed: true
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
@@ -25,114 +25,69 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.10.255.1/31
+  ip_address: 10.10.255.11/31
   no_autostate: true
   mtu: 9214
 port_channel_interfaces:
 - name: Port-Channel25
-  description: MLAG_PEER_SL-LEAF0A_Po25
+  description: MLAG_PEER_SL-LEAF2A_Po25
   type: switched
   shutdown: false
   mode: trunk
   trunk_groups:
   - MLAG
-- name: Port-Channel27
-  description: SL-LEAF1_Po27
-  type: switched
-  shutdown: false
-  mode: trunk
-  vlans: none
 - name: Port-Channel41
-  description: SL-LEAF2_Po41
+  description: SL-LEAF0_Po41
   type: switched
   shutdown: false
   mode: trunk
   vlans: none
+  mlag: 41
 ethernet_interfaces:
 - name: Ethernet25
-  peer: SL-LEAF0A
+  peer: SL-LEAF2A
   peer_interface: Ethernet25
   peer_type: mlag_peer
-  description: MLAG_PEER_SL-LEAF0A_Ethernet25
+  description: MLAG_PEER_SL-LEAF2A_Ethernet25
   type: port-channel-member
   shutdown: false
   channel_group:
     id: 25
     mode: active
 - name: Ethernet26
-  peer: SL-LEAF0A
+  peer: SL-LEAF2A
   peer_interface: Ethernet26
   peer_type: mlag_peer
-  description: MLAG_PEER_SL-LEAF0A_Ethernet26
+  description: MLAG_PEER_SL-LEAF2A_Ethernet26
   type: port-channel-member
   shutdown: false
   channel_group:
     id: 25
     mode: active
-- name: Ethernet27
-  peer: SL-LEAF1A
-  peer_interface: Ethernet27
-  peer_type: leaf
-  description: SL-LEAF1A_Ethernet27
-  shutdown: false
-  type: port-channel-member
-  channel_group:
-    id: 27
-    mode: active
-- name: Ethernet28
-  peer: SL-LEAF1B
-  peer_interface: Ethernet27
-  peer_type: leaf
-  description: SL-LEAF1B_Ethernet27
-  shutdown: false
-  type: port-channel-member
-  channel_group:
-    id: 27
-    mode: active
 - name: Ethernet41
-  peer: SL-LEAF2A
-  peer_interface: Ethernet41
+  peer: SL-LEAF0B
+  peer_interface: Ethernet43
   peer_type: leaf
-  description: SL-LEAF2A_Ethernet41
+  description: SL-LEAF0B_Ethernet43
   shutdown: false
   type: port-channel-member
   channel_group:
     id: 41
     mode: active
 - name: Ethernet42
-  peer: SL-LEAF2A
-  peer_interface: Ethernet42
+  peer: SL-LEAF0B
+  peer_interface: Ethernet44
   peer_type: leaf
-  description: SL-LEAF2A_Ethernet42
-  shutdown: false
-  type: port-channel-member
-  channel_group:
-    id: 41
-    mode: active
-- name: Ethernet43
-  peer: SL-LEAF2B
-  peer_interface: Ethernet41
-  peer_type: leaf
-  description: SL-LEAF2B_Ethernet41
-  shutdown: false
-  type: port-channel-member
-  channel_group:
-    id: 41
-    mode: active
-- name: Ethernet44
-  peer: SL-LEAF2B
-  peer_interface: Ethernet42
-  peer_type: leaf
-  description: SL-LEAF2B_Ethernet42
+  description: SL-LEAF0B_Ethernet44
   shutdown: false
   type: port-channel-member
   channel_group:
     id: 41
     mode: active
 mlag_configuration:
-  domain_id: SL-LEAF0
+  domain_id: SL-LEAF2
   local_interface: Vlan4094
-  peer_address: 10.10.255.0
+  peer_address: 10.10.255.10
   peer_link: Port-Channel25
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
