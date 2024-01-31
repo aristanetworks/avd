@@ -10010,6 +10010,11 @@
           },
           "title": "MAC"
         },
+        "fips_restrictions": {
+          "type": "boolean",
+          "description": "Use FIPS compliant algorithms.",
+          "title": "Fips Restrictions"
+        },
         "hostkey": {
           "type": "object",
           "properties": {
@@ -10020,6 +10025,11 @@
                 "type": "string"
               },
               "title": "Server"
+            },
+            "client_strict_checking": {
+              "type": "boolean",
+              "description": "Enforce strict host key checking.",
+              "title": "Client Strict Checking"
             }
           },
           "additionalProperties": false,

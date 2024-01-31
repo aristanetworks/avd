@@ -5987,6 +5987,9 @@ keys:
         type: list
         items:
           type: str
+      fips_restrictions:
+        type: bool
+        description: Use FIPS compliant algorithms.
       hostkey:
         type: dict
         keys:
@@ -5995,6 +5998,9 @@ keys:
             type: list
             items:
               type: str
+          client_strict_checking:
+            type: bool
+            description: Enforce strict host key checking.
       enable:
         description: Enable SSH daemon
         type: bool
