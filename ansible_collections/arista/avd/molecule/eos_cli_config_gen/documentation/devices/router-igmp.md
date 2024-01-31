@@ -41,11 +41,11 @@ interface Management1
 
 #### Router IGMP Summary
 
-| Settings | Value | VRF |
-| -------- | ----- | --- |
-| SSM Aware | True | N/A |
-| Host Proxy | iif | BLUE |
-| Host Proxy | all | default |
+| VRF | SSM Aware | Host Proxy |
+| --- | --------- | ---------- |
+| --- | Enabled | --- |
+| BLUE | --- | iif |
+| default | --- | all |
 
 #### Router IGMP Device Configuration
 

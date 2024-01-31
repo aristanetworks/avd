@@ -10,14 +10,14 @@
 
 #### Router IGMP Summary
 
-| Settings | Value | VRF |
-| -------- | ----- | --- |
+| VRF | SSM Aware | Host Proxy |
+| --- | --------- | ---------- |
 {%     if router_igmp.ssm_aware is arista.avd.defined %}
-| SSM Aware | {{ router_igmp.ssm_aware }} | N/A |
+| --- | Enabled | --- |
 {%     endif %}
 {%     if router_igmp.host_proxy is arista.avd.defined %}
 {%         for vrf in router_igmp.host_proxy.vrfs | arista.avd.natural_sort('name') %}
-| Host Proxy | {{ vrf.match_mroute }} | {{ vrf.name }} |
+| {{ vrf.name }} | --- | {{ vrf.match_mroute }} |
 {%         endfor %}
 {%     endif %}
 
