@@ -14,7 +14,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
     eos_validate_state integration with ANTA is in preview. Everything is subject to change.
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
-!!! lightning
+!!! warning
     ANTA version has been bumped to **0.12.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode)
 
 # Overview
