@@ -45,6 +45,7 @@ l3leaf:
         - name: inband-mgmt-parent-ipv6-1
           id: 5
         - name: inband-mgmt-parent-ipv6-2
+          inband_mgmt_vrf: INBANDMGMT
           id: 6
 
 
