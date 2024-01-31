@@ -47,7 +47,6 @@ interface Management1
 | default | --- | all |
 | BLUE | --- | iif |
 
-
 #### Router IGMP Device Configuration
 
 ```eos
