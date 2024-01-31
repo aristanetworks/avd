@@ -74,7 +74,10 @@ class AvdTestBGP(AvdTestBase):
 
     def add_test(self, afi: str, bgp_neighbor_ip: str, safi: str | None = None) -> dict:
         """Add a BGP test definition with the proper input parameters."""
-        custom_field = f"BGP {afi.upper() + ' ' + safi.capitalize() if safi else afi.upper()} Peer: {bgp_neighbor_ip}"
+        formatted_afi = "IPv4" if afi.lower() == "ipv4" else "IPv6" if afi.lower() == "ipv6" else afi.upper()
+        formatted_safi = f" {safi.capitalize()}" if safi else ""
+        custom_field = f"BGP {formatted_afi}{formatted_safi} Peer: {bgp_neighbor_ip}"
+
         address_family = {"afi": afi, "peers": [bgp_neighbor_ip]}
         if safi:
             address_family["safi"] = safi
@@ -131,8 +134,7 @@ class AvdTestBGP(AvdTestBase):
             {
                 "VerifyRoutingProtocolModel": {
                     "model": "multi-agent",
-                    # TODO @carl-baillargeon: Remove description and categories once the following PR is merged:
-                    # https://github.com/arista-netdevops-community/anta/pull/551
+                    # TODO @carl-baillargeon: Remove description and categories once we bump ANTA version.
                     "result_overwrite": {
                         "description": "Verifies the configured routing protocol model.",
                         "categories": self.categories,

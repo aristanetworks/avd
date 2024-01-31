@@ -69,7 +69,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 10.255.255.11"
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.11"
   },
   {
     "name": "dc1-spine2",
@@ -81,7 +81,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 10.255.255.3"
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.3"
   },
   {
     "name": "dc1-spine2",
@@ -93,7 +93,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 10.255.255.7"
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.7"
   },
   {
     "name": "dc1-spine2",
@@ -105,7 +105,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 142.112.39.2"
+    "custom_field": "BGP IPv4 Unicast Peer: 142.112.39.2"
   },
   {
     "name": "dc1-spine2",
@@ -117,7 +117,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV6 Unicast Peer: 2001:db8:1::2"
+    "custom_field": "BGP IPv6 Unicast Peer: 2001:db8:1::2"
   },
   {
     "name": "dc1-spine2",

@@ -57,7 +57,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 10.255.129.121"
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.129.121"
   },
   {
     "name": "dc2-leaf2a",
@@ -69,7 +69,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 10.255.255.112"
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.112"
   },
   {
     "name": "dc2-leaf2a",
@@ -81,7 +81,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 10.255.255.114"
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.114"
   },
   {
     "name": "dc2-leaf2a",
@@ -93,7 +93,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 192.168.100.0"
+    "custom_field": "BGP IPv4 Unicast Peer: 192.168.100.0"
   },
   {
     "name": "dc2-leaf2a",

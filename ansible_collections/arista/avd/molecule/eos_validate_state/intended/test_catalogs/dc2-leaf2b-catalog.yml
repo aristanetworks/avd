@@ -488,7 +488,7 @@ anta.tests.routing.bgp:
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'BGP IPV4 Unicast Peer: 10.255.129.120'
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.129.120'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -498,7 +498,7 @@ anta.tests.routing.bgp:
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'BGP IPV4 Unicast Peer: 10.255.255.116'
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.116'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -508,7 +508,7 @@ anta.tests.routing.bgp:
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'BGP IPV4 Unicast Peer: 10.255.255.118'
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.118'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent

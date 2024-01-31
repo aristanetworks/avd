@@ -45,7 +45,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 10.255.129.124"
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.129.124"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -57,7 +57,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 10.255.255.124"
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.124"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -69,7 +69,7 @@
     "result": "unset",
     "messages": [],
     "error": "None",
-    "custom_field": "BGP IPV4 Unicast Peer: 10.255.255.126"
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.126"
   },
   {
     "name": "dc2-leaf3b.arista.com",
