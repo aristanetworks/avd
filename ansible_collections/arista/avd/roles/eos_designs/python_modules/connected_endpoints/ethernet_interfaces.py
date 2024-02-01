@@ -144,6 +144,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             ),
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
+            "validate_state": None if adapter.get("validate_state", True) else False,
             "eos_cli": adapter.get("raw_eos_cli"),
             "struct_cfg": adapter.get("structured_config"),
         }

@@ -108,15 +108,17 @@ class AvdTestBase:
 
     def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:
         """
-        Check if an interface is shutdown or not, considering EOS defaults.
+        Update an interface's shutdown key, considering EOS defaults.
+
+        For Ethernet interfaces, the method will update the shutdown key in the following order:
+        - If the interface's shutdown key is not set, it will use the host's interface_defaults.ethernet.shutdown key.
+        - If the host's interface_defaults.ethernet.shutdown key is not set, the interface's shutdown key will be set to False.
+
+        For other interfaces, the method will update the shutdown key per the existing interface's shutdown key or set it to False if not available.
 
         Args:
             interface (dict): The interface to verify.
             host (str): Host to verify. Defaults to the host running the test.
-
-        Returns:
-            bool: Returns the interface shutdown key's value, or `interface_defaults.ethernet` if not available.
-                  Returns False if both are absent, which is the default EOS behavior.
         """
         host_struct_cfg = self.get_host_structured_config(host=host) if host else self.structured_config
         if "Ethernet" in get(interface, "name", ""):

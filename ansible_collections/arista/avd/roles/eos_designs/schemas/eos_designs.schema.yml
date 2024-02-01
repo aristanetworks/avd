@@ -4363,6 +4363,9 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items/
+      validate_state:
+        type: bool
+        description: Key only used for validation purposes
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final

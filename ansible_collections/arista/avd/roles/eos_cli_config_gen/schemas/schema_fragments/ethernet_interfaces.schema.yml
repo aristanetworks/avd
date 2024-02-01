@@ -1242,6 +1242,9 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address
+        validate_state:
+          type: bool
+          description: Key used validation purposes
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration

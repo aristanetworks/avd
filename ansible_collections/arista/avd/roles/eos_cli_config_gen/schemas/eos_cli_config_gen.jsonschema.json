@@ -4997,6 +4997,11 @@
             },
             "title": "VRRP IDs"
           },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Key used validation purposes",
+            "title": "Validate State"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -13352,6 +13357,11 @@
               "^_.+$": {}
             },
             "title": "Sflow"
+          },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Key used validation purposes",
+            "title": "Validate State"
           },
           "eos_cli": {
             "type": "string",

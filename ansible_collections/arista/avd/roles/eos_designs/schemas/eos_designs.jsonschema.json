@@ -8082,6 +8082,11 @@
                 },
                 "title": "VRRP IDs"
               },
+              "validate_state": {
+                "type": "boolean",
+                "description": "Key used validation purposes",
+                "title": "Validate State"
+              },
               "eos_cli": {
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -10751,6 +10756,11 @@
                     },
                     "title": "Sflow"
                   },
+                  "validate_state": {
+                    "type": "boolean",
+                    "description": "Key used validation purposes",
+                    "title": "Validate State"
+                  },
                   "eos_cli": {
                     "type": "string",
                     "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
@@ -10769,6 +10779,11 @@
               "^_.+$": {}
             },
             "title": "Port Channel"
+          },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Key only used for validation purposes",
+            "title": "Validate State"
           },
           "raw_eos_cli": {
             "type": "string",
@@ -13348,6 +13363,11 @@
                   ]
                 },
                 "title": "VRRP IDs"
+              },
+              "validate_state": {
+                "type": "boolean",
+                "description": "Key used validation purposes",
+                "title": "Validate State"
               },
               "eos_cli": {
                 "type": "string",
@@ -16826,6 +16846,11 @@
                     },
                     "title": "Sflow"
                   },
+                  "validate_state": {
+                    "type": "boolean",
+                    "description": "Key used validation purposes",
+                    "title": "Validate State"
+                  },
                   "eos_cli": {
                     "type": "string",
                     "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
@@ -16844,6 +16869,11 @@
               "^_.+$": {}
             },
             "title": "Port Channel"
+          },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Key only used for validation purposes",
+            "title": "Validate State"
           },
           "raw_eos_cli": {
             "type": "string",
@@ -19423,6 +19453,11 @@
                   ]
                 },
                 "title": "VRRP IDs"
+              },
+              "validate_state": {
+                "type": "boolean",
+                "description": "Key used validation purposes",
+                "title": "Validate State"
               },
               "eos_cli": {
                 "type": "string",
