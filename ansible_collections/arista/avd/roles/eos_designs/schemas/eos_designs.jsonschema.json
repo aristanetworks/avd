@@ -4092,13 +4092,6 @@
       "description": "cvp_token_file is the path to the token file on the switch.\nIf not set the default locations for on-premise or CVaaS will be used.\nSee cvp_ingestauth_key for details.",
       "title": "CVP Token File"
     },
-    "data_plane_cpu_allocation_max": {
-      "type": "integer",
-      "description": "Set the maximum number of CPU used for the data plane.\nThis setting is useful on virtual Route Reflectors and Pathfinders node.",
-      "minimum": 1,
-      "maximum": 128,
-      "title": "Data Plane CPU Allocation Max"
-    },
     "dc_name": {
       "description": "POD Name is used in:\n- Fabric Documentation (Optional, falls back to fabric_name)\n- SNMP Location: `snmp_settings.location` (Optional)\n- HER Overlay DC scoped flood lists: `overlay_her_flood_list_scope: dc` (Required)\n",
       "type": "string",
@@ -5436,8 +5429,8 @@
           },
           "name": {
             "type": "string",
-            "description": "Ethernet interface name like 'Ethernet2'.",
-            "pattern": "Ethernet[\\d/]+",
+            "description": "Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'\nFor a subinterface, the parent physical interface is automatically created.",
+            "pattern": "Ethernet[\\d/]+(.[\\d]+)?",
             "title": "Name"
           },
           "description": {
@@ -5445,10 +5438,17 @@
             "description": "Interface description.\nIf not set a default description will be configured with '[<peer>[ <peer_interface>]]'",
             "title": "Description"
           },
-          "ip": {
+          "ip_address": {
             "type": "string",
             "description": "Node IPv4 address/Mask or 'dhcp'.",
-            "title": "IP"
+            "title": "IP Address"
+          },
+          "encapsulation_dot1q_vlan": {
+            "description": "For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Encapsulation Dot1Q VLAN"
           },
           "set_default_route": {
             "type": "boolean",
