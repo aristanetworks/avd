@@ -141,7 +141,7 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: l3dot1q
-  encapsulation_dot1q_vlan: '42'
+  encapsulation_dot1q_vlan: 42
   dhcp_client_accept_default_route: true
   flow_tracker:
     hardware: WAN-FLOW-TRACKER

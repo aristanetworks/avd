@@ -139,7 +139,7 @@ class UtilsMixin:
         interface_name = get(l3_interface, "name", required=True, org_key=f"<node_type_key>...[node={self.shared_utils.hostname}].l3_interfaces[].name]")
         if "." in interface_name:
             iface_type = "l3dot1q"
-            encapsulation = get(l3_interface, "encapsulation_dot1q_vlan", default=interface_name.split(".")[-1])
+            encapsulation = int(get(l3_interface, "encapsulation_dot1q_vlan", default=interface_name.split(".")[-1]))
         else:
             iface_type = "routed"
 
