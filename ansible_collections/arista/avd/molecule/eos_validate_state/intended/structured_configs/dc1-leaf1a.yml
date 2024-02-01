@@ -379,6 +379,30 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
+- name: Ethernet31
+  peer: dc1-leaf1-workstation1
+  peer_interface: e1
+  peer_type: workstation
+  port_profile: Workstations
+  description: dc1-leaf1-workstation1_e1
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '11'
+  spanning_tree_portfast: edge
+- name: Ethernet32
+  peer: dc1-leaf1-workstation2
+  peer_interface: e1
+  peer_type: workstation
+  port_profile: Workstations
+  description: dc1-leaf1-workstation2_e1
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '11'
+  spanning_tree_portfast: edge
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094

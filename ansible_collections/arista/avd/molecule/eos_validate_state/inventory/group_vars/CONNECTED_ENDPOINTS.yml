@@ -1,6 +1,14 @@
 ---
 ### group_vars/CONNECTED_ENDPOINTS.yml
 
+# This profile will not be validated
+port_profiles:
+  - profile: Workstations
+    mode: access
+    vlans: 11
+    spanning_tree_portfast: edge
+    validate_state: False
+
 # Definition of connected endpoints in the fabric.
 servers:
   # Name of the defined server.
@@ -109,3 +117,28 @@ servers:
         vlans: 11
         mode: access
         spanning_tree_portfast: edge
+
+workstations:
+  - name: dc1-leaf1-workstation1
+    adapters:
+      - profile: Workstations
+        endpoint_ports: [ e1 ]
+        switch_ports: [ Ethernet31 ]
+        switches: [ dc1-leaf1a ]
+
+  - name: dc1-leaf1-workstation2
+    adapters:
+      - profile: Workstations
+        endpoint_ports: [ e1 ]
+        switch_ports: [ Ethernet32 ]
+        switches: [ dc1-leaf1a ]
+
+# These ports will not be validated
+network_ports:
+  - switches: [ dc1-leaf1b ]
+    switch_ports: [ Ethernet41-49 ]
+    description: Cameras
+    mode: access
+    vlans: 50
+    spanning_tree_portfast: edge
+    validate_state: False
