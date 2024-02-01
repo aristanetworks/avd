@@ -8084,7 +8084,7 @@
               },
               "validate_state": {
                 "type": "boolean",
-                "description": "Key used validation purposes",
+                "description": "Set to false to disable validation by the eos_validate_state role",
                 "title": "Validate State"
               },
               "eos_cli": {
@@ -10758,7 +10758,7 @@
                   },
                   "validate_state": {
                     "type": "boolean",
-                    "description": "Key used validation purposes",
+                    "description": "Set to false to disable validation by the eos_validate_state role",
                     "title": "Validate State"
                   },
                   "eos_cli": {
@@ -10782,7 +10782,7 @@
           },
           "validate_state": {
             "type": "boolean",
-            "description": "Key only used for validation purposes",
+            "description": "Set to false to disable validation by the eos_validate_state role",
             "title": "Validate State"
           },
           "raw_eos_cli": {
@@ -13366,7 +13366,7 @@
               },
               "validate_state": {
                 "type": "boolean",
-                "description": "Key used validation purposes",
+                "description": "Set to false to disable validation by the eos_validate_state role",
                 "title": "Validate State"
               },
               "eos_cli": {
@@ -16848,7 +16848,7 @@
                   },
                   "validate_state": {
                     "type": "boolean",
-                    "description": "Key used validation purposes",
+                    "description": "Set to false to disable validation by the eos_validate_state role",
                     "title": "Validate State"
                   },
                   "eos_cli": {
@@ -16872,7 +16872,7 @@
           },
           "validate_state": {
             "type": "boolean",
-            "description": "Key only used for validation purposes",
+            "description": "Set to false to disable validation by the eos_validate_state role",
             "title": "Validate State"
           },
           "raw_eos_cli": {
@@ -19456,7 +19456,7 @@
               },
               "validate_state": {
                 "type": "boolean",
-                "description": "Key used validation purposes",
+                "description": "Set to false to disable validation by the eos_validate_state role",
                 "title": "Validate State"
               },
               "eos_cli": {
