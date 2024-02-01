@@ -16,7 +16,7 @@
 | --- | Enabled | --- |
 {%     endif %}
 {%     if router_igmp.host_proxy_match_mroute is arista.avd.defined %}
-| default | --- | {{ router_igmp.host_proxy_match_mroute }} |
+| default | - | {{ router_igmp.host_proxy_match_mroute }} |
 {%     endif %}
 {%     if router_igmp.vrfs is arista.avd.defined %}
 {%         for vrf in router_igmp.vrfs | arista.avd.natural_sort('name') %}
