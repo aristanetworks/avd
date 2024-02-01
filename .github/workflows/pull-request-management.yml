@@ -91,7 +91,7 @@ jobs:
         run: |
           pre-commit run --all-files --color always
       - name: Apply automatic fixes
-        uses: pre-commit-ci/lite-action@v1
+        uses: pre-commit-ci/lite-action@v1.0.0
         if: always()
   # ----------------------------------- #
   # Check Links  offline for dead target
