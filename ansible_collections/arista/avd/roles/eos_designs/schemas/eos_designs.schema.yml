@@ -7522,7 +7522,7 @@ $defs:
           description: 'Interface description.
 
             If not set a default description will be configured with ''[<peer>[ <peer_interface>]]'''
-        ip:
+        ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
         set_default_route:
