@@ -2302,6 +2302,8 @@ keys:
           type: list
           items:
             type: str
+            convert_types:
+            - int
         trident_forwarding_table_partition:
           type: str
           description: Only applied when evpn_multicast is true.
