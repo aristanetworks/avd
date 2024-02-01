@@ -279,6 +279,7 @@ router isis EVPN_UNDERLAY
    log-adjacency-changes
    mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
+   set-overload-bit on-startup wait-for-bgp timeout 10
    advertise passive-only
    spf-interval 250 10
    graceful-restart

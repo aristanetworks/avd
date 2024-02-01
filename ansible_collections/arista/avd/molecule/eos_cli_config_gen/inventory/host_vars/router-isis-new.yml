@@ -62,6 +62,11 @@ router_isis:
         index: 211
       - prefix: 2001:cafe:155::/64
         index: 6211
+  set_overload_bit:
+    on_startup:
+      wait_for_bgp:
+        enabled: true
+        timeout: 10
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:

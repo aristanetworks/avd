@@ -44,6 +44,27 @@ keys:
                   - str
                 default: 10000
                 description: Delay in milliseconds.
+      set_overload_bit:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          on_startup:
+            type: dict
+            keys:
+              delay:
+                type: int
+                convert_types:
+                  - str
+                description: Number of seconds
+              wait_for_bgp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                  timeout:
+                    type: int
+                    description: Number of seconds
       advertise:
         type: dict
         keys:
