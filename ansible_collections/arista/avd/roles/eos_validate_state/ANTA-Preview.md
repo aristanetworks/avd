@@ -15,7 +15,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
 !!! warning
-    ANTA version has been bumped to **0.12.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode)
+    ANTA version has been bumped to **0.12.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode).
 
 # Overview
 
@@ -65,14 +65,6 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 
   ```shell
   pip3 install '
-  --8<-- "roles/eos_validate_state/preview_requirements.txt:4:4"
-  '
-  ```
-
-  To upgrade the package:
-
-  ```shell
-  pip3 install -U '
   --8<-- "roles/eos_validate_state/preview_requirements.txt:4:4"
   '
   ```
