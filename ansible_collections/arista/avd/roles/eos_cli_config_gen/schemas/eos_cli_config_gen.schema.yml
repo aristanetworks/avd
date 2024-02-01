@@ -5994,10 +5994,16 @@ keys:
         type: dict
         keys:
           server:
-            description: SSH host key settings
-            type: list
-            items:
-              type: str
+            type: dict
+            description: SSH host key settings.
+            keys:
+              cert_key:
+                type: str
+                description: Configure switch's hostkey cert file.
+              algorithm:
+                type: list
+                items:
+                  type: str
           client_strict_checking:
             type: bool
             description: Enforce strict host key checking.

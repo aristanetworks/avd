@@ -10,8 +10,10 @@ management_ssh:
     - hmac-sha2-512-etm@openssh.com
   hostkey:
     server:
-      - ecdsa-nistp256
-      - ecdsa-nistp521
+      cert_key: <switch's cert key>
+      algorithm:
+        - ecdsa-nistp256
+        - ecdsa-nistp521
   access_groups:
     - name: ACL-SSH
     - name: ACL-SSH-VRF

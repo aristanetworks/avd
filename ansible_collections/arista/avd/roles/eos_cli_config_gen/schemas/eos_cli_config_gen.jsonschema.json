@@ -10019,10 +10019,25 @@
           "type": "object",
           "properties": {
             "server": {
-              "description": "SSH host key settings",
-              "type": "array",
-              "items": {
-                "type": "string"
+              "type": "object",
+              "description": "SSH host key settings.",
+              "properties": {
+                "cert_key": {
+                  "type": "string",
+                  "description": "Configure switch's hostkey cert file.",
+                  "title": "Cert Key"
+                },
+                "algorithm": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Algorithm"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
               },
               "title": "Server"
             },

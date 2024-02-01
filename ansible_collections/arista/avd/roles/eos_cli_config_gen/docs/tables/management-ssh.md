@@ -23,8 +23,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.mac.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;fips_restrictions</samp>](## "management_ssh.fips_restrictions") | Boolean |  |  |  | Use FIPS compliant algorithms. |
     | [<samp>&nbsp;&nbsp;hostkey</samp>](## "management_ssh.hostkey") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;server</samp>](## "management_ssh.hostkey.server") | List, items: String |  |  |  | SSH host key settings |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.hostkey.server.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;server</samp>](## "management_ssh.hostkey.server") | Dictionary |  |  |  | SSH host key settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cert_key</samp>](## "management_ssh.hostkey.server.cert_key") | String |  |  |  | Configure switch's hostkey cert file. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "management_ssh.hostkey.server.algorithm") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.hostkey.server.algorithm.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;client_strict_checking</samp>](## "management_ssh.hostkey.client_strict_checking") | Boolean |  |  |  | Enforce strict host key checking. |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "management_ssh.enable") | Boolean |  |  |  | Enable SSH daemon |
     | [<samp>&nbsp;&nbsp;connection</samp>](## "management_ssh.connection") | Dictionary |  |  |  |  |
@@ -76,9 +78,13 @@
       fips_restrictions: <bool>
       hostkey:
 
-        # SSH host key settings
+        # SSH host key settings.
         server:
-          - <str>
+
+          # Configure switch's hostkey cert file.
+          cert_key: <str>
+          algorithm:
+            - <str>
 
         # Enforce strict host key checking.
         client_strict_checking: <bool>
