@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].name") | String | Required, Unique |  | Pattern: Ethernet[\d/]+ | Ethernet interface name like 'Ethernet2'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set_default_route</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].set_default_route") | Boolean |  | `False` |  | Insert a default route to the `peer_ip` if `ip` is an ip address<br>or configure to accept a default route from DHCP if `ip` is `dhcp`.<br><br>AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
@@ -34,7 +34,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: Ethernet[\d/]+ | Ethernet interface name like 'Ethernet2'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set_default_route</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].set_default_route") | Boolean |  | `False` |  | Insert a default route to the `peer_ip` if `ip` is an ip address<br>or configure to accept a default route from DHCP if `ip` is `dhcp`.<br><br>AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
@@ -51,7 +51,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: Ethernet[\d/]+ | Ethernet interface name like 'Ethernet2'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set_default_route</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].set_default_route") | Boolean |  | `False` |  | Insert a default route to the `peer_ip` if `ip` is an ip address<br>or configure to accept a default route from DHCP if `ip` is `dhcp`.<br><br>AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
@@ -70,7 +70,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: Ethernet[\d/]+ | Ethernet interface name like 'Ethernet2'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set_default_route</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].set_default_route") | Boolean |  | `False` |  | Insert a default route to the `peer_ip` if `ip` is an ip address<br>or configure to accept a default route from DHCP if `ip` is `dhcp`.<br><br>AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
@@ -87,7 +87,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "l3_interface_profiles.[].profile") | String | Required, Unique |  |  | L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_interface_profiles.[].name") | String |  |  | Pattern: Ethernet[\d/]+ | Ethernet interface name like 'Ethernet2'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_interface_profiles.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_interface_profiles.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "l3_interface_profiles.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;set_default_route</samp>](## "l3_interface_profiles.[].set_default_route") | Boolean |  | `False` |  | Insert a default route to the `peer_ip` if `ip` is an ip address<br>or configure to accept a default route from DHCP if `ip` is `dhcp`.<br><br>AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_interface_profiles.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_interface_profiles.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
@@ -125,7 +125,7 @@
             description: <str>
 
             # Node IPv4 address/Mask or 'dhcp'.
-            ip: <str>
+            ip_address: <str>
 
             # Insert a default route to the `peer_ip` if `ip` is an ip address
             # or configure to accept a default route from DHCP if `ip` is `dhcp`.
@@ -197,7 +197,7 @@
                   description: <str>
 
                   # Node IPv4 address/Mask or 'dhcp'.
-                  ip: <str>
+                  ip_address: <str>
 
                   # Insert a default route to the `peer_ip` if `ip` is an ip address
                   # or configure to accept a default route from DHCP if `ip` is `dhcp`.
@@ -256,7 +256,7 @@
               description: <str>
 
               # Node IPv4 address/Mask or 'dhcp'.
-              ip: <str>
+              ip_address: <str>
 
               # Insert a default route to the `peer_ip` if `ip` is an ip address
               # or configure to accept a default route from DHCP if `ip` is `dhcp`.
@@ -321,7 +321,7 @@
               description: <str>
 
               # Node IPv4 address/Mask or 'dhcp'.
-              ip: <str>
+              ip_address: <str>
 
               # Insert a default route to the `peer_ip` if `ip` is an ip address
               # or configure to accept a default route from DHCP if `ip` is `dhcp`.
@@ -381,7 +381,7 @@
         description: <str>
 
         # Node IPv4 address/Mask or 'dhcp'.
-        ip: <str>
+        ip_address: <str>
 
         # Insert a default route to the `peer_ip` if `ip` is an ip address
         # or configure to accept a default route from DHCP if `ip` is `dhcp`.
