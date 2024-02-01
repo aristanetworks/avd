@@ -1,8 +1,10 @@
 # Collapsing generated schemas from PR diff by default
 /ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml  linguist-generated=true -merge -diff
 /ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.jsonschema.json  linguist-generated=true  -merge -diff
+/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.pickle  linguist-generated=true  -merge -diff
 /ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.yml  linguist-generated=true  -merge -diff
 /ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.jsonschema.json  linguist-generated=true  -merge -diff
+/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.pickle  linguist-generated=true  -merge -diff
 
 # Collapsing generated tables from PR diff by default
 /ansible_collections/arista/avd/roles/eos_cli_config_gen/tables/*  linguist-generated=true -merge -diff
