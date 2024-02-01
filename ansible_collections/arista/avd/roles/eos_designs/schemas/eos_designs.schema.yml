@@ -2526,6 +2526,8 @@ keys:
       keys:
         platform:
           type: str
+          convert_types:
+          - int
         speeds:
           type: list
           primary_key: speed
@@ -6069,6 +6071,8 @@ $defs:
               table: node-type-common-configuration
             description: Arista platform family.
             type: str
+            convert_types:
+            - int
           mac_address:
             documentation_options:
               table: node-type-common-configuration
