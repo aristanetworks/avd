@@ -46,7 +46,7 @@ wan_edge:
         - name: Ethernet1
           wan_carrier: Comcast
           wan_circuit_id: 666
-          ip: dhcp
+          ip_address: dhcp
           set_default_route: true
 
 wan_path_groups:
