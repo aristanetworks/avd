@@ -503,12 +503,14 @@ keys:
                 - str
               min: 1
               max: 255
+              description: Administrative distance for generated routes.
             prefix_length:
               type: int
               convert_types:
                 - str
               min: 0
               max: 128
+              description: Prefix length for generated routes.
         bfd:
           type: dict
           keys:

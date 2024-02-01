@@ -78,6 +78,16 @@ interface {{ vlan_interface.name }}
 {%         endif %}
    {{ destination_cli }}
 {%     endfor %}
+{%     if vlan_interface.ipv6_attached_host_route_export.enabled is arista.avd.defined(true) %}
+{%         set ipv6_attached_host_route_export_cli = "ipv6 attached-host route export" %}
+{%         if vlan_interface.ipv6_attached_host_route_export.distance is arista.avd.defined %}
+{%             set ipv6_attached_host_route_export_cli = ipv6_attached_host_route_export_cli ~ " " ~ vlan_interface.ipv6_attached_host_route_export.distance %}
+{%         endif %}
+{%         if vlan_interface.ipv6_attached_host_route_export.prefix_length is arista.avd.defined %}
+{%             set ipv6_attached_host_route_export_cli = ipv6_attached_host_route_export_cli ~ " prefix-length " ~ vlan_interface.ipv6_attached_host_route_export.prefix_length %}
+{%         endif %}
+   {{ ipv6_attached_host_route_export_cli }}
+{%     endif %}
 {%     if vlan_interface.ip_igmp is arista.avd.defined(true) %}
    ip igmp
 {%     endif %}
@@ -301,16 +311,6 @@ interface {{ vlan_interface.name }}
 {%             set ip_attached_host_route_export_cli = ip_attached_host_route_export_cli ~ " " ~ vlan_interface.ip_attached_host_route_export.distance %}
 {%         endif %}
    {{ ip_attached_host_route_export_cli }}
-{%     endif %}
-{%     if vlan_interface.ipv6_attached_host_route_export.enabled is arista.avd.defined(true) %}
-{%         set ipv6_attached_host_route_export_cli = "ipv6 attached-host route export" %}
-{%         if vlan_interface.ipv6_attached_host_route_export.distance is arista.avd.defined %}
-{%             set ipv6_attached_host_route_export_cli = ipv6_attached_host_route_export_cli ~ " " ~ vlan_interface.ipv6_attached_host_route_export.distance %}
-{%         endif %}
-{%         if vlan_interface.ipv6_attached_host_route_export.prefix_length is arista.avd.defined %}
-{%             set ipv6_attached_host_route_export_cli = ipv6_attached_host_route_export_cli ~ " prefix-length " ~ vlan_interface.ipv6_attached_host_route_export.prefix_length %}
-{%         endif %}
-   {{ ipv6_attached_host_route_export_cli }}
 {%     endif %}
 {%     if vlan_interface.bfd.interval is arista.avd.defined and
           vlan_interface.bfd.min_rx is arista.avd.defined and

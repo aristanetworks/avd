@@ -21889,6 +21889,7 @@
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 255,
+                          "description": "Administrative distance for generated routes.",
                           "title": "Distance"
                         },
                         "prefix_length": {
