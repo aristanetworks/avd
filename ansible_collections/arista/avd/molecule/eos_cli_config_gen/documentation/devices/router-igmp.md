@@ -43,9 +43,9 @@ interface Management1
 
 | VRF | SSM Aware | Host Proxy |
 | --- | --------- | ---------- |
-| --- | Enabled | --- |
-| default | --- | all |
-| BLUE | --- | iif |
+| - | Enabled | - |
+| default | - | all |
+| BLUE | - | iif |
 
 #### Router IGMP Device Configuration
 
