@@ -10,7 +10,7 @@ keys:
     documentation_options:
       table: bfd-settings
     type: dict
-    description: BFD Multihop tuning.testagain.
+    description: BFD Multihop tuning.testagainagain.
     keys:
       interval:
         type: int
