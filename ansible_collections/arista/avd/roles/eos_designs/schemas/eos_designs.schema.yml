@@ -5,7 +5,7 @@ $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
-  application_traffic_recognition:
+  application_classification:
     type: dict
     description: 'PREVIEW: WAN Preview'
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
