@@ -148,9 +148,9 @@ class UtilsMixin:
         # TODO catch if ip_address is not valid or not dhcp
         ip_address = get(
             l3_interface,
-            "ip",
+            "ip_address",
             required=True,
-            org_key=f"{self.shared_utils.node_type_key_data['key']}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}.ip]",
+            org_key=f"{self.shared_utils.node_type_key_data['key']}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}].ip_address",
         )
 
         interface = {

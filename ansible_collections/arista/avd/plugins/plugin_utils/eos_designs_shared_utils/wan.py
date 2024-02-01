@@ -174,7 +174,7 @@ class WanMixin:
         If not found we use the IP under the interface, unless it is "dhcp" where we raise.
         """
         if self.wan_role != "server":
-            return interface["ip"]
+            return interface["ip_address"]
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:
@@ -183,13 +183,13 @@ class WanMixin:
             if found_interface.get("ip_address") is not None:
                 return found_interface["ip_address"]
 
-        if interface["ip"] == "dhcp":
+        if interface["ip_address"] == "dhcp":
             raise AristaAvdError(
                 f"The IP address for WAN interface '{interface['name']}' on Route Server '{self.hostname}' is set to 'dhcp'. "
                 "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
             )
 
-        return interface["ip"]
+        return interface["ip_address"]
 
     @cached_property
     def wan_site(self: SharedUtils) -> dict:
