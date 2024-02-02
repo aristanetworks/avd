@@ -1644,7 +1644,7 @@
               },
               "cvsourceintf": {
                 "type": "string",
-                "description": "Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0\n",
+                "description": "Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0.\nThe interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.\n",
                 "title": "Cvsourceintf"
               },
               "cvvrf": {
@@ -1725,7 +1725,7 @@
         },
         "cvsourceintf": {
           "type": "string",
-          "description": "Set source interface in case of in-band managament\n",
+          "description": "Set source interface in case of in-band managament.\nThe interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.\n",
           "title": "Cvsourceintf"
         },
         "cvvrf": {
