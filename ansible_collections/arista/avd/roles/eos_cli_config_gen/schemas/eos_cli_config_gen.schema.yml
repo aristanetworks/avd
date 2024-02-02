@@ -1124,7 +1124,10 @@ keys:
             cvsourceintf:
               type: str
               description: 'Set source interface in case of in-band managament. Available
-                as of TerminAttr v1.23.0
+                as of TerminAttr v1.23.0.
+
+                The interface name is case sensitive and has to match the interface
+                name in the running-config, e.g.:Vlan100.
 
                 '
             cvvrf:
@@ -1198,7 +1201,10 @@ keys:
           '
       cvsourceintf:
         type: str
-        description: 'Set source interface in case of in-band managament
+        description: 'Set source interface in case of in-band managament.
+
+          The interface name is case sensitive and has to match the interface name
+          in the running-config, e.g.:Vlan100.
 
           '
       cvvrf:
