@@ -12,5 +12,5 @@
     // The dev entrypoint is used to install Ansible collections and requirements, as they are not included with the dev version.
     // "true" is required to exit "postCreateCommand" without entering ZSH.
     // the script must be executed ONLY if Ansible is not installed
-    "postStartCommand": "ansible --version &> /dev/null || /bin/entrypoint.sh true"
+    "postStartCommand": "/bin/entrypoint.sh true"
 }
