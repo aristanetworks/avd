@@ -99,7 +99,7 @@ class AvdTestBGP(AvdTestBase):
         peer_groups = get(self.structured_config, f"router_bgp.address_family_{afi}.peer_groups", [])
         direct_neighbors = get(self.structured_config, f"router_bgp.address_family_{afi}.neighbors", [])
 
-        # Only explicitely activated neighbors and peer groups are tested.
+        # Only explicitly activated neighbors and peer groups are tested.
         filtered_peer_groups = [peer_group["name"] for peer_group in peer_groups if peer_group.get("activate")]
         filtered_neighbors = [neighbor["ip_address"] for neighbor in direct_neighbors if neighbor.get("activate")]
 

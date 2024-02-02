@@ -5,8 +5,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ArBGP is configured and operating",
-    "custom_field": "ArBGP"
+    "description": "Verifies the configured routing protocol model.",
+    "custom_field": "Routing protocol model: multi-agent"
   },
   {
     "name": "dc2-spine2",
@@ -14,8 +14,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.128.13"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.13"
   },
   {
     "name": "dc2-spine2",
@@ -23,8 +23,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.128.14"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.14"
   },
   {
     "name": "dc2-spine2",
@@ -32,8 +32,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.128.15"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.15"
   },
   {
     "name": "dc2-spine2",
@@ -41,8 +41,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.128.16"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.16"
   },
   {
     "name": "dc2-spine2",
@@ -50,8 +50,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.128.17"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.17"
   },
   {
     "name": "dc2-spine2",
@@ -59,8 +59,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.128.18"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.18"
   },
   {
     "name": "dc2-spine2",
@@ -68,8 +68,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.107"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.107"
   },
   {
     "name": "dc2-spine2",
@@ -77,8 +77,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.111"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.111"
   },
   {
     "name": "dc2-spine2",
@@ -86,8 +86,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.115"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.115"
   },
   {
     "name": "dc2-spine2",
@@ -95,8 +95,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.119"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.119"
   },
   {
     "name": "dc2-spine2",
@@ -104,8 +104,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.123"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.123"
   },
   {
     "name": "dc2-spine2",
@@ -113,8 +113,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.127"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.127"
   },
   {
     "name": "dc2-spine2",
