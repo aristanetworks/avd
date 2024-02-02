@@ -6,9 +6,6 @@
       "BGP"
     ],
     "description": "ArBGP is configured and operating",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "ArBGP"
   },
   {
@@ -18,9 +15,6 @@
       "BGP"
     ],
     "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "bgp_neighbor: 10.255.0.1"
   },
   {
@@ -30,9 +24,6 @@
       "BGP"
     ],
     "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "bgp_neighbor: 10.255.0.2"
   },
   {
@@ -42,9 +33,6 @@
       "BGP"
     ],
     "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "bgp_neighbor: 10.255.128.15"
   },
   {
@@ -54,9 +42,6 @@
       "BGP"
     ],
     "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "bgp_neighbor: 10.255.255.10"
   },
   {
@@ -66,9 +51,6 @@
       "BGP"
     ],
     "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "bgp_neighbor: 10.255.255.8"
   },
   {
@@ -78,9 +60,6 @@
       "BGP"
     ],
     "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "bgp_neighbor: 192.168.100.1"
   },
   {
@@ -89,11 +68,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the device temperature is within the acceptable range."
   },
   {
     "name": "dc1-leaf2a",
@@ -101,11 +76,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the fans status are within the accepted states list.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the fans status are within the accepted states list."
   },
   {
     "name": "dc1-leaf2a",
@@ -113,11 +84,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the power supplies status are within the accepted states list."
   },
   {
     "name": "dc1-leaf2a",
@@ -125,11 +92,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
   },
   {
     "name": "dc1-leaf2a",
@@ -138,9 +101,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet3"
   },
   {
@@ -150,9 +110,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet3"
   },
   {
@@ -162,9 +119,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet3 - MLAG_PEER_dc1-leaf2b_Ethernet3"
   },
   {
@@ -174,9 +128,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet4 - MLAG_PEER_dc1-leaf2b_Ethernet4"
   },
   {
@@ -186,9 +137,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet5 - dc1-leaf2-server1_PCI1"
   },
   {
@@ -198,9 +146,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet6 - P2P_LINK_TO_dc2-leaf2a_Ethernet6"
   },
   {
@@ -210,9 +155,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet8 - DC1-LEAF2C_Ethernet1"
   },
   {
@@ -222,9 +164,6 @@
       "Interface State"
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Loopback0 - EVPN_Overlay_Peering"
   },
   {
@@ -234,9 +173,6 @@
       "Interface State"
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Loopback1 - VTEP_VXLAN_Tunnel_Source"
   },
   {
@@ -246,9 +182,6 @@
       "Interface State"
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Loopback10 - VRF10_VTEP_DIAGNOSTICS"
   },
   {
@@ -258,9 +191,6 @@
       "Interface State"
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Loopback11 - VRF11_VTEP_DIAGNOSTICS"
   },
   {
@@ -270,9 +200,6 @@
       "Interface State"
     ],
     "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Port-Channel3 - MLAG_PEER_dc1-leaf2b_Po3"
   },
   {
@@ -282,9 +209,6 @@
       "Interface State"
     ],
     "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Port-Channel5 - dc1-leaf2-server1_PortChannel dc1-leaf2-server1"
   },
   {
@@ -294,9 +218,6 @@
       "Interface State"
     ],
     "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Port-Channel8 - DC1-LEAF2C_Po1"
   },
   {
@@ -306,9 +227,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan11 - VRF10_VLAN11"
   },
   {
@@ -318,9 +236,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan12 - VRF10_VLAN12"
   },
   {
@@ -330,9 +245,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan21 - VRF11_VLAN21"
   },
   {
@@ -342,9 +254,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan22 - VRF11_VLAN22"
   },
   {
@@ -354,9 +263,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10"
   },
   {
@@ -366,9 +272,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11"
   },
   {
@@ -378,21 +281,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "Vlan4085 - Inband Management"
-  },
-  {
-    "name": "dc1-leaf2a",
-    "test": "VerifyInterfacesStatus",
-    "categories": [
-      "Interface State"
-    ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan4093 - MLAG_PEER_L3_PEERING"
   },
   {
@@ -402,9 +290,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan4094 - MLAG_PEER"
   },
   {
@@ -414,9 +299,6 @@
       "Interface State"
     ],
     "description": "Vxlan Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vxlan1"
   },
   {
@@ -426,9 +308,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a_Ethernet1 - Destination: dc1-spine1_Ethernet3"
   },
   {
@@ -438,9 +317,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a_Ethernet2 - Destination: dc1-spine2_Ethernet3"
   },
   {
@@ -450,9 +326,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a_Ethernet6 - Destination: dc2-leaf2a_Ethernet6"
   },
   {
@@ -462,9 +335,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet1 - remote: dc1-spine1_Ethernet3"
   },
   {
@@ -474,9 +344,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet2 - remote: dc1-spine2_Ethernet3"
   },
   {
@@ -486,9 +353,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet6 - remote: dc2-leaf2a_Ethernet6"
   },
   {
@@ -498,9 +362,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet8 - remote: dc1-leaf2c_Ethernet1"
   },
   {
@@ -510,9 +371,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.0.1"
   },
   {
@@ -522,9 +380,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.0.2"
   },
   {
@@ -534,9 +389,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.0.3"
   },
   {
@@ -546,9 +398,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.0.4"
   },
   {
@@ -558,9 +407,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.0.5"
   },
   {
@@ -570,9 +416,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.128.11"
   },
   {
@@ -582,9 +425,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.128.12"
   },
   {
@@ -594,9 +434,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.128.13"
   },
   {
@@ -606,9 +443,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.128.14"
   },
   {
@@ -618,9 +452,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.128.15"
   },
   {
@@ -630,9 +461,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.128.16"
   },
   {
@@ -642,9 +470,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.128.17"
   },
   {
@@ -654,9 +479,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.128.18"
   },
   {
@@ -665,11 +487,7 @@
     "categories": [
       "mlag"
     ],
-    "description": "This test verifies the health status of the MLAG configuration.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "This test verifies the health status of the MLAG configuration."
   },
   {
     "name": "dc1-leaf2a",
@@ -678,9 +496,6 @@
       "NTP"
     ],
     "description": "Synchronised with NTP server",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "NTP"
   },
   {
@@ -702,9 +517,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.0.1"
   },
   {
@@ -714,9 +526,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.0.2"
   },
   {
@@ -726,9 +535,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.0.3"
   },
   {
@@ -738,9 +544,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.0.4"
   },
   {
@@ -750,9 +553,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.0.5"
   },
   {
@@ -762,9 +562,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.11"
   },
   {
@@ -774,9 +571,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.12"
   },
   {
@@ -786,9 +580,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.13"
   },
   {
@@ -798,9 +589,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.14"
   },
   {
@@ -810,9 +598,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.15"
   },
   {
@@ -822,9 +607,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.16"
   },
   {
@@ -834,9 +616,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.17"
   },
   {
@@ -846,9 +625,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.18"
   },
   {
@@ -858,9 +634,6 @@
       "Routing Table"
     ],
     "description": "Remote VTEP address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.1.3"
   },
   {
@@ -870,9 +643,6 @@
       "Routing Table"
     ],
     "description": "Remote VTEP address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.1.5"
   },
   {
@@ -882,9 +652,6 @@
       "Routing Table"
     ],
     "description": "Remote VTEP address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.129.13"
   },
   {
@@ -894,9 +661,6 @@
       "Routing Table"
     ],
     "description": "Remote VTEP address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.129.15"
   },
   {
@@ -906,9 +670,6 @@
       "Routing Table"
     ],
     "description": "Remote VTEP address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.129.17"
   },
   {
@@ -917,10 +678,6 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
   }
 ]

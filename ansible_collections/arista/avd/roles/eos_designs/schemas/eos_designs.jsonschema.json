@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "application_traffic_recognition": {
+    "application_classification": {
       "type": "object",
       "description": "PREVIEW: WAN Preview",
       "properties": {
@@ -331,7 +331,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Application Traffic Recognition"
+      "title": "Application Classification"
     },
     "avd_data_conversion_mode": {
       "type": "string",
@@ -14190,7 +14190,20 @@
           "platforms": [
             "750",
             "755",
-            "758",
+            "758"
+          ],
+          "management_interface": "Management0",
+          "feature_support": {
+            "poe": true,
+            "queue_monitor_length_notify": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
+        },
+        {
+          "platforms": [
             "720DP",
             "722XP",
             "710P"

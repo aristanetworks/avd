@@ -17,6 +17,8 @@ keys:
           type: list
           items:
             type: str
+            convert_types:
+              - int
         trident_forwarding_table_partition:
           type: str
           description: Only applied when evpn_multicast is true.
@@ -117,6 +119,14 @@ keys:
           - '750'
           - '755'
           - '758'
+        management_interface: Management0
+        feature_support:
+          poe: true
+          queue_monitor_length_notify: false
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+      - platforms:
           - 720DP
           - 722XP
           - 710P
@@ -126,7 +136,6 @@ keys:
         reload_delay:
           mlag: 300
           non_mlag: 330
-
       - platforms:
           - 7280R
           - 7280R2
