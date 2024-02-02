@@ -40,3 +40,6 @@ ansible_collections/arista/avd/tests/.mypy_cache/
 
 # OSX
 *.DS_Store
+
+# Checksum of schemas
+*schema.sha1
