@@ -136,21 +136,31 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- name: Ethernet1
+- name: Ethernet1.42
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 42
   dhcp_client_accept_default_route: true
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
-- name: Ethernet2
+- name: Ethernet2.42
   peer_type: l3_interface
   ip_address: 172.16.6.6/31
   shutdown: false
-  type: routed
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 666
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
+- name: Ethernet1
+  type: routed
+  peer_type: l3_interface
+  shutdown: false
+- name: Ethernet2
+  type: routed
+  peer_type: l3_interface
+  shutdown: false
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -328,7 +338,7 @@ router_path_selection:
   - name: INET
     id: 101
     local_interfaces:
-    - name: Ethernet1
+    - name: Ethernet1.42
       stun:
         server_profiles:
         - INET-cv-pathfinder-pathfinder-Ethernet1
@@ -345,7 +355,7 @@ router_path_selection:
   - name: MPLS
     id: 100
     local_interfaces:
-    - name: Ethernet2
+    - name: Ethernet2.42
       stun:
         server_profiles:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2
@@ -496,19 +506,11 @@ metadata:
     - interface: Ethernet1
       tags:
       - name: Type
-        value: wan
-      - name: Carrier
-        value: Comcast
-      - name: Circuit
-        value: '667'
+        value: lan
     - interface: Ethernet2
       tags:
       - name: Type
-        value: wan
-      - name: Carrier
-        value: Colt
-      - name: Circuit
-        value: '10666'
+        value: lan
   cv_pathfinder:
     role: transit region
     vtep_ip: 192.168.143.1
@@ -516,10 +518,10 @@ metadata:
     zone: DEFAULT-ZONE
     site: Site422
     interfaces:
-    - name: Ethernet1
+    - name: Ethernet1.42
       carrier: Comcast
       pathgroup: INET
-    - name: Ethernet2
+    - name: Ethernet2.42
       carrier: Colt
       pathgroup: MPLS
     pathfinders:

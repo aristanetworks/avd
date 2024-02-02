@@ -98,12 +98,13 @@ wan_transit:
       cv_pathfinder_site: Site422
       id: 1
       l3_interfaces:
-        - name: Ethernet1
+        - name: Ethernet1.42
           wan_carrier: Comcast
           wan_circuit_id: 667
           set_default_route: true
           ip_address: dhcp
-        - name: Ethernet2
+        - name: Ethernet2.42
+          encapsulation_dot1q_vlan: 666
           wan_carrier: Colt
           wan_circuit_id: 10666
           ip_address: 172.16.6.6/31
@@ -112,6 +113,7 @@ wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.44.0/24
     vtep_loopback_ipv4_pool: 192.168.144.0/24
+    data_plane_cpu_allocation_max: 1
   nodes:
     - name: cv-pathfinder-pathfinder
       id: 1
@@ -132,6 +134,7 @@ wan_rr:
           ip_address: 10.9.9.9/31
     - name: cv-pathfinder-pathfinder1
       id: 2
+      data_plane_cpu_allocation_max: 3
       l3_interfaces:
         - name: Ethernet1
           wan_carrier: Orange
@@ -139,6 +142,7 @@ wan_rr:
           ip_address: 10.8.8.8/31
     - name: cv-pathfinder-pathfinder2
       id: 3
+      data_plane_cpu_allocation_max: 3
       l3_interfaces:
         - name: Ethernet1
           wan_carrier: SFR

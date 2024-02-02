@@ -59,15 +59,15 @@ wan_edge:
           wan_carrier: ATT
           wan_circuit_id: 666
           set_default_route: true
-          ip: dhcp
+          ip_address: dhcp
         - name: Ethernet2
           wan_carrier: Colt
           wan_circuit_id: 10555
-          ip: 172.15.5.5/31
+          ip_address: 172.15.5.5/31
         - name: Ethernet3
           wan_carrier: Comcast-5G
           wan_circuit_id: AF830
-          ip: 172.20.20.20/31
+          ip_address: 172.20.20.20/31
           connected_to_pathfinder: False
 
 wan_path_groups:
