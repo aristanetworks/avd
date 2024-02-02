@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 .j2cache/
 *.log
+*.pickle
 
 # pyavd ignores
 python-avd/build/
