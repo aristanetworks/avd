@@ -1,0 +1,33 @@
+---
+default_node_types:
+  - match_hostnames:
+      - faulty-mlag-leaf.*
+    node_type: l3leaf
+
+default_interfaces:
+  - types: [ l3leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-10 ]
+    mlag_interfaces: [ Ethernet11-20 ]
+    downlink_interfaces: [ Ethernet21-30 ]
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.0.255.0/24
+    vtep_loopback_ipv4_pool: 10.0.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    mlag_peer_ipv4_pool: 10.0.253.0/24
+    mlag_peer_l3_ipv4_pool: 10.0.252.0/24
+    bgp_as: 65000-65100
+  node_groups:
+    - group: faulty-mlag
+      nodes:
+        - name: faulty-mlag-leaf1
+          id: 1
+        - name: faulty-mlag-leaf2
+          id: 2
+
+platform_settings:
+  - platforms: ['default']
+    feature_support:
+      queue_monitor_length_notify: false
