@@ -236,7 +236,7 @@
         return_details: true
       register: CVP_STRICT_TAGS_RESULTS
 
-    - name: Get Device Tag information
+    - name: Get Strict Device Tag information
       delegate_to: localhost
       run_once: true
       ansible.builtin.uri:
