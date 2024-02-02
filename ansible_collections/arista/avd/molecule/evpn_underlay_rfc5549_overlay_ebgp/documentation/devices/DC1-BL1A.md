@@ -283,7 +283,6 @@ vlan 350
 | Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | - | default | 1500 | False | - | - | - | - |
 | Ethernet9 | P2P_LINK_TO_DC1-BL1B_Ethernet9 | routed | - | - | default | 1500 | False | - | - | - | - |
 | Ethernet10 | P2P_LINK_TO_DC1-BL1B_Ethernet10 | routed | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet11 | P2P_LINK_TO_outside-r1_other1 | routed | - | - | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -337,7 +336,6 @@ interface Ethernet11
    mtu 1500
    no switchport
    ip address 10.23.23.1/30
-   ipv6 enable
 !
 interface Ethernet4000
    description My test

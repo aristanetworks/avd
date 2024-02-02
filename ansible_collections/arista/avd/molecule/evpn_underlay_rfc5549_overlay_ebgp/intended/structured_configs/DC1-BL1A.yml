@@ -350,7 +350,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.23.23.1/30
-  ipv6_enable: true
 - name: Ethernet4000
   description: My test
   ip_address: 10.1.2.3/12

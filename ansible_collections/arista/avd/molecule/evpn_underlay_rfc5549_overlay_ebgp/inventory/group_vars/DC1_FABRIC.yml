@@ -256,7 +256,6 @@ core_interfaces:
 l3_edge:
   p2p_links_profiles:
     - name: IPV4-UNDERLAY-EXTERNAL
-      ipv6_enable: False
       routing_protocol: ebgp
   p2p_links:
     - nodes: [ DC1-BL1A, outside-r1]
@@ -269,3 +268,4 @@ l3_edge:
       as: [ "65105", "64900" ]
       subnet: 10.23.23.4/30
       profile: IPV4-UNDERLAY-EXTERNAL
+      ipv6_enable: True
