@@ -5,7 +5,7 @@ $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
-  application_traffic_recognition:
+  application_classification:
     type: dict
     description: 'PREVIEW: WAN Preview'
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -667,14 +667,6 @@ keys:
       If not set the default locations for on-premise or CVaaS will be used.
 
       See cvp_ingestauth_key for details.'
-  data_plane_cpu_allocation_max:
-    documentation_options:
-      table: system-settings
-    type: int
-    $ref: eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max
-    description: 'Set the maximum number of CPU used for the data plane.
-
-      This setting is useful on virtual Route Reflectors and Pathfinders node.'
   dc_name:
     documentation_options:
       table: fabric-topology
@@ -2310,6 +2302,8 @@ keys:
           type: list
           items:
             type: str
+            convert_types:
+            - int
         trident_forwarding_table_partition:
           type: str
           description: Only applied when evpn_multicast is true.
@@ -2430,6 +2424,14 @@ keys:
       - '750'
       - '755'
       - '758'
+      management_interface: Management0
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+    - platforms:
       - 720DP
       - 722XP
       - 710P
@@ -2524,6 +2526,8 @@ keys:
       keys:
         platform:
           type: str
+          convert_types:
+          - int
         speeds:
           type: list
           primary_key: speed
@@ -6067,6 +6071,8 @@ $defs:
               table: node-type-common-configuration
             description: Arista platform family.
             type: str
+            convert_types:
+            - int
           mac_address:
             documentation_options:
               table: node-type-common-configuration
@@ -7468,6 +7474,15 @@ $defs:
                   description: 'L3 interface profile name. Profile defined under `l3_interface_profiles`.
 
                     '
+          data_plane_cpu_allocation_max:
+            documentation_options:
+              table: system-settings
+            type: int
+            $ref: eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max
+            description: 'Set the maximum number of CPU used for the data plane.
+
+              This setting is useful on virtual Route Reflectors and Pathfinders where
+              more CPU cores should be allocated for control plane.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -7512,16 +7527,27 @@ $defs:
       keys:
         name:
           type: str
-          description: Ethernet interface name like 'Ethernet2'.
-          pattern: Ethernet[\d/]+
+          description: 'Ethernet interface name like ''Ethernet2'' or subinterface
+            name like ''Ethernet2.42''
+
+            For a subinterface, the parent physical interface is automatically created.'
+          pattern: Ethernet[\d/]+(.[\d]+)?
         description:
           type: str
           description: 'Interface description.
 
             If not set a default description will be configured with ''[<peer>[ <peer_interface>]]'''
-        ip:
+        ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        encapsulation_dot1q_vlan:
+          description: For subinterfaces the dot1q vlan is derived from the interface
+            name by default, but can also be specified.
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 4094
         set_default_route:
           type: bool
           default: false

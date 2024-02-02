@@ -5,11 +5,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the configured routing protocol model.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "Routing protocol model: multi-agent"
+    "description": "ArBGP is configured and operating",
+    "custom_field": "ArBGP"
   },
   {
     "name": "dc2-spine1",
@@ -17,11 +14,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP EVPN Peer: 10.255.128.13"
+    "description": "bgp evpn peer state established (evpn)",
+    "custom_field": "bgp_neighbor: 10.255.128.13"
   },
   {
     "name": "dc2-spine1",
@@ -29,11 +23,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP EVPN Peer: 10.255.128.14"
+    "description": "bgp evpn peer state established (evpn)",
+    "custom_field": "bgp_neighbor: 10.255.128.14"
   },
   {
     "name": "dc2-spine1",
@@ -41,11 +32,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP EVPN Peer: 10.255.128.15"
+    "description": "bgp evpn peer state established (evpn)",
+    "custom_field": "bgp_neighbor: 10.255.128.15"
   },
   {
     "name": "dc2-spine1",
@@ -53,11 +41,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP EVPN Peer: 10.255.128.16"
+    "description": "bgp evpn peer state established (evpn)",
+    "custom_field": "bgp_neighbor: 10.255.128.16"
   },
   {
     "name": "dc2-spine1",
@@ -65,11 +50,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP EVPN Peer: 10.255.128.17"
+    "description": "bgp evpn peer state established (evpn)",
+    "custom_field": "bgp_neighbor: 10.255.128.17"
   },
   {
     "name": "dc2-spine1",
@@ -77,11 +59,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP EVPN Peer: 10.255.128.18"
+    "description": "bgp evpn peer state established (evpn)",
+    "custom_field": "bgp_neighbor: 10.255.128.18"
   },
   {
     "name": "dc2-spine1",
@@ -89,11 +68,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.105"
+    "description": "ip bgp peer state established (ipv4)",
+    "custom_field": "bgp_neighbor: 10.255.255.105"
   },
   {
     "name": "dc2-spine1",
@@ -101,11 +77,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.109"
+    "description": "ip bgp peer state established (ipv4)",
+    "custom_field": "bgp_neighbor: 10.255.255.109"
   },
   {
     "name": "dc2-spine1",
@@ -113,11 +86,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.113"
+    "description": "ip bgp peer state established (ipv4)",
+    "custom_field": "bgp_neighbor: 10.255.255.113"
   },
   {
     "name": "dc2-spine1",
@@ -125,11 +95,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.117"
+    "description": "ip bgp peer state established (ipv4)",
+    "custom_field": "bgp_neighbor: 10.255.255.117"
   },
   {
     "name": "dc2-spine1",
@@ -137,11 +104,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.121"
+    "description": "ip bgp peer state established (ipv4)",
+    "custom_field": "bgp_neighbor: 10.255.255.121"
   },
   {
     "name": "dc2-spine1",
@@ -149,11 +113,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.125"
+    "description": "ip bgp peer state established (ipv4)",
+    "custom_field": "bgp_neighbor: 10.255.255.125"
   },
   {
     "name": "dc2-spine1",
@@ -161,11 +122,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the device temperature is within the acceptable range."
   },
   {
     "name": "dc2-spine1",
@@ -173,11 +130,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the fans status are within the accepted states list.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the fans status are within the accepted states list."
   },
   {
     "name": "dc2-spine1",
@@ -185,11 +138,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the power supplies status are within the accepted states list."
   },
   {
     "name": "dc2-spine1",
@@ -197,11 +146,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
   },
   {
     "name": "dc2-spine1",
@@ -210,9 +155,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet1 - P2P_LINK_TO_DC2-LEAF1A_Ethernet1"
   },
   {
@@ -222,9 +164,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet2 - P2P_LINK_TO_DC2-LEAF1B_Ethernet1"
   },
   {
@@ -234,9 +173,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet3 - P2P_LINK_TO_DC2-LEAF2A_Ethernet1"
   },
   {
@@ -246,9 +182,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet4 - P2P_LINK_TO_DC2-LEAF2B_Ethernet1"
   },
   {
@@ -258,9 +191,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet5 - P2P_LINK_TO_DC2-LEAF3A.ARISTA.COM_Ethernet1"
   },
   {
@@ -270,9 +200,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet6 - P2P_LINK_TO_DC2-LEAF3B.ARISTA.COM_Ethernet1"
   },
   {
@@ -282,9 +209,6 @@
       "Interface State"
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Loopback0 - EVPN_Overlay_Peering"
   },
   {
@@ -294,9 +218,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet1 - Destination: dc2-leaf1a_Ethernet1"
   },
   {
@@ -306,9 +227,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet2 - Destination: dc2-leaf1b_Ethernet1"
   },
   {
@@ -318,9 +236,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet3 - Destination: dc2-leaf2a_Ethernet1"
   },
   {
@@ -330,9 +245,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet4 - Destination: dc2-leaf2b_Ethernet1"
   },
   {
@@ -342,9 +254,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet5 - Destination: dc2-leaf3a.arista.com_Ethernet1"
   },
   {
@@ -354,9 +263,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet6 - Destination: dc2-leaf3b.arista.com_Ethernet1"
   },
   {
@@ -366,9 +272,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet1 - remote: dc2-leaf1a_Ethernet1"
   },
   {
@@ -378,9 +281,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet2 - remote: dc2-leaf1b_Ethernet1"
   },
   {
@@ -390,9 +290,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet3 - remote: dc2-leaf2a_Ethernet1"
   },
   {
@@ -402,9 +299,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet4 - remote: dc2-leaf2b_Ethernet1"
   },
   {
@@ -414,9 +308,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet5 - remote: dc2-leaf3a.arista.com_Ethernet1"
   },
   {
@@ -426,9 +317,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet6 - remote: dc2-leaf3b.arista.com_Ethernet1"
   },
   {
@@ -438,9 +326,6 @@
       "NTP"
     ],
     "description": "Synchronised with NTP server",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "NTP"
   },
   {
@@ -449,10 +334,6 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
   }
 ]

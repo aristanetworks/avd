@@ -36,7 +36,8 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
   - The `application_virtual_topologies` entries and the `default_virtual_topology` key are used to create the policy match statement, the AVT profile (when `wan_mode` is CV Pathfinder) and the load balancing policy.
   - The `default_virtual_topology` is used as the default match in the policy.  To prevent configuring it, the `drop_unmatched` boolean must be set to `true` otherwise, at least one `path-group` must be configured or AVD will raise an error.
   - Policies are assigned to VRFs using the list `wan_virtual_topologies.vrfs`. A policy can be reused in multiple VRFs.
-  - AVD requires that a policy is assigned for the `default` VRF policy. An extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `CONTROL-PLANE-APPLICATION-PROFILE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
+  - If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
+  - For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `CONTROL-PLANE-APPLICATION-PROFILE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
 
 ## Known limitations
 
@@ -57,14 +58,12 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
     ```
 
 - No IPv6 support
-- For WAN interfaces only `l3_edge.l3_interfaces` is supported  and not `core_interfaces.l3_interfaces`.
 - For WAN interfaces, NAT IP on the Pathfinder side can be supported using the `wan_route_servers.path_groups.interfaces` key.
 - Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
 
 ## Future work
 
-- As of now, only the fundations of the `eos_designs` functionality for WAN is
-    being introduced without any support for LAN interfaces.
+- As of now, only the fundations of the `eos_designs` functionality for WAN is being introduced without any support for LAN interfaces.
 - Auto generation of Path-group IDs and other IDs.
 - HA for sites will be covered in a future PR
 
@@ -138,10 +137,10 @@ roles/eos_designs/docs/tables/wan-interfaces-settings.md
 roles/eos_designs/docs/tables/wan-virtual-topologies.md
 --8<--
 
-#### Application traffic recognition
+#### Application Classification
 
 --8<--
-roles/eos_designs/docs/tables/application-traffic-recognition.md
+roles/eos_designs/docs/tables/application-classification.md
 --8<--
 
 #### New BGP peer-group
@@ -183,3 +182,17 @@ roles/eos_designs/docs/tables/node-type-key-wan-configuration.md
 | `Type`        | `lan` or `wan` if `cv_pathfinder_role` is set                               |
 | `Carrier`     | `wan_carrier` if `cv_pathfinder_role` is set and this is a WAN interface    |
 | `Circuit`     | `wan_circiot_id` if `cv_pathfinder_role` is set and this is a LAN interface |
+
+## Getting started with WAN
+
+### Global settings
+
+TODO - cover here WAN hierarchy, wan mode, route-servers, path-groups and carriers and how they are linked together.
+
+### WAN interfaces
+
+TODO
+
+### Defining policies
+
+TODO

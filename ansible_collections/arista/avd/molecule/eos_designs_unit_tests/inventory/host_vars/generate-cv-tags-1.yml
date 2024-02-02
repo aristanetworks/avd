@@ -9,7 +9,7 @@ spine:
       rack: ABC567
       l3_interfaces:
         - name: Ethernet1
-          ip: 10.20.30.40/24
+          ip_address: 10.20.30.40/24
           description: Test interface
           peer: Someotherdevice
           peer_ip: 10.20.30.50/24
