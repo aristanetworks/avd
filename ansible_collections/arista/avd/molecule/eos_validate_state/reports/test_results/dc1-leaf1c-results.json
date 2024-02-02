@@ -74,9 +74,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan4085 - L2LEAF_INBAND_MGMT"
   },
   {
@@ -104,9 +101,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.1"
   },
   {
@@ -116,9 +110,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.2"
   },
   {
@@ -128,9 +119,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.3"
   },
   {
@@ -140,9 +128,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.4"
   },
   {
@@ -152,9 +137,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.5"
   },
   {
@@ -164,9 +146,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.11"
   },
   {
@@ -176,9 +155,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.12"
   },
   {
@@ -188,9 +164,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.13"
   },
   {
@@ -200,9 +173,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.14"
   },
   {
@@ -212,9 +182,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.15"
   },
   {
@@ -224,9 +191,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.16"
   },
   {
@@ -236,9 +200,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.17"
   },
   {
@@ -248,9 +209,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Inband Mgmt Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.18"
   },
   {
@@ -269,9 +227,6 @@
       "Reload Cause"
     ],
     "description": "Reload Cause - Reload requested by the user",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Reload Cause"
   },
   {

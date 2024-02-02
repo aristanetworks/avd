@@ -281,6 +281,15 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
+    "custom_field": "Vlan4085 - Inband Management"
+  },
+  {
+    "name": "dc1-leaf2a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
     "custom_field": "Vlan4093 - MLAG_PEER_L3_PEERING"
   },
   {
@@ -505,9 +514,6 @@
       "Reload Cause"
     ],
     "description": "Reload Cause - Reload requested by the user",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Reload Cause"
   },
   {

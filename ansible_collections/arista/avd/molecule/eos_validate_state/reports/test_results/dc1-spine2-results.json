@@ -209,9 +209,6 @@
       "Reload Cause"
     ],
     "description": "Reload Cause - Reload requested by the user",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Reload Cause"
   },
   {
