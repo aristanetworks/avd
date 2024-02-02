@@ -10,6 +10,6 @@
     // },
     // Run entrypoint script manually as it's ignored by dev container CLI otherwise.
     // The dev entrypoint is used to install Ansible collections and requirements, as they are not included with the dev version.
-    // "true" is required to exit "onCreateCommand" without entering ZSH.
-    "onCreateCommand": "/bin/entrypoint.sh true"
+    // "true" is required to exit "postCreateCommand" without entering ZSH.
+    "postCreateCommand": "/bin/entrypoint.sh true"
 }
