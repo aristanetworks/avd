@@ -12,22 +12,31 @@
     tag_url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
     configuration_dir: "{{ playbook_dir }}/intended/configs"
     structured_config_dir: "{{ playbook_dir }}/intended/structured_configs"
+    strict_configuration_dir: "{{ playbook_dir }}/intended/configs/strict_tags"
+    strict_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/strict_tags"
     intended_tag_device: s1-leaf1
     intended_tags: "{{ lookup('file', structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
+    # intended_strict_tag_device: s1-leaf1-strict_tags
+    intended_strict_tags: "{{ lookup('file', strict_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
 
-    ws_name: avd-static-studio-42
-    ws_description: sample description
-    ws_req_state: submitted
-    ws_force: true
 
-    # TODO: cc_id is not getting set to anything other than Workspace-<ws_nane>
-    cc_id: Workspace-avd-static-studio-42
-    cc_requested_state: running
-    cc_name: cc_avd_studio-42
-    cc_desctiption: sample description
-
-  # TODO: get end state device and assert state
   tasks:
+    - name: Generate random string
+      set_fact:
+        r: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
+      run_once: true
+
+    - name: set facts
+      set_fact:
+        ws_name: avd-static-studio-{{ r }}
+        ws_description: sample description
+        ws_req_state: submitted
+        ws_force: true
+        cc_name: cc_avd_studio-{{ r }}
+        cc_requested_state: running
+        cc_desctiption: sample description
+      run_once: true
+
     - name: Test = Provision CVP with AVD configuration
       run_once: true
       delegate_to: localhost
@@ -37,8 +46,8 @@
         # structured_config_suffix: "yml"
         # device_list: "{{ ansible_play_hosts }}"
         device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
-        # strict_tags: true
-        # skip_missing_devices: false
+        strict_tags: true
+        # skip_strict_devices: false
         # configlet_name_template: "AVD-${hostname}"
         cv_servers: [ '{{ cv_server }}' ]
         cv_token: '{{ token }}'
@@ -65,6 +74,8 @@
         msg: '{{CVP_RESULTS}}'
 
     - name: check CVP returns
+      vars:
+        cc_id: Workspace-{{ ws_name }}
       ansible.builtin.assert:
         that:
           # workspace
@@ -113,7 +124,7 @@
       register: result
 
     # CC information
-    - name: get CC information
+    - name: Validate CC state to completed
       delegate_to: localhost
       run_once: true
       ansible.builtin.uri:
@@ -126,7 +137,7 @@
         body_format: json
         body:
           key:
-            id: '{{ cc_id }}'
+            id: Workspace-{{ ws_name }}
       register: CC_INFO
       until: CC_INFO.json[0].value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
       retries: 5
@@ -150,12 +161,6 @@
           - item.key  == lookup('file', item.value)
       loop: "{{ response_configlet | dict2items }}"
 
-    # - name: 'Display intended tags'
-    #   run_once: true
-    #   debug:
-    #     msg: '{{ item }}'
-    #   loop: '{{ intended_tags.metadata.cv_tags.interface_tags }}'
-
     - name: Get Device Tag information
       delegate_to: localhost
       run_once: true
@@ -176,14 +181,6 @@
             deviceId: "{{ intended_tag_device }}"
       loop:
         "{{ intended_tags.metadata.cv_tags.device_tags }}"
-
-    # - name: 'Assert designed tags'
-    #   run_once: true
-    #   ansible.builtin.assert:
-    #     that:
-    #       - item.failed == false
-    #   loop:
-    #     '{{ designed_tags.results }}'
 
     # # XXX: Assuming that there is only one interfaceTag per port
     - name: Get and verify Interface Tag information
@@ -208,50 +205,54 @@
       loop:
         "{{ intended_tags.metadata.cv_tags.interface_tags }}"
 
-    # - name: 'Assert designed interface tags'
-    #   run_once: true
-    #   ansible.builtin.assert:
-    #     that:
-    #       - item.failed == false
-    #   loop:
-    #     '{{ designed_tags.results }}'
-
-    - name: Test = Provision with missing device
+    - name: Test Strict tags = Set tags
       run_once: true
       delegate_to: localhost
       vars:
-        ws_name: missing-device-studio-4
+        ws_name_strict: avd-static-studio-strict-{{ r }}
+        ws_description_strict: sample description
+        ws_req_state_strict: submitted
+        ws_force_strict: true
+        cc_name_strict: cc_avd_studio-strict-{{ r }}
+        cc_requested_state_strict: running
+        cc_desctiption_strict: sample description
       arista.avd.deploy_to_cv:
-        configuration_dir: "{{ configuration_dir }}"
-        structured_config_dir: "{{ structured_config_dir }}"
-        # structured_config_suffix: "yml"
-        # device_list: "{{ ansible_play_hosts }}"
-        device_list: ["s1-missing"]
+        configuration_dir: "{{ strict_configuration_dir }}"
+        structured_config_dir: "{{ strict_structured_config_dir }}"
+        device_list: ["s1-leaf1"]
         strict_tags: true
-        # skip_missing_devices: false
-        # configlet_name_template: "AVD-${hostname}"
         cv_servers: [ '{{ cv_server }}' ]
         cv_token: '{{ token }}'
-        # cv_verify_certs: True
         workspace:
-          name: '{{ ws_name }}'
-          description: '{{ ws_description }}'
-          id: '{{ ws_name }}'
-          requested_state: '{{ ws_req_state }}'
-          force: '{{ ws_force }}'
+          name: '{{ ws_name_strict }}'
+          description: '{{ ws_description_strict }}'
+          id: '{{ ws_name_strict }}'
+          requested_state: '{{ ws_req_state_strict }}'
+          force: '{{ ws_force_strict }}'
         change_control:
-          name: '{{ cc_name }}'
-          description: '{{ cc_desctiption }}'
-          requested_state: '{{ cc_requested_state }}'
-        # timeouts:
-        #   workspace_build_timeout: 300.0
-        #   change_control_creation_timeout: 300.0
+          name: '{{ cc_name_strict }}'
+          description: '{{ cc_desctiption_strict }}'
+          requested_state: '{{ cc_requested_state_strict }}'
         return_details: true
-      ignore_errors: true
-      register: CVP_RESULTS_MISSING
+      register: CVP_STRICT_TAGS_RESULTS
 
-    - name: Assert missing device errors
+    - name: Get Device Tag information
+      delegate_to: localhost
       run_once: true
-      ansible.builtin.assert:
-        that:
-          - CVP_RESULTS_MISSING.errors == ["('Missing devices on CloudVision', CVDevice(hostname='s1-missing', serial_number=None, system_mac_address=None, _exists_on_cv=None))"]
+      ansible.builtin.uri:
+        url: '{{ tag_url }}'
+        return_content: true
+        validate_certs: false
+        headers:
+          Cookie: "access_token={{ token }}"
+        method: POST
+        body_format: json
+        body:
+          key:
+            workspaceId: '{{ ws_name }}'
+            elementType: 1
+            label: "{{ item.name }}"
+            value: "{{ item.value }}"
+            deviceId: "{{ intended_tag_device }}"
+      loop:
+        "{{ intended_strict_tags.metadata.cv_tags.device_tags }}"

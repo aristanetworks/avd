@@ -122,12 +122,6 @@ metadata:
     device_tags:
     - name: Role
       value: edge
-    - name: Region
-      value: AVD_Land_East
-    - name: Zone
-      value: DEFAULT-ZONE
-    - name: Site
-      value: Site511
     interface_tags:
     - interface: Ethernet1
       tags:
