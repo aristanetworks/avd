@@ -81,13 +81,15 @@ class AvdTestInbandReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (management_interfaces := self.logged_get(key="management_interfaces", logging_level="WARNING")) is None:
+        if (vlan_interfaces := self.logged_get(key="vlan_interfaces")) is None:
             return None
 
-        for idx, interface in enumerate(management_interfaces):
+        for idx, interface in enumerate(vlan_interfaces):
             self.update_interface_shutdown(interface=interface)
-            if not self.validate_data(data=interface, data_path=f"management_interface.[{idx}]", required_keys="name", type="inband", shutdown=False):
+            if not self.validate_data(data=interface, data_path=f"vlan_interfaces.[{idx}]", required_keys="name", type="inband_mgmt", shutdown=False):
                 continue
+
+            vrf = interface.get("vrf", "default")
 
             for dst_node, dst_ip in self.loopback0_mapping:
                 if not self.is_peer_available(dst_node):
@@ -97,7 +99,7 @@ class AvdTestInbandReachability(AvdTestBase):
                 anta_tests.append(
                     {
                         "VerifyReachability": {
-                            "hosts": [{"source": interface["name"], "destination": dst_ip, "vrf": "default", "repeat": 1}],
+                            "hosts": [{"source": interface["name"], "destination": dst_ip, "vrf": vrf, "repeat": 1}],
                             "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
                         }
                     }

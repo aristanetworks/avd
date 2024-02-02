@@ -666,3 +666,9 @@ anta.tests.system:
       - NTP
       custom_field: NTP
       description: Synchronised with NTP server
+- VerifyReloadCause:
+    result_overwrite:
+      categories:
+      - Reload Cause
+      custom_field: Reload Cause
+      description: Reload Cause - Reload requested by the user

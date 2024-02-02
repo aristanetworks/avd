@@ -411,6 +411,16 @@ anta.tests.interfaces:
       description: Vlan Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
+    - interface: Vlan4085
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Vlan4085 - Inband Management
+      description: Vlan Interface & Line Protocol == 'up'
+- VerifyInterfacesStatus:
+    interfaces:
     - interface: Loopback0
       protocol_status: up
       state: up
@@ -687,3 +697,9 @@ anta.tests.system:
       - NTP
       custom_field: NTP
       description: Synchronised with NTP server
+- VerifyReloadCause:
+    result_overwrite:
+      categories:
+      - Reload Cause
+      custom_field: Reload Cause
+      description: Reload Cause - Reload requested by the user

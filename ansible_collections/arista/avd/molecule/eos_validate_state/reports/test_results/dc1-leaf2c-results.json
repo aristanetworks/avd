@@ -97,6 +97,18 @@
   },
   {
     "name": "dc1-leaf2c",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vlan4085 - L2LEAF_INBAND_MGMT"
+  },
+  {
+    "name": "dc1-leaf2c",
     "test": "VerifyLLDPNeighbors",
     "categories": [
       "LLDP Topology"
@@ -109,6 +121,162 @@
   },
   {
     "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.1"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.2"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.3"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.4"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.5"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.11"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.12"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.13"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.14"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.15"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.16"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.17"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.18"
+  },
+  {
+    "name": "dc1-leaf2c",
     "test": "VerifyNTP",
     "categories": [
       "NTP"
@@ -118,6 +286,18 @@
     "messages": [],
     "error": "None",
     "custom_field": "NTP"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "Reload Cause"
+    ],
+    "description": "Reload Cause - Reload requested by the user",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Reload Cause"
   },
   {
     "name": "dc1-leaf2c",

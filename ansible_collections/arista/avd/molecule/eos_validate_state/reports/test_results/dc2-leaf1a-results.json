@@ -649,6 +649,18 @@
   },
   {
     "name": "dc2-leaf1a",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "Reload Cause"
+    ],
+    "description": "Reload Cause - Reload requested by the user",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Reload Cause"
+  },
+  {
+    "name": "dc2-leaf1a",
     "test": "VerifyRoutingTableEntry",
     "categories": [
       "Routing Table"

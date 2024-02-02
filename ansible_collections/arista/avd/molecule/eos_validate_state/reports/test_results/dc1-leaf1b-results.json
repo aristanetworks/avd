@@ -357,6 +357,18 @@
     "result": "unset",
     "messages": [],
     "error": "None",
+    "custom_field": "Vlan4085 - Inband Management"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
     "custom_field": "Vlan4093 - MLAG_PEER_L3_PEERING"
   },
   {
@@ -646,6 +658,18 @@
     "messages": [],
     "error": "None",
     "custom_field": "NTP"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "Reload Cause"
+    ],
+    "description": "Reload Cause - Reload requested by the user",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Reload Cause"
   },
   {
     "name": "dc1-leaf1b",
