@@ -20432,7 +20432,7 @@
               "properties": {
                 "delay": {
                   "type": "integer",
-                  "description": "Number of seconds",
+                  "description": "Number of seconds.",
                   "title": "Delay"
                 },
                 "wait_for_bgp": {
@@ -20444,7 +20444,7 @@
                     },
                     "timeout": {
                       "type": "integer",
-                      "description": "Number of seconds",
+                      "description": "Number of seconds.",
                       "title": "Timeout"
                     }
                   },

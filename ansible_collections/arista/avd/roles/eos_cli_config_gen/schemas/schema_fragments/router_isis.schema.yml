@@ -56,7 +56,7 @@ keys:
                 type: int
                 convert_types:
                   - str
-                description: Number of seconds
+                description: Number of seconds.
               wait_for_bgp:
                 type: dict
                 keys:
@@ -64,7 +64,7 @@ keys:
                     type: bool
                   timeout:
                     type: int
-                    description: Number of seconds
+                    description: Number of seconds.
       authentication:
         type: dict
         keys:
