@@ -58,6 +58,9 @@ def _should_recompile_schemas() -> bool:
 
 
 def _create_store_from_yaml() -> dict[str, dict]:
+    """
+    Returns a schema store loaded from yaml/json files with $ref
+    """
     store = {}
     for id, schema_file in DEFAULT_SCHEMAS.items():
         with open(schema_file, "r", encoding="UTF-8") as stream:
@@ -110,8 +113,6 @@ def _resolve_schema(schema: dict, store: dict) -> dict:
     """
     Get fully resolved schema (where all $ref has been expanded recursively)
     .schemaresolver performs inplace update of the argument so we give it a copy of the existing schema.
-
-    The resolved schema is cached on the instance of AvdSchema.
     """
     resolved_schema = deepcopy(schema)
     schemaresolver = AvdSchemaResolver(resolved_schema, store)
