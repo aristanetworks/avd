@@ -133,7 +133,7 @@ wan_virtual_topologies:
             - names: [INET]
               preference: alternate
 
-application_traffic_recognition:
+application_classification:
   application_profiles:
     - name: VIDEO
     - name: IT
