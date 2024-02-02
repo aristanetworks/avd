@@ -362,7 +362,7 @@
     },
     "bfd_multihop": {
       "type": "object",
-      "description": "BFD Multihop tuning.test",
+      "description": "BFD Multihop tuning.",
       "properties": {
         "interval": {
           "type": "integer",

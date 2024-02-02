@@ -79,7 +79,7 @@ keys:
     documentation_options:
       table: bfd-settings
     type: dict
-    description: BFD Multihop tuning.test
+    description: BFD Multihop tuning.
     keys:
       interval:
         type: int
