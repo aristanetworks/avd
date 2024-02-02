@@ -20468,6 +20468,332 @@
           },
           "title": "Set Overload Bit"
         },
+        "authentication": {
+          "type": "object",
+          "properties": {
+            "key_id": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 65535,
+                  "description": "Configure authentication keyid.",
+                  "title": "ID"
+                },
+                "algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "sha-1",
+                    "sha-224",
+                    "sha-256",
+                    "sha-384",
+                    "sha-512"
+                  ],
+                  "title": "Algorithm"
+                },
+                "key": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "7",
+                    "8a"
+                  ],
+                  "description": "Configure authentication key.",
+                  "title": "Key"
+                },
+                "password": {
+                  "type": "string",
+                  "title": "Password"
+                },
+                "rfc_5310": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "enum": [
+                        "0",
+                        "7",
+                        "8a"
+                      ],
+                      "description": "Configure authentication key.",
+                      "title": "Key"
+                    },
+                    "password": {
+                      "type": "string",
+                      "title": "Password"
+                    },
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "level_1": {
+                      "type": "boolean",
+                      "title": "Level 1"
+                    },
+                    "level_2": {
+                      "type": "boolean",
+                      "title": "Level 2"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Rfc 5310"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Key ID"
+            },
+            "key": {
+              "type": "string",
+              "enum": [
+                "0",
+                "7",
+                "8a"
+              ],
+              "description": "Configure authentication key.",
+              "title": "Key"
+            },
+            "password": {
+              "type": "string",
+              "title": "Password"
+            },
+            "mode": {
+              "type": "object",
+              "properties": {
+                "md5": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-1 and level-2 both.",
+                      "title": "Enabled"
+                    },
+                    "level_1": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-1.",
+                      "title": "Level 1"
+                    },
+                    "level_2": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-2.",
+                      "title": "Level 2"
+                    },
+                    "rx_disabled": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-1 and level-2 both.",
+                          "title": "Enabled"
+                        },
+                        "level_1": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-1.",
+                          "title": "Level 1"
+                        },
+                        "level_2": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-2.",
+                          "title": "Level 2"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "RX Disabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Md5"
+                },
+                "sha": {
+                  "type": "object",
+                  "properties": {
+                    "key_id": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 6553,
+                      "title": "Key ID"
+                    },
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-1 and level-2 both.",
+                      "title": "Enabled"
+                    },
+                    "level_1": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-1.",
+                      "title": "Level 1"
+                    },
+                    "level_2": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-2.",
+                      "title": "Level 2"
+                    },
+                    "rx_disabled": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-1 and level-2 both.",
+                          "title": "Enabled"
+                        },
+                        "level_1": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-1.",
+                          "title": "Level 1"
+                        },
+                        "level_2": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-2.",
+                          "title": "Level 2"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "RX Disabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Sha"
+                },
+                "text": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-1 and level-2 both.",
+                      "title": "Enabled"
+                    },
+                    "level_1": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-1.",
+                      "title": "Level 1"
+                    },
+                    "level_2": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-2.",
+                      "title": "Level 2"
+                    },
+                    "rx_disabled": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-1 and level-2 both.",
+                          "title": "Enabled"
+                        },
+                        "level_1": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-1.",
+                          "title": "Level 1"
+                        },
+                        "level_2": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-2.",
+                          "title": "Level 2"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "RX Disabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Text"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "title": "Profile"
+                    },
+                    "algorithm": {
+                      "type": "string",
+                      "title": "Algorithm"
+                    },
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-1 and level-2 both.",
+                      "title": "Enabled"
+                    },
+                    "level_1": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-1.",
+                      "title": "Level 1"
+                    },
+                    "level_2": {
+                      "type": "boolean",
+                      "description": "Configure authentication at level-2.",
+                      "title": "Level 2"
+                    },
+                    "rx_disabled": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-1 and level-2 both.",
+                          "title": "Enabled"
+                        },
+                        "level_1": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-1.",
+                          "title": "Level 1"
+                        },
+                        "level_2": {
+                          "type": "boolean",
+                          "description": "Disable authentication on receive side at level-2.",
+                          "title": "Level 2"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "RX Disabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Mode"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Authentication"
+        },
         "advertise": {
           "type": "object",
           "properties": {

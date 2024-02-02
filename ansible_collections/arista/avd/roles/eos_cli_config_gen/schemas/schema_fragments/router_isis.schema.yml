@@ -65,6 +65,117 @@ keys:
                   timeout:
                     type: int
                     description: Number of seconds
+      authentication:
+        type: dict
+        keys:
+          key_id:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                min: 0
+                max: 65535
+                description: Configure authentication keyid.
+              algorithm:
+                type: str
+                valid_values:
+                  - sha-1
+                  - sha-224
+                  - sha-256
+                  - sha-384
+                  - sha-512
+              key:
+                type: str
+                convert_types:
+                  - int
+                valid_values:
+                  - '0'
+                  - '7'
+                  - '8a'
+                description: Configure authentication key.
+              password:
+                type: str
+              rfc_5310:
+                type: dict
+                keys:
+                  key:
+                    type: str
+                    convert_types:
+                      - int
+                    valid_values:
+                      - '0'
+                      - '7'
+                      - '8a'
+                    description: Configure authentication key.
+                  password:
+                    type: str
+                  enabled:
+                    type: bool
+                  level_1:
+                    type: bool
+                  level_2:
+                    type: bool
+          key:
+            type: str
+            convert_types:
+              - int
+            valid_values:
+              - '0'
+              - '7'
+              - '8a'
+            description: Configure authentication key.
+          password:
+            type: str
+          mode:
+            type: dict
+            keys:
+              md5:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: Configure authentication at level-1 and level-2 both.
+                  level_1:
+                    type: bool
+                    description: Configure authentication at level-1.
+                  level_2:
+                    type: bool
+                    description: Configure authentication at level-2.
+                  rx_disabled:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        description: Disable authentication on receive side at level-1 and level-2 both.
+                      level_1:
+                        type: bool
+                        description: Disable authentication on receive side at level-1.
+                      level_2:
+                        type: bool
+                        description: Disable authentication on receive side at level-2.
+              sha:
+                type: dict
+                $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/mode/keys/md5"
+                keys:
+                  key_id:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 0
+                    max: 6553
+              text:
+                $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/mode/keys/md5"
+                type: dict
+              shared_secret:
+                type: dict
+                $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/mode/keys/md5"
+                keys:
+                  profile:
+                    type: str
+                  algorithm:
+                    type: str
       advertise:
         type: dict
         keys:

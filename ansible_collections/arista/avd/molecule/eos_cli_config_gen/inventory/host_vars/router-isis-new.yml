@@ -67,6 +67,20 @@ router_isis:
       wait_for_bgp:
         enabled: true
         timeout: 10
+  authentication:
+    key_id:
+      id: 2
+      algorithm: sha-512
+      rfc_5310:
+        key: 8a
+        password: shi
+        level_1: true
+    key: 7
+    password: shapass
+    mode:
+      md5:
+        rx_disabled:
+          level_1: true
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:

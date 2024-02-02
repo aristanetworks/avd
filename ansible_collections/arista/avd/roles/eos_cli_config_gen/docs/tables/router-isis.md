@@ -25,6 +25,56 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wait_for_bgp</samp>](## "router_isis.set_overload_bit.on_startup.wait_for_bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.set_overload_bit.on_startup.wait_for_bgp.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "router_isis.set_overload_bit.on_startup.wait_for_bgp.timeout") | Integer |  |  |  | Number of seconds |
+    | [<samp>&nbsp;&nbsp;authentication</samp>](## "router_isis.authentication") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "router_isis.authentication.key_id") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_isis.authentication.key_id.id") | Integer |  |  | Min: 0<br>Max: 65535 | Configure authentication keyid. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "router_isis.authentication.key_id.algorithm") | String |  |  | Valid Values:<br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha-512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "router_isis.authentication.key_id.key") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Configure authentication key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "router_isis.authentication.key_id.password") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rfc_5310</samp>](## "router_isis.authentication.key_id.rfc_5310") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "router_isis.authentication.key_id.rfc_5310.key") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Configure authentication key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "router_isis.authentication.key_id.rfc_5310.password") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.authentication.key_id.rfc_5310.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "router_isis.authentication.key_id.rfc_5310.level_1") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "router_isis.authentication.key_id.rfc_5310.level_2") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "router_isis.authentication.key") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Configure authentication key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "router_isis.authentication.password") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.authentication.mode") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;md5</samp>](## "router_isis.authentication.mode.md5") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.authentication.mode.md5.enabled") | Boolean |  |  |  | Configure authentication at level-1 and level-2 both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "router_isis.authentication.mode.md5.level_1") | Boolean |  |  |  | Configure authentication at level-1. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "router_isis.authentication.mode.md5.level_2") | Boolean |  |  |  | Configure authentication at level-2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "router_isis.authentication.mode.md5.rx_disabled") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.authentication.mode.md5.rx_disabled.enabled") | Boolean |  |  |  | Disable authentication on receive side at level-1 and level-2 both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "router_isis.authentication.mode.md5.rx_disabled.level_1") | Boolean |  |  |  | Disable authentication on receive side at level-1. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "router_isis.authentication.mode.md5.rx_disabled.level_2") | Boolean |  |  |  | Disable authentication on receive side at level-2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "router_isis.authentication.mode.sha") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "router_isis.authentication.mode.sha.key_id") | Integer |  |  | Min: 0<br>Max: 6553 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.authentication.mode.sha.enabled") | Boolean |  |  |  | Configure authentication at level-1 and level-2 both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "router_isis.authentication.mode.sha.level_1") | Boolean |  |  |  | Configure authentication at level-1. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "router_isis.authentication.mode.sha.level_2") | Boolean |  |  |  | Configure authentication at level-2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "router_isis.authentication.mode.sha.rx_disabled") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.authentication.mode.sha.rx_disabled.enabled") | Boolean |  |  |  | Disable authentication on receive side at level-1 and level-2 both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "router_isis.authentication.mode.sha.rx_disabled.level_1") | Boolean |  |  |  | Disable authentication on receive side at level-1. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "router_isis.authentication.mode.sha.rx_disabled.level_2") | Boolean |  |  |  | Disable authentication on receive side at level-2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text</samp>](## "router_isis.authentication.mode.text") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.authentication.mode.text.enabled") | Boolean |  |  |  | Configure authentication at level-1 and level-2 both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "router_isis.authentication.mode.text.level_1") | Boolean |  |  |  | Configure authentication at level-1. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "router_isis.authentication.mode.text.level_2") | Boolean |  |  |  | Configure authentication at level-2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "router_isis.authentication.mode.text.rx_disabled") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.authentication.mode.text.rx_disabled.enabled") | Boolean |  |  |  | Disable authentication on receive side at level-1 and level-2 both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "router_isis.authentication.mode.text.rx_disabled.level_1") | Boolean |  |  |  | Disable authentication on receive side at level-1. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "router_isis.authentication.mode.text.rx_disabled.level_2") | Boolean |  |  |  | Disable authentication on receive side at level-2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "router_isis.authentication.mode.shared_secret") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "router_isis.authentication.mode.shared_secret.profile") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "router_isis.authentication.mode.shared_secret.algorithm") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.authentication.mode.shared_secret.enabled") | Boolean |  |  |  | Configure authentication at level-1 and level-2 both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "router_isis.authentication.mode.shared_secret.level_1") | Boolean |  |  |  | Configure authentication at level-1. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "router_isis.authentication.mode.shared_secret.level_2") | Boolean |  |  |  | Configure authentication at level-2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "router_isis.authentication.mode.shared_secret.rx_disabled") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.authentication.mode.shared_secret.rx_disabled.enabled") | Boolean |  |  |  | Disable authentication on receive side at level-1 and level-2 both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "router_isis.authentication.mode.shared_secret.rx_disabled.level_1") | Boolean |  |  |  | Disable authentication on receive side at level-1. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "router_isis.authentication.mode.shared_secret.rx_disabled.level_2") | Boolean |  |  |  | Disable authentication on receive side at level-2. |
     | [<samp>&nbsp;&nbsp;advertise</samp>](## "router_isis.advertise") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;passive_only</samp>](## "router_isis.advertise.passive_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;address_family</samp>](## "router_isis.address_family") | List, items: String |  |  |  |  |
@@ -108,6 +158,112 @@
 
             # Number of seconds
             timeout: <int>
+      authentication:
+        key_id:
+
+          # Configure authentication keyid.
+          id: <int; 0-65535>
+          algorithm: <str; "sha-1" | "sha-224" | "sha-256" | "sha-384" | "sha-512">
+
+          # Configure authentication key.
+          key: <str; "0" | "7" | "8a">
+          password: <str>
+          rfc_5310:
+
+            # Configure authentication key.
+            key: <str; "0" | "7" | "8a">
+            password: <str>
+            enabled: <bool>
+            level_1: <bool>
+            level_2: <bool>
+
+        # Configure authentication key.
+        key: <str; "0" | "7" | "8a">
+        password: <str>
+        mode:
+          md5:
+
+            # Configure authentication at level-1 and level-2 both.
+            enabled: <bool>
+
+            # Configure authentication at level-1.
+            level_1: <bool>
+
+            # Configure authentication at level-2.
+            level_2: <bool>
+            rx_disabled:
+
+              # Disable authentication on receive side at level-1 and level-2 both.
+              enabled: <bool>
+
+              # Disable authentication on receive side at level-1.
+              level_1: <bool>
+
+              # Disable authentication on receive side at level-2.
+              level_2: <bool>
+          sha:
+            key_id: <int; 0-6553>
+
+            # Configure authentication at level-1 and level-2 both.
+            enabled: <bool>
+
+            # Configure authentication at level-1.
+            level_1: <bool>
+
+            # Configure authentication at level-2.
+            level_2: <bool>
+            rx_disabled:
+
+              # Disable authentication on receive side at level-1 and level-2 both.
+              enabled: <bool>
+
+              # Disable authentication on receive side at level-1.
+              level_1: <bool>
+
+              # Disable authentication on receive side at level-2.
+              level_2: <bool>
+          text:
+
+            # Configure authentication at level-1 and level-2 both.
+            enabled: <bool>
+
+            # Configure authentication at level-1.
+            level_1: <bool>
+
+            # Configure authentication at level-2.
+            level_2: <bool>
+            rx_disabled:
+
+              # Disable authentication on receive side at level-1 and level-2 both.
+              enabled: <bool>
+
+              # Disable authentication on receive side at level-1.
+              level_1: <bool>
+
+              # Disable authentication on receive side at level-2.
+              level_2: <bool>
+          shared_secret:
+            profile: <str>
+            algorithm: <str>
+
+            # Configure authentication at level-1 and level-2 both.
+            enabled: <bool>
+
+            # Configure authentication at level-1.
+            level_1: <bool>
+
+            # Configure authentication at level-2.
+            level_2: <bool>
+            rx_disabled:
+
+              # Disable authentication on receive side at level-1 and level-2 both.
+              enabled: <bool>
+
+              # Disable authentication on receive side at level-1.
+              level_1: <bool>
+
+              # Disable authentication on receive side at level-2.
+              level_2: <bool>
       advertise:
         passive_only: <bool>
       address_family:
