@@ -20,6 +20,8 @@ keys:
       keys:
         platform:
           type: str
+          convert_types:
+            - int
         speeds:
           type: list
           primary_key: speed
