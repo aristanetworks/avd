@@ -122,6 +122,23 @@ keys:
           bfd:
             type: bool
             default: True
+          bfd_timers:
+            type: dict
+            description: |-
+                Specify the BFD timers to override the default values.
+                It is recommended to keep BFD total timeout longer than the DPS timeout.
+                The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds.
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/keys/bfd_timers"
+            keys:
+              interval:
+                type: int
+                default: 1000
+              min_rx:
+                type: int
+                default: 1000
+              multiplier:
+                type: int
+                default: 10
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
@@ -164,6 +181,23 @@ keys:
           bfd:
             type: bool
             default: False
+          bfd_timers:
+            type: dict
+            description: |-
+                Specify the BFD timers to override the default values.
+                It is recommended to keep BFD total timeout longer than the DPS timeout.
+                The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds.
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/keys/bfd_timers"
+            keys:
+              interval:
+                type: int
+                default: 1000
+              min_rx:
+                type: int
+                default: 1000
+              multiplier:
+                type: int
+                default: 10
           listen_range_prefixes:
             type: list
             description: |-

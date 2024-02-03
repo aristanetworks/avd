@@ -13,6 +13,12 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, g
 
 from .utils import UtilsMixin
 
+# Assigning known default bfd timers for specific peer groups.
+DEFAULT_BFD_TIMERS_PER_PEER_GROUP = {
+    "WAN_OVERLAY_PEERS": {"interval": 1000, "min_rx": 1000, "multiplier": 10},
+    "RR_OVERLAY_PEERS": {"interval": 1000, "min_rx": 1000, "multiplier": 10},
+}
+
 
 class RouterBgpMixin(UtilsMixin):
     """
@@ -164,6 +170,15 @@ class RouterBgpMixin(UtilsMixin):
             )
 
         return peer_groups
+
+    def _generate_bfd_timers(self, peer_group) -> dict:
+        bfd_timers = {}
+        if self.shared_utils.bgp_peer_groups[peer_group]["bfd"]:
+            # assigning default value here.
+            bfd_timers = DEFAULT_BFD_TIMERS_PER_PEER_GROUP.get(peer_group)
+            if "bfd_timers" in self.shared_utils.bgp_peer_groups[peer_group]:
+                bfd_timers = self.shared_utils.bgp_peer_groups[peer_group]["bfd_timers"]
+        return bfd_timers
 
     def _address_family_ipv4(self) -> dict:
         """

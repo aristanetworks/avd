@@ -2242,6 +2242,45 @@
               "default": true,
               "title": "BFD"
             },
+            "bfd_timers": {
+              "type": "object",
+              "description": "Specify the BFD timers to override the default values.\nIt is recommended to keep BFD total timeout longer than the DPS timeout.\nThe Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds.",
+              "properties": {
+                "interval": {
+                  "type": "integer",
+                  "default": 1000,
+                  "minimum": 50,
+                  "maximum": 60000,
+                  "description": "Interval in milliseconds.",
+                  "title": "Interval"
+                },
+                "min_rx": {
+                  "type": "integer",
+                  "default": 1000,
+                  "minimum": 50,
+                  "maximum": 60000,
+                  "description": "Rate in milliseconds.",
+                  "title": "Min RX"
+                },
+                "multiplier": {
+                  "type": "integer",
+                  "default": 10,
+                  "minimum": 3,
+                  "maximum": 50,
+                  "title": "Multiplier"
+                }
+              },
+              "required": [
+                "interval",
+                "min_rx",
+                "multiplier"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BFD Timers"
+            },
             "structured_config": {
               "type": "object",
               "description": "Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.",
@@ -2934,6 +2973,45 @@
               "type": "boolean",
               "default": false,
               "title": "BFD"
+            },
+            "bfd_timers": {
+              "type": "object",
+              "description": "Specify the BFD timers to override the default values.\nIt is recommended to keep BFD total timeout longer than the DPS timeout.\nThe Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds.",
+              "properties": {
+                "interval": {
+                  "type": "integer",
+                  "default": 1000,
+                  "minimum": 50,
+                  "maximum": 60000,
+                  "description": "Interval in milliseconds.",
+                  "title": "Interval"
+                },
+                "min_rx": {
+                  "type": "integer",
+                  "default": 1000,
+                  "minimum": 50,
+                  "maximum": 60000,
+                  "description": "Rate in milliseconds.",
+                  "title": "Min RX"
+                },
+                "multiplier": {
+                  "type": "integer",
+                  "default": 10,
+                  "minimum": 3,
+                  "maximum": 50,
+                  "title": "Multiplier"
+                }
+              },
+              "required": [
+                "interval",
+                "min_rx",
+                "multiplier"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BFD Timers"
             },
             "listen_range_prefixes": {
               "type": "array",
