@@ -5095,6 +5095,24 @@
         "sampled": {
           "type": "object",
           "properties": {
+            "encapsulation": {
+              "type": "object",
+              "properties": {
+                "ipv4_ipv6": {
+                  "type": "boolean",
+                  "title": "IPv4 IPv6"
+                },
+                "mpls": {
+                  "type": "boolean",
+                  "title": "MPLS"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Encapsulation"
+            },
             "sample": {
               "type": "integer",
               "minimum": 1,
