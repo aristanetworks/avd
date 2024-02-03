@@ -126,6 +126,28 @@ ethernet_interfaces:
     id: 12
     mode: active
   speed: forced 40gfull
+- name: Ethernet14
+  type: port-channel-member
+  peer: SITE2-LER1
+  peer_interface: Ethernet13
+  peer_type: pe
+  description: P2P_LINK_TO_SITE2-LER1_Ethernet13
+  shutdown: false
+  channel_group:
+    id: 110
+    mode: active
+  speed: forced 40gfull
+- name: Ethernet15
+  type: port-channel-member
+  peer: SITE2-LER1
+  peer_interface: Ethernet14
+  peer_type: pe
+  description: P2P_LINK_TO_SITE2-LER1_Ethernet14
+  shutdown: false
+  channel_group:
+    id: 110
+    mode: active
+  speed: forced 40gfull
 port_channel_interfaces:
 - name: Port-Channel12
   peer: SITE2-LER1
@@ -139,6 +161,31 @@ port_channel_interfaces:
 
     '
   ip_address: 100.64.49.1/30
+  ipv6_enable: true
+  isis_enable: CUSTOM_NAME
+  isis_metric: 60
+  isis_network_point_to_point: true
+  isis_hello_padding: false
+  isis_circuit_type: level-2
+  isis_authentication_mode: md5
+  isis_authentication_key: asdadjiwtelogkkdng
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+- name: Port-Channel110
+  peer: SITE2-LER1
+  peer_interface: Port-Channel13
+  peer_type: pe
+  description: P2P_LINK_TO_SITE2-LER1_Port-Channel13
+  type: routed
+  shutdown: false
+  mtu: 9178
+  eos_cli: 'link-debounce time 1600
+
+    '
+  ip_address: 100.64.49.5/30
   ipv6_enable: true
   isis_enable: CUSTOM_NAME
   isis_metric: 60

@@ -168,7 +168,9 @@ class UtilsMixin:
                 required=True,
                 var_name=f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces",
             )["interfaces"]
-            pc_id = int("".join(re.findall(r"\d", member_interfaces[0])))
+            pc_id = get_item(node_child_interfaces, "node", self.shared_utils.hostname, default={}).get("channel_id")
+            if not pc_id:
+                pc_id = int("".join(re.findall(r"\d", member_interfaces[0])))
             peer_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
             data.update(
                 {

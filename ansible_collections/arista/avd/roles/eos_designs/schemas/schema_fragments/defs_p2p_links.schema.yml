@@ -149,6 +149,11 @@ $defs:
                     description: List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].
                     items:
                       type: str
+                  channel_id:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.

@@ -49,6 +49,8 @@
 | pe | SITE2-LER1 | Ethernet1 | p | SITE2-LSR1 | Ethernet1 |
 | pe | SITE2-LER1 | Ethernet11 | p | SITE2-LSR2 | Ethernet12 |
 | pe | SITE2-LER1 | Ethernet12 | p | SITE2-LSR2 | Ethernet13 |
+| pe | SITE2-LER1 | Ethernet13 | p | SITE2-LSR2 | Ethernet14 |
+| pe | SITE2-LER1 | Ethernet14 | p | SITE2-LSR2 | Ethernet15 |
 | p | SITE2-LSR1 | Ethernet4 | rr | SITE2-RR1 | Ethernet4 |
 
 ## Fabric IP Allocation
