@@ -464,7 +464,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.10
       - uses: actions/checkout@v3
       - name: Install requirements
         # Install the specific version of galaxy-importer used on galaxy.ansible.com
