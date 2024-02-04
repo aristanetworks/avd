@@ -472,7 +472,7 @@ jobs:
         # so we let the galaxy-importer version resolve remaining requirements.
         # Also install deepmerge and jsonschema for use in rebuilding schemas.
         run: |
-          pip install "galaxy-importer==0.4.19" "jsonschema>=4.5.1,<4.18" "deepmerge>=1.1.0"
+          pip install "galaxy-importer==0.4.19" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: 'Build ansible package'
         run: make collection-build
       - name: 'Run galaxy-importer checks'
