@@ -97,14 +97,19 @@ def _compile_schemas() -> dict:
 
         resolved_schema_store[schema_name] = resolved_schema
 
-        # Update pickle file with binary version of the completely resolved schema
-        with pickle_file.open("wb") as stream:
-            pickle_dump(resolved_schema, stream, HIGHEST_PROTOCOL)
+        # Update pickle file with binary version of the completely resolved schema.
+        try:
+            with pickle_file.open("wb") as stream:
+                pickle_dump(resolved_schema, stream, HIGHEST_PROTOCOL)
 
-        # Update the .sha1 file with the new hash of the yaml schema file.
-        schema_file = DEFAULT_SCHEMAS[schema_name]
-        new_hash = sha1(schema_file.read_bytes(), usedforsecurity=False).hexdigest()
-        schema_file.with_suffix(".sha1").write_text(new_hash, encoding="UTF-8")
+            # Update the .sha1 file with the new hash of the yaml schema file.
+            schema_file = DEFAULT_SCHEMAS[schema_name]
+            new_hash = sha1(schema_file.read_bytes(), usedforsecurity=False).hexdigest()
+            schema_file.with_suffix(".sha1").write_text(new_hash, encoding="UTF-8")
+        except PermissionError:
+            # Ignoring PermissionError so we can operate in read-only environments
+            # (like "ansible-test units" containers).
+            pass
 
     return resolved_schema_store
 
