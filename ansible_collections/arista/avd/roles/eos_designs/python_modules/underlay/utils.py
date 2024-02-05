@@ -5,10 +5,13 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 
 class UtilsMixin:
@@ -83,6 +86,7 @@ class UtilsMixin:
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
+                        "spanning_tree_portfast": get(uplink, "peer_spanning_tree_portfast"),
                         "structured_config": get(uplink, "structured_config"),
                     }
                     if (subinterfaces := get(uplink, "subinterfaces")) is not None:
@@ -184,3 +188,108 @@ class UtilsMixin:
             interface["flow_tracker"] = {"hardware": "WAN-FLOW-TRACKER"}
 
         return strip_empties_from_dict(interface)
+
+    def _get_l3_uplink_with_l2_as_subint(self, link: dict) -> (dict, list[dict]):
+        """
+        Return a tuple with main uplink interface, list of subinterfaces representing each SVI.
+        """
+        vlans = [int(vlan) for vlan in range_expand(link["vlans"])]
+
+        # Main interface
+        # Routed interface with no config unless there is an SVI matching the native-vlan, then it will contain the config for that SVI
+
+        interfaces = []
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                for svi in vrf["svis"]:
+                    svi_id = int(svi["id"])
+                    # Skip any vlans not part of the link
+                    if svi_id not in vlans:
+                        continue
+
+                    interfaces.append(self._get_l2_as_subint(link, svi, vrf))
+
+        # If we have the main interface covered, we can just exclude it from the list and return as main interface.
+        # Otherwise we return an almost empty dict as the main interface since it was already covered by the calling function.
+        main_interface = get_item(interfaces, "name", link["interface"], default={"type": "routed", "mtu": self.shared_utils.p2p_uplinks_mtu})
+        main_interface.pop("description", None)
+
+        if (mtu := main_interface.get("mtu", 1500)) != self.shared_utils.p2p_uplinks_mtu:
+            raise AristaAvdError(
+                f"MTU '{self.shared_utils.p2p_uplinks_mtu}' set for 'p2p_uplinks_mtu' conflicts with MTU '{mtu}' "
+                f"set on SVI for uplink_native_vlan '{link['native_vlan']}'."
+                "Either adjust the MTU on the SVI or p2p_uplinks_mtu or change/remove the uplink_native_vlan setting."
+            )
+        return main_interface, [interface for interface in interfaces if interface["name"] != link["interface"]]
+
+    def _get_l2_as_subint(self, link: dict, svi: dict, vrf: dict) -> dict:
+        """
+        Return structured config for one subinterface representing the given SVI.
+        Only supports static IPs or VRRP.
+        """
+        svi_id = int(svi["id"])
+        is_native = svi_id == link.get("native_vlan")
+        interface_name = link["interface"] if is_native else f"{link['interface']}.{svi_id}"
+        subinterface = {
+            "name": interface_name,
+            "peer": link["peer"],
+            "peer_interface": f"{link['peer_interface']} VLAN {svi_id}",
+            "peer_type": link["peer_type"],
+            "description": default(svi.get("description"), svi["name"]),
+            "shutdown": not (svi.get("enabled", False)),
+            "type": "routed" if is_native else "l3dot1q",
+            "encapsulation_dot1q_vlan": None if is_native else svi_id,
+            "vrf": vrf["name"] if vrf["name"] != "default" else None,
+            "ip_address": svi.get("ip_address"),
+            "ipv6_address": svi.get("ipv6_address"),
+            "ipv6_enable": svi.get("ipv6_enable"),
+            "mtu": svi.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
+            "eos_cli": svi.get("raw_eos_cli"),
+            "struct_cfg": svi.get("structured_config"),
+        }
+        if (mtu := subinterface["mtu"]) is not None and subinterface["mtu"] > self.shared_utils.p2p_uplinks_mtu:
+            raise AristaAvdError(
+                f"MTU '{self.shared_utils.p2p_uplinks_mtu}' set for 'p2p_uplinks_mtu' must be larger or equal to MTU '{mtu}' "
+                f"set on the SVI '{svi_id}'."
+                "Either adjust the MTU on the SVI or p2p_uplinks_mtu."
+            )
+
+        # Only set VRRPv4 if ip_address is set
+        if subinterface["ip_address"] is not None:
+            # TODO in separate PR adding VRRP support for SVIs
+            pass
+
+        # Only set VRRPv6 if ipv6_address is set
+        if subinterface["ipv6_address"] is not None:
+            # TODO in separate PR adding VRRP support for SVIs
+            pass
+
+        svi_ip_helpers: list[dict] = convert_dicts(default(svi.get("ip_helpers"), vrf.get("ip_helpers"), []), "ip_helper")
+        if svi_ip_helpers:
+            subinterface["ip_helpers"] = [
+                {"ip_helper": svi_ip_helper["ip_helper"], "source_interface": svi_ip_helper.get("source_interface"), "vrf": svi_ip_helper.get("source_vrf")}
+                for svi_ip_helper in svi_ip_helpers
+            ]
+
+        if get(svi, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
+            subinterface.update(
+                {
+                    "ospf_area": svi["ospf"].get("area", "0"),
+                    "ospf_network_point_to_point": svi["ospf"].get("point_to_point", False),
+                    "ospf_cost": svi["ospf"].get("cost"),
+                }
+            )
+            ospf_authentication = svi["ospf"].get("authentication")
+            if ospf_authentication == "simple" and (ospf_simple_auth_key := svi["ospf"].get("simple_auth_key")) is not None:
+                subinterface.update({"ospf_authentication": ospf_authentication, "ospf_authentication_key": ospf_simple_auth_key})
+            elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := svi["ospf"].get("message_digest_keys")) is not None:
+                ospf_keys = []
+                for ospf_key in ospf_message_digest_keys:
+                    if not ("id" in ospf_key and "key" in ospf_key):
+                        continue
+
+                    ospf_keys.append({"id": ospf_key["id"], "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]})
+                if ospf_keys:
+                    subinterface.update({"ospf_authentication": ospf_authentication, "ospf_message_digest_keys": ospf_keys})
+
+        return strip_empties_from_dict(subinterface)

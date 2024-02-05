@@ -188,6 +188,15 @@ class UplinksMixin:
             if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
                 raise AristaAvdError("'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'p2p-vrfs' as 'uplink_type'.")
             get_uplink = self._get_p2p_vrfs_uplink
+        elif self.shared_utils.uplink_type == "lan":
+            if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
+                raise AristaAvdError("'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'lan' as 'uplink_type'.")
+            if len(self._uplink_interfaces) > 1:
+                raise AristaAvdError(
+                    "'uplink_type: lan' only supports a single uplink interface. "
+                    f"Got {self._uplink_interfaces}. Consider 'uplink_type: lan-port-channel' if applicable."
+                )
+            get_uplink = self._get_l2_uplink
         else:
             raise AristaAvdError(f"Invalid uplink_type '{self.shared_utils.uplink_type}'.")
 
@@ -212,7 +221,7 @@ class UplinksMixin:
 
     def _get_p2p_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
         """
-        Return a single uplink dictionnary for uplink_type p2p
+        Return a single uplink dictionary for uplink_type p2p
         """
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
         uplink = {
@@ -260,7 +269,37 @@ class UplinksMixin:
 
     def _get_port_channel_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
         """
-        Return a single uplink dictionnary for uplink_type port-channel
+        Return a single uplink dictionary for uplink_type port-channel
+        """
+        uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
+
+        # Reusing get_l2_uplink
+        uplink = self._get_l2_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)
+
+        if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
+            # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
+            uplink["channel_description"] = uplink_switch_facts.shared_utils.group
+
+        # Used to determine whether or not port-channel should have an mlag id configure on the uplink_switch
+        unique_uplink_switches = set(self.shared_utils.uplink_switches)
+        if self.shared_utils.mlag is True:
+            # Override the peer's description on port-channel to be our group name if we are mlag pair #}
+            uplink["peer_channel_description"] = self.shared_utils.group
+
+            # Updating unique_uplink_switches with our mlag peer's uplink switches
+            unique_uplink_switches.update(self.shared_utils.mlag_peer_facts.shared_utils.uplink_switches)
+
+        # Only enable mlag for this port-channel on the uplink switch if there are multiple unique uplink switches
+        uplink["peer_mlag"] = len(unique_uplink_switches) > 1
+
+        uplink["channel_group_id"] = str(self._uplink_port_channel_id)
+        uplink["peer_channel_group_id"] = str(self._uplink_switch_port_channel_id)
+
+        return uplink
+
+    def _get_l2_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
+        """
+        Return a single uplink dictionary for an L2 uplink. Reused for both uplink_type port-channel, lan and lan-port-channel.
         """
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
         uplink = {
@@ -281,25 +320,6 @@ class UplinksMixin:
             uplink["ptp"] = self.shared_utils.uplink_ptp
         elif self.shared_utils.ptp_enabled:
             uplink["ptp"] = {"enable": True}
-
-        if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
-            # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
-            uplink["channel_description"] = uplink_switch_facts.shared_utils.group
-
-        # Used to determine whether or not port-channel should have an mlag id configure on the uplink_switch
-        unique_uplink_switches = set(self.shared_utils.uplink_switches)
-        if self.shared_utils.mlag is True:
-            # Override the peer's description on port-channel to be our group name if we are mlag pair #}
-            uplink["peer_channel_description"] = self.shared_utils.group
-
-            # Updating unique_uplink_switches with our mlag peer's uplink switches
-            unique_uplink_switches.update(self.shared_utils.mlag_peer_facts.shared_utils.uplink_switches)
-
-        # Only enable mlag for this port-channel on the uplink switch if there are multiple unique uplink switches
-        uplink["peer_mlag"] = len(unique_uplink_switches) > 1
-
-        uplink["channel_group_id"] = str(self._uplink_port_channel_id)
-        uplink["peer_channel_group_id"] = str(self._uplink_switch_port_channel_id)
 
         # Remove vlans if upstream switch does not have them #}
         if self.shared_utils.enable_trunk_groups:
@@ -326,6 +346,11 @@ class UplinksMixin:
 
         if self.shared_utils.link_tracking_groups is not None:
             uplink["link_tracking_groups"] = [{"name": lt_group["name"], "direction": "upstream"} for lt_group in self.shared_utils.link_tracking_groups]
+
+        if not self.shared_utils.network_services_l2:
+            # This child device does not support VLANs, so we tell the peer to enable portfast
+            uplink["peer_spanning_tree_portfast"] = "edge"
+
         if self.shared_utils.uplink_structured_config is not None:
             uplink["structured_config"] = self.shared_utils.uplink_structured_config
 
@@ -333,7 +358,7 @@ class UplinksMixin:
 
     def _get_p2p_vrfs_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
         """
-        Return a single uplink dictionnary for uplink_type p2p-vrfs
+        Return a single uplink dictionary for uplink_type p2p-vrfs
         """
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
 

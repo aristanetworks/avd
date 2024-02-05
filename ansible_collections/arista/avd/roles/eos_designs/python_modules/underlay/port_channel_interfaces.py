@@ -28,7 +28,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         port_channel_interfaces = []
         port_channel_list = []
         for link in self._underlay_links:
-            if link["type"] != "underlay_l2":
+            if link["type"] != "underlay_l2" or link.get("channel_group_id") is None:
                 continue
 
             if (channel_group_id := link.get("channel_group_id")) in port_channel_list:
@@ -56,6 +56,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "link_tracking_groups": link.get("link_tracking_groups"),
                 "native_vlan": link.get("native_vlan"),
                 "sflow": link.get("sflow"),
+                "spanning_tree_portfast": link.get("spanning_tree_portfast"),
             }
 
             if (trunk_groups := link.get("trunk_groups")) is not None:

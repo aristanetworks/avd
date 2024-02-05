@@ -1,0 +1,49 @@
+hostname: uplink_lan_l2leaf
+is_deployed: true
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: uplink_lan_wan_edge1
+  peer_interface: Ethernet2
+  peer_type: wan_edge
+  description: UPLINK_LAN_WAN_EDGE1_Ethernet2
+  shutdown: false
+  type: switched
+  vlans: 10,100
+  mode: trunk
+  native_vlan: 10
+  spanning_tree_portfast: edge
+- name: Ethernet2
+  peer: uplink_lan_wan_edge2
+  peer_interface: Ethernet2
+  peer_type: wan_edge
+  description: UPLINK_LAN_WAN_EDGE2_Ethernet2
+  shutdown: false
+  type: switched
+  vlans: 10,100
+  mode: trunk
+  spanning_tree_portfast: edge
+vlans:
+- id: 10
+  name: VLAN10_NATIVE
+  tenant: TEST
+- id: 100
+  name: VLAN100
+  tenant: TEST
+- id: 102
+  name: VLAN102
+  tenant: TEST
+ip_igmp_snooping:
+  globally_enabled: true

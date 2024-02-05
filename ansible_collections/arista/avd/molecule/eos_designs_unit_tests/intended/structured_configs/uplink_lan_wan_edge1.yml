@@ -1,0 +1,147 @@
+hostname: uplink_lan_wan_edge1
+is_deployed: true
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF1
+  tenant: TEST
+  ip_routing: true
+  ipv6_routing: true
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet2
+  peer: uplink_lan_l2leaf
+  peer_interface: Ethernet1 VLAN 10
+  peer_type: l2leaf
+  description: UPLINK_LAN_L2LEAF_Ethernet1
+  shutdown: false
+  type: routed
+  vrf: VRF1
+  ip_address: 10.0.10.1/24
+  mtu: 9214
+- name: Ethernet2.100
+  peer: uplink_lan_l2leaf
+  peer_interface: Ethernet1 VLAN 100
+  peer_type: l2leaf
+  description: My vlan 100
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 100
+  vrf: VRF1
+  ip_address: 10.0.100.1/24
+  ipv6_address: cafe::cafe/64
+  ipv6_enable: true
+  eos_cli: comment yo
+  _custom_key: custom_value
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 192.168.1.1/32
+router_bgp:
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  peer_groups: []
+  address_family_evpn:
+    peer_groups: []
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.1.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+ip_security:
+  ike_policies:
+  - name: CP-IKE-POLICY
+    local_id: 192.168.2.1
+  sa_policies:
+  - name: CP-SA-POLICY
+  profiles:
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
+    connection: start
+    shared_key: test
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  key_controller:
+    profile: CP-PROFILE
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
+  load_balance_policies:
+  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+  policies:
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    rules:
+    - id: 10
+      application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      load_balance: LB-CONTROL-PLANE-PROFILE
+    default_match:
+      load_balance: LB-DEFAULT-AVT-POLICY-DEFAULT
+  vrfs:
+  - name: default
+    path_selection_policy: DEFAULT-AVT-POLICY-WITH-CP
+application_traffic_recognition:
+  application_profiles:
+  - name: CONTROL-PLANE-APPLICATION-PROFILE
+    applications:
+    - name: CONTROL-PLANE-APPLICATION
+  applications:
+    ipv4_applications:
+    - name: CONTROL-PLANE-APPLICATION
+      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+  field_sets:
+    ipv4_prefixes:
+    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  ip_address: 192.168.2.1/32
+vxlan_interface:
+  Vxlan1:
+    description: uplink_lan_wan_edge1_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Dps1

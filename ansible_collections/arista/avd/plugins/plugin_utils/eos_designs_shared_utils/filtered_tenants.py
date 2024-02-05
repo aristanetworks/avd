@@ -333,7 +333,7 @@ class FilteredTenantsMixin:
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
         """
-        if not self.network_services_l2:
+        if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return []
 
         svis: list[dict] = natural_sort(convert_dicts(vrf.get("svis", []), "id"), "id")

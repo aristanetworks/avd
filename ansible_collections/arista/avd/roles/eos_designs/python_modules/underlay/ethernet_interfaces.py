@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
@@ -115,27 +114,35 @@ class EthernetInterfacesMixin(UtilsMixin):
 
             # L2 interface
             elif link["type"] == "underlay_l2":
-                if (channel_group_id := link.get("channel_group_id")) is not None:
-                    ethernet_interface.update(
-                        {
-                            "type": "port-channel-member",
-                            "channel_group": {
-                                "id": int(channel_group_id),
-                                "mode": "active",
-                            },
-                        }
-                    )
+                if self.shared_utils.network_services_l2_as_subint:
+                    # Render L3 subinterfaces for each SVI.
+                    # The peer will just render a regular trunk.
+                    main_interface, ethernet_subinterfaces = self._get_l3_uplink_with_l2_as_subint(link)
+                    ethernet_interface.update(main_interface)
+
                 else:
-                    vlans = get(link, "vlans", default=[])
-                    ethernet_interface.update(
-                        {
-                            "type": "switched",
-                            "vlans": list_compress(vlans),
-                            "native_vlan": link.get("native_vlan"),
-                            "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
-                            "link_tracking_groups": link.get("link_tracking_groups"),
-                        }
-                    )
+                    if (channel_group_id := link.get("channel_group_id")) is not None:
+                        ethernet_interface.update(
+                            {
+                                "type": "port-channel-member",
+                                "channel_group": {
+                                    "id": int(channel_group_id),
+                                    "mode": "active",
+                                },
+                            }
+                        )
+                    else:
+                        ethernet_interface.update(
+                            {
+                                "type": "switched",
+                                "vlans": link["vlans"],
+                                "mode": "trunk",
+                                "native_vlan": link.get("native_vlan"),
+                                "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
+                                "link_tracking_groups": link.get("link_tracking_groups"),
+                                "spanning_tree_portfast": link.get("spanning_tree_portfast"),
+                            }
+                        )
 
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
@@ -180,6 +187,17 @@ class EthernetInterfacesMixin(UtilsMixin):
                         ethernet_subinterface.update({"ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}"}),
 
                     ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
+                    append_if_not_duplicate(
+                        list_of_dicts=ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=ethernet_subinterface,
+                        context="Ethernet sub-interfaces defined for underlay",
+                        context_keys=["name", "peer", "peer_interface"],
+                    )
+
+            # Adding subinterfaces for each SVI after the main interface.
+            if link["type"] == "underlay_l2" and self.shared_utils.network_services_l2_as_subint:
+                for ethernet_subinterface in ethernet_subinterfaces:
                     append_if_not_duplicate(
                         list_of_dicts=ethernet_interfaces,
                         primary_key="name",
