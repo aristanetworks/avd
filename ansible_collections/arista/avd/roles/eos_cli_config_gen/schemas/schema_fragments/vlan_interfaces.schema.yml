@@ -19,6 +19,14 @@ keys:
           description: VLAN interface name like "Vlan123"
         description:
           type: str
+        logging:
+          type: dict
+          keys:
+            event:
+              type: dict
+              keys:
+                link_status:
+                  type: bool
         shutdown:
           type: bool
         vrf:

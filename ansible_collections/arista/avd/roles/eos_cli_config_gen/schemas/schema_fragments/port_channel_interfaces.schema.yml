@@ -26,6 +26,8 @@ keys:
               keys:
                 link_status:
                   type: bool
+                storm_control_discards:
+                  type: bool
         shutdown:
           type: bool
         l2_mtu:

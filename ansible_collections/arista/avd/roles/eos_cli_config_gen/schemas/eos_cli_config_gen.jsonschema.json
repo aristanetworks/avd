@@ -11912,6 +11912,10 @@
                   "link_status": {
                     "type": "boolean",
                     "title": "Link Status"
+                  },
+                  "storm_control_discards": {
+                    "type": "boolean",
+                    "title": "Storm Control Discards"
                   }
                 },
                 "additionalProperties": false,
@@ -24935,6 +24939,30 @@
           "description": {
             "type": "string",
             "title": "Description"
+          },
+          "logging": {
+            "type": "object",
+            "properties": {
+              "event": {
+                "type": "object",
+                "properties": {
+                  "link_status": {
+                    "type": "boolean",
+                    "title": "Link Status"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Event"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Logging"
           },
           "shutdown": {
             "type": "boolean",
