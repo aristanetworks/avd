@@ -15,7 +15,22 @@ from .default_schemas import DEFAULT_PICKLED_SCHEMAS, DEFAULT_SCHEMAS
 
 
 @lru_cache
-def create_store(load_from_yaml=False, force_rebuild=False):
+def create_store(load_from_yaml=False, force_rebuild=False) -> dict[str, dict]:
+    """
+    Create and return a schema store which is a dict of all our schemas like
+    {
+        "avd_meta_schema": {...avd meta schema as dict...},
+        "eos_cli_config_gen": {...schema as dict...},
+        "eos_designs": {...schema as dict...},
+    }
+    The function is cached to save time on multiple calls.
+
+    If load_from_yaml is True it will read and return unresolved schemas from yml/json files.
+
+    If force_rebuild is True or if this is the first time running AVD after changing schemas/upgrade/install
+    the schema yml/json files will be read, fully resolved, saved as pickle to a file and returned in the
+    store dict.
+    """
     store = {}
 
     # Load from YAML if set. This is used by the tool that creates the pickle.
@@ -42,14 +57,14 @@ def _should_recompile_schemas() -> bool:
     for id, pickle_file in DEFAULT_PICKLED_SCHEMAS.items():
         if not pickle_file.exists():
             return True
-    # Check if any hash file is missing
+
+    # Check if any hash file is missing and if any stored hash does not match the hash of the schema file
     for id, schema_file in DEFAULT_SCHEMAS.items():
-        if not schema_file.with_suffix(".sha1").exists():
+        hash_file = schema_file.with_suffix(".sha1")
+        if not hash_file.exists():
             return True
 
-    # Check if any hash does not match the has of the schema file
-    for id, schema_file in DEFAULT_SCHEMAS.items():
-        existing_hash = schema_file.with_suffix(".sha1").read_text(encoding="UTF-8")
+        existing_hash = hash_file.with_suffix(".sha1").read_text(encoding="UTF-8")
         new_hash = sha1(schema_file.read_bytes(), usedforsecurity=False).hexdigest()
         if existing_hash != new_hash:
             return True
@@ -74,28 +89,20 @@ def _compile_schemas() -> dict:
     create a temporary "store",
     resolve all $refs and save the resulting schemas as pickles
     """
-    resolved_schema_store = {}
-
-    temp_schema_store = _create_store_from_yaml()
+    schema_store = _create_store_from_yaml()
 
     # We rely on eos_cli_config_gen being before eos_designs,
     # so anything in eos_cli_config_gen can be resolved and $def popped before resolving from eos_designs.
     for schema_name, pickle_file in DEFAULT_PICKLED_SCHEMAS.items():
         if schema_name == "avd_meta_schema":
             # Do not resolve $ref in the meta schema.
-            resolved_schema = temp_schema_store[schema_name]
+            resolved_schema = schema_store[schema_name]
         else:
-            # Copying so we can pop below.
-            resolved_schema = _resolve_schema(temp_schema_store[schema_name].copy(), temp_schema_store)
-
-            # Since the schema is now fully resolved we can drop the $defs.
-            resolved_schema.pop("$defs", None)
+            resolved_schema = _resolve_schema(schema_store[schema_name], schema_store)
 
             # Inplace update the schema store with the resolved variant without $def.
             # This is needed so eos_designs will not resolve to a schema with another $ref.
-            temp_schema_store[schema_name] = resolved_schema
-
-        resolved_schema_store[schema_name] = resolved_schema
+            schema_store[schema_name] = resolved_schema
 
         # Update pickle file with binary version of the completely resolved schema.
         try:
@@ -111,7 +118,7 @@ def _compile_schemas() -> dict:
             # (like "ansible-test units" containers).
             pass
 
-    return resolved_schema_store
+    return schema_store
 
 
 def _resolve_schema(schema: dict, store: dict) -> dict:
@@ -126,4 +133,8 @@ def _resolve_schema(schema: dict, store: dict) -> dict:
         if isinstance(resolve_error, Exception):
             # TODO: Raise multiple errors or abstract them
             raise resolve_error
+
+    # Since the schema is now fully resolved we can drop the $defs.
+    resolved_schema.pop("$defs", None)
+
     return resolved_schema
