@@ -180,6 +180,10 @@ class UtilsMixin:
         if ip_address == "dhcp" and l3_interface.get("set_default_route", False):
             interface["dhcp_client_accept_default_route"] = True
 
+        if l3_interface.get("enable_wan_acls", True):
+            interface["access_group_in"] = "PUBLIC_TRANSPORT_IN"
+            interface["access_group_out"] = "PUBLIC_TRANSPORT_OUT"
+
         if self.shared_utils.cv_pathfinder_role:
             interface["flow_tracker"] = {"hardware": "WAN-FLOW-TRACKER"}
 

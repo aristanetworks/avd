@@ -25,6 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_wan_acls</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].enable_wan_acls") | Boolean |  | `True` |  | Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.<br>This can be overriden using the structured_config. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
@@ -47,6 +48,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_wan_acls</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].enable_wan_acls") | Boolean |  | `True` |  | Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.<br>This can be overriden using the structured_config. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>L3 Interfaces currently only use for WAN interfaces. |
@@ -65,6 +67,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_wan_acls</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].enable_wan_acls") | Boolean |  | `True` |  | Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.<br>This can be overriden using the structured_config. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
@@ -85,6 +88,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_wan_acls</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].enable_wan_acls") | Boolean |  | `True` |  | Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.<br>This can be overriden using the structured_config. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>l3_interface_profiles</samp>](## "l3_interface_profiles") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>Profiles to inherit common settings for l3_interfaces defined under the node type key.<br>These profiles will *not* work for `l3_interfaces` defined under `vrfs`. |
@@ -103,6 +107,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "l3_interface_profiles.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "l3_interface_profiles.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "l3_interface_profiles.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enable_wan_acls</samp>](## "l3_interface_profiles.[].enable_wan_acls") | Boolean |  | `True` |  | Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.<br>This can be overriden using the structured_config. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_interface_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_interface_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
 
@@ -170,6 +175,10 @@
 
             # For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
             connected_to_pathfinder: <bool; default=True>
+
+            # Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.
+            # This can be overriden using the structured_config.
+            enable_wan_acls: <bool; default=True>
 
             # EOS CLI rendered directly on the interface in the final EOS configuration.
             raw_eos_cli: <str>
@@ -247,6 +256,10 @@
                   # For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
                   connected_to_pathfinder: <bool; default=True>
 
+                  # Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.
+                  # This can be overriden using the structured_config.
+                  enable_wan_acls: <bool; default=True>
+
                   # EOS CLI rendered directly on the interface in the final EOS configuration.
                   raw_eos_cli: <str>
 
@@ -309,6 +322,10 @@
 
               # For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
               connected_to_pathfinder: <bool; default=True>
+
+              # Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.
+              # This can be overriden using the structured_config.
+              enable_wan_acls: <bool; default=True>
 
               # EOS CLI rendered directly on the interface in the final EOS configuration.
               raw_eos_cli: <str>
@@ -379,6 +396,10 @@
               # For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
               connected_to_pathfinder: <bool; default=True>
 
+              # Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.
+              # This can be overriden using the structured_config.
+              enable_wan_acls: <bool; default=True>
+
               # EOS CLI rendered directly on the interface in the final EOS configuration.
               raw_eos_cli: <str>
 
@@ -442,6 +463,10 @@
 
         # For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
         connected_to_pathfinder: <bool; default=True>
+
+        # Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.
+        # This can be overriden using the structured_config.
+        enable_wan_acls: <bool; default=True>
 
         # EOS CLI rendered directly on the interface in the final EOS configuration.
         raw_eos_cli: <str>

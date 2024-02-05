@@ -81,6 +81,12 @@ $defs:
           default: True
           description: |-
             For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
+        enable_wan_acls:
+          type: bool
+          default: True
+          description: |-
+            Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.
+            This can be overriden using the structured_config.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS configuration.

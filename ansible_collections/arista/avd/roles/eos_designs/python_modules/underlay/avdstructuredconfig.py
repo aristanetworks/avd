@@ -4,6 +4,7 @@
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
 from .ethernet_interfaces import EthernetInterfacesMixin
+from .ip_access_list import IPAccessListsMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
 from .mpls import MplsMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
@@ -21,6 +22,7 @@ from .vlans import VlansMixin
 
 class AvdStructuredConfigUnderlay(
     AvdFacts,
+    IPAccessListsMixin,
     VlansMixin,
     EthernetInterfacesMixin,
     PortChannelInterfacesMixin,

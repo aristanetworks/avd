@@ -113,6 +113,31 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ip_access_lists:
+- name: PUBLIC_TRANSPORT_OUT
+  entries:
+  - sequence: 10
+    remark: ' ### Blocking RFC 1918 prefixes ###'
+  - sequence: 20
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.0.0.0/8
+  - sequence: 30
+    action: deny
+    protocol: ip
+    source: any
+    destination: 172.16.0.0/12
+  - sequence: 40
+    action: deny
+    protocol: ip
+    source: any
+    destination: 192.168.0.0/16
+  - sequence: 50
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
 ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface
@@ -120,6 +145,8 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   dhcp_client_accept_default_route: true
+  access_group_in: PUBLIC_TRANSPORT_IN
+  access_group_out: PUBLIC_TRANSPORT_OUT
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:

@@ -5882,6 +5882,12 @@
             "description": "For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.",
             "title": "Connected To Pathfinder"
           },
+          "enable_wan_acls": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.\nThis can be overriden using the structured_config.",
+            "title": "Enable Wan Acls"
+          },
           "raw_eos_cli": {
             "type": "string",
             "description": "EOS CLI rendered directly on the interface in the final EOS configuration.",

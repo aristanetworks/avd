@@ -66,6 +66,7 @@ wan_edge:
           wan_circuit_id: 666
           set_default_route: true
           ip_address: dhcp
+          enable_wan_acls: True
         - name: Ethernet2
           wan_carrier: Colt
           wan_circuit_id: 10555
