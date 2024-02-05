@@ -273,7 +273,7 @@ wan_virtual_topologies:
               preference: alternate
           id: 42
 
-application_traffic_recognition:
+application_classification:
   application_profiles:
     - name: VIDEO
       # Testing categories filtering
