@@ -330,15 +330,6 @@
   },
   {
     "name": "dc2-spine2",
-    "test": "VerifyReloadCause",
-    "categories": [
-      "Reload Cause"
-    ],
-    "description": "Reload Cause - Reload requested by the user",
-    "custom_field": "Reload Cause"
-  },
-  {
-    "name": "dc2-spine2",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
       "security"

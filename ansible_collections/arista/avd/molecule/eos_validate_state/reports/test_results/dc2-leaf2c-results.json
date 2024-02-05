@@ -96,15 +96,6 @@
   },
   {
     "name": "dc2-leaf2c",
-    "test": "VerifyReloadCause",
-    "categories": [
-      "Reload Cause"
-    ],
-    "description": "Reload Cause - Reload requested by the user",
-    "custom_field": "Reload Cause"
-  },
-  {
-    "name": "dc2-leaf2c",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
       "security"

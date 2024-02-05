@@ -150,10 +150,6 @@ def get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]
     """
     result = []
 
-    # Special tag for running all tests, overwriting all other run tags
-    if "run_all" in run_tags:
-        return result
-
     for cls, cls_info in AVD_TEST_CLASSES.items():
         class_legacy_tags = set(cls_info.get("legacy_ansible_tags", {}))
 

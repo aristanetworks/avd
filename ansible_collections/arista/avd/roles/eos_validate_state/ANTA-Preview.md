@@ -84,12 +84,6 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
   ansible-playbook playbooks/fabric-validate.yaml --tags routing_table
   ```
 
-  You can also use the special tag `run_all` to run all tests, including the optional tests. This will overwrite all other run tags.
-
-  ```shell
-  ansible-playbook playbooks/fabric-validate.yaml --tags run_all
-  ```
-
 - You can now run the eos_validate_state role in check_mode. This will produce a report of tests that will be performed without running the tests on your network. Tests will be marked as `NOT RUN` in the final reports.
 
   ```shell
@@ -131,7 +125,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
   - VerifyReachability: Validate IP reachability for point-to-point l3 ethernet interfaces.
 
 - AvdTestInbandReachability (Ansible tags: `loopback_reachability`, `loopback0_reachability`, `optional`)
-  - VerifyReachability: Validate loopback reachability from the inband management VLAN interface. (Optional)
+  - VerifyReachability: Validate loopback reachability from the inband management VLAN interface.
 
 - AvdTestLoopback0Reachability (Ansible tags: `loopback_reachability`, `loopback0_reachability`)
   - VerifyReachability: Validate loopback reachability between devices.
