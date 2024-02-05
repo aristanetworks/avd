@@ -3270,6 +3270,353 @@
             "^_.+$": {}
           },
           "title": "Wan Overlay Peers"
+        },
+        "wan_rr_overlay_peers": {
+          "type": "object",
+          "description": "Configuration options for the peer-group created to peer between\nAutoVPN RRs or CV-Pathfinders.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "WAN-RR-OVERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "bfd": {
+              "type": "boolean",
+              "default": true,
+              "title": "BFD"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Peer-group name",
+                  "title": "Name"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Key only used for documentation or validation purposes",
+                  "title": "Type"
+                },
+                "remote_as": {
+                  "type": "string",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "title": "Remote As"
+                },
+                "local_as": {
+                  "type": "string",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "title": "Local As"
+                },
+                "description": {
+                  "type": "string",
+                  "title": "Description"
+                },
+                "shutdown": {
+                  "type": "boolean",
+                  "title": "Shutdown"
+                },
+                "as_path": {
+                  "type": "object",
+                  "description": "BGP AS-PATH options",
+                  "properties": {
+                    "remote_as_replace_out": {
+                      "type": "boolean",
+                      "description": "Replace AS number with local AS number",
+                      "title": "Remote As Replace Out"
+                    },
+                    "prepend_own_disabled": {
+                      "type": "boolean",
+                      "description": "Disable prepending own AS number to AS path",
+                      "title": "Prepend Own Disabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "As Path"
+                },
+                "remove_private_as": {
+                  "type": "object",
+                  "description": "Remove private AS numbers in outbound AS path",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "all": {
+                      "type": "boolean",
+                      "title": "All"
+                    },
+                    "replace_as": {
+                      "type": "boolean",
+                      "title": "Replace As"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Remove Private As"
+                },
+                "remove_private_as_ingress": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "replace_as": {
+                      "type": "boolean",
+                      "title": "Replace As"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Remove Private As Ingress"
+                },
+                "peer_filter": {
+                  "type": "string",
+                  "description": "Peer-filter name\nnote: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with\nthe new `listen_ranges` key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>listen_ranges</samp> instead.",
+                  "deprecated": true,
+                  "title": "Peer Filter"
+                },
+                "next_hop_unchanged": {
+                  "type": "boolean",
+                  "title": "Next Hop Unchanged"
+                },
+                "update_source": {
+                  "type": "string",
+                  "description": "IP address or interface name",
+                  "title": "Update Source"
+                },
+                "route_reflector_client": {
+                  "type": "boolean",
+                  "title": "Route Reflector Client"
+                },
+                "bfd": {
+                  "type": "boolean",
+                  "description": "Enable BFD.",
+                  "title": "BFD"
+                },
+                "bfd_timers": {
+                  "type": "object",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Interval in milliseconds.",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Rate in milliseconds.",
+                      "title": "Min RX"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    }
+                  },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BFD Timers"
+                },
+                "ebgp_multihop": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 255,
+                  "description": "Time-to-live in range of hops",
+                  "title": "Ebgp Multihop"
+                },
+                "next_hop_self": {
+                  "type": "boolean",
+                  "title": "Next Hop Self"
+                },
+                "password": {
+                  "type": "string",
+                  "title": "Password"
+                },
+                "passive": {
+                  "type": "boolean",
+                  "title": "Passive"
+                },
+                "default_originate": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "always": {
+                      "type": "boolean",
+                      "title": "Always"
+                    },
+                    "route_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Route Map"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Default Originate"
+                },
+                "send_community": {
+                  "type": "string",
+                  "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'",
+                  "title": "Send Community"
+                },
+                "maximum_routes": {
+                  "type": "integer",
+                  "description": "Maximum number of routes (0 means unlimited)",
+                  "minimum": 0,
+                  "maximum": 4294967294,
+                  "title": "Maximum Routes"
+                },
+                "maximum_routes_warning_limit": {
+                  "type": "string",
+                  "description": "Maximum number of routes after which a warning is issued (0 means never warn) or\nPercentage of maximum number of routes at which to warn (\"<1-100> percent\")\n",
+                  "title": "Maximum Routes Warning Limit"
+                },
+                "maximum_routes_warning_only": {
+                  "type": "boolean",
+                  "title": "Maximum Routes Warning Only"
+                },
+                "link_bandwidth": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "default": {
+                      "type": "string",
+                      "description": "nn.nn(K|M|G) link speed in bits/second",
+                      "title": "Default"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Link Bandwidth"
+                },
+                "allowas_in": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "times": {
+                      "type": "integer",
+                      "description": "Number of local ASNs allowed in a BGP update",
+                      "minimum": 1,
+                      "maximum": 10,
+                      "title": "Times"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Allowas In"
+                },
+                "weight": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 65535,
+                  "title": "Weight"
+                },
+                "timers": {
+                  "type": "string",
+                  "description": "BGP Keepalive and Hold Timer values in seconds as string \"<0-3600> <0-3600>\"",
+                  "title": "Timers"
+                },
+                "rib_in_pre_policy_retain": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "all": {
+                      "type": "boolean",
+                      "title": "All"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Rib In Pre Policy Retain"
+                },
+                "route_map_in": {
+                  "type": "string",
+                  "description": "Inbound route-map name",
+                  "title": "Route Map In"
+                },
+                "route_map_out": {
+                  "type": "string",
+                  "description": "Outbound route-map name",
+                  "title": "Route Map Out"
+                },
+                "bgp_listen_range_prefix": {
+                  "type": "string",
+                  "description": "IP prefix range\nnote: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with\nthe new `listen_ranges` key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>listen_ranges</samp> instead.",
+                  "deprecated": true,
+                  "title": "BGP Listen Range Prefix"
+                },
+                "session_tracker": {
+                  "type": "string",
+                  "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Wan Rr Overlay Peers"
         }
       },
       "additionalProperties": false,
