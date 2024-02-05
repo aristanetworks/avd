@@ -467,13 +467,16 @@ jobs:
           python-version: |
             3.10
       - uses: actions/checkout@v3
-      - name: Install requirements
-        # Install the specific version of galaxy-importer used on galaxy.ansible.com
-        # The version conflicts with our versions of other tooling,
-        # so we let the galaxy-importer version resolve remaining requirements.
-        # Also install deepmerge and jsonschema for use in rebuilding schemas.
+      - name: 'Install Python & Ansible requirements'
         run: |
-          pip install "galaxy-importer==0.4.19" "jsonschema>=4.5.1,<4.18" "deepmerge>=1.1.0" "pydantic"
+          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          ansible-galaxy collection install -r ansible_collections/arista/avd/collections.yml
+      - name: Install galaxy-importer
+        # Install the specific version of galaxy-importer used on galaxy.ansible.com
+        # The version conflicts with our requirements,
+        # so we let the galaxy-importer version resolve remaining requirements.
+        run: |
+          pip install "galaxy-importer==0.4.19"
       - name: 'Build ansible package'
         run: make collection-build
       - name: 'Run galaxy-importer checks'
