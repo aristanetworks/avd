@@ -5,7 +5,7 @@ $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
-  application_traffic_recognition:
+  application_classification:
     type: dict
     description: 'PREVIEW: WAN Preview'
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -2302,6 +2302,8 @@ keys:
           type: list
           items:
             type: str
+            convert_types:
+            - int
         trident_forwarding_table_partition:
           type: str
           description: Only applied when evpn_multicast is true.
@@ -2422,6 +2424,14 @@ keys:
       - '750'
       - '755'
       - '758'
+      management_interface: Management0
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+    - platforms:
       - 720DP
       - 722XP
       - 710P
@@ -2516,6 +2526,8 @@ keys:
       keys:
         platform:
           type: str
+          convert_types:
+          - int
         speeds:
           type: list
           primary_key: speed
@@ -6063,6 +6075,8 @@ $defs:
               table: node-type-common-configuration
             description: Arista platform family.
             type: str
+            convert_types:
+            - int
           mac_address:
             documentation_options:
               table: node-type-common-configuration
