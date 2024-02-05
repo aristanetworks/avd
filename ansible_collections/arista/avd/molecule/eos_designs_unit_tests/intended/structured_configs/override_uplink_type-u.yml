@@ -70,6 +70,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
+  spanning_tree_portfast: edge
   vlans: none
 loopback_interfaces:
 - name: Loopback0
