@@ -565,6 +565,8 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
 {%         if ethernet_interface.switchport.port_security.mac_address_maximum.disabled is arista.avd.defined(true) %}
    switchport port-security mac-address maximum disabled
+{%         elif ethernet_interface.switchport.port_security.mac_address_maximum.disabled is arista.avd.defined(false) %}
+   no switchport port-security mac-address maximum disabled
 {%         elif ethernet_interface.switchport.port_security.mac_address_maximum.limit is arista.avd.defined %}
    switchport port-security mac-address maximum {{ ethernet_interface.switchport.port_security.mac_address_maximum.limit }}
 {%         endif %}

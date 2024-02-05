@@ -108,6 +108,8 @@ ethernet_interfaces:
     spanning_tree_guard: root
     switchport:
       port_security:
+        mac_address_maximum:
+          disabled: false
         violation:
           mode: shutdown
         vlan_default_mac_address_maximum: 2
