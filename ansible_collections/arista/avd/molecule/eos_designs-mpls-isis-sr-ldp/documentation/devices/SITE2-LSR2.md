@@ -222,7 +222,7 @@ interface Ethernet15
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Port-Channel12 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | routed | - | 100.64.49.1/30 | default | 9178 | False | - | - |
-| Port-Channel110 | P2P_LINK_TO_SITE2-LER1_Port-Channel13 | routed | - | 100.64.49.5/30 | default | 9178 | False | - | - |
+| Port-Channel110 | P2P_LINK_TO_SITE2-LER1_Port-Channel220 | routed | - | 100.64.49.5/30 | default | 9178 | False | - | - |
 
 ##### ISIS
 
@@ -256,7 +256,7 @@ interface Port-Channel12
 
 !
 interface Port-Channel110
-   description P2P_LINK_TO_SITE2-LER1_Port-Channel13
+   description P2P_LINK_TO_SITE2-LER1_Port-Channel220
    no shutdown
    mtu 9178
    no switchport

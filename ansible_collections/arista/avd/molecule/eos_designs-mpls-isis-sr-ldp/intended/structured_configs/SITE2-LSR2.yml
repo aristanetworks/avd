@@ -176,9 +176,9 @@ port_channel_interfaces:
       igp_sync: true
 - name: Port-Channel110
   peer: SITE2-LER1
-  peer_interface: Port-Channel13
+  peer_interface: Port-Channel220
   peer_type: pe
-  description: P2P_LINK_TO_SITE2-LER1_Port-Channel13
+  description: P2P_LINK_TO_SITE2-LER1_Port-Channel220
   type: routed
   shutdown: false
   mtu: 9178

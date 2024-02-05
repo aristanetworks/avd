@@ -343,7 +343,7 @@ interface Ethernet14
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Port-Channel11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | routed | - | 100.64.49.2/30 | default | 9178 | False | - | - |
-| Port-Channel220 | P2P_LINK_TO_SITE2-LSR2_Port-Channel14 | routed | - | 100.64.49.6/30 | default | 9178 | False | - | - |
+| Port-Channel220 | P2P_LINK_TO_SITE2-LSR2_Port-Channel110 | routed | - | 100.64.49.6/30 | default | 9178 | False | - | - |
 
 ##### ISIS
 
@@ -406,7 +406,7 @@ interface Port-Channel11
 
 !
 interface Port-Channel220
-   description P2P_LINK_TO_SITE2-LSR2_Port-Channel14
+   description P2P_LINK_TO_SITE2-LSR2_Port-Channel110
    no shutdown
    mtu 9178
    no switchport
