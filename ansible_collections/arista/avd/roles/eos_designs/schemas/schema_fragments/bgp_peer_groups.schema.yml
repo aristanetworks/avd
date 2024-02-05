@@ -180,7 +180,10 @@ keys:
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       wan_rr_overlay_peers:
         type: dict
+        documentation_options:
+          table: wan-bgp-peer-groups
         description: |-
+          PREVIEW: This key is currently not supported
           Configuration options for the peer-group created to peer between
           AutoVPN RRs or CV-Pathfinders.
         keys:

@@ -3273,7 +3273,7 @@
         },
         "wan_rr_overlay_peers": {
           "type": "object",
-          "description": "Configuration options for the peer-group created to peer between\nAutoVPN RRs or CV-Pathfinders.",
+          "description": "PREVIEW: This key is currently not supported\nConfiguration options for the peer-group created to peer between\nAutoVPN RRs or CV-Pathfinders.",
           "properties": {
             "name": {
               "type": "string",
