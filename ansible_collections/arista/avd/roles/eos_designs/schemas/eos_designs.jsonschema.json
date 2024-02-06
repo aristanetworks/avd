@@ -21896,6 +21896,7 @@
                           "type": "integer",
                           "minimum": 0,
                           "maximum": 128,
+                          "description": "Prefix length for generated routes.",
                           "title": "Prefix Length"
                         }
                       },
@@ -23552,6 +23553,37 @@
                   "^_.+$": {}
                 },
                 "title": "IP Attached Host Route Export"
+              },
+              "ipv6_attached_host_route_export": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "distance": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 255,
+                    "description": "Administrative distance for generated routes.",
+                    "title": "Distance"
+                  },
+                  "prefix_length": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 128,
+                    "description": "Prefix length for generated routes.",
+                    "title": "Prefix Length"
+                  }
+                },
+                "required": [
+                  "enabled"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "IPv6 Attached Host Route Export"
               },
               "bfd": {
                 "type": "object",
