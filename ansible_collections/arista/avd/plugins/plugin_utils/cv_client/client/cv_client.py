@@ -49,7 +49,6 @@ class CVClient(
             token: Token defined in CloudVision under service-accounts.
             port: TCP port to use for the connection.
             verify_certs: Disables SSL certificate verification if set to False. Not recommended for production.
-        ```
         """
         if isinstance(servers, list):
             self._servers = servers
