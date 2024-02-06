@@ -149,7 +149,6 @@ def get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]
       result (list[dict]): List of dictionary containing the categories to skip.
     """
     result = []
-
     for cls, cls_info in AVD_TEST_CLASSES.items():
         class_legacy_tags = set(cls_info.get("legacy_ansible_tags", {}))
 
