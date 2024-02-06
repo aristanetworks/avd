@@ -376,7 +376,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum") | Dictionary |  |  |  | Maximum number of MAC addresses allowed on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum.disabled") | Boolean |  |  |  | Disable port level check for port security (only in violation 'shutdown' mode). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum.limit") | Integer |  |  | Min: 1<br>Max: 1000 | MAC address limit. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violation</samp>](## "ethernet_interfaces.[].switchport.port_security.violation") | Dictionary |  |  |  | Configure violation mode (shutdown or protect), default is 'shutdown'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violation</samp>](## "ethernet_interfaces.[].switchport.port_security.violation") | Dictionary |  |  |  | Configure violation mode (shutdown or protect), EOS default is 'shutdown'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.mode") | String |  |  | Valid Values:<br>- <code>shutdown</code><br>- <code>protect</code> | Configure port security mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protect_log</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.protect_log") | Boolean |  |  |  | Log new addresses seen after limit is reached in protect mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_default_mac_address_maximum</samp>](## "ethernet_interfaces.[].switchport.port_security.vlan_default_mac_address_maximum") | Integer |  |  | Min: 0<br>Max: 1000 | Default maximum MAC addresses for all VLANs on this interface. |
@@ -1057,7 +1057,7 @@
               # MAC address limit.
               limit: <int; 1-1000>
 
-            # Configure violation mode (shutdown or protect), default is 'shutdown'.
+            # Configure violation mode (shutdown or protect), EOS default is 'shutdown'.
             violation:
 
               # Configure port security mode.

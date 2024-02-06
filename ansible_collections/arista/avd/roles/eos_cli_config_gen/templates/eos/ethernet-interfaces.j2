@@ -570,18 +570,19 @@ interface {{ ethernet_interface.name }}
 {%         elif ethernet_interface.switchport.port_security.mac_address_maximum.limit is arista.avd.defined %}
    switchport port-security mac-address maximum {{ ethernet_interface.switchport.port_security.mac_address_maximum.limit }}
 {%         endif %}
-{%         if ethernet_interface.switchport.port_security.vlans is arista.avd.defined and ethernet_interface.switchport.port_security.violation.mode is not arista.avd.defined('protect') %}
-{%             for vlan in ethernet_interface.switchport.port_security.vlans %}
-{%                 if vlan.range is arista.avd.defined and vlan.mac_address_maximum is arista.avd.defined %}
-{%                     for id in vlan.range | arista.avd.range_expand %}
-{%                         set vlan_id = 'vlan ' ~ id %}
-   switchport port-security {{ vlan_id }} mac-address maximum {{ vlan.mac_address_maximum }}
-{%                     endfor %}
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
-{%         if ethernet_interface.switchport.port_security.vlan_default_mac_address_maximum is arista.avd.defined and ethernet_interface.switchport.port_security.violation.mode is not arista.avd.defined('protect') %}
+{%         if ethernet_interface.switchport.port_security.violation.mode is not arista.avd.defined('protect')  %}
+{%             if ethernet_interface.switchport.port_security.vlans is arista.avd.defined %}
+{%                 for vlan in ethernet_interface.switchport.port_security.vlans %}
+{%                     if vlan.range is arista.avd.defined and vlan.mac_address_maximum is arista.avd.defined %}
+{%                         for id in vlan.range | arista.avd.range_expand %}
+   switchport port-security vlan {{ id }} mac-address maximum {{ vlan.mac_address_maximum }}
+{%                         endfor %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%             if ethernet_interface.switchport.port_security.vlan_default_mac_address_maximum is arista.avd.defined %}
    switchport port-security vlan default mac-address maximum {{ ethernet_interface.switchport.port_security.vlan_default_mac_address_maximum }}
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {%     if ethernet_interface.qos.trust is arista.avd.defined %}

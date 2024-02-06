@@ -5047,27 +5047,21 @@
                   },
                   "violation": {
                     "type": "object",
-                    "description": "Configure violation mode (shutdown or protect), default is 'shutdown'.",
+                    "description": "Configure violation mode (shutdown or protect), EOS default is 'shutdown'.",
                     "properties": {
-                      "protect": {
-                        "type": "object",
-                        "description": "Configure port security in protect mode.",
-                        "properties": {
-                          "enabled": {
-                            "type": "boolean",
-                            "title": "Enabled"
-                          },
-                          "log": {
-                            "type": "boolean",
-                            "description": "Log new addresses seen after limit is reached in protect mode.",
-                            "title": "Log"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
-                        },
-                        "title": "Protect"
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "shutdown",
+                          "protect"
+                        ],
+                        "description": "Configure port security mode.",
+                        "title": "Mode"
+                      },
+                      "protect_log": {
+                        "type": "boolean",
+                        "description": "Log new addresses seen after limit is reached in protect mode.",
+                        "title": "Protect Log"
                       }
                     },
                     "additionalProperties": false,

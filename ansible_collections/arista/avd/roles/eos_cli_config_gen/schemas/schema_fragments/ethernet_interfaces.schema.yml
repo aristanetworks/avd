@@ -1274,7 +1274,7 @@ keys:
                       description: MAC address limit.
                 violation:
                   type: dict
-                  description: Configure violation mode (shutdown or protect), default is 'shutdown'.
+                  description: Configure violation mode (shutdown or protect), EOS default is 'shutdown'.
                   keys:
                     mode:
                       type: str
