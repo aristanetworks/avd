@@ -32,7 +32,7 @@ class StaticRoutesMixin(UtilsMixin):
             interface_name = get(l3_interface, "name", required=True, org_key=f"<node_type_key>...[node={self.shared_utils.hostname}].l3_interfaces[].name]")
             ip_address = get(
                 l3_interface,
-                "ip",
+                "ip_address",
                 required=True,
                 org_key=f"{self.shared_utils.node_type_key_data['key']}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}.ip]",
             )

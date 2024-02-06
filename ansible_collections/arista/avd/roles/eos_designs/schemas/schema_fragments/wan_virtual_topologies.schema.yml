@@ -97,6 +97,7 @@ keys:
                   id:
                     type: int
                     $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id"
+                    required: false
                     min: 2
                     max: 253
                     description: |-

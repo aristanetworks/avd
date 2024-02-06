@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 $id: eos_cli_config_gen
@@ -280,7 +280,9 @@ keys:
 
                     - "group MYGROUP none"
 
-                    - "group tacacs+ group MYGROUP local"'
+                    - "group tacacs+ group MYGROUP local"
+
+                    '
   aaa_root:
     type: dict
     keys:
@@ -351,7 +353,9 @@ keys:
                 required: true
                 description: 'Action as string
 
-                  Example: "deny ip any any"'
+                  Example: "deny ip any any"
+
+                  '
   address_locking:
     type: dict
     keys:
@@ -420,7 +424,7 @@ keys:
     type: str
     description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
       |\n  alias wr copy running-config startup-config\n  alias siib show ip interface
-      brief\n```"
+      brief\n```\n"
   application_traffic_recognition:
     type: dict
     description: Application traffic recognition configuration.
@@ -779,7 +783,9 @@ keys:
 
       "debug" will produce hidden debug messages viewable with -v.
 
-      "quiet" will not produce any messages'
+      "quiet" will not produce any messages
+
+      '
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -806,7 +812,9 @@ keys:
 
       "info" will produce regular log messages.
 
-      "debug" will produce hidden debug messages viewable with -v.'
+      "debug" will produce hidden debug messages viewable with -v.
+
+      '
   banners:
     type: dict
     keys:
@@ -941,7 +949,9 @@ keys:
           required: true
           description: 'Action as string
 
-            Example: "permit GSHUT 65123:123"'
+            Example: "permit GSHUT 65123:123"
+
+            '
   custom_templates:
     type: list
     display_name: Extensibility with Custom Templates
@@ -1114,7 +1124,10 @@ keys:
             cvsourceintf:
               type: str
               description: 'Set source interface in case of in-band managament. Available
-                as of TerminAttr v1.23.0
+                as of TerminAttr v1.23.0.
+
+                The interface name is case sensitive and has to match the interface
+                name in the running-config, e.g.:Vlan100.
 
                 '
             cvvrf:
@@ -1188,7 +1201,10 @@ keys:
           '
       cvsourceintf:
         type: str
-        description: 'Set source interface in case of in-band managament
+        description: 'Set source interface in case of in-band managament.
+
+          The interface name is case sensitive and has to match the interface name
+          in the running-config, e.g.:Vlan100.
 
           '
       cvvrf:
@@ -1291,7 +1307,9 @@ keys:
         description: 'The default compression scheme when streaming to CloudVision
           is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
 
-          There is no need to change the compression scheme.'
+          There is no need to change the compression scheme.
+
+          '
   daemons:
     type: list
     primary_key: name
@@ -1592,7 +1610,9 @@ keys:
         description: 'Must be the hash of the password using the specified algorithm.
 
           By default EOS salts the password, so the simplest is to generate the hash
-          on an EOS device.'
+          on an EOS device.
+
+          '
   eos_cli:
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level
@@ -3107,7 +3127,9 @@ keys:
         asynchronous:
           type: bool
           default: false
-          description: Set the action to be non-blocking.
+          description: 'Set the action to be non-blocking.
+
+            '
   event_monitor:
     type: dict
     keys:
@@ -3120,6 +3142,13 @@ keys:
         type: dict
         $ref: eos_cli_config_gen#/$defs/flow_tracking
         keys:
+          encapsulation:
+            type: dict
+            keys:
+              ipv4_ipv6:
+                type: bool
+              mpls:
+                type: bool
           sample:
             type: int
             convert_types:
@@ -3293,7 +3322,9 @@ keys:
 
       - Transceiver qsfp default mode
 
-      - End of configuration delimiter'
+      - End of configuration delimiter
+
+      '
   generate_device_documentation:
     type: bool
     default: true
@@ -3494,7 +3525,9 @@ keys:
             type: str
             description: 'EOS CLI interface command
 
-              Example: "switchport mode access"'
+              Example: "switchport mode access"
+
+              '
   ip_access_lists:
     type: list
     primary_key: name
@@ -3716,7 +3749,9 @@ keys:
                 type: str
                 description: 'Regular Expression
 
-                  If defined, a regex community-list will be configured'
+                  If defined, a regex community-list will be configured
+
+                  '
   ip_dhcp_relay:
     type: dict
     keys:
@@ -3810,7 +3845,9 @@ keys:
                 required: true
                 description: 'Communities as string
 
-                  Example: "65000:65000"'
+                  Example: "65000:65000"
+
+                  '
   ip_extcommunity_lists_regexp:
     type: list
     primary_key: name
@@ -3990,8 +4027,10 @@ keys:
               type: bool
             proxy:
               type: bool
-              description: Global proxy settings should be enabled before enabling
+              description: 'Global proxy settings should be enabled before enabling
                 per-vlan
+
+                '
   ip_name_servers:
     type: list
     items:
@@ -4388,6 +4427,12 @@ keys:
           profile:
             type: str
             description: IPsec profile name to use.
+      hardware_encryption_disabled:
+        type: bool
+        default: false
+        description: 'Disable hardware encryption.
+
+          An SFE restart is needed for this change to take effect.'
   ip_ssh_client_source_interfaces:
     type: list
     items:
@@ -4453,7 +4498,9 @@ keys:
                 required: true
                 description: 'Action as string
 
-                  Example: "deny ipv6 any any"'
+                  Example: "deny ipv6 any any"
+
+                  '
   ipv6_hardware:
     type: dict
     keys:
@@ -4502,7 +4549,9 @@ keys:
                 required: true
                 description: 'Action as string
 
-                  Example: "permit 1b11:3a00:22b0:0082::/64 eq 128"'
+                  Example: "permit 1b11:3a00:22b0:0082::/64 eq 128"
+
+                  '
   ipv6_standard_access_lists:
     type: list
     primary_key: name
@@ -4537,7 +4586,9 @@ keys:
                 required: true
                 description: 'Action as string
 
-                  Example: "deny ipv6 any any"'
+                  Example: "deny ipv6 any any"
+
+                  '
   ipv6_static_routes:
     type: list
     items:
@@ -5354,7 +5405,9 @@ keys:
                   type: list
                   items:
                     type: str
-                    description: Name of Interface Group
+                    description: 'Name of Interface Group
+
+                      '
   management_accounts:
     type: dict
     keys:
@@ -5517,7 +5570,9 @@ keys:
         description: 'These should not be mixed with the new keys above.
 
           Octa activates `eos-native` provider and it is the only provider currently
-          supported by EOS.'
+          supported by EOS.
+
+          '
   management_api_http:
     type: dict
     keys:
@@ -6658,7 +6713,9 @@ keys:
                 required: true
                 description: 'Match as string
 
-                  Example: "as-range 1-100 result accept"'
+                  Example: "as-range 1-100 result accept"
+
+                  '
   platform:
     type: dict
     description: Every key below this point is platform dependent.
@@ -7805,7 +7862,9 @@ keys:
                 required: true
                 description: 'Action as string
 
-                  Example: "permit 10.255.0.0/27 eq 32"'
+                  Example: "permit 10.255.0.0/27 eq 32"
+
+                  '
   priority_flow_control:
     type: dict
     description: 'Global Priority Flow Control settings.
@@ -7875,7 +7934,9 @@ keys:
               '
           override_action_drop:
             type: bool
-            description: Override configured action on stuck queue to drop.
+            description: 'Override configured action on stuck queue to drop.
+
+              '
   prompt:
     type: str
   ptp:
@@ -8580,7 +8641,9 @@ keys:
                   no_drop:
                     type: bool
                     required: true
-                    description: Enable Priority Flow Control frames on this queue
+                    description: 'Enable Priority Flow Control frames on this queue
+
+                      '
   queue_monitor_length:
     type: dict
     keys:
@@ -11897,6 +11960,9 @@ keys:
             - str
             min: 1
             max: 128
+          bfd_all_interfaces:
+            type: bool
+            description: Enable BFD on all interfaces.
           fast_reroute_ti_lfa:
             type: dict
             keys:
@@ -11937,6 +12003,9 @@ keys:
             - str
             min: 1
             max: 128
+          bfd_all_interfaces:
+            type: bool
+            description: Enable BFD on all interfaces.
           fast_reroute_ti_lfa:
             type: dict
             keys:
@@ -11950,7 +12019,7 @@ keys:
                 valid_values:
                 - level-1
                 - level-2
-                description: Optional, default is to protect all levels
+                description: Optional, default is to protect all levels.
               srlg:
                 type: dict
                 description: Shared Risk Link Group
@@ -11979,6 +12048,52 @@ keys:
                   type: int
                   convert_types:
                   - str
+      spf_interval:
+        type: dict
+        keys:
+          interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 300
+            description: Maximum interval between two SPFs in seconds.
+          wait_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 300000
+            description: Initial wait interval for SPF in milliseconds.
+      graceful_restart:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          restart_hold_time:
+            type: int
+            convert_types:
+            - str
+            min: 5
+            max: 300
+            description: Number of seconds.
+          t2:
+            type: dict
+            keys:
+              level_1_wait_time:
+                type: int
+                convert_types:
+                - str
+                min: 5
+                max: 300
+                description: Level-1 LSP database sync wait time in seconds.
+              level_2_wait_time:
+                type: int
+                convert_types:
+                - str
+                min: 5
+                max: 300
+                description: Level-2 LSP database sync wait time in seconds.
   router_l2_vpn:
     type: dict
     keys:
@@ -13677,7 +13792,9 @@ keys:
                 required: true
                 description: 'Action as string
 
-                  Example: "deny ip any any"'
+                  Example: "deny ip any any"
+
+                  '
   static_routes:
     type: list
     items:
@@ -14033,8 +14150,10 @@ keys:
             source:
               type: str
               required: false
-              description: TCAM profile local source path. Used to read the TCAM profile
-                from a local path existing on the device.
+              description: 'TCAM profile local source path. Used to read the TCAM
+                profile from a local path existing on the device.
+
+                '
   terminal:
     type: dict
     display_name: Terminal Settings
@@ -14291,9 +14410,11 @@ keys:
   transceiver_qsfp_default_mode_4x10:
     type: bool
     default: true
-    description: On all front panel ports which support this feature, the following
+    description: 'On all front panel ports which support this feature, the following
       global configuration command changes the QSFP mode from 40G to 4x10G (default).
       When set to false the command reverts the default QSFP mode back to 40G.
+
+      '
   tunnel_interfaces:
     type: list
     primary_key: name
@@ -14379,8 +14500,10 @@ keys:
           description: Enable Path MTU Discovery On Tunnel
         eos_cli:
           type: str
-          description: Multiline String with EOS CLI rendered directly on the Tunnel
+          description: 'Multiline String with EOS CLI rendered directly on the Tunnel
             interface in the final EOS configuration.
+
+            '
   virtual_source_nat_vrfs:
     type: list
     primary_key: name
@@ -15201,8 +15324,10 @@ keys:
                 type: bool
           eos_cli:
             type: str
-            description: Multiline String with EOS CLI rendered directly on the Vxlan
+            description: 'Multiline String with EOS CLI rendered directly on the Vxlan
               interface in the final EOS configuration.
+
+              '
 $defs:
   flow_tracking:
     type: dict

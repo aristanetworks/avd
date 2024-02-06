@@ -22,6 +22,9 @@ class IpExtCommunityListsMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol != "ibgp":
             return None
 
+        if self.shared_utils.wan_role is not None:
+            return None
+
         if self.shared_utils.overlay_vtep:
             return [
                 {

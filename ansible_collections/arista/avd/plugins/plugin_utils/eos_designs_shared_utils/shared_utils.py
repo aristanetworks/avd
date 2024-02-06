@@ -4,6 +4,7 @@
 from .bgp_peer_groups import BgpPeerGroupsMixin
 from .connected_endpoints_keys import ConnectedEndpointsKeysMixin
 from .cv_topology import CvTopology
+from .filtered_tenants import FilteredTenantsMixin
 from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
 from .ip_addressing import IpAddressingMixin
@@ -27,6 +28,7 @@ from .wan import WanMixin
 class SharedUtils(
     BgpPeerGroupsMixin,
     ConnectedEndpointsKeysMixin,
+    FilteredTenantsMixin,
     InbandManagementMixin,
     InterfaceDescriptionsMixin,
     IpAddressingMixin,

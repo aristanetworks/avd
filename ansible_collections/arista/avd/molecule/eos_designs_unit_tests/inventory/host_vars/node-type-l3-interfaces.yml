@@ -9,7 +9,7 @@ spine:
       l3_interfaces:
         - # Settings set via profile
           name: Ethernet1
-          ip: 192.168.1.2/31
+          ip_address: 192.168.1.2/31
           set_default_route: true
           peer: peer1
           peer_interface: eth1
@@ -18,18 +18,18 @@ spine:
         - # DHCP default route
           peer: peer2
           name: Ethernet2/2
-          ip: dhcp
+          ip_address: dhcp
           set_default_route: true
         - # custom description
           peer: peer3
           name: Ethernet42
           enabled: false
           description: This is a custom description
-          ip: dhcp
+          ip_address: dhcp
         - # empty description
           name: Ethernet43
           enabled: false
-          ip: 192.168.42.42/24
+          ip_address: 192.168.42.42/24
 
 
 l3_interface_profiles:

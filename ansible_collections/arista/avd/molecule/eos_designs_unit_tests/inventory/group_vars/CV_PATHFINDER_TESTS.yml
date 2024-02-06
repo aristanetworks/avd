@@ -25,8 +25,8 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
     listen_range_prefixes:
-      - 192.168.42.0/24
-      - 192.168.43.0/24
+      - 192.168.142.0/24
+      - 192.168.143.0/24
 
 wan_route_servers:
   # Not testing the overloading
@@ -52,6 +52,7 @@ default_node_types:
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA]
   nodes:
@@ -64,15 +65,15 @@ wan_edge:
           wan_carrier: ATT
           wan_circuit_id: 666
           set_default_route: true
-          ip: dhcp
+          ip_address: dhcp
         - name: Ethernet2
           wan_carrier: Colt
           wan_circuit_id: 10555
-          ip: 172.15.5.5/31
+          ip_address: 172.15.5.5/31
         - name: Ethernet3
           wan_carrier: Comcast-5G
           wan_circuit_id: AF830
-          ip: 172.20.20.20/31
+          ip_address: 172.20.20.20/31
           connected_to_pathfinder: False
     - name: cv-pathfinder-edge-no-common-path-group
       cv_pathfinder_region: AVD_Land_East
@@ -83,11 +84,12 @@ wan_edge:
           wan_carrier: Inmrasat
           wan_circuit_id: S512
           set_default_route: true
-          ip: dhcp
+          ip_address: dhcp
 
 wan_transit:
   defaults:
     loopback_ipv4_pool: 192.168.43.0/24
+    vtep_loopback_ipv4_pool: 192.168.143.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA, TenantB]
   nodes:
@@ -96,19 +98,22 @@ wan_transit:
       cv_pathfinder_site: Site422
       id: 1
       l3_interfaces:
-        - name: Ethernet1
+        - name: Ethernet1.42
           wan_carrier: Comcast
           wan_circuit_id: 667
           set_default_route: true
-          ip: dhcp
-        - name: Ethernet2
+          ip_address: dhcp
+        - name: Ethernet2.42
+          encapsulation_dot1q_vlan: 666
           wan_carrier: Colt
           wan_circuit_id: 10666
-          ip: 172.16.6.6/31
+          ip_address: 172.16.6.6/31
 
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.44.0/24
+    vtep_loopback_ipv4_pool: 192.168.144.0/24
+    data_plane_cpu_allocation_max: 1
   nodes:
     - name: cv-pathfinder-pathfinder
       id: 1
@@ -117,34 +122,36 @@ wan_rr:
           wan_carrier: Bouygues_Telecom
           wan_circuit_id: 777
           set_default_route: true
-          ip: 10.7.7.7/31
+          ip_address: 10.7.7.7/31
           peer_ip: 10.7.7.6
         - name: Ethernet2
           wan_carrier: Colt
           wan_circuit_id: 10000
-          ip: 172.16.0.1/31
+          ip_address: 172.16.0.1/31
         - name: Ethernet3
           wan_carrier: Another-ISP
           wan_circuit_id: 999
-          ip: 10.9.9.9/31
+          ip_address: 10.9.9.9/31
     - name: cv-pathfinder-pathfinder1
       id: 2
+      data_plane_cpu_allocation_max: 3
       l3_interfaces:
         - name: Ethernet1
           wan_carrier: Orange
           wan_circuit_id: 888
-          ip: 10.8.8.8/31
+          ip_address: 10.8.8.8/31
     - name: cv-pathfinder-pathfinder2
       id: 3
+      data_plane_cpu_allocation_max: 3
       l3_interfaces:
         - name: Ethernet1
           wan_carrier: SFR
           wan_circuit_id: 999
-          ip: 10.9.9.9/31
+          ip_address: 10.9.9.9/31
         - name: Ethernet2
           wan_carrier: ATT-MPLS
           wan_circuit_id: 10999
-          ip: 172.19.9.9/31
+          ip_address: 172.19.9.9/31
 
 wan_path_groups:
   - name: MPLS
@@ -266,7 +273,7 @@ wan_virtual_topologies:
               preference: alternate
           id: 42
 
-application_traffic_recognition:
+application_classification:
   application_profiles:
     - name: VIDEO
       # Testing categories filtering

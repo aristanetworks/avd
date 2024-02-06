@@ -276,8 +276,6 @@ route_maps:
     - ip address prefix-list PL-STATIC-VRF-DEFAULT
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
-  - sequence: 20
-    type: permit
   - sequence: 10
     type: deny
     match:
@@ -286,6 +284,8 @@ route_maps:
     type: deny
     match:
     - ip address prefix-list PL-STATIC-VRF-DEFAULT
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 1200

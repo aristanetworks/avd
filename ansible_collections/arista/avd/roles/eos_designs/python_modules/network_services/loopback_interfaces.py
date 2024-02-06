@@ -29,7 +29,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
             return None
 
         loopback_interfaces = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if (loopback_interface := self._get_vtep_diagnostic_loopback_for_vrf(vrf)) is not None:
                     append_if_not_duplicate(

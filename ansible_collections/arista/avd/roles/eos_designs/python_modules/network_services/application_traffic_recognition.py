@@ -25,11 +25,11 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         if not self.shared_utils.wan_role:
             return None
 
-        filtered_application_traffic_recognition = self._filtered_application_traffic_recognition()
+        filtered_application_classification = self._filtered_application_classification()
 
-        self._generate_control_plane_application_profile(filtered_application_traffic_recognition)
+        self._generate_control_plane_application_profile(filtered_application_classification)
 
-        return strip_empties_from_dict(filtered_application_traffic_recognition)
+        return strip_empties_from_dict(filtered_application_classification)
 
     #  self._wan_control_plane_application_profile is defined in utils.py
     @cached_property
@@ -40,25 +40,49 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
     def _wan_cp_app_dst_prefix(self) -> str:
         return "CONTROL-PLANE-APP-DEST-PREFIXES"
 
+    @cached_property
+    def _wan_cp_app_src_prefix(self) -> str:
+        return "CONTROL-PLANE-APP-SRC-PREFIXES"
+
     def _generate_control_plane_application_profile(self, app_dict: dict) -> None:
         """
-        Generate an application profile using a single application matching the device Pathfinders router_ids.
+        Generate an application profile using a single application matching:
+        * the device Pathfinders vtep_ips as destination for non Pathfinders.
+        * the device Pathfinder vtep_ip as source
 
         Create a structure as follow. If any object already exist, it is kept as defined by user and override the defaults.
 
-        application_traffic_recognition:
-          application_profiles:
-            - name: CONTROL-PLANE-APPLICATION-PROFILE
+        Edge and Transit:
+
+            application_traffic_recognition:
+              application_profiles:
+                - name: CONTROL-PLANE-APPLICATION-PROFILE
+                  applications:
+                    - name: CONTROL-PLANE-APPLICATION
               applications:
-                - name: CONTROL-PLANE-APPLICATION
-          applications:
-            ipv4_applications:
-              - name: CONTROL-PLANE-APPLICATION
-                dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
-          field_sets:
-            ipv4_prefixes:
-              - name: CONTROL-PLANE-APP-DEST-PREFIXES
-                prefix_values: [Pathfinder to which the router is connected router-ids]
+                ipv4_applications:
+                  - name: CONTROL-PLANE-APPLICATION
+                    dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+              field_sets:
+                ipv4_prefixes:
+                  - name: CONTROL-PLANE-APP-DEST-PREFIXES
+                    prefix_values: [Pathfinder to which the router is connected vtep_ips]
+
+        Pathfinder:
+
+            application_traffic_recognition:
+              application_profiles:
+                - name: CONTROL-PLANE-APPLICATION-PROFILE
+                  applications:
+                    - name: CONTROL-PLANE-APPLICATION
+              applications:
+                ipv4_applications:
+                  - name: CONTROL-PLANE-APPLICATION
+                    src_prefix_set_name: CONTROL-PLANE-APP-SRC-PREFIXES
+              field_sets:
+                ipv4_prefixes:
+                  - name: CONTROL-PLANE-APP-SRC-PREFIXES
+                    prefix_values: [Pathfinder vtep_ip]
         """
         # Adding the application-profile
         application_profiles = get(app_dict, "application_profiles", [])
@@ -78,36 +102,44 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         ipv4_applications = get(app_dict, "applications.ipv4_applications", [])
         if get_item(ipv4_applications, "name", self._wan_control_plane_application) is not None:
             return
-        app_dict.setdefault("applications", {}).setdefault("ipv4_applications", []).append(
-            {
-                "name": self._wan_control_plane_application,
-                "dest_prefix_set_name": self._wan_cp_app_dst_prefix,
-            }
-        )
-        # Adding the field-set based on the connected Pathfinder router-ids
-        ipv4_prefixes_field_sets = get(app_dict, "field_sets.ipv4_prefixes", [])
-        if get_item(ipv4_prefixes_field_sets, "name", self._wan_cp_app_dst_prefix) is not None:
-            return
-        pathfinder_router_ids = [f"{wan_rs_data.get('router_id')}/32" for wan_rs, wan_rs_data in self.shared_utils.filtered_wan_route_servers.items()]
-        if self.shared_utils.wan_role == "server":
-            pathfinder_router_ids.extend(self.shared_utils.wan_listen_ranges)
+        if self.shared_utils.wan_role == "client":
+            app_dict.setdefault("applications", {}).setdefault("ipv4_applications", []).append(
+                {
+                    "name": self._wan_control_plane_application,
+                    "dest_prefix_set_name": self._wan_cp_app_dst_prefix,
+                }
+            )
+            # Adding the field-set based on the connected Pathfinder router-ids
+            ipv4_prefixes_field_sets = get(app_dict, "field_sets.ipv4_prefixes", [])
+            if get_item(ipv4_prefixes_field_sets, "name", self._wan_cp_app_dst_prefix) is not None:
+                return
+            pathfinder_vtep_ips = [f"{wan_rs_data.get('vtep_ip')}/32" for wan_rs, wan_rs_data in self.shared_utils.filtered_wan_route_servers.items()]
+            app_dict.setdefault("field_sets", {}).setdefault("ipv4_prefixes", []).append(
+                {
+                    "name": self._wan_cp_app_dst_prefix,
+                    "prefix_values": pathfinder_vtep_ips,
+                }
+            )
+        elif self.shared_utils.wan_role == "server":
+            app_dict.setdefault("applications", {}).setdefault("ipv4_applications", []).append(
+                {
+                    "name": self._wan_control_plane_application,
+                    "src_prefix_set_name": self._wan_cp_app_src_prefix,
+                }
+            )
+            app_dict.setdefault("field_sets", {}).setdefault("ipv4_prefixes", []).append(
+                {"name": self._wan_cp_app_src_prefix, "prefix_values": [f"{self.shared_utils.vtep_ip}/32"]}
+            )
 
-        app_dict.setdefault("field_sets", {}).setdefault("ipv4_prefixes", []).append(
-            {
-                "name": self._wan_cp_app_dst_prefix,
-                "prefix_values": pathfinder_router_ids,
-            }
-        )
-
-    def _filtered_application_traffic_recognition(self) -> dict:
+    def _filtered_application_classification(self) -> dict:
         """
         Based on the filtered policies local to the device, filter which application profiles should be configured on the device.
 
-        Supports only `application_traffic_recognition.applications.ipv4_applications` for now.
+        Supports only `application_classification.applications.ipv4_applications` for now.
 
         For applications - the existence cannot be verified as there are 4000+ applications built-in in the DPI engine used by EOS.
         """
-        input_application_traffic_recognition = get(self._hostvars, "application_traffic_recognition", {})
+        input_application_classification = get(self._hostvars, "application_classification", {})
         # Application profiles first
         application_profiles = []
         # TODO inject "application_profile": "CONTROL-PLANE-APPLICATION-PROFILE",
@@ -119,7 +151,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
             """
             if (
                 obj := get_item(
-                    get(input_application_traffic_recognition, path, default=[]),
+                    get(input_application_classification, path, default=[]),
                     "name",
                     obj_name,
                     required=required,
@@ -145,7 +177,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=application_profiles,
                     message=(
                         f"The application profile {application_profile} used in policy {policy['name']}  "
-                        "is not defined in 'application_traffic_recognition.application_profiles'."
+                        "is not defined in 'application_classification.application_profiles'."
                     ),
                 )
             default_virtual_topology = get(policy, "default_virtual_topology", required=True)
@@ -158,7 +190,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                         list_of_dicts=application_profiles,
                         message=(
                             f"The application profile {application_profile} used in policy {policy['name']} "
-                            "is not defined in 'application_traffic_recognition.application_profiles'."
+                            "is not defined in 'application_classification.application_profiles'."
                         ),
                     )
         output = {"application_profiles": application_profiles}
@@ -173,7 +205,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=categories,
                     message=(
                         f"The application profile {application_profile['name']} uses the category {category['name']} "
-                        "undefined in 'application_traffic_recognition.categories'."
+                        "undefined in 'application_classification.categories'."
                     ),
                 )
             # Applications in application profiles
@@ -207,7 +239,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=ipv4_prefixes,
                     message=(
                         f"The IPv4 prefix field set {src_prefix_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.ipv4_prefixes'."
+                        "is undefined in 'application_classification.fields_sets.ipv4_prefixes'."
                     ),
                 )
             if (dest_prefix_set_name := get(application, "dest_prefix_set_name")) is not None:
@@ -217,7 +249,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=ipv4_prefixes,
                     message=(
                         f"The IPv4 prefix field set {dest_prefix_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.ipv4_prefixes'."
+                        "is undefined in 'application_classification.fields_sets.ipv4_prefixes'."
                     ),
                 )
             if (udp_src_port_set_name := get(application, "udp_src_port_set_name")) is not None:
@@ -227,7 +259,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=l4_ports,
                     message=(
                         f"The L4 Ports field set {udp_src_port_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.l4_ports'."
+                        "is undefined in 'application_classification.fields_sets.l4_ports'."
                     ),
                 )
             if (udp_dest_port_set_name := get(application, "udp_dest_port_set_name")) is not None:
@@ -237,7 +269,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=l4_ports,
                     message=(
                         f"The L4 Ports field set {udp_dest_port_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.l4_ports'."
+                        "is undefined in 'application_classification.fields_sets.l4_ports'."
                     ),
                 )
             if (tcp_src_port_set_name := get(application, "tcp_src_port_set_name")) is not None:
@@ -247,7 +279,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=l4_ports,
                     message=(
                         f"The L4 Ports field set {tcp_src_port_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.l4_ports'."
+                        "is undefined in 'application_classification.fields_sets.l4_ports'."
                     ),
                 )
             if (tcp_dest_port_set_name := get(application, "tcp_dest_port_set_name")) is not None:
@@ -257,7 +289,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=l4_ports,
                     message=(
                         f"The L4 Ports field set {tcp_dest_port_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.l4_ports'."
+                        "is undefined in 'application_classification.fields_sets.l4_ports'."
                     ),
                 )
 

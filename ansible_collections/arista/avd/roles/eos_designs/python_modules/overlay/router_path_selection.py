@@ -26,10 +26,9 @@ class RouterPathSelectionMixin(UtilsMixin):
         if not self.shared_utils.wan_role:
             return None
 
-        path_groups = self._get_path_groups()
-
         router_path_selection = {
-            "path_groups": path_groups,
+            "tcp_mss_ceiling": {"ipv4_segment_size": get(self.shared_utils.switch_data_combined, "dps_mss_ipv4", default="auto")},
+            "path_groups": self._get_path_groups(),
         }
 
         if self.shared_utils.wan_role == "server":
@@ -46,7 +45,13 @@ class RouterPathSelectionMixin(UtilsMixin):
         # TODO - need to have default value in one place only -> maybe facts / shared_utils ?
         ipsec_profile_name = get(self._hostvars, "wan_ipsec_profiles.control_plane.profile_name", default="CP-PROFILE")
 
-        for path_group in self.shared_utils.wan_local_path_groups:
+        if self.shared_utils.wan_role == "server":
+            # Configure all path-groups on Pathfinders and AutoVPN RRs
+            path_groups_to_configure = self.shared_utils.wan_path_groups
+        else:
+            path_groups_to_configure = self.shared_utils.wan_local_path_groups
+
+        for path_group in path_groups_to_configure:
             pg_name = path_group.get("name")
 
             path_group_data = {
@@ -115,8 +120,8 @@ class RouterPathSelectionMixin(UtilsMixin):
             return None
 
         static_peers = []
-        for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
-            if (path_group := get_item(get(data, "wan_path_groups", default=[]), "name", path_group_name)) is not None:
+        for wan_route_server_name, wan_route_server in self.shared_utils.filtered_wan_route_servers.items():
+            if (path_group := get_item(get(wan_route_server, "wan_path_groups", default=[]), "name", path_group_name)) is not None:
                 ipv4_addresses = []
 
                 for interface_dict in get(path_group, "interfaces", required=True):
@@ -125,8 +130,8 @@ class RouterPathSelectionMixin(UtilsMixin):
                         ipv4_addresses.append(ip_address.split("/")[0])
                 static_peers.append(
                     {
-                        "router_ip": get(data, "router_id", required=True),
-                        "name": wan_route_server,
+                        "router_ip": get(wan_route_server, "vtep_ip", required=True),
+                        "name": wan_route_server_name,
                         "ipv4_addresses": ipv4_addresses,
                     }
                 )

@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
@@ -252,22 +251,28 @@ class VlansMixin:
                 endpoint_vlans = self._endpoint_vlans
 
             for network_services_key in self.shared_utils.network_services_keys:
-                tenants = get(self._hostvars, network_services_key["name"])
+                tenants = get(self._hostvars, network_services_key["name"], default=[])
                 # Support legacy data model by converting nested dict to list of dict
-                tenants = convert_dicts(tenants, "name")
-                for tenant in natural_sort(tenants, "name"):
+                if isinstance(tenants, dict):
+                    tenants = convert_dicts(tenants, "name")
+
+                for tenant in tenants:
                     if not set(self.shared_utils.filter_tenants).intersection([tenant["name"], "all"]):
                         # Not matching tenant filters. Skipping this tenant.
                         continue
 
                     vrfs = tenant.get("vrfs", [])
                     # Support legacy data model by converting nested dict to list of dict
-                    vrfs = convert_dicts(vrfs, "name")
-                    for vrf in natural_sort(vrfs, "name"):
+                    if isinstance(vrfs, dict):
+                        vrfs = convert_dicts(vrfs, "name")
+
+                    for vrf in vrfs:
                         svis = vrf.get("svis", [])
                         # Support legacy data model by converting nested dict to list of dict
-                        svis = convert_dicts(svis, "id")
-                        for svi in natural_sort(svis, "id"):
+                        if isinstance(svis, dict):
+                            svis = convert_dicts(svis, "id")
+
+                        for svi in svis:
                             svi_tags = svi.get("tags", ["all"])
                             if "all" in match_tags or set(svi_tags).intersection(match_tags):
                                 if self.shared_utils.filter_only_vlans_in_use:
@@ -289,9 +294,10 @@ class VlansMixin:
 
                     l2vlans = tenant.get("l2vlans", [])
                     # Support legacy data model by converting nested dict to list of dict
-                    l2vlans = convert_dicts(l2vlans, "id")
+                    if isinstance(l2vlans, dict):
+                        l2vlans = convert_dicts(l2vlans, "id")
 
-                    for l2vlan in natural_sort(l2vlans, "id"):
+                    for l2vlan in l2vlans:
                         l2vlan_tags = l2vlan.get("tags", ["all"])
                         if "all" in match_tags or set(l2vlan_tags).intersection(match_tags):
                             if self.shared_utils.filter_only_vlans_in_use:

@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "application_traffic_recognition": {
+    "application_classification": {
       "type": "object",
       "description": "PREVIEW: WAN Preview",
       "properties": {
@@ -331,7 +331,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Application Traffic Recognition"
+      "title": "Application Classification"
     },
     "avd_data_conversion_mode": {
       "type": "string",
@@ -344,7 +344,7 @@
         "quiet"
       ],
       "default": "debug",
-      "description": "Conversion Mode for AVD input data conversion.\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages",
+      "description": "Conversion Mode for AVD input data conversion.\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages\n",
       "title": "AVD Data Conversion Mode"
     },
     "avd_data_validation_mode": {
@@ -357,7 +357,7 @@
         "debug"
       ],
       "default": "warning",
-      "description": "Validation Mode for AVD input data validation.\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
+      "description": "Validation Mode for AVD input data validation.\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n",
       "title": "AVD Data Validation Mode"
     },
     "bfd_multihop": {
@@ -444,9 +444,8 @@
       "title": "BGP Distance"
     },
     "bgp_ecmp": {
-      "description": "Maximum ECMP for BGP multi-path.",
+      "description": "Maximum ECMP for BGP multi-path.\nThe default value is 4 except for WAN Routers where the default value is unset (falls back to EOS default).",
       "type": "integer",
-      "default": 4,
       "title": "BGP ECMP"
     },
     "bgp_graceful_restart": {
@@ -478,9 +477,8 @@
       "title": "BGP Graceful Restart"
     },
     "bgp_maximum_paths": {
-      "description": "Maximum Paths for BGP multi-path.",
+      "description": "Maximum Paths for BGP multi-path.\nThe default value is 4 except for WAN Routers where the default value is 16.",
       "type": "integer",
-      "default": 4,
       "minimum": 1,
       "maximum": 512,
       "title": "BGP Maximum Paths"
@@ -488,7 +486,7 @@
     "bgp_mesh_pes": {
       "type": "boolean",
       "default": false,
-      "description": "Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.\nOnly supported in combination with MPLS overlay.",
+      "description": "Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.\nOnly supported in combination with MPLS overlay.\n",
       "title": "BGP Mesh PEs"
     },
     "bgp_peer_groups": {
@@ -4076,7 +4074,7 @@
     },
     "cvp_instance_ip": {
       "type": "string",
-      "description": "IPv4 address or DNS name for CloudVision.\nThis variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cvp_instance_ips</samp> instead.",
+      "description": "IPv4 address or DNS name for CloudVision.\nThis variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cvp_instance_ips</samp> instead.",
       "deprecated": true,
       "title": "CVP Instance IP"
     },
@@ -4346,7 +4344,7 @@
           "asynchronous": {
             "type": "boolean",
             "default": false,
-            "description": "Set the action to be non-blocking.",
+            "description": "Set the action to be non-blocking.\n",
             "title": "Asynchronous"
           }
         },
@@ -4480,7 +4478,7 @@
             "properties": {
               "raw_eos_cli": {
                 "type": "string",
-                "description": "EOS cli commands rendered on router_bgp.vlans-aware-bundle.",
+                "description": "EOS cli commands rendered on router_bgp.vlans-aware-bundle.\n",
                 "title": "Raw EOS CLI"
               }
             },
@@ -4824,7 +4822,7 @@
     "ipv6_mgmt_gateway": {
       "type": "string",
       "format": "ipv6",
-      "description": "OOB Management interface gateway in IPv6 format.\nUsed as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.",
+      "description": "OOB Management interface gateway in IPv6 format.\nUsed as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.\n",
       "title": "IPv6 Management Gateway"
     },
     "is_deployed": {
@@ -4851,7 +4849,7 @@
         "level-2"
       ],
       "default": "level-2",
-      "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level.",
+      "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level.\n",
       "title": "ISIS Default Circuit Type"
     },
     "isis_default_is_type": {
@@ -4867,7 +4865,7 @@
     "isis_default_metric": {
       "type": "integer",
       "default": 50,
-      "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level.",
+      "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level.\n",
       "title": "ISIS Default Metric"
     },
     "isis_maximum_paths": {
@@ -5431,8 +5429,8 @@
           },
           "name": {
             "type": "string",
-            "description": "Ethernet interface name like 'Ethernet2'.",
-            "pattern": "Ethernet[\\d/]+",
+            "description": "Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'\nFor a subinterface, the parent physical interface is automatically created.",
+            "pattern": "Ethernet[\\d/]+(.[\\d]+)?",
             "title": "Name"
           },
           "description": {
@@ -5440,10 +5438,17 @@
             "description": "Interface description.\nIf not set a default description will be configured with '[<peer>[ <peer_interface>]]'",
             "title": "Description"
           },
-          "ip": {
+          "ip_address": {
             "type": "string",
             "description": "Node IPv4 address/Mask or 'dhcp'.",
-            "title": "IP"
+            "title": "IP Address"
+          },
+          "encapsulation_dot1q_vlan": {
+            "description": "For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Encapsulation Dot1Q VLAN"
           },
           "set_default_route": {
             "type": "boolean",
@@ -8220,7 +8225,7 @@
     },
     "mgmt_gateway": {
       "type": "string",
-      "description": "OOB Management interface gateway in IPv4 format.\nUsed as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'.",
+      "description": "OOB Management interface gateway in IPv4 format.\nUsed as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'.\n",
       "title": "Management Gateway"
     },
     "mgmt_interface": {
@@ -13390,6 +13395,11 @@
       ],
       "title": "Network Services Keys"
     },
+    "new_network_services_bgp_vrf_config": {
+      "type": "boolean",
+      "description": "Set this key to `true` in the node type to generate full BGP configuration\nfor network services even when `evpn` is not in the address families\n(`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).\n\nThis is `false` by default except if `uplink_type` is set to `p2p-vrfs`, then the default value is `true`.\n\nThis may introduce breaking changes to your configuration.",
+      "title": "New Network Services BGP VRF Config"
+    },
     "node_type_keys": {
       "type": "array",
       "description": "Define Node Type Keys, to specify the properties of each node type in the fabric.\nThis allows for complete customization of the fabric layout and functionality.\n`node_type_keys` should be defined in top level group_var for the fabric.\nThe default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.\n",
@@ -13556,10 +13566,11 @@
             "type": "string",
             "enum": [
               "p2p",
-              "port-channel"
+              "port-channel",
+              "p2p-vrfs"
             ],
             "default": "p2p",
-            "description": "`uplink_type` must be \"p2p\" if `vtep` or `underlay_router` is true.",
+            "description": "`uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router` is true.\n\nFor `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF\nin `network_services` present on both the uplink and the downlink switch.\nThe subinterface ID is the `vrf_id`.\n'underlay_router' and 'network_services.l3' must be set to true.\nVRF `default` is always configured on the physical interface using the underlay routing protocol.\nAll subinterfaces use the same IP address as the physical interface.\nMulticast is not supported.\nOnly BGP is supported for subinterfaces.",
             "title": "Uplink Type"
           },
           "vtep": {
@@ -13876,7 +13887,7 @@
       "type": "array",
       "items": {
         "type": "string",
-        "description": "'inventory_hostname' of CVX server"
+        "description": "'inventory_hostname' of CVX server\n"
       },
       "title": "Overlay CVX Servers"
     },
@@ -13940,7 +13951,7 @@
             "vlan_id"
           ],
           "default": "mac_vrf_id",
-          "description": "The method for deriving RD Assigned Number subfield for VLAN services (second part of RD):\n- 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.\n- 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.\n- 'vlan_id' will only use the 'vlan_id' and ignores all base values.\n\nThese methods can be overridden per VLAN if either 'rd_override', 'rt_override' or 'vni_override' is set (preferred in this order).",
+          "description": "The method for deriving RD Assigned Number subfield for VLAN services (second part of RD):\n- 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.\n- 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.\n- 'vlan_id' will only use the 'vlan_id' and ignores all base values.\n\nThese methods can be overridden per VLAN if either 'rd_override', 'rt_override' or 'vni_override' is set (preferred in this order).\n",
           "title": "VLAN Assigned Number Subfield"
         }
       },
@@ -13997,7 +14008,7 @@
             "vlan_id"
           ],
           "default": "mac_vrf_id",
-          "description": "The method for deriving RT Assigned Number subfield for VLAN services (second part of RT):\n- 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.\n- 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.\n- 'vlan_id' will only use the 'vlan_id' and ignores all base values.\n\nThese methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).",
+          "description": "The method for deriving RT Assigned Number subfield for VLAN services (second part of RT):\n- 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.\n- 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.\n- 'vlan_id' will only use the 'vlan_id' and ignores all base values.\n\nThese methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).\n",
           "title": "VLAN Assigned Number Subfield"
         }
       },
@@ -14179,7 +14190,20 @@
           "platforms": [
             "750",
             "755",
-            "758",
+            "758"
+          ],
+          "management_interface": "Management0",
+          "feature_support": {
+            "poe": true,
+            "queue_monitor_length_notify": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
+        },
+        {
+          "platforms": [
             "720DP",
             "722XP",
             "710P"
@@ -14366,7 +14390,7 @@
           },
           "parent_profile": {
             "type": "string",
-            "description": "Parent profile is optional.\nPort_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).",
+            "description": "Parent profile is optional.\nPort_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).\n",
             "title": "Parent Profile"
           },
           "speed": {
@@ -19589,7 +19613,7 @@
         },
         "notifying": {
           "type": "boolean",
-          "description": "If True, `eos_designs` will configure `queue-monitor length notifying` according to the\n`platform_settings.[].feature_support.queue_monitor_length_notify` setting.",
+          "description": "If True, `eos_designs` will configure `queue-monitor length notifying` according to the\n`platform_settings.[].feature_support.queue_monitor_length_notify` setting.\n",
           "title": "Notifying"
         },
         "default_thresholds": {
@@ -19693,7 +19717,7 @@
     "shutdown_interfaces_towards_undeployed_peers": {
       "type": "boolean",
       "default": false,
-      "description": "- It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.\n\n```yaml\n# Use at the host level\nis_deployed: < true or false or default -> true >\n```\n\n- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.\n- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.\n- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.\n- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.\n- Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.",
+      "description": "- It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.\n\n```yaml\n# Use at the host level\nis_deployed: < true or false or default -> true >\n```\n\n- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.\n- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.\n- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.\n- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.\n- Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.\n",
       "title": "Shutdown Interfaces Towards Undeployed Peers"
     },
     "snmp_settings": {
@@ -20290,7 +20314,7 @@
           },
           "parent_profile": {
             "type": "string",
-            "description": "Parent SVI profile name to apply.\nsvi_profiles can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).",
+            "description": "Parent SVI profile name to apply.\nsvi_profiles can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).\n",
             "title": "Parent Profile"
           },
           "nodes": {
@@ -23596,7 +23620,7 @@
     },
     "system_mac_address": {
       "type": "string",
-      "description": "Set to the same MAC address as available in \"show version\" on the device.\n\"system_mac_address\" can also be set under node type settings.\nIf both are set, the value under node type settings takes precedence.",
+      "description": "Set to the same MAC address as available in \"show version\" on the device.\n\"system_mac_address\" can also be set under node type settings.\nIf both are set, the value under node type settings takes precedence.\n",
       "title": "System MAC Address"
     },
     "terminattr_disable_aaa": {
@@ -23685,7 +23709,7 @@
     },
     "type": {
       "type": "string",
-      "description": "The `type:` variable needs to be defined for each device in the fabric.\nThis is leveraged to load the appropriate template to generate the configuration.",
+      "description": "The `type:` variable needs to be defined for each device in the fabric.\nThis is leveraged to load the appropriate template to generate the configuration.\n",
       "title": "Type"
     },
     "underlay_filter_peer_as": {
@@ -23792,7 +23816,7 @@
           },
           "access_list_name": {
             "type": "string",
-            "description": "Name of standard Access-List.",
+            "description": "Name of standard Access-List.\n",
             "title": "Access List Name"
           }
         },
@@ -24078,10 +24102,10 @@
             "description": "Route-Reflector hostname.",
             "title": "Hostname"
           },
-          "router_id": {
+          "vtep_ip": {
             "type": "string",
-            "description": "Route-Reflector router id.",
-            "title": "Router ID"
+            "description": "Route-Reflector VTEP IP Address. This is usually the IP address under `interface Dps1`.",
+            "title": "Vtep IP"
           },
           "path_groups": {
             "type": "array",
@@ -24378,14 +24402,13 @@
                       "title": "Path Groups"
                     }
                   },
-                  "required": [
-                    "id",
-                    "application_profile"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "application_profile"
+                  ]
                 },
                 "title": "Application Virtual Topologies"
               },

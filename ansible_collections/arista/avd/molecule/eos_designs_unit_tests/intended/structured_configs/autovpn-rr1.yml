@@ -7,19 +7,21 @@ router_bgp:
     default:
       ipv4_unicast: false
   maximum_paths:
-    paths: 4
-    ecmp: 4
+    paths: 16
   updates:
     wait_install: true
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   bgp_cluster_id: 192.168.31.1
   listen_ranges:
-  - prefix: 192.168.30.0/24
+  - prefix: 192.168.130.0/24
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
   peer_groups:
   - name: WAN-OVERLAY-PEERS
     type: wan
-    update_source: Loopback0
+    update_source: Dps1
     bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
@@ -28,7 +30,7 @@ router_bgp:
     route_reflector_client: true
   - name: RR-OVERLAY-PEERS
     type: wan
-    update_source: Loopback0
+    update_source: Dps1
     bfd: true
     send_community: all
     maximum_routes: 0
@@ -59,10 +61,23 @@ router_bgp:
         send:
           any: true
   neighbors:
-  - ip_address: 192.168.31.2
+  - ip_address: 192.168.131.2
     peer_group: RR-OVERLAY-PEERS
     peer: autovpn-rr2
     description: autovpn-rr2
+  vrfs:
+  - name: default
+    rd: 192.168.31.1:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -75,6 +90,9 @@ spanning_tree:
 vrfs:
 - name: MGMT
   ip_routing: false
+platform:
+  sfe:
+    data_plane_cpu_allocation_max: 2
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -91,10 +109,28 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.31.1/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.31.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 30
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ip_security:
   ike_policies:
   - name: AUTOVPN-IKE
-    local_id: 192.168.31.1
+    local_id: 192.168.131.1
   sa_policies:
   - name: AUTOVPN-SA
   profiles:
@@ -114,16 +150,23 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
   path_groups:
+  - name: MPLS
+    id: 100
   - name: INET
     id: 101
     local_interfaces:
     - name: Ethernet1
     static_peers:
-    - router_ip: 192.168.31.2
+    - router_ip: 192.168.131.2
       name: autovpn-rr2
       ipv4_addresses:
       - 10.8.8.8
+    ipsec_profile: AUTOVPN
+  - name: LTE
+    id: 102
     ipsec_profile: AUTOVPN
   peer_dynamic_source: stun
   load_balance_policies:
@@ -183,24 +226,22 @@ application_traffic_recognition:
   applications:
     ipv4_applications:
     - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+      src_prefix_set_name: CONTROL-PLANE-APP-SRC-PREFIXES
   field_sets:
     ipv4_prefixes:
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: CONTROL-PLANE-APP-SRC-PREFIXES
       prefix_values:
-      - 192.168.31.2/32
-      - 192.168.30.0/24
+      - 192.168.131.1/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  tcp_mss_ceiling:
-    ipv4: 1000
+  ip_address: 192.168.131.1/32
 vxlan_interface:
   Vxlan1:
     description: autovpn-rr1_VTEP
     vxlan:
       udp_port: 4789
-      source_interface: Loopback0
+      source_interface: Dps1
       vrfs:
       - name: default
         vni: 1

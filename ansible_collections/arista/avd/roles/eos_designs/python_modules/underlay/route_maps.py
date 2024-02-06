@@ -23,7 +23,7 @@ class RouteMapsMixin(UtilsMixin):
         - Route map for connected routes redistribution in BGP
         - Route map to filter peer AS in underlay
         """
-        if self.shared_utils.underlay_bgp is not True:
+        if not self.shared_utils.underlay_bgp and not self.shared_utils.wan_role:
             return None
 
         route_maps = []

@@ -8,7 +8,7 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
     listen_range_prefixes:
-      - 192.168.30.0/24
+      - 192.168.130.0/24
 
 wan_route_servers:
   # Testing having the interface configured with DHCP
@@ -38,6 +38,7 @@ default_node_types:
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.30.0/24
+    vtep_loopback_ipv4_pool: 192.168.130.0/24
     filter:
       # TODO find a way to not need this
       always_include_vrfs_in_tenants: [TenantA]
@@ -48,12 +49,14 @@ wan_edge:
         - name: Ethernet1
           wan_carrier: Comcast
           wan_circuit_id: 666
-          ip: dhcp
+          ip_address: dhcp
           set_default_route: true
 
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.31.0/24
+    vtep_loopback_ipv4_pool: 192.168.131.0/24
+    data_plane_cpu_allocation_max: 2
   nodes:
     - name: autovpn-rr1
       id: 1
@@ -61,7 +64,7 @@ wan_rr:
         - name: Ethernet1
           wan_carrier: ATT
           wan_circuit_id: 777
-          ip: dhcp
+          ip_address: dhcp
           set_default_route: true
     - name: autovpn-rr2
       id: 2
@@ -69,7 +72,7 @@ wan_rr:
         - name: Ethernet1
           wan_carrier: ATT
           wan_circuit_id: 888
-          ip: 10.8.8.8/31
+          ip_address: 10.8.8.8/31
           set_default_route: true
           peer_ip: 10.8.8.9
 
@@ -130,7 +133,7 @@ wan_virtual_topologies:
             - names: [INET]
               preference: alternate
 
-application_traffic_recognition:
+application_classification:
   application_profiles:
     - name: VIDEO
     - name: IT

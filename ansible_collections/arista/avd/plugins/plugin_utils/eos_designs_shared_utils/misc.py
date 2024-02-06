@@ -270,3 +270,28 @@ class MiscMixin:
     def default_interface_mtu(self: SharedUtils) -> int | None:
         default_default_interface_mtu = get(self.hostvars, "default_interface_mtu")
         return get(self.platform_settings, "default_interface_mtu", default=default_default_interface_mtu)
+
+    def get_switch_fact(self: SharedUtils, key, required=True):
+        """
+        Return facts from EosDesignsFacts.
+        We need to go via avd_switch_facts since PyAVD does not expose "switch.*" in get_avdfacts.
+        """
+        return get(self.hostvars, f"avd_switch_facts..{self.hostname}..switch..{key}", required=required, org_key=f"switch.{key}", separator="..")
+
+    @cached_property
+    def evpn_multicast(self: SharedUtils) -> bool:
+        return self.get_switch_fact("evpn_multicast", required=False) is True
+
+    @cached_property
+    def new_network_services_bgp_vrf_config(self: SharedUtils) -> bool:
+        """
+        Return whether or not to use the new behavior when generating
+        BGP VRF configuration
+
+        TODO: Change default to True in all cases in AVD 5.0.0 and remove in AVD 6.0.0
+        """
+        if self.uplink_type == "p2p-vrfs":
+            default_value = True
+        else:
+            default_value = False
+        return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)

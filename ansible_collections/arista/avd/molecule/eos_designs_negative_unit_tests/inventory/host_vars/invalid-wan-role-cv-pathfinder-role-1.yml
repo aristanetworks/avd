@@ -15,12 +15,16 @@ wan_path_groups:
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.0.0/24
+    vtep_loopback_ipv4_pool: 192.168.1.0/24
   nodes:
     - name: invalid-wan-role-cv-pathfinder-role-1
       # Trying to set edge as RR
       wan_role: server
       evpn_role: server
+      # If this is not set, the other error message is not triggered
+      data_plane_cpu_allocation_max: 1
       id: 1
+
 
 expected_error_message: >-
   'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'

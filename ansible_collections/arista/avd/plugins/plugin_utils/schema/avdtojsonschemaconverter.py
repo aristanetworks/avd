@@ -3,9 +3,51 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtodocumentationschemaconverter import get_deprecation
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.key_to_display_name import key_to_display_name
+
+
+def get_deprecation(schema: dict) -> tuple[str, str]:
+    """
+    Build deprecation details for documentation if deprecation is set on the schema element.
+
+    This function is also imported into avdtojsonschemaconverter
+
+    Returns
+    -------
+    deprecation_label : str | None
+        If deprecated or removed this is "deprecated" or "removed" . Should be added as label
+        on the key by the calling function.
+    deprecation : str | None
+        Deprecation or removal message which should be added to the key comment field by the calling function.
+    """
+    if (deprecation := schema.get("deprecation")) is None:
+        return None, None
+
+    if removed := deprecation.get("removed"):
+        removed_verb = "was"
+        state_verb = "was"
+        state = "removed"
+    else:
+        removed_verb = "will be"
+        state_verb = "is"
+        state = "deprecated"
+
+    output = [f"This key {state_verb} {state}."]
+
+    if (remove_in_version := deprecation.get("remove_in_version")) is not None:
+        output.append(f"Support {removed_verb} removed in AVD version {remove_in_version}.")
+    elif (remove_after_date := deprecation.get("remove_after_date")) is not None:
+        output.append(f"Support {removed_verb} removed in the first major AVD version released after {remove_after_date}.")
+    elif removed:
+        output.append(f"Support {removed_verb} removed in AVD.")
+
+    if (new_key := deprecation.get("new_key")) is not None:
+        output.append(f"Use <samp>{new_key}</samp> instead.")
+
+    if (url := deprecation.get("url")) is not None:
+        output.append(f"See [here]({url}) for details.")
+
+    return state, " ".join(output)
 
 
 class AvdToJsonSchemaConverter:
@@ -25,14 +67,10 @@ class AvdToJsonSchemaConverter:
     - Most options under str "format"
     """
 
-    def __init__(self, avdschema: AvdSchema):
-        self.avdschema = avdschema
+    def __init__(self):
         self.converters = {
             "display_name": self.convert_display_name,
             "description": self.convert_description,
-            # Keeping ref and def out until vscode yaml plugin works well with refs and unevaluatedProperties
-            # "$ref": self.convert_ref,
-            # "$defs": self.convert_defs,
             "type": self.convert_type,
             "max": self.convert_max,
             "min": self.convert_min,
@@ -47,15 +85,8 @@ class AvdToJsonSchemaConverter:
             # "dynamic_keys": self.convert_dynamic_keys,
         }
 
-    def convert_schema(self, schema: dict = None) -> dict:
+    def convert_schema(self, schema: dict) -> dict:
         output = {}
-        if schema is None:
-            # We are at the root level, so fetch the full schema
-            # Since vscode language server is not working well with "unevaluatedProperties",
-            # we have to stick with "additionalProperties" which does not work in combination with $ref.
-            # This means we have to fully expand the schema and not use $ref in jsonschema.
-            schema = self.avdschema.resolved_schema
-
         for word in schema:
             if word not in self.converters:
                 # Ignore unsupported keys
@@ -180,12 +211,3 @@ class AvdToJsonSchemaConverter:
                 }
 
         return {"description": description}
-
-    def convert_ref(self, ref: str, parent_schema: dict) -> dict:
-        jsonschema_ref = ref.replace("keys", "properties")
-        # TODO: Translate using paths set in avd schema store
-        jsonschema_ref = jsonschema_ref.replace("eos_cli_config_gen#", "../../eos_cli_config_gen/schemas/eos_cli_config_gen.jsonschema.json#")
-        return {"$ref": jsonschema_ref}
-
-    def convert_defs(self, dollardef: dict, parent_schema: dict) -> dict:
-        return self.__convert_keys(dollardef, parent_schema, "$defs", ignore_required=True)

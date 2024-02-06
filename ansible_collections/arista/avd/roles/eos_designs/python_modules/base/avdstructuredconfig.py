@@ -59,6 +59,14 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         )
         platform_bgp_update_wait_install = get(self.shared_utils.platform_settings, "feature_support.bgp_update_wait_install", default=True) is True
 
+        if self.shared_utils.wan_role is not None:
+            # Special defaults for WAN routers
+            default_maximum_paths = 16
+            default_ecmp = None
+        else:
+            default_maximum_paths = 4
+            default_ecmp = 4
+
         router_bgp = {
             "as": self.shared_utils.bgp_as,
             "router_id": self.shared_utils.router_id,
@@ -70,8 +78,8 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                 },
             },
             "maximum_paths": {
-                "paths": get(self._hostvars, "bgp_maximum_paths", default=4),
-                "ecmp": get(self._hostvars, "bgp_ecmp", default=4),
+                "paths": get(self._hostvars, "bgp_maximum_paths", default=default_maximum_paths),
+                "ecmp": get(self._hostvars, "bgp_ecmp", default=default_ecmp),
             },
         }
         if get(self._hostvars, "bgp_update_wait_for_convergence", default=False) is True and platform_bgp_update_wait_for_convergence:
@@ -204,7 +212,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             return None
 
         router_multicast = {"ipv4": {"routing": True}}
-        if get(self._hostvars, "switch.evpn_multicast") is True:
+        if self.shared_utils.evpn_multicast:
             router_multicast["ipv4"]["software_forwarding"] = "sfe"
 
         return router_multicast
@@ -509,16 +517,25 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
     @cached_property
     def platform(self) -> dict | None:
         """
-        platform set based on platform_settings.lag_hardware_only,
-        platform_settings.trident_forwarding_table_partition and switch.evpn_multicast facts
+        platform set based on:
+        * platform_settings.lag_hardware_only,
+        * platform_settings.trident_forwarding_table_partition and switch.evpn_multicast facts
+        * data_plane_cpu_allocation_max
         """
         platform = {}
         if (lag_hardware_only := get(self.shared_utils.platform_settings, "lag_hardware_only")) is not None:
             platform["sand"] = {"lag": {"hardware_only": lag_hardware_only}}
 
         trident_forwarding_table_partition = get(self.shared_utils.platform_settings, "trident_forwarding_table_partition")
-        if trident_forwarding_table_partition is not None and get(self._hostvars, "switch.evpn_multicast") is True:
+        if trident_forwarding_table_partition is not None and self.shared_utils.evpn_multicast:
             platform["trident"] = {"forwarding_table_partition": trident_forwarding_table_partition}
+
+        if (cpu_max_allocation := get(self.shared_utils.switch_data_combined, "data_plane_cpu_allocation_max")) is not None:
+            platform["sfe"] = {"data_plane_cpu_allocation_max": cpu_max_allocation}
+        elif self.shared_utils.wan_role == "server":
+            # For AutoVPN Route Reflectors and Pathfinders, running on CloudEOS, setting
+            # this value is required for the solution to work.
+            raise AristaAvdMissingVariableError("For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set")
 
         if platform:
             return platform

@@ -133,6 +133,13 @@ router_bgp:
   vrfs:
   - name: Common_VRF
     router_id: 172.16.110.5
+    eos_cli: 'comment
+
+      Comment created from raw_eos_cli under BGP for VRF Common_VRF
+
+      EOF
+
+      '
     rd: 172.16.110.5:1025
     route_targets:
       import:
@@ -145,13 +152,6 @@ router_bgp:
         - 1025:1025
     redistribute_routes:
     - source_protocol: connected
-    eos_cli: 'comment
-
-      Comment created from raw_eos_cli under BGP for VRF Common_VRF
-
-      EOF
-
-      '
   - name: vrf_with_loopbacks_dc1_pod1_only
     router_id: 172.16.110.5
     rd: 172.16.110.5:1102
