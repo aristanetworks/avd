@@ -11879,14 +11879,14 @@ keys:
               type: str
               description: 'Specify conditions for sending IGMP joins for host-proxy
 
-                    ''iif'' will enable igmp host-proxy to work in iif aware
+                ''iif'' will enable igmp host-proxy to work in iif aware
 
-                    ''all'' will enable igmp host-proxy to work in iif unaware mode
+                ''all'' will enable igmp host-proxy to work in iif unaware mode
 
-                    '
-                  valid_values:
-                  - all
-                  - iif
+                '
+              valid_values:
+              - all
+              - iif
   router_isis:
     type: dict
     keys:
