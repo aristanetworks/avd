@@ -79,6 +79,7 @@ class UtilsMixin:
                         "ptp": get(uplink, "ptp"),
                         "mac_security": get(uplink, "mac_security"),
                         "short_esi": get(uplink, "peer_short_esi"),
+                        "mlag": get(uplink, "peer_mlag"),
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
