@@ -71,55 +71,62 @@ keys:
         type: dict
         keys:
           key_id:
-            type: dict
-            keys:
-              id:
-                type: int
-                convert_types:
-                  - str
-                min: 0
-                max: 65535
-                description: Configure authentication keyid.
-              algorithm:
-                type: str
-                valid_values:
-                  - sha-1
-                  - sha-224
-                  - sha-256
-                  - sha-384
-                  - sha-512
-              key:
-                type: str
-                convert_types:
-                  - int
-                valid_values:
-                  - '0'
-                  - '7'
-                  - '8a'
-                description: Configure authentication key.
-              password:
-                type: str
-              rfc_5310:
-                type: dict
-                keys:
-                  key:
-                    type: str
-                    convert_types:
-                      - int
-                    valid_values:
-                      - '0'
-                      - '7'
-                      - '8a'
-                    description: Configure authentication key.
-                  password:
-                    type: str
-                  enabled:
-                    type: bool
-                  level_1:
-                    type: bool
-                  level_2:
-                    type: bool
-          key:
+            type: list
+            convert_types:
+              - dict
+            primary_key: id
+            items:
+              type: dict
+              keys:
+                id:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 65535
+                  description: Configure authentication key-id.
+                algorithm:
+                  type: str
+                  valid_values:
+                    - sha-1
+                    - sha-224
+                    - sha-256
+                    - sha-384
+                    - sha-512
+                key_type:
+                  type: str
+                  convert_types:
+                    - int
+                  valid_values:
+                    - '0'
+                    - '7'
+                    - '8a'
+                  description: Configure authentication key type.
+                key:
+                  type: str
+                  description: Password string.
+                rfc_5310:
+                  type: dict
+                  keys:
+                    key_type:
+                      type: str
+                      convert_types:
+                        - int
+                      valid_values:
+                        - '0'
+                        - '7'
+                        - '8a'
+                      description: Configure authentication key type.
+                    key:
+                      type: str
+                      description: Password string.
+                    levels:
+                      type: str
+                      valid_values:
+                        - "both"
+                        - "level-1"
+                        - "level-2"
+          key_type:
             type: str
             convert_types:
               - int
@@ -127,36 +134,28 @@ keys:
               - '0'
               - '7'
               - '8a'
-            description: Configure authentication key.
-          password:
+            description: Configure authentication key type.
+          key:
             type: str
+            description: Password string.
           mode:
             type: dict
             keys:
               md5:
                 type: dict
                 keys:
-                  enabled:
-                    type: bool
-                    description: Configure authentication at level-1 and level-2 both.
-                  level_1:
-                    type: bool
-                    description: Configure authentication at level-1.
-                  level_2:
-                    type: bool
-                    description: Configure authentication at level-2.
-                  rx_disabled:
-                    type: dict
-                    keys:
-                      enabled:
-                        type: bool
-                        description: Disable authentication on receive side at level-1 and level-2 both.
-                      level_1:
-                        type: bool
-                        description: Disable authentication on receive side at level-1.
-                      level_2:
-                        type: bool
-                        description: Disable authentication on receive side at level-2.
+                  levels:
+                    type: str
+                    valid_values:
+                      - "level-1"
+                      - "level-2"
+                      - "both"
+                  rx_disabled_levels:
+                    type: str
+                    valid_values:
+                      - "level-1"
+                      - "level-2"
+                      - "both"
               sha:
                 type: dict
                 $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/mode/keys/md5"
@@ -165,8 +164,9 @@ keys:
                     type: int
                     convert_types:
                       - str
+                    required: true
                     min: 0
-                    max: 6553
+                    max: 65535
               text:
                 $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/mode/keys/md5"
                 type: dict
@@ -176,8 +176,17 @@ keys:
                 keys:
                   profile:
                     type: str
+                    required: true
                   algorithm:
                     type: str
+                    required: true
+                    valid_values:
+                      - md5
+                      - sha-1
+                      - sha-224
+                      - sha-256
+                      - sha-384
+                      - sha-512
       advertise:
         type: dict
         keys:
