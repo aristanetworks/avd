@@ -159,11 +159,11 @@ class UtilsMixin:
         node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
         # Convert to new data models
         node_child_interfaces = convert_dicts(node_child_interfaces, primary_key="node", secondary_key="interfaces")
-        if member_interfaces := get_item(node_child_interfaces, "node", self.shared_utils.hostname, default={}).get("interfaces"):
+        if (node_data := get_item(node_child_interfaces, "node", self.shared_utils.hostname)) is not None and (
+            member_interfaces := node_data.get("interfaces")
+        ):
             # Port-channel
-            pc_id = get_item(node_child_interfaces, "node", self.shared_utils.hostname, default={}).get("channel_id")
-            if not pc_id:
-                pc_id = int("".join(re.findall(r"\d", member_interfaces[0])))
+            portchannel_id = node_data.get("channel_id", int("".join(re.findall(r"\d", member_interfaces[0]))))
 
             peer = get_item(
                 node_child_interfaces,
@@ -172,16 +172,13 @@ class UtilsMixin:
                 var_name=f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces",
             )
             peer_member_interfaces = peer["interfaces"]
-            if "channel_id" in peer:
-                peer_id = peer["channel_id"]
-            else:
-                peer_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
+            peer_id = peer.get("channel_id", int("".join(re.findall(r"\d", peer_member_interfaces[0]))))
 
             data.update(
                 {
-                    "interface": f"Port-Channel{pc_id}",
+                    "interface": f"Port-Channel{portchannel_id}",
                     "peer_interface": f"Port-Channel{peer_id}",
-                    "port_channel_id": pc_id,
+                    "port_channel_id": portchannel_id,
                     "port_channel_members": [
                         {
                             "interface": interface,
