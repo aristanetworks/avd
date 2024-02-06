@@ -4,10 +4,9 @@ USERNAME=$(whoami)
 AVD_COLLECTION_PATH="${HOME}/.ansible/collections/ansible_collections/arista/avd"
 CONTAINER_WORKSPACE=$(git rev-parse --show-toplevel)
 CONTAINER_WSF_AVD_PATH=${CONTAINER_WORKSPACE}/ansible_collections/arista/avd
-ANSIBLE_BINARY="${HOME}/.local/bin/ansible"
 
 # only install collections if ansible binary is missing
-if ! [ -f ${ANSIBLE_BINARY} ]; then
+if ! [ -z "$(command -v ansible)" ]; then
 
   # if collection is already mounted, it will be used to install the requirements
   # there is no need to install AVD collection for this case as it's already mounted to the correct location
@@ -38,7 +37,10 @@ if ! [ -f ${ANSIBLE_BINARY} ]; then
   fi
 
   # if ansible installation failed for whatever reason - raise an error
-  ansible --version &> /dev/null ||  (echo "ERROR: Failed to install Ansible and collections." >&2; exit 1)
+  if ! [ -z "$(command -v ansible)" ]; then
+    echo "ERROR: Failed to install Ansible and collections." >&2
+    exit 1
+  fi
 
 fi
 
