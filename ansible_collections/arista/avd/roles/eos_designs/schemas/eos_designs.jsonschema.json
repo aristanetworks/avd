@@ -3637,6 +3637,14 @@
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
               },
+              "routing_protocol": {
+                "type": "string",
+                "enum": [
+                  "ebgp"
+                ],
+                "description": "Enables deviation of the routing protocol used on this link from the fabric underlay default.\n- ebgp: Enforce plain IPv4 BGP peering",
+                "title": "Routing Protocol"
+              },
               "structured_config": {
                 "type": "object",
                 "description": "Custom structured config for interfaces\nNote! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.",
@@ -3871,6 +3879,14 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
+              },
+              "routing_protocol": {
+                "type": "string",
+                "enum": [
+                  "ebgp"
+                ],
+                "description": "Enables deviation of the routing protocol used on this link from the fabric underlay default.\n- ebgp: Enforce plain IPv4 BGP peering",
+                "title": "Routing Protocol"
               },
               "structured_config": {
                 "type": "object",
@@ -5158,6 +5174,14 @@
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
               },
+              "routing_protocol": {
+                "type": "string",
+                "enum": [
+                  "ebgp"
+                ],
+                "description": "Enables deviation of the routing protocol used on this link from the fabric underlay default.\n- ebgp: Enforce plain IPv4 BGP peering",
+                "title": "Routing Protocol"
+              },
               "structured_config": {
                 "type": "object",
                 "description": "Custom structured config for interfaces\nNote! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.",
@@ -5392,6 +5416,14 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
+              },
+              "routing_protocol": {
+                "type": "string",
+                "enum": [
+                  "ebgp"
+                ],
+                "description": "Enables deviation of the routing protocol used on this link from the fabric underlay default.\n- ebgp: Enforce plain IPv4 BGP peering",
+                "title": "Routing Protocol"
               },
               "structured_config": {
                 "type": "object",

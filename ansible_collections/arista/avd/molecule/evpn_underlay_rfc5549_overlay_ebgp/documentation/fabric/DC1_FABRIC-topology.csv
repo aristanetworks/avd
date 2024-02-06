@@ -5,6 +5,7 @@ l3leaf,DC1-BL1A,Ethernet3,spine,DC1-SPINE3,Ethernet6,True
 l3leaf,DC1-BL1A,Ethernet4,spine,DC1-SPINE4,Ethernet6,True
 l3leaf,DC1-BL1A,Ethernet9,l3leaf,DC1-BL1B,Ethernet9,True
 l3leaf,DC1-BL1A,Ethernet10,l3leaf,DC1-BL1B,Ethernet10,True
+l3leaf,DC1-BL1A,Ethernet11,other,outside-r1,other1,True
 l3leaf,DC1-BL1A,Ethernet4000,my_precious,MY-own-peer,Ethernet123,True
 l3leaf,DC1-BL1B,Ethernet1,spine,DC1-SPINE1,Ethernet7,True
 l3leaf,DC1-BL1B,Ethernet2,spine,DC1-SPINE2,Ethernet7,True
@@ -12,6 +13,7 @@ l3leaf,DC1-BL1B,Ethernet3,spine,DC1-SPINE3,Ethernet7,True
 l3leaf,DC1-BL1B,Ethernet4,spine,DC1-SPINE4,Ethernet7,True
 l3leaf,DC1-BL1B,Ethernet9,l3leaf,DC1-BL1A,Ethernet9,True
 l3leaf,DC1-BL1B,Ethernet10,l3leaf,DC1-BL1A,Ethernet10,True
+l3leaf,DC1-BL1B,Ethernet11,other,outside-r1,other2,True
 l3leaf,DC1-BL1B,Ethernet4000,my_precious,MY-own-peer,Ethernet123,True
 l2leaf,DC1-L2LEAF1A,Ethernet1,l3leaf,DC1-LEAF2A,Ethernet7,True
 l2leaf,DC1-L2LEAF1A,Ethernet2,l3leaf,DC1-LEAF2B,Ethernet7,True
