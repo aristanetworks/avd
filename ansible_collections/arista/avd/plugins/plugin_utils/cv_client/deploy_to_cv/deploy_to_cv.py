@@ -59,7 +59,7 @@ async def deploy_to_cv(
     Parameters:
         cloudvision: CloudVision instance to deploy to.
         workspace: CloudVision Workspace to create or use for the deployment. \
-            If the Workspace already exists, it must be in 'pending' state.
+            If the Workspace already exists, it must be in 'pending' state. \
             The `final_state` property will be inplace updated in the given CVWorkSpace object.
         change_control: CloudVision Change Control to create for the deployment. \
             It is not supported to reuse an existing Change Control, so the `id` field should not be set in the given CVChangeControl object. \

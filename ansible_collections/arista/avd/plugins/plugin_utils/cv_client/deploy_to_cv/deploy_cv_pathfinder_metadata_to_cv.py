@@ -200,7 +200,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     ```
     """
 
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: %s", len(cv_pathfinder_metadata))
+    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Got cv_pathfinder_metadata for %s devices", len(cv_pathfinder_metadata))
 
     if not cv_pathfinder_metadata:
         return
@@ -217,16 +217,36 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     pathfinders: list[CVPathfinderMetadata] = []
     for device_metadata in cv_pathfinder_metadata:
         if not device_metadata.device._exists_on_cv:
+            LOGGER.info(
+                "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since the device is not found on CV.",
+                device_metadata.device.serial_number,
+            )
             result.skipped_cv_pathfinder_metadata.append(device_metadata)
             continue
 
         device_role = get(device_metadata.metadata, "role")
 
         if device_role in ["edge", "transit region"]:
+            LOGGER.info(
+                "deploy_cv_pathfinder_metadata_to_cv: Adding metadata for device '%s' as role '%s'.",
+                device_metadata.device.serial_number,
+                device_role,
+            )
             edges.append(device_metadata)
         elif device_role == "pathfinder":
+            LOGGER.info(
+                "deploy_cv_pathfinder_metadata_to_cv: Adding metadata for device '%s' as role '%s'.",
+                device_metadata.device.serial_number,
+                device_role,
+            )
+            edges.append(device_metadata)
             pathfinders.append(device_metadata)
         else:
+            LOGGER.info(
+                "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since role '%s' is not supported.",
+                device_metadata.device.serial_number,
+                device_role,
+            )
             result.skipped_cv_pathfinder_metadata.append(device_metadata)
             continue
 

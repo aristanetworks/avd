@@ -86,5 +86,4 @@ class CVClient(
             context = True
 
         if self._channel is None:
-            # print(f"Connecting to {self._servers[0]}:{self._port}")
             self._channel = Channel(host=self._servers[0], port=self._port, ssl=context)

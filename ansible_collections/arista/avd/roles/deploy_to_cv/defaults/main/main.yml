@@ -8,8 +8,8 @@ avd_structured_config_file_format: "yml"
 cv_inventory_hostname: "cloudvision"
 
 # Manually override the CV server hostname and token if CloudVision is not part of the inventory.
-cv_server: "{{ hostvars[deploy_to_cv_inventory_host].ansible_host | arista.avd.default }}"
-cv_token: "{{ hostvars[deploy_to_cv_inventory_host].ansible_password | arista.avd.default }}"
+cv_server: "{{ hostvars[cv_inventory_hostname].ansible_host | arista.avd.default }}"
+cv_token: "{{ hostvars[cv_inventory_hostname].ansible_password | arista.avd.default }}"
 
 # Verify Certificate for CloudVision (Always use valid certificates for production)
 cv_verify_certs: true

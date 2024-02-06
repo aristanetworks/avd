@@ -94,7 +94,6 @@ class StudioMixin:
 
             # We only get a response if the inputs are set/changed in the workspace.
             if studio_inputs:
-                # print("Got studio inputs from the workspace")
                 return studio_inputs or default_value
         except Exception as e:
             raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
@@ -112,7 +111,6 @@ class StudioMixin:
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
-                # print("Studio inputs removed in the workspace")
                 # If we get here it means we got an entry with "removed: True" so no need to look further.
                 return default_value
 
@@ -141,7 +139,7 @@ class StudioMixin:
                     data=studio_inputs,
                     value=json.loads(response.value.inputs),
                 )
-            # print("Studio inputs from mainline", studio_inputs)
+
             return studio_inputs or default_value
         except Exception as e:
             raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
@@ -187,7 +185,6 @@ class StudioMixin:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
 
             # We only get a response if the inputs are set/changed in the workspace.
-            # print("Got studio inputs from the workspace")
             if response.value.inputs is not None:
                 return json.loads(response.value.inputs)
             else:
@@ -218,7 +215,6 @@ class StudioMixin:
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
-                # print("Studio inputs removed in the workspace")
                 # If we get here it means we got an entry with "removed: True" so no need to look further.
                 return default_value
 
@@ -238,7 +234,6 @@ class StudioMixin:
         client = InputsServiceStub(self._channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-            # print("Studio inputs from mainline", studio_inputs)
             if response.value.inputs is not None:
                 return json.loads(response.value.inputs)
             else:
