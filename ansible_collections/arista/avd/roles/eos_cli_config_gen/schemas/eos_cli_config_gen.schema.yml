@@ -11909,6 +11909,8 @@ keys:
                     type: bool
                   timeout:
                     type: int
+                    convert_types:
+                    - str
                     description: Number of seconds.
       authentication:
         type: dict
