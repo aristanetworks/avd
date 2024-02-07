@@ -5482,11 +5482,11 @@
             "maximum": 4094,
             "title": "Encapsulation Dot1Q VLAN"
           },
-          "set_default_route": {
+          "dhcp_accept_default_route": {
             "type": "boolean",
             "default": false,
-            "description": "Insert a default route to the `peer_ip` if `ip` is an ip address\nor configure to accept a default route from DHCP if `ip` is `dhcp`.\n\nAVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.",
-            "title": "Set Default Route"
+            "description": "Accept a default route from DHCP if `ip` is `dhcp`.",
+            "title": "DHCP Accept Default Route"
           },
           "enabled": {
             "type": "boolean",
@@ -5513,6 +5513,16 @@
             "type": "string",
             "description": "The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
             "title": "Peer IP"
+          },
+          "static_routes": {
+            "description": "Configure IPv4 static routes pointing to `peer_ip`.",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "description": "IPv4_network/Mask"
+            },
+            "title": "Static Routes"
           },
           "qos_profile": {
             "type": "string",

@@ -64,7 +64,7 @@ wan_edge:
         - name: Ethernet1
           wan_carrier: ATT
           wan_circuit_id: 666
-          set_default_route: true
+          dhcp_accept_default_route: true
           ip_address: dhcp
         - name: Ethernet2
           wan_carrier: Colt
@@ -83,7 +83,7 @@ wan_edge:
         - name: Ethernet1
           wan_carrier: Inmrasat
           wan_circuit_id: S512
-          set_default_route: true
+          dhcp_accept_default_route: true
           ip_address: dhcp
 
 wan_transit:
@@ -101,7 +101,7 @@ wan_transit:
         - name: Ethernet1.42
           wan_carrier: Comcast
           wan_circuit_id: 667
-          set_default_route: true
+          dhcp_accept_default_route: true
           ip_address: dhcp
         - name: Ethernet2.42
           encapsulation_dot1q_vlan: 666
@@ -121,7 +121,8 @@ wan_rr:
         - name: Ethernet1
           wan_carrier: Bouygues_Telecom
           wan_circuit_id: 777
-          set_default_route: true
+          static_routes:
+            - 0.0.0.0/0
           ip_address: 10.7.7.7/31
           peer_ip: 10.7.7.6
         - name: Ethernet2

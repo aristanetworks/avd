@@ -50,7 +50,7 @@ wan_edge:
           wan_carrier: Comcast
           wan_circuit_id: 666
           ip_address: dhcp
-          set_default_route: true
+          dhcp_accept_default_route: true
 
 wan_rr:
   defaults:
@@ -65,7 +65,7 @@ wan_rr:
           wan_carrier: ATT
           wan_circuit_id: 777
           ip_address: dhcp
-          set_default_route: true
+          dhcp_accept_default_route: true
     - name: autovpn-rr2
       id: 2
       l3_interfaces:
@@ -73,7 +73,8 @@ wan_rr:
           wan_carrier: ATT
           wan_circuit_id: 888
           ip_address: 10.8.8.8/31
-          set_default_route: true
+          static_routes:
+            - 0.0.0.0/0
           peer_ip: 10.8.8.9
 
 wan_path_groups:

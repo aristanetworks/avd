@@ -58,7 +58,7 @@ wan_edge:
         - name: Ethernet1
           wan_carrier: ATT
           wan_circuit_id: 666
-          set_default_route: true
+          dhcp_accept_default_route: true
           ip_address: dhcp
         - name: Ethernet2
           wan_carrier: Colt

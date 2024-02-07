@@ -22,43 +22,25 @@ class StaticRoutesMixin(UtilsMixin):
         Returns structured config for static_routes
 
         Consist of
-        - default route injected for l3interfaces when `set_default_route` is True
-          note that only VRF default is supported today.
+        - static_routes configured under node type l3 interfaces
         """
 
         static_routes = []
 
         for l3_interface in self.shared_utils.l3_interfaces:
+            if not (l3_interface_static_routes := get(l3_interface, "static_routes")):
+                continue
+
             interface_name = get(l3_interface, "name", required=True, org_key=f"<node_type_key>...[node={self.shared_utils.hostname}].l3_interfaces[].name]")
-            ip_address = get(
-                l3_interface,
-                "ip_address",
-                required=True,
-                org_key=f"{self.shared_utils.node_type_key_data['key']}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}.ip]",
-            )
-
-            # 'dhcp' is handled at the interface level
-            if ip_address == "dhcp":
-                continue
-
-            if not l3_interface.get("set_default_route", False):
-                # No route to inject
-                continue
 
             gateway = get(
                 l3_interface,
                 "peer_ip",
                 required=True,
-                org_key=f"Cannot set a default route for interface {interface_name} because 'peer_ip' is missing",
+                org_key=f"Cannot set a static_route route for interface {interface_name} because 'peer_ip' is missing",
             )
 
-            static_route = {
-                "destination_address_prefix": "0.0.0.0/0",
-                "gateway": gateway,
-            }
-
-            if static_route not in static_routes:
-                static_routes.append(static_route)
+            static_routes.extend({"destination_address_prefix": prefix, "gateway": gateway} for prefix in l3_interface_static_routes)
 
         if static_routes:
             return static_routes
