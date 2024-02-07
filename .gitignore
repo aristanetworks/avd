@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 .j2cache/
 *.log
+*.pickle
 
 # pyavd ignores
 python-avd/build/
@@ -39,3 +40,6 @@ ansible_collections/arista/avd/tests/.mypy_cache/
 
 # OSX
 *.DS_Store
+
+# Checksum of schemas
+*schema.sha1

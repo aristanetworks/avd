@@ -372,6 +372,33 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+      wan_rr_overlay_peers:
+        type: dict
+        documentation_options:
+          table: wan-bgp-peer-groups
+        description: 'PREVIEW: This key is currently not supported
+
+          Configuration options for the peer-group created to peer between
+
+          AutoVPN RRs or CV-Pathfinders.'
+        keys:
+          name:
+            type: str
+            default: WAN-RR-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: true
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
@@ -1480,6 +1507,18 @@ keys:
         min: 1
         max: 4093
         default: 3000
+  mlag_on_orphan_port_channel_downlink:
+    type: bool
+    documentation_options:
+      table: fabric-settings
+    description: 'If `true` (default) an MLAG ID will always be configured on a Port-Channel
+      downlink even if the downlink is only on one node in the MLAG pair.
+
+      If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed
+      to two MLAG switches.
+
+      Note the default value will change to `false` in AVD version 5.0'
+    default: true
   name_servers:
     documentation_options:
       table: management-settings
@@ -7769,6 +7808,14 @@ $defs:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in
             the final EOS configuration.
+        routing_protocol:
+          type: str
+          valid_values:
+          - ebgp
+          description: 'Enables deviation of the routing protocol used on this link
+            from the fabric underlay default.
+
+            - ebgp: Enforce plain IPv4 BGP peering'
         structured_config:
           type: dict
           documentation_options:
