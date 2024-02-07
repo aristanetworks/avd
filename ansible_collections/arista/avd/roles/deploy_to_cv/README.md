@@ -13,7 +13,7 @@ title: Ansible Collection Role deploy_to_cv
 !!! warning
     `arista.avd.deploy_to_cv` is in preview. Everything is subject to change.
 
-    The role will fail to run unless `deploy_to_cv_accept_preview` is set. Make sure to read this document before accepting.
+    The role will fail to run unless `deploy_to_cv_accept_preview` is set. Make sure to read this document before accepting. Especially the notes under [limitations](#limitations).
 
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
 
@@ -40,6 +40,20 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
 - It is not possible to authenticate with username/password.
 - Configuration deployment is based on the "Static Configuration Studio" which is still a Beta feature on CloudVision.
   - Make sure to enable "Studios - End-to-End Provisioning" under Settings, Features.
+
+## Roadmap
+
+This feature is still under "preview", so several planned features are not implemented yet.
+
+- Make all timeouts configurable. Current exposed settings have no effect.
+- Detect changes in configlets and only update when needed. (Depends on newer API)
+- Validate tag labels and values
+- Detect conflicting devices like using the same serial number or mac for more than one hostname.
+- Support waiting for change controls to complete before returning.
+- Support for assigning change control templates.
+- Add automatic testing.
+- Add required CloudVision versions once the APIs are generally available.
+- Update AVD examples.
 
 ## Example
 
@@ -76,6 +90,7 @@ All `cv_*` settings described below can be set either as inventory variables, gr
 #### Accept Preview
 
 Since the role is in preview and subject to change, it will require acceptance before using.
+Make sure to read this document before accepting. Especially the notes under [limitations](#limitations).
 
 ```yaml
 deploy_to_cv_accept_preview: true

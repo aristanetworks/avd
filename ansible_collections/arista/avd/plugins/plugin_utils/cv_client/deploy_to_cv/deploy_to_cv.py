@@ -74,7 +74,7 @@ async def deploy_to_cv(
             Otherwise the Workspace will be abandoned on any issue.
         strict_tags: If `True` other tags associated with the devices will get removed. \
             Otherwise other tags will be left as-is. \
-            TODO: Other Tags with the same label are always removed.
+            Other Tags with the same label are always removed.
 
     TODO: Consider implementing "strict configs".
           Very hard to implement since configs can now come from various studios and tag queries we have little control over.
@@ -97,7 +97,8 @@ async def deploy_to_cv(
             + In-place update workspace object.
         + On CV in "Inventory & Topology Studio" set/verify hostnames.
         + On CV in "Static Configlet Studio" upload configlets and assign to devices.
-            - TODO: Consider if we should create a hierarchy of configuration containers. For now a single folder "AVD".
+            - TODO: Consider if we should create a hierarchy of configuration containers.
+                    For now a single folder "AVD Configurations".
         + On CV add and assign device tags.
         + On CV add and assign interface tags.
         + On CV deploy studio inputs
