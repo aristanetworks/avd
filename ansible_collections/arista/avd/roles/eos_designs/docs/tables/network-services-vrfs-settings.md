@@ -17,6 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].address_families.[]") | String |  |  | Valid Values:<br>- <code>evpn</code><br>- <code>vpn-ipv4</code><br>- <code>vpn-ipv6</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<network_services_keys.name>.[].vrfs.[].description") | String |  |  |  | VRF description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf_vni</samp>](## "<network_services_keys.name>.[].vrfs.[].vrf_vni") | Integer |  |  | Min: 1<br>Max: 16777215 | Required if "vrf_id" is not set.<br>The VRF VNI range is not limited, but if vrf_id is not set, "vrf_vni" is used for calculating MLAG iBGP peering vlan id.<br>"vrf_vni" may also be used for VRF RD/RT ID. See "overlay_rd_type" and "overlay_rt_type" for details.<br>See "mlag_ibgp_peering_vrfs.base_vlan" for details.<br>If vrf_vni > 10000 make sure to adjust "mac_vrf_vni_base" accordingly to avoid overlap.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_vni</samp>](## "<network_services_keys.name>.[].vrfs.[].wan_vni") | Integer |  |  | Min: 1<br>Max: 255 | Required for VRFs carried over AutoVPN or CV Pathfinder WAN.<br><br>A VRF can have a different VNI in the Datacenters and in the WAN.<br>Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with<br>`wan_vni` set to `1`.<br>In addition either `vrf_id` or `vrf_vni` must be set to enforce consistant route-targets across domains.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf_id</samp>](## "<network_services_keys.name>.[].vrfs.[].vrf_id") | Integer |  |  |  | Required if "vrf_vni" is not set.<br>"vrf_id" is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.<br>"vrf_id" may also be used for VRF RD/RT ID. See "overlay_rd_type" and "overlay_rt_type" for details.<br>"vrf_id" is preferred over "vrf_vni" for MLAG iBGP peering vlan, see "mlag_ibgp_peering_vrfs.base_vlan" for details.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_override</samp>](## "<network_services_keys.name>.[].vrfs.[].rd_override") | String |  |  |  | By default, the VRF RD will be derived from the pattern defined in `overlay_rd_type`.<br>The rd_override allows us to override this value and statically define it.<br><br>rd_override supports two formats:<br>  - A single number will be used in the RD assigned number subfield (second part of the RD).<br>  - A full RD string with colon seperator which will override the full RD.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_override</samp>](## "<network_services_keys.name>.[].vrfs.[].rt_override") | String |  |  |  | By default, the VRF RT will be derived from the pattern defined in `overlay_rt_type`.<br>The rt_override allows us to override this value and statically define it.<br><br>rt_override supports two formats:<br>  - A single number will be used in the RT assigned number subfield (second part of the RT).<br>  - A full RT string with colon seperator which will override the full RT.<br> |
@@ -114,6 +115,14 @@
             # See "mlag_ibgp_peering_vrfs.base_vlan" for details.
             # If vrf_vni > 10000 make sure to adjust "mac_vrf_vni_base" accordingly to avoid overlap.
             vrf_vni: <int; 1-16777215>
+
+            # Required for VRFs carried over AutoVPN or CV Pathfinder WAN.
+            #
+            # A VRF can have a different VNI in the Datacenters and in the WAN.
+            # Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with
+            # `wan_vni` set to `1`.
+            # In addition either `vrf_id` or `vrf_vni` must be set to enforce consistant route-targets across domains.
+            wan_vni: <int; 1-255>
 
             # Required if "vrf_vni" is not set.
             # "vrf_id" is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.

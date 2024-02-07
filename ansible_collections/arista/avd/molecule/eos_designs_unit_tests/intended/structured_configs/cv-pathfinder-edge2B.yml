@@ -64,21 +64,21 @@ router_bgp:
     - ip_address: 172.17.0.8
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf2A_Ethernet2.100_vrf_IT
+      description: site-ha-enabled-leaf2A_Ethernet2.1000_vrf_IT
     - ip_address: 172.17.0.10
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf2B_Ethernet2.100_vrf_IT
-    rd: 192.168.42.3:100
+      description: site-ha-enabled-leaf2B_Ethernet2.1000_vrf_IT
+    rd: 192.168.42.3:1000
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - 100:100
+        - 1000:1000
       export:
       - address_family: evpn
         route_targets:
-        - 100:100
+        - 1000:1000
     redistribute_routes:
     - source_protocol: connected
   - name: PROD
@@ -87,21 +87,44 @@ router_bgp:
     - ip_address: 172.17.0.8
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf2A_Ethernet2.42_vrf_PROD
+      description: site-ha-enabled-leaf2A_Ethernet2.142_vrf_PROD
     - ip_address: 172.17.0.10
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf2B_Ethernet2.42_vrf_PROD
-    rd: 192.168.42.3:42
+      description: site-ha-enabled-leaf2B_Ethernet2.142_vrf_PROD
+    rd: 192.168.42.3:142
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '42:42'
+        - 142:142
       export:
       - address_family: evpn
         route_targets:
-        - '42:42'
+        - 142:142
+    redistribute_routes:
+    - source_protocol: connected
+  - name: ATTRACTED-VRF-FROM-UPLINK
+    router_id: 192.168.42.3
+    neighbors:
+    - ip_address: 172.17.0.8
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65199'
+      description: site-ha-enabled-leaf2A_Ethernet2.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+    - ip_address: 172.17.0.10
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65199'
+      description: site-ha-enabled-leaf2B_Ethernet2.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+    rd: 192.168.42.3:666
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 666:666
+      export:
+      - address_family: evpn
+        route_targets:
+        - 666:666
     redistribute_routes:
     - source_protocol: connected
   - name: default
@@ -156,6 +179,9 @@ vrfs:
 - name: PROD
   tenant: TenantA
   ip_routing: true
+- name: ATTRACTED-VRF-FROM-UPLINK
+  tenant: TenantC
+  ip_routing: true
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -172,26 +198,37 @@ ethernet_interfaces:
   ip_address: 172.17.0.9/31
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
-- name: Ethernet52.100
+- name: Ethernet52.1000
   peer: site-ha-enabled-leaf2A
-  peer_interface: Ethernet2.100
+  peer_interface: Ethernet2.1000
   peer_type: l3leaf
   vrf: IT
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet2.100_vrf_IT
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet2.1000_vrf_IT
   shutdown: false
   type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.9/31
-- name: Ethernet52.42
+- name: Ethernet52.142
   peer: site-ha-enabled-leaf2A
-  peer_interface: Ethernet2.42
+  peer_interface: Ethernet2.142
   peer_type: l3leaf
   vrf: PROD
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet2.42_vrf_PROD
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet2.142_vrf_PROD
   shutdown: false
   type: l3dot1q
-  encapsulation_dot1q_vlan: 42
+  encapsulation_dot1q_vlan: 142
+  mtu: 9214
+  ip_address: 172.17.0.9/31
+- name: Ethernet52.666
+  peer: site-ha-enabled-leaf2A
+  peer_interface: Ethernet2.666
+  peer_type: l3leaf
+  vrf: ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet2.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.9/31
 - name: Ethernet53
@@ -205,26 +242,37 @@ ethernet_interfaces:
   ip_address: 172.17.0.11/31
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
-- name: Ethernet53.100
+- name: Ethernet53.1000
   peer: site-ha-enabled-leaf2B
-  peer_interface: Ethernet2.100
+  peer_interface: Ethernet2.1000
   peer_type: l3leaf
   vrf: IT
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet2.100_vrf_IT
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet2.1000_vrf_IT
   shutdown: false
   type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.11/31
-- name: Ethernet53.42
+- name: Ethernet53.142
   peer: site-ha-enabled-leaf2B
-  peer_interface: Ethernet2.42
+  peer_interface: Ethernet2.142
   peer_type: l3leaf
   vrf: PROD
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet2.42_vrf_PROD
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet2.142_vrf_PROD
   shutdown: false
   type: l3dot1q
-  encapsulation_dot1q_vlan: 42
+  encapsulation_dot1q_vlan: 142
+  mtu: 9214
+  ip_address: 172.17.0.11/31
+- name: Ethernet53.666
+  peer: site-ha-enabled-leaf2B
+  peer_interface: Ethernet2.666
+  peer_type: l3leaf
+  vrf: ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet2.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.11/31
 - name: Ethernet2
@@ -612,6 +660,8 @@ vxlan_interface:
         vni: 100
       - name: PROD
         vni: 42
+      - name: ATTRACTED-VRF-FROM-UPLINK
+        vni: 166
 metadata:
   cv_tags:
     device_tags:

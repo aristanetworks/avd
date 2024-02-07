@@ -559,7 +559,7 @@ metadata:
         - name: MPLS
           preference: alternate
     - name: PROD
-      vni: 42
+      vni: 142
       avts:
       - constraints:
           jitter: 42
@@ -593,7 +593,7 @@ metadata:
         - name: MPLS
           preference: alternate
     - name: IT
-      vni: 100
+      vni: 1000
       avts:
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO

@@ -100,14 +100,18 @@ tenants:
     vrfs:
       - name: default
         vrf_id: 1
+        # Testing VRF default without wan_vni set to check it is inserted and
+        # does not explode
       - name: PROD
         vrf_id: 42
+        wan_vni: 42
         svis:
           - id: 100
             name: VLAN100
             ip_address_virtual: 10.0.100.1/24
       - name: IT
         vrf_id: 100
+        wan_vni: 100
     l2vlans:
       - id: 101
         name: VLAN101

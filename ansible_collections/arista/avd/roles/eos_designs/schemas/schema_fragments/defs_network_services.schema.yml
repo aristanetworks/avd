@@ -280,6 +280,19 @@ $defs:
                   "vrf_vni" may also be used for VRF RD/RT ID. See "overlay_rd_type" and "overlay_rt_type" for details.
                   See "mlag_ibgp_peering_vrfs.base_vlan" for details.
                   If vrf_vni > 10000 make sure to adjust "mac_vrf_vni_base" accordingly to avoid overlap.
+              wan_vni:
+                type: int
+                convert_types:
+                  - str
+                min: 1
+                max: 255
+                description: |
+                  Required for VRFs carried over AutoVPN or CV Pathfinder WAN.
+
+                  A VRF can have a different VNI in the Datacenters and in the WAN.
+                  Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with
+                  `wan_vni` set to `1`.
+                  In addition either `vrf_id` or `vrf_vni` must be set to enforce consistant route-targets across domains.
               vrf_id:
                 type: int
                 convert_types:

@@ -132,10 +132,29 @@ class VxlanInterfaceMixin(UtilsMixin):
             if "evpn" not in vrf.get("address_families", ["evpn"]):
                 return
 
-            vni = default(
-                vrf.get("vrf_vni"),
-                vrf.get("vrf_id"),
-            )
+            if self.shared_utils.is_wan_router:
+                vni = get(
+                    vrf,
+                    "wan_vni",
+                    required=True,
+                    # TODO  when adding VRF filter, change the error message
+                    # org_key=(
+                    #     f"VRF {vrf_name} in tenant {tenant['name']} does not have a `wan_vni` defined. "
+                    #     "If this VRF was not intended to be extended over WAN, set 'address_families: []' under the VRF definition."
+                    #     "If not intended on the WAN router, use the VRF filter"
+                    # )
+                    org_key=(
+                        f"VRF {vrf_name} in tenant {tenant['name']} does not have a `wan_vni` defined. "
+                        "If this VRF was not intended to be extended over WAN, set 'address_families: []' under the VRF definition."
+                    ),
+                )
+            else:
+                vni = default(
+                    vrf.get("vrf_vni"),
+                    vrf.get("vrf_id"),
+                )
+
+            # NOTE: this can never be None here, it would be caught previously in the code
             id = default(
                 vrf.get("vrf_id"),
                 vrf.get("vrf_vni"),
@@ -144,10 +163,6 @@ class VxlanInterfaceMixin(UtilsMixin):
                 # Silently ignore if we cannot set a VNI
                 # This is legacy behavior so we will leave stricter enforcement to the schema
                 vrf_data = {"name": vrf_name, "vni": vni}
-
-                # TODO need to handle this better from a design point of view
-                if self.shared_utils.is_wan_router and vni > 255:
-                    raise AristaAvdError("VNI for WAN with DPS use cases cannot be > 255, got '{vni}' for vrf '{vrf_name}' in tenant '{tenant['name']}'.")
 
                 if get(vrf, "_evpn_l3_multicast_enabled"):
                     underlay_l3_multicast_group_ipv4_pool = get(

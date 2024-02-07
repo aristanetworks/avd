@@ -6,6 +6,7 @@ from __future__ import annotations
 import ipaddress
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item
@@ -120,7 +121,7 @@ class UtilsMixin:
             redistribute_in_overlay = False
 
         return {
-            "static_routes": list(vrf_default_ipv4_static_routes),
+            "static_routes": natural_sort(vrf_default_ipv4_static_routes),
             "redistribute_in_underlay": redistribute_in_underlay,
             "redistribute_in_overlay": redistribute_in_overlay,
         }
