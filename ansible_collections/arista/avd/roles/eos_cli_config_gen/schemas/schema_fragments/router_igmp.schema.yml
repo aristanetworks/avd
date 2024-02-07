@@ -23,9 +23,9 @@ keys:
         type: bool
       vrfs:
         type: list
-        description: |
-          Configure IGMP in a VRF
-          default vrf is not supported in EOS, please see keys directly under 'router_igmp'
+        description: |-
+          Configure IGMP in a VRF.
+          VRF 'default' is not supported in EOS, please see keys directly under 'router_igmp'.
         primary_key: name
         convert_types:
           - dict
