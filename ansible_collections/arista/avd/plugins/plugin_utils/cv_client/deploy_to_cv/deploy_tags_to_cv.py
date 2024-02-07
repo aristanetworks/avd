@@ -28,11 +28,13 @@ async def deploy_tags_to_cv(
     If "strict" == True:
       - Any other tag associations will be removed from the devices.
       - TODO: Remove deassociated tags if they are no longer associated with any device.
+    Else:
+      - Always remove other tag assignments with the same label as given tags.
+      - TODO: Remove deassociated tags if they are no longer associated with any device.
 
     TODO: Refactor CVDeviceTag / CVInterfaceTag to produce a stable hash so we can use it with set() methods.
           Then improve logic below using sets.
 
-    TODO: Always remove other tag assignments with the same label as given tags.
 
     In-place updates skipped_tags, deployed_tags, removed_tags, warnings so they can be given directly from the results object.
     """
@@ -99,9 +101,7 @@ async def deploy_tags_to_cv(
     # Move all todo to deployed.
     deployed_tags.extend(todo_tags)
 
-    # If we don't need to unassign any tags, we are done.
-    if not strict:
-        return
+    # Now we start removing assignments depending on strict_tags or not.
 
     # Build set of tuples for deployed tags.
     deployed_tags_tuples = {
@@ -111,11 +111,25 @@ async def deploy_tags_to_cv(
     # Build set of serial numbers for devices
     devices_by_serial_number = {tag.device.serial_number: tag.device for tag in deployed_tags if tag.device is not None}
 
-    assignments_to_unassign = [
-        (label, value, device_serial_number, interface)
-        for label, value, device_serial_number, interface in existing_assignments
-        if device_serial_number in devices_by_serial_number and (label, value, device_serial_number, interface) not in deployed_tags_tuples
-    ]
+    # If strict, we remove any assignments not specified in the inputs.
+    # If not strict, we remove any assignments with the same labels but not sepcified in the inputs.
+    if strict:
+        assignments_to_unassign = [
+            (label, value, device_serial_number, interface)
+            for label, value, device_serial_number, interface in existing_assignments
+            if device_serial_number in devices_by_serial_number and (label, value, device_serial_number, interface) not in deployed_tags_tuples
+        ]
+    else:
+        # Build set of tag labels we have assigned so we know which ones to remove.
+        deployed_tags_labels = {tag_tuple[0] for tag_tuple in deployed_tags_tuples}
+        assignments_to_unassign = [
+            (label, value, device_serial_number, interface)
+            for label, value, device_serial_number, interface in existing_assignments
+            if device_serial_number in devices_by_serial_number
+            and label in deployed_tags_labels
+            and (label, value, device_serial_number, interface) not in deployed_tags_tuples
+        ]
+
     if assignments_to_unassign:
         LOGGER.info("deploy_tags_to_cv: Deleting %s tag assignments", len(assignments_to_unassign))
         await cv_client.delete_tag_assignments(workspace_id=workspace.id, tag_assignments=assignments_to_unassign, element_type=tag_type)

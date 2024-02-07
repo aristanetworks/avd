@@ -13,7 +13,7 @@ title: Ansible Collection Role deploy_to_cv
 !!! warning
     `arista.avd.deploy_to_cv` is in preview. Everything is subject to change.
 
-    The role will fail to run unless `deploy_to_cv_accept_preview` is set.
+    The role will fail to run unless `deploy_to_cv_accept_preview` is set. Make sure to read this document before accepting.
 
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
 
@@ -134,7 +134,7 @@ By default this role will deploy configurations for all hosts targeted by the An
       ansible.builtin.import_role:
         name: arista.avd.deploy_to_cv
       vars:
-        cv_submit_workspace: false
+        deploy_to_cv_accept_preview: true
 ```
 
 This playbook targets the Ansible inventory group "FABRIC", so all devices under this group will be used for the deployment.
@@ -173,8 +173,16 @@ By default the role will
 
 1. Create a workspace.
 2. Push all configurations and tags.
-3. Build and submit the Workspace.
-4. Leave any created Change Control in `pending approval` state.
+3. Unassign tags
+4. Build and submit the Workspace.
+5. Leave any created Change Control in `pending approval` state.
+
+!!! warning
+    When deploying CloudVision Tag assignments, the builtin behavior is to unassign any other tags
+    with the same labels but different values. This is not configurable.
+
+    It is possible to assign _any_ other tag from the devices by setting `cv_strict_tags: true`.
+    This may remove tags used for studios and other things, so this is *not* recommended.
 
 These settings allow modifying the default behavior as needed. The values below are the default values.
 
