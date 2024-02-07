@@ -10,7 +10,7 @@
     | [<samp>router_igmp</samp>](## "router_igmp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;host_proxy_match_mroute</samp>](## "router_igmp.host_proxy_match_mroute") | String |  |  | Valid Values:<br>- <code>all</code><br>- <code>iif</code> | Specify conditions for sending IGMP joins for host-proxy<br>'iif' will enable igmp host-proxy to work in iif aware<br>'all' will enable igmp host-proxy to work in iif unaware mode<br> |
     | [<samp>&nbsp;&nbsp;ssm_aware</samp>](## "router_igmp.ssm_aware") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_igmp.vrfs") | List, items: Dictionary |  |  |  | Configure IGMP in a VRF |
+    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_igmp.vrfs") | List, items: Dictionary |  |  |  | Configure IGMP in a VRF<br>default vrf is not supported in EOS, please see keys directly under 'router_igmp'<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_igmp.vrfs.[].name") | String | Required, Unique |  |  | VRF name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_proxy_match_mroute</samp>](## "router_igmp.vrfs.[].host_proxy_match_mroute") | String |  |  | Valid Values:<br>- <code>all</code><br>- <code>iif</code> | Specify conditions for sending IGMP joins for host-proxy<br>'iif' will enable igmp host-proxy to work in iif aware<br>'all' will enable igmp host-proxy to work in iif unaware mode<br> |
 
@@ -26,6 +26,7 @@
       ssm_aware: <bool>
 
       # Configure IGMP in a VRF
+      # default vrf is not supported in EOS, please see keys directly under 'router_igmp'
       vrfs:
 
           # VRF name

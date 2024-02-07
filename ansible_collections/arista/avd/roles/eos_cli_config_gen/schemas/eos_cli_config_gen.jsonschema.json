@@ -20360,7 +20360,7 @@
         },
         "vrfs": {
           "type": "array",
-          "description": "Configure IGMP in a VRF",
+          "description": "Configure IGMP in a VRF\ndefault vrf is not supported in EOS, please see keys directly under 'router_igmp'\n",
           "items": {
             "type": "object",
             "properties": {
