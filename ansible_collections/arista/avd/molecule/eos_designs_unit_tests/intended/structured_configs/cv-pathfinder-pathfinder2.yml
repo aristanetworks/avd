@@ -464,10 +464,12 @@ metadata:
     interfaces:
     - name: Ethernet1
       carrier: SFR
+      circuit_id: '999'
       pathgroup: INET
       public_ip: 10.9.9.9
     - name: Ethernet2
       carrier: ATT-MPLS
+      circuit_id: '10999'
       pathgroup: MPLS
       public_ip: 172.19.9.9
     pathgroups:

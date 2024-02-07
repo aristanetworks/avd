@@ -100,7 +100,6 @@ wan_transit:
       l3_interfaces:
         - name: Ethernet1.42
           wan_carrier: Comcast
-          wan_circuit_id: 667
           set_default_route: true
           ip_address: dhcp
         - name: Ethernet2.42
