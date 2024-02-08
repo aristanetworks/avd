@@ -106,7 +106,7 @@ vlan_interfaces:
   ipv6_address: 2a00:106::3/64
   ipv6_virtual_router_addresses:
   - 2a00:106::1
-  ip_attached_host_route_export:
+  ipv6_attached_host_route_export:
     enabled: true
     distance: 19
 - name: Vlan107
@@ -118,7 +118,7 @@ vlan_interfaces:
   ipv6_address: 2a00:107::3/64
   ipv6_virtual_router_addresses:
   - 2a00:107::1
-  ip_attached_host_route_export:
+  ipv6_attached_host_route_export:
     enabled: true
     distance: 19
 port_channel_interfaces:

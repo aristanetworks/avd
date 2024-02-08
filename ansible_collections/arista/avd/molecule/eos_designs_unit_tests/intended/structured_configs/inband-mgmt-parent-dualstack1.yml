@@ -160,6 +160,9 @@ vlan_interfaces:
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ipv6_attached_host_route_export:
+    enabled: true
+    distance: 19
 port_channel_interfaces:
 - name: Port-Channel11
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Po11

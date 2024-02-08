@@ -262,13 +262,17 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         ipv6_address = None
         v6_gateway = None
         ipv6_enable = None
+        v6_attached_host_export = None
+        v4_attached_host_export = None
 
         if subnet is not None:
             network = ip_network(subnet, strict=False)
+            v4_attached_host_export = {"enabled": True, "distance": 19}
 
         if ipv6_subnet is not None:
             ipv6_enable = True
             v6_network = ip_network(ipv6_subnet, strict=False)
+            v6_attached_host_export = {"enabled": True, "distance": 19}
 
         if self.shared_utils.mlag_role == "secondary":
             if network:
@@ -301,9 +305,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                 "ipv6_enable": ipv6_enable,
                 "ipv6_address": ipv6_address,
                 "ipv6_virtual_router_addresses": [v6_gateway],
-                "ip_attached_host_route_export": {
-                    "enabled": True,
-                    "distance": 19,
-                },
+                "ip_attached_host_route_export": v4_attached_host_export,
+                "ipv6_attached_host_route_export": v6_attached_host_export,
             }
         )
