@@ -69,8 +69,6 @@ router_isis:
         timeout: 10
   authentication:
     both:
-      key_type: 0
-      key: password
       key_id:
         - id: 2
           algorithm: sha-512

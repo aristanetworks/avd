@@ -322,6 +322,7 @@ router isis EVPN_UNDERLAY
    timers local-convergence-delay 15000 protected-prefixes
    advertise passive-only
    authentication mode sha key-id 4
+   authentication key 0 password
    !
    address-family ipv4 unicast
       maximum-paths 2

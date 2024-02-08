@@ -191,9 +191,6 @@ router isis {{ router_isis.instance }}
 {%     endif %}
 {%     if router_isis.authentication is arista.avd.defined %}
 {%         if router_isis.authentication.both is arista.avd.defined %}
-{%             if router_isis.authentication.both.key_type is arista.avd.defined and router_isis.authentication.both.key is arista.avd.defined %}
-   authentication key {{ router_isis.authentication.both.key_type }} {{ router_isis.authentication.both.key }}
-{%             endif %}
 {%             if router_isis.authentication.both.key_id is arista.avd.defined %}
 {%                 for auth_key_id in router_isis.authentication.both.key_id %}
 {%                     if auth_key_id.id is arista.avd.defined and auth_key_id.algorithm is arista.avd.defined %}
@@ -209,9 +206,6 @@ router isis {{ router_isis.instance }}
 {%             endif %}
 {%         endif %}
 {%         if router_isis.authentication.level_1 is arista.avd.defined %}
-{%             if router_isis.authentication.level_1.key_type is arista.avd.defined and router_isis.authentication.level_1.key is arista.avd.defined %}
-   authentication key {{ router_isis.authentication.level_1.key_type }} {{ router_isis.authentication.level_1.key }} level-1
-{%             endif %}
 {%             if router_isis.authentication.level_1.key_id is arista.avd.defined %}
 {%                 set both_key_id = [] %}
 {%                 if router_isis.authentication.both.key_id is arista.avd.defined %}
@@ -233,9 +227,6 @@ router isis {{ router_isis.instance }}
 {%             endif %}
 {%         endif %}
 {%         if router_isis.authentication.level_2 is arista.avd.defined %}
-{%             if router_isis.authentication.level_2.key_type is arista.avd.defined and router_isis.authentication.level_2.key is arista.avd.defined %}
-   authentication key {{ router_isis.authentication.level_2.key_type }} {{ router_isis.authentication.level_2.key }} level-2
-{%             endif %}
 {%             if router_isis.authentication.level_2.key_id is arista.avd.defined %}
 {%                 set both_key_id = [] %}
 {%                 if router_isis.authentication.both.key_id is arista.avd.defined %}
@@ -254,6 +245,16 @@ router isis {{ router_isis.instance }}
 {%                         endif %}
 {%                     endif %}
 {%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%         if router_isis.authentication.both.key_type is arista.avd.defined and router_isis.authentication.both.key is arista.avd.defined %}
+   authentication key {{ router_isis.authentication.both.key_type }} {{ router_isis.authentication.both.key }}
+{%         else %}
+{%             if router_isis.authentication.level_1.key_type is arista.avd.defined and router_isis.authentication.level_1.key is arista.avd.defined %}
+   authentication key {{ router_isis.authentication.level_1.key_type }} {{ router_isis.authentication.level_1.key }} level-1
+{%             endif %}
+{%             if router_isis.authentication.level_2.key_type is arista.avd.defined and router_isis.authentication.level_2.key is arista.avd.defined %}
+   authentication key {{ router_isis.authentication.level_2.key_type }} {{ router_isis.authentication.level_2.key }} level-2
 {%             endif %}
 {%         endif %}
 {%     endif %}

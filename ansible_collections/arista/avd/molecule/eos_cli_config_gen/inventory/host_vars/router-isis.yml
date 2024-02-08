@@ -18,13 +18,19 @@ router_isis:
     enabled: true
   authentication:
     both:
+      key_type: 0
+      key: password
       mode: sha
       sha:
         key_id: 4
     level_1:
+      key_type: 0
+      key: password
       mode: md5
       rx_disabled: true
     level_2:
+      key_type: 0
+      key: password
       mode: sha
       sha:
         key_id: 2
