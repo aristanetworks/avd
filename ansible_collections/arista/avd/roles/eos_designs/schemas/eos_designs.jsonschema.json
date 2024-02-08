@@ -5885,7 +5885,7 @@
           "enable_wan_acls": {
             "type": "boolean",
             "default": true,
-            "description": "Enable this to apply recommended acls on the pathfinder and edge device's wan interfaces.\nThis can be overriden using the structured_config.",
+            "description": "Enable this to apply recommended ACLs on the device WAN interfaces.",
             "title": "Enable Wan Acls"
           },
           "raw_eos_cli": {

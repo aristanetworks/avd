@@ -7639,10 +7639,7 @@ $defs:
         enable_wan_acls:
           type: bool
           default: true
-          description: 'Enable this to apply recommended acls on the pathfinder and
-            edge device''s wan interfaces.
-
-            This can be overriden using the structured_config.'
+          description: Enable this to apply recommended ACLs on the device WAN interfaces.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS

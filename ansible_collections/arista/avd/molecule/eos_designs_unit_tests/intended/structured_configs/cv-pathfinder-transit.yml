@@ -136,15 +136,15 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ip_access_lists:
-- name: PUBLIC_TRANSPORT_IN
+- name: WAN_TRANSPORT_Ethernet2.42_IN
   entries:
   - sequence: 10
     remark: '### Allow BGP ###'
   - sequence: 20
     action: permit
     protocol: tcp
-    source: 172.16.6.6/31
-    destination: any
+    source: any
+    destination: 172.16.6.6/31
     destination_ports_match: eq
     destination_ports:
     - bgp
@@ -153,15 +153,15 @@ ip_access_lists:
   - sequence: 40
     action: permit
     protocol: gre
-    source: 172.16.6.6/31
-    destination: any
+    source: any
+    destination: 172.16.6.6/31
   - sequence: 50
     remark: '### Allow IPSEC ###'
   - sequence: 60
     action: permit
     protocol: udp
-    source: 172.16.6.6/31
-    destination: any
+    source: any
+    destination: 172.16.6.6/31
     destination_ports_match: eq
     destination_ports:
     - isakmp
@@ -173,26 +173,26 @@ ip_access_lists:
     action: permit
     protocol: icmp
     icmp_type: echo-reply
-    source: 172.16.6.6/31
-    destination: any
+    source: any
+    destination: 172.16.6.6/31
   - sequence: 90
     action: permit
     protocol: icmp
     icmp_type: unreachable
-    source: 172.16.6.6/31
-    destination: any
+    source: any
+    destination: 172.16.6.6/31
   - sequence: 100
     action: permit
     protocol: icmp
     icmp_type: time-exceeded
-    source: 172.16.6.6/31
-    destination: any
+    source: any
+    destination: 172.16.6.6/31
   - sequence: 110
     action: deny
     protocol: ip
     source: any
     destination: any
-- name: PUBLIC_TRANSPORT_OUT
+- name: WAN_TRANSPORT_OUT
   entries:
   - sequence: 10
     remark: ' ### Blocking RFC 1918 prefixes ###'
@@ -224,8 +224,7 @@ ethernet_interfaces:
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
   dhcp_client_accept_default_route: true
-  access_group_in: PUBLIC_TRANSPORT_IN
-  access_group_out: PUBLIC_TRANSPORT_OUT
+  access_group_out: WAN_TRANSPORT_OUT
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet2.42
@@ -234,8 +233,8 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 666
-  access_group_in: PUBLIC_TRANSPORT_IN
-  access_group_out: PUBLIC_TRANSPORT_OUT
+  access_group_in: WAN_TRANSPORT_Ethernet2.42_IN
+  access_group_out: WAN_TRANSPORT_OUT
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet1

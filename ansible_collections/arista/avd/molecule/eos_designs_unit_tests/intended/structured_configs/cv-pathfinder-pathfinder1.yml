@@ -123,15 +123,15 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ip_access_lists:
-- name: PUBLIC_TRANSPORT_IN
+- name: WAN_TRANSPORT_Ethernet1_IN
   entries:
   - sequence: 10
     remark: '### Allow BGP ###'
   - sequence: 20
     action: permit
     protocol: tcp
-    source: 10.8.8.8/31
-    destination: any
+    source: any
+    destination: 10.8.8.8/31
     destination_ports_match: eq
     destination_ports:
     - bgp
@@ -140,15 +140,15 @@ ip_access_lists:
   - sequence: 40
     action: permit
     protocol: gre
-    source: 10.8.8.8/31
-    destination: any
+    source: any
+    destination: 10.8.8.8/31
   - sequence: 50
     remark: '### Allow IPSEC ###'
   - sequence: 60
     action: permit
     protocol: udp
-    source: 10.8.8.8/31
-    destination: any
+    source: any
+    destination: 10.8.8.8/31
     destination_ports_match: eq
     destination_ports:
     - isakmp
@@ -160,26 +160,26 @@ ip_access_lists:
     action: permit
     protocol: icmp
     icmp_type: echo-reply
-    source: 10.8.8.8/31
-    destination: any
+    source: any
+    destination: 10.8.8.8/31
   - sequence: 90
     action: permit
     protocol: icmp
     icmp_type: unreachable
-    source: 10.8.8.8/31
-    destination: any
+    source: any
+    destination: 10.8.8.8/31
   - sequence: 100
     action: permit
     protocol: icmp
     icmp_type: time-exceeded
-    source: 10.8.8.8/31
-    destination: any
+    source: any
+    destination: 10.8.8.8/31
   - sequence: 110
     action: deny
     protocol: ip
     source: any
     destination: any
-- name: PUBLIC_TRANSPORT_OUT
+- name: WAN_TRANSPORT_OUT
   entries:
   - sequence: 10
     remark: ' ### Blocking RFC 1918 prefixes ###'
@@ -209,8 +209,8 @@ ethernet_interfaces:
   ip_address: 10.8.8.8/31
   shutdown: false
   type: routed
-  access_group_in: PUBLIC_TRANSPORT_IN
-  access_group_out: PUBLIC_TRANSPORT_OUT
+  access_group_in: WAN_TRANSPORT_Ethernet1_IN
+  access_group_out: WAN_TRANSPORT_OUT
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
