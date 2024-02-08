@@ -68,18 +68,48 @@ router_isis:
         enabled: true
         timeout: 10
   authentication:
-    key_id:
-      - id: 2
-        algorithm: sha-512
-        rfc_5310:
+    both:
+      key_type: 0
+      key: password
+      key_id:
+        - id: 2
+          algorithm: sha-512
           key_type: 0
           key: password
-          levels: level-1
-    key_type: 0
-    key: shapass
-    mode:
-      md5:
-        rx_disabled_levels: both
+          rfc_5310: false
+    level_1:
+      key_type: 0
+      key: password
+      mode: md5
+      rx_disabled: true
+      key_id:
+        - id: 1
+          algorithm: sha-1
+          key_type: 0
+          key: password
+          rfc_5310: true
+        - id: 2
+          algorithm: sha-1
+          key_type: 0
+          key: password
+          rfc_5310: true
+    level_2:
+      key_type: 0
+      key: password
+      mode: sha
+      sha:
+        key_id: 2
+      key_id:
+        - id: 1
+          algorithm: sha-1
+          key_type: 0
+          key: password
+          rfc_5310: true
+        - id: 2
+          algorithm: sha-1
+          key_type: 0
+          key: password
+          rfc_5310: true
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:

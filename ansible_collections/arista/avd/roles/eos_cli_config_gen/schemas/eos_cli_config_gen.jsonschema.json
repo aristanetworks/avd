@@ -20471,47 +20471,48 @@
         "authentication": {
           "type": "object",
           "properties": {
-            "key_id": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 65535,
-                    "description": "Configure authentication key-id.",
-                    "title": "ID"
-                  },
-                  "algorithm": {
-                    "type": "string",
-                    "enum": [
-                      "sha-1",
-                      "sha-224",
-                      "sha-256",
-                      "sha-384",
-                      "sha-512"
-                    ],
-                    "title": "Algorithm"
-                  },
-                  "key_type": {
-                    "type": "string",
-                    "enum": [
-                      "0",
-                      "7",
-                      "8a"
-                    ],
-                    "description": "Configure authentication key type.",
-                    "title": "Key Type"
-                  },
-                  "key": {
-                    "type": "string",
-                    "description": "Password string.",
-                    "title": "Key"
-                  },
-                  "rfc_5310": {
+            "both": {
+              "type": "object",
+              "description": "Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.",
+              "properties": {
+                "key_type": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "7",
+                    "8a"
+                  ],
+                  "description": "Configure authentication key type. Default key_id is 0.",
+                  "title": "Key Type"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Password string.",
+                  "title": "Key"
+                },
+                "key_id": {
+                  "type": "array",
+                  "items": {
                     "type": "object",
                     "properties": {
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "Configure authentication key-id.",
+                        "title": "ID"
+                      },
+                      "algorithm": {
+                        "type": "string",
+                        "enum": [
+                          "sha-1",
+                          "sha-224",
+                          "sha-256",
+                          "sha-384",
+                          "sha-512"
+                        ],
+                        "title": "Algorithm"
+                      },
                       "key_type": {
                         "type": "string",
                         "enum": [
@@ -20527,105 +20528,45 @@
                         "description": "Password string.",
                         "title": "Key"
                       },
-                      "levels": {
-                        "type": "string",
-                        "enum": [
-                          "both",
-                          "level-1",
-                          "level-2"
-                        ],
-                        "title": "Levels"
+                      "rfc_5310": {
+                        "description": "SHA digest computation according to rfc5310.",
+                        "type": "boolean",
+                        "title": "Rfc 5310"
                       }
                     },
+                    "required": [
+                      "id",
+                      "algorithm",
+                      "key_type",
+                      "key"
+                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}
-                    },
-                    "title": "Rfc 5310"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "required": [
-                  "id"
-                ]
-              },
-              "title": "Key ID"
-            },
-            "key_type": {
-              "type": "string",
-              "enum": [
-                "0",
-                "7",
-                "8a"
-              ],
-              "description": "Configure authentication key type.",
-              "title": "Key Type"
-            },
-            "key": {
-              "type": "string",
-              "description": "Password string.",
-              "title": "Key"
-            },
-            "mode": {
-              "type": "object",
-              "properties": {
-                "md5": {
-                  "type": "object",
-                  "properties": {
-                    "levels": {
-                      "type": "string",
-                      "enum": [
-                        "level-1",
-                        "level-2",
-                        "both"
-                      ],
-                      "title": "Levels"
-                    },
-                    "rx_disabled_levels": {
-                      "type": "string",
-                      "enum": [
-                        "level-1",
-                        "level-2",
-                        "both"
-                      ],
-                      "title": "RX Disabled Levels"
                     }
                   },
-                  "additionalProperties": false,
-                  "patternProperties": {
-                    "^_.+$": {}
-                  },
-                  "title": "Md5"
+                  "title": "Key ID"
+                },
+                "mode": {
+                  "type": "string",
+                  "description": "Authentication mode.",
+                  "enum": [
+                    "md5",
+                    "sha",
+                    "text",
+                    "shared_secret"
+                  ],
+                  "title": "Mode"
                 },
                 "sha": {
                   "type": "object",
+                  "description": "Required settings for authentication mode 'sha'.",
                   "properties": {
                     "key_id": {
                       "type": "integer",
-                      "minimum": 0,
+                      "minimum": 1,
                       "maximum": 65535,
                       "title": "Key ID"
-                    },
-                    "levels": {
-                      "type": "string",
-                      "enum": [
-                        "level-1",
-                        "level-2",
-                        "both"
-                      ],
-                      "title": "Levels"
-                    },
-                    "rx_disabled_levels": {
-                      "type": "string",
-                      "enum": [
-                        "level-1",
-                        "level-2",
-                        "both"
-                      ],
-                      "title": "RX Disabled Levels"
                     }
                   },
                   "required": [
@@ -20637,36 +20578,9 @@
                   },
                   "title": "Sha"
                 },
-                "text": {
-                  "type": "object",
-                  "properties": {
-                    "levels": {
-                      "type": "string",
-                      "enum": [
-                        "level-1",
-                        "level-2",
-                        "both"
-                      ],
-                      "title": "Levels"
-                    },
-                    "rx_disabled_levels": {
-                      "type": "string",
-                      "enum": [
-                        "level-1",
-                        "level-2",
-                        "both"
-                      ],
-                      "title": "RX Disabled Levels"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "patternProperties": {
-                    "^_.+$": {}
-                  },
-                  "title": "Text"
-                },
                 "shared_secret": {
                   "type": "object",
+                  "description": "Required settings for authentication mode 'shared_secret'.",
                   "properties": {
                     "profile": {
                       "type": "string",
@@ -20683,24 +20597,6 @@
                         "sha-512"
                       ],
                       "title": "Algorithm"
-                    },
-                    "levels": {
-                      "type": "string",
-                      "enum": [
-                        "level-1",
-                        "level-2",
-                        "both"
-                      ],
-                      "title": "Levels"
-                    },
-                    "rx_disabled_levels": {
-                      "type": "string",
-                      "enum": [
-                        "level-1",
-                        "level-2",
-                        "both"
-                      ],
-                      "title": "RX Disabled Levels"
                     }
                   },
                   "required": [
@@ -20712,13 +20608,315 @@
                     "^_.+$": {}
                   },
                   "title": "Shared Secret"
+                },
+                "rx_disabled": {
+                  "type": "boolean",
+                  "title": "RX Disabled"
                 }
               },
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
               },
-              "title": "Mode"
+              "title": "Both"
+            },
+            "level_1": {
+              "type": "object",
+              "description": "Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.",
+              "properties": {
+                "key_type": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "7",
+                    "8a"
+                  ],
+                  "description": "Configure authentication key type. Default key_id is 0.",
+                  "title": "Key Type"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Password string.",
+                  "title": "Key"
+                },
+                "key_id": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "Configure authentication key-id.",
+                        "title": "ID"
+                      },
+                      "algorithm": {
+                        "type": "string",
+                        "enum": [
+                          "sha-1",
+                          "sha-224",
+                          "sha-256",
+                          "sha-384",
+                          "sha-512"
+                        ],
+                        "title": "Algorithm"
+                      },
+                      "key_type": {
+                        "type": "string",
+                        "enum": [
+                          "0",
+                          "7",
+                          "8a"
+                        ],
+                        "description": "Configure authentication key type.",
+                        "title": "Key Type"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "Password string.",
+                        "title": "Key"
+                      },
+                      "rfc_5310": {
+                        "description": "SHA digest computation according to rfc5310.",
+                        "type": "boolean",
+                        "title": "Rfc 5310"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "algorithm",
+                      "key_type",
+                      "key"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Key ID"
+                },
+                "mode": {
+                  "type": "string",
+                  "description": "Authentication mode.",
+                  "enum": [
+                    "md5",
+                    "sha",
+                    "text",
+                    "shared_secret"
+                  ],
+                  "title": "Mode"
+                },
+                "sha": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'sha'.",
+                  "properties": {
+                    "key_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Key ID"
+                    }
+                  },
+                  "required": [
+                    "key_id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Sha"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'shared_secret'.",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "title": "Profile"
+                    },
+                    "algorithm": {
+                      "type": "string",
+                      "enum": [
+                        "md5",
+                        "sha-1",
+                        "sha-224",
+                        "sha-256",
+                        "sha-384",
+                        "sha-512"
+                      ],
+                      "title": "Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
+                "rx_disabled": {
+                  "type": "boolean",
+                  "title": "RX Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Level 1"
+            },
+            "level_2": {
+              "type": "object",
+              "description": "Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.",
+              "properties": {
+                "key_type": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "7",
+                    "8a"
+                  ],
+                  "description": "Configure authentication key type. Default key_id is 0.",
+                  "title": "Key Type"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Password string.",
+                  "title": "Key"
+                },
+                "key_id": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "Configure authentication key-id.",
+                        "title": "ID"
+                      },
+                      "algorithm": {
+                        "type": "string",
+                        "enum": [
+                          "sha-1",
+                          "sha-224",
+                          "sha-256",
+                          "sha-384",
+                          "sha-512"
+                        ],
+                        "title": "Algorithm"
+                      },
+                      "key_type": {
+                        "type": "string",
+                        "enum": [
+                          "0",
+                          "7",
+                          "8a"
+                        ],
+                        "description": "Configure authentication key type.",
+                        "title": "Key Type"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "Password string.",
+                        "title": "Key"
+                      },
+                      "rfc_5310": {
+                        "description": "SHA digest computation according to rfc5310.",
+                        "type": "boolean",
+                        "title": "Rfc 5310"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "algorithm",
+                      "key_type",
+                      "key"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Key ID"
+                },
+                "mode": {
+                  "type": "string",
+                  "description": "Authentication mode.",
+                  "enum": [
+                    "md5",
+                    "sha",
+                    "text",
+                    "shared_secret"
+                  ],
+                  "title": "Mode"
+                },
+                "sha": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'sha'.",
+                  "properties": {
+                    "key_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Key ID"
+                    }
+                  },
+                  "required": [
+                    "key_id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Sha"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'shared_secret'.",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "title": "Profile"
+                    },
+                    "algorithm": {
+                      "type": "string",
+                      "enum": [
+                        "md5",
+                        "sha-1",
+                        "sha-224",
+                        "sha-256",
+                        "sha-384",
+                        "sha-512"
+                      ],
+                      "title": "Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
+                "rx_disabled": {
+                  "type": "boolean",
+                  "title": "RX Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Level 2"
             }
           },
           "additionalProperties": false,

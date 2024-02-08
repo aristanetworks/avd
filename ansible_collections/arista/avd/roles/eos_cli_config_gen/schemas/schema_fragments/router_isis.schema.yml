@@ -70,48 +70,52 @@ keys:
       authentication:
         type: dict
         keys:
-          key_id:
-            type: list
-            convert_types:
-              - dict
-            primary_key: id
-            items:
-              type: dict
-              keys:
-                id:
-                  type: int
-                  convert_types:
-                    - str
-                  min: 0
-                  max: 65535
-                  description: Configure authentication key-id.
-                algorithm:
-                  type: str
-                  valid_values:
-                    - sha-1
-                    - sha-224
-                    - sha-256
-                    - sha-384
-                    - sha-512
-                key_type:
-                  type: str
-                  convert_types:
-                    - int
-                  valid_values:
-                    - '0'
-                    - '7'
-                    - '8a'
-                  description: Configure authentication key type.
-                key:
-                  type: str
-                  description: Password string.
-                rfc_5310:
+          both:
+            type: dict
+            description: Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            keys:
+              key_type:
+                type: str
+                convert_types:
+                  - int
+                valid_values:
+                  - '0'
+                  - '7'
+                  - '8a'
+                description: Configure authentication key type. Default key_id is 0.
+              key:
+                type: str
+                description: Password string.
+              key_id:
+                type: list
+                convert_types:
+                  - dict
+                primary_key: id
+                items:
                   type: dict
                   keys:
+                    id:
+                      type: int
+                      convert_types:
+                        - str
+                      required: true
+                      min: 1
+                      max: 65535
+                      description: Configure authentication key-id.
+                    algorithm:
+                      type: str
+                      required: true
+                      valid_values:
+                        - sha-1
+                        - sha-224
+                        - sha-256
+                        - sha-384
+                        - sha-512
                     key_type:
                       type: str
                       convert_types:
                         - int
+                      required: true
                       valid_values:
                         - '0'
                         - '7'
@@ -119,60 +123,33 @@ keys:
                       description: Configure authentication key type.
                     key:
                       type: str
+                      required: true
                       description: Password string.
-                    levels:
-                      type: str
-                      valid_values:
-                        - "both"
-                        - "level-1"
-                        - "level-2"
-          key_type:
-            type: str
-            convert_types:
-              - int
-            valid_values:
-              - '0'
-              - '7'
-              - '8a'
-            description: Configure authentication key type.
-          key:
-            type: str
-            description: Password string.
-          mode:
-            type: dict
-            keys:
-              md5:
-                type: dict
-                keys:
-                  levels:
-                    type: str
-                    valid_values:
-                      - "level-1"
-                      - "level-2"
-                      - "both"
-                  rx_disabled_levels:
-                    type: str
-                    valid_values:
-                      - "level-1"
-                      - "level-2"
-                      - "both"
+                    rfc_5310:
+                      description: SHA digest computation according to rfc5310.
+                      type: bool
+              mode:
+                type: str
+                description: Authentication mode.
+                valid_values:
+                  - md5
+                  - sha
+                  - text
+                  - shared_secret
               sha:
                 type: dict
-                $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/mode/keys/md5"
+                description: Required settings for authentication mode 'sha'.
                 keys:
                   key_id:
                     type: int
                     convert_types:
                       - str
                     required: true
-                    min: 0
+                    min: 1
                     max: 65535
-              text:
-                $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/mode/keys/md5"
-                type: dict
               shared_secret:
                 type: dict
-                $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/mode/keys/md5"
+                description: Required settings for authentication mode 'shared_secret'.
                 keys:
                   profile:
                     type: str
@@ -187,6 +164,16 @@ keys:
                       - sha-256
                       - sha-384
                       - sha-512
+              rx_disabled:
+                type: bool
+          level_1:
+            type: dict
+            description: Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both"
+          level_2:
+            type: dict
+            description: Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both"
       advertise:
         type: dict
         keys:

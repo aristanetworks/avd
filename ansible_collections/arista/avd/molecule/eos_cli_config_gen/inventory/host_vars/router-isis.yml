@@ -16,6 +16,18 @@ router_isis:
     maximum_paths: 2
   segment_routing_mpls:
     enabled: true
+  authentication:
+    both:
+      mode: sha
+      sha:
+        key_id: 4
+    level_1:
+      mode: md5
+      rx_disabled: true
+    level_2:
+      mode: sha
+      sha:
+        key_id: 2
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:

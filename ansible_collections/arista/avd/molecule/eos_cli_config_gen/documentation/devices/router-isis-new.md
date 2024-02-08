@@ -282,13 +282,18 @@ router isis EVPN_UNDERLAY
    set-overload-bit on-startup wait-for-bgp timeout 10
    advertise passive-only
    spf-interval 250 10
-   authentication mode md5 rx-disabled
+   authentication mode md5 level-1
+   authentication mode sha key-id 2 level-2
    graceful-restart
    graceful-restart t2 level-1 10
    graceful-restart t2 level-2 20
    graceful-restart restart-hold-time 10
-   authentication key-id 2 algorithm sha-512 rfc-5310 key 0 password level-1
-   authentication key 0 shapass
+   authentication key 0 password
+   authentication key-id 2 algorithm sha-512 key 0 password
+   authentication key 0 password level-1
+   authentication key-id 1 algorithm sha-1 rfc-5310 key 0 password level-1
+   authentication key 0 password level-2
+   authentication key-id 1 algorithm sha-1 rfc-5310 key 0 password level-2
    !
    address-family ipv4 unicast
       maximum-paths 4
