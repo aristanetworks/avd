@@ -18,3 +18,26 @@
   check_mode: false
   when: use_anta | bool
   tags: always
+
+#######################################
+##  Generate reports from ANTA tests ##
+#######################################
+
+- name: Create validation reports from ANTA tests
+  arista.avd.eos_validate_state_reports:
+    csv_report_path: "{{ eos_validate_state_csv_report_path }}"
+    md_report_path: "{{ eos_validate_state_md_report_path }}"
+    validation_report_csv: "{{ validation_report_csv }}"
+    validation_report_md: "{{ validation_report_md }}"
+    only_failed_tests: "{{ only_failed_tests }}"
+    test_results_dir: "{{ test_results_dir }}"
+    # cprofile_file: "eos_validate_state_reports.prof"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+  when:
+    - use_anta | bool
+    - validation_report_csv | bool or validation_report_md | bool
+  tags:
+    - always
+    - reports
