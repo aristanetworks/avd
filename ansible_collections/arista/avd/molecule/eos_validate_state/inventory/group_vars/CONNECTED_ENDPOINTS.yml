@@ -141,4 +141,4 @@ network_ports:
     mode: access
     vlans: 50
     spanning_tree_portfast: edge
-    validate_state: False
+    validate_state: false
