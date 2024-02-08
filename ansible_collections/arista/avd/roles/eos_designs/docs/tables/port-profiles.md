@@ -487,7 +487,7 @@
           # Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
           structured_config: <dict>
 
-        # Set to false to disable validation by the eos_validate_state role
+        # Set to false to disable interface validation by the `eos_validate_state` role
         validate_state: <bool>
 
         # EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
