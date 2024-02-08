@@ -37,6 +37,10 @@ router_bgp:
     - ip_address: 192.168.255.2
       peer_group: EVPN-OVERLAY-PEERS
   address_family_evpn:
+    next_hop_mpls_resolution_ribs:
+      primary_rib: "tunnel-rib colored system-colored-tunnel-rib"
+      fallback_rib: "tunnel-rib"
+      fallback_rib_name: "test-rib"
     neighbor_default:
       encapsulation: mpls
       next_hop_self_source_interface: Loopback0
