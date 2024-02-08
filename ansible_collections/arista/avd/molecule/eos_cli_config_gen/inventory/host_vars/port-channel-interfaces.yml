@@ -106,6 +106,7 @@ port_channel_interfaces:
     logging:
       event:
         link_status: false
+        storm_control_discards: true
     description: IFL for TENANT02
     mtu: 1500
     ip_address: 10.1.2.3/31

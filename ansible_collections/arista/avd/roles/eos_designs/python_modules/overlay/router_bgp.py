@@ -142,14 +142,14 @@ class RouterBgpMixin(UtilsMixin):
                         }
                     )
 
-            # RR Overlay peer group rendered either for MPLS ir WAN RRs.
+            # RR Overlay peer group rendered either for MPLS route servers
             if self._is_mpls_server is True:
                 peer_groups.append({**self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
 
             if self._is_wan_server_with_peers:
                 peer_groups.append(
                     {
-                        **self._generate_base_peer_group("wan", "rr_overlay_peers", update_source=self.shared_utils.vtep_loopback),
+                        **self._generate_base_peer_group("wan", "wan_rr_overlay_peers", update_source=self.shared_utils.vtep_loopback),
                         "remote_as": self.shared_utils.bgp_as,
                     }
                 )
@@ -187,8 +187,11 @@ class RouterBgpMixin(UtilsMixin):
             if self.shared_utils.overlay_mpls is True:
                 peer_groups.append({"name": self.shared_utils.bgp_peer_groups["mpls_overlay_peers"]["name"], "activate": False})
 
-            if self._is_mpls_server is True or self._is_wan_server_with_peers:
+            if self._is_mpls_server is True:
                 peer_groups.append({"name": self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"], "activate": False})
+
+            if self._is_wan_server_with_peers:
+                peer_groups.append({"name": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["name"], "activate": False})
 
         if self.shared_utils.overlay_ipvpn_gateway is True:
             peer_groups.append({"name": self.shared_utils.bgp_peer_groups["ipvpn_gateway_peers"]["name"], "activate": False})
@@ -246,8 +249,11 @@ class RouterBgpMixin(UtilsMixin):
                         }
                     )
 
-            if self._is_mpls_server is True or self._is_wan_server_with_peers:
+            if self._is_mpls_server is True:
                 peer_groups.append({"name": self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"], "activate": True})
+
+            if self._is_wan_server_with_peers:
+                peer_groups.append({"name": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["name"], "activate": True})
 
         address_family_evpn["peer_groups"] = peer_groups
 
@@ -287,7 +293,7 @@ class RouterBgpMixin(UtilsMixin):
         }
 
         if self._is_wan_server_with_peers:
-            address_family_ipv4_sr_te["peer_groups"].append({"name": self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"], "activate": True})
+            address_family_ipv4_sr_te["peer_groups"].append({"name": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["name"], "activate": True})
 
         return address_family_ipv4_sr_te
 
@@ -318,7 +324,7 @@ class RouterBgpMixin(UtilsMixin):
             address_family_link_state["path_selection"] = {"roles": {"producer": True}}
 
         if self._is_wan_server_with_peers:
-            address_family_link_state["peer_groups"].append({"name": self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"], "activate": True})
+            address_family_link_state["peer_groups"].append({"name": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["name"], "activate": True})
 
         return address_family_link_state
 
@@ -338,7 +344,7 @@ class RouterBgpMixin(UtilsMixin):
         }
 
         if self._is_wan_server_with_peers:
-            address_family_path_selection["peer_groups"].append({"name": self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"], "activate": True})
+            address_family_path_selection["peer_groups"].append({"name": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["name"], "activate": True})
 
         return address_family_path_selection
 
@@ -409,7 +415,7 @@ class RouterBgpMixin(UtilsMixin):
             if self.shared_utils.overlay_mpls is True:
                 peer_groups.append({"name": self.shared_utils.bgp_peer_groups["mpls_overlay_peers"]["name"], "activate": True})
 
-            if self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"] is not None and self.shared_utils.mpls_overlay_role == "server":
+            if self.shared_utils.mpls_overlay_role == "server":
                 peer_groups.append({"name": self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"], "activate": True})
 
         if peer_groups:
@@ -498,7 +504,7 @@ class RouterBgpMixin(UtilsMixin):
             if self.shared_utils.wan_role == "server":
                 # No neighbor configured on the `wan_overlay_peers` peer group as it is covered by listen ranges
                 for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
-                    neighbor = self._create_neighbor(data["vtep_ip"], wan_route_server, self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"])
+                    neighbor = self._create_neighbor(data["vtep_ip"], wan_route_server, self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["name"])
                     neighbors.append(neighbor)
 
         for ipvpn_gw_peer, data in natural_sort(self._ipvpn_gateway_remote_peers.items()):

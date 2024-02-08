@@ -4,8 +4,6 @@
 # that can be found in the LICENSE file.
 from json import dump as json_dump
 from pathlib import Path
-from pickle import HIGHEST_PROTOCOL
-from pickle import dump as pickle_dump
 from sys import path
 from textwrap import indent
 
@@ -17,14 +15,14 @@ from yaml import load as yaml_load
 # Override global path to load schema from source instead of any installed version.
 path.insert(0, str(Path(__file__).parents[1]))
 
-from schema_tools.constants import JSONSCHEMA_PATHS, LICENSE_HEADER, PICKLED_SCHEMAS, REPO_ROOT, SCHEMA_FRAGMENTS_PATHS, SCHEMA_PATHS
+from schema_tools.constants import JSONSCHEMA_PATHS, LICENSE_HEADER, REPO_ROOT, SCHEMA_FRAGMENTS_PATHS, SCHEMA_PATHS
 from schema_tools.generate_docs.mdtabsgen import get_md_tabs
 from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
 
 path.insert(0, str(REPO_ROOT))
 
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtojsonschemaconverter import AvdToJsonSchemaConverter
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.store import create_store
 
 FRAGMENTS_PATTERN = "*.schema.yml"
 
@@ -47,41 +45,6 @@ def combine_schemas():
         with SCHEMA_PATHS[schema_name].open(mode="w", encoding="UTF-8") as schema_stream:
             schema_stream.write(indent(LICENSE_HEADER, prefix="# ") + "\n")
             schema_stream.write(yaml_dump(schema, Dumper=CSafeDumper, sort_keys=False))
-
-
-def compile_schemas() -> dict:
-    """
-    Load schemas from yaml files,
-    create a temporary "store",
-    resolve all $refs and save the resulting schemas as pickles
-    """
-    resolved_schema_store = {}
-
-    # We rely on eos_cli_config_gen being before eos_designs,
-    # so anything in eos_cli_config_gen can be resolved and $def popped before resolving from eos_designs.
-    for schema_name, pickle_file in PICKLED_SCHEMAS.items():
-        if schema_name == "avd_meta_schema":
-            resolved_schema = AvdSchema(load_store_from_yaml=True).store["avd_meta_schema"]
-        else:
-            print("Resolving schema", schema_name)
-            avdschema = AvdSchema(schema_id=schema_name, load_store_from_yaml=True)
-
-            # Copying so we can pop below.
-            resolved_schema = avdschema.resolved_schema.copy()
-
-            # Since the schema is now fully resolved we can drop the $defs.
-            resolved_schema.pop("$defs", None)
-
-            # Inplace update the schema store with the resolved variant without $def.
-            avdschema.store[schema_name] = resolved_schema
-
-        print("Saving pickled schema", schema_name)
-        with open(pickle_file, "wb") as pickle_stream:
-            pickle_dump(resolved_schema, pickle_stream, HIGHEST_PROTOCOL)
-
-        resolved_schema_store[schema_name] = resolved_schema
-
-    return resolved_schema_store
 
 
 def convert_to_jsonschema(schema_store):
@@ -117,7 +80,8 @@ def build_schema_tables(schema_store):
 
 def main():
     combine_schemas()
-    schema_store = compile_schemas()
+    print("Rebuilding pickled schemas")
+    schema_store = create_store(force_rebuild=True)
     convert_to_jsonschema(schema_store)
     build_schema_tables(schema_store)
 
