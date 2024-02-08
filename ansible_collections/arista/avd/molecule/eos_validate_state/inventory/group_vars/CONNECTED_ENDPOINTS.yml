@@ -7,7 +7,7 @@ port_profiles:
     mode: access
     vlans: 11
     spanning_tree_portfast: edge
-    validate_state: False
+    validate_state: false
 
 # Definition of connected endpoints in the fabric.
 servers:
