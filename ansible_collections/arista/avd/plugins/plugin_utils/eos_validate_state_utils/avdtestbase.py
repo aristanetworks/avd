@@ -108,13 +108,13 @@ class AvdTestBase:
 
     def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:
         """
-        Update an interface's shutdown key, considering EOS defaults.
+        Update the interface shutdown key, considering EOS default.
 
-        For Ethernet interfaces, the method will update the shutdown key in the following order:
-        - If the interface's shutdown key is not set, it will use the host's interface_defaults.ethernet.shutdown key.
-        - If the host's interface_defaults.ethernet.shutdown key is not set, the interface's shutdown key will be set to False.
+        For Ethernet interfaces:
+        - If the interface shutdown key is not set, the host interface_defaults.ethernet.shutdown key is used
+        - If the host interface_defaults.ethernet.shutdown key is not set, the interface shutdown key is set to False.
 
-        For other interfaces, the method will update the shutdown key per the existing interface's shutdown key or set it to False if not available.
+        For other interfaces, the shutdown key is updated using the interface shutdown key if available or set to False.
 
         Args:
             interface (dict): The interface to verify.
