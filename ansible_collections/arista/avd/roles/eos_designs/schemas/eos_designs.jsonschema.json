@@ -7394,7 +7394,7 @@
                       },
                       "storm_control_discards": {
                         "type": "boolean",
-                        "description": "Discards due to storm-control.\nNote: `logging event storm-control discards use-global` is the default and it does not show up in the config.\n",
+                        "description": "Discards due to storm-control.\n",
                         "title": "Storm Control Discards"
                       }
                     },
@@ -9681,7 +9681,7 @@
                           },
                           "storm_control_discards": {
                             "type": "boolean",
-                            "description": "Discards due to storm-control.\nNote: `logging event storm-control discards use-global` is the default and it does not show up in the config.\n",
+                            "description": "Discards due to storm-control.\n",
                             "title": "Storm Control Discards"
                           }
                         },
@@ -12673,7 +12673,7 @@
                       },
                       "storm_control_discards": {
                         "type": "boolean",
-                        "description": "Discards due to storm-control.\nNote: `logging event storm-control discards use-global` is the default and it does not show up in the config.\n",
+                        "description": "Discards due to storm-control.\n",
                         "title": "Storm Control Discards"
                       }
                     },
@@ -15775,7 +15775,7 @@
                           },
                           "storm_control_discards": {
                             "type": "boolean",
-                            "description": "Discards due to storm-control.\nNote: `logging event storm-control discards use-global` is the default and it does not show up in the config.\n",
+                            "description": "Discards due to storm-control.\n",
                             "title": "Storm Control Discards"
                           }
                         },
@@ -18767,7 +18767,7 @@
                       },
                       "storm_control_discards": {
                         "type": "boolean",
-                        "description": "Discards due to storm-control.\nNote: `logging event storm-control discards use-global` is the default and it does not show up in the config.\n",
+                        "description": "Discards due to storm-control.\n",
                         "title": "Storm Control Discards"
                       }
                     },
