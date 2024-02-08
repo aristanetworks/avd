@@ -50,11 +50,6 @@ router_bgp:
         receive: true
         send:
           any: true
-  neighbors:
-  - ip_address: 192.168.144.1
-    peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
   vrfs:
   - name: default
     rd: 192.168.42.6:1
@@ -354,8 +349,6 @@ application_traffic_recognition:
       prefix_values:
       - 6.6.6.0/24
     - name: CONTROL-PLANE-APP-DEST-PREFIXES
-      prefix_values:
-      - 192.168.144.1/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -404,6 +397,5 @@ metadata:
     interfaces:
     - name: Ethernet1
       carrier: Inmrasat
+      circuit_id: S512
       pathgroup: Satellite
-    pathfinders:
-    - vtep_ip: 192.168.144.1

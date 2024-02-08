@@ -92,6 +92,7 @@ wan_carriers:
   - name: ATT
     path_group: INET
 
+# SVI and L2VLAN is inserted to ensure these are *not* rendered.
 tenants:
   - name: TenantA
     vrfs:
@@ -99,8 +100,15 @@ tenants:
         vrf_id: 1
       - name: PROD
         vrf_id: 42
+        svis:
+          - id: 100
+            name: VLAN100
+            ip_address_virtual: 10.0.100.1/24
       - name: IT
         vrf_id: 100
+    l2vlans:
+      - id: 101
+        name: VLAN101
 
 wan_virtual_topologies:
   vrfs:

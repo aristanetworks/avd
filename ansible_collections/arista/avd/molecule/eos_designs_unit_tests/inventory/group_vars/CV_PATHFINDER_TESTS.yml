@@ -100,7 +100,6 @@ wan_transit:
       l3_interfaces:
         - name: Ethernet1.42
           wan_carrier: Comcast
-          wan_circuit_id: 667
           dhcp_accept_default_route: true
           ip_address: dhcp
         - name: Ethernet2.42
@@ -197,8 +196,15 @@ tenants:
         vrf_id: 1
       - name: PROD
         vrf_id: 42
+        svis:
+          - id: 100
+            name: VLAN100
+            ip_address_virtual: 10.0.100.1/24
       - name: IT
         vrf_id: 100
+    l2vlans:
+      - id: 101
+        name: VLAN101
   - name: TenantB
     vrfs:
       - name: default

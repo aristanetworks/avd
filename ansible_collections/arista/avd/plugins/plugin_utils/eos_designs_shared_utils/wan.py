@@ -110,11 +110,14 @@ class WanMixin:
                 local_carriers_dict[interface_carrier]["interfaces"] = []
 
             local_carriers_dict[interface_carrier]["interfaces"].append(
-                {
-                    "name": get(interface, "name", required=True),
-                    "ip_address": self.get_public_ip_for_wan_interface(interface),
-                    "connected_to_pathfinder": get(interface, "connected_to_pathfinder", default=True),
-                }
+                strip_empties_from_dict(
+                    {
+                        "name": get(interface, "name", required=True),
+                        "ip_address": self.get_public_ip_for_wan_interface(interface),
+                        "connected_to_pathfinder": get(interface, "connected_to_pathfinder", default=True),
+                        "wan_circuit_id": get(interface, "wan_circuit_id"),
+                    }
+                )
             )
 
         return list(local_carriers_dict.values())
@@ -323,7 +326,10 @@ class WanMixin:
                 "wan_path_groups": [path_group for path_group in wan_path_groups if self.should_connect_to_wan_rs([path_group["name"]])],
             }
 
-            wan_route_servers[wan_rs] = strip_empties_from_dict(wan_rs_result_dict)
+            # If no common path-group then skip
+            # TODO - this may need to change when `import` path-groups is available
+            if len(wan_rs_result_dict["wan_path_groups"]) > 0:
+                wan_route_servers[wan_rs] = strip_empties_from_dict(wan_rs_result_dict)
 
         return wan_route_servers
 
