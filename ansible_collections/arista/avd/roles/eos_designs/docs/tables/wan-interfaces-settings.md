@@ -21,8 +21,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].static_routes") | List, items: String |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].static_routes.[]") | String |  |  |  | IPv4_network/Mask |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
@@ -45,8 +45,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].static_routes") | List, items: String |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].static_routes.[]") | String |  |  |  | IPv4_network/Mask |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
@@ -65,8 +65,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].static_routes") | List, items: String |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].static_routes.[]") | String |  |  |  | IPv4_network/Mask |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
@@ -87,8 +87,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].static_routes") | List, items: String |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].static_routes.[]") | String |  |  |  | IPv4_network/Mask |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
@@ -107,8 +107,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "l3_interface_profiles.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "l3_interface_profiles.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "l3_interface_profiles.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "l3_interface_profiles.[].static_routes") | List, items: String |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_interface_profiles.[].static_routes.[]") | String |  |  |  | IPv4_network/Mask |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "l3_interface_profiles.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "l3_interface_profiles.[].static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_interface_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "l3_interface_profiles.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "l3_interface_profiles.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
@@ -168,7 +168,7 @@
             static_routes: # >=1 items
 
                 # IPv4_network/Mask
-              - <str>
+              - prefix: <str; required>
 
             # QOS service profile.
             qos_profile: <str>
@@ -247,7 +247,7 @@
                   static_routes: # >=1 items
 
                       # IPv4_network/Mask
-                    - <str>
+                    - prefix: <str; required>
 
                   # QOS service profile.
                   qos_profile: <str>
@@ -313,7 +313,7 @@
               static_routes: # >=1 items
 
                   # IPv4_network/Mask
-                - <str>
+                - prefix: <str; required>
 
               # QOS service profile.
               qos_profile: <str>
@@ -385,7 +385,7 @@
               static_routes: # >=1 items
 
                   # IPv4_network/Mask
-                - <str>
+                - prefix: <str; required>
 
               # QOS service profile.
               qos_profile: <str>
@@ -452,7 +452,7 @@
         static_routes: # >=1 items
 
             # IPv4_network/Mask
-          - <str>
+          - prefix: <str; required>
 
         # QOS service profile.
         qos_profile: <str>

@@ -62,8 +62,12 @@ $defs:
           type: list
           min_length: 1
           items:
-            type: str
-            description: IPv4_network/Mask
+            type: dict
+            keys:
+              prefix:
+                type: str
+                required: true
+                description: IPv4_network/Mask
         qos_profile:
           type: str
           description: QOS service profile.

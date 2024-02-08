@@ -15,7 +15,7 @@ spine:
           peer_ip: 192.168.1.3
           profile: profile1
           static_routes:
-            - 0.0.0.0/0
+            - prefix: 0.0.0.0/0
         - # DHCP default route
           peer: peer2
           name: Ethernet2/2

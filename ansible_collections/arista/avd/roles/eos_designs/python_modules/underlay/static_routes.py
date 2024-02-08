@@ -40,7 +40,10 @@ class StaticRoutesMixin(UtilsMixin):
                 org_key=f"Cannot set a static_route route for interface {interface_name} because 'peer_ip' is missing",
             )
 
-            static_routes.extend({"destination_address_prefix": prefix, "gateway": gateway} for prefix in l3_interface_static_routes)
+            static_routes.extend(
+                {"destination_address_prefix": l3_interface_static_route["prefix"], "gateway": gateway}
+                for l3_interface_static_route in l3_interface_static_routes
+            )
 
         if static_routes:
             return static_routes

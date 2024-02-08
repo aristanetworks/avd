@@ -74,7 +74,7 @@ wan_rr:
           wan_circuit_id: 888
           ip_address: 10.8.8.8/31
           static_routes:
-            - 0.0.0.0/0
+            - prefix: 0.0.0.0/0
           peer_ip: 10.8.8.9
 
 wan_path_groups:

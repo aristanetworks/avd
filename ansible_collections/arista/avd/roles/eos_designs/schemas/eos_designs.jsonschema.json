@@ -5519,8 +5519,21 @@
             "type": "array",
             "minItems": 1,
             "items": {
-              "type": "string",
-              "description": "IPv4_network/Mask"
+              "type": "object",
+              "properties": {
+                "prefix": {
+                  "type": "string",
+                  "description": "IPv4_network/Mask",
+                  "title": "Prefix"
+                }
+              },
+              "required": [
+                "prefix"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
             },
             "title": "Static Routes"
           },
