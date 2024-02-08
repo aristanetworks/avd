@@ -688,6 +688,9 @@ keys:
                   type: bool
                 storm_control_discards:
                   type: bool
+                  description: |
+                    Discards due to storm-control.
+                    Note: `logging event storm-control discards use-global` is the default and it does not show up in the config.
         lldp:
           type: dict
           keys:
