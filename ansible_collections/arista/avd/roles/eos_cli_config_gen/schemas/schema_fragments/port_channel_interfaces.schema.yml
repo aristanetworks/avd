@@ -747,7 +747,7 @@ keys:
                   type: bool
         validate_state:
           type: bool
-          description: Set to false to disable validation by the eos_validate_state role
+          description: Set to false to disable interface validation by the `eos_validate_state` role
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration
