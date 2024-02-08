@@ -345,3 +345,40 @@ class WanMixin:
             local_path_group["name"] in path_groups and any(wan_interface["connected_to_pathfinder"] for wan_interface in local_path_group["interfaces"])
             for local_path_group in self.wan_local_path_groups
         )
+
+    @cached_property
+    def wan_bgp_soo(self) -> str:
+        """
+        Return the SoO extended community to be used for the site
+
+        <router_id>:<cv_pathfinder_site.id>
+
+        TODO: support HA in HA PR by using the first router_id
+        TODO: This may have to change when HA support for AutoVPN is implemented
+              as AutoVPN routers do not have a site ID.
+        """
+        return f"{self.router_id}:{self.wan_site['id']}"
+
+    @cached_property
+    def wan_ha_flow_tracker_name(self) -> str:
+        """
+        Return the name of the WAN flow tracking object
+        Used in both network services, underlay and overlay python modules.
+
+        TODO make this configurable
+        TODO may need to return exporter name also later
+        """
+        return "WAN-FLOW-TRACKER"
+
+    @cached_property
+    def is_cv_pathfinder_edge_or_transit(self) -> bool:
+        """
+        Return True is the current wan_mode is cv-pathfinder and the device is either an edge or a transit device
+        """
+        if self.wan_mode != "cv-pathfinder":
+            return False
+        if self.cv_pathfinder_role == "cv-pathfinder":
+            return False
+        if self.cv_pathfinder_role in ["edge", "transit region"]:
+            return True
+        return False

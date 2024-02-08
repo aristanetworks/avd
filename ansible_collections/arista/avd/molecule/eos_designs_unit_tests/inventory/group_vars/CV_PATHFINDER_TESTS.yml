@@ -12,14 +12,15 @@ cv_pathfinder_regions:
       - name: Site422
         id: 422
         location: Somewhere
+      - name: Site423
+        id: 423
+        location: Somewhere-warm
   - name: AVD_Land_East
     id: 43
     description: AVD Region
     sites:
       - name: Site511
         id: 511
-      - name: Site512
-        id: 512
 
 bgp_peer_groups:
   wan_overlay_peers:
@@ -48,6 +49,9 @@ default_node_types:
   - node_type: wan_edge
     match_hostnames:
       - "cv-pathfinder-edge.*"
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*leaf.*"
 
 wan_edge:
   defaults:
@@ -55,8 +59,13 @@ wan_edge:
     vtep_loopback_ipv4_pool: 192.168.142.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA]
-  nodes:
-    - name: cv-pathfinder-edge
+    uplink_ipv4_pool: 172.17.0.0/16
+  node_groups:
+    # SITE_HA_DISABLED
+    - group: Site511
+      uplink_type: p2p-vrfs
+      uplink_switches: [ site-ha-disabled-leaf ]
+      uplink_interfaces: [ Ethernet52 ]
       cv_pathfinder_region: AVD_Land_East
       cv_pathfinder_site: Site511
       id: 1
@@ -85,6 +94,55 @@ wan_edge:
           wan_circuit_id: S512
           dhcp_accept_default_route: true
           ip_address: dhcp
+      # Disabling HA - TODO once implemented, for now it is disabled by default
+      # wan_ha:
+      #  enabled: False
+      nodes:
+        - name: cv-pathfinder-edge
+          id: 1
+          uplink_switch_interfaces: [Ethernet1]
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: ATT
+              wan_circuit_id: 666
+              set_default_route: true
+              ip_address: dhcp
+            - name: Ethernet2
+              wan_carrier: Colt
+              wan_circuit_id: 10555
+              ip_address: 172.15.5.5/31
+            - name: Ethernet3
+              wan_carrier: Comcast-5G
+              wan_circuit_id: AF830
+              ip_address: 172.20.20.20/31
+              connected_to_pathfinder: False
+        - name: cv-pathfinder-edge-no-common-path-group
+          id: 2
+          uplink_switch_interfaces: [Ethernet2]
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: Inmrasat
+              wan_circuit_id: S511
+              set_default_route: true
+              ip_address: dhcp
+
+# Fake DC1
+l3leaf:
+  defaults:
+    bgp_as: 65199
+    loopback_ipv4_pool: 192.168.45.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+    virtual_router_mac_address: 00:1c:73:00:00:01
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+  nodes:
+    # Used for HA in HA PR
+    #- name: site-ha-enabled-leaf1
+    #  id: 1
+    #- name: site-ha-enabled-leaf2
+    #  id: 2
+    - name: site-ha-disabled-leaf
+      id: 3
 
 wan_transit:
   defaults:
@@ -191,6 +249,7 @@ wan_carriers:
 
 tenants:
   - name: TenantA
+    mac_vrf_vni_base: 1000
     vrfs:
       - name: default
         vrf_id: 1

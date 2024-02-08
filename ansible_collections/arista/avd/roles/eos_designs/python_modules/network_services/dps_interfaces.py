@@ -36,6 +36,6 @@ class DpsInterfacesMixin(UtilsMixin):
         # When needed - need a default value if different than IPv4
 
         if self.shared_utils.cv_pathfinder_role:
-            dps1["flow_tracker"] = {"hardware": "WAN-FLOW-TRACKER"}
+            dps1["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
 
         return [dps1]

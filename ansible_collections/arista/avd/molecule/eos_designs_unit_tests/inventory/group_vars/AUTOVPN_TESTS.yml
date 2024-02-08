@@ -1,6 +1,8 @@
 ---
 # Testing autovpn
 wan_mode: autovpn
+# Disabling underlay for tests
+underlay_routing_protocol: none
 
 bgp_as: 65000
 

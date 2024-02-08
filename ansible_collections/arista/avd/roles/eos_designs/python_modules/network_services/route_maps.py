@@ -145,35 +145,39 @@ class RouteMapsMixin(UtilsMixin):
         Match the following prefixes to be exported in EVPN for VRF default:
         * SVI subnets in VRF default
         * Static routes subnets in VRF default
-        * for WAN routers, the loopbacks in VRF default.
+
+        * for WAN routers, all the routes matching the SOO (which includes the two above)
         """
         sequence_numbers = []
-        if self._vrf_default_ipv4_subnets:
-            sequence_numbers.append(
-                {
-                    "sequence": 10,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                }
-            )
+        if self.shared_utils.is_cv_pathfinder_edge_or_transit:
+            sequence_numbers.append({"sequence": 10, "type": "permit", "match": [f"extcommunity soo {self.shared_utils.wan_bgp_soo} additive"]})
+        else:
+            # TODO refactor existing behavior to SoO?
+            if self._vrf_default_ipv4_subnets:
+                sequence_numbers.append(
+                    {
+                        "sequence": 10,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+                    }
+                )
 
-        if self._vrf_default_ipv4_static_routes["static_routes"]:
-            sequence_numbers.append(
-                {
-                    "sequence": 20,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-                }
-            )
-
-        if self.shared_utils.wan_role:
-            sequence_numbers.append(
-                {
-                    "sequence": 30,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
-                }
-            )
+            if self._vrf_default_ipv4_static_routes["static_routes"]:
+                sequence_numbers.append(
+                    {
+                        "sequence": 20,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
+                    }
+                )
+            if self.shared_utils.wan_role:
+                sequence_numbers.append(
+                    {
+                        "sequence": 30,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
+                    }
+                )
 
         if not sequence_numbers:
             return None
@@ -235,13 +239,15 @@ class RouteMapsMixin(UtilsMixin):
 
         if self._vrf_default_ipv4_subnets:
             # Add subnets to redistribution in default VRF
-            sequence_numbers.append(
-                {
-                    "sequence": 30,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                },
-            )
+            sequence_30 = {
+                "sequence": 30,
+                "type": "permit",
+                "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+            }
+            if self.shared_utils.is_cv_pathfinder_edge_or_transit:
+                sequence_30["set"] = [f"extcommunity soo {self.shared_utils.wan_bgp_soo} additive"]
+
+            sequence_numbers.append(sequence_30)
 
         if not sequence_numbers:
             return None

@@ -20,19 +20,10 @@ class RouteMapsMixin(UtilsMixin):
     def route_maps(self) -> list | None:
         """
         Return structured config for route_maps
-
-        TODO
         """
 
         if self.shared_utils.overlay_cvx:
             return None
-
-        if self.shared_utils.overlay_mpls is True:
-            # some logic
-            pass
-        if self.shared_utils.overlay_evpn is True:
-            # some logic
-            pass
 
         route_maps = []
 
@@ -90,7 +81,6 @@ class RouteMapsMixin(UtilsMixin):
                     }
                 )
 
-        # TODO - maybe need to clean None
         if route_maps:
             return route_maps
 

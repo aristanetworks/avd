@@ -158,12 +158,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.42.1:511 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
-  - sequence: 30
+  - sequence: 10
     type: permit
     match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    - extcommunity soo 192.168.42.1:511 additive
 flow_tracking:
   hardware:
     trackers:
@@ -180,8 +182,6 @@ flow_tracking:
     shutdown: false
 ip_security:
   ike_policies:
-  - name: DP-IKE-POLICY
-    local_id: 192.168.255.1
   - name: CP-IKE-POLICY
     local_id: 192.168.255.1
   sa_policies:
@@ -195,7 +195,6 @@ ip_security:
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
-    ike_policy: DP-IKE-POLICY
     sa_policy: DP-SA-POLICY
     connection: start
     shared_key: ABCDEF1234567890666
