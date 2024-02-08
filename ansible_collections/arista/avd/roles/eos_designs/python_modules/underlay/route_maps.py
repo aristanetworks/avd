@@ -85,8 +85,7 @@ class RouteMapsMixin(UtilsMixin):
                 }
             )
 
-        # TODO can this clash with  RM-BGP-AS{{ asn }}-OUT ?
-        # Route-map IN and OUT for SOO, rendered for WAN routers with HA
+        # Route-map IN and OUT for SOO, rendered for WAN routers
         if (
             self.shared_utils.overlay_routing_protocol == "ibgp"
             and self.shared_utils.underlay_routing_protocol == "ebgp"
@@ -118,20 +117,19 @@ class RouteMapsMixin(UtilsMixin):
                 {
                     "name": "RM-BGP-UNDERLAY-PEERS-OUT",
                     "sequence_numbers": [
-                        # TODO sequence 10 is left to match local HA prefix and
-                        # mark them with SOO
+                        {
+                            "sequence": 10,
+                            "type": "permit",
+                            "description": "Advertise local routes towards LAN",
+                            "match": ["extcommunity ECL-WAN-HA-SOO"],
+                        },
                         {
                             "sequence": 20,
                             "type": "permit",
-                            "description": "Advertise towards LAN the routes received locally",
-                            "match": [f"extcommunity soo {self.shared_utils.wan_bgp_soo} additive"],
+                            "description": "Advertise routes received from WAN towards LAN",
+                            "match": ["route-type internal"],
                         },
-                        {
-                            "sequence": 30,
-                            "type": "permit",
-                            "description": "Advertise towards LAN the routes received over WAN",
-                            "match": ["as-path AP-WAN"],
-                        },
+                        # TODO match local HA prefix and mark them with SOO
                     ],
                 }
             )

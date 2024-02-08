@@ -213,22 +213,22 @@ route_maps:
     - extcommunity soo 192.168.43.1:422 additive
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Advertise local routes towards LAN
+    match:
+    - extcommunity ECL-WAN-HA-SOO
   - sequence: 20
     type: permit
-    description: Advertise towards LAN the routes received locally
+    description: Advertise routes received from WAN towards LAN
     match:
-    - extcommunity soo 192.168.43.1:422 additive
-  - sequence: 30
-    type: permit
-    description: Advertise towards LAN the routes received over WAN
-    match:
-    - as-path AP-WAN
+    - route-type internal
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
     type: permit
     match:
-    - extcommunity soo 192.168.43.1:422 additive
+    - extcommunity ECL-WAN-HA-SOO
 flow_tracking:
   hardware:
     trackers:

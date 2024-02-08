@@ -165,7 +165,7 @@ route_maps:
   - sequence: 10
     type: permit
     match:
-    - extcommunity soo 192.168.42.1:511 additive
+    - extcommunity ECL-WAN-HA-SOO
 flow_tracking:
   hardware:
     trackers:
