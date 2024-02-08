@@ -20345,9 +20345,49 @@
       "type": "object",
       "title": "Router IGMP Configuration",
       "properties": {
+        "host_proxy_match_mroute": {
+          "type": "string",
+          "description": "Specify conditions for sending IGMP joins for host-proxy\n'iif' will enable igmp host-proxy to work in iif aware\n'all' will enable igmp host-proxy to work in iif unaware mode (EOS default)\n",
+          "enum": [
+            "all",
+            "iif"
+          ],
+          "title": "Host Proxy Match Mroute"
+        },
         "ssm_aware": {
           "type": "boolean",
           "title": "Ssm Aware"
+        },
+        "vrfs": {
+          "type": "array",
+          "description": "Configure IGMP in a VRF.\nVRF 'default' is not supported in EOS, please see keys directly under 'router_igmp'.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name",
+                "title": "Name"
+              },
+              "host_proxy_match_mroute": {
+                "type": "string",
+                "description": "Specify conditions for sending IGMP joins for host-proxy\n'iif' will enable igmp host-proxy to work in iif aware\n'all' will enable igmp host-proxy to work in iif unaware mode (EOS default)\n",
+                "enum": [
+                  "all",
+                  "iif"
+                ],
+                "title": "Host Proxy Match Mroute"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
         }
       },
       "additionalProperties": false,
