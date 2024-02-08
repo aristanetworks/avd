@@ -30,7 +30,11 @@ except ImportError:
 except TypeError as e:
     # Known bug with Python 3.9.7 and Pydantic `conint`, impacting ANTA. Issue: https://github.com/arista-netdevops-community/anta/issues/557
     if "Interval() takes no arguments" in str(e):
-        msg = "Encountered a known bug with Pydantic and Python 3.9.7. Please consider upgrading Python or using a different environment."
+        msg = (
+            "The ANTA testing framework, used in the AVD eos_validate_state role, has encountered a compatibility issue with Python 3.9.x. "
+            "Please try a different Python version. For assistance or to report your Python version, please refer to the AVD/ANTA GitHub repositories:\n"
+            "https://github.com/aristanetworks/avd/\nhttps://github.com/arista-netdevops-community/anta"
+        )
         raise AristaAvdError(msg) from e
     else:
         # If the TypeError is not related to the known bug, raise it to avoid silencing other issues

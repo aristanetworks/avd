@@ -16,7 +16,6 @@
     # cprofile_file: "anta-{{inventory_hostname}}.prof"
   register: anta_results
   check_mode: false
-  when: use_anta | bool
   tags: always
 
 #######################################
@@ -36,7 +35,6 @@
   run_once: true
   check_mode: false
   when:
-    - use_anta | bool
     - validation_report_csv | bool or validation_report_md | bool
   tags:
     - always
