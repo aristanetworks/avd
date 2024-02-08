@@ -186,7 +186,7 @@ loopback_interfaces:
   ip_address: 192.168.42.2/32
 as_path:
   access_lists:
-  - name: AP-WAN
+  - name: ASPATH-WAN
     entries:
     - type: permit
       match: '65000'
@@ -215,7 +215,7 @@ route_maps:
     type: deny
     description: Deny prefixes from WAN
     match:
-    - as-path AP-WAN
+    - as-path ASPATH-WAN
   - sequence: 30
     type: permit
     description: Mark prefixes originated from the LAN

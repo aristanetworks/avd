@@ -39,6 +39,44 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
   - If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
   - For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `CONTROL-PLANE-APPLICATION-PROFILE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
 
+#### LAN Designs
+
+!!! note
+
+    An important design point to keep in mind is that the current CV Pathfinder and AutoVPN
+    solutions require the Dps1 interface to be in VRF default.
+    This implies that all the WAN interfaces also live in VRF default.
+    And the LAN interfaces also have subnets in the default VRF.
+    All of this means VRF default routing must be handled with care.
+
+!!! warning
+
+    AVD does not yet configure any route-map to filter potential routes received
+    from the WAN for a WAN interface purpose (e.g. internet) to be advertised
+    towards the LAN. The plan is to add an inbound route-map set the
+    no-advertise community on the received routes.
+
+    Similarly there is no current prevention to prevent advertising the LAN routes towards the WAN,
+    The plan is to apply an outbound route-map preventing any routes to be advertised.
+
+##### EBGP LAN
+
+- the Site of Origin (SoO) extended community is configured as <router_id>:<site_id>
+    note: site id is unique per zone (only a default zone supported today).
+- the routes redistributed into BGP via the route-map `RM-CONN-2-BGP` are tagged with the SoO.
+- the Underlay peer group (towards the LAN) is configured with two route-maps reused from existing designed but configured differently
+  - one outbound route-map `RM-BGP-UNDERLAY-PEERS-OUT`:
+    - advertised the local routes tagged with the SoO extended community.
+    - advertised the routes received from iBGP (WAN) towards the LAN
+  - one outbound route-map `RM-BGP-UNDERLAY-PEERS-IN`:
+    - deny routes received from LAN that already contain the WAN AS in the path.
+    - accept routes coming from the LAN and set the SoO extended community on them.
+- For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SoO.
+
+###### HA
+
+To Be Implemented.
+
 ## Known limitations
 
 - Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `DEFAULT-ZONE` with ID `1`.
@@ -57,15 +95,22 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
          template interval 5000
     ```
 
+- All Pathfinders must be able to create a full mesh
 - No IPv6 support
+- For WAN interfaces only physical interfaces are supported today under `node.l3_interfaces`
 - For WAN interfaces, NAT IP on the Pathfinder side can be supported using the `wan_route_servers.path_groups.interfaces` key.
 - Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
+- The name of the AVT policies and AVT profiles are configurable in the input variables. The Load Balance policies are named `LB-<profile_name>` and are not configurable.
+- For LAN, the current supported funcitonality is to use `uplink_type: p2p-vrfs` on the WAN routers and to have the relevant VRFs present on the uplink switches via `network_services`. Other LAN scenarios will come with time.
 
 ## Future work
 
-- As of now, only the fundations of the `eos_designs` functionality for WAN is being introduced without any support for LAN interfaces.
 - Auto generation of Path-group IDs and other IDs.
-- HA for sites will be covered in a future PR
+- New LAN scenarios (L2, ..)
+- HA for eBGP
+- HA for AutoVPN
+- Proper OSPF-BGP redistribution in VRF default.
+- Support for OSPF subinterfaces.
 
 ## `eos_cli_config_gen` support
 

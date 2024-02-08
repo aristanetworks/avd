@@ -84,16 +84,6 @@ wan_edge:
           wan_circuit_id: AF830
           ip_address: 172.20.20.20/31
           connected_to_pathfinder: False
-    - name: cv-pathfinder-edge-no-common-path-group
-      cv_pathfinder_region: AVD_Land_East
-      cv_pathfinder_site: Site512
-      id: 6
-      l3_interfaces:
-        - name: Ethernet1
-          wan_carrier: Inmrasat
-          wan_circuit_id: S512
-          dhcp_accept_default_route: true
-          ip_address: dhcp
       # Disabling HA - TODO once implemented, for now it is disabled by default
       # wan_ha:
       #  enabled: False
@@ -105,7 +95,7 @@ wan_edge:
             - name: Ethernet1
               wan_carrier: ATT
               wan_circuit_id: 666
-              set_default_route: true
+              dhcp_accept_default_route: true
               ip_address: dhcp
             - name: Ethernet2
               wan_carrier: Colt
@@ -123,7 +113,7 @@ wan_edge:
             - name: Ethernet1
               wan_carrier: Inmrasat
               wan_circuit_id: S511
-              set_default_route: true
+              dhcp_accept_default_route: true
               ip_address: dhcp
 
 # Fake DC1

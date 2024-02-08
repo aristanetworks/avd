@@ -26,7 +26,7 @@ class AsPathMixin(UtilsMixin):
         if self.shared_utils.is_cv_pathfinder_edge_or_transit:
             access_lists.append(
                 {
-                    "name": "AP-WAN",
+                    "name": "ASPATH-WAN",
                     "entries": [
                         {
                             "type": "permit",

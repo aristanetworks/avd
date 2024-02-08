@@ -101,7 +101,7 @@ class RouteMapsMixin(UtilsMixin):
                             "sequence": 20,
                             "type": "deny",
                             "description": "Deny prefixes from WAN",
-                            "match": ["as-path AP-WAN"],
+                            "match": ["as-path ASPATH-WAN"],
                         },
                         {
                             "sequence": 30,
