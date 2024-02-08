@@ -24,6 +24,11 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.vrf is arista.avd.defined %}
    vrf {{ vlan_interface.vrf }}
 {%     endif %}
+{%     if vlan_interface.logging.event.link_status is arista.avd.defined(true) %}
+   logging event link-status
+{%     elif vlan_interface.logging.event.link_status is arista.avd.defined(false) %}
+   no logging event link-status
+{%     endif %}
 {%     if vlan_interface.arp_aging_timeout is arista.avd.defined %}
    arp aging timeout {{ vlan_interface.arp_aging_timeout }}
 {%     endif %}

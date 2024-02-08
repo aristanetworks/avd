@@ -15,6 +15,11 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.logging.event.link_status is arista.avd.defined(false) %}
    no logging event link-status
 {%     endif %}
+{%     if port_channel_interface.logging.event.storm_control_discards is arista.avd.defined(true) %}
+   logging event storm-control discards
+{%     elif port_channel_interface.logging.event.storm_control_discards is arista.avd.defined(false) %}
+   no logging event storm-control discards
+{%     endif %}
 {%     if port_channel_interface.shutdown is arista.avd.defined(true) %}
    shutdown
 {%     elif port_channel_interface.shutdown is arista.avd.defined(false) %}

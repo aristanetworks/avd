@@ -2462,6 +2462,9 @@ keys:
                   type: bool
                 storm_control_discards:
                   type: bool
+                  description: 'Discards due to storm-control.
+
+                    '
         lldp:
           type: dict
           keys:
@@ -7069,6 +7072,11 @@ keys:
               keys:
                 link_status:
                   type: bool
+                storm_control_discards:
+                  type: bool
+                  description: 'Discards due to storm-control.
+
+                    '
         shutdown:
           type: bool
         l2_mtu:
@@ -14573,6 +14581,14 @@ keys:
           description: VLAN interface name like "Vlan123"
         description:
           type: str
+        logging:
+          type: dict
+          keys:
+            event:
+              type: dict
+              keys:
+                link_status:
+                  type: bool
         shutdown:
           type: bool
         vrf:
