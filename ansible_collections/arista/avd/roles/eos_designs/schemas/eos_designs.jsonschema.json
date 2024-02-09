@@ -5832,7 +5832,7 @@
           "dhcp_accept_default_route": {
             "type": "boolean",
             "default": false,
-            "description": "Accept a default route from DHCP if `ip` is `dhcp`.",
+            "description": "Accept a default route from DHCP if `ip_address` is set to `dhcp`.",
             "title": "DHCP Accept Default Route"
           },
           "enabled": {
@@ -7417,6 +7417,7 @@
                       },
                       "storm_control_discards": {
                         "type": "boolean",
+                        "description": "Discards due to storm-control.\n",
                         "title": "Storm Control Discards"
                       }
                     },
@@ -9700,6 +9701,11 @@
                           "link_status": {
                             "type": "boolean",
                             "title": "Link Status"
+                          },
+                          "storm_control_discards": {
+                            "type": "boolean",
+                            "description": "Discards due to storm-control.\n",
+                            "title": "Storm Control Discards"
                           }
                         },
                         "additionalProperties": false,
@@ -12690,6 +12696,7 @@
                       },
                       "storm_control_discards": {
                         "type": "boolean",
+                        "description": "Discards due to storm-control.\n",
                         "title": "Storm Control Discards"
                       }
                     },
@@ -15788,6 +15795,11 @@
                           "link_status": {
                             "type": "boolean",
                             "title": "Link Status"
+                          },
+                          "storm_control_discards": {
+                            "type": "boolean",
+                            "description": "Discards due to storm-control.\n",
+                            "title": "Storm Control Discards"
                           }
                         },
                         "additionalProperties": false,
@@ -18778,6 +18790,7 @@
                       },
                       "storm_control_discards": {
                         "type": "boolean",
+                        "description": "Discards due to storm-control.\n",
                         "title": "Storm Control Discards"
                       }
                     },
@@ -21235,6 +21248,30 @@
                       "type": "string",
                       "title": "Description"
                     },
+                    "logging": {
+                      "type": "object",
+                      "properties": {
+                        "event": {
+                          "type": "object",
+                          "properties": {
+                            "link_status": {
+                              "type": "boolean",
+                              "title": "Link Status"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Event"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Logging"
+                    },
                     "shutdown": {
                       "type": "boolean",
                       "title": "Shutdown"
@@ -22910,6 +22947,30 @@
               "description": {
                 "type": "string",
                 "title": "Description"
+              },
+              "logging": {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "object",
+                    "properties": {
+                      "link_status": {
+                        "type": "boolean",
+                        "title": "Link Status"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Event"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Logging"
               },
               "shutdown": {
                 "type": "boolean",

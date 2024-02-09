@@ -688,6 +688,8 @@ keys:
                   type: bool
                 storm_control_discards:
                   type: bool
+                  description: |
+                    Discards due to storm-control.
         lldp:
           type: dict
           keys:
