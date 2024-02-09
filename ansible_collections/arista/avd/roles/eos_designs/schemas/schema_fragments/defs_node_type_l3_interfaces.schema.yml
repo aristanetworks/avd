@@ -36,7 +36,7 @@ $defs:
         dhcp_accept_default_route:
           type: bool
           default: false
-          description: Accept a default route from DHCP if `ip` is `dhcp`.
+          description: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
         enabled:
           type: bool
           default: true
