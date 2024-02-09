@@ -13,17 +13,17 @@ title: arista.avd.generate_route_target
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.generate_route_target` when using this plugin.
 
-Transforms short\_esi <code>0303\:0202\:0101</code> to route\-target format <code>03\:03\:02\:02\:01\:01</code>
+Transforms short_esi `0303:0202:0101` to route-target format `03:03:02:02:01:01`
 
 ## Synopsis
 
-Removes <code>\:</code> and inserts new <code>\:</code> for each two characters.
+Removes `:` and inserts new `:` for each two characters.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | string | True | None |  | Short ESI value as per AVD definition in eos\_designs. |
+| <samp>_input</samp> | string | True | None |  | Short ESI value as per AVD definition in eos_designs. |
 
 ## Examples
 
@@ -36,7 +36,7 @@ rt: "{{ short_esi | arista.avd.generate_route_target }}"
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | string | String based on route\-target format like 03\:03\:02\:02\:01\:01 |
+| _value | string | String based on route-target format like 03:03:02:02:01:01 |
 
 ## Authors
 

@@ -20,15 +20,15 @@ Deploy various objects to CloudVision
 
 ## Synopsis
 
-The <code>arista.avd.deploy\_to\_cv</code> module is an Ansible Action Plugin providing the following capabilities\:
+The `arista.avd.deploy_to_cv` module is an Ansible Action Plugin providing the following capabilities:
 
-\- Verify Devices are in the CloudVision inventory.
-\- Verify Devices are in the Inventory \& Topology Studio.
-\- Update the Device hostname in the Inventory \& Topology Studio as needed.
-\- Create Workspace and build, submit, abandon as needed.
-\- Deploy EOS configurations using \"Static Configlet Studio\".
-\- Create and associate Device and Interface Tags.
-\- Approve, run, cancel Change Controls as needed.
+- Verify Devices are in the CloudVision inventory.
+- Verify Devices are in the Inventory &amp; Topology Studio.
+- Update the Device hostname in the Inventory &amp; Topology Studio as needed.
+- Create Workspace and build, submit, abandon as needed.
+- Deploy EOS configurations using &#34;Static Configlet Studio&#34;.
+- Create and associate Device and Interface Tags.
+- Approve, run, cancel Change Controls as needed.
 
 ## Parameters
 
@@ -38,26 +38,26 @@ The <code>arista.avd.deploy\_to\_cv</code> module is an Ansible Action Plugin pr
 | <samp>cv_token</samp> | str | True | None |  | Service account token. It is strongly recommended to use Vault for this. |
 | <samp>cv_verify_certs</samp> | bool | optional | True |  | Verifies CloudVison server certificates. |
 | <samp>configuration_dir</samp> | str | True | None |  | Path to directory containing .cfg files with EOS configurations. |
-| <samp>structured_config_dir</samp> | str | True | None |  | Path to directory containing files with AVD structured configurations.<br>If found, the <code>serial\_number</code> or <code>system\_mac\_address</code> will be used to identify the Device on CloudVision.<br>Any tags found in the structured configuration metadata will be applied to the Device and/or Interfaces. |
+| <samp>structured_config_dir</samp> | str | True | None |  | Path to directory containing files with AVD structured configurations.<br>If found, the `serial_number` or `system_mac_address` will be used to identify the Device on CloudVision.<br>Any tags found in the structured configuration metadata will be applied to the Device and/or Interfaces. |
 | <samp>structured_config_suffix</samp> | str | optional | yml |  | File suffix for AVD structured configuration files. |
 | <samp>device_list</samp> | list | True | None |  | List of devices to deploy. The names are used to find AVD structured configuration and EOS configuration files. |
-| <samp>strict_tags</samp> | bool | optional | False |  | If <code>true</code> other tags associated with the devices will get removed. Otherwise other tags will be left as\-is. |
-| <samp>skip_missing_devices</samp> | bool | optional | False |  | If <code>true</code> anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue. |
+| <samp>strict_tags</samp> | bool | optional | False |  | If `true` other tags associated with the devices will get removed. Otherwise other tags will be left as-is. |
+| <samp>skip_missing_devices</samp> | bool | optional | False |  | If `true` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue. |
 | <samp>configlet_name_template</samp> | str | optional | AVD-${hostname} |  | Python String Template to use for creating the configlet name for each device configuration. |
 | <samp>workspace</samp> | dict | optional | None |  | CloudVision Workspace to create or use for the deployment. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None |  | Optional name to use for the created Workspace. By default the name will be <code>AVD \<timestamp\></code>. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None |  | Optional name to use for the created Workspace. By default the name will be `AVD &lt;timestamp&gt;`. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | str | optional | None |  | Optional description to use for the created Workspace. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp> | str | optional | None |  | Optional ID to use for the created Workspace. If there is already a workspace with the same ID, it must be in the \'pending\' state. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;requested_state</samp> | str | optional | built | Valid values:<br>- <code>pending</code><br>- <code>built</code><br>- <code>submitted</code><br>- <code>abandoned</code><br>- <code>deleted</code> | The requested state for the Workspace.<br><br>\- <code>\"pending\"</code>\: Leave the Workspace in pending state.<br>\- <code>\"built\"</code>\: Build the Workspace but do not submit.<br>\- <code>\"submitted\"</code> \(default\)\: Build and submit the Workspace.<br>\- <code>\"abandoned\"</code>\: Build and then abandon the Workspace.<br>    Used for dry\-run where no changes will be committed to CloudVision.<br>\- <code>\"deleted\"</code>\: Build, abort and then delete the Workspace.<br>    Used for dry\-run where no changes will be committed to CloudVision and the temporary Workspace will be removed to avoid \"clutter\". |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp> | str | optional | None |  | Optional ID to use for the created Workspace. If there is already a workspace with the same ID, it must be in the &#39;pending&#39; state. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;requested_state</samp> | str | optional | built | Valid values:<br>- <code>pending</code><br>- <code>built</code><br>- <code>submitted</code><br>- <code>abandoned</code><br>- <code>deleted</code> | The requested state for the Workspace.<br><br>- `pending`: Leave the Workspace in pending state.<br>- `built`: Build the Workspace but do not submit.<br>- `submitted` (default): Build and submit the Workspace.<br>- `abandoned`: Build and then abandon the Workspace.<br>    Used for dry-run where no changes will be committed to CloudVision.<br>- `deleted`: Build, abort and then delete the Workspace.<br>    Used for dry-run where no changes will be committed to CloudVision and the temporary Workspace will be removed to avoid &#34;clutter&#34;. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;force</samp> | bool | optional | False |  | Force submit the workspace even if some devices are not actively streaming to CloudVision. |
 | <samp>change_control</samp> | dict | optional | None |  | CloudVision Change Control to create for the deployment. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None |  | Optional name to use for the created Change Control. By default the name generated by CloudVision will be kept. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | str | optional | None |  | Optional description to use for the created Change Control. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;requested_state</samp> | str | optional | pending approval | Valid values:<br>- <code>pending approval</code><br>- <code>approved</code><br>- <code>running</code><br>- <code>completed</code> | The requested state for the Change Control.<br><br>\- <code>\"pending approval\"</code> \(default\)\: Leave the Change Control in \"pending approval\" state.<br>\- <code>\"approved\"</code>\: Approve the Change Control but do not start.<br>\- <code>\"running\"</code>\: Approve and start the Change Control. Do not wait for the Change Control to be completed or failed.<br>\- <code>\"completed\"</code>\: Approve and start the Change Control. Wait for the Change Control to be completed. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;requested_state</samp> | str | optional | pending approval | Valid values:<br>- <code>pending approval</code><br>- <code>approved</code><br>- <code>running</code><br>- <code>completed</code> | The requested state for the Change Control.<br><br>- `pending approval` (default): Leave the Change Control in &#34;pending approval&#34; state.<br>- `approved`: Approve the Change Control but do not start.<br>- `running`: Approve and start the Change Control. Do not wait for the Change Control to be completed or failed.<br>- `completed`: Approve and start the Change Control. Wait for the Change Control to be completed. |
 | <samp>timeouts</samp> | dict | optional | None |  | Timeouts for long running operations. May need to be adjusted for large inventories. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;workspace_build_timeout</samp> | float | optional | 300.0 |  | Time to wait for Workspace build before failing. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;change_control_creation_timeout</samp> | float | optional | 300.0 |  | Time to wait for Change Control creation before failing. |
-| <samp>return_details</samp> | bool | optional | False |  | If <code>true</code> all details will be returned to Ansible and can be registered.<br>For large inventories this can affect performance, so it is disabled by default. |
+| <samp>return_details</samp> | bool | optional | False |  | If `true` all details will be returned to Ansible and can be registered.<br>For large inventories this can affect performance, so it is disabled by default. |
 
 ## Examples
 
