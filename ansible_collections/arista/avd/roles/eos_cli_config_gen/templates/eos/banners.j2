@@ -8,8 +8,8 @@
 !
 banner login
 {%     set login = banners.login %}
-{%     if not (login.strip().endswith('\nEOF') or login.strip().endswith('\nEOF\n')) %}
-{%         set login = login.strip() + "\nEOF\n" %}
+{%     if not login.rstrip().endswith('\nEOF') %}
+{%         set login = login.rstrip() + "\nEOF\n" %}
 {%     endif %}
 {{ login }}
 {% endif %}
@@ -17,8 +17,8 @@ banner login
 !
 banner motd
 {%     set motd = banners.motd %}
-{%     if not (motd.strip().endswith('\nEOF') or motd.strip().endswith('\nEOF\n')) %}
-{%         set motd = motd.strip() + "\nEOF\n" %}
+{%     if not (motd.rstrip().endswith('\nEOF')) %}
+{%         set motd = motd.rstrip() + "\nEOF\n" %}
 {%     endif %}
 {{ motd }}
 {% endif %}
