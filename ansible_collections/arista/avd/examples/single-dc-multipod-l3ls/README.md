@@ -12,17 +12,17 @@ title: AVD example for a single data center using multiple pods for l3ls
 
 ## Introduction
 
-This example shows how to create a multipod environment (also known as a 5-stage Clos) in a DC environment. This can be used in multiple DCs of course, but this example is only for two pods in a single DC. 
+This example shows how to create a multipod environment (also known as a 5-stage Clos) in a single DC environment. This can be used in multiple DCs of course, but this example is only for two pods in a single DC.
 
-Also included is an external router for an external routed connection for VRF_A. 
+Also included is an example of connecting an external router to a VRF/tenant.
 
-This example will not teach all the aspects of a l3ls EVPN/VXLAN build, see the single-dc-l3ls directory for that. This is a supplement to this, concentrating on the differences between a typical DC l3ls and one with multiple pods/5-stage Clos.  
+This example will not teach all the aspects of a l3ls EVPN/VXLAN build, see the single-dc-l3ls directory for that. This is a supplement to single-dc-l3ls, concentrating on the aspects that are unique when doing multiple pods/5-stage Clos.  
 
 Ansible playbooks are included to show the following:
 
 - Building the intended configuration and documentation
 - Deploying the configuration via CloudVision to the switches, including a full change-based workflow with rollback capability etc.
-- Validating the configuration 
+- Validating the configuration
 
 
 ## Overall design overview
@@ -36,7 +36,7 @@ The drawing below shows the physical topology used in this example. The interfac
 
 ### Fabric Design
 
-The fabric is a basic l3ls EVPN/VXLAN design with a multi-pod (5-stage Clos) architecture. Of course four leafs and four spines wouldn't be put into multi-pod, this is just a demonstration of how it is configured. 
+The fabric is a basic l3ls EVPN/VXLAN design with a multi-pod (5-stage Clos) architecture.
 
 ## Ansible inventory, group vars, and naming scheme
 
@@ -152,7 +152,6 @@ With the topology, five YAML files are used in group_vars:
 * ENDPOINT_CONNECT.yml
 
 
-
 The FABRIC.yml file contains parameters that would apply to the entire fabric, such as `evpn_vlan_aware_bundles: true`. FABRIC.yml also contains the definitions for the superspines. 
 
 ```yaml title="FABRIC.yml"
@@ -256,7 +255,7 @@ l3leaf:
 
 ## Connecting an External Router
 
-In addition to multi-pod, this AVD set also has an example of connecting to an external network. This is defined in the EVPN_SERVICES.yml file. The `l3_interfaces` parameter creates an L3 interface in the VRF on a specific leaf, and the `bgp_peer` section. 
+In addition to multi-pod, this example also has a tenant/VRF connecting to an external network via a router (R1). This is defined in the EVPN_SERVICES.yml file. The `l3_interfaces` parameter creates an L3 interface in the VRF on a specific leaf, and the `bgp_peer` section. 
 
 ```YAML
 ---
@@ -286,11 +285,3 @@ tenants:
             remote_as: 65534
             nodes: [leaf4]
 ```
-# Playbooks
-
-There are three playbooks in the playbook directory: 
-
-* build_fabric.yml: Builds the configurations as well as documentation
-* deploy_fabric.yml: Deploys the configurations as configlets through CVP
-* test_fabric.yml: Validates the deployment with various tests customized from the fabric configuration. 
-
