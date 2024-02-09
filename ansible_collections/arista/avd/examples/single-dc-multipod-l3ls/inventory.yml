@@ -38,9 +38,9 @@ all:
           vars:
             type: super-spine
           hosts:  
-            borderleaf1:
+            superspine1:
               ansible_host: 192.168.0.15
-            borderleaf2:
+            superspine2:
               ansible_host: 192.168.0.16
         POD1:
           children:
