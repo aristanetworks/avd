@@ -2190,6 +2190,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                border_router:
+                  type: bool
+                  description: Configure pim border router. EOS default is false
                 dr_priority:
                   type: int
                   convert_types:
@@ -7748,6 +7751,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                border_router:
+                  type: bool
+                  description: Configure pim border router. EOS default is false
                 dr_priority:
                   type: int
                   convert_types:
@@ -14906,6 +14912,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                border_router:
+                  type: bool
+                  description: Configure pim border router. EOS default is false
                 dr_priority:
                   type: int
                   convert_types:
