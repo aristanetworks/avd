@@ -1,0 +1,159 @@
+hostname: spine1
+router_bgp:
+  as: '65001'
+  router_id: 192.168.101.11
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  neighbors:
+  - ip_address: 192.168.103.1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    description: leaf1_Ethernet3
+  - ip_address: 192.168.103.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    description: leaf2_Ethernet3
+  - ip_address: 192.168.103.40
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    description: borderleaf1_Ethernet3
+  - ip_address: 192.168.103.42
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    description: borderleaf2_Ethernet3
+  - ip_address: 192.168.101.201
+    peer_group: EVPN-OVERLAY-PEERS
+    description: borderleaf1
+    remote_as: '65000'
+  - ip_address: 192.168.101.202
+    peer_group: EVPN-OVERLAY-PEERS
+    description: borderleaf2
+    remote_as: '65000'
+  - ip_address: 192.168.101.1
+    peer_group: EVPN-OVERLAY-PEERS
+    description: leaf1
+    remote_as: '65100'
+  - ip_address: 192.168.101.2
+    peer_group: EVPN-OVERLAY-PEERS
+    description: leaf2
+    remote_as: '65100'
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+static_routes:
+- vrf: default
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.0.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+vrfs:
+- name: default
+  ip_routing: false
+management_interfaces:
+- name: Management0
+  description: oob_management
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.11/24
+  gateway: 192.168.0.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: default
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet3
+  peer: leaf1
+  peer_interface: Ethernet3
+  peer_type: l3leaf
+  description: P2P_LINK_TO_LEAF1_Ethernet3
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.0/31
+- name: Ethernet4
+  peer: leaf2
+  peer_interface: Ethernet3
+  peer_type: l3leaf
+  description: P2P_LINK_TO_LEAF2_Ethernet3
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.4/31
+- name: Ethernet7
+  peer: borderleaf1
+  peer_interface: Ethernet3
+  peer_type: super-spine
+  description: P2P_LINK_TO_BORDERLEAF1_Ethernet3
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.41/31
+- name: Ethernet8
+  peer: borderleaf2
+  peer_interface: Ethernet3
+  peer_type: super-spine
+  description: P2P_LINK_TO_BORDERLEAF2_Ethernet3
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.43/31
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.101.11/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.101.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3

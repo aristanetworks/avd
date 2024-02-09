@@ -1,0 +1,159 @@
+hostname: superspine1
+router_bgp:
+  as: '65000'
+  router_id: 192.168.101.201
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  neighbors:
+  - ip_address: 192.168.103.41
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    description: spine1_Ethernet7
+  - ip_address: 192.168.103.45
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    description: spine2_Ethernet7
+  - ip_address: 192.168.103.49
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65002'
+    description: spine3_Ethernet7
+  - ip_address: 192.168.103.53
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65002'
+    description: spine4_Ethernet7
+  - ip_address: 192.168.101.11
+    peer_group: EVPN-OVERLAY-PEERS
+    description: spine1
+    remote_as: '65001'
+  - ip_address: 192.168.101.12
+    peer_group: EVPN-OVERLAY-PEERS
+    description: spine2
+    remote_as: '65001'
+  - ip_address: 192.168.101.13
+    peer_group: EVPN-OVERLAY-PEERS
+    description: spine3
+    remote_as: '65002'
+  - ip_address: 192.168.101.14
+    peer_group: EVPN-OVERLAY-PEERS
+    description: spine4
+    remote_as: '65002'
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+static_routes:
+- vrf: default
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.0.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+vrfs:
+- name: default
+  ip_routing: false
+management_interfaces:
+- name: Management0
+  description: oob_management
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.25/24
+  gateway: 192.168.0.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: default
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet3
+  peer: spine1
+  peer_interface: Ethernet7
+  peer_type: spine
+  description: P2P_LINK_TO_SPINE1_Ethernet7
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.40/31
+- name: Ethernet4
+  peer: spine2
+  peer_interface: Ethernet7
+  peer_type: spine
+  description: P2P_LINK_TO_SPINE2_Ethernet7
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.44/31
+- name: Ethernet5
+  peer: spine3
+  peer_interface: Ethernet7
+  peer_type: spine
+  description: P2P_LINK_TO_SPINE3_Ethernet7
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.48/31
+- name: Ethernet6
+  peer: spine4
+  peer_interface: Ethernet7
+  peer_type: spine
+  description: P2P_LINK_TO_SPINE4_Ethernet7
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.52/31
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.101.201/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.101.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
