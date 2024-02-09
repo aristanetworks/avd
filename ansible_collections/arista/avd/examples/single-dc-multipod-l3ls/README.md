@@ -14,11 +14,9 @@ title: AVD example for a single data center using multiple pods for l3ls
 
 This example shows how to create a multipod environment (also known as a 5-stage Clos) in a DC environment. This can be used in multiple DCs of course, but this example is only for two pods in a single DC. 
 
-The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering a single DC using the following:
+Also included is an external router for an external routed connection for VRF_A. 
 
-- Four (virtual) spine switches divided between two pods
-- Two sets of (virtual) leaf switches, serving endpoints such as servers.
-- A set of (virtual) super-spine switches which aggregate the two pods
+This example will not teach all the aspects of a l3ls EVPN/VXLAN build, see the single-dc-l3ls directory for that. This is a supplement to this, concentrating on the differences between a typical DC l3ls and one with multiple pods/5-stage Clos.  
 
 Ansible playbooks are included to show the following:
 
@@ -31,287 +29,265 @@ Ansible playbooks are included to show the following:
 
 ### Physical topology
 
-The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology. Finally, the Ansible host is connected to the dedicated out-of-band management port (Ethernet0 when using vEOS-lab):
+The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology. 
 
-![Figure: Arista Leaf Spine physical topology](images/avd-single-dc-l3ls-example.svg)
+![Figure: Arista Leaf Spine physical topology](images/l3ls-multipod.png)
 
-### IP ranges used
-
-| Out-of-band management IP allocation for DC1        | 192.168.0.0/24               |
-|-----------------------------------------------------|-----------------------------|
-| Default gateway                                     | 192.168.0.1                  |
-| spine1                                              | 192.168.0.11                 |
-| spine2                                              | 192.168.0.12                 |
-| spine3                                              | 192.168.0.13                 |
-| spine4                                              | 192.168.0.14                 |
-| leaf1                                               | 192.168.0.21                 |
-| leaf2                                               | 192.168.0.22                 |
-| leaf3                                               | 192.168.0.23                 |
-| leaf4                                               | 192.168.0.24                |
-| **Point-to-point links between leaf and spine**     | **(Underlay)**              |
-| DC1                                                 | 192.168.103.0/24            |
-| **Loopback0 interfaces used for EVPN peering**      | 192.168.101.0/24             |
-| **Loopback1 interfaces used for VTEP**              | 192.168.102.0/24         |
-| cvp                                                 | 192.168.0.5            |
 
 ### Fabric Design
 
-=== "Underlay"
-
-    ![Arista Multipod Fabric](images/l3ls-multipod.png)
-
+The fabric is a basic l3ls EVPN/VXLAN design with a multi-pod (5-stage Clos) architecture. Of course four leafs and four spines wouldn't be put into multi-pod, this is just a demonstration of how it is configured. 
 
 ## Ansible inventory, group vars, and naming scheme
 
 The following drawing shows a graphic overview of the Ansible inventory, group variables, and naming scheme used in this example:
 
-![Figure: Ansible inventory and vars](images/ansible-groups.svg)
+![Figure: Arista Leaf Spine physical topology](images/inventory.png)
 
-!!! note
-    The two servers `dc1-leaf1-server1` and `dc1-leaf2-server1` at the bottom are **not** configured by AVD, but the switch ports used to connect to the servers are.
+There is the addition of a SUPERSPINES group as well as a POD1 and POD2 groups with PODX_LEAFS and PODX_SPINES under each. The EVPN_SERVICES and ENDPOINT_CONNECT allow separation of YAML files, and putting the PODX_LEAFS under them will build the appropriate configs for those devices (VXLAN/VLAN/anycast gateways do not get instantiated on spines, of course).
 
-Group names use uppercase and underscore syntax:
 
-- CVP_Cluster
-- FABRIC
-- SUPERSPINES
-- POD1
-- POD1_SPINES
-- POD1_LEAFS
-- POD2_SPINES
-- POD2_LEAFS
-- EVPN_SERVICES
-- ENDPOINT_CONNECT
-
-All hostnames use lowercase and dashes, for example:
-
-- cvp
-- dc1-spine1
-- dc1-leaf1a
-- dc1-leaf2c
-
-The drawing also shows the relationships between groups and their children:
-
-- For example, `dc1-spine1` and `dc1-spine2` are both children of the group called `DC1_SPINES`.
-
-Additionally, groups themselves can be children of another group, for example:
-
-- `DC1_L3_LEAVES` is a group consisting of the groups `DC1_LEAF1` and `DC1_LEAF2`
-- `DC1_L3_LEAVES` is also a child of the group `DC1`.
-
-This naming convention makes it possible to extend anything easily, but as always, this can be changed based on your preferences. Just ensure that the names of all groups and hosts are unique.
 
 ### Content of the inventory.yml file
-
-This section describes the entire `ansible-avd-examples/single-dc-l3ls/inventory.yml` file used to represent the above topology.
-
-It is important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host verifies name resolution(e.g., `ping dc1-spine1`).
-
-Alternatively, if there is no DNS available, or if devices need to be reached using a fully qualified domain name (FQDN), define `ansible_host` to be an IP address or FQDN for each device - see below for an example:
-
-```yaml title="inventory.yml"
---8<--
-examples/single-dc-l3ls/inventory.yml
---8<--
-```
-
-The above is what is included in this example, *purely* to make it as simple as possible to get started. However, in the future, please do not carry over this practice to a production environment, where an inventory file for an identical topology should look as follows when using DNS:
 
 ```yaml title="inventory.yml"
 ---
 all:
   children:
-    CLOUDVISION: # (1)!
-      hosts:
-        cvp:
-          # Ansible variables used by the ansible_avd and ansible_cvp roles to push configuration to devices via CVP
-          ansible_httpapi_host: cvp
-          ansible_host: cvp
-          ansible_user: ansible
-          ansible_password: ansible
-          ansible_connection: httpapi
-          ansible_httpapi_use_ssl: true
-          ansible_httpapi_validate_certs: false
-          ansible_network_os: eos
-          # Configuration to get Virtual Env information
-          ansible_python_interpreter: $(which python3)
+    CVP_cluster:
+      vars:
+        ansible_user: arista
+        ansible_password: arista123
+        ansible_connection: httpapi
+        ansible_httpapi_use_ssl: True
+        ansible_httpapi_validate_certs: False
+        ansible_network_os: eos
+        ansible_httpapi_port: 443
+      hosts: 
+        cvp1: 
+          ansible_host: 192.168.0.5
+        cvp2: 
+          ansible_host: 192.168.0.6
+        cvp3: 
+          ansible_host: 192.168.0.7
+
     FABRIC:
+      vars:
+        ansible_user: arista
+        ansible_ssh_pass: arista123 # If using SSH keys with CLI, this can be removed
+# Use this section if you want to perform testing via the eAPI
+        ansible_connection: httpapi
+        ansible_httpapi_use_ssl: True
+        ansible_httpapi_validate_certs: False
+        ansible_network_os: eos
+        ansible_httpapi_port: 443
+# Use this section if you want to perform testing via the CLI through SSH
+        # ansible_connection: network_cli
+        # ansible_network_os: eos
+        # ansible_become: yes
+        # ansible_become_method: enable
       children:
-        DC1:
+        SUPERSPINES:
+          vars:
+            type: super-spine
+          hosts:  
+            borderleaf1:
+              ansible_host: 192.168.0.15
+            borderleaf2:
+              ansible_host: 192.168.0.16
+        POD1:
           children:
-            DC1_SPINES:
+            POD1_SPINES:
+              vars:
+                type: spine
               hosts:
-                dc1-spine1:
-                dc1-spine2:
-            DC1_L3_LEAVES:
+                spine1:
+                  ansible_host: 192.168.0.11
+                spine2:
+                  ansible_host: 192.168.0.12
+            POD1_LEAFS:
+              vars: 
+                type: l3leaf
               hosts:
-                dc1-leaf1a:
-                dc1-leaf1b:
-                dc1-leaf2a:
-                dc1-leaf2b:
-            DC1_L2_LEAVES:
+                leaf1:
+                  ansible_host: 192.168.0.21
+                leaf2:
+                  ansible_host: 192.168.0.22
+        POD2:
+          children:
+            POD2_SPINES:
+              vars:
+                type: spine
               hosts:
-                dc1-leaf1c:
-                dc1-leaf2c:
-
-    NETWORK_SERVICES: # (2)!
+                spine3:
+                  ansible_host: 192.168.0.13
+                spine4:
+                  ansible_host: 192.168.0.14
+            POD2_LEAFS:
+              vars:
+                type: l3leaf
+              hosts:
+                leaf3:
+                  ansible_host: 192.168.0.23
+                leaf4:
+                  ansible_host: 192.168.0.24
+    EVPN_SERVICES:
       children:
-        DC1_L3_LEAVES:
-        DC1_L2_LEAVES:
-    CONNECTED_ENDPOINTS: # (3)!
+        POD1_LEAFS:
+        POD2_LEAFS:
+    ENDPOINT_CONNECT:
       children:
-        DC1_L3_LEAVES:
-        DC1_L2_LEAVES:
+        POD1_LEAFS:
+        POD2_LEAFS:
 ```
 
-1. `CLOUDVISION`
+## FABRIC Files
 
-   - Defines the relevant values required to enable communication with CloudVision.
+With the topology, five YAML files are used: 
 
-   - Specifically the hostname (`cvp`) of the CloudVision Portal server used, the username (`ansible`) and password (`ansible`), connection method (`httpapi`), SSL and certificate settings.
+* FABRIC.yml
+* POD1.yml
+* POD2.yml
+* EVPN_SERVICES.yml
+* ENDPOINT_CONNECT.yml
 
-   - Please note that the username (`ansible`) and password (`ansible`) defined here must exist in CloudVision.
 
-   - More information is available [here](https://avd.sh/en/stable/roles/eos_config_deploy_cvp/index.html?h=is_deployed#inputs)
 
-2. `NETWORK_SERVICES`
-
-    - Creates a group named `NETWORK_SERVICES`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml`).
-
-    - The file's contents, which in this case are specifications of VRFs and VLANs, are then applied to the group's children. In this case, the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
-
-3. `CONNECTED_ENDPOINTS`
-
-    - Creates a group named `CONNECTED_ENDPOINTS`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml`).
-
-    - The file's contents, which in this case are specifications of connected endpoints (typically servers), are then applied to the children of the group, in this case, the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
-
-## Defining device types
-
-Since this example covers building an L3LS network, AVD must know about the device types, for example, spines, L3 leaves, L2 leaves, etc. The devices are already grouped in the inventory, so the device types are specified in the group variable files with the following names and content:
-
-=== "DC1_SPINES.yml"
-
-    ```yaml
-    --8<--
-    examples/single-dc-l3ls/group_vars/DC1_SPINES.yml
-    --8<--
-    ```
-
-=== "DC1_L3_LEAVES.yml"
-
-    ```yaml
-    --8<--
-    examples/single-dc-l3ls/group_vars/DC1_L3_LEAVES.yml
-    --8<--
-    ```
-
-=== "DC1_L2_LEAVES.yml"
-
-    ```yaml
-    --8<--
-    examples/single-dc-l3ls/group_vars/DC1_L2_LEAVES.yml
-    --8<--
-    ```
-
-For example, all switches that are children of the DC1_SPINES group defined in the inventory will be of type `spine`.
-
-## Setting fabric-wide configuration parameters
-
-The `ansible-avd-examples/single-dc-l3ls/group_vars/FABRIC.yml` file defines generic settings that apply to all children of the `FABRIC` group as specified in the inventory described earlier.
-
-The first section defines how the Ansible host connects to the devices:
+The FABRIC.yml file contains parameters that would apply to the entire fabric, such as `evpn_vlan_aware_bundles: true`. FABRIC.yml also contains the definitions for the superspines. 
 
 ```yaml title="FABRIC.yml"
-ansible_connection: ansible.netcommon.httpapi # (1)!
-ansible_network_os: arista.eos.eos # (2)!
-ansible_user: ansible # (3)!
-ansible_password: ansible
-ansible_become: true
-ansible_become_method: enable # (4)!
-ansible_httpapi_use_ssl: true # (5)!
-ansible_httpapi_validate_certs: false # (6)!
+---
+
+fabric_name: FABRIC
+
+# Various fabric settings
+
+# Enable vlan aware bundles
+evpn_vlan_aware_bundles: true
+
+# Super-Spine Switches
+super_spine:
+  defaults:
+    platform: cEOS
+    bgp_as: 65000
+    loopback_ipv4_pool: 192.168.101.0/24
+    mlag: false
+    evpn_role: server
+
+  nodes:
+    superspine1:
+      id: 201
+      mgmt_ip: 192.168.0.25/24
+    superspine2:
+      id: 202
+      mgmt_ip: 192.168.0.26/24
 ```
 
-1. The Ansible host must use eAPI
-2. Network OS which in this case is Arista EOS
-3. The username/password combo
-4. How to escalate privileges to get write access
-5. Use SSL
-6. Do not validate SSL certificates
+The pod leafs and spines are not in the FABRIC.yml file in this example (although the contents of POD1.yml and POD2.yml could be consolidated into FABRIC.yml). The super_spine section is new, but it works much like the traditional spine section did in a single pod l3ls. It will need an ASN (seprate from the pod spines), loopback pool (which can the same pool as the pods, as long as the IDs are unique). The `evpn_role` server makes the super-spines a router server, as the routes from the pods will need to be propagated to each other. 
 
-The following section specifies variables that generate configuration to be applied to all devices in the fabric:
+The rest of the FABRIC.yml would contain any parameters for your fabric, such as NTP servers, user accounts, and p2p MTUs. 
 
-```yaml title="FABRIC.yml"
-fabric_name: FABRIC # (1)!
+The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. Note that each pod's spines have their own unique ASN (eBGP). Also the spines now have uplink interfaces and uplinks switches specificed (to the superspines) with the `uplink_switches` and `uplink_interfaces` directives. The uplink pool can overlap between the pods in a DC. If doing multi-DC, the pools should be on different subnets.
 
-underlay_routing_protocol: ebgp
-overlay_routing_protocol: ebgp
+The leaf configurations, EVPN_SERVICES and ENDPOINT_CONNECT sections aren't affected by the multi-pod format. 
 
-local_users: # (2)!
-  - name: ansible
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
-  - name: admin
-    privilege: 15
-    role: network-admin
-    no_password: true
+```yaml title="POD1.yml"
 
-bgp_peer_groups: # (3)!
-  evpn_overlay_peers:
-    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
-  ipv4_underlay_peers:
-    password: 7x4B4rnJhZB438m9+BrBfQ==
-  mlag_ipv4_underlay_peer:
-    password: 4b21pAdCvWeAqpcKDFMdWw==
+# Spine Switches
+spine:
+  defaults:
+    platform: cEOS
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.168.101.0/24
+    mlag: false
+    uplink_switches: [superspine1, superspine2] # Where the leaf uplinks go
+    uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
+    uplink_interfaces: [Ethernet7, Ethernet8] # Spine uplinks
+  nodes:
+    spine1:
+      id: 11
+      mgmt_ip: 192.168.0.11/24
+      uplink_switch_interfaces: [Ethernet3, Ethernet3]
+      evpn_route_servers: [superspine1, superspine2]
+    spine2:
+      id: 12
+      mgmt_ip: 192.168.0.12/24
+      uplink_switch_interfaces: [Ethernet4, Ethernet4]
+      evpn_route_servers: [superspine1, superspine2]
 
-p2p_uplinks_mtu: 1500 # (4)!
 
-default_interfaces: # (5)!
-  - types: [ spine ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-2 ]
-    downlink_interfaces: [ Ethernet1-8 ]
-  - types: [ l3leaf ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-2 ]
-    mlag_interfaces: [ Ethernet3-4 ]
-    downlink_interfaces: [ Ethernet8 ]
-  - types: [ l2leaf ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-2 ]
 
-cvp_instance_ips:
-  - 192.168.1.12 # (6)!
-terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
-terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
-terminattr_disable_aaa: true
+# Leaf switches. Most leafs will be l3leaf, not l2leaf.
+l3leaf:
+  defaults:
+    bgp_as: 65100-65199 # Gives a range which will be auto-assigned
+    platform: cEOS
+    loopback_ipv4_pool: 192.168.101.0/24 # This is loopback0 (underlay)
+    vtep_loopback_ipv4_pool: 192.168.102.0/24 # This is loopback1 (VTEP)
+    uplink_interfaces: [Ethernet3, Ethernet4] # Leaf uplinks
+    uplink_switches: [spine1, spine2] # Where the leaf uplinks go
+    uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
+    mlag_interfaces: [Ethernet1, Ethernet2] # MLAG peer link
+    mlag_peer_ipv4_pool: 10.255.252.0/24 # MLAG peer IPs
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # iBGP peering between MLAG peers
+    virtual_router_mac_address: 00:1c:73:00:00:99 # The vMAC for the anycast gateways
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    spanning_tree_mode: mstp # Spanning Tree is still enabled even in EVPN setups
+    spanning_tree_priority: 16384 
+    mlag: true # By default, use MLAG
 
-name_servers: # (7)!
-  - 192.168.1.1
-
-ntp_settings: # (8)!
-  server_vrf: use_mgmt_interface_vrf
-  servers:
-    - name: 192.168.200.5
+  node_groups:
+    mlag1:
+      nodes:
+        leaf1:
+          id: 1
+          mgmt_ip: 192.168.0.21/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+        leaf2:
+          id: 2
+          mgmt_ip: 192.168.0.22/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]
 ```
 
-1. The name of the fabric for internal AVD use. This name *must* match the name of an Ansible Group (and therefore a corresponding group_vars file) covering all network devices.
-2. Local users/passwords and their privilege levels. In this case, the `ansible` user is set with the password `ansible` and an `admin` user is set with no password.
-3. BGP peer groups and their passwords (all passwords are "arista").
-4. Point-to-point interface MTU, in this case, is set to 1500 since the example uses vEOS, but when using hardware, this should be set to 9214 instead.
-5. Defines which interfaces to use for uplinks, MLAG peer-links and downlinks. In this example they are specified per node type.
-   1. `uplink_interfaces` specify which local interfaces connect to an upstream device.
-   2. `mlag_interfaces` specify which local interfaces connect to an MLAG peer.
-   3. `downlink_interfaces` specify which local interfaces connect to a downstream device.
-6. Relevant settings for the `TerminAttr` software agent on EOS, responsible for streaming telemetry back to CloudVision Portal.
-7. DNS Server specification. Used in this example primarily to resolve the IP address of the NTP server.
-8. NTP server settings. Correct and synchronized time on EOS is required for proper connectivity to CloudVision Portal.
 
-## Setting device specific configuration parameters
+## Connecting an External Router
 
-The `ansible-avd-examples/single-dc-l3ls/group_vars/DC1.yml` file defines settings that apply to all children of the `DC1` group as specified in the inventory described earlier. However, this time the settings defined are no longer fabric-wide but are limited to DC1. This example is of limited benefit with only a single data center. Still, it allows us to scale the configuration to a scenario with multiple data centers in the future.
+In addition to multi-pod, this AVD set also has an example of connecting to an external network. This is defined in the EVPN_SERVICES.yml file. The `l3_interfaces` parameter creates an L3 interface in the VRF on a specific leaf, and the `bgp_peer` section. 
+
+```YAML
+---
+tenants:
+  - name: ACME
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_A
+        vrf_vni: 10
+        svis:
+          - id: 10
+            # SVI Description
+            name: DMZ
+            enabled: true
+            ip_address_virtual: 10.1.10.1/24
+          - id: 20
+            name: Internal
+            enabled: true
+            ip_address_virtual: 10.1.20.1/24
+        l3_interfaces:
+          - interfaces: [Ethernet9]
+            ip_addresses: [10.1.5.0/31]
+            nodes: [leaf4]
+            enabled: True 
+        bgp_peers:
+          - ip_address: 10.1.5.1
+            remote_as: 65534
+            nodes: [leaf4]
+```
+
+Connecting to an 
 
 ```yaml title="DC1.yml"
 ---
