@@ -38,10 +38,10 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
   address_family_evpn:
     next_hop_mpls_resolution_ribs:
-      - type: "tunnel-rib-colored"
-      - type: "tunnel-rib"
+      - rib_type: "tunnel-rib-colored"
+      - rib_type: "tunnel-rib"
         rib_name: "test-rib"
-      - type: "system-connected"
+      - rib_type: "system-connected"
     neighbor_default:
       encapsulation: mpls
       next_hop_self_source_interface: Loopback0

@@ -575,10 +575,10 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs is arista.avd.defined() %}
 {%             set ns = namespace(evpn_mpls_resolution_ribs = "next-hop mpls resolution ribs") %}
 {%             for rib in router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs %}
-{%                 if rib.type == "tunnel-rib-colored" %}
+{%                 if rib.rib_type == "tunnel-rib-colored" %}
 {%                     set rib_type = "tunnel-rib colored system-colored-tunnel-rib" %}
 {%                 else %}
-{%                     set rib_type = rib.type %}
+{%                     set rib_type = rib.rib_type %}
 {%                 endif %}
 {%                 set ns.evpn_mpls_resolution_ribs = ns.evpn_mpls_resolution_ribs ~ ' ' ~ rib_type ~ ' ' ~ rib.rib_name | arista.avd.default('') %}
 {%             endfor %}
