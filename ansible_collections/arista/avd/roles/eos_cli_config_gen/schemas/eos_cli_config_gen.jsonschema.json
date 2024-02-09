@@ -7406,6 +7406,11 @@
                   "tunnel"
                 ],
                 "title": "Mode"
+              },
+              "flow_parallelization_encapsulation_udp": {
+                "type": "boolean",
+                "description": "Enable flow parallelization.\nWhen enabled, multiple cores are used to parallelize the IPsec encryption and decryption processing.",
+                "title": "Flow Parallelization Encapsulation UDP"
               }
             },
             "additionalProperties": false,
