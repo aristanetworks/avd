@@ -6947,7 +6947,7 @@
                     "properties": {
                       "border_router": {
                         "type": "boolean",
-                        "description": "Configure pim border router. EOS default is false",
+                        "description": "Configure PIM border router. EOS default is false.",
                         "title": "Border Router"
                       },
                       "dr_priority": {
@@ -10976,7 +10976,7 @@
                         "properties": {
                           "border_router": {
                             "type": "boolean",
-                            "description": "Configure pim border router. EOS default is false",
+                            "description": "Configure PIM border router. EOS default is false.",
                             "title": "Border Router"
                           },
                           "dr_priority": {
@@ -12236,7 +12236,7 @@
                     "properties": {
                       "border_router": {
                         "type": "boolean",
-                        "description": "Configure pim border router. EOS default is false",
+                        "description": "Configure PIM border router. EOS default is false.",
                         "title": "Border Router"
                       },
                       "dr_priority": {
@@ -17080,7 +17080,7 @@
                         "properties": {
                           "border_router": {
                             "type": "boolean",
-                            "description": "Configure pim border router. EOS default is false",
+                            "description": "Configure PIM border router. EOS default is false.",
                             "title": "Border Router"
                           },
                           "dr_priority": {
@@ -18340,7 +18340,7 @@
                     "properties": {
                       "border_router": {
                         "type": "boolean",
-                        "description": "Configure pim border router. EOS default is false",
+                        "description": "Configure PIM border router. EOS default is false.",
                         "title": "Border Router"
                       },
                       "dr_priority": {
@@ -22015,7 +22015,7 @@
                           "properties": {
                             "border_router": {
                               "type": "boolean",
-                              "description": "Configure pim border router. EOS default is false",
+                              "description": "Configure PIM border router. EOS default is false.",
                               "title": "Border Router"
                             },
                             "dr_priority": {
@@ -23720,7 +23720,7 @@
                     "properties": {
                       "border_router": {
                         "type": "boolean",
-                        "description": "Configure pim border router. EOS default is false",
+                        "description": "Configure PIM border router. EOS default is false.",
                         "title": "Border Router"
                       },
                       "dr_priority": {

@@ -982,7 +982,7 @@ interface Ethernet69
 
 | Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
-| Ethernet5 | - | IPv4 | Enabled | 200 | - |
+| Ethernet5 | - | IPv4 | True | 200 | - |
 
 ## 802.1X Port Security
 
