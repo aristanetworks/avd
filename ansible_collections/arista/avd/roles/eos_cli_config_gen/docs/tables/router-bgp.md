@@ -250,11 +250,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_received_evpn_routes</samp>](## "router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.inter_domain") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop_mpls_resolution_ribs</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_rib</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.primary_rib") | String | Required |  | Valid Values:<br>- <code>system-connected</code><br>- <code>tunnel-rib colored system-colored-tunnel-rib</code><br>- <code>tunnel-rib</code> | Primary RIB. For 'tunnel-rib', use 'primary_rib_name' to specify the name of the Tunnel-RIB to use. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_rib_name</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.primary_rib_name") | String |  |  |  | The name of the tunnle-rib to use for the PRIMARY_RIB. Usd when defining a primary_rib as 'tunnel-rib',  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fallback_rib</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.fallback_rib") | String | Required |  | Valid Values:<br>- <code>system-connected</code><br>- <code>tunnel-rib colored system-colored-tunnel-rib</code><br>- <code>tunnel-rib</code> | Fallback RIB. For 'tunnel-rib', use 'fallback_rib_name' to specify the name of the Tunnel-RIB to use. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fallback_rib_name</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.fallback_rib_name") | String |  |  |  | The name of the tunnle-rib to use for the PRIMARY_RIB. Usd when defining a primary_rib as 'tunnel-rib',  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop_mpls_resolution_ribs</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;type</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.[].type") | String | Required |  | Valid Values:<br>- <code>system-connected</code><br>- <code>tunnel-rib-colored</code><br>- <code>tunnel-rib</code> | Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rib_name</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.[].rib_name") | String |  |  |  | The name of the tunnel-rib to use when using 'tunnel-rib' type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_evpn.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_evpn.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_evpn.peer_groups.[].activate") | Boolean |  |  |  |  |
@@ -1179,17 +1177,11 @@
             inter_domain: <bool>
         next_hop_mpls_resolution_ribs:
 
-          # Primary RIB. For 'tunnel-rib', use 'primary_rib_name' to specify the name of the Tunnel-RIB to use.
-          primary_rib: <str; "system-connected" | "tunnel-rib colored system-colored-tunnel-rib" | "tunnel-rib"; required>
+            # Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use.
+          - type: <str; "system-connected" | "tunnel-rib-colored" | "tunnel-rib"; required>
 
-          # The name of the tunnle-rib to use for the PRIMARY_RIB. Usd when defining a primary_rib as 'tunnel-rib',
-          primary_rib_name: <str>
-
-          # Fallback RIB. For 'tunnel-rib', use 'fallback_rib_name' to specify the name of the Tunnel-RIB to use.
-          fallback_rib: <str; "system-connected" | "tunnel-rib colored system-colored-tunnel-rib" | "tunnel-rib"; required>
-
-          # The name of the tunnle-rib to use for the PRIMARY_RIB. Usd when defining a primary_rib as 'tunnel-rib',
-          fallback_rib_name: <str>
+            # The name of the tunnel-rib to use when using 'tunnel-rib' type.
+            rib_name: <str>
         peer_groups:
 
             # Peer-group name

@@ -16814,46 +16814,33 @@
               "title": "Neighbor Default"
             },
             "next_hop_mpls_resolution_ribs": {
-              "type": "object",
-              "properties": {
-                "primary_rib": {
-                  "type": "string",
-                  "enum": [
-                    "system-connected",
-                    "tunnel-rib colored system-colored-tunnel-rib",
-                    "tunnel-rib"
-                  ],
-                  "description": "Primary RIB. For 'tunnel-rib', use 'primary_rib_name' to specify the name of the Tunnel-RIB to use.",
-                  "title": "Primary Rib"
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "system-connected",
+                      "tunnel-rib-colored",
+                      "tunnel-rib"
+                    ],
+                    "description": "Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use.",
+                    "title": "Type"
+                  },
+                  "rib_name": {
+                    "type": "string",
+                    "description": "The name of the tunnel-rib to use when using 'tunnel-rib' type.",
+                    "title": "Rib Name"
+                  }
                 },
-                "primary_rib_name": {
-                  "type": "string",
-                  "description": "The name of the tunnle-rib to use for the PRIMARY_RIB. Usd when defining a primary_rib as 'tunnel-rib', ",
-                  "title": "Primary Rib Name"
-                },
-                "fallback_rib": {
-                  "type": "string",
-                  "enum": [
-                    "system-connected",
-                    "tunnel-rib colored system-colored-tunnel-rib",
-                    "tunnel-rib"
-                  ],
-                  "description": "Fallback RIB. For 'tunnel-rib', use 'fallback_rib_name' to specify the name of the Tunnel-RIB to use.",
-                  "title": "Fallback Rib"
-                },
-                "fallback_rib_name": {
-                  "type": "string",
-                  "description": "The name of the tunnle-rib to use for the PRIMARY_RIB. Usd when defining a primary_rib as 'tunnel-rib', ",
-                  "title": "Fallback Rib Name"
+                "required": [
+                  "type"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
                 }
-              },
-              "required": [
-                "primary_rib",
-                "fallback_rib"
-              ],
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
               },
               "title": "Next Hop MPLS Resolution Ribs"
             },

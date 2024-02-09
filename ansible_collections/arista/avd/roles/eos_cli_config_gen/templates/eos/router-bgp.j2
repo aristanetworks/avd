@@ -573,11 +573,16 @@ router bgp {{ router_bgp.as }}
       {{ evpn_neighbor_default_encap_cli }}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs is arista.avd.defined() %}
-{%             set evpn_mpls_resolution_ribs = "next-hop mpls resolution ribs " ~ router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.primary_rib  %}
-{%             if router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.fallback_rib is arista.avd.defined %}
-{%                 set evpn_mpls_resolution_ribs = evpn_mpls_resolution_ribs ~ " " ~ router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.fallback_rib  %}
-{%             endif %}
-      {{ evpn_mpls_resolution_ribs }}
+{%             set ns = namespace(evpn_mpls_resolution_ribs = "next-hop mpls resolution ribs") %}
+{%             for rib in router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs %}
+{%                 if rib.type == "tunnel-rib-colored" %}
+{%                     set rib_type = "tunnel-rib colored system-colored-tunnel-rib" %}
+{%                 else %}
+{%                     set rib_type = rib.type %}
+{%                 endif %}
+{%                 set ns.evpn_mpls_resolution_ribs = ns.evpn_mpls_resolution_ribs ~ ' ' ~ rib_type ~ ' ' ~ rib.rib_name | arista.avd.default('') %}
+{%             endfor %}
+      {{ ns.evpn_mpls_resolution_ribs }}
 {%         endif %}
 {%         for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort('name') %}
 {%             if peer_group.route_map_in is arista.avd.defined %}
