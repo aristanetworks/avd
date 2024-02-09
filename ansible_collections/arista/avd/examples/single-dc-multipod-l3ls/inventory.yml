@@ -2,30 +2,35 @@
 all:
   children:
     CVP_cluster:
+      vars:
+        ansible_user: arista
+        ansible_password: arista123
+        ansible_connection: httpapi
+        ansible_httpapi_use_ssl: True
+        ansible_httpapi_validate_certs: False
+        ansible_network_os: eos
+        ansible_httpapi_port: 443
       hosts: 
         cvp1: 
-          ansible_httpapi_host: 192.168.0.5
           ansible_host: 192.168.0.5
-          ansible_user: arista
-          ansible_password: aristabjg1
-          ansible_connection: httpapi
-          ansible_httpapi_use_ssl: True
-          ansible_httpapi_validate_certs: False
-          ansible_network_os: eos
-          ansible_httpapi_port: 443
+        cvp2: 
+          ansible_host: 192.168.0.6
+        cvp3: 
+          ansible_host: 192.168.0.7
+
     FABRIC:
       vars:
         ansible_user: arista
-        ansible_ssh_pass: aristabjg1 # If using SSH keys, this can be removed
+        ansible_ssh_pass: arista123 # If using SSH keys with CLI, this can be removed
 # Use this section if you want to perform testing via the eAPI
-        # ansible_connection: httpapi
-        # ansible_httpapi_use_ssl: True
-        # ansible_httpapi_validate_certs: False
-        # ansible_network_os: eos
-        # ansible_httpapi_port: 443
-# Use this section if you want to perform testing via the CLI through SSH
-        ansible_connection: network_cli
+        ansible_connection: httpapi
+        ansible_httpapi_use_ssl: True
+        ansible_httpapi_validate_certs: False
         ansible_network_os: eos
+        ansible_httpapi_port: 443
+# Use this section if you want to perform testing via the CLI through SSH
+        # ansible_connection: network_cli
+        # ansible_network_os: eos
         # ansible_become: yes
         # ansible_become_method: enable
       children:
@@ -77,7 +82,7 @@ all:
       children:
         POD1_LEAFS:
         POD2_LEAFS:
-    HOST_CONNECT:
+    ENDPOINT_CONNECT:
       children:
         POD1_LEAFS:
         POD2_LEAFS:

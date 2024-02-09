@@ -54,34 +54,12 @@ The drawing below shows the physical topology used in this example. The interfac
 | **Loopback1 interfaces used for VTEP**              | 192.168.102.0/24         |
 | cvp                                                 | 192.168.0.5            |
 
-### BGP design
+### Fabric Design
 
 === "Underlay"
 
-    ![Arista Underlay BGP Design](images/l3ls-multipod.png)
+    ![Arista Multipod Fabric](images/l3ls-multipod.png)
 
-=== "Overlay"
-
-    ![Figure: Arista Underlay BGP Design](images/bgp-overlay.svg)
-
-### Basic EOS config
-
-Basic connectivity between the Ansible host and the switches must be established before Ansible can be used to push configurations. You must configure the following on all switches:
-
-- A hostname configured purely for ease of understanding.
-- An IP enabled interface - in this example, the dedicated out-of-band management interface is used.
-- A username and password with the proper access privileges.
-
-Below is the basic configuration file for `dc1-leaf1a`:
-
-```eos title="dc1-leaf1a-basic-configuration.txt"
---8<--
-examples/single-dc-l3ls/switch-basic-configurations/dc1-leaf1a-basic-configuration.txt
---8<--
-```
-
-!!! note
-    The folder `single-dc-l3ls/switch-basic-configurations/` contains a file per device for the initial configurations.
 
 ## Ansible inventory, group vars, and naming scheme
 
@@ -94,12 +72,16 @@ The following drawing shows a graphic overview of the Ansible inventory, group v
 
 Group names use uppercase and underscore syntax:
 
-- CLOUDVISION
+- CVP_Cluster
 - FABRIC
-- DC1
-- DC1_SPINES
-- DC1_L3_LEAVES
-- DC1_L2_LEAVES
+- SUPERSPINES
+- POD1
+- POD1_SPINES
+- POD1_LEAFS
+- POD2_SPINES
+- POD2_LEAFS
+- EVPN_SERVICES
+- ENDPOINT_CONNECT
 
 All hostnames use lowercase and dashes, for example:
 
