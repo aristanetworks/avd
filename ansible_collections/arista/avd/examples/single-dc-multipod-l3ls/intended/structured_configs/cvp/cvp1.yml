@@ -1,13 +1,5 @@
 ---
 cvp_devices:
-  - fqdn: borderleaf1
-    parentContainerName: SUPERSPINES
-    configlets:
-      - AVD_borderleaf1
-  - fqdn: borderleaf2
-    parentContainerName: SUPERSPINES
-    configlets:
-      - AVD_borderleaf2
   - fqdn: leaf1
     parentContainerName: POD1_LEAFS
     configlets:
@@ -40,6 +32,14 @@ cvp_devices:
     parentContainerName: POD2_SPINES
     configlets:
       - AVD_spine4
+  - fqdn: superspine1
+    parentContainerName: SUPERSPINES
+    configlets:
+      - AVD_superspine1
+  - fqdn: superspine2
+    parentContainerName: SUPERSPINES
+    configlets:
+      - AVD_superspine2
 cvp_containers:
   FABRIC:
     parentContainerName: Tenant

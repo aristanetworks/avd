@@ -4,7 +4,7 @@ all:
     CVP_cluster:
       vars:
         ansible_user: arista
-        ansible_password: arista123
+        ansible_password: aristaya2u
         ansible_connection: httpapi
         ansible_httpapi_use_ssl: True
         ansible_httpapi_validate_certs: False
@@ -21,7 +21,7 @@ all:
     FABRIC:
       vars:
         ansible_user: arista
-        ansible_ssh_pass: arista123 # If using SSH keys with CLI, this can be removed
+        ansible_ssh_pass: aristaya2u # If using SSH keys with CLI, this can be removed
 # Use this section if you want to perform testing via the eAPI
         ansible_connection: httpapi
         ansible_httpapi_use_ssl: True
@@ -39,9 +39,9 @@ all:
             type: super-spine
           hosts:  
             superspine1:
-              ansible_host: 192.168.0.15
+              ansible_host: 192.168.0.25
             superspine2:
-              ansible_host: 192.168.0.16
+              ansible_host: 192.168.0.26
         POD1:
           children:
             POD1_SPINES:
