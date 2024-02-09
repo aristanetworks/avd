@@ -14,19 +14,19 @@ name: is_in_filter
 collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "1.1"
-short_description: Returns V(True) if the input hostname matches the I(hostname_filter).
-description:
-  - The filter matches if any filter strings are found in the input hostname.
-  - I(hostname_filter=["all"]) or I(hostname_filter=none) will match all hostnames.
+short_description: Returns `True` if the input hostname matches the `hostname_filter`.
+description: |-
+  The filter matches if any filter strings are found in the input hostname.
+  `hostname_filter=[all]` or `hostname_filter=none` will match all hostnames.
 positional: _input
 options:
   _input:
-    description: One hostname to match with I(hostname_filter).
+    description: One hostname to match with `hostname_filter`.
     type: string
     required: true
   hostname_filter:
-    description:
-      - Filter as a list of strings or C(None).
+    description: |-
+      Filter as a list of strings or `None`.
     type: any
     required: true
 """
@@ -43,7 +43,7 @@ not_found_1: "{{ 'myhostname' | arista.avd.is_in_filter(['myhost1', 'MYhostname'
 RETURN = r"""
 ---
 _value:
-  description: V(True) if the input hostname matches the I(hostname_filter). Otherwise V(False)
+  description: "`True` if the input hostname matches the `hostname_filter`. Otherwise `False`"
   type: boolean
 """
 
