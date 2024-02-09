@@ -16,41 +16,41 @@ title: arista.avd.eos_validate_state_runner
 !!! warning "This module is in **preview** mode"
     This module is not guaranteed to have a backwards compatible interface.
 
-Uses ANTA for eos\_validate\_state role
+Uses ANTA for eos_validate_state role
 
 ## Synopsis
 
-The <code>arista.avd.eos\_validate\_state\_runner</code> module is an Ansible Action Plugin leveraging the ANTA test framework to validate that the generated structured configurations by AVD are applied to the devices and that the deployed network is working correctly.
+The `arista.avd.eos_validate_state_runner` module is an Ansible Action Plugin leveraging the ANTA test framework to validate that the generated structured configurations by AVD are applied to the devices and that the deployed network is working correctly.
 
-This plugin requires a valid structured configuration for each device in the hostvars\; otherwise, some tests will not be generated.
+This plugin requires a valid structured configuration for each device in the hostvars; otherwise, some tests will not be generated.
 
-The plugin offers the following capabilities\:
-    \- Generating a per\-device test catalog based on the AVD structured\_config.
-    \- Running generated tests against each device, saving the results in a single JSON file per\-device.
-    \- In check\_mode, only the test catalog is generated, and a report is created to preview the tests that would be run against each device.
-    \- Saving per\-device test catalogs and results in specified directories for use by the <code>eos\_validate\_state\_reports</code> plugin.
-    \- Maintaining backward compatibility with existing ansible tags for eos\_validate\_state to filter test categories.
+The plugin offers the following capabilities:
+    - Generating a per-device test catalog based on the AVD structured_config.
+    - Running generated tests against each device, saving the results in a single JSON file per-device.
+    - In check_mode, only the test catalog is generated, and a report is created to preview the tests that would be run against each device.
+    - Saving per-device test catalogs and results in specified directories for use by the `eos_validate_state_reports` plugin.
+    - Maintaining backward compatibility with existing ansible tags for eos_validate_state to filter test categories.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>logging_level</samp> | str | optional | WARNING | Valid values:<br>- <code>CRITICAL</code><br>- <code>ERROR</code><br>- <code>WARNING</code><br>- <code>INFO</code><br>- <code>DEBUG</code> | Sets the log level for the ANTA library. Defaults to \"WARNING\" if not specified. |
+| <samp>logging_level</samp> | str | optional | WARNING | Valid values:<br>- <code>CRITICAL</code><br>- <code>ERROR</code><br>- <code>WARNING</code><br>- <code>INFO</code><br>- <code>DEBUG</code> | Sets the log level for the ANTA library. Defaults to &#34;WARNING&#34; if not specified. |
 | <samp>save_catalog</samp> | bool | optional | False |  | Indicates whether to save the test catalog for each device. |
-| <samp>device_catalog_path</samp> | str | optional | None |  | The absolute path where the device test catalog will be saved.<br>Required if <code>save\_catalog</code> is set to <code>True</code>. |
+| <samp>device_catalog_path</samp> | str | optional | None |  | The absolute path where the device test catalog will be saved.<br>Required if `save_catalog` is set to `True`. |
 | <samp>test_results_dir</samp> | str | optional | None |  | The directory where the test results JSON file for each host will be saved. |
-| <samp>skipped_tests</samp> | list | optional | None |  | A list of dictionaries specifying categories and, optionally, tests to skip.<br>Each dictionary must have a key <code>category</code> and can optionally include a <code>tests</code> key. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;category</samp> | str | optional | None |  | The name of an AvdTest category \(e.g., <code>AvdTestHardware</code>\). |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;tests</samp> | list | optional | None |  | An optional list of specific tests in the category to skip \(e.g., <code>VerifyRoutingProtocolModel</code> in <code>AvdTestBGP</code>\).<br>If not specified, all tests in the category are considered.<br>For a complete list of available tests, see \[link to the test list\]\(https\://avd.sh/en/stable/roles/eos\_validate\_state/ANTA\-Preview.html\#test\-categories\). |
+| <samp>skipped_tests</samp> | list | optional | None |  | A list of dictionaries specifying categories and, optionally, tests to skip.<br>Each dictionary must have a key `category` and can optionally include a `tests` key. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;category</samp> | str | optional | None |  | The name of an AvdTest category (e.g., `AvdTestHardware`). |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;tests</samp> | list | optional | None |  | An optional list of specific tests in the category to skip (e.g., `VerifyRoutingProtocolModel` in `AvdTestBGP`).<br>If not specified, all tests in the category are considered.<br>For a complete list of available tests, see [link to the test list](https://avd.sh/en/stable/roles/eos_validate_state/ANTA-Preview.html#test-categories). |
 | <samp>cprofile_file</samp> | any | optional | None |  | The filename for storing cProfile data, useful for debugging performance issues.<br>Be aware that enabling cProfile can affect performance, so use it only for troubleshooting. |
 
 ## Notes
 
-- Enabling the cProfile feature for performance profiling may impact the plugin\'s performance, especially in production environments.
+- Enabling the cProfile feature for performance profiling may impact the plugin&#39;s performance, especially in production environments.
 - The plugin manages the creation of JSON files, which are used for storing test results. For each device, one JSON file containing all results is saved in the test results directory.
-- The file naming convention is hard coded as \"\<inventory\_hostname\>\-results.json\" and cannot be changed. This ensures that the report plugin can properly retrieve the files.
-- This module supports <code>check\_mode</code>, allowing the generation of test reports without executing the tests.
-- Regardless of whether they are running in <code>check\_mode</code> or not, the reports are generated by the <code>eos\_validate\_state\_reports</code> plugin.
+- The file naming convention is hard coded as &#34;&lt;inventory_hostname&gt;-results.json&#34; and cannot be changed. This ensures that the report plugin can properly retrieve the files.
+- This module supports `check_mode`, allowing the generation of test reports without executing the tests.
+- Regardless of whether they are running in `check_mode` or not, the reports are generated by the `eos_validate_state_reports` plugin.
 
 ## See Also
 

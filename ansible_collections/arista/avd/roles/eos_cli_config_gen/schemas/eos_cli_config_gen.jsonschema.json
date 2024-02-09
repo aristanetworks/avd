@@ -5003,6 +5003,11 @@
             },
             "title": "VRRP IDs"
           },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Set to false to disable interface validation by the `eos_validate_state` role",
+            "title": "Validate State"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -13386,6 +13391,11 @@
               "^_.+$": {}
             },
             "title": "Sflow"
+          },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Set to false to disable interface validation by the `eos_validate_state` role",
+            "title": "Validate State"
           },
           "eos_cli": {
             "type": "string",

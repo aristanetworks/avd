@@ -141,6 +141,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
             "ptp": self._get_adapter_ptp(adapter),
             "sflow": self._get_adapter_sflow(adapter),
+            "validate_state": None if adapter.get("validate_state", True) else False,
             "eos_cli": get(adapter, "port_channel.raw_eos_cli"),
             "struct_cfg": get(adapter, "port_channel.structured_config"),
         }
