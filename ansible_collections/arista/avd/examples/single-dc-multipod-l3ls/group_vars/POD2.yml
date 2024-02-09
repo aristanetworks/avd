@@ -37,23 +37,19 @@ l3leaf:
     mlag_peer_ipv4_pool: 10.255.252.0/24 # MLAG peer IPs
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # iBGP peering between MLAG peers
     virtual_router_mac_address: 00:1c:73:00:00:99 # The vMAC for the anycast gateways
-    bgp_defaults:
-      - 'no bgp default ipv4-unicast'
-      - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
     spanning_tree_mode: mstp # Spanning Tree is still enabled even in EVPN setups
     spanning_tree_priority: 16384 
     mlag: true # By default, use MLAG
 
   node_groups:
-    mlag2:
+    - group: mlag2
+      bgp_as: 65299 # Manually set for the external routed connection
       nodes:
-        leaf3:
-          id: 3
-          mgmt_ip: 192.168.0.23/24
-          uplink_switch_interfaces: [Ethernet5, Ethernet5, Ethernet5, Ethernet5]
-        leaf4:
-          id: 4
-          mgmt_ip: 192.168.0.24/24
-          uplink_switch_interfaces: [Ethernet6, Ethernet6, Ethernet6, Ethernet6]
+      - name: leaf3
+        id: 3
+        mgmt_ip: 192.168.0.23/24
+        uplink_switch_interfaces: [Ethernet5, Ethernet5]
+      - name: leaf4
+        id: 4
+        mgmt_ip: 192.168.0.24/24
+        uplink_switch_interfaces: [Ethernet6, Ethernet6]
