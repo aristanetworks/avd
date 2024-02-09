@@ -31,8 +31,7 @@ The \`arista.avd.eos\_designs\_facts\` module is an Ansible Action Plugin provid
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>eos_designs_custom_templates</samp> | list | False | None |  | List of dicts for Jinja2 templates to be run after generating the structured configuration |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;template</samp> | str | True | None |  | Template file.
- |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;template</samp> | str | True | None |  | Template file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;options</samp> | dict | False | None |  | Template options |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list_merge</samp> | str | False | append |  | Merge strategy for lists |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strip_empty_keys</samp> | bool | False | True |  | Filter out keys from the generated output if value is null/none/undefined<br>Only applies to templates. |
