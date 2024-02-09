@@ -52,13 +52,13 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | default | 192.168.0.23/24 | 192.168.0.1 |
+| Management0 | oob_management | oob | MGMT | 192.168.0.23/24 | 192.168.0.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | default | - | - |
+| Management0 | oob_management | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -67,6 +67,7 @@
 interface Management0
    description oob_management
    no shutdown
+   vrf MGMT
    ip address 192.168.0.23/24
 ```
 
@@ -93,7 +94,7 @@ dns domain atd.lab
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| default | - | - |
+| MGMT | - | - |
 
 #### Management API HTTP Configuration
 
@@ -103,7 +104,7 @@ management api http-commands
    protocol https
    no shutdown
    !
-   vrf default
+   vrf MGMT
       no shutdown
 ```
 
@@ -217,6 +218,7 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | MLAG_PEER_leaf4_Ethernet1 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 1 |
 | Ethernet2 | MLAG_PEER_leaf4_Ethernet2 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 1 |
+| Ethernet7 | host2 | *access | *20 | *- | *- | 7 |
 
 *Inherited from Port-Channel Interface
 
@@ -254,6 +256,11 @@ interface Ethernet6
    mtu 1500
    no switchport
    ip address 192.168.103.11/31
+!
+interface Ethernet7
+   description host2
+   no shutdown
+   channel-group 7 mode active
 ```
 
 ### Port-Channel Interfaces
@@ -265,6 +272,7 @@ interface Ethernet6
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | MLAG_PEER_leaf4_Po1 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel7 | host2_PortChannel host2 | switched | access | 20 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -277,6 +285,13 @@ interface Port-Channel1
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+!
+interface Port-Channel7
+   description host2_PortChannel host2
+   no shutdown
+   switchport
+   switchport access vlan 20
+   spanning-tree portfast
 ```
 
 ### Loopback Interfaces
@@ -440,6 +455,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
+| MGMT | False |
 | VRF_A | True |
 
 #### IP Routing Device Configuration
@@ -447,6 +463,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 ```eos
 !
 ip routing
+no ip routing vrf MGMT
 ip routing vrf VRF_A
 ```
 
@@ -457,7 +474,7 @@ ip routing vrf VRF_A
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| default | false |
+| MGMT | false |
 | VRF_A | false |
 
 ### Static Routes
@@ -466,13 +483,13 @@ ip routing vrf VRF_A
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| default | 0.0.0.0/0 | 192.168.0.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 192.168.0.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route 0.0.0.0/0 192.168.0.1
+ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 ```
 
 ### Router BGP
@@ -481,14 +498,10 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65102|  192.168.101.3 |
+| 65299|  192.168.101.3 |
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
@@ -518,7 +531,7 @@ ip route 0.0.0.0/0 192.168.0.1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65102 |
+| Remote AS | 65299 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -558,14 +571,10 @@ ip route 0.0.0.0/0 192.168.0.1
 
 ```eos
 !
-router bgp 65102
+router bgp 65299
    router-id 192.168.101.3
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -576,7 +585,7 @@ router bgp 65102
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65102
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65299
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description leaf4
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
@@ -710,11 +719,14 @@ route-map RM-MLAG-PEER-IN permit 10
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
+| MGMT | disabled |
 | VRF_A | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
+!
+vrf instance MGMT
 !
 vrf instance VRF_A
 ```

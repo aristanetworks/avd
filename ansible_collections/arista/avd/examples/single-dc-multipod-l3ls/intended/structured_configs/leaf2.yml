@@ -2,11 +2,6 @@ hostname: leaf2
 router_bgp:
   as: '65100'
   router_id: 192.168.101.2
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
   bgp:
     default:
       ipv4_unicast: false
@@ -96,7 +91,7 @@ router_bgp:
     - learned
     vlan: 10,20
 static_routes:
-- vrf: default
+- vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.0.1
 service_routing_protocols_model: multi-agent
@@ -113,7 +108,7 @@ spanning_tree:
     priority: 16384
   no_spanning_tree_vlan: 4093-4094
 vrfs:
-- name: default
+- name: MGMT
   ip_routing: false
 - name: VRF_A
   tenant: ACME
@@ -122,13 +117,13 @@ management_interfaces:
 - name: Management0
   description: oob_management
   shutdown: false
-  vrf: default
+  vrf: MGMT
   ip_address: 192.168.0.22/24
   gateway: 192.168.0.1
   type: oob
 management_api_http:
   enable_vrfs:
-  - name: default
+  - name: MGMT
   enable_https: true
 vlans:
 - id: 4093
@@ -242,9 +237,8 @@ ethernet_interfaces:
   ip_address: 192.168.103.7/31
 - name: Ethernet7
   peer: host1
-  peer_interface: Ethernet2
   peer_type: server
-  description: host1_Ethernet2
+  description: host1
   shutdown: false
   type: port-channel-member
   channel_group:
