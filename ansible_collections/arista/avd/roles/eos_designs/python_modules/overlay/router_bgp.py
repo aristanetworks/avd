@@ -122,7 +122,7 @@ class RouterBgpMixin(UtilsMixin):
                 peer_group_config = {"remote_as": self.shared_utils.bgp_as}
                 if self.shared_utils.wan_role:
                     # WAN OVERLAY peer group
-                    # TODO Add TTL max hop to the peer group on the Pathfinder once agreed upon
+                    peer_group_config["ttl_maximum_hops"] = 1
                     if self.shared_utils.wan_role == "server":
                         peer_group_config["route_reflector_client"] = True
                     peer_groups.append(
@@ -147,10 +147,12 @@ class RouterBgpMixin(UtilsMixin):
                 peer_groups.append({**self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
 
             if self._is_wan_server_with_peers:
+                wan_rr_overlay_peer_grp_config = {"remote_as": self.shared_utils.bgp_as}
+                wan_rr_overlay_peer_grp_config["ttl_maximum_hops"] = 1
                 peer_groups.append(
                     {
                         **self._generate_base_peer_group("wan", "wan_rr_overlay_peers", update_source=self.shared_utils.vtep_loopback),
-                        "remote_as": self.shared_utils.bgp_as,
+                        **wan_rr_overlay_peer_grp_config,
                     }
                 )
 

@@ -30,6 +30,7 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
+    ttl_maximum_hops: 1
     route_reflector_client: true
   address_family_evpn:
     peer_groups:
