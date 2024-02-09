@@ -1,0 +1,83 @@
+---
+all:
+  children:
+    CVP_cluster:
+      hosts: 
+        cvp1: 
+          ansible_httpapi_host: 192.168.0.5
+          ansible_host: 192.168.0.5
+          ansible_user: arista
+          ansible_password: aristabjg1
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: True
+          ansible_httpapi_validate_certs: False
+          ansible_network_os: eos
+          ansible_httpapi_port: 443
+    FABRIC:
+      vars:
+        ansible_user: arista
+        ansible_ssh_pass: aristabjg1 # If using SSH keys, this can be removed
+# Use this section if you want to perform testing via the eAPI
+        # ansible_connection: httpapi
+        # ansible_httpapi_use_ssl: True
+        # ansible_httpapi_validate_certs: False
+        # ansible_network_os: eos
+        # ansible_httpapi_port: 443
+# Use this section if you want to perform testing via the CLI through SSH
+        ansible_connection: network_cli
+        ansible_network_os: eos
+        # ansible_become: yes
+        # ansible_become_method: enable
+      children:
+        SUPERSPINES:
+          vars:
+            type: super-spine
+          hosts:  
+            borderleaf1:
+              ansible_host: 192.168.0.15
+            borderleaf2:
+              ansible_host: 192.168.0.16
+        POD1:
+          children:
+            POD1_SPINES:
+              vars:
+                type: spine
+              hosts:
+                spine1:
+                  ansible_host: 192.168.0.11
+                spine2:
+                  ansible_host: 192.168.0.12
+            POD1_LEAFS:
+              vars: 
+                type: l3leaf
+              hosts:
+                leaf1:
+                  ansible_host: 192.168.0.21
+                leaf2:
+                  ansible_host: 192.168.0.22
+        POD2:
+          children:
+            POD2_SPINES:
+              vars:
+                type: spine
+              hosts:
+                spine3:
+                  ansible_host: 192.168.0.13
+                spine4:
+                  ansible_host: 192.168.0.14
+            POD2_LEAFS:
+              vars:
+                type: l3leaf
+              hosts:
+                leaf3:
+                  ansible_host: 192.168.0.23
+                leaf4:
+                  ansible_host: 192.168.0.24
+    EVPN_SERVICES:
+      children:
+        POD1_LEAFS:
+        POD2_LEAFS:
+    HOST_CONNECT:
+      children:
+        POD1_LEAFS:
+        POD2_LEAFS:

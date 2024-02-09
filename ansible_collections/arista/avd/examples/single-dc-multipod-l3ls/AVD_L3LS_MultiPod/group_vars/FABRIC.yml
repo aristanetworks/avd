@@ -1,0 +1,61 @@
+---
+
+fabric_name: FABRIC
+
+# Various fabric settings
+
+# Enable vlan aware bundles
+evpn_vlan_aware_bundles: true
+
+
+# Spine Switches
+super_spine:
+  defaults:
+    platform: cEOS
+    bgp_as: 65000
+    loopback_ipv4_pool: 192.168.101.0/24
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+    mlag: false
+    evpn_role: server
+
+  nodes:
+    borderleaf1:
+      id: 201
+      mgmt_ip: 192.168.0.25/24
+    borderleaf2:
+      id: 202
+      mgmt_ip: 192.168.0.26/24
+
+
+# There's an issue with vEOS with larger MTUs
+p2p_uplinks_mtu: 1500
+
+# BFD Settings
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+
+# # If you want to put a password on peers
+# bgp_peer_groups:
+#   # all passwords set to "arista"
+#   evpn_overlay_peers:
+#     password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+#   ipv4_underlay_peers:
+#     password: 7x4B4rnJhZB438m9+BrBfQ==
+#   mlag_ipv4_underlay_peer:
+#     password: 4b21pAdCvWeAqpcKDFMdWw==
+
+# Needed for vEOS/cEOS
+
+# bgp_update_wait_install: false
+# bgp_update_wait_for_convergence: false
+
+# Needed for Arista ATD Lab Environment
+dns_domain: atd.lab
+mgmt_interface: Management1
+mgmt_interface_vrf: default
+mgmt_gateway: 192.168.0.1
