@@ -1,12 +1,7 @@
 hostname: leaf3
 router_bgp:
-  as: '65102'
+  as: '65299'
   router_id: 192.168.101.3
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
   bgp:
     default:
       ipv4_unicast: false
@@ -16,7 +11,7 @@ router_bgp:
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
-    remote_as: '65102'
+    remote_as: '65299'
     next_hop_self: true
     description: leaf4
     maximum_routes: 12000
@@ -96,7 +91,7 @@ router_bgp:
     - learned
     vlan: 10,20
 static_routes:
-- vrf: default
+- vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.0.1
 service_routing_protocols_model: multi-agent
@@ -113,7 +108,7 @@ spanning_tree:
     priority: 16384
   no_spanning_tree_vlan: 4093-4094
 vrfs:
-- name: default
+- name: MGMT
   ip_routing: false
 - name: VRF_A
   tenant: ACME
@@ -122,13 +117,13 @@ management_interfaces:
 - name: Management0
   description: oob_management
   shutdown: false
-  vrf: default
+  vrf: MGMT
   ip_address: 192.168.0.23/24
   gateway: 192.168.0.1
   type: oob
 management_api_http:
   enable_vrfs:
-  - name: default
+  - name: MGMT
   enable_https: true
 vlans:
 - id: 4093
@@ -193,6 +188,13 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
+- name: Port-Channel7
+  description: host2_PortChannel host2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '20'
+  spanning_tree_portfast: edge
 ethernet_interfaces:
 - name: Ethernet1
   peer: leaf4
@@ -232,6 +234,15 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 192.168.103.11/31
+- name: Ethernet7
+  peer: host2
+  peer_type: server
+  description: host2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 7
+    mode: active
 mlag_configuration:
   domain_id: mlag2
   local_interface: Vlan4094

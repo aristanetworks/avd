@@ -52,13 +52,13 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | default | 192.168.0.24/24 | 192.168.0.1 |
+| Management0 | oob_management | oob | MGMT | 192.168.0.24/24 | 192.168.0.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | default | - | - |
+| Management0 | oob_management | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -67,6 +67,7 @@
 interface Management0
    description oob_management
    no shutdown
+   vrf MGMT
    ip address 192.168.0.24/24
 ```
 
@@ -93,7 +94,7 @@ dns domain atd.lab
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| default | - | - |
+| MGMT | - | - |
 
 #### Management API HTTP Configuration
 
@@ -103,7 +104,7 @@ management api http-commands
    protocol https
    no shutdown
    !
-   vrf default
+   vrf MGMT
       no shutdown
 ```
 
@@ -226,7 +227,7 @@ vlan 4094
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet5 | P2P_LINK_TO_SPINE3_Ethernet6 | routed | - | 192.168.103.13/31 | default | 1500 | False | - | - |
 | Ethernet6 | P2P_LINK_TO_SPINE4_Ethernet6 | routed | - | 192.168.103.15/31 | default | 1500 | False | - | - |
-| Ethernet9 | - | routed | - | 10.1.5.1/24 | VRF_A | - | False | - | - |
+| Ethernet9 | - | routed | - | 10.1.5.0/31 | VRF_A | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -260,7 +261,7 @@ interface Ethernet9
    no shutdown
    no switchport
    vrf VRF_A
-   ip address 10.1.5.1/24
+   ip address 10.1.5.0/31
 ```
 
 ### Port-Channel Interfaces
@@ -447,6 +448,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
+| MGMT | False |
 | VRF_A | True |
 
 #### IP Routing Device Configuration
@@ -454,6 +456,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 ```eos
 !
 ip routing
+no ip routing vrf MGMT
 ip routing vrf VRF_A
 ```
 
@@ -464,7 +467,7 @@ ip routing vrf VRF_A
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| default | false |
+| MGMT | false |
 | VRF_A | false |
 
 ### Static Routes
@@ -473,13 +476,13 @@ ip routing vrf VRF_A
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| default | 0.0.0.0/0 | 192.168.0.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 192.168.0.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route 0.0.0.0/0 192.168.0.1
+ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 ```
 
 ### Router BGP
@@ -488,14 +491,10 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65102|  192.168.101.4 |
+| 65299|  192.168.101.4 |
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
@@ -525,7 +524,7 @@ ip route 0.0.0.0/0 192.168.0.1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65102 |
+| Remote AS | 65299 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -540,7 +539,7 @@ ip route 0.0.0.0/0 192.168.0.1
 | 192.168.103.12 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 192.168.103.14 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 10.255.251.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF_A | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
-| 10.1.5.254 | 1 | VRF_A | - | - | - | - | - | - | - | - |
+| 10.1.5.1 | 65534 | VRF_A | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -566,14 +565,10 @@ ip route 0.0.0.0/0 192.168.0.1
 
 ```eos
 !
-router bgp 65102
+router bgp 65299
    router-id 192.168.101.4
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -584,7 +579,7 @@ router bgp 65102
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65102
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65299
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description leaf3
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
@@ -625,12 +620,12 @@ router bgp 65102
       route-target import evpn 10:10
       route-target export evpn 10:10
       router-id 192.168.101.4
-      neighbor 10.1.5.254 remote-as 1
+      neighbor 10.1.5.1 remote-as 65534
       neighbor 10.255.251.4 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
       !
       address-family ipv4
-         neighbor 10.1.5.254 activate
+         neighbor 10.1.5.1 activate
 ```
 
 ## BFD
@@ -722,11 +717,14 @@ route-map RM-MLAG-PEER-IN permit 10
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
+| MGMT | disabled |
 | VRF_A | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
+!
+vrf instance MGMT
 !
 vrf instance VRF_A
 ```
