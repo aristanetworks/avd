@@ -11,9 +11,9 @@ collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "3.8.0"
 short_description: Decrypt supported EOS passwords.
-description:
-  - The filter is used to decrypt supported EOS passwords into clear text.
-  - Note - For now this filter only supports decryption from type C(7) and not type C(8a) for OSPF and BGP passwords.
+description: |-
+  The filter is used to decrypt supported EOS passwords into clear text.
+  Note - For now this filter only supports decryption from type `7` and not type `8a` for OSPF and BGP passwords.
 positional: _input
 options:
   _input:
@@ -22,10 +22,10 @@ options:
     required: true
   passwd_type:
     type: string
-    description:
-      - Type of password to decrypt.
-      - C(bgp) and C(ospf_simple) requires the I(password) and I(key) inputs.
-      - C(ospf_message_digest) requires the I(password), I(key), I(hash_algorithm), I(key_id) inputs.
+    description: |-
+      Type of password to decrypt.
+      `bgp` and `ospf_simple` requires the `password` and `key` inputs.
+      `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
     choices: ["bgp", "ospf_simple", "ospf_message_digest"]
     required: true
   key:
@@ -33,17 +33,15 @@ options:
     description:
       - Encryption key. The value depends on the type of password.
       - For BGP passwords the key is the Neighbor IP or the BGP Peer Group Name in EOS.
-      - For OSPF passwords the key is the interface name (e.g., C(Ethernet1)).
+      - For OSPF passwords the key is the interface name (e.g., `Ethernet1`).
     required: true
   hash_algorithm:
     type: string
-    description:
-      - Hash algorithm to use with I(passwd_type="ospf_message_digest").
+    description: Hash algorithm to use with `passwd_type=ospf_message_digest`.
     choices: ["md5", "sha1", "sha256", "sha384", "sha512"]
   key_id:
     type: integer
-    description:
-      - Key ID to use with I(passwd_type="ospf_message_digest").
+    description: Key ID to use with `passwd_type=ospf_message_digest`.
     min: 1
     max: 255
 """

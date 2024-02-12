@@ -47,7 +47,7 @@ wan_edge:
           wan_carrier: Comcast
           wan_circuit_id: 666
           ip_address: dhcp
-          set_default_route: true
+          dhcp_accept_default_route: true
 
 wan_path_groups:
   - name: MPLS

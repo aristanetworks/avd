@@ -18,20 +18,18 @@ Encrypt supported EOS passwords
 ## Synopsis
 
 The filter encrypts a clear text password into EOS passwords.
-
-To be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in <code>eos\_designs</code>.
-
-Note \- For now this filter only supports encryption from type <code>7</code> and not type <code>8a</code> for OSPF and BGP passwords.
+To be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+Note - For now this filter only supports encryption from type `7` and not type `8a` for OSPF and BGP passwords.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>_input</samp> | string | True | None |  | Clear text password to be encrypted. |
-| <samp>passwd_type</samp> | string | True | None | Valid values:<br>- <code>bgp</code><br>- <code>ospf_simple</code><br>- <code>ospf_message_digest</code> | Type of password to encrypt.<br><code>bgp</code> and <code>ospf\_simple</code> requires the <em>password</em> and <em>key</em> inputs.<br><code>ospf\_message\_digest</code> requires the <em>password</em>, <em>key</em>, <em>hash\_algorithm</em>, <em>key\_id</em> inputs. |
-| <samp>key</samp> | string | True | None |  | Encryption key. The value depends on the type of password.<br>For BGP passwords, the key is the Neighbor IP or the BGP Peer Group Name in EOS.<br>For OSPF passwords, the key is the interface name \(e.g., <code>Ethernet1</code>\). |
-| <samp>hash_algorithm</samp> | string | optional | None | Valid values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Hash algorithm to use with <em>passwd\_type\=\"ospf\_message\_digest\"</em>. |
-| <samp>key_id</samp> | integer | optional | None | Min value: <code>1</code><br>Max value: <code>255</code> | Key ID to use with <em>passwd\_type\=\"ospf\_message\_digest\"</em>. |
+| <samp>passwd_type</samp> | string | True | None | Valid values:<br>- <code>bgp</code><br>- <code>ospf_simple</code><br>- <code>ospf_message_digest</code> | Type of password to encrypt.<br>`bgp` and `ospf_simple` requires the `password` and `key` inputs.<br>`ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs. |
+| <samp>key</samp> | string | True | None |  | Encryption key. The value depends on the type of password.<br>For BGP passwords, the key is the Neighbor IP or the BGP Peer Group Name in EOS.<br>For OSPF passwords, the key is the interface name (e.g., `Ethernet1`). |
+| <samp>hash_algorithm</samp> | string | optional | None | Valid values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Hash algorithm to use with `passwd_type=ospf_message_digest`. |
+| <samp>key_id</samp> | integer | optional | None | Min value: <code>1</code><br>Max value: <code>255</code> | Key ID to use with `passwd_type=ospf_message_digest`. |
 
 ## Examples
 
