@@ -27,6 +27,20 @@ except ImportError:
     HAS_ANTA = False
     # Next line to make ansible-test sanity happy
     AntaDevice = object
+except TypeError as e:
+    # Known bug with Python 3.9.7 and Pydantic `conint`, impacting ANTA. Issue: https://github.com/arista-netdevops-community/anta/issues/557
+    if "Interval() takes no arguments" in str(e):
+        msg = (
+            "The ANTA testing framework, utilized in the AVD eos_validate_state role, has identified a compatibility issue with Python 3.9.x. "
+            "We recommend trying a different Python version; 3.9.13 has been confirmed to work, or consider upgrading to version 3.10 or newer.\n"
+            "For further assistance or to report your Python version, please visit the AVD and ANTA GitHub repositories:\n"
+            "https://github.com/aristanetworks/avd/\n"
+            "https://github.com/arista-netdevops-community/anta"
+        )
+        raise AristaAvdError(msg) from e
+    else:
+        # If the TypeError is not related to the known bug, raise it to avoid silencing other issues
+        raise
 
 if TYPE_CHECKING:
     from ansible.plugins.connection import ConnectionBase
@@ -55,8 +69,11 @@ class AnsibleEOSDevice(AntaDevice):
 
         Raises:
         ------
-            AristaAvdError: Raised if the provided Ansible connection does not use the EOS HttpApi plugin.
+            AristaAvdError: Raised if ANTA is not imported or if the provided Ansible connection does not use the EOS HttpApi plugin.
         """
+        if not HAS_ANTA:
+            raise AristaAvdError(message="AVD could not import the required 'anta' Python library")
+
         super().__init__(name, tags, disable_cache=False)
         self.check_mode = check_mode
         # In check_mode we don't care that we cannot connect to the device

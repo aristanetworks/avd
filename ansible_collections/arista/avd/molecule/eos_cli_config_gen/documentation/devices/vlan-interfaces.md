@@ -440,6 +440,7 @@ interface Vlan1002
 interface Vlan2001
    description SVI Description
    vrf Tenant_B
+   logging event link-status
    ip address virtual 10.2.1.1/24
    comment
    Comment created from eos_cli under vlan_interfaces.Vlan2001
