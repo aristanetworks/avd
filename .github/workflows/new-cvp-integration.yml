@@ -57,7 +57,7 @@ jobs:
     steps:
       - name: 'Set environment variables'
         env:
-          CVAAS_TOKEN: ${{ secrets.CVAAS_TOKEN }}
+          CVAAS_TOKEN: ${{ secrets.CVAAS_AAWG_DEMO }}
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
