@@ -54,44 +54,139 @@ keys:
                           recursive:
                             type: bool
       qos:
-        type: list
-        description: QOS Policy-Maps
-        primary_key: name
-        convert_types:
-          - dict
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Policy-Map Name
-            classes:
-              type: list
-              primary_key: name
-              convert_types:
-                - dict
-              items:
-                type: dict
-                keys:
-                  name:
-                    type: str
-                    description: Class Name
-                  set:
+        type: dict
+        keys:
+          policy:
+            type: list
+            description: QOS Policy-Maps
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Policy-Map Name
+                classes:
+                  type: list
+                  primary_key: name
+                  convert_types:
+                    - dict
+                  items:
                     type: dict
                     keys:
-                      cos:
-                        type: int
-                        convert_types:
-                          - str
-                      dscp:
+                      name:
                         type: str
-                        convert_types:
-                          - int
-                      traffic_class:
-                        type: int
-                        convert_types:
-                          - str
-                      drop_precedence:
-                        type: int
-                        convert_types:
-                          - str
+                        description: Class Name
+                      set:
+                        type: dict
+                        keys:
+                          cos:
+                            type: int
+                            convert_types:
+                              - str
+                          dscp:
+                            type: str
+                            convert_types:
+                              - int
+                          traffic_class:
+                            type: int
+                            convert_types:
+                              - str
+                          drop_precedence:
+                            type: int
+                            convert_types:
+                              - str
+          policer:
+            type: dict
+            keys:
+              classes:
+                type: list
+                $ref: "eos_cli_config_gen#/keys/policy_maps/keys/qos/keys/policy/items/keys/classes/"
+                items:
+                  type: dict
+                  keys:
+                    police:
+                      type: dict
+                      keys:
+                        cir:
+                          type: dict
+                          description: Set committed information rate.
+                          keys:
+                            cir_rate:
+                              type: int
+                              convert_types:
+                                - str
+                              description: Specify lower rate.
+                            cir_unit:
+                              type: str
+                              valid_values:
+                                - "bps"
+                                - "kbps"
+                                - "mbps"
+                              default: "bps"
+                            bc:
+                              description: Set committed burst rate.
+                              type: int
+                              convert_types:
+                                - str
+                            bc_unit:
+                              type: str
+                              valid_values:
+                                - "bytes"
+                                - "kbytes"
+                                - "mbytes"
+                              default: bytes
+                        rate:
+                          type: dict
+                          keys:
+                            lower_rate:
+                              type: int
+                              convert_types:
+                                - str
+                              description: |
+                                Specify lower rate.
+                                Lower rate range in kbps - <8-200000000>
+                            rate_unit:
+                              type: str
+                              valid_values:
+                                - "bps"
+                                - "kbps"
+                                - "mbps"
+                                - "pps"
+                              default: "bps"
+                            lower_rate_burst_size:
+                              type: int
+                              convert_types:
+                                - str
+                              min: 256
+                              max: 128000000
+                            burst_size_unit:
+                              type: str
+                              valid_values:
+                                - "bytes"
+                                - "kbytes"
+                                - "mbytes"
+                                - "packets"
+                            action:
+                              description: Set action for policed traffic
+                              type: str
+                              valid_values:
+                                - "dscp"
+                                - "drop-precedence"
+                            dscp_value:
+                              type: str
+                              convert_types:
+                                - int
+                            higher_rate:
+                              type: int
+                              convert_types:
+                                - str
+                              description: Specify higher rate
+                            higher_rate_burst_size:
+                              type: int
+                              convert_types:
+                                - str
+                              min: 256
+                              max: 128000000
