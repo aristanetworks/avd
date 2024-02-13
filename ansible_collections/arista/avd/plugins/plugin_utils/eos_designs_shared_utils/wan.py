@@ -375,10 +375,4 @@ class WanMixin:
         """
         Return True is the current wan_mode is cv-pathfinder and the device is either an edge or a transit device
         """
-        if self.wan_mode != "cv-pathfinder":
-            return False
-        if self.cv_pathfinder_role == "cv-pathfinder":
-            return False
-        if self.cv_pathfinder_role in ["edge", "transit region"]:
-            return True
-        return False
+        return self.wan_mode == "cv-pathfinder" and self.cv_pathfinder_role in ["edge", "transit region"]
