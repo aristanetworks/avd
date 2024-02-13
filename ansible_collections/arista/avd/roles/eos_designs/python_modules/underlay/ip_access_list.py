@@ -140,8 +140,8 @@ class IPAccessListsMixin(UtilsMixin):
 
     def _get_sequence(self, refresh=False):
         """
-            Returns sequence numbers starting from 10 and incrementing by 10.
-            Set refresh to True to restart the sequence.
+        Returns sequence numbers starting from 10 and incrementing by 10.
+        Set refresh to True to restart the sequence.
         """
         if refresh:
             self.sequence = 0
