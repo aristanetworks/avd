@@ -97,175 +97,124 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ip_access_lists:
-- name: WAN_TRANSPORT_Ethernet1_IN
+- name: ACL-WAN-TRANSPORT-ETHERNET1-IN
   entries:
   - sequence: 10
-    remark: '### Allow BGP ###'
-  - sequence: 20
-    action: permit
-    protocol: tcp
-    source: any
-    destination: 10.7.7.6/31
-    destination_ports_match: eq
-    destination_ports:
-    - bgp
-  - sequence: 30
-    remark: '### Allow GRE ###'
-  - sequence: 40
-    action: permit
-    protocol: gre
-    source: any
-    destination: 10.7.7.6/31
-  - sequence: 50
     remark: '### Allow IPSEC ###'
-  - sequence: 60
+  - sequence: 20
     action: permit
     protocol: udp
     source: any
-    destination: 10.7.7.6/31
+    destination: 10.7.7.7
     destination_ports_match: eq
     destination_ports:
     - isakmp
     - '3478'
     - non500-isakmp
-  - sequence: 70
+  - sequence: 30
     remark: '### Allow ICMP ###'
-  - sequence: 80
+  - sequence: 40
     action: permit
     protocol: icmp
     icmp_type: echo-reply
     source: any
-    destination: 10.7.7.6/31
-  - sequence: 90
+    destination: 10.7.7.7
+  - sequence: 50
     action: permit
     protocol: icmp
     icmp_type: unreachable
     source: any
-    destination: 10.7.7.6/31
-  - sequence: 100
+    destination: 10.7.7.7
+  - sequence: 60
     action: permit
     protocol: icmp
     icmp_type: time-exceeded
     source: any
-    destination: 10.7.7.6/31
-  - sequence: 110
+    destination: 10.7.7.7
+  - sequence: 70
     action: deny
     protocol: ip
     source: any
     destination: any
-- name: WAN_TRANSPORT_Ethernet2_IN
+- name: ACL-WAN-TRANSPORT-ETHERNET2-IN
   entries:
   - sequence: 10
-    remark: '### Allow BGP ###'
-  - sequence: 20
-    action: permit
-    protocol: tcp
-    source: any
-    destination: 172.16.0.0/31
-    destination_ports_match: eq
-    destination_ports:
-    - bgp
-  - sequence: 30
-    remark: '### Allow GRE ###'
-  - sequence: 40
-    action: permit
-    protocol: gre
-    source: any
-    destination: 172.16.0.0/31
-  - sequence: 50
     remark: '### Allow IPSEC ###'
-  - sequence: 60
+  - sequence: 20
     action: permit
     protocol: udp
     source: any
-    destination: 172.16.0.0/31
+    destination: 172.16.0.1
     destination_ports_match: eq
     destination_ports:
     - isakmp
     - '3478'
     - non500-isakmp
-  - sequence: 70
+  - sequence: 30
     remark: '### Allow ICMP ###'
-  - sequence: 80
+  - sequence: 40
     action: permit
     protocol: icmp
     icmp_type: echo-reply
     source: any
-    destination: 172.16.0.0/31
-  - sequence: 90
+    destination: 172.16.0.1
+  - sequence: 50
     action: permit
     protocol: icmp
     icmp_type: unreachable
     source: any
-    destination: 172.16.0.0/31
-  - sequence: 100
+    destination: 172.16.0.1
+  - sequence: 60
     action: permit
     protocol: icmp
     icmp_type: time-exceeded
     source: any
-    destination: 172.16.0.0/31
-  - sequence: 110
+    destination: 172.16.0.1
+  - sequence: 70
     action: deny
     protocol: ip
     source: any
     destination: any
-- name: WAN_TRANSPORT_Ethernet3_IN
+- name: ACL-WAN-TRANSPORT-ETHERNET3-IN
   entries:
   - sequence: 10
-    remark: '### Allow BGP ###'
-  - sequence: 20
-    action: permit
-    protocol: tcp
-    source: any
-    destination: 10.9.9.8/31
-    destination_ports_match: eq
-    destination_ports:
-    - bgp
-  - sequence: 30
-    remark: '### Allow GRE ###'
-  - sequence: 40
-    action: permit
-    protocol: gre
-    source: any
-    destination: 10.9.9.8/31
-  - sequence: 50
     remark: '### Allow IPSEC ###'
-  - sequence: 60
+  - sequence: 20
     action: permit
     protocol: udp
     source: any
-    destination: 10.9.9.8/31
+    destination: 10.9.9.9
     destination_ports_match: eq
     destination_ports:
     - isakmp
     - '3478'
     - non500-isakmp
-  - sequence: 70
+  - sequence: 30
     remark: '### Allow ICMP ###'
-  - sequence: 80
+  - sequence: 40
     action: permit
     protocol: icmp
     icmp_type: echo-reply
     source: any
-    destination: 10.9.9.8/31
-  - sequence: 90
+    destination: 10.9.9.9
+  - sequence: 50
     action: permit
     protocol: icmp
     icmp_type: unreachable
     source: any
-    destination: 10.9.9.8/31
-  - sequence: 100
+    destination: 10.9.9.9
+  - sequence: 60
     action: permit
     protocol: icmp
     icmp_type: time-exceeded
     source: any
-    destination: 10.9.9.8/31
-  - sequence: 110
+    destination: 10.9.9.9
+  - sequence: 70
     action: deny
     protocol: ip
     source: any
     destination: any
-- name: WAN_TRANSPORT_OUT
+- name: ACL-WAN-TRANSPORT-OUT
   entries:
   - sequence: 10
     remark: ' ### Blocking RFC 1918 prefixes ###'
@@ -295,8 +244,8 @@ ethernet_interfaces:
   ip_address: 10.7.7.7/31
   shutdown: false
   type: routed
-  access_group_in: WAN_TRANSPORT_Ethernet1_IN
-  access_group_out: WAN_TRANSPORT_OUT
+  access_group_in: ACL-WAN-TRANSPORT-ETHERNET1-IN
+  access_group_out: ACL-WAN-TRANSPORT-OUT
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet2
@@ -304,8 +253,8 @@ ethernet_interfaces:
   ip_address: 172.16.0.1/31
   shutdown: false
   type: routed
-  access_group_in: WAN_TRANSPORT_Ethernet2_IN
-  access_group_out: WAN_TRANSPORT_OUT
+  access_group_in: ACL-WAN-TRANSPORT-ETHERNET2-IN
+  access_group_out: ACL-WAN-TRANSPORT-OUT
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet3
@@ -313,8 +262,8 @@ ethernet_interfaces:
   ip_address: 10.9.9.9/31
   shutdown: false
   type: routed
-  access_group_in: WAN_TRANSPORT_Ethernet3_IN
-  access_group_out: WAN_TRANSPORT_OUT
+  access_group_in: ACL-WAN-TRANSPORT-ETHERNET3-IN
+  access_group_out: ACL-WAN-TRANSPORT-OUT
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:

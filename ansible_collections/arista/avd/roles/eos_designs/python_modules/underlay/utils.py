@@ -183,7 +183,7 @@ class UtilsMixin:
         if l3_interface.get("enable_wan_acls", True):
             if ip_address != "dhcp":
                 interface["access_group_in"] = self._get_inbound_wan_acl_name(interface_name)
-            interface["access_group_out"] = "WAN_TRANSPORT_OUT"
+            interface["access_group_out"] = "ACL-WAN-TRANSPORT-OUT"
 
         if self.shared_utils.cv_pathfinder_role:
             interface["flow_tracker"] = {"hardware": "WAN-FLOW-TRACKER"}
@@ -191,4 +191,4 @@ class UtilsMixin:
         return strip_empties_from_dict(interface)
 
     def _get_inbound_wan_acl_name(self, interface_name):
-        return f"WAN_TRANSPORT_{interface_name}_IN"
+        return f"ACL-WAN-TRANSPORT-{interface_name.upper()}-IN"

@@ -114,7 +114,7 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ip_access_lists:
-- name: WAN_TRANSPORT_OUT
+- name: ACL-WAN-TRANSPORT-OUT
   entries:
   - sequence: 10
     remark: ' ### Blocking RFC 1918 prefixes ###'
@@ -145,7 +145,7 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   dhcp_client_accept_default_route: true
-  access_group_out: WAN_TRANSPORT_OUT
+  access_group_out: ACL-WAN-TRANSPORT-OUT
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
