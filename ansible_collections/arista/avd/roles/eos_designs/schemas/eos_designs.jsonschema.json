@@ -3263,6 +3263,11 @@
                 "^_.+$": {}
               },
               "title": "Structured Config"
+            },
+            "ttl_maximum_hops": {
+              "type": "integer",
+              "default": 1,
+              "title": "TTL Maximum Hops"
             }
           },
           "additionalProperties": false,
@@ -3610,6 +3615,11 @@
                 "^_.+$": {}
               },
               "title": "Structured Config"
+            },
+            "ttl_maximum_hops": {
+              "type": "integer",
+              "default": 1,
+              "title": "TTL Maximum Hops"
             }
           },
           "additionalProperties": false,

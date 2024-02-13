@@ -122,7 +122,7 @@ class RouterBgpMixin(UtilsMixin):
                 peer_group_config = {"remote_as": self.shared_utils.bgp_as}
                 if self.shared_utils.wan_role:
                     # WAN OVERLAY peer group
-                    peer_group_config["ttl_maximum_hops"] = 1
+                    peer_group_config["ttl_maximum_hops"] = self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["ttl_maximum_hops"]
                     if self.shared_utils.wan_role == "server":
                         peer_group_config["route_reflector_client"] = True
                     peer_groups.append(
@@ -147,14 +147,11 @@ class RouterBgpMixin(UtilsMixin):
                 peer_groups.append({**self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
 
             if self._is_wan_server_with_peers:
-                wan_rr_overlay_peer_grp_config = {"remote_as": self.shared_utils.bgp_as}
-                wan_rr_overlay_peer_grp_config["ttl_maximum_hops"] = 1
-                peer_groups.append(
-                    {
-                        **self._generate_base_peer_group("wan", "wan_rr_overlay_peers", update_source=self.shared_utils.vtep_loopback),
-                        **wan_rr_overlay_peer_grp_config,
-                    }
+                wan_rr_overlay_peer_group = self._generate_base_peer_group("wan", "wan_rr_overlay_peers", update_source=self.shared_utils.vtep_loopback)
+                wan_rr_overlay_peer_group.update(
+                    {"remote_as": self.shared_utils.bgp_as, "ttl_maximum_hops": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["ttl_maximum_hops"]}
                 )
+                peer_groups.append(wan_rr_overlay_peer_group)
 
         # same for ebgp and ibgp
         if self.shared_utils.overlay_ipvpn_gateway is True:

@@ -15,11 +15,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;listen_range_prefixes</samp>](## "bgp_peer_groups.wan_overlay_peers.listen_range_prefixes") | List, items: String |  |  |  | Only used for nodes where `wan_role` is `server` like AutoVPN RRs and Pathfinders.<br>For clients, AVD will raise an error if the Loopback0 IP is not in any listen range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "bgp_peer_groups.wan_overlay_peers.listen_range_prefixes.[]") | String |  |  |  | The prefixes to use in listen_range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.wan_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "bgp_peer_groups.wan_overlay_peers.ttl_maximum_hops") | Integer |  | `1` |  |  |
     | [<samp>&nbsp;&nbsp;wan_rr_overlay_peers</samp>](## "bgp_peer_groups.wan_rr_overlay_peers") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Configuration options for the peer-group created to peer between<br>AutoVPN RRs or CV-Pathfinders. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.name") | String |  | `WAN-RR-OVERLAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.ttl_maximum_hops") | Integer |  | `1` |  |  |
 
 === "YAML"
 
@@ -47,6 +49,7 @@
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
         structured_config: <dict>
+        ttl_maximum_hops: <int; default=1>
 
       # PREVIEW: This key is currently not supported
       # Configuration options for the peer-group created to peer between
@@ -62,4 +65,5 @@
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
         structured_config: <dict>
+        ttl_maximum_hops: <int; default=1>
     ```
