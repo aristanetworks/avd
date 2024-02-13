@@ -57,11 +57,11 @@ management ssh
 {%     if management_ssh.hostkey.client_strict_checking is arista.avd.defined(true) %}
    hostkey client strict-checking
 {%     endif %}
-{%     if management_ssh.hostkey.server.algorithm is arista.avd.defined %}
-   hostkey server {{ management_ssh.hostkey.server.algorithm | join(" ") }}
+{%     if management_ssh.hostkey.server is arista.avd.defined %}
+   hostkey server {{ management_ssh.hostkey.server | join(" ") }}
 {%     endif %}
-{%     if management_ssh.hostkey.server.cert_key is arista.avd.defined %}
-   hostkey server cert {{ management_ssh.hostkey.server.cert_key }}
+{%     if management_ssh.hostkey.server_cert_key is arista.avd.defined %}
+   hostkey server cert {{ management_ssh.hostkey.server_cert_key }}
 {%     endif %}
 {%     if management_ssh.enable is arista.avd.defined(false) %}
    shutdown

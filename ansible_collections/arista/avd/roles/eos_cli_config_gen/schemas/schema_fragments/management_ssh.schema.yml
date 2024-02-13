@@ -65,16 +65,13 @@ keys:
         type: dict
         keys:
           server:
-            type: dict
             description: SSH host key settings.
-            keys:
-              cert_key:
-                type: str
-                description: Configure switch's hostkey cert file.
-              algorithm:
-                type: list
-                items:
-                  type: str
+            type: list
+            items:
+              type: str
+          server_cert_key:
+            type: str
+            description: Configure switch's hostkey cert file.
           client_strict_checking:
             type: bool
             description: Enforce strict host key checking.

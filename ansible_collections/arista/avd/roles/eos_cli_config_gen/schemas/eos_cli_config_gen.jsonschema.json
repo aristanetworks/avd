@@ -10019,27 +10019,17 @@
           "type": "object",
           "properties": {
             "server": {
-              "type": "object",
               "description": "SSH host key settings.",
-              "properties": {
-                "cert_key": {
-                  "type": "string",
-                  "description": "Configure switch's hostkey cert file.",
-                  "title": "Cert Key"
-                },
-                "algorithm": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
-                  "title": "Algorithm"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
+              "type": "array",
+              "items": {
+                "type": "string"
               },
               "title": "Server"
+            },
+            "server_cert_key": {
+              "type": "string",
+              "description": "Configure switch's hostkey cert file.",
+              "title": "Server Cert Key"
             },
             "client_strict_checking": {
               "type": "boolean",
