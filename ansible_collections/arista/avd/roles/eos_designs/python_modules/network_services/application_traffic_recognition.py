@@ -25,11 +25,11 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         if not self.shared_utils.wan_role:
             return None
 
-        filtered_application_traffic_recognition = self._filtered_application_traffic_recognition()
+        filtered_application_classification = self._filtered_application_classification()
 
-        self._generate_control_plane_application_profile(filtered_application_traffic_recognition)
+        self._generate_control_plane_application_profile(filtered_application_classification)
 
-        return strip_empties_from_dict(filtered_application_traffic_recognition)
+        return strip_empties_from_dict(filtered_application_classification)
 
     #  self._wan_control_plane_application_profile is defined in utils.py
     @cached_property
@@ -131,15 +131,15 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                 {"name": self._wan_cp_app_src_prefix, "prefix_values": [f"{self.shared_utils.vtep_ip}/32"]}
             )
 
-    def _filtered_application_traffic_recognition(self) -> dict:
+    def _filtered_application_classification(self) -> dict:
         """
         Based on the filtered policies local to the device, filter which application profiles should be configured on the device.
 
-        Supports only `application_traffic_recognition.applications.ipv4_applications` for now.
+        Supports only `application_classification.applications.ipv4_applications` for now.
 
         For applications - the existence cannot be verified as there are 4000+ applications built-in in the DPI engine used by EOS.
         """
-        input_application_traffic_recognition = get(self._hostvars, "application_traffic_recognition", {})
+        input_application_classification = get(self._hostvars, "application_classification", {})
         # Application profiles first
         application_profiles = []
         # TODO inject "application_profile": "CONTROL-PLANE-APPLICATION-PROFILE",
@@ -151,7 +151,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
             """
             if (
                 obj := get_item(
-                    get(input_application_traffic_recognition, path, default=[]),
+                    get(input_application_classification, path, default=[]),
                     "name",
                     obj_name,
                     required=required,
@@ -177,7 +177,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=application_profiles,
                     message=(
                         f"The application profile {application_profile} used in policy {policy['name']}  "
-                        "is not defined in 'application_traffic_recognition.application_profiles'."
+                        "is not defined in 'application_classification.application_profiles'."
                     ),
                 )
             default_virtual_topology = get(policy, "default_virtual_topology", required=True)
@@ -190,7 +190,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                         list_of_dicts=application_profiles,
                         message=(
                             f"The application profile {application_profile} used in policy {policy['name']} "
-                            "is not defined in 'application_traffic_recognition.application_profiles'."
+                            "is not defined in 'application_classification.application_profiles'."
                         ),
                     )
         output = {"application_profiles": application_profiles}
@@ -205,7 +205,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=categories,
                     message=(
                         f"The application profile {application_profile['name']} uses the category {category['name']} "
-                        "undefined in 'application_traffic_recognition.categories'."
+                        "undefined in 'application_classification.categories'."
                     ),
                 )
             # Applications in application profiles
@@ -239,7 +239,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=ipv4_prefixes,
                     message=(
                         f"The IPv4 prefix field set {src_prefix_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.ipv4_prefixes'."
+                        "is undefined in 'application_classification.fields_sets.ipv4_prefixes'."
                     ),
                 )
             if (dest_prefix_set_name := get(application, "dest_prefix_set_name")) is not None:
@@ -249,7 +249,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=ipv4_prefixes,
                     message=(
                         f"The IPv4 prefix field set {dest_prefix_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.ipv4_prefixes'."
+                        "is undefined in 'application_classification.fields_sets.ipv4_prefixes'."
                     ),
                 )
             if (udp_src_port_set_name := get(application, "udp_src_port_set_name")) is not None:
@@ -259,7 +259,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=l4_ports,
                     message=(
                         f"The L4 Ports field set {udp_src_port_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.l4_ports'."
+                        "is undefined in 'application_classification.fields_sets.l4_ports'."
                     ),
                 )
             if (udp_dest_port_set_name := get(application, "udp_dest_port_set_name")) is not None:
@@ -269,7 +269,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=l4_ports,
                     message=(
                         f"The L4 Ports field set {udp_dest_port_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.l4_ports'."
+                        "is undefined in 'application_classification.fields_sets.l4_ports'."
                     ),
                 )
             if (tcp_src_port_set_name := get(application, "tcp_src_port_set_name")) is not None:
@@ -279,7 +279,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=l4_ports,
                     message=(
                         f"The L4 Ports field set {tcp_src_port_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.l4_ports'."
+                        "is undefined in 'application_classification.fields_sets.l4_ports'."
                     ),
                 )
             if (tcp_dest_port_set_name := get(application, "tcp_dest_port_set_name")) is not None:
@@ -289,7 +289,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     list_of_dicts=l4_ports,
                     message=(
                         f"The L4 Ports field set {tcp_dest_port_set_name} used in the application {application} "
-                        "is undefined in 'application_traffic_recognition.fields_sets.l4_ports'."
+                        "is undefined in 'application_classification.fields_sets.l4_ports'."
                     ),
                 )
 

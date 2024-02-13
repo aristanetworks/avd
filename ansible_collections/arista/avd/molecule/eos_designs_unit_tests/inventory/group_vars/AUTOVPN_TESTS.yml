@@ -49,13 +49,14 @@ wan_edge:
         - name: Ethernet1
           wan_carrier: Comcast
           wan_circuit_id: 666
-          ip: dhcp
-          set_default_route: true
+          ip_address: dhcp
+          dhcp_accept_default_route: true
 
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.31.0/24
     vtep_loopback_ipv4_pool: 192.168.131.0/24
+    data_plane_cpu_allocation_max: 2
   nodes:
     - name: autovpn-rr1
       id: 1
@@ -63,16 +64,17 @@ wan_rr:
         - name: Ethernet1
           wan_carrier: ATT
           wan_circuit_id: 777
-          ip: dhcp
-          set_default_route: true
+          ip_address: dhcp
+          dhcp_accept_default_route: true
     - name: autovpn-rr2
       id: 2
       l3_interfaces:
         - name: Ethernet1
           wan_carrier: ATT
           wan_circuit_id: 888
-          ip: 10.8.8.8/31
-          set_default_route: true
+          ip_address: 10.8.8.8/31
+          static_routes:
+            - prefix: 0.0.0.0/0
           peer_ip: 10.8.8.9
 
 wan_path_groups:
@@ -90,6 +92,7 @@ wan_carriers:
   - name: ATT
     path_group: INET
 
+# SVI and L2VLAN is inserted to ensure these are *not* rendered.
 tenants:
   - name: TenantA
     vrfs:
@@ -97,8 +100,15 @@ tenants:
         vrf_id: 1
       - name: PROD
         vrf_id: 42
+        svis:
+          - id: 100
+            name: VLAN100
+            ip_address_virtual: 10.0.100.1/24
       - name: IT
         vrf_id: 100
+    l2vlans:
+      - id: 101
+        name: VLAN101
 
 wan_virtual_topologies:
   vrfs:
@@ -132,7 +142,7 @@ wan_virtual_topologies:
             - names: [INET]
               preference: alternate
 
-application_traffic_recognition:
+application_classification:
   application_profiles:
     - name: VIDEO
     - name: IT

@@ -6,7 +6,7 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  application_traffic_recognition:
+  application_classification:
     type: dict
     description: |-
       PREVIEW: WAN Preview

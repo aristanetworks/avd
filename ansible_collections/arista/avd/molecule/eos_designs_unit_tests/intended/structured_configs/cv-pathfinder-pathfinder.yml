@@ -444,14 +444,17 @@ metadata:
     interfaces:
     - name: Ethernet1
       carrier: Bouygues_Telecom
+      circuit_id: '777'
       pathgroup: INET
       public_ip: 10.7.7.7
     - name: Ethernet2
       carrier: Colt
+      circuit_id: '10000'
       pathgroup: MPLS
       public_ip: 172.16.0.1
     - name: Ethernet3
       carrier: Another-ISP
+      circuit_id: '999'
       pathgroup: INET
       public_ip: 10.9.9.9
     pathgroups:

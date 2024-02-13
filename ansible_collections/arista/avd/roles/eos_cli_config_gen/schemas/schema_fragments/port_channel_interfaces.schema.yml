@@ -26,6 +26,10 @@ keys:
               keys:
                 link_status:
                   type: bool
+                storm_control_discards:
+                  type: bool
+                  description: |
+                    Discards due to storm-control.
         shutdown:
           type: bool
         l2_mtu:
@@ -745,6 +749,9 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        validate_state:
+          type: bool
+          description: Set to false to disable interface validation by the `eos_validate_state` role
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration

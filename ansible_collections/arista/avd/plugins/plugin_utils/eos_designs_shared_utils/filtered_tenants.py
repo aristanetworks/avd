@@ -90,6 +90,9 @@ class FilteredTenantsMixin:
         Return sorted and filtered l2vlan list from given tenant.
         Filtering based on l2vlan tags.
         """
+        if not self.network_services_l2:
+            return []
+
         if "l2vlans" not in tenant:
             return []
 
@@ -330,6 +333,9 @@ class FilteredTenantsMixin:
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
         """
+        if not self.network_services_l2:
+            return []
+
         svis: list[dict] = natural_sort(convert_dicts(vrf.get("svis", []), "id"), "id")
         svis = [svi for svi in svis if self.is_accepted_vlan(svi)]
 

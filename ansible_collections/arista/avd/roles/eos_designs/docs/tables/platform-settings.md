@@ -120,10 +120,18 @@
         - feature_support:
             poe: true
             queue_monitor_length_notify: false
+          management_interface: Management0
           platforms:
           - '750'
           - '755'
           - '758'
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+          platforms:
           - 720DP
           - 722XP
           - 710P

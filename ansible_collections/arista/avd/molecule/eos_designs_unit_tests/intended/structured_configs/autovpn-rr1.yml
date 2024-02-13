@@ -28,7 +28,7 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     route_reflector_client: true
-  - name: RR-OVERLAY-PEERS
+  - name: WAN-RR-OVERLAY-PEERS
     type: wan
     update_source: Dps1
     bfd: true
@@ -39,7 +39,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
-    - name: RR-OVERLAY-PEERS
+    - name: WAN-RR-OVERLAY-PEERS
       activate: true
     next_hop:
       resolution_disabled: true
@@ -47,13 +47,13 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: false
-    - name: RR-OVERLAY-PEERS
+    - name: WAN-RR-OVERLAY-PEERS
       activate: false
   address_family_path_selection:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
-    - name: RR-OVERLAY-PEERS
+    - name: WAN-RR-OVERLAY-PEERS
       activate: true
     bgp:
       additional_paths:
@@ -62,7 +62,7 @@ router_bgp:
           any: true
   neighbors:
   - ip_address: 192.168.131.2
-    peer_group: RR-OVERLAY-PEERS
+    peer_group: WAN-RR-OVERLAY-PEERS
     peer: autovpn-rr2
     description: autovpn-rr2
   vrfs:

@@ -1,9 +1,6 @@
 ---
 # Inherit most of the variables from CV_PATHFINDERS_TESTS
 
-# overwriting data_plane_cpu_allocation_max from CV_PATHINDERS
-data_plane_cpu_allocation_max: 3
-
 wan_route_servers:
   # Not testing the overloading
   - hostname: cv-pathfinder-pathfinder1

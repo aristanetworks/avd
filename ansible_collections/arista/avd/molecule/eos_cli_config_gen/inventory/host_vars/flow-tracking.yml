@@ -3,6 +3,9 @@
 
 flow_tracking:
   sampled:
+    encapsulation:
+      ipv4_ipv6: true
+      mpls: true
     sample: 666
     hardware_offload:
       ipv4: true

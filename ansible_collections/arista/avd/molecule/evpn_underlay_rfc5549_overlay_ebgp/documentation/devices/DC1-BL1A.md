@@ -270,6 +270,7 @@ vlan 350
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet11 | P2P_LINK_TO_outside-r1_other1 | routed | - | 10.23.23.1/30 | default | 1500 | False | - | - |
 | Ethernet4000 | My test | routed | - | 10.1.2.3/12 | default | 1500 | False | - | - |
 
 ##### IPv6
@@ -328,6 +329,13 @@ interface Ethernet10
    mtu 1500
    no switchport
    ipv6 enable
+!
+interface Ethernet11
+   description P2P_LINK_TO_outside-r1_other1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.23.23.1/30
 !
 interface Ethernet4000
    description My test
@@ -597,6 +605,7 @@ router general
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 10.23.23.2 | 64900 | default | - | Inherited from peer group UNDERLAY_PEERS | Inherited from peer group UNDERLAY_PEERS | - | - | - | - | - | - |
 | 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
@@ -673,6 +682,9 @@ router bgp 65104
    neighbor interface Ethernet4 peer-group UNDERLAY_PEERS remote-as 65001
    neighbor interface Ethernet9 peer-group UNDERLAY_PEERS remote-as 65105
    neighbor interface Ethernet10 peer-group UNDERLAY_PEERS remote-as 65105
+   neighbor 10.23.23.2 peer group UNDERLAY_PEERS
+   neighbor 10.23.23.2 remote-as 64900
+   neighbor 10.23.23.2 description outside-r1
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

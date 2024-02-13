@@ -27,6 +27,8 @@ $defs:
               table: node-type-common-configuration
             description: Arista platform family.
             type: str
+            convert_types:
+              - int
           mac_address:
             documentation_options:
               table: node-type-common-configuration
@@ -1175,6 +1177,14 @@ $defs:
                   type: str
                   description: |
                     L3 interface profile name. Profile defined under `l3_interface_profiles`.
+          data_plane_cpu_allocation_max:
+            documentation_options:
+              table: system-settings
+            type: int
+            $ref: "eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max"
+            description: |-
+              Set the maximum number of CPU used for the data plane.
+              This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

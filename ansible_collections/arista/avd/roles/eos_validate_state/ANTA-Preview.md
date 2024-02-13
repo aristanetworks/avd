@@ -11,10 +11,13 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 # eos_validate_state - Preview Integration with ANTA
 
 !!! warning
-    eos_validate_state intergration with ANTA is in preview. Everything is subject to change.
+    eos_validate_state integration with ANTA is in preview. Everything is subject to change.
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
-## Overview
+!!! warning
+    ANTA version has been bumped to **0.12.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode).
+
+# Overview
 
 **eos_validate_state** is a role leveraged to validate Arista EOS devices' operational states.
 

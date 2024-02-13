@@ -74,7 +74,7 @@ class ResultsManager:
         ]
 
         # Mapping the ANTA results
-        anta_result = result.get("result", "")
+        anta_result = result.get("result", "unset")
         new_result = RESULTS_MAPPING.get(anta_result, "")
 
         # Create the parsed result dictionary
@@ -84,7 +84,7 @@ class ResultsManager:
             "test_categories": test_categories,
             "test_description": result.get("description", ""),
             # Since AVD tests can have the same description and category, ANTA's custom_field is used to differentiate tests
-            "test": result.get("custom_field", "") if result.get("custom_field") != "None" else result.get("test", ""),
+            "test": result.get("custom_field") or result.get("test", ""),
             "result": new_result,
             "messages": result.get("messages", []),
         }

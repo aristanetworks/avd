@@ -13,17 +13,17 @@ title: arista.avd.generate_lacp_id
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.generate_lacp_id` when using this plugin.
 
-Transforms short\_esi <code>0303\:0202\:0101</code> to LACP ID format <code>0303.0202.0101</code>
+Transforms short_esi `0303:0202:0101` to LACP ID format `0303.0202.0101`
 
 ## Synopsis
 
-Replaces <code>\:</code> with <code>.</code>
+Replaces `:` with `.`
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | string | True | None |  | Short ESI value as per AVD definition in eos\_designs. |
+| <samp>_input</samp> | string | True | None |  | Short ESI value as per AVD definition in eos_designs. |
 
 ## Examples
 

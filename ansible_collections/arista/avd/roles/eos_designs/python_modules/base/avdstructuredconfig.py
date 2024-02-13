@@ -530,7 +530,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         if trident_forwarding_table_partition is not None and self.shared_utils.evpn_multicast:
             platform["trident"] = {"forwarding_table_partition": trident_forwarding_table_partition}
 
-        if (cpu_max_allocation := get(self._hostvars, "data_plane_cpu_allocation_max")) is not None:
+        if (cpu_max_allocation := get(self.shared_utils.switch_data_combined, "data_plane_cpu_allocation_max")) is not None:
             platform["sfe"] = {"data_plane_cpu_allocation_max": cpu_max_allocation}
         elif self.shared_utils.wan_role == "server":
             # For AutoVPN Route Reflectors and Pathfinders, running on CloudEOS, setting
