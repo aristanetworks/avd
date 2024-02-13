@@ -48,7 +48,7 @@ router msdp
       sa-filter in list {{ peer.sa_filter.in_list }}
 {%             endif %}
 {%             if peer.sa_filter.out_list is arista.avd.defined %}
-      sa-filter out list {{ peer.sa_filter.in_list }}
+      sa-filter out list {{ peer.sa_filter.out_list }}
 {%             endif %}
 {%             if peer.description is arista.avd.defined %}
       description {{ peer.description }}
