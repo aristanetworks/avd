@@ -84,6 +84,13 @@ policy-map type pbr PM_PBR_BREAKOUT
 | CM_REPLICATION_LD | dscp | af11 |
 | CM_REPLICATION_LD | cos | 4 |
 
+##### PM_REPLICATION_LD3
+
+| class | Set | Value |
+| ----- | --- | ----- |
+| CM_REPLICATION_LD | dscp | af11 |
+| CM_REPLICATION_LD | cos | 6 |
+
 #### QOS Policy Maps Device Configuration
 
 ```eos
@@ -93,6 +100,7 @@ policy-map type quality-of-service PM_REPLICATION_LD
       set dscp af11
       set traffic-class 2
       set drop-precedence 1
+      police rate 10 kbps burst-size 260 kbytes action set drop-precedence rate 30 kbps 270 kbytes
    !
    class CM_REPLICATION_LD_2
       set dscp af11
@@ -102,4 +110,11 @@ policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
       set dscp af11
       set cos 4
+      police cir 12 kbps bc 267 kbytes
+!
+policy-map type quality-of-service PM_REPLICATION_LD3
+   class CM_REPLICATION_LD
+      set dscp af11
+      set cos 6
+      police rate 10 kbps burst-size 260 kbytes
 ```

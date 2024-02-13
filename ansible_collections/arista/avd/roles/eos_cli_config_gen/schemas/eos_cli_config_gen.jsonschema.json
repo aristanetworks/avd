@@ -12306,255 +12306,192 @@
           "title": "PBR"
         },
         "qos": {
-          "type": "object",
-          "properties": {
-            "policy": {
-              "type": "array",
-              "description": "QOS Policy-Maps",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Policy-Map Name",
-                    "title": "Name"
-                  },
-                  "classes": {
-                    "type": "array",
-                    "items": {
+          "type": "array",
+          "description": "QOS Policy-Maps",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Policy-Map Name",
+                "title": "Name"
+              },
+              "classes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Class Name",
+                      "title": "Name"
+                    },
+                    "set": {
                       "type": "object",
                       "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Class Name",
-                          "title": "Name"
+                        "cos": {
+                          "type": "integer",
+                          "title": "COS"
                         },
-                        "set": {
-                          "type": "object",
-                          "properties": {
-                            "cos": {
-                              "type": "integer",
-                              "title": "COS"
-                            },
-                            "dscp": {
-                              "type": "string",
-                              "title": "DSCP"
-                            },
-                            "traffic_class": {
-                              "type": "integer",
-                              "title": "Traffic Class"
-                            },
-                            "drop_precedence": {
-                              "type": "integer",
-                              "title": "Drop Precedence"
-                            }
-                          },
-                          "additionalProperties": false,
-                          "patternProperties": {
-                            "^_.+$": {}
-                          },
-                          "title": "Set"
+                        "dscp": {
+                          "type": "string",
+                          "title": "DSCP"
+                        },
+                        "traffic_class": {
+                          "type": "integer",
+                          "title": "Traffic Class"
+                        },
+                        "drop_precedence": {
+                          "type": "integer",
+                          "title": "Drop Precedence"
                         }
                       },
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
                       },
-                      "required": [
-                        "name"
-                      ]
+                      "title": "Set"
                     },
-                    "title": "Classes"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "required": [
-                  "name"
-                ]
-              },
-              "title": "Policy"
-            },
-            "policer": {
-              "type": "object",
-              "properties": {
-                "classes": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "police": {
-                        "type": "object",
-                        "properties": {
-                          "cir": {
-                            "type": "object",
-                            "description": "Set committed information rate.",
-                            "properties": {
-                              "cir_rate": {
-                                "type": "integer",
-                                "description": "Specify lower rate.",
-                                "title": "Cir Rate"
-                              },
-                              "cir_unit": {
-                                "type": "string",
-                                "enum": [
-                                  "bps",
-                                  "kbps",
-                                  "mbps"
-                                ],
-                                "default": "bps",
-                                "title": "Cir Unit"
-                              },
-                              "bc": {
-                                "description": "Set committed burst rate.",
-                                "type": "integer",
-                                "title": "Bc"
-                              },
-                              "bc_unit": {
-                                "type": "string",
-                                "enum": [
-                                  "bytes",
-                                  "kbytes",
-                                  "mbytes"
-                                ],
-                                "default": "bytes",
-                                "title": "Bc Unit"
-                              }
+                    "police": {
+                      "type": "object",
+                      "properties": {
+                        "cir": {
+                          "type": "object",
+                          "description": "Set committed information rate.",
+                          "properties": {
+                            "cir_rate": {
+                              "type": "integer",
+                              "description": "Specify lower rate.\nLower rate range in kbps - <8-200000000>.\n",
+                              "title": "Cir Rate"
                             },
-                            "additionalProperties": false,
-                            "patternProperties": {
-                              "^_.+$": {}
+                            "cir_unit": {
+                              "type": "string",
+                              "enum": [
+                                "bps",
+                                "kbps",
+                                "mbps"
+                              ],
+                              "default": "bps",
+                              "title": "Cir Unit"
                             },
-                            "title": "Cir"
+                            "bc": {
+                              "description": "Set committed burst rate.",
+                              "type": "integer",
+                              "title": "Bc"
+                            },
+                            "bc_unit": {
+                              "type": "string",
+                              "enum": [
+                                "bytes",
+                                "kbytes",
+                                "mbytes"
+                              ],
+                              "default": "bytes",
+                              "title": "Bc Unit"
+                            }
                           },
-                          "rate": {
-                            "type": "object",
-                            "properties": {
-                              "lower_rate": {
-                                "type": "integer",
-                                "description": "Specify lower rate.\nLower rate range in kbps - <8-200000000>\n",
-                                "title": "Lower Rate"
-                              },
-                              "rate_unit": {
-                                "type": "string",
-                                "enum": [
-                                  "bps",
-                                  "kbps",
-                                  "mbps",
-                                  "pps"
-                                ],
-                                "default": "bps",
-                                "title": "Rate Unit"
-                              },
-                              "lower_rate_burst_size": {
-                                "type": "integer",
-                                "minimum": 256,
-                                "maximum": 128000000,
-                                "title": "Lower Rate Burst Size"
-                              },
-                              "burst_size_unit": {
-                                "type": "string",
-                                "enum": [
-                                  "bytes",
-                                  "kbytes",
-                                  "mbytes",
-                                  "packets"
-                                ],
-                                "title": "Burst Size Unit"
-                              },
-                              "action": {
-                                "description": "Set action for policed traffic",
-                                "type": "string",
-                                "enum": [
-                                  "dscp",
-                                  "drop-precedence"
-                                ],
-                                "title": "Action"
-                              },
-                              "dscp_value": {
-                                "type": "string",
-                                "title": "DSCP Value"
-                              },
-                              "higher_rate": {
-                                "type": "integer",
-                                "description": "Specify higher rate",
-                                "title": "Higher Rate"
-                              },
-                              "higher_rate_burst_size": {
-                                "type": "integer",
-                                "minimum": 256,
-                                "maximum": 128000000,
-                                "title": "Higher Rate Burst Size"
-                              }
-                            },
-                            "additionalProperties": false,
-                            "patternProperties": {
-                              "^_.+$": {}
-                            },
-                            "title": "Rate"
-                          }
+                          "required": [
+                            "cir_rate",
+                            "bc"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Cir"
                         },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
-                        },
-                        "title": "Police"
+                        "rate": {
+                          "type": "object",
+                          "properties": {
+                            "lower_rate": {
+                              "type": "integer",
+                              "description": "Specify lower rate.\nLower rate range in kbps - <8-200000000>.\n",
+                              "title": "Lower Rate"
+                            },
+                            "rate_unit": {
+                              "type": "string",
+                              "enum": [
+                                "bps",
+                                "kbps",
+                                "mbps",
+                                "pps"
+                              ],
+                              "default": "bps",
+                              "title": "Rate Unit"
+                            },
+                            "lower_rate_burst_size": {
+                              "type": "integer",
+                              "minimum": 256,
+                              "maximum": 128000000,
+                              "title": "Lower Rate Burst Size"
+                            },
+                            "burst_size_unit": {
+                              "type": "string",
+                              "enum": [
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "packets"
+                              ],
+                              "title": "Burst Size Unit"
+                            },
+                            "action": {
+                              "description": "Set action for policed traffic.",
+                              "type": "string",
+                              "enum": [
+                                "dscp",
+                                "drop-precedence"
+                              ],
+                              "title": "Action"
+                            },
+                            "dscp_value": {
+                              "type": "string",
+                              "title": "DSCP Value"
+                            },
+                            "higher_rate": {
+                              "type": "integer",
+                              "description": "Specify higher rate.",
+                              "title": "Higher Rate"
+                            },
+                            "higher_rate_burst_size": {
+                              "type": "integer",
+                              "minimum": 256,
+                              "maximum": 128000000,
+                              "title": "Higher Rate Burst Size"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Rate"
+                        }
                       },
-                      "name": {
-                        "type": "string",
-                        "description": "Class Name",
-                        "title": "Name"
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
                       },
-                      "set": {
-                        "type": "object",
-                        "properties": {
-                          "cos": {
-                            "type": "integer",
-                            "title": "COS"
-                          },
-                          "dscp": {
-                            "type": "string",
-                            "title": "DSCP"
-                          },
-                          "traffic_class": {
-                            "type": "integer",
-                            "title": "Traffic Class"
-                          },
-                          "drop_precedence": {
-                            "type": "integer",
-                            "title": "Drop Precedence"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
-                        },
-                        "title": "Set"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "required": [
-                      "name"
-                    ]
+                      "title": "Police"
+                    }
                   },
-                  "title": "Classes"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              },
-              "title": "Policer"
-            }
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Classes"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "QOS"
         }
