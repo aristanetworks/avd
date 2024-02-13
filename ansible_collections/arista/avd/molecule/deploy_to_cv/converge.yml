@@ -6,7 +6,8 @@
   vars:
     # cv_server: staticstudio-1-cfec4cc2-eos.topo.testdrive.arista.com
     cv_server: www.cv-staging.corp.arista.io
-    token: "{{ lookup('file', playbook_dir ~ '/token-cvaas.tok')}}"
+    # token: "{{ lookup('file', playbook_dir ~ '/token-cvaas.tok')}}"
+    token: "{{ lookup('env', 'CVAAS_TOKEN' }}"
     ws_url: https://{{ cv_server }}/api/v3/services/arista.configlet.v1.ConfigletService/GetOne
     cc_url: https://{{ cv_server }}/api/v3/services/arista.changecontrol.v1.ChangeControlService/GetOne
     tag_url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
