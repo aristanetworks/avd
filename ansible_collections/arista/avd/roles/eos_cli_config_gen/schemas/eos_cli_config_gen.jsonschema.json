@@ -16844,7 +16844,7 @@
                       "tunnel-rib-colored",
                       "tunnel-rib"
                     ],
-                    "description": "Type of RIB, one of system-connect|tunnel-rib-colored|tunnel-rib. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use. Use 'tunnel-rib-colored' for 'tunnel-rib colored system-colored-tunnel-rib'",
+                    "description": "Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use.",
                     "title": "Rib Type"
                   },
                   "rib_name": {
