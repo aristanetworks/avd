@@ -2078,6 +2078,10 @@
           "type": "boolean",
           "title": "System Auth Control"
         },
+        "protocol_bpdu_bypass": {
+          "type": "boolean",
+          "title": "Protocol Bpdu Bypass"
+        },
         "protocol_lldp_bypass": {
           "type": "boolean",
           "title": "Protocol LLDP Bypass"
