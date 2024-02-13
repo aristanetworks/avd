@@ -5,8 +5,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ArBGP is configured and operating",
-    "custom_field": "ArBGP"
+    "description": "Verifies the configured routing protocol model.",
+    "custom_field": "Routing protocol model: multi-agent"
   },
   {
     "name": "dc2-leaf2a",
@@ -14,8 +14,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.0.5"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.0.5"
   },
   {
     "name": "dc2-leaf2a",
@@ -23,8 +23,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.128.11"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.11"
   },
   {
     "name": "dc2-leaf2a",
@@ -32,8 +32,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.128.12"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.12"
   },
   {
     "name": "dc2-leaf2a",
@@ -41,8 +41,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.129.121"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.129.121"
   },
   {
     "name": "dc2-leaf2a",
@@ -50,8 +50,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.112"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.112"
   },
   {
     "name": "dc2-leaf2a",
@@ -59,8 +59,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.114"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.114"
   },
   {
     "name": "dc2-leaf2a",
@@ -68,8 +68,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 192.168.100.0"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 192.168.100.0"
   },
   {
     "name": "dc2-leaf2a",

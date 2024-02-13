@@ -20,7 +20,7 @@ class AvdTestInterfacesState(AvdTestBase):
         ("ethernet_interfaces", "Ethernet Interface & Line Protocol == '{state}'"),
         ("port_channel_interfaces", "Port-Channel Interface & Line Protocol == '{state}'"),
         ("vlan_interfaces", "Vlan Interface & Line Protocol == '{state}'"),
-        ("loopback_interfaces", "Loopback Interface Status & Line Protocol == 'up'"),
+        ("loopback_interfaces", "Loopback Interface Status & Line Protocol == '{state}'"),
     ]
 
     @cached_property
@@ -76,6 +76,9 @@ class AvdTestInterfacesState(AvdTestBase):
             for idx, interface in enumerate(interfaces):
                 self.update_interface_shutdown(interface=interface)
                 if not self.validate_data(data=interface, data_path=f"{interface_key}.[{idx}]", required_keys=required_keys):
+                    continue
+                if interface.get("validate_state", True) is False:
+                    self.log_skip_message(f"Interface {interface['name']} validate_state is set to False.")
                     continue
                 state, proto, description = generate_test_details(interface, description_template)
                 intf_description = interface.get("description")

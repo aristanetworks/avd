@@ -5,8 +5,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ArBGP is configured and operating",
-    "custom_field": "ArBGP"
+    "description": "Verifies the configured routing protocol model.",
+    "custom_field": "Routing protocol model: multi-agent"
   },
   {
     "name": "dc1-leaf1a",
@@ -14,8 +14,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.0.1"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.0.1"
   },
   {
     "name": "dc1-leaf1a",
@@ -23,8 +23,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.0.2"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.0.2"
   },
   {
     "name": "dc1-leaf1a",
@@ -32,8 +32,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.1.97"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.1.97"
   },
   {
     "name": "dc1-leaf1a",
@@ -41,8 +41,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.0"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.0"
   },
   {
     "name": "dc1-leaf1a",
@@ -50,8 +50,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.2"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.2"
   },
   {
     "name": "dc1-leaf1a",
