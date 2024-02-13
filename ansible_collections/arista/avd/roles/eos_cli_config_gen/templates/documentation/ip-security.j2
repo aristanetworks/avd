@@ -45,10 +45,7 @@
 {%             set dpd_time = profile.dpd_time | arista.avd.default("-") %}
 {%             set dpd_action = profile.dpd_action | arista.avd.default("-") %}
 {%             set mode = profile.mode | arista.avd.default("-") %}
-{%             set flow_parallelization = "Disabled" %}
-{%             if profile.flow_parallelization_encapsulation_udp is arista.avd.defined(true) %}
-{%                 set flow_parallelization = "Enabled" %}
-{%             endif %}
+{%             set flow_parallelization = profile.flow_parallelization_encapsulation_udp | arista.avd.default('-') %}
 | {{ profile.name }} | {{ ike_policy }} | {{ sa_policy }} | {{ connection }} | {{ dpd_interval }} | {{ dpd_time }} | {{ dpd_action }} | {{ mode }} | {{ flow_parallelization }} |
 {%         endfor %}
 {%     endif %}

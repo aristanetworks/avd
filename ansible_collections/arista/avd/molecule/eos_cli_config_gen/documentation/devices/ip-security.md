@@ -62,9 +62,9 @@ interface Management1
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
 | ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
-| Profile-1 | IKE-1 | SA-1 | start | - | - | - | transport | Disabled |
-| Profile-2 | - | SA-2 | start | - | - | - | tunnel | Disabled |
-| Profile-3 | - | SA-3 | start | - | - | - | tunnel | Enabled |
+| Profile-1 | IKE-1 | SA-1 | start | - | - | - | transport | - |
+| Profile-2 | - | SA-2 | start | - | - | - | tunnel | False |
+| Profile-3 | - | SA-3 | start | - | - | - | tunnel | True |
 
 ### Key controller
 

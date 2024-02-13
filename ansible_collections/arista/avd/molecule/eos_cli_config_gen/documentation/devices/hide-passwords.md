@@ -108,7 +108,7 @@ radius-server host 10.10.10.158 key 7 <removed>
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
 | ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
-| Profile-1 | - | - | - | - | - | - | - | Disabled |
+| Profile-1 | - | - | - | - | - | - | - | - |
 
 ### IP Security Device Configuration
 
