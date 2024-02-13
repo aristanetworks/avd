@@ -14,10 +14,13 @@
     structured_config_dir: "{{ playbook_dir }}/intended/structured_configs"
     strict_configuration_dir: "{{ playbook_dir }}/intended/configs/strict_tags"
     strict_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/strict_tags"
+    value_configuration_dir: "{{ playbook_dir }}/intended/configs/change_tags"
+    value_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/change_tags"
     intended_tag_device: s1-leaf1
     intended_tags: "{{ lookup('file', structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
     # intended_strict_tag_device: s1-leaf1-strict_tags
     intended_strict_tags: "{{ lookup('file', strict_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
+    intended_value_tags: "{{ lookup('file', value_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
 
 
   tasks:
@@ -147,9 +150,9 @@
       run_once: true
       vars:
         configs: ['{{ configuration_dir }}/s1-leaf1.cfg',
-          '{{ configuration_dir }}/s1-leaf2.cfg',
-          '{{ configuration_dir }}/s1-leaf3.cfg',
-          '{{ configuration_dir }}/s1-leaf4.cfg'
+                  '{{ configuration_dir }}/s1-leaf2.cfg',
+                  '{{ configuration_dir }}/s1-leaf3.cfg',
+                  '{{ configuration_dir }}/s1-leaf4.cfg'
         ]
       set_fact:
         response_configlet: "{{ response_configlet | default({}) | combine({item.0.json[0].value.body | trim: item.1}) }}"
@@ -201,7 +204,7 @@
             label: "{{ item.tags[0].name }}"
             value: "{{ item.tags[0].value }}"
             deviceId: "{{ intended_tag_device }}"
-            interfaceId:  "{{ item.interface }}"
+            interfaceId: "{{ item.interface }}"
       loop:
         "{{ intended_tags.metadata.cv_tags.interface_tags }}"
 
@@ -256,3 +259,57 @@
             deviceId: "{{ intended_tag_device }}"
       loop:
         "{{ intended_strict_tags.metadata.cv_tags.device_tags }}"
+
+    - name: Test tags = Value change
+      run_once: true
+      delegate_to: localhost
+      vars:
+        ws_name_value: avd-static-studio-tag-value-change-{{ r }}
+        ws_description_value: sample description
+        ws_req_state_value: submitted
+        ws_force_value: true
+        cc_name_value: cc_avd-static-studio-tag-value-change-{{ r }}
+        cc_requested_state_value: running
+        cc_desctiption_value: sample description
+      arista.avd.deploy_to_cv:
+        configuration_dir: "{{ value_configuration_dir }}"
+        structured_config_dir: "{{ value_structured_config_dir }}"
+        device_list: ["s1-leaf1"]
+        strict_tags: true
+        cv_servers: [ '{{ cv_server }}' ]
+        cv_token: '{{ token }}'
+        workspace:
+          name: '{{ ws_name_value }}'
+          description: '{{ ws_description_value }}'
+          id: '{{ ws_name_value }}'
+          requested_state: '{{ ws_req_state_value }}'
+          force: '{{ ws_force_value }}'
+        change_control:
+          name: '{{ cc_name_value }}'
+          description: '{{ cc_desctiption_value }}'
+          requested_state: '{{ cc_requested_state_value }}'
+        return_details: true
+      register: CVP_VALUE_TAGS_RESULTS
+
+    - name: Get Value Device Tag information
+      delegate_to: localhost
+      run_once: true
+      vars:
+        ws_name_value: avd-static-studio-tag-value-change-{{ r }}
+      ansible.builtin.uri:
+        url: '{{ tag_url }}'
+        return_content: true
+        validate_certs: false
+        headers:
+          Cookie: "access_token={{ token }}"
+        method: POST
+        body_format: json
+        body:
+          key:
+            workspaceId: '{{ ws_name_value }}'
+            elementType: 1
+            label: "{{ item.name }}"
+            value: "{{ item.value }}"
+            deviceId: "{{ intended_tag_device }}"
+      loop:
+        "{{ intended_value_tags.metadata.cv_tags.device_tags }}"
