@@ -1,5 +1,5 @@
 ---
-name: "Collection code testing"
+name: "deploy_to_cv testing"
 
 on: pull_request
 
@@ -37,7 +37,7 @@ jobs:
   # ----------------------------------- #
   # DEPLOY_TO_CV MOLECULE
   # ----------------------------------- #
-  molecule_eos_cli_config_gen:
+  molecule_deploy_to_cv:
     name: Run molecule test for new cvp integration
     runs-on: ubuntu-latest
     strategy:
