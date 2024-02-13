@@ -527,6 +527,7 @@
 - Next-hop-unchanged is explicitly configured (default behaviour)
 {%         endif %}
 {%         if router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs is arista.avd.defined() %}
+
 {%             set rib_position = ["Primary", "Secondary", "Tertiary" ] %}
 {%             for rib in router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs %}
 {%                 if rib.rib_type == "tunnel-rib-colored" %}
