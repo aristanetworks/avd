@@ -42,7 +42,7 @@ class WanMixin:
         return wan_role
 
     @cached_property
-    def wan_listen_ranges(self) -> list:
+    def wan_listen_ranges(self: SharedUtils) -> list:
         return get(
             self.bgp_peer_groups["wan_overlay_peers"],
             "listen_range_prefixes",
@@ -347,7 +347,7 @@ class WanMixin:
         )
 
     @cached_property
-    def wan_bgp_soo(self) -> str:
+    def wan_bgp_soo(self: SharedUtils) -> str:
         """
         Return the SoO extended community to be used for the site
 
@@ -360,7 +360,7 @@ class WanMixin:
         return f"{self.router_id}:{self.wan_site['id']}"
 
     @cached_property
-    def wan_ha_flow_tracker_name(self) -> str:
+    def wan_ha_flow_tracker_name(self: SharedUtils) -> str:
         """
         Return the name of the WAN flow tracking object
         Used in both network services, underlay and overlay python modules.
@@ -371,7 +371,7 @@ class WanMixin:
         return "WAN-FLOW-TRACKER"
 
     @cached_property
-    def is_cv_pathfinder_edge_or_transit(self) -> bool:
+    def is_cv_pathfinder_edge_or_transit(self: SharedUtils) -> bool:
         """
         Return True is the current wan_mode is cv-pathfinder and the device is either an edge or a transit device
         """
