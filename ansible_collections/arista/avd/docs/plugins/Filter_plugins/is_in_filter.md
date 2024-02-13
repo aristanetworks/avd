@@ -13,20 +13,19 @@ title: arista.avd.is_in_filter
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.is_in_filter` when using this plugin.
 
-Returns <code>True</code> if the input hostname matches the <em>hostname\_filter</em>.
+Returns `True` if the input hostname matches the `hostname_filter`.
 
 ## Synopsis
 
 The filter matches if any filter strings are found in the input hostname.
-
-<em>hostname\_filter\=\[\"all\"\]</em> or <em>hostname\_filter\=none</em> will match all hostnames.
+`hostname_filter=[all]` or `hostname_filter=none` will match all hostnames.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | string | True | None |  | One hostname to match with <em>hostname\_filter</em>. |
-| <samp>hostname_filter</samp> | any | True | None |  | Filter as a list of strings or <code>None</code>. |
+| <samp>_input</samp> | string | True | None |  | One hostname to match with `hostname_filter`. |
+| <samp>hostname_filter</samp> | any | True | None |  | Filter as a list of strings or `None`. |
 
 ## Examples
 
@@ -43,7 +42,7 @@ not_found_1: "{{ 'myhostname' | arista.avd.is_in_filter(['myhost1', 'MYhostname'
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | boolean | <code>True</code> if the input hostname matches the <em>hostname\_filter</em>. Otherwise <code>False</code> |
+| _value | boolean | `True` if the input hostname matches the `hostname_filter`. Otherwise `False` |
 
 ## Authors
 

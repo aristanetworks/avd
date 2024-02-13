@@ -13,8 +13,8 @@ name: generate_route_target
 collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "1.1"
-short_description: Transforms short_esi C(0303:0202:0101) to route-target format C(03:03:02:02:01:01)
-description: Removes C(:) and inserts new C(:) for each two characters.
+short_description: Transforms short_esi `0303:0202:0101` to route-target format `03:03:02:02:01:01`
+description: Removes `:` and inserts new `:` for each two characters.
 positional: _input
 options:
   _input:

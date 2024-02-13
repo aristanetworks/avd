@@ -17,9 +17,9 @@ Test if a list contains one or more of the supplied values.
 
 ## Synopsis
 
-The arista.avd.contains test will test if the passed list contains one or more of the supplied test\_values.
+The `arista.avd.contains` test will test if the passed list contains one or more of the supplied test_values.
 
-The test accepts either a single test\_value or a list of test\_values.
+The test accepts either a single test_value or a list of test_values.
 
 ## Parameters
 
@@ -43,7 +43,7 @@ vars:
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | boolean | Returns <code>False</code> if either the passed value or the test\_values are <code>Undefined</code> or <code>none</code>.<br>Returns <code>True</code> if the passed list contains one or more of the supplied test\_values. <code>False</code> otherwise. |
+| _value | boolean | Returns `False` if either the passed value or the test_values are `Undefined` or `none`.<br>Returns `True` if the passed list contains one or more of the supplied test_values. `False` otherwise. |
 
 ## Authors
 

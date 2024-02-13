@@ -15,6 +15,7 @@ SCOPES = [
     "build_output_folders",
     "cvp_configlet_upload",
     "dhcp_provisioner",
+    "deploy_to_cv",
     "eos_cli_config_gen",
     "eos_config_deploy_cvp",
     "eos_config_deploy_eapi",

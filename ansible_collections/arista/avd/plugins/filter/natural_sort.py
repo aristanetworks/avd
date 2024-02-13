@@ -25,7 +25,7 @@ description:
       Provides the capability to sort a list or a dictionary of integers and strings that contain alphanumeric characters naturally.
       When leveraged on a dictionary, only the key value will be returned.
       An optional `sort_key` can be specified, to sort on content of certain key if the items are dictionaries.
-  - The filter will return an empty list if the value parsed to M(arista.avd.natural_sort) is C(None) or C(undefined).
+  - The filter will return an empty list if the value parsed to `arista.avd.natural_sort` is `None` or `undefined`.
 positional: _input
 options:
   _input:
@@ -50,7 +50,7 @@ empty_list_2: "{{ some_undefined_var | natural_sort }}" # -> []
 RETURN = r"""
 ---
 _value:
-  description: Sorted list if the input was a list. Sorted keys if the input was a dictionary. Empty list if the input value was C(None) or C(undefined).
+  description: Sorted list if the input was a list. Sorted keys if the input was a dictionary. Empty list if the input value was `None` or `undefined`.
   type: list
 """
 
