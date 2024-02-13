@@ -52,7 +52,7 @@ jobs:
         # include:
         #   - avd_scenario: 'eos_cli_config_gen'
         #     ansible_version: 'ansible-core==2.14.0'
-    needs: [ pre_commit ]
+    # needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
       - name: 'Set environment variables'
