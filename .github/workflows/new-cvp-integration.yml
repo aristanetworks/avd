@@ -58,6 +58,8 @@ jobs:
       - name: 'Set environment variables'
         env:
           CVAAS_TOKEN: ${{ secrets.CVAAS_AAWG_DEMO }}
+        if: ${{ env.CVAAS_TOKEN != '' }}
+        # run: 'echo "echo the secret \"MY_SECRET\" has not been made; echo please go to \"settings \> secrets \> actions\" to create it"
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
