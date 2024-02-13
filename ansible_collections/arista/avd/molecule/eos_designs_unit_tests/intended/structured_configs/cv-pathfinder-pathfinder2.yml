@@ -162,12 +162,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.44.3:0 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
-  - sequence: 30
+  - sequence: 10
     type: permit
     match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    - extcommunity ECL-EVPN-SOO
 flow_tracking:
   hardware:
     trackers:
@@ -182,6 +184,11 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 5000
     shutdown: false
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.44.3:0
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY

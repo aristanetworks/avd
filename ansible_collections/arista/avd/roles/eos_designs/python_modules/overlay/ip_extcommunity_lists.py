@@ -22,7 +22,7 @@ class IpExtCommunityListsMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol != "ibgp":
             return None
 
-        if self.shared_utils.wan_role is not None:
+        if self.shared_utils.evpn_role == "server" and not self.shared_utils.wan_role:
             return None
 
         if self.shared_utils.overlay_vtep:
@@ -32,7 +32,7 @@ class IpExtCommunityListsMixin(UtilsMixin):
                     "entries": [
                         {
                             "type": "permit",
-                            "extcommunities": f"soo {self.shared_utils.vtep_ip}:1",
+                            "extcommunities": f"soo {self.shared_utils.evpn_soo}",
                         },
                     ],
                 }

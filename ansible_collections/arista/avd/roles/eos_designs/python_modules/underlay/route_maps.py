@@ -36,8 +36,8 @@ class RouteMapsMixin(UtilsMixin):
                 "type": "permit",
                 "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
             }
-            if self.shared_utils.is_cv_pathfinder_edge_or_transit:
-                sequence_10["set"] = [f"extcommunity soo {self.shared_utils.wan_bgp_soo} additive"]
+            if self.shared_utils.wan_role:
+                sequence_10["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
 
             sequence_numbers.append(sequence_10)
 
@@ -86,11 +86,7 @@ class RouteMapsMixin(UtilsMixin):
             )
 
         # Route-map IN and OUT for SOO, rendered for WAN routers
-        if (
-            self.shared_utils.overlay_routing_protocol == "ibgp"
-            and self.shared_utils.underlay_routing_protocol == "ebgp"
-            and self.shared_utils.is_cv_pathfinder_edge_or_transit
-        ):
+        if self.shared_utils.underlay_routing_protocol == "ebgp" and self.shared_utils.wan_role == "client":
             route_maps.append(
                 {
                     "name": "RM-BGP-UNDERLAY-PEERS-IN",
@@ -107,7 +103,7 @@ class RouteMapsMixin(UtilsMixin):
                             "sequence": 30,
                             "type": "permit",
                             "description": "Mark prefixes originated from the LAN",
-                            "set": [f"extcommunity soo {self.shared_utils.wan_bgp_soo} additive"],
+                            "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                         },
                     ],
                 }
@@ -121,7 +117,7 @@ class RouteMapsMixin(UtilsMixin):
                             "sequence": 10,
                             "type": "permit",
                             "description": "Advertise local routes towards LAN",
-                            "match": ["extcommunity ECL-WAN-SOO"],
+                            "match": ["extcommunity ECL-EVPN-SOO"],
                         },
                         {
                             "sequence": 20,

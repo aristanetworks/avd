@@ -347,19 +347,6 @@ class WanMixin:
         )
 
     @cached_property
-    def wan_bgp_soo(self: SharedUtils) -> str:
-        """
-        Return the SoO extended community to be used for the site
-
-        <router_id>:<cv_pathfinder_site.id>
-
-        TODO: support HA in HA PR by using the first router_id
-        TODO: This may have to change when HA support for AutoVPN is implemented
-              as AutoVPN routers do not have a site ID.
-        """
-        return f"{self.router_id}:{self.wan_site['id']}"
-
-    @cached_property
     def wan_ha_flow_tracker_name(self: SharedUtils) -> str:
         """
         Return the name of the WAN flow tracking object

@@ -13881,13 +13881,12 @@
             "description": "Set the default underlay routing_protocol.\nCan be overridden by setting \"underlay_routing_protocol\" host/group_vars.\n",
             "enum": [
               "ebgp",
-              "ibgp",
               "ospf",
+              "ospf-ldp",
               "isis",
               "isis-sr",
               "isis-ldp",
               "isis-sr-ldp",
-              "ospf-ldp",
               "none"
             ],
             "title": "Default Underlay Routing Protocol"
@@ -24425,16 +24424,15 @@
     },
     "underlay_routing_protocol": {
       "type": "string",
-      "description": "- The following underlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - IBGP\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n  - No underlay routing protocol (none)\n- The variables should be applied to all devices in the fabric.\n*Only supported with core_interfaces data model.\n",
+      "description": "- The following underlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - OSPF.\n  - OSPF-LDP*.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - No underlay routing protocol (none)\n- The variables should be applied to all devices in the fabric.\n*Only supported with core_interfaces data model.\n",
       "enum": [
         "ebgp",
-        "ibgp",
         "ospf",
+        "ospf-ldp",
         "isis",
         "isis-sr",
         "isis-ldp",
         "isis-sr-ldp",
-        "ospf-ldp",
         "none"
       ],
       "title": "Underlay Routing Protocol"

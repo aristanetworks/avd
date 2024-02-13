@@ -149,12 +149,12 @@ class RouteMapsMixin(UtilsMixin):
         * for WAN routers, all the routes matching the SOO (which includes the two above)
         """
         sequence_numbers = []
-        if self.shared_utils.is_cv_pathfinder_edge_or_transit:
+        if self.shared_utils.wan_role:
             sequence_numbers.append(
                 {
                     "sequence": 10,
                     "type": "permit",
-                    "match": ["extcommunity ECL-WAN-SOO"],
+                    "match": ["extcommunity ECL-EVPN-SOO"],
                 }
             )
         else:
@@ -174,14 +174,6 @@ class RouteMapsMixin(UtilsMixin):
                         "sequence": 20,
                         "type": "permit",
                         "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-                    }
-                )
-            if self.shared_utils.wan_role:
-                sequence_numbers.append(
-                    {
-                        "sequence": 30,
-                        "type": "permit",
-                        "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
                     }
                 )
 
@@ -250,8 +242,8 @@ class RouteMapsMixin(UtilsMixin):
                 "type": "permit",
                 "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
             }
-            if self.shared_utils.is_cv_pathfinder_edge_or_transit:
-                sequence_30["set"] = [f"extcommunity soo {self.shared_utils.wan_bgp_soo} additive"]
+            if self.shared_utils.wan_role:
+                sequence_30["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
 
             sequence_numbers.append(sequence_30)
 

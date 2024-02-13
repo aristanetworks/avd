@@ -5,7 +5,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFact
 
 from .as_path import AsPathMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
-from .ip_extcommunity_lists import IpExtCommunityListsMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
 from .mpls import MplsMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
@@ -29,7 +28,6 @@ class AvdStructuredConfigUnderlay(
     LoopbackInterfacesMixin,
     RouterBgpMixin,
     AsPathMixin,
-    IpExtCommunityListsMixin,
     RouterOspfMixin,
     PrefixListsMixin,
     RouteMapsMixin,

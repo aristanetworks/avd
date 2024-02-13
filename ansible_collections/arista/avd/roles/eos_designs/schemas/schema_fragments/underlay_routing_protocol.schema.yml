@@ -14,23 +14,21 @@ keys:
     description: |
       - The following underlay routing protocols are supported:
         - EBGP (default for l3ls-evpn)
-        - IBGP
         - OSPF.
+        - OSPF-LDP*.
         - ISIS.
         - ISIS-SR*.
         - ISIS-LDP*.
         - ISIS-SR-LDP*.
-        - OSPF-LDP*.
         - No underlay routing protocol (none)
       - The variables should be applied to all devices in the fabric.
       *Only supported with core_interfaces data model.
     valid_values:
       - "ebgp"
-      - "ibgp"
       - "ospf"
+      - "ospf-ldp"
       - "isis"
       - "isis-sr"
       - "isis-ldp"
       - "isis-sr-ldp"
-      - "ospf-ldp"
       - "none"

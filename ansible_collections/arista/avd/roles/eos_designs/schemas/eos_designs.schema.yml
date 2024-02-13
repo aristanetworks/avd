@@ -3414,19 +3414,18 @@ keys:
     type: str
     convert_to_lower_case: true
     description: "- The following underlay routing protocols are supported:\n  - EBGP
-      (default for l3ls-evpn)\n  - IBGP\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  -
-      ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n  - No underlay routing protocol
-      (none)\n- The variables should be applied to all devices in the fabric.\n*Only
-      supported with core_interfaces data model.\n"
+      (default for l3ls-evpn)\n  - OSPF.\n  - OSPF-LDP*.\n  - ISIS.\n  - ISIS-SR*.\n
+      \ - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - No underlay routing protocol (none)\n-
+      The variables should be applied to all devices in the fabric.\n*Only supported
+      with core_interfaces data model.\n"
     valid_values:
     - ebgp
-    - ibgp
     - ospf
+    - ospf-ldp
     - isis
     - isis-sr
     - isis-ldp
     - isis-sr-ldp
-    - ospf-ldp
     - none
   uplink_ptp:
     documentation_options:

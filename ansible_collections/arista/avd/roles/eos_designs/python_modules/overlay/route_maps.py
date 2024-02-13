@@ -49,37 +49,36 @@ class RouteMapsMixin(UtilsMixin):
                         }
                     )
 
-        elif self.shared_utils.overlay_routing_protocol == "ibgp":
-            if self.shared_utils.overlay_vtep and self.shared_utils.wan_role is None:
-                # Route-map IN and OUT for SOO, not rendered for WAN routers
-                route_maps.append(
-                    {
-                        "name": "RM-EVPN-SOO-IN",
-                        "sequence_numbers": [
-                            {
-                                "sequence": 10,
-                                "type": "deny",
-                                "match": ["extcommunity ECL-EVPN-SOO"],
-                            },
-                            {
-                                "sequence": 20,
-                                "type": "permit",
-                            },
-                        ],
-                    }
-                )
-                route_maps.append(
-                    {
-                        "name": "RM-EVPN-SOO-OUT",
-                        "sequence_numbers": [
-                            {
-                                "sequence": 10,
-                                "type": "permit",
-                                "set": [f"extcommunity soo {self.shared_utils.vtep_ip}:1 additive"],
-                            },
-                        ],
-                    }
-                )
+        elif self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.overlay_vtep and self.shared_utils.evpn_role != "server":
+            # Route-map IN and OUT for SOO
+            route_maps.append(
+                {
+                    "name": "RM-EVPN-SOO-IN",
+                    "sequence_numbers": [
+                        {
+                            "sequence": 10,
+                            "type": "deny",
+                            "match": ["extcommunity ECL-EVPN-SOO"],
+                        },
+                        {
+                            "sequence": 20,
+                            "type": "permit",
+                        },
+                    ],
+                }
+            )
+            route_maps.append(
+                {
+                    "name": "RM-EVPN-SOO-OUT",
+                    "sequence_numbers": [
+                        {
+                            "sequence": 10,
+                            "type": "permit",
+                            "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                        },
+                    ],
+                }
+            )
 
         if route_maps:
             return route_maps
