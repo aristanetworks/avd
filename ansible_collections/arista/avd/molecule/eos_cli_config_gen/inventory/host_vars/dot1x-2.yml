@@ -4,6 +4,7 @@
 # we verify that PR 2764 is not happenign again
 dot1x:
   system_auth_control: true
+  protocol_bpdu_bypass: true
   protocol_lldp_bypass: true
   dynamic_authorization: true
   radius_av_pair:
