@@ -2462,6 +2462,9 @@ keys:
                   type: bool
                 storm_control_discards:
                   type: bool
+                  description: 'Discards due to storm-control.
+
+                    '
         lldp:
           type: dict
           keys:
@@ -3067,6 +3070,10 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address
+        validate_state:
+          type: bool
+          description: Set to false to disable interface validation by the `eos_validate_state`
+            role
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
@@ -4421,6 +4428,12 @@ keys:
               valid_values:
               - transport
               - tunnel
+            flow_parallelization_encapsulation_udp:
+              type: bool
+              description: 'Enable flow parallelization.
+
+                When enabled, multiple cores are used to parallelize the IPsec encryption
+                and decryption processing.'
       key_controller:
         type: dict
         keys:
@@ -7069,6 +7082,11 @@ keys:
               keys:
                 link_status:
                   type: bool
+                storm_control_discards:
+                  type: bool
+                  description: 'Discards due to storm-control.
+
+                    '
         shutdown:
           type: bool
         l2_mtu:
@@ -7829,6 +7847,10 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        validate_state:
+          type: bool
+          description: Set to false to disable interface validation by the `eos_validate_state`
+            role
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface
@@ -11849,8 +11871,48 @@ keys:
     type: dict
     display_name: Router IGMP Configuration
     keys:
+      host_proxy_match_mroute:
+        type: str
+        description: 'Specify conditions for sending IGMP joins for host-proxy
+
+          ''iif'' will enable igmp host-proxy to work in iif aware
+
+          ''all'' will enable igmp host-proxy to work in iif unaware mode (EOS default)
+
+          '
+        valid_values:
+        - all
+        - iif
       ssm_aware:
         type: bool
+      vrfs:
+        type: list
+        description: 'Configure IGMP in a VRF.
+
+          VRF ''default'' is not supported in EOS, please see keys directly under
+          ''router_igmp''.'
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name
+            host_proxy_match_mroute:
+              type: str
+              description: 'Specify conditions for sending IGMP joins for host-proxy
+
+                ''iif'' will enable igmp host-proxy to work in iif aware
+
+                ''all'' will enable igmp host-proxy to work in iif unaware mode (EOS
+                default)
+
+                '
+              valid_values:
+              - all
+              - iif
   router_isis:
     type: dict
     keys:
@@ -14533,6 +14595,14 @@ keys:
           description: VLAN interface name like "Vlan123"
         description:
           type: str
+        logging:
+          type: dict
+          keys:
+            event:
+              type: dict
+              keys:
+                link_status:
+                  type: bool
         shutdown:
           type: bool
         vrf:

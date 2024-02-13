@@ -11,8 +11,8 @@ name: generate_lacp_id
 collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "1.1"
-short_description: Transforms short_esi C(0303:0202:0101) to LACP ID format C(0303.0202.0101)
-description: Replaces C(:) with C(.)
+short_description: Transforms short_esi `0303:0202:0101` to LACP ID format `0303.0202.0101`
+description: Replaces `:` with `.`
 positional: _input
 options:
   _input:
