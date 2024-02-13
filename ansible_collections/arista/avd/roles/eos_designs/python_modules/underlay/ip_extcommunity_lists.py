@@ -25,7 +25,7 @@ class IpExtCommunityListsMixin(UtilsMixin):
         if self.shared_utils.is_cv_pathfinder_edge_or_transit:
             return [
                 {
-                    "name": "ECL-WAN-HA-SOO",
+                    "name": "ECL-WAN-SOO",
                     "entries": [
                         {
                             "type": "permit",

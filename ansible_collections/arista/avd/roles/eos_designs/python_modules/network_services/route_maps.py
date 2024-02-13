@@ -150,7 +150,13 @@ class RouteMapsMixin(UtilsMixin):
         """
         sequence_numbers = []
         if self.shared_utils.is_cv_pathfinder_edge_or_transit:
-            sequence_numbers.append({"sequence": 10, "type": "permit", "match": ["extcommunity ECL-WAN-HA-SOO"]})
+            sequence_numbers.append(
+                {
+                    "sequence": 10,
+                    "type": "permit",
+                    "match": ["extcommunity ECL-WAN-SOO"],
+                }
+            )
         else:
             # TODO refactor existing behavior to SoO?
             if self._vrf_default_ipv4_subnets:

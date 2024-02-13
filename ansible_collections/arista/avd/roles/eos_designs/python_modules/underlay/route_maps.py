@@ -121,12 +121,12 @@ class RouteMapsMixin(UtilsMixin):
                             "sequence": 10,
                             "type": "permit",
                             "description": "Advertise local routes towards LAN",
-                            "match": ["extcommunity ECL-WAN-HA-SOO"],
+                            "match": ["extcommunity ECL-WAN-SOO"],
                         },
                         {
                             "sequence": 20,
                             "type": "permit",
-                            "description": "Advertise routes received from WAN towards LAN",
+                            "description": "Advertise routes received from WAN iBGP towards LAN",
                             "match": ["route-type internal"],
                         },
                         # TODO match local HA prefix and mark them with SOO
