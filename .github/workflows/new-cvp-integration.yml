@@ -15,7 +15,7 @@ jobs:
   python_requirements:
     name: Test Python requirements installation
     runs-on: ubuntu-latest
-    needs: [ pre_commit ]
+    # needs: [ pre_commit ]
     if: needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
