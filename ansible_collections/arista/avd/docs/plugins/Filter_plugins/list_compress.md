@@ -37,7 +37,7 @@ list2: "{{ [1,2,3,7,8] | arista.avd.list_compress }}" # -> "1-3,7-8"
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | string | Range string like \"1\-3,7\-8\" |
+| _value | string | Range string like &#34;1-3,7-8&#34; |
 
 ## Authors
 

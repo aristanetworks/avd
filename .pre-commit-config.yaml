@@ -92,6 +92,8 @@ repos:
         # ignoring errors and selecting line length as per
         # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
         types: [python]
+        # The cv_client api is generated from proto files, so it should not be linted.
+        exclude: ^ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/
 
   - repo: https://github.com/pycqa/pylint
     rev: "v2.16.1"

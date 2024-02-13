@@ -4998,6 +4998,11 @@
             },
             "title": "VRRP IDs"
           },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Set to false to disable interface validation by the `eos_validate_state` role",
+            "title": "Validate State"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -7406,6 +7411,11 @@
                   "tunnel"
                 ],
                 "title": "Mode"
+              },
+              "flow_parallelization_encapsulation_udp": {
+                "type": "boolean",
+                "description": "Enable flow parallelization.\nWhen enabled, multiple cores are used to parallelize the IPsec encryption and decryption processing.",
+                "title": "Flow Parallelization Encapsulation UDP"
               }
             },
             "additionalProperties": false,
@@ -13376,6 +13386,11 @@
               "^_.+$": {}
             },
             "title": "Sflow"
+          },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Set to false to disable interface validation by the `eos_validate_state` role",
+            "title": "Validate State"
           },
           "eos_cli": {
             "type": "string",

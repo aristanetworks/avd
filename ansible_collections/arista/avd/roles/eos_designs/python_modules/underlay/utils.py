@@ -177,7 +177,7 @@ class UtilsMixin:
         if iface_type == "l3dot1q":
             interface["encapsulation_dot1q_vlan"] = encapsulation
 
-        if ip_address == "dhcp" and l3_interface.get("set_default_route", False):
+        if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", False):
             interface["dhcp_client_accept_default_route"] = True
 
         if l3_interface.get("enable_wan_acls", True):

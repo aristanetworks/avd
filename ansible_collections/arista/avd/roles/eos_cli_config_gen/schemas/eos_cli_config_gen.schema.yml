@@ -3070,6 +3070,10 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address
+        validate_state:
+          type: bool
+          description: Set to false to disable interface validation by the `eos_validate_state`
+            role
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
@@ -4424,6 +4428,12 @@ keys:
               valid_values:
               - transport
               - tunnel
+            flow_parallelization_encapsulation_udp:
+              type: bool
+              description: 'Enable flow parallelization.
+
+                When enabled, multiple cores are used to parallelize the IPsec encryption
+                and decryption processing.'
       key_controller:
         type: dict
         keys:
@@ -7837,6 +7847,10 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        validate_state:
+          type: bool
+          description: Set to false to disable interface validation by the `eos_validate_state`
+            role
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface
