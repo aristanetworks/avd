@@ -8,7 +8,6 @@
     cv_server: www.cv-staging.corp.arista.io
     # token: "{{ lookup('file', playbook_dir ~ '/token-cvaas.tok')}}"
     token: "{{ lookup('env', 'CVAAS_AAWG_DEMO') }}"
-    # token: "{{ lookup('env', 'CVAAS_TOKEN') }}"
     ws_url: https://{{ cv_server }}/api/v3/services/arista.configlet.v1.ConfigletService/GetOne
     cc_url: https://{{ cv_server }}/api/v3/services/arista.changecontrol.v1.ChangeControlService/GetOne
     tag_url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
