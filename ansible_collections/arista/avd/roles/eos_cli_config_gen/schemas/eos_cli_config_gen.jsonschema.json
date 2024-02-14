@@ -20490,7 +20490,7 @@
                   "description": "Password string.",
                   "title": "Key"
                 },
-                "key_id": {
+                "key_ids": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -20545,7 +20545,7 @@
                       "^_.+$": {}
                     }
                   },
-                  "title": "Key ID"
+                  "title": "Key IDs"
                 },
                 "mode": {
                   "type": "string",
@@ -20639,7 +20639,7 @@
                   "description": "Password string.",
                   "title": "Key"
                 },
-                "key_id": {
+                "key_ids": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -20694,7 +20694,7 @@
                       "^_.+$": {}
                     }
                   },
-                  "title": "Key ID"
+                  "title": "Key IDs"
                 },
                 "mode": {
                   "type": "string",
@@ -20788,7 +20788,7 @@
                   "description": "Password string.",
                   "title": "Key"
                 },
-                "key_id": {
+                "key_ids": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -20843,7 +20843,7 @@
                       "^_.+$": {}
                     }
                   },
-                  "title": "Key ID"
+                  "title": "Key IDs"
                 },
                 "mode": {
                   "type": "string",

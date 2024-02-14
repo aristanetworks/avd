@@ -69,7 +69,7 @@ router_isis:
         timeout: 10
   authentication:
     both:
-      key_id:
+      key_ids:
         - id: 2
           algorithm: sha-512
           key_type: 0
@@ -80,7 +80,7 @@ router_isis:
       key: password
       mode: md5
       rx_disabled: true
-      key_id:
+      key_ids:
         - id: 1
           algorithm: sha-1
           key_type: 0
@@ -97,7 +97,7 @@ router_isis:
       mode: sha
       sha:
         key_id: 2
-      key_id:
+      key_ids:
         - id: 1
           algorithm: sha-1
           key_type: 0

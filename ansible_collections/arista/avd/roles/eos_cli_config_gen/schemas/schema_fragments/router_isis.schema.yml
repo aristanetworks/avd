@@ -86,7 +86,7 @@ keys:
               key:
                 type: str
                 description: Password string.
-              key_id:
+              key_ids:
                 type: list
                 convert_types:
                   - dict
