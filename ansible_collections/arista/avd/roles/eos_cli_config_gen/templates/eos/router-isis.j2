@@ -84,95 +84,59 @@ router isis {{ router_isis.instance }}
    spf-interval {{ router_isis.spf_interval.interval }}
 {%         endif %}
 {%     endif %}
-{%     if router_isis.authentication.both.mode is arista.avd.defined %}
-{%         if router_isis.authentication.both.mode is arista.avd.defined('md5') %}
-{%             if router_isis.authentication.both.rx_disabled is arista.avd.defined('true') %}
-   authentication mode md5 rx-disabled
-{%             else %}
-   authentication mode md5
-{%             endif %}
+{%     if router_isis.authentication.both.mode is arista.avd.defined
+          and (router_isis.authentication.both.mode in ["md5", "text"]
+               or (router_isis.authentication.both.mode == "sha" and router_isis.authentication.both.sha.key_id is arista.avd.defined)
+               or (router_isis.authentication.both.mode == "shared-secret"
+                   and router_isis.authentication.both.shared_secret.profile is arista.avd.defined
+                   and router_isis.authentication.both.shared_secret.algorithm is arista.avd.defined)) %}
+{%         set isis_auth_cli = "authentication mode " ~ router_isis.authentication.both.mode %}
+{%         if router_isis.authentication.both.mode == "sha" %}
+{%             set isis_auth_cli = isis_auth_cli ~ " key-id " ~ router_isis.authentication.both.sha.key_id %}
+{%         elif router_isis.authentication.both.mode == "shared-secret" %}
+{%             set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.both.shared_secret.profile %}
+{%             set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.both.shared_secret.algorithm %}
 {%         endif %}
-{%         if router_isis.authentication.both.mode is arista.avd.defined('sha') and router_isis.authentication.both.sha.key_id is arista.avd.defined %}
-{%             if router_isis.authentication.both.rx_disabled is arista.avd.defined('true') %}
-   authentication mode sha key-id {{ router_isis.authentication.both.sha.key_id }} rx-disabled
-{%             else %}
-   authentication mode sha key-id {{ router_isis.authentication.both.sha.key_id }}
-{%             endif %}
+{%         if router_isis.authentication.both.rx_disabled is arista.avd.defined('true') %}
+{%             set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
 {%         endif %}
-{%         if router_isis.authentication.both.mode is arista.avd.defined('text') %}
-{%             if router_isis.authentication.both.rx_disabled is arista.avd.defined('true') %}
-   authentication mode text rx-disabled
-{%             else %}
-   authentication mode text
-{%             endif %}
-{%         endif %}
-{%         if router_isis.authentication.both.mode is arista.avd.defined('shared-secret') and router_isis.authentication.both.shared_secret.profile is arista.avd.defined and router_isis.authentication.both.shared_secret.algorithm is arista.avd.defined %}
-{%             if router_isis.authentication.both.rx_disabled is arista.avd.defined('true') %}
-   authentication mode shared-secret profile {{ router_isis.authentication.both.shared_secret.profile }} algorithm {{ router_isis.authentication.both.shared_secret.algorithm }} rx-disabled
-{%             else %}
-   authentication mode shared-secret profile {{ router_isis.authentication.both.shared_secret.profile }} algorithm {{ router_isis.authentication.both.shared_secret.algorithm }}
-{%             endif %}
-{%         endif %}
+   {{ isis_auth_cli }}
 {%     else %}
-{%         if router_isis.authentication.level_1.mode is arista.avd.defined %}
-{%             if router_isis.authentication.level_1.mode is arista.avd.defined('md5') %}
-{%                 if router_isis.authentication.level_1.rx_disabled is arista.avd.defined('true') %}
-   authentication mode md5 rx-disabled level-1
-{%                 else %}
-   authentication mode md5 level-1
-{%                 endif %}
+{%         if router_isis.authentication.level_1.mode is arista.avd.defined
+               and (router_isis.authentication.level_1.mode in ["md5", "text"]
+               or (router_isis.authentication.level_1.mode == "sha" and router_isis.authentication.level_1.sha.key_id is arista.avd.defined)
+               or (router_isis.authentication.level_1.mode == "shared-secret"
+                   and router_isis.authentication.level_1.shared_secret.profile is arista.avd.defined
+                   and router_isis.authentication.level_1.shared_secret.algorithm is arista.avd.defined)) %}
+{%             set isis_auth_cli = "authentication mode " ~ router_isis.authentication.level_1.mode %}
+{%             if router_isis.authentication.level_1.mode == "sha" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ router_isis.authentication.level_1.sha.key_id %}
+{%             elif router_isis.authentication.level_1.mode == "shared-secret" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.level_1.shared_secret.profile %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.level_1.shared_secret.algorithm %}
 {%             endif %}
-{%             if router_isis.authentication.level_1.mode is arista.avd.defined('sha') and router_isis.authentication.level_1.sha.key_id is arista.avd.defined %}
-{%                 if router_isis.authentication.level_1.rx_disabled is arista.avd.defined('true') %}
-   authentication mode sha key-id {{ router_isis.authentication.level_1.sha.key_id }} rx-disabled level-1
-{%                 else %}
-   authentication mode sha key-id {{ router_isis.authentication.level_1.sha.key_id }} level-1
-{%                 endif %}
+{%             if router_isis.authentication.level_1.rx_disabled is arista.avd.defined('true') %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
 {%             endif %}
-{%             if router_isis.authentication.level_1.mode is arista.avd.defined('text') %}
-{%                 if router_isis.authentication.level_1.rx_disabled is arista.avd.defined('true') %}
-   authentication mode text rx-disabled level-1
-{%                 else %}
-   authentication mode text level-1
-{%                 endif %}
-{%             endif %}
-{%             if router_isis.authentication.level_1.mode is arista.avd.defined('shared-secret') and router_isis.authentication.level_1.shared_secret.profile is arista.avd.defined and router_isis.authentication.level_1.shared_secret.algorithm is arista.avd.defined %}
-{%                 if router_isis.authentication.level_1.rx_disabled is arista.avd.defined('true') %}
-   authentication mode shared-secret profile {{ router_isis.authentication.level_1.shared_secret.profile }} algorithm {{ router_isis.authentication.level_1.shared_secret.algorithm }} rx-disabled level-1
-{%                 else %}
-   authentication mode shared-secret profile {{ router_isis.authentication.level_1.shared_secret.profile }} algorithm {{ router_isis.authentication.level_1.shared_secret.algorithm }} level-1
-{%                 endif %}
-{%             endif %}
+   {{ isis_auth_cli }} level-1
 {%         endif %}
-{%         if router_isis.authentication.level_2.mode is arista.avd.defined %}
-{%             if router_isis.authentication.level_2.mode is arista.avd.defined('md5') %}
-{%                 if router_isis.authentication.level_2.rx_disabled is arista.avd.defined('true') %}
-   authentication mode md5 rx-disabled level-2
-{%                 else %}
-   authentication mode md5 level-2
-{%                 endif %}
+{%         if router_isis.authentication.level_2.mode is arista.avd.defined
+               and (router_isis.authentication.level_2.mode in ["md5", "text"]
+               or (router_isis.authentication.level_2.mode == "sha" and router_isis.authentication.level_2.sha.key_id is arista.avd.defined)
+               or (router_isis.authentication.level_2.mode == "shared-secret"
+                   and router_isis.authentication.level_2.shared_secret.profile is arista.avd.defined
+                   and router_isis.authentication.level_2.shared_secret.algorithm is arista.avd.defined)) %}
+{%             set isis_auth_cli = "authentication mode " ~ router_isis.authentication.level_2.mode %}
+{%             if router_isis.authentication.level_2.mode == "sha" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ router_isis.authentication.level_2.sha.key_id %}
+{%             elif router_isis.authentication.level_2.mode == "shared-secret" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.level_2.shared_secret.profile %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.level_2.shared_secret.algorithm %}
 {%             endif %}
-{%             if router_isis.authentication.level_2.mode is arista.avd.defined('sha') and router_isis.authentication.level_2.sha.key_id is arista.avd.defined %}
-{%                 if router_isis.authentication.level_2.rx_disabled is arista.avd.defined('true') %}
-   authentication mode sha key-id {{ router_isis.authentication.level_2.sha.key_id }} rx-disabled level-2
-{%                 else %}
-   authentication mode sha key-id {{ router_isis.authentication.level_2.sha.key_id }} level-2
-{%                 endif %}
+{%             if router_isis.authentication.level_2.rx_disabled is arista.avd.defined('true') %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
 {%             endif %}
-{%             if router_isis.authentication.level_2.mode is arista.avd.defined('text') %}
-{%                 if router_isis.authentication.level_2.rx_disabled is arista.avd.defined('true') %}
-   authentication mode text rx-disabled level-2
-{%                 else %}
-   authentication mode text level-2
-{%                 endif %}
-{%             endif %}
-{%             if router_isis.authentication.level_2.mode is arista.avd.defined('shared-secret') and router_isis.authentication.level_2.shared_secret.profile is arista.avd.defined and router_isis.authentication.level_2.shared_secret.algorithm is arista.avd.defined %}
-{%                 if router_isis.authentication.level_2.rx_disabled is arista.avd.defined('true') %}
-   authentication mode shared-secret profile {{ router_isis.authentication.level_2.shared_secret.profile }} algorithm {{ router_isis.authentication.level_2.shared_secret.algorithm }} rx-disabled level-2
-{%                 else %}
-   authentication mode shared-secret profile {{ router_isis.authentication.level_2.shared_secret.profile }} algorithm {{ router_isis.authentication.level_2.shared_secret.algorithm }} level-2
-{%                 endif %}
-{%             endif %}
+   {{ isis_auth_cli }} level-2
 {%         endif %}
 {%     endif %}
 {%     if router_isis.graceful_restart is arista.avd.defined %}
