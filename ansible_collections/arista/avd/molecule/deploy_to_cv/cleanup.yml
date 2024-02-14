@@ -1,0 +1,77 @@
+---
+- name: Converge - Configuration deployment with CVP
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    # cv_server: staticstudio-1-cfec4cc2-eos.topo.testdrive.arista.com
+    cv_server: www.cv-staging.corp.arista.io
+    # token: "{{ lookup('file', playbook_dir ~ '/token-cvaas.tok')}}"
+    token: "{{ lookup('env', 'CVAAS_AAWG_DEMO') }}"
+    # ws_url: https://{{ cv_server }}/api/v3/services/arista.configlet.v1.ConfigletService/GetOne
+    # cc_url: https://{{ cv_server }}/api/v3/services/arista.changecontrol.v1.ChangeControlService/GetOne
+    # tag_url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
+    configuration_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+    structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+    # strict_configuration_dir: "{{ playbook_dir }}/intended/configs/strict_tags"
+    # strict_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/strict_tags"
+    # value_configuration_dir: "{{ playbook_dir }}/intended/configs/change_tags"
+    # value_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/change_tags"
+    # intended_tag_device: s1-leaf1
+    # intended_tags: "{{ lookup('file', structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
+    # # intended_strict_tag_device: s1-leaf1-strict_tags
+    # intended_strict_tags: "{{ lookup('file', strict_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
+    # intended_value_tags: "{{ lookup('file', value_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
+
+
+  tasks:
+    - name: Generate random string
+      set_fact:
+        r: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
+      run_once: true
+
+    - name: Check token from env
+      ansible.builtin.shell: echo "token is read"
+      when: token != ''
+
+    - name: set facts
+      set_fact:
+        ws_name: avd-static-studio-cleanup-{{ r }}
+        ws_description: sample description
+        ws_req_state: submitted
+        ws_force: true
+        cc_name: cc_avd_studio-cleanup-{{ r }}
+        cc_requested_state: running
+        cc_desctiption: sample description
+      run_once: true
+
+    - name: Clean up = and provision CVP with with base AVD configuration
+      run_once: true
+      delegate_to: localhost
+      arista.avd.deploy_to_cv:
+        configuration_dir: "{{ configuration_dir }}"
+        structured_config_dir: "{{ structured_config_dir }}"
+        # structured_config_suffix: "yml"
+        # device_list: "{{ ansible_play_hosts }}"
+        device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
+        strict_tags: true
+        # skip_strict_devices: false
+        # configlet_name_template: "AVD-${hostname}"
+        cv_servers: [ '{{ cv_server }}' ]
+        cv_token: '{{ token }}'
+        # cv_verify_certs: True
+        workspace:
+          name: '{{ ws_name }}'
+          description: '{{ ws_description }}'
+          id: '{{ ws_name }}'
+          requested_state: '{{ ws_req_state }}'
+          force: '{{ ws_force }}'
+        change_control:
+          name: '{{ cc_name }}'
+          description: '{{ cc_desctiption }}'
+          requested_state: '{{ cc_requested_state }}'
+        # timeouts:
+        #   workspace_build_timeout: 300.0
+        #   change_control_creation_timeout: 300.0
+        return_details: true
+      register: CVP_RESULTS
