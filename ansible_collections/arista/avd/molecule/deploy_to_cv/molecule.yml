@@ -8,6 +8,7 @@ scenario:
     - create
     - converge
     - verify
+    - cleanup
   cleanup_sequence:
     - destroy
 dependency:
