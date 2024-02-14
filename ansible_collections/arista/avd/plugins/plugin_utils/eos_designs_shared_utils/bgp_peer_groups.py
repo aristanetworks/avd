@@ -40,6 +40,7 @@ class BgpPeerGroupsMixin:
             ("rr_overlay_peers", "RR-OVERLAY-PEERS", True),
             ("ipvpn_gateway_peers", "IPVPN-GATEWAY-PEERS", True),
             ("wan_overlay_peers", "WAN-OVERLAY-PEERS", True),
+            ("wan_rr_overlay_peers", "WAN-RR-OVERLAY-PEERS", True),
         ]
 
         bgp_peer_groups = {}

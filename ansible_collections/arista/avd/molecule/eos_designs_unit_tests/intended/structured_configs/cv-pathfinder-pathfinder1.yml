@@ -31,7 +31,7 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     route_reflector_client: true
-  - name: RR-OVERLAY-PEERS
+  - name: WAN-RR-OVERLAY-PEERS
     type: wan
     update_source: Dps1
     bfd: true
@@ -42,7 +42,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
-    - name: RR-OVERLAY-PEERS
+    - name: WAN-RR-OVERLAY-PEERS
       activate: true
     next_hop:
       resolution_disabled: true
@@ -50,13 +50,13 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: false
-    - name: RR-OVERLAY-PEERS
+    - name: WAN-RR-OVERLAY-PEERS
       activate: false
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
-    - name: RR-OVERLAY-PEERS
+    - name: WAN-RR-OVERLAY-PEERS
       activate: true
   address_family_link_state:
     peer_groups:
@@ -64,7 +64,7 @@ router_bgp:
       activate: true
       missing_policy:
         direction_out_action: deny
-    - name: RR-OVERLAY-PEERS
+    - name: WAN-RR-OVERLAY-PEERS
       activate: true
     path_selection:
       roles:
@@ -74,7 +74,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
-    - name: RR-OVERLAY-PEERS
+    - name: WAN-RR-OVERLAY-PEERS
       activate: true
     bgp:
       additional_paths:
@@ -83,11 +83,11 @@ router_bgp:
           any: true
   neighbors:
   - ip_address: 192.168.144.3
-    peer_group: RR-OVERLAY-PEERS
+    peer_group: WAN-RR-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder2
     description: cv-pathfinder-pathfinder2
   - ip_address: 6.6.6.6
-    peer_group: RR-OVERLAY-PEERS
+    peer_group: WAN-RR-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder3
     description: cv-pathfinder-pathfinder3
   vrfs:
@@ -440,6 +440,7 @@ metadata:
     interfaces:
     - name: Ethernet1
       carrier: Orange
+      circuit_id: '888'
       pathgroup: INET
       public_ip: 10.8.8.8
     pathgroups:

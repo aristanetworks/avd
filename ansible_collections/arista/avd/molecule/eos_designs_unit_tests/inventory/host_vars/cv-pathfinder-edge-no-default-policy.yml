@@ -29,7 +29,6 @@ bgp_peer_groups:
       - 192.168.255.0/24
 
 wan_route_servers:
-  # Not testing the overloading
   - hostname: cv-pathfinder-pathfinder
 
 wan_ipsec_profiles:
@@ -58,7 +57,7 @@ wan_edge:
         - name: Ethernet1
           wan_carrier: ATT
           wan_circuit_id: 666
-          set_default_route: true
+          dhcp_accept_default_route: true
           ip_address: dhcp
         - name: Ethernet2
           wan_carrier: Colt

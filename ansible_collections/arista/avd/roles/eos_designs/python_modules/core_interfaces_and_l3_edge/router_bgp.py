@@ -42,7 +42,7 @@ class RouterBgpMixin(UtilsMixin):
             }
 
             # RFC5549
-            if self.shared_utils.underlay_rfc5549:
+            if self.shared_utils.underlay_rfc5549 and p2p_link.get("routing_protocol") != "ebgp":
                 neighbor_interfaces.append({"name": p2p_link["data"]["interface"], **neighbor})
                 continue
 

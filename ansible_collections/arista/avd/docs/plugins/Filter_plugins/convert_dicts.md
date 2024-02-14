@@ -17,19 +17,19 @@ Convert a dictionary containing nested dictionaries to a list of dictionaries.
 
 ## Synopsis
 
-The filter inserts the outer dictionary keys into each list item using the primary\_key \`name\` \(the key name is configurable\), and if there is a non\-dictionary value, it inserts this value to secondary key \(the key name is configurable\), if <em>secondary\_key</em> is provided.
+The filter inserts the outer dictionary keys into each list item using the primary_key `name` (the key name is configurable), and if there is a non-dictionary value, it inserts this value to secondary key (the key name is configurable), if `secondary_key` is provided.
 
 This filter is intended for seamless data model migration from dictionaries to lists.
 
-The filter can improve Ansible\'s processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
+The filter can improve Ansible&#39;s processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
 
-Note \- if there is a non\-dictionary value with no secondary key provided, it will pass through untouched.
+Note - if there is a non-dictionary value with no secondary key provided, it will pass through untouched.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | any | True | None |  | Dictionary to convert \- returned untouched if not a nested dictionary/list. |
+| <samp>_input</samp> | any | True | None |  | Dictionary to convert - returned untouched if not a nested dictionary/list. |
 | <samp>primary_key</samp> | string | optional | name |  | Name of the primary key used when inserting outer dictionary keys into items. |
 | <samp>secondary_key</samp> | string | optional | None |  | Name of the secondary key used when inserting dictionary values which are list into items. |
 

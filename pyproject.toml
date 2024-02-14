@@ -1,7 +1,14 @@
 [tool.black]
 line-length = 160
 
+force-exclude = '''ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/.*'''
+
 [tool.isort]
+
+extend_skip_glob = [
+  "ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/**/*"
+]
+
 profile = "black"
 skip_gitignore = true
 line_length = 160

@@ -252,3 +252,20 @@ core_interfaces:
       nodes: [ DC1-BL1A, DC1-BL1B ]
       interfaces: [ Ethernet10, Ethernet10 ]
       as: [ "65104", "65105" ]
+
+l3_edge:
+  p2p_links_profiles:
+    - name: IPV4-UNDERLAY-EXTERNAL
+      routing_protocol: ebgp
+  p2p_links:
+    - nodes: [ DC1-BL1A, outside-r1]
+      interfaces: [ Ethernet11, other1]
+      as: [ "65104", "64900" ]
+      subnet: 10.23.23.0/30
+      profile: IPV4-UNDERLAY-EXTERNAL
+    - nodes: [ DC1-BL1B, outside-r1]
+      interfaces: [ Ethernet11, other2]
+      as: [ "65105", "64900" ]
+      subnet: 10.23.23.4/30
+      profile: IPV4-UNDERLAY-EXTERNAL
+      ipv6_enable: True

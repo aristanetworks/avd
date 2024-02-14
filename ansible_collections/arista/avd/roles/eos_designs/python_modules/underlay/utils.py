@@ -79,6 +79,7 @@ class UtilsMixin:
                         "ptp": get(uplink, "ptp"),
                         "mac_security": get(uplink, "mac_security"),
                         "short_esi": get(uplink, "peer_short_esi"),
+                        "mlag": get(uplink, "peer_mlag"),
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
@@ -176,7 +177,7 @@ class UtilsMixin:
         if iface_type == "l3dot1q":
             interface["encapsulation_dot1q_vlan"] = encapsulation
 
-        if ip_address == "dhcp" and l3_interface.get("set_default_route", False):
+        if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", False):
             interface["dhcp_client_accept_default_route"] = True
 
         if self.shared_utils.cv_pathfinder_role:

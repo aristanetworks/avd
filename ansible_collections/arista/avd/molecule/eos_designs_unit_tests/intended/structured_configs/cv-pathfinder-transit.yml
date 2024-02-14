@@ -523,6 +523,7 @@ metadata:
       pathgroup: INET
     - name: Ethernet2.42
       carrier: Colt
+      circuit_id: '10666'
       pathgroup: MPLS
     pathfinders:
     - vtep_ip: 192.168.144.1
