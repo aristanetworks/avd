@@ -460,6 +460,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                border_router:
+                  type: bool
+                  description: Configure PIM border router. EOS default is false.
                 dr_priority:
                   type: int
                   convert_types:

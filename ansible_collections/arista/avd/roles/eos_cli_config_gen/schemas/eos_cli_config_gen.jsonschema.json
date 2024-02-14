@@ -3481,6 +3481,11 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
+                  "border_router": {
+                    "type": "boolean",
+                    "description": "Configure PIM border router. EOS default is false.",
+                    "title": "Border Router"
+                  },
                   "dr_priority": {
                     "type": "integer",
                     "minimum": 0,
@@ -13214,6 +13219,11 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
+                  "border_router": {
+                    "type": "boolean",
+                    "description": "Configure PIM border router. EOS default is false.",
+                    "title": "Border Router"
+                  },
                   "dr_priority": {
                     "type": "integer",
                     "minimum": 0,
@@ -25760,6 +25770,11 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
+                  "border_router": {
+                    "type": "boolean",
+                    "description": "Configure PIM border router. EOS default is false.",
+                    "title": "Border Router"
+                  },
                   "dr_priority": {
                     "type": "integer",
                     "minimum": 0,
