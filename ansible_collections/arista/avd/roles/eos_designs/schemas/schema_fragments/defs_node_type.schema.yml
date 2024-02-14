@@ -455,11 +455,13 @@ $defs:
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration
-            description: Required with eBGP.
+            description: |-
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                Required with eBGP.
             type: str
             convert_types:
               - int
-              - float
           bgp_defaults:
             documentation_options:
               table: node-type-bgp-configuration
@@ -561,11 +563,12 @@ $defs:
                       type: str
                       format: ipv4
                     bgp_as:
-                      description: BGP ASN of remote Route Server.
+                      description: |-
+                        Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
                       type: str
                       convert_types:
                         - int
-                        - float
               evpn_l2:
                 description: Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
                 type: dict
@@ -613,7 +616,10 @@ $defs:
                   - str
                 default: 0
               local_as:
-                description: Apply local-as to peering with IPVPN remote peers.
+                description: |-
+                  Local BGP AS applied to peering with IPVPN remote peers.
+                  BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                  For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
                 type: str
                 convert_types:
                   - int
@@ -639,12 +645,13 @@ $defs:
                       format: ipv4
                       required: true
                     bgp_as:
-                      description: BGP ASN of remote IPVPN Peer.
+                      description: |-
+                        Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
                       type: str
                       required: true
                       convert_types:
                         - int
-                        - float
           mlag:
             documentation_options:
               table: node-type-l2-mlag-configuration
