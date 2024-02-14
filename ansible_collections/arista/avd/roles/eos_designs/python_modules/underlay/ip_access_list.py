@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 from functools import cached_property
-from ipaddress import ip_network
 from pickle import TRUE
 
 from .utils import UtilsMixin
