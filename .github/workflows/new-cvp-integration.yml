@@ -56,10 +56,6 @@ jobs:
     # if: needs.file-changes.outputs.config_gen == 'true'
     steps:
       - name: 'Set environment variables'
-        # env:
-        #   CVAAS_AAWG_DEMO: ${{ secrets.CVAAS_AAWG_DEMO }}
-        # if: ${{ env.CVAAS_AAWG_DEMO != '' }}
-        # run: 'echo "echo the secret \"MY_SECRET\" has not been made; echo please go to \"settings \> secrets \> actions\" to create it"
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
@@ -67,7 +63,6 @@ jobs:
       - name: Run molecule action
         env:
           CVAAS_AAWG_DEMO: ${{ secrets.CVAAS_AAWG_DEMO }}
-        # if: ${{ env.CVAAS_AAWG_DEMO == '' }}
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
