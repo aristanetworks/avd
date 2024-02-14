@@ -254,7 +254,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             }
         )
 
-    def get_parent_svi_cfg(self, vlan: int, subnet: str, ipv6_subnet: str) -> dict:
+    def get_parent_svi_cfg(self, vlan: int, subnet: str | None, ipv6_subnet: str | None) -> dict:
         network = False
         v6_network = False
         ip_address = None
