@@ -1484,9 +1484,9 @@ keys:
     keys:
       system_auth_control:
         type: bool
-      protocol_bpdu_bypass:
-        type: bool
       protocol_lldp_bypass:
+        type: bool
+      protocol_bpdu_bypass:
         type: bool
       dynamic_authorization:
         type: bool
