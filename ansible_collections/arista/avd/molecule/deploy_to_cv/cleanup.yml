@@ -8,21 +8,8 @@
     cv_server: www.cv-staging.corp.arista.io
     # token: "{{ lookup('file', playbook_dir ~ '/token-cvaas.tok')}}"
     token: "{{ lookup('env', 'CVAAS_AAWG_DEMO') }}"
-    # ws_url: https://{{ cv_server }}/api/v3/services/arista.configlet.v1.ConfigletService/GetOne
-    # cc_url: https://{{ cv_server }}/api/v3/services/arista.changecontrol.v1.ChangeControlService/GetOne
-    # tag_url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
     configuration_dir: "{{ playbook_dir }}/intended/configs/base_configs"
     structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
-    # strict_configuration_dir: "{{ playbook_dir }}/intended/configs/strict_tags"
-    # strict_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/strict_tags"
-    # value_configuration_dir: "{{ playbook_dir }}/intended/configs/change_tags"
-    # value_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/change_tags"
-    # intended_tag_device: s1-leaf1
-    # intended_tags: "{{ lookup('file', structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
-    # # intended_strict_tag_device: s1-leaf1-strict_tags
-    # intended_strict_tags: "{{ lookup('file', strict_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
-    # intended_value_tags: "{{ lookup('file', value_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
-
 
   tasks:
     - name: Generate random string
@@ -53,7 +40,7 @@
         structured_config_dir: "{{ structured_config_dir }}"
         # structured_config_suffix: "yml"
         # device_list: "{{ ansible_play_hosts }}"
-        device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
+        device_list: ["devel-s1-leaf1", "devel-s1-leaf2", "devel-s1-leaf3", "devel-s1-leaf4", "devel-s1-spine1", "devel-s1-spine2"]
         strict_tags: true
         # skip_strict_devices: false
         # configlet_name_template: "AVD-${hostname}"
