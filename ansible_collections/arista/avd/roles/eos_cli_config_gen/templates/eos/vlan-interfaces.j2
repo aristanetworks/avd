@@ -215,6 +215,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
    pim ipv4 sparse-mode
 {%     endif %}
+{%     if vlan_interface.pim.ipv4.border_router is arista.avd.defined(true) %}
+   pim ipv4 border-router
+{%     endif %}
 {%     if vlan_interface.pim.ipv4.dr_priority is arista.avd.defined %}
    pim ipv4 dr-priority {{ vlan_interface.pim.ipv4.dr_priority }}
 {%     endif %}
