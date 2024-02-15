@@ -12,8 +12,7 @@ Imagine being asked to configure a **layer 3 leaf spine (L3LS)** network from sc
 
 ![Figure: Arista Leaf Spine topology](../_media/getting-started/single-dc-topology-physical.png)
 
-Traditionally one would configure the switches manually using a laptop, console cable, and USB key to load the correct EOS software
-image and configuration. Of course, the configuration would be manually generated, using snippets from the relevant Arista design guides, or copying/pasting from existing devices. Configurations would have to be manually adapted to each and every device, which is time-consuming and prone to errors. Consider what would happen if a new pair of leaf switches or new VRFs/VLANs were added to the network - changes would need to be made to most of the devices.
+Traditionally one would configure the switches manually using a laptop, console cable, and USB key to load the correct EOS software image and configuration. Of course, the configuration would be manually generated, using snippets from the relevant Arista design guides, or copying/pasting from existing devices. Configurations would have to be manually adapted to each and every device, which is time-consuming and error-prone. Imagine a new pair of leaf switches or new VRFs/VLANs were added to the network, changes would need to be made to most of the devices.
 
 Using Arista Validated Designs (AVD), this task is automated, greatly simplified, and made considerably faster. All the basic network configuration is guaranteed to be identical across the entire fabric from day one. No longer do you have to manually inspect each device for errors or differences. AVD will ensure the consistency and accuracy of your configuration not only for initial deployment but for all subsequent network changes.
 
@@ -55,7 +54,7 @@ Ansible can run on almost anything, but in production scenarios, Ansible is typi
 Arista and accepts third-party contributions on GitHub at [aristanetworks/avd](https://github.com/aristanetworks/avd).
 
 While Ansible is the core automation engine, AVD is an Ansible Collection described above. It provides roles, modules, and plugins
-that allow the user to generate and deploy best-practice configurations to a layer three leaf-spine network.
+that allow the user to generate and deploy best-practice configurations to Arista based networks of various design types: Data Center, Campus and Wide Area Networks.
 
 ![Figure: Arista Leaf Spine topology](../_media/getting-started/ansible-avd.png)
 
