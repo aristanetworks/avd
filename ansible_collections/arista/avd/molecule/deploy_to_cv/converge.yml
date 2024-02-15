@@ -30,10 +30,6 @@
         r: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
       run_once: true
 
-    - name: Check token from env
-      ansible.builtin.shell: echo "token is read"
-      when: token != ''
-
     - name: set facts
       set_fact:
         ws_name: avd-static-studio-{{ r }}
