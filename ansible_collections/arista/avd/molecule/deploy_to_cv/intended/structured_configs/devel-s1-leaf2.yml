@@ -1,4 +1,4 @@
-hostname: s1-leaf2
+hostname: devel-s1-leaf2
 is_deployed: true
 static_routes:
 - vrf: default

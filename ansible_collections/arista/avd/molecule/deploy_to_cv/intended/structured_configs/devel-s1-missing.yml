@@ -1,4 +1,4 @@
-hostname: s1-leaf1
+hostname: devel-s1-leaf1
 is_deployed: true
 static_routes:
 - vrf: default
@@ -120,10 +120,36 @@ ip_igmp_snooping:
 metadata:
   cv_tags:
     device_tags:
-    - name: dummy_name
-      value: dummy_val
+    - name: Role
+      value: edge
+    # - name: Region
+    #   value: AVD_Land_East
+    # - name: Zone
+    #   value: DEFAULT-ZONE
+    # - name: Site
+    #   value: Site511
     interface_tags:
     - interface: Ethernet1
       tags:
-      - name: dummy_name
-        value: dummy_val
+      - name: Type
+        value: wan
+      # - name: Carrier
+      #   value: ATT
+      # - name: Circuit
+      #   value: '666'
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      # - name: Carrier
+      #   value: Colt
+      # - name: Circuit
+      #   value: '10555'
+    - interface: Ethernet3
+      tags:
+      - name: Type
+        value: wan
+      # - name: Carrier
+      #   value: Comcast-5G
+      # - name: Circuit
+      #   value: AF830

@@ -17,9 +17,9 @@
     strict_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/strict_tags"
     value_configuration_dir: "{{ playbook_dir }}/intended/configs/change_tags"
     value_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/change_tags"
-    intended_tag_device: s1-leaf1
+    intended_tag_device: devel-s1-leaf1
     intended_tags: "{{ lookup('file', structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
-    # intended_strict_tag_device: s1-leaf1-strict_tags
+    # intended_strict_tag_device: devel-s1-leaf1-strict_tags
     intended_strict_tags: "{{ lookup('file', strict_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
     intended_value_tags: "{{ lookup('file', value_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
 
@@ -53,7 +53,7 @@
         structured_config_dir: "{{ structured_config_dir }}"
         # structured_config_suffix: "yml"
         # device_list: "{{ ansible_play_hosts }}"
-        device_list: ["s1-leaf1", "s1-leaf2", "s1-leaf3", "s1-leaf4", "s1-spine1", "s1-spine2"]
+        device_list: ["devel-s1-leaf1", "devel-s1-leaf2", "devel-s1-leaf3", "devel-s1-leaf4", "devel-s1-spine1", "devel-s1-spine2"]
         strict_tags: true
         # skip_strict_devices: false
         # configlet_name_template: "AVD-${hostname}"
@@ -125,10 +125,10 @@
             workspace_id: '{{ ws_name }}'
             configlet_id: '{{ item }}'
       loop:
-        - "avd-s1-leaf1"
-        - "avd-s1-leaf2"
-        - "avd-s1-leaf3"
-        - "avd-s1-leaf4"
+        - "avd-devel-s1-leaf1"
+        - "avd-devel-s1-leaf2"
+        - "avd-devel-s1-leaf3"
+        - "avd-devel-s1-leaf4"
       register: result
 
     # CC information
@@ -154,10 +154,10 @@
     - name: 'Set configlets facts'
       run_once: true
       vars:
-        configs: ['{{ configuration_dir }}/s1-leaf1.cfg',
-                  '{{ configuration_dir }}/s1-leaf2.cfg',
-                  '{{ configuration_dir }}/s1-leaf3.cfg',
-                  '{{ configuration_dir }}/s1-leaf4.cfg'
+        configs: ['{{ configuration_dir }}/devel-s1-leaf1.cfg',
+                  '{{ configuration_dir }}/devel-s1-leaf2.cfg',
+                  '{{ configuration_dir }}/devel-s1-leaf3.cfg',
+                  '{{ configuration_dir }}/devel-s1-leaf4.cfg'
         ]
       set_fact:
         response_configlet: "{{ response_configlet | default({}) | combine({item.0.json[0].value.body | trim: item.1}) }}"
@@ -227,7 +227,7 @@
       arista.avd.deploy_to_cv:
         configuration_dir: "{{ strict_configuration_dir }}"
         structured_config_dir: "{{ strict_structured_config_dir }}"
-        device_list: ["s1-leaf1"]
+        device_list: ["devel-s1-leaf1"]
         strict_tags: true
         cv_servers: [ '{{ cv_server }}' ]
         cv_token: '{{ token }}'
@@ -279,7 +279,7 @@
       arista.avd.deploy_to_cv:
         configuration_dir: "{{ value_configuration_dir }}"
         structured_config_dir: "{{ value_structured_config_dir }}"
-        device_list: ["s1-leaf1"]
+        device_list: ["devel-s1-leaf1"]
         strict_tags: true
         cv_servers: [ '{{ cv_server }}' ]
         cv_token: '{{ token }}'

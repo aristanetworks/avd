@@ -1,4 +1,4 @@
-hostname: s1-spine2
+hostname: devel-s1-spine2
 is_deployed: true
 static_routes:
 - vrf: default

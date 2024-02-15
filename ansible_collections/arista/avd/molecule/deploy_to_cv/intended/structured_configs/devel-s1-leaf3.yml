@@ -1,4 +1,4 @@
-hostname: s1-leaf4
+hostname: devel-s1-leaf3
 is_deployed: true
 static_routes:
 - vrf: default
@@ -29,7 +29,7 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: default
-  ip_address: 192.168.0.15/24
+  ip_address: 192.168.0.14/24
   gateway: 192.168.0.1
   type: oob
 management_api_http:
@@ -49,12 +49,12 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.1.253.9/31
+  ip_address: 10.1.253.8/31
   no_autostate: true
   mtu: 1500
 port_channel_interfaces:
 - name: Port-Channel1
-  description: MLAG_PEER_s1-leaf3_Po1
+  description: MLAG_PEER_s1-leaf4_Po1
   type: switched
   shutdown: false
   mode: trunk
@@ -69,20 +69,20 @@ port_channel_interfaces:
   mlag: 2
 ethernet_interfaces:
 - name: Ethernet1
-  peer: s1-leaf3
+  peer: s1-leaf4
   peer_interface: Ethernet1
   peer_type: mlag_peer
-  description: MLAG_PEER_s1-leaf3_Ethernet1
+  description: MLAG_PEER_s1-leaf4_Ethernet1
   type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
     mode: active
 - name: Ethernet6
-  peer: s1-leaf3
+  peer: s1-leaf4
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_s1-leaf3_Ethernet6
+  description: MLAG_PEER_s1-leaf4_Ethernet6
   type: port-channel-member
   shutdown: false
   channel_group:
@@ -90,9 +90,9 @@ ethernet_interfaces:
     mode: active
 - name: Ethernet2
   peer: s1-spine1
-  peer_interface: Ethernet5
+  peer_interface: Ethernet4
   peer_type: l3spine
-  description: S1-SPINE1_Ethernet5
+  description: S1-SPINE1_Ethernet4
   shutdown: false
   type: port-channel-member
   channel_group:
@@ -100,9 +100,9 @@ ethernet_interfaces:
     mode: active
 - name: Ethernet3
   peer: s1-spine2
-  peer_interface: Ethernet5
+  peer_interface: Ethernet4
   peer_type: l3spine
-  description: S1-SPINE2_Ethernet5
+  description: S1-SPINE2_Ethernet4
   shutdown: false
   type: port-channel-member
   channel_group:
@@ -111,7 +111,7 @@ ethernet_interfaces:
 mlag_configuration:
   domain_id: RACK2
   local_interface: Vlan4094
-  peer_address: 10.1.253.8
+  peer_address: 10.1.253.9
   peer_link: Port-Channel1
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'

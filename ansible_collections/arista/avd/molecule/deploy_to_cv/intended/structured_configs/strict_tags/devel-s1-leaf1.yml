@@ -1,4 +1,4 @@
-hostname: s1-leaf1
+hostname: devel-s1-leaf1
 is_deployed: true
 static_routes:
 - vrf: default
@@ -121,7 +121,7 @@ metadata:
   cv_tags:
     device_tags:
     - name: Role
-      value: border
+      value: edge
     interface_tags:
     - interface: Ethernet1
       tags:
