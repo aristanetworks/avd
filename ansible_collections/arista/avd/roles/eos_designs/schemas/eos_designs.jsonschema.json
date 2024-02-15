@@ -3960,6 +3960,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -4203,6 +4208,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -5497,6 +5507,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -5740,6 +5755,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
