@@ -163,8 +163,8 @@ class UtilsMixin:
             member_interfaces := node_data.get("interfaces")
         ):
             # Port-channel
-            interface_digits = re.findall(r"\d", member_interfaces[0])
-            portchannel_id = node_data.get("channel_id", int("".join(interface_digits)))
+            default_channel_id = int("".join(re.findall(r"\d", member_interfaces[0])))
+            portchannel_id = node_data.get("channel_id", default_channel_id)
 
             peer = get_item(
                 node_child_interfaces,
@@ -173,8 +173,8 @@ class UtilsMixin:
                 var_name=f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces",
             )
             peer_member_interfaces = peer["interfaces"]
-            peer_inteface_digits = re.findall(r"\d", peer_member_interfaces[0])
-            peer_id = peer.get("channel_id", int("".join(peer_inteface_digits)))
+            default_peer_channel_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
+            peer_id = peer.get("channel_id", default_peer_channel_id)
 
             data.update(
                 {
