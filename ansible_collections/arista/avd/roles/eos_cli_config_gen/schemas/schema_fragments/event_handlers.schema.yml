@@ -42,6 +42,68 @@ keys:
           - on-boot
           - on-logging
           - on-startup-config
+          - on-maintenance
+        trigger_on_maintenance:
+          type: dict
+          keys:
+            operation:
+              type: str
+              required: true
+              valid_values:
+              - "enter"
+              - "exit"
+            bgp:
+              type: dict
+              keys:
+                neighbor_address_ipv4:
+                  type: str
+                neighbor_address_ipv6:
+                  type: str
+                peer_group_name:
+                  type: str
+            stage:
+              type: str
+              valid_values:
+              - after
+              - before
+              - all
+              - begin
+              - end
+              - vrf
+            after_before_stage:
+              type: str
+              description: Action is triggered after/before specified stage.
+              valid_values:
+              - "bgp"
+              - "linkdown"
+              - "mlag"
+              - "ratemon"
+            vrf:
+              type: str
+              description: VRF name.
+            interface:
+              type: dict
+              keys:
+                interface_type:
+                  type: str
+                  required: true
+                  valid_values:
+                  - Ethernet
+                  - Fabric
+                  - Loopback
+                  - Management
+                  - Port-Channel
+                  - Tunnel
+                  - Vlan
+                  - Vxlan
+                interface_number:
+                  type: int
+                  convert_types:
+                  - str
+                  required: true
+            unit:
+              type: str
+              description: Name of unit.
         regex:
           type: str
           description: |

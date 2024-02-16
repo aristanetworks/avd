@@ -5467,9 +5467,118 @@
             "enum": [
               "on-boot",
               "on-logging",
-              "on-startup-config"
+              "on-startup-config",
+              "on-maintenance"
             ],
             "title": "Trigger"
+          },
+          "trigger_on_maintenance": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "enter",
+                  "exit"
+                ],
+                "title": "Operation"
+              },
+              "bgp": {
+                "type": "object",
+                "properties": {
+                  "neighbor_address_ipv4": {
+                    "type": "string",
+                    "title": "Neighbor Address IPv4"
+                  },
+                  "neighbor_address_ipv6": {
+                    "type": "string",
+                    "title": "Neighbor Address IPv6"
+                  },
+                  "peer_group_name": {
+                    "type": "string",
+                    "title": "Peer Group Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BGP"
+              },
+              "stage": {
+                "type": "string",
+                "enum": [
+                  "after",
+                  "before",
+                  "all",
+                  "begin",
+                  "end",
+                  "vrf"
+                ],
+                "title": "Stage"
+              },
+              "after_before_stage": {
+                "type": "string",
+                "description": "Action is triggered after/before specified stage.",
+                "enum": [
+                  "bgp",
+                  "linkdown",
+                  "mlag",
+                  "ratemon"
+                ],
+                "title": "After Before Stage"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF name.",
+                "title": "VRF"
+              },
+              "interface": {
+                "type": "object",
+                "properties": {
+                  "interface_type": {
+                    "type": "string",
+                    "enum": [
+                      "Ethernet",
+                      "Fabric",
+                      "Loopback",
+                      "Management",
+                      "Port-Channel",
+                      "Tunnel",
+                      "Vlan",
+                      "Vxlan"
+                    ],
+                    "title": "Interface Type"
+                  },
+                  "interface_number": {
+                    "type": "integer",
+                    "title": "Interface Number"
+                  }
+                },
+                "required": [
+                  "interface_type",
+                  "interface_number"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Interface"
+              },
+              "unit": {
+                "type": "string",
+                "description": "Name of unit.",
+                "title": "Unit"
+              }
+            },
+            "required": [
+              "operation"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Maintenance"
           },
           "regex": {
             "type": "string",
