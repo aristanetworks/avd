@@ -3394,6 +3394,8 @@ keys:
               - enter
               - exit
             bgp:
+              description: Trigger condition occurs on maintenance operation of specified
+                BGP peer.
               type: dict
               keys:
                 neighbor_address_ipv4:
@@ -3423,6 +3425,8 @@ keys:
               type: str
               description: VRF name.
             interface:
+              description: Trigger condition occurs on maintenance operation of specified
+                interface.
               type: dict
               keys:
                 interface_type:
@@ -3444,7 +3448,8 @@ keys:
                   required: true
             unit:
               type: str
-              description: Name of unit.
+              description: Name of unit. Trigger condition occurs on maintenance operation
+                of specified unit
         regex:
           type: str
           description: 'Regular expression to use for searching log messages. Required

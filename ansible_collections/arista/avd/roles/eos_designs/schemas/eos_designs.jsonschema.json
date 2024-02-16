@@ -4818,6 +4818,7 @@
                 "title": "Operation"
               },
               "bgp": {
+                "description": "Trigger condition occurs on maintenance operation of specified BGP peer.",
                 "type": "object",
                 "properties": {
                   "neighbor_address_ipv4": {
@@ -4868,6 +4869,7 @@
                 "title": "VRF"
               },
               "interface": {
+                "description": "Trigger condition occurs on maintenance operation of specified interface.",
                 "type": "object",
                 "properties": {
                   "interface_type": {
@@ -4901,7 +4903,7 @@
               },
               "unit": {
                 "type": "string",
-                "description": "Name of unit.",
+                "description": "Name of unit. Trigger condition occurs on maintenance operation of specified unit",
                 "title": "Unit"
               }
             },
@@ -21270,6 +21272,7 @@
                           "title": "Operation"
                         },
                         "bgp": {
+                          "description": "Trigger condition occurs on maintenance operation of specified BGP peer.",
                           "type": "object",
                           "properties": {
                             "neighbor_address_ipv4": {
@@ -21320,6 +21323,7 @@
                           "title": "VRF"
                         },
                         "interface": {
+                          "description": "Trigger condition occurs on maintenance operation of specified interface.",
                           "type": "object",
                           "properties": {
                             "interface_type": {
@@ -21353,7 +21357,7 @@
                         },
                         "unit": {
                           "type": "string",
-                          "description": "Name of unit.",
+                          "description": "Name of unit. Trigger condition occurs on maintenance operation of specified unit",
                           "title": "Unit"
                         }
                       },
