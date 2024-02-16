@@ -12,11 +12,11 @@ Imagine being asked to configure a **layer 3 leaf spine (L3LS)** network from sc
 
 ![Figure: Arista Leaf Spine topology](../_media/getting-started/single-dc-topology-physical.png)
 
-Traditionally one would configure the switches manually using a laptop, console cable, and USB key to load the correct EOS software image and configuration. Of course, the configuration would be manually generated, using snippets from the relevant Arista design guides, or copying/pasting from existing devices. Configurations would have to be manually adapted to each and every device, which is time-consuming and error-prone. Imagine a new pair of leaf switches or new VRFs/VLANs were added to the network, changes would need to be made to most of the devices.
+Traditionally, one would configure the switches manually using a laptop, console cable, and USB key to load the correct EOS software image and configuration. Of course, the configuration would be manually generated using snippets from the relevant Arista design guides or copied/pasted from existing devices. Configurations must be manually adapted to every device, which is time-consuming and error-prone. Imagine a new pair of leaf switches or new VRFs/VLANs were added to the network; changes would need to be made to most of the devices.
 
 Using Arista Validated Designs (AVD), this task is automated, greatly simplified, and made considerably faster. All the basic network configuration is guaranteed to be identical across the entire fabric from day one. No longer do you have to manually inspect each device for errors or differences. AVD will ensure the consistency and accuracy of your configuration not only for initial deployment but for all subsequent network changes.
 
-AVD is based on best practices from [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides), meaning you get the full benefit of Arista's experience in deploying large-scale leaf spine fabrics. AVD fully integrates with Arista CloudVision, which adds a change control workflow, continuous compliance check, and network topology overview as well as real-time streaming telemetry including flow-based data and more.
+AVD is based on best practices from [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides), meaning you get the full benefit of Arista's experience deploying large-scale leaf spine fabrics. AVD fully integrates with Arista CloudVision, which adds a change control workflow, continuous compliance check, network topology overview, real-time streaming telemetry including flow-based data, and more.
 
 ## What is Ansible?
 
@@ -365,7 +365,7 @@ Since operating many networking devices also typically results in having many ne
 
 With AVD, you define not only the topology of your network centrally but also which services are used where in a central repository of text files. Furthermore, because this data is stored in text files, it's possible to apply version control (for example, using tools like git, subversion, or mercurial) to this system of record, giving you visibility of when the intended configuration was changed and by whom.
 
-This system of record means you have a complete overview of your entire designed network configuration without having to look at individual network devices. An additional benefit of AVD is that by design, you always have a backup of your network configuration. Including automated documentation in markdown format, you no longer have to remember to update documentation about which interface is connected to which device, etc., whenever you change something on a device. Instead, it's all done automatically based on the configuration built and applied to the network devices by Ansible every time you execute the playbooks.
+This system of record means you have a complete overview of your designed network configuration without looking at individual network devices. An additional benefit of AVD is that by design, you always have a network configuration backup. Including automated documentation in markdown format, you no longer have to remember to update documentation about which interface is connected to which device, etc., whenever you change something on a device. Instead, it's all done automatically based on the configuration built and applied to the network devices by Ansible every time you execute the playbooks.
 
 Below you will find two examples of documentation automatically created by Ansible AVD:
 
@@ -473,7 +473,7 @@ This quickly identifies any issues that we could otherwise overlook. For example
 
 ## Day 2 Operations
 
-Day 2 operations describe most if not all, network configuration changes that occur after the initial configuration.
+Day 2 operations describe most, if not all, network configuration changes that occur after the initial configuration.
 
 These tasks, while relatively simple, can be time-consuming simply because they involve changes to multiple devices:
 
