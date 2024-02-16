@@ -281,6 +281,15 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
+    "custom_field": "Vlan4085 - Inband Management"
+  },
+  {
+    "name": "dc1-leaf2a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
     "custom_field": "Vlan4093 - MLAG_PEER_L3_PEERING"
   },
   {

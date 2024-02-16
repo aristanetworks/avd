@@ -862,7 +862,9 @@ $defs:
                       type: str
                       convert_types:
                         - int
-                      description: Remote BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                      description: |-
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     description:
                       type: str
                     password:
@@ -935,9 +937,9 @@ $defs:
                       type: str
                       convert_types:
                         - int
-                      description: |
-                        Local BGP ASN.
-                        eg. "65001.1200".
+                      description: |-
+                        Local BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     weight:
                       type: int
                       convert_types:

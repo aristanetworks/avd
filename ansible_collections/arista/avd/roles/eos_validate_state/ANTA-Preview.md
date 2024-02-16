@@ -59,6 +59,8 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 !!! note
     Starting from version 4.30.1F, `service_routing_protocols_model` is preset to `multi-agent` by default on EOS devices.
 
+- Inband management reachability test has been refactored to support the new AVD 4.x.x inband management [data model](https://avd.sh/en/stable/roles/eos_designs/docs/input-variables.html#node-type-inband-management).
+
 ## How to run eos_validate_state in ANTA mode
 
 - Install the "anta" Python package (this is *not* part of the `requirements.txt`):
@@ -123,7 +125,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
   - VerifyReachability: Validate IP reachability for point-to-point l3 ethernet interfaces.
 
 - AvdTestInbandReachability (Ansible tags: `loopback_reachability`, `loopback0_reachability`, `optional`)
-  - VerifyReachability: Validate loopback reachability between devices.
+  - VerifyReachability: Validate loopback reachability from the inband management VLAN interface.
 
 - AvdTestLoopback0Reachability (Ansible tags: `loopback_reachability`, `loopback0_reachability`)
   - VerifyReachability: Validate loopback reachability between devices.
