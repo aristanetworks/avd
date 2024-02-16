@@ -7326,9 +7326,7 @@ keys:
                             - str
                             description: 'Specify lower rate.
 
-                              Lower rate range in kbps - <8-200000000>.
-
-                              '
+                              Lower rate range in kbps - <8-200000000>.'
                           cir_unit:
                             type: str
                             valid_values:
@@ -7358,9 +7356,7 @@ keys:
                             - str
                             description: 'Specify lower rate.
 
-                              Lower rate range in kbps - <8-200000000>.
-
-                              '
+                              Lower rate range in kbps - <8-200000000>.'
                           rate_unit:
                             type: str
                             valid_values:
@@ -7382,6 +7378,7 @@ keys:
                             - kbytes
                             - mbytes
                             - packets
+                            default: bytes
                           action:
                             description: Set action for policed traffic.
                             type: str

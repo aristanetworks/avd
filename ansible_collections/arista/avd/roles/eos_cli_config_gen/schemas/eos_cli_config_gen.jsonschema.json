@@ -12361,7 +12361,7 @@
                           "properties": {
                             "cir_rate": {
                               "type": "integer",
-                              "description": "Specify lower rate.\nLower rate range in kbps - <8-200000000>.\n",
+                              "description": "Specify lower rate.\nLower rate range in kbps - <8-200000000>.",
                               "title": "Cir Rate"
                             },
                             "cir_unit": {
@@ -12405,7 +12405,7 @@
                           "properties": {
                             "lower_rate": {
                               "type": "integer",
-                              "description": "Specify lower rate.\nLower rate range in kbps - <8-200000000>.\n",
+                              "description": "Specify lower rate.\nLower rate range in kbps - <8-200000000>.",
                               "title": "Lower Rate"
                             },
                             "rate_unit": {
@@ -12433,6 +12433,7 @@
                                 "mbytes",
                                 "packets"
                               ],
+                              "default": "bytes",
                               "title": "Burst Size Unit"
                             },
                             "action": {

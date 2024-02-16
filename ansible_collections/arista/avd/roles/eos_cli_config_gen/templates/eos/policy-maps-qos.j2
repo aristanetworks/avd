@@ -19,21 +19,21 @@ policy-map type quality-of-service {{ policy_map.name }}
 {%             endif %}
 {%         endfor %}
 {%         if class.police.cir is arista.avd.defined %}
-{%             if class.police.cir.cir_rate is arista.avd.defined and class.police.cir.cir_unit is arista.avd.defined and class.police.cir.bc is arista.avd.defined and class.police.cir.bc_unit is arista.avd.defined %}
-      police cir {{ class.police.cir.cir_rate }} {{ class.police.cir.cir_unit }} bc {{ class.police.cir.bc }} {{ class.police.cir.bc_unit }}
+{%             if class.police.cir.cir_rate is arista.avd.defined and class.police.cir.bc is arista.avd.defined %}
+      police cir {{ class.police.cir.cir_rate }} {{ class.police.cir.cir_unit | arista.avd.default('bps') }} bc {{ class.police.cir.bc }} {{ class.police.cir.bc_unit | arista.avd.default('bytes') }}
 {%             endif %}
 {%         elif class.police.rate is arista.avd.defined %}
-{%             if class.police.rate.lower_rate is arista.avd.defined and class.police.rate.rate_unit is arista.avd.defined and class.police.rate.lower_rate_burst_size is arista.avd.defined and class.police.rate.burst_size_unit is arista.avd.defined %}
+{%             if class.police.rate.lower_rate is arista.avd.defined and class.police.rate.lower_rate_burst_size is arista.avd.defined %}
 {%                 if class.police.rate.higher_rate is arista.avd.defined and class.police.rate.higher_rate_burst_size is arista.avd.defined %}
 {%                     if class.police.rate.action is arista.avd.defined("dscp") and class.police.rate.dscp_value is arista.avd.defined %}
-      police rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit }} action set dscp {{ class.police.rate.dscp_value }} rate {{ class.police.rate.higher_rate }} {{ class.police.rate.rate_unit }} {{ class.police.rate.higher_rate_burst_size }} {{ class.police.rate.burst_size_unit }}
+      police rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }} action set dscp {{ class.police.rate.dscp_value }} rate {{ class.police.rate.higher_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} {{ class.police.rate.higher_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }}
 {%                     elif class.police.rate.action is arista.avd.defined("drop-precedence") %}
-      police rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit }} action set drop-precedence rate {{ class.police.rate.higher_rate }} {{ class.police.rate.rate_unit }} {{ class.police.rate.higher_rate_burst_size }} {{ class.police.rate.burst_size_unit }}
+      police rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }} action set drop-precedence rate {{ class.police.rate.higher_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} {{ class.police.rate.higher_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }}
 {%                     else %}
-      police rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit }} rate {{ class.police.rate.higher_rate }} {{ class.police.rate.rate_unit }} {{ class.police.rate.higher_rate_burst_size }} {{ class.police.rate.burst_size_unit }}
+      police rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }} rate {{ class.police.rate.higher_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} {{ class.police.rate.higher_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }}
 {%                     endif %}
 {%                 else %}
-      police rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit }}
+      police rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }}
 {%                 endif %}
 {%             endif %}
 {%         endif %}

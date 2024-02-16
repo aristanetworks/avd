@@ -110,7 +110,7 @@ policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
       set dscp af11
       set cos 4
-      police cir 12 kbps bc 267 kbytes
+      police cir 12 bps bc 267 kbytes
 !
 policy-map type quality-of-service PM_REPLICATION_LD3
    class CM_REPLICATION_LD

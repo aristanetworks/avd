@@ -107,7 +107,7 @@ keys:
                             type: int
                             convert_types:
                               - str
-                            description: |
+                            description: |-
                               Specify lower rate.
                               Lower rate range in kbps - <8-200000000>.
                           cir_unit:
@@ -137,7 +137,7 @@ keys:
                             type: int
                             convert_types:
                               - str
-                            description: |
+                            description: |-
                               Specify lower rate.
                               Lower rate range in kbps - <8-200000000>.
                           rate_unit:
@@ -161,6 +161,7 @@ keys:
                               - "kbytes"
                               - "mbytes"
                               - "packets"
+                            default: "bytes"
                           action:
                             description: Set action for policed traffic.
                             type: str
@@ -175,7 +176,8 @@ keys:
                             type: int
                             convert_types:
                               - str
-                            description: Specify higher rate.
+                            description: |-
+                              Specify higher rate.
                           higher_rate_burst_size:
                             type: int
                             convert_types:
