@@ -2082,6 +2082,10 @@
           "type": "boolean",
           "title": "Protocol LLDP Bypass"
         },
+        "protocol_bpdu_bypass": {
+          "type": "boolean",
+          "title": "Protocol Bpdu Bypass"
+        },
         "dynamic_authorization": {
           "type": "boolean",
           "title": "Dynamic Authorization"
