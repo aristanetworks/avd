@@ -12,7 +12,7 @@ management_ssh:
     server:
       - ecdsa-nistp256
       - ecdsa-nistp521
-    server_cert_key: sshkey.cert
+    server_cert: sshkey.cert
   access_groups:
     - name: ACL-SSH
     - name: ACL-SSH-VRF

@@ -5998,7 +5998,7 @@ keys:
             type: list
             items:
               type: str
-          server_cert_key:
+          server_cert:
             type: str
             description: Configure switch's hostkey cert file.
           client_strict_checking:

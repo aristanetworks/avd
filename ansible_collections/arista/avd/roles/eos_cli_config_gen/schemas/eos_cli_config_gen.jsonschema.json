@@ -10026,10 +10026,10 @@
               },
               "title": "Server"
             },
-            "server_cert_key": {
+            "server_cert": {
               "type": "string",
               "description": "Configure switch's hostkey cert file.",
-              "title": "Server Cert Key"
+              "title": "Server Cert"
             },
             "client_strict_checking": {
               "type": "boolean",
