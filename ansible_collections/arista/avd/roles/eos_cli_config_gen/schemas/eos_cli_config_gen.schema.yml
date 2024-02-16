@@ -9161,7 +9161,10 @@ keys:
     keys:
       as:
         type: str
-        description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+        description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+          For asdot notation in YAML inputs, the value must be put in quotes, to prevent
+          it from being interpreted as a float number.'
         convert_types:
         - int
       router_id:
@@ -9337,7 +9340,10 @@ keys:
               type: str
               convert_types:
               - int
-              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+              description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+                For asdot notation in YAML inputs, the value must be put in quotes,
+                to prevent it from being interpreted as a float number.'
       peer_groups:
         type: list
         primary_key: name
@@ -9354,12 +9360,18 @@ keys:
               description: Key only used for documentation or validation purposes
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+              description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+                For asdot notation in YAML inputs, the value must be put in quotes,
+                to prevent it from being interpreted as a float number.'
               convert_types:
               - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+              description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+                For asdot notation in YAML inputs, the value must be put in quotes,
+                to prevent it from being interpreted as a float number.'
               convert_types:
               - int
             description:
@@ -9572,12 +9584,18 @@ keys:
               type: str
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+              description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+                For asdot notation in YAML inputs, the value must be put in quotes,
+                to prevent it from being interpreted as a float number.'
               convert_types:
               - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+              description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+                For asdot notation in YAML inputs, the value must be put in quotes,
+                to prevent it from being interpreted as a float number.'
               convert_types:
               - int
             as_path:
@@ -9763,6 +9781,10 @@ keys:
               type: str
               convert_types:
               - int
+              description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+                For asdot notation in YAML inputs, the value must be put in quotes,
+                to prevent it from being interpreted as a float number.'
             peer:
               type: str
               description: Key only used for documentation or validation purposes
@@ -11134,8 +11156,11 @@ keys:
                       '
                   remote_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation
-                      "<1-65535>.<0-65535>"
+                    description: 'BGP AS <1-4294967295> or AS number in asdot notation
+                      "<1-65535>.<0-65535>".
+
+                      For asdot notation in YAML inputs, the value must be put in
+                      quotes, to prevent it from being interpreted as a float number.'
                     convert_types:
                     - int
             neighbors:
@@ -11153,8 +11178,11 @@ keys:
                     description: Peer-group name
                   remote_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation
-                      "<1-65535>.<0-65535>"
+                    description: 'BGP AS <1-4294967295> or AS number in asdot notation
+                      "<1-65535>.<0-65535>".
+
+                      For asdot notation in YAML inputs, the value must be put in
+                      quotes, to prevent it from being interpreted as a float number.'
                     convert_types:
                     - int
                   password:
@@ -11186,8 +11214,11 @@ keys:
                     - str
                   local_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation
-                      "<1-65535>.<0-65535>"
+                    description: 'BGP AS <1-4294967295> or AS number in asdot notation
+                      "<1-65535>.<0-65535>".
+
+                      For asdot notation in YAML inputs, the value must be put in
+                      quotes, to prevent it from being interpreted as a float number.'
                     convert_types:
                     - int
                   as_path:
@@ -11334,8 +11365,11 @@ keys:
                     description: Interface name
                   remote_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation
-                      "<1-65535>.<0-65535>"
+                    description: 'BGP AS <1-4294967295> or AS number in asdot notation
+                      "<1-65535>.<0-65535>".
+
+                      For asdot notation in YAML inputs, the value must be put in
+                      quotes, to prevent it from being interpreted as a float number.'
                     convert_types:
                     - int
                   peer_group:
