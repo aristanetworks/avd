@@ -419,6 +419,7 @@ interface Ethernet5
    ip ospf area 100
    ip ospf message-digest-key 1 sha512 7 <removed>
    pim ipv4 sparse-mode
+   pim ipv4 border-router
    pim ipv4 dr-priority 200
    isis enable ISIS_TEST
    isis circuit-type level-2
@@ -979,9 +980,9 @@ interface Ethernet69
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Ethernet5 | - | IPv4 | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Ethernet5 | - | IPv4 | True | 200 | - |
 
 ## 802.1X Port Security
 

@@ -3960,6 +3960,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -4203,6 +4208,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -5497,6 +5507,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -5740,6 +5755,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -6968,6 +6988,11 @@
                   "ipv4": {
                     "type": "object",
                     "properties": {
+                      "border_router": {
+                        "type": "boolean",
+                        "description": "Configure PIM border router. EOS default is false.",
+                        "title": "Border Router"
+                      },
                       "dr_priority": {
                         "type": "integer",
                         "minimum": 0,
@@ -10997,6 +11022,11 @@
                       "ipv4": {
                         "type": "object",
                         "properties": {
+                          "border_router": {
+                            "type": "boolean",
+                            "description": "Configure PIM border router. EOS default is false.",
+                            "title": "Border Router"
+                          },
                           "dr_priority": {
                             "type": "integer",
                             "minimum": 0,
@@ -12262,6 +12292,11 @@
                   "ipv4": {
                     "type": "object",
                     "properties": {
+                      "border_router": {
+                        "type": "boolean",
+                        "description": "Configure PIM border router. EOS default is false.",
+                        "title": "Border Router"
+                      },
                       "dr_priority": {
                         "type": "integer",
                         "minimum": 0,
@@ -17106,6 +17141,11 @@
                       "ipv4": {
                         "type": "object",
                         "properties": {
+                          "border_router": {
+                            "type": "boolean",
+                            "description": "Configure PIM border router. EOS default is false.",
+                            "title": "Border Router"
+                          },
                           "dr_priority": {
                             "type": "integer",
                             "minimum": 0,
@@ -18371,6 +18411,11 @@
                   "ipv4": {
                     "type": "object",
                     "properties": {
+                      "border_router": {
+                        "type": "boolean",
+                        "description": "Configure PIM border router. EOS default is false.",
+                        "title": "Border Router"
+                      },
                       "dr_priority": {
                         "type": "integer",
                         "minimum": 0,
@@ -22046,6 +22091,11 @@
                         "ipv4": {
                           "type": "object",
                           "properties": {
+                            "border_router": {
+                              "type": "boolean",
+                              "description": "Configure PIM border router. EOS default is false.",
+                              "title": "Border Router"
+                            },
                             "dr_priority": {
                               "type": "integer",
                               "minimum": 0,
@@ -23746,6 +23796,11 @@
                   "ipv4": {
                     "type": "object",
                     "properties": {
+                      "border_router": {
+                        "type": "boolean",
+                        "description": "Configure PIM border router. EOS default is false.",
+                        "title": "Border Router"
+                      },
                       "dr_priority": {
                         "type": "integer",
                         "minimum": 0,
