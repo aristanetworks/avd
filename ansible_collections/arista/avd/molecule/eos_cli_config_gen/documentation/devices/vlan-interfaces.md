@@ -440,6 +440,7 @@ interface Vlan1002
 interface Vlan2001
    description SVI Description
    vrf Tenant_B
+   logging event link-status
    ip address virtual 10.2.1.1/24
    comment
    Comment created from eos_cli under vlan_interfaces.Vlan2001
@@ -477,7 +478,7 @@ interface Vlan4094
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Vlan89 | - | IPv4 | - | Loopback0 |
-| Vlan4094 | - | IPv4 | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Vlan89 | - | IPv4 | - | - | Loopback0 |
+| Vlan4094 | - | IPv4 | - | 200 | - |

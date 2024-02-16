@@ -28,7 +28,7 @@ Transform information from ansible inventory to be able to provision CloudVision
 | <samp>configlet_dir</samp> | str | False | None |  | Directory where intended configurations are located. |
 | <samp>configlet_prefix</samp> | str | False | AVD |  | Prefix to put on configlet. |
 | <samp>destination</samp> | str | False | None |  | Optional path to save variable. |
-| <samp>device_filter</samp> | list | False | ['all'] |  | Filter to apply intended mode on a set of configlet. If not used, then module only uses ADD mode. device\_filter list devices that can be modified or deleted based on configlets entries. |
+| <samp>device_filter</samp> | list | False | ['all'] |  | Filter to apply intended mode on a set of configlet. If not used, then module only uses ADD mode. device_filter list devices that can be modified or deleted based on configlets entries. |
 
 ## Examples
 

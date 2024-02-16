@@ -15,6 +15,11 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.logging.event.link_status is arista.avd.defined(false) %}
    no logging event link-status
 {%     endif %}
+{%     if port_channel_interface.logging.event.storm_control_discards is arista.avd.defined(true) %}
+   logging event storm-control discards
+{%     elif port_channel_interface.logging.event.storm_control_discards is arista.avd.defined(false) %}
+   no logging event storm-control discards
+{%     endif %}
 {%     if port_channel_interface.shutdown is arista.avd.defined(true) %}
    shutdown
 {%     elif port_channel_interface.shutdown is arista.avd.defined(false) %}
@@ -301,6 +306,9 @@ interface {{ port_channel_interface.name }}
 {%     endfor %}
 {%     if port_channel_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
    pim ipv4 sparse-mode
+{%     endif %}
+{%     if port_channel_interface.pim.ipv4.border_router is arista.avd.defined(true) %}
+   pim ipv4 border-router
 {%     endif %}
 {%     if port_channel_interface.pim.ipv4.dr_priority is arista.avd.defined %}
    pim ipv4 dr-priority {{ port_channel_interface.pim.ipv4.dr_priority }}

@@ -5,8 +5,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ArBGP is configured and operating",
-    "custom_field": "ArBGP"
+    "description": "Verifies the configured routing protocol model.",
+    "custom_field": "Routing protocol model: multi-agent"
   },
   {
     "name": "dc1-spine1",
@@ -14,8 +14,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.0.3"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.0.3"
   },
   {
     "name": "dc1-spine1",
@@ -23,8 +23,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.0.4"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.0.4"
   },
   {
     "name": "dc1-spine1",
@@ -32,8 +32,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "custom_field": "bgp_neighbor: 10.255.0.5"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.0.5"
   },
   {
     "name": "dc1-spine1",
@@ -41,8 +41,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.1"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.1"
   },
   {
     "name": "dc1-spine1",
@@ -50,8 +50,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.5"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.5"
   },
   {
     "name": "dc1-spine1",
@@ -59,8 +59,44 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "custom_field": "bgp_neighbor: 10.255.255.9"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.9"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 123.1.1.10"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 123.1.1.11"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv6 Unicast Peer: fd5a:fe45:8831:06c5::a"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv6 Unicast Peer: fd5a:fe45:8831:06c5::b"
   },
   {
     "name": "dc1-spine1",

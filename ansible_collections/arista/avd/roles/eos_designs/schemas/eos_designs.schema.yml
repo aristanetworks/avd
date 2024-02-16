@@ -4416,6 +4416,10 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items/
+      validate_state:
+        type: bool
+        description: Set to false to disable interface validation by the `eos_validate_state`
+          role.
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final
@@ -7597,16 +7601,11 @@ $defs:
           - str
           min: 1
           max: 4094
-        set_default_route:
+        dhcp_accept_default_route:
           type: bool
           default: false
-          description: 'Insert a default route to the `peer_ip` if `ip` is an ip address
-
-            or configure to accept a default route from DHCP if `ip` is `dhcp`.
-
-
-            AVD will error out if set to true, `ip` is an ip address and `peer_ip`
-            is missing.'
+          description: Accept a default route from DHCP if `ip_address` is set to
+            `dhcp`.
         enabled:
           type: bool
           default: true
@@ -7625,6 +7624,17 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        static_routes:
+          description: Configure IPv4 static routes pointing to `peer_ip`.
+          type: list
+          min_length: 1
+          items:
+            type: dict
+            keys:
+              prefix:
+                type: str
+                required: true
+                description: IPv4_network/Mask
         qos_profile:
           type: str
           description: QOS service profile.
@@ -7814,6 +7824,12 @@ $defs:
                       'node1 interface2' ].
                     items:
                       type: str
+                  channel_id:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Port-Channel ID. If no channel_id is specified, an
+                      id is generated from the first switch port in the port channel.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in

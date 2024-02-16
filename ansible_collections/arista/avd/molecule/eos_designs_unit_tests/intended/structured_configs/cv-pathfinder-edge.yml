@@ -495,12 +495,15 @@ metadata:
     interfaces:
     - name: Ethernet1
       carrier: ATT
+      circuit_id: '666'
       pathgroup: INET
     - name: Ethernet2
       carrier: Colt
+      circuit_id: '10555'
       pathgroup: MPLS
     - name: Ethernet3
       carrier: Comcast-5G
+      circuit_id: AF830
       pathgroup: LTE
     pathfinders:
     - vtep_ip: 192.168.144.1

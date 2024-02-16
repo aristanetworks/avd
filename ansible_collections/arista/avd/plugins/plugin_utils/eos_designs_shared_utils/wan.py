@@ -110,11 +110,14 @@ class WanMixin:
                 local_carriers_dict[interface_carrier]["interfaces"] = []
 
             local_carriers_dict[interface_carrier]["interfaces"].append(
-                {
-                    "name": get(interface, "name", required=True),
-                    "ip_address": self.get_public_ip_for_wan_interface(interface),
-                    "connected_to_pathfinder": get(interface, "connected_to_pathfinder", default=True),
-                }
+                strip_empties_from_dict(
+                    {
+                        "name": get(interface, "name", required=True),
+                        "ip_address": self.get_public_ip_for_wan_interface(interface),
+                        "connected_to_pathfinder": get(interface, "connected_to_pathfinder", default=True),
+                        "wan_circuit_id": get(interface, "wan_circuit_id"),
+                    }
+                )
             )
 
         return list(local_carriers_dict.values())

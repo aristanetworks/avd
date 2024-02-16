@@ -5,6 +5,9 @@ vlan_interfaces:
     description: SVI Description
     vrf: Tenant_B
     ip_address_virtual: 10.2.1.1/24
+    logging:
+      event:
+        link_status: true
     eos_cli: |
       comment
       Comment created from eos_cli under vlan_interfaces.Vlan2001

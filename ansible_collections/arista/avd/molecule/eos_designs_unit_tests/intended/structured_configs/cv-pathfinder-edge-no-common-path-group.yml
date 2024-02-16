@@ -397,4 +397,5 @@ metadata:
     interfaces:
     - name: Ethernet1
       carrier: Inmrasat
+      circuit_id: S512
       pathgroup: Satellite
