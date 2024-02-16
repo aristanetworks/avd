@@ -15330,7 +15330,7 @@
       "properties": {
         "as": {
           "type": "string",
-          "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+          "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
           "title": "As"
         },
         "router_id": {
@@ -15573,7 +15573,7 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               }
             },
@@ -15601,12 +15601,12 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               },
               "local_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Local As"
               },
               "description": {
@@ -15924,12 +15924,12 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               },
               "local_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Local As"
               },
               "as_path": {
@@ -16232,7 +16232,7 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               },
               "peer": {
@@ -18905,7 +18905,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Remote As"
                     }
                   },
@@ -18932,7 +18932,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Remote As"
                     },
                     "password": {
@@ -18992,7 +18992,7 @@
                     },
                     "local_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Local As"
                     },
                     "as_path": {
@@ -19213,7 +19213,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Remote As"
                     },
                     "peer_group": {

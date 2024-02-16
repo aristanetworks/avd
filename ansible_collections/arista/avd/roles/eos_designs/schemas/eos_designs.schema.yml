@@ -112,7 +112,7 @@ keys:
     description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
       to use to configure overlay when "overlay_routing_protocol" == ibgp.
 
-      For asdot notation in YAML inputs, the value *must* be put in quotes to prevent
+      For asdot notation in YAML inputs, the value must be put in quotes, to prevent
       it from being interpreted as a float number.'
     type: str
     convert_types:
@@ -5651,9 +5651,8 @@ $defs:
                       description: 'BGP AS <1-4294967295> or AS number in asdot notation
                         "<1-65535>.<0-65535>".
 
-                        For asdot notation in YAML inputs, the value *must* be put
-                        in quotes to prevent it from being interpreted as a float
-                        number.'
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                     description:
                       type: str
                     password:
@@ -5745,9 +5744,8 @@ $defs:
                       description: 'Local BGP AS <1-4294967295> or AS number in asdot
                         notation "<1-65535>.<0-65535>".
 
-                        For asdot notation in YAML inputs, the value *must* be put
-                        in quotes to prevent it from being interpreted as a float
-                        number.'
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                     weight:
                       type: int
                       convert_types:
@@ -6657,7 +6655,7 @@ $defs:
               table: node-type-bgp-configuration
             description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
 
-              For asdot notation in YAML inputs, the value *must* be put in quotes
+              For asdot notation in YAML inputs, the value must be put in quotes,
               to prevent it from being interpreted as a float number.
 
               Required with eBGP.'
@@ -6798,9 +6796,8 @@ $defs:
                       description: 'Remote Route Server''s BGP AS <1-4294967295> or
                         AS number in asdot notation "<1-65535>.<0-65535>".
 
-                        For asdot notation in YAML inputs, the value *must* be put
-                        in quotes to prevent it from being interpreted as a float
-                        number.'
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                       type: str
                       convert_types:
                       - int
@@ -6863,7 +6860,7 @@ $defs:
 
                   BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
 
-                  For asdot notation in YAML inputs, the value *must* be put in quotes
+                  For asdot notation in YAML inputs, the value must be put in quotes,
                   to prevent it from being interpreted as a float number.'
                 type: str
                 convert_types:
@@ -6894,9 +6891,8 @@ $defs:
                       description: 'Remote IPVPN Peer''s BGP AS <1-4294967295> or
                         AS number in asdot notation "<1-65535>.<0-65535>".
 
-                        For asdot notation in YAML inputs, the value *must* be put
-                        in quotes to prevent it from being interpreted as a float
-                        number.'
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                       type: str
                       required: true
                       convert_types:

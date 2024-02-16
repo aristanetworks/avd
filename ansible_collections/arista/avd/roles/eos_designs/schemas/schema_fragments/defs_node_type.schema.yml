@@ -457,7 +457,7 @@ $defs:
               table: node-type-bgp-configuration
             description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                 Required with eBGP.
             type: str
             convert_types:
@@ -566,7 +566,7 @@ $defs:
                     bgp_as:
                       description: |-
                         Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                        For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                       type: str
                       convert_types:
                         - int
@@ -621,7 +621,7 @@ $defs:
                 description: |-
                   Local BGP AS applied to peering with IPVPN remote peers.
                   BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                  For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                  For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                 type: str
                 convert_types:
                   - int
@@ -649,7 +649,7 @@ $defs:
                     bgp_as:
                       description: |-
                         Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                        For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                       type: str
                       required: true
                       convert_types:

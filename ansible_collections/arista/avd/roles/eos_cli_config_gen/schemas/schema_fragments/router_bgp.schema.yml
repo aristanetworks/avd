@@ -13,7 +13,7 @@ keys:
         type: str
         description: |-
           BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-          For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+          For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
         convert_types:
           - int
       router_id:
@@ -170,7 +170,7 @@ keys:
                 - int
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
       peer_groups:
         type: list
         primary_key: name
@@ -189,14 +189,14 @@ keys:
               type: str
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
               convert_types:
                 - int
             local_as:
               type: str
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
               convert_types:
                 - int
             description:
@@ -397,14 +397,14 @@ keys:
               type: str
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
               convert_types:
                 - int
             local_as:
               type: str
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
               convert_types:
                 - int
             as_path:
@@ -586,7 +586,7 @@ keys:
                 - int
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
             peer:
               type: str
               description: Key only used for documentation or validation purposes
@@ -1939,7 +1939,7 @@ keys:
                     type: str
                     description: |-
                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                      For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                      For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     convert_types:
                       - int
             neighbors:
@@ -1959,7 +1959,7 @@ keys:
                     type: str
                     description: |-
                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                      For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                      For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     convert_types:
                       - int
                   password:
@@ -1993,7 +1993,7 @@ keys:
                     type: str
                     description: |-
                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                      For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                      For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     convert_types:
                       - int
                   as_path:
@@ -2134,7 +2134,7 @@ keys:
                     type: str
                     description: |-
                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                      For asdot notation in YAML inputs, the value *must* be put in quotes to prevent it from being interpreted as a float number.
+                      For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     convert_types:
                       - int
                   peer_group:
