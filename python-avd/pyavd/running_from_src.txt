@@ -1,2 +1,2 @@
 This file is not included when PyAVD is built as a Python package, so the presence of it will signal whether PyAVD is running from source or not.
-This can be use to run special logic to recompile schemas, templates etc as needed.
+This can be used to run special logic to recompile schemas, templates etc as needed.
