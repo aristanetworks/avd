@@ -10897,6 +10897,51 @@
       },
       "title": "Monitor Connectivity"
     },
+    "monitor_layer1": {
+      "type": "object",
+      "description": "Enable SYSLOG messages on transceiver SMBus communication failures.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable monitor layer1",
+          "title": "Enabled"
+        },
+        "logging_mac_fault": {
+          "type": "boolean",
+          "description": "Enable MAC fault logging.",
+          "title": "Logging MAC Fault"
+        },
+        "logging_transceiver": {
+          "type": "object",
+          "description": "Configure transceiver monitoring logging.",
+          "properties": {
+            "dom": {
+              "type": "boolean",
+              "description": "Enable transceiver Digital Optical Monitoring (DOM) logging.",
+              "title": "Dom"
+            },
+            "communication": {
+              "type": "boolean",
+              "description": "Enable transceiver SMBus fail and reset logging.",
+              "title": "Communication"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Logging Transceiver"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Monitor Layer1"
+    },
     "monitor_sessions": {
       "type": "array",
       "items": {

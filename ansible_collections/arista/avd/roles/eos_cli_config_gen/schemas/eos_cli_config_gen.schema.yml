@@ -6423,6 +6423,27 @@ keys:
                     type: str
                   url:
                     type: str
+  monitor_layer1:
+    type: dict
+    description: Enable SYSLOG messages on transceiver SMBus communication failures.
+    keys:
+      enabled:
+        type: bool
+        required: true
+        description: Enable monitor layer1
+      logging_mac_fault:
+        type: bool
+        description: Enable MAC fault logging.
+      logging_transceiver:
+        type: dict
+        description: Configure transceiver monitoring logging.
+        keys:
+          dom:
+            type: bool
+            description: Enable transceiver Digital Optical Monitoring (DOM) logging.
+          communication:
+            type: bool
+            description: Enable transceiver SMBus fail and reset logging.
   monitor_sessions:
     type: list
     convert_types:
