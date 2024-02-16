@@ -29,7 +29,6 @@ policy_maps:
           police:
             cir:
               cir_rate: 12
-              cir_unit: kbps
               bc: 267
               bc_unit: kbytes
     - name: PM_REPLICATION_LD3
