@@ -22,3 +22,4 @@ ansible-doc-extractor>=0.1.10
 tox
 pydantic>=2.3.0
 aristaproto[compiler]>=0.1.1
+pyavd==4.6.0

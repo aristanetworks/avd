@@ -31,6 +31,10 @@ def _translate_version(version: str, pyavd_prerelease: str) -> str:
 
 
 def _insert_version() -> None:
+    """
+    Updates __version__ in pyavd's __init__.py.
+    Updates requirements.txt and requirements-dev.py with pyavd==<version>.
+    """
     with open(Path(__file__).parents[2].joinpath("ansible_collections/arista/avd/galaxy.yml"), encoding="UTF-8") as galaxy_file:
         ansible_version = dict(safe_load(galaxy_file)).get("version")
 
@@ -52,6 +56,17 @@ def _insert_version() -> None:
 
     with open(Path(__file__).parents[1].joinpath("pyavd/__init__.py"), mode="w", encoding="UTF-8") as init_file:
         init_file.writelines(init_lines)
+
+    # Update requirements files.
+    for req_file in ["requirements.txt", "requirements-dev.txt"]:
+        req_path = Path(__file__).parents[2].joinpath(f"ansible_collections/arista/avd/{req_file}")
+        req = req_path.read_text(encoding="UTF-8")
+        req_lines = req.split("\n")
+        for index, line in enumerate(req_lines):
+            if line.startswith("pyavd=="):
+                req_lines[index] = f"pyavd=={version}"
+                req_path.write_text("\n".join(req_lines), encoding="UTF-8")
+                break
 
 
 def get_requires_for_build_wheel(config_settings=None):
