@@ -69,27 +69,30 @@ policy-map type pbr PM_PBR_BREAKOUT
 
 ##### PM_REPLICATION_LD
 
-| class | Set | Value |
-| ----- | --- | ----- |
-| CM_REPLICATION_LD | dscp | af11 |
-| CM_REPLICATION_LD | traffic_class | 2 |
-| CM_REPLICATION_LD | drop_precedence | 1 |
-| CM_REPLICATION_LD_2 | dscp | af11 |
-| CM_REPLICATION_LD_2 | traffic_class | 2 |
+| class | Set | Value | Police |
+| ----- | --- | ----- | ------ |
+| CM_REPLICATION_LD | dscp | af11 | - |
+| CM_REPLICATION_LD | traffic_class | 2 | - |
+| CM_REPLICATION_LD | drop_precedence | 1 | - |
+| CM_REPLICATION_LD | - | - | rate 10 kbps burst-size 260 kbytes action set drop-precedence rate 30 kbps 270 kbytes |
+| CM_REPLICATION_LD_2 | dscp | af11 | - |
+| CM_REPLICATION_LD_2 | traffic_class | 2 | - |
 
 ##### PM_REPLICATION_LD2
 
-| class | Set | Value |
-| ----- | --- | ----- |
-| CM_REPLICATION_LD | dscp | af11 |
-| CM_REPLICATION_LD | cos | 4 |
+| class | Set | Value | Police |
+| ----- | --- | ----- | ------ |
+| CM_REPLICATION_LD | dscp | af11 | - |
+| CM_REPLICATION_LD | cos | 4 | - |
+| CM_REPLICATION_LD | - | - | police cir 12 bps bc 267 kbytes |
 
 ##### PM_REPLICATION_LD3
 
-| class | Set | Value |
-| ----- | --- | ----- |
-| CM_REPLICATION_LD | dscp | af11 |
-| CM_REPLICATION_LD | cos | 6 |
+| class | Set | Value | Police |
+| ----- | --- | ----- | ------ |
+| CM_REPLICATION_LD | dscp | af11 | - |
+| CM_REPLICATION_LD | cos | 6 | - |
+| CM_REPLICATION_LD | - | - | rate 10 kbps burst-size 260 kbytes |
 
 #### QOS Policy Maps Device Configuration
 
