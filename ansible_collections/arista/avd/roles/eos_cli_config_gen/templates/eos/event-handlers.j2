@@ -10,18 +10,16 @@
 event-handler {{ handler.name }}
 {%         if handler.trigger is arista.avd.defined %}
 {%             if handler.trigger is arista.avd.defined("on-maintenance")
-                  and handler.trigger_on_maintenance is arista.avd.defined
                   and handler.trigger_on_maintenance.operation is arista.avd.defined
                   and handler.trigger_on_maintenance.stage is arista.avd.defined %}
 {%                 set trigger_on_manitenance_cli =  "trigger " ~ handler.trigger ~ " " ~ handler.trigger_on_maintenance.operation %}
 {%                 if handler.trigger_on_maintenance.bgp is arista.avd.defined %}
-{%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " bgp " %}
 {%                     if handler.trigger_on_maintenance.bgp.neighbor_address_ipv4 is arista.avd.defined %}
-{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ handler.trigger_on_maintenance.bgp.neighbor_address_ipv4 %}
+{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " bgp " ~ handler.trigger_on_maintenance.bgp.neighbor_address_ipv4 %}
 {%                     elif handler.trigger_on_maintenance.bgp.neighbor_address_ipv6 is arista.avd.defined %}
-{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ handler.trigger_on_maintenance.bgp.neighbor_address_ipv6 %}
+{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " bgp " ~ handler.trigger_on_maintenance.bgp.neighbor_address_ipv6 %}
 {%                     elif handler.trigger_on_maintenance.bgp.peer_group_name is arista.avd.defined %}
-{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ handler.trigger_on_maintenance.bgp.peer_group_name %}
+{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " bgp " ~ handler.trigger_on_maintenance.bgp.peer_group_name %}
 {%                     endif %}
 {%                 elif handler.trigger_on_maintenance.interface.interface_type is arista.avd.defined and handler.trigger_on_maintenance.interface.interface_number is arista.avd.defined %}
 {%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " interface " ~ handler.trigger_on_maintenance.interface.interface_type ~ " " ~ handler.trigger_on_maintenance.interface.interface_number %}

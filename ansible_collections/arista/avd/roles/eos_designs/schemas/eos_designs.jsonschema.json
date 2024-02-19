@@ -4807,6 +4807,7 @@
             "title": "Trigger"
           },
           "trigger_on_maintenance": {
+            "description": "Settings required for trigger 'on-maintenance'.",
             "type": "object",
             "properties": {
               "operation": {
@@ -4908,7 +4909,8 @@
               }
             },
             "required": [
-              "operation"
+              "operation",
+              "stage"
             ],
             "additionalProperties": false,
             "patternProperties": {
@@ -21261,6 +21263,7 @@
                       "title": "Trigger"
                     },
                     "trigger_on_maintenance": {
+                      "description": "Settings required for trigger 'on-maintenance'.",
                       "type": "object",
                       "properties": {
                         "operation": {
@@ -21362,7 +21365,8 @@
                         }
                       },
                       "required": [
-                        "operation"
+                        "operation",
+                        "stage"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
