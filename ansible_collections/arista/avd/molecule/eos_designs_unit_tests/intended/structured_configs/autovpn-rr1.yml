@@ -237,6 +237,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
+  mtu: 9214
   ip_address: 192.168.131.1/32
 vxlan_interface:
   Vxlan1:
