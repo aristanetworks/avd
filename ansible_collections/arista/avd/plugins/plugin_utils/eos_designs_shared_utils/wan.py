@@ -359,7 +359,7 @@ class WanMixin:
         )
 
     @cached_property
-    def wan_ha_flow_tracker_name(self: SharedUtils) -> str:
+    def wan_flow_tracker_name(self: SharedUtils) -> str:
         """
         Return the name of the WAN flow tracking object
         Used in both network services, underlay and overlay python modules.
@@ -463,3 +463,9 @@ class WanMixin:
             ip_addresses.append(f"{ip_address}/{prefix_length}")
 
         return ip_addresses
+
+    def generate_lb_policy_name(self: SharedUtils, name: str) -> str:
+        """
+        Returns LB-{name}
+        """
+        return f"LB-{name}"
