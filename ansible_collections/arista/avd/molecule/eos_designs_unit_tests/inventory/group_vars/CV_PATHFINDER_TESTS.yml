@@ -243,6 +243,10 @@ tenants:
     vrfs:
       - name: default
         vrf_id: 1
+        static_routes:
+          - destination_address_prefix: 66.66.66.0/24
+            gateway: 172.17.0.0
+            nodes: [cv-pathfinder-edge]
       - name: PROD
         vrf_id: 42
         svis:
