@@ -375,6 +375,11 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+            - str
+            default: 1
       wan_rr_overlay_peers:
         type: dict
         documentation_options:
@@ -402,6 +407,11 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+            - str
+            default: 1
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
