@@ -27,6 +27,8 @@ class DpsInterfacesMixin(UtilsMixin):
         dps1 = {
             "name": "Dps1",
             "description": "DPS Interface",
+            # Recommended MTU value to avoid double fragmentation in certain cases
+            "mtu": 9214,
         }
 
         if self.shared_utils.vtep_loopback.lower().startswith("dps"):
