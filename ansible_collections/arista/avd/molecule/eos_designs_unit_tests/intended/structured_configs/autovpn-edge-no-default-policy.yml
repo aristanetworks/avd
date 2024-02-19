@@ -181,6 +181,15 @@ ip_security:
     mode: transport
   key_controller:
     profile: AUTOVPN
+management_security:
+  ssl_profiles:
+  - name: SSL-STUN
+    certificate:
+      file: SSL-STUN.crt
+      key: SSL-STUN.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
 router_bfd:
   multihop:
     interval: 300
@@ -235,6 +244,7 @@ stun:
     server_profiles:
     - name: INET-autovpn-rr3-Ethernet1
       ip_address: 10.7.7.7
+      ssl_profile: SSL-STUN
 application_traffic_recognition:
   application_profiles:
   - name: APP-PROFILE-CONTROL-PLANE

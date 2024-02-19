@@ -24856,6 +24856,18 @@
               }
             },
             "title": "Path Groups"
+          },
+          "disable_stun_ssl": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set this to true in case of AutoVPN or cv-pathfinder without CloudVision.\nIn case of AutoVPN if this is set to `false`, user needs to deploy the ssl certificates manually into devices.",
+            "title": "Disable STUN SSL"
+          },
+          "stun_ssl_profile": {
+            "type": "string",
+            "description": "stun_ssl_profile will be used as the name for the certificate and keys used for communication with stun server.\nWhen using CV Pathfinder integration with CVaaS, the certificates and keys will be created by CVP and pushed to respective devices.",
+            "default": "SSL-STUN",
+            "title": "STUN SSL Profile"
           }
         },
         "additionalProperties": false,

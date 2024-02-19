@@ -197,6 +197,15 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+management_security:
+  ssl_profiles:
+  - name: profileA
+    certificate:
+      file: profileA.crt
+      key: profileA.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
 router_adaptive_virtual_topology:
   topology_role: pathfinder
   profiles:
@@ -383,6 +392,7 @@ stun:
     - Ethernet1
     - Ethernet2
     - Ethernet3
+    ssl_profile: profileA
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO

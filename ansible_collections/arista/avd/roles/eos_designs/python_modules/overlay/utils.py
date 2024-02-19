@@ -275,11 +275,15 @@ class UtilsMixin:
         """
         stun_server_profiles = {}
         for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
+            ssl_profile = {}
+            if not get(data, "disable_stun_ssl"):
+                ssl_profile = {"ssl_profile": get(data, "stun_ssl_profile", default="SSL-STUN")}
             for path_group in data.get("wan_path_groups", []):
                 stun_server_profiles.setdefault(path_group["name"], []).extend(
                     {
                         "name": self._stun_server_profile_name(wan_route_server, path_group["name"], get(interface_dict, "name", required=True)),
                         "ip_address": get(interface_dict, "ip_address", required=True).split("/")[0],
+                        **ssl_profile,
                     }
                     for interface_dict in get(path_group, "interfaces", required=True)
                 )

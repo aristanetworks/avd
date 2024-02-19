@@ -277,7 +277,7 @@ class WanMixin:
         """
         Return a dict keyed by Wan RR based on the the wan_mode type with only the path_groups the router should connect to.
 
-        It the RR is part of the inventory, the peer_facts are read..
+        If the RR is part of the inventory, the peer_facts are read..
         If any key is specified in the variables, it overwrites whatever is in the peer_facts.
 
         If no peer_fact is found the variables are required in the inventory.
@@ -293,10 +293,10 @@ class WanMixin:
             if wan_rs == self.hostname:
                 # Don't add yourself
                 continue
-
             if (peer_facts := self.get_peer_facts(wan_rs, required=False)) is not None:
                 # Found a matching server in inventory
                 bgp_as = peer_facts.get("bgp_as")
+
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.bgp_as:
                     raise AristaAvdError(f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs} is different from our own: {self.bgp_as}.")
@@ -333,7 +333,11 @@ class WanMixin:
             wan_rs_result_dict = {
                 "vtep_ip": vtep_ip,
                 "wan_path_groups": [path_group for path_group in wan_path_groups if self.should_connect_to_wan_rs([path_group["name"]])],
+                "disable_stun_ssl": get(wan_rs_dict, "disable_stun_ssl", default=False),
             }
+
+            if ssl_profile := get(wan_rs_dict, "stun_ssl_profile"):
+                wan_rs_result_dict["stun_ssl_profile"] = ssl_profile
 
             # If no common path-group then skip
             # TODO - this may need to change when `import` path-groups is available
@@ -493,3 +497,34 @@ class WanMixin:
         Returns LB-{name}
         """
         return f"LB-{name}"
+
+    def stun_ssl_profiles(self: SharedUtils) -> list:
+        """
+        Returns the ssl profile names for server or client.
+        A stun server can have only one ssl profile now but a client can have
+        multiple depending on the server it connects to.
+        """
+
+        if not get(self.hostvars, "wan_route_servers", default=[]) or not self.is_wan_router:
+            return []
+
+        default_ssl_profile = "SSL-STUN"
+        ssl_profiles = []
+        # Only one stun ssl profile is associated to a server.
+        if self.is_wan_server:
+            wan_route_servers_list = get(self.hostvars, "wan_route_servers", default=[])
+            for wan_rs in wan_route_servers_list:
+                if wan_rs.get("hostname") == self.hostname:
+                    if get(wan_rs, "disable_stun_ssl", default=False):
+                        return None
+                    ssl_profiles = [get(wan_rs, "stun_ssl_profile", default=default_ssl_profile)]
+        # return the ssl profiles associated to pathfinders to which this device should connect to.
+        elif self.is_wan_client:
+            if wan_route_servers := self.filtered_wan_route_servers:
+                for wan_rs in list(wan_route_servers.values()):
+                    if get(wan_rs, "disable_stun_ssl", default=False):
+                        continue
+                    ssl_profile = get(wan_rs, "stun_ssl_profile", default=default_ssl_profile)
+                    if ssl_profile and ssl_profile not in ssl_profiles:
+                        ssl_profiles.append(ssl_profile)
+        return ssl_profiles

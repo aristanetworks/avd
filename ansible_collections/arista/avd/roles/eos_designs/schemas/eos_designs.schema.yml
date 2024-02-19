@@ -3689,6 +3689,22 @@ keys:
                       type: str
                       description: The public IP address of the Route Reflector for
                         this path-group.
+        disable_stun_ssl:
+          type: bool
+          default: false
+          description: 'Set this to true in case of AutoVPN or cv-pathfinder without
+            CloudVision.
+
+            In case of AutoVPN if this is set to `false`, user needs to deploy the
+            ssl certificates manually into devices.'
+        stun_ssl_profile:
+          type: str
+          description: 'stun_ssl_profile will be used as the name for the certificate
+            and keys used for communication with stun server.
+
+            When using CV Pathfinder integration with CVaaS, the certificates and
+            keys will be created by CVP and pushed to respective devices.'
+          default: SSL-STUN
   wan_transit:
     documentation_options:
       table: wan-settings
@@ -7777,6 +7793,14 @@ $defs:
 
               This setting is useful on virtual Route Reflectors and Pathfinders where
               more CPU cores should be allocated for control plane.'
+          ssl_profile:
+            type: str
+            description: 'ssl_profile_name will be used as a name for cert,
+
+              keys which will be internally created by CVP and pushed to respective
+              devices.
+
+              Used for communication with stun server.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
