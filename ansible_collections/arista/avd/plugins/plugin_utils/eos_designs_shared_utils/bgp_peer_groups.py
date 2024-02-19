@@ -53,5 +53,6 @@ class BgpPeerGroupsMixin:
             }
             if key == "wan_overlay_peers" and get(self.hostvars, f"bgp_peer_groups.{key}") is not None:
                 bgp_peer_groups[key]["listen_range_prefixes"] = get(self.hostvars, f"bgp_peer_groups.{key}.listen_range_prefixes", required=True)
-
+            if key == "wan_overlay_peers" or key == "wan_rr_overlay_peers":
+                bgp_peer_groups[key]["ttl_maximum_hops"] = get(self.hostvars, f"bgp_peer_groups.{key}.ttl_maximum_hops", default=1)
         return bgp_peer_groups

@@ -309,7 +309,7 @@ class StudioMixin:
         Returns:
             TopologyInput objects for the requested devices.
         """
-        topology_inputs = []
+        topology_inputs: list[TopologyInput] = []
         studio_inputs: dict = await self.get_studio_inputs(
             studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={}, time=time, timeout=timeout
         )
@@ -354,7 +354,7 @@ class StudioMixin:
         self: CVClient,
         workspace_id: str,
         device_inputs: list[tuple[str, str]],
-        timeout: float = 10.0,
+        timeout: float = 30.0,
     ) -> list[InputsConfig]:
         """
         TODO: Once the topology studio inputs API is public, this function can be replaced by the _future variant.
@@ -364,10 +364,10 @@ class StudioMixin:
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            device_inputs: List of Tuples with the format (<device_id>, <hostname>).
+            device_inputs: List of Tuples with the format (<device_id>, <hostname>, <system_mac>).
             timeout: Timeout in seconds.
         """
-        device_inputs_by_id = {device_id: {"hostname": hostname} for device_id, hostname in device_inputs}
+        device_inputs_by_id = {device_id: {"hostname": hostname, "macAddress": system_mac} for device_id, hostname, system_mac in device_inputs}
 
         # We need to get all the devices to make sure we get the correct index of devices.
         studio_inputs: dict = await self.get_studio_inputs(studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={}, timeout=timeout)
@@ -384,13 +384,31 @@ class StudioMixin:
 
             # Update the given fields for the device and submit a separate set request for this device.
             device_info: dict = device_entry.get("inputs", {}).get("device", {})
-            device_info.update(device_inputs_by_id[device_id])
+            device_info.update(device_inputs_by_id.pop(device_id))
             coroutines.append(
                 self.set_studio_inputs(
                     studio_id=TOPOLOGY_STUDIO_ID,
                     workspace_id=workspace_id,
                     input_path=["devices", str(device_index), "inputs", "device"],
                     inputs=device_info,
+                    timeout=timeout,
+                )
+            )
+        index_offset = len(studio_inputs.get("devices", []))
+        # Add any devices not part of the topology studio already.
+        for index, device in enumerate(device_inputs_by_id.items()):
+            device_id, device_inputs = device
+            device_index = index + index_offset
+            device_entry = {
+                "inputs": {"device": {**device_inputs, "modelName": "", "interfaces": []}},
+                "tags": {"query": f"device:{device_id}"},
+            }
+            coroutines.append(
+                self.set_studio_inputs(
+                    studio_id=TOPOLOGY_STUDIO_ID,
+                    workspace_id=workspace_id,
+                    input_path=["devices", str(device_index)],
+                    inputs=device_entry,
                     timeout=timeout,
                 )
             )

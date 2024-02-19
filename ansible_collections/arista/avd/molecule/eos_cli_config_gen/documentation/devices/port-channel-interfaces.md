@@ -715,9 +715,9 @@ interface Port-Channel131
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Port-Channel99 | - | IPv4 | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Port-Channel99 | - | IPv4 | - | 200 | - |
 
 ## Quality Of Service
 
