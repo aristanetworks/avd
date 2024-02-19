@@ -7,6 +7,18 @@
     msg: arista.avd.deploy_to_cv is in 'preview mode'. Set 'deploy_to_cv_accept_preview' to use.
   when: deploy_to_cv_accept_preview is not arista.avd.defined
 
+- name: Verify Requirements
+  tags: [always, avd_req]
+  delegate_to: localhost
+  when: avd_requirements is not defined
+  arista.avd.verify_requirements:
+    requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
+  vars:
+    requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
+  run_once: true
+  register: avd_requirements
+
 - name: Deploy device configurations and tags to CloudVision
   run_once: true
   delegate_to: localhost
@@ -24,7 +36,7 @@
     workspace:
       name: "{{ cv_workspace_name | arista.avd.default }}"
       description: "{{ cv_workspace_description | arista.avd.default }}"
-      requested_state: "{{ 'submitted' if cv_submit_workspace else 'pending' }}"
+      requested_state: "{{ 'submitted' if cv_submit_workspace else 'built' }}"
       force: "{{ cv_submit_workspace_force }}"
     change_control:
       name: "{{ cv_change_control_name | arista.avd.default }}"

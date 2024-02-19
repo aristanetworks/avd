@@ -2082,6 +2082,10 @@
           "type": "boolean",
           "title": "Protocol LLDP Bypass"
         },
+        "protocol_bpdu_bypass": {
+          "type": "boolean",
+          "title": "Protocol Bpdu Bypass"
+        },
         "dynamic_authorization": {
           "type": "boolean",
           "title": "Dynamic Authorization"
@@ -3481,6 +3485,11 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
+                  "border_router": {
+                    "type": "boolean",
+                    "description": "Configure PIM border router. EOS default is false.",
+                    "title": "Border Router"
+                  },
                   "dr_priority": {
                     "type": "integer",
                     "minimum": 0,
@@ -7411,6 +7420,11 @@
                   "tunnel"
                 ],
                 "title": "Mode"
+              },
+              "flow_parallelization_encapsulation_udp": {
+                "type": "boolean",
+                "description": "Enable flow parallelization.\nWhen enabled, multiple cores are used to parallelize the IPsec encryption and decryption processing.",
+                "title": "Flow Parallelization Encapsulation UDP"
               }
             },
             "additionalProperties": false,
@@ -10883,6 +10897,51 @@
       },
       "title": "Monitor Connectivity"
     },
+    "monitor_layer1": {
+      "type": "object",
+      "description": "Enable SYSLOG messages on transceiver SMBus communication failures.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable monitor layer1",
+          "title": "Enabled"
+        },
+        "logging_mac_fault": {
+          "type": "boolean",
+          "description": "Enable MAC fault logging.",
+          "title": "Logging MAC Fault"
+        },
+        "logging_transceiver": {
+          "type": "object",
+          "description": "Configure transceiver monitoring logging.",
+          "properties": {
+            "dom": {
+              "type": "boolean",
+              "description": "Enable transceiver Digital Optical Monitoring (DOM) logging.",
+              "title": "Dom"
+            },
+            "communication": {
+              "type": "boolean",
+              "description": "Enable transceiver SMBus fail and reset logging.",
+              "title": "Communication"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Logging Transceiver"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Monitor Layer1"
+    },
     "monitor_sessions": {
       "type": "array",
       "items": {
@@ -13209,6 +13268,11 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
+                  "border_router": {
+                    "type": "boolean",
+                    "description": "Configure PIM border router. EOS default is false.",
+                    "title": "Border Router"
+                  },
                   "dr_priority": {
                     "type": "integer",
                     "minimum": 0,
@@ -15315,7 +15379,7 @@
       "properties": {
         "as": {
           "type": "string",
-          "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+          "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
           "title": "As"
         },
         "router_id": {
@@ -15558,7 +15622,7 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               }
             },
@@ -15586,12 +15650,12 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               },
               "local_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Local As"
               },
               "description": {
@@ -15909,12 +15973,12 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               },
               "local_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Local As"
               },
               "as_path": {
@@ -16217,6 +16281,7 @@
               },
               "remote_as": {
                 "type": "string",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               },
               "peer": {
@@ -16828,6 +16893,40 @@
                 "^_.+$": {}
               },
               "title": "Neighbor Default"
+            },
+            "next_hop_mpls_resolution_ribs": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 3,
+              "description": "Specify the RIBs used to resolve MPLS next-hops. The order of this list determines the order of RIB lookups.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "rib_type": {
+                    "type": "string",
+                    "enum": [
+                      "system-connected",
+                      "tunnel-rib-colored",
+                      "tunnel-rib"
+                    ],
+                    "description": "Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use.",
+                    "title": "Rib Type"
+                  },
+                  "rib_name": {
+                    "type": "string",
+                    "description": "The name of the tunnel-rib to use when using 'tunnel-rib' type.",
+                    "title": "Rib Name"
+                  }
+                },
+                "required": [
+                  "rib_type"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Next Hop MPLS Resolution Ribs"
             },
             "peer_groups": {
               "type": "array",
@@ -18855,7 +18954,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Remote As"
                     }
                   },
@@ -18882,7 +18981,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Remote As"
                     },
                     "password": {
@@ -18942,7 +19041,7 @@
                     },
                     "local_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Local As"
                     },
                     "as_path": {
@@ -19163,7 +19262,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Remote As"
                     },
                     "peer_group": {
@@ -20475,6 +20574,511 @@
             "^_.+$": {}
           },
           "title": "Timers"
+        },
+        "set_overload_bit": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "on_startup": {
+              "type": "object",
+              "properties": {
+                "delay": {
+                  "type": "integer",
+                  "description": "Number of seconds.",
+                  "title": "Delay"
+                },
+                "wait_for_bgp": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "timeout": {
+                      "type": "integer",
+                      "description": "Number of seconds.",
+                      "title": "Timeout"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Wait For BGP"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "On Startup"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Set Overload Bit"
+        },
+        "authentication": {
+          "type": "object",
+          "properties": {
+            "both": {
+              "type": "object",
+              "description": "Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.",
+              "properties": {
+                "key_type": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "7",
+                    "8a"
+                  ],
+                  "description": "Configure authentication key type. Default key_id is 0.",
+                  "title": "Key Type"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Password string.",
+                  "title": "Key"
+                },
+                "key_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "Configure authentication key-id.",
+                        "title": "ID"
+                      },
+                      "algorithm": {
+                        "type": "string",
+                        "enum": [
+                          "sha-1",
+                          "sha-224",
+                          "sha-256",
+                          "sha-384",
+                          "sha-512"
+                        ],
+                        "title": "Algorithm"
+                      },
+                      "key_type": {
+                        "type": "string",
+                        "enum": [
+                          "0",
+                          "7",
+                          "8a"
+                        ],
+                        "description": "Configure authentication key type.",
+                        "title": "Key Type"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "Password string.",
+                        "title": "Key"
+                      },
+                      "rfc_5310": {
+                        "description": "SHA digest computation according to rfc5310.",
+                        "type": "boolean",
+                        "title": "Rfc 5310"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "algorithm",
+                      "key_type",
+                      "key"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Key IDs"
+                },
+                "mode": {
+                  "type": "string",
+                  "description": "Authentication mode.",
+                  "enum": [
+                    "md5",
+                    "sha",
+                    "text",
+                    "shared_secret"
+                  ],
+                  "title": "Mode"
+                },
+                "sha": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'sha'.",
+                  "properties": {
+                    "key_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Key ID"
+                    }
+                  },
+                  "required": [
+                    "key_id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Sha"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'shared_secret'.",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "title": "Profile"
+                    },
+                    "algorithm": {
+                      "type": "string",
+                      "enum": [
+                        "md5",
+                        "sha-1",
+                        "sha-224",
+                        "sha-256",
+                        "sha-384",
+                        "sha-512"
+                      ],
+                      "title": "Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
+                "rx_disabled": {
+                  "type": "boolean",
+                  "title": "RX Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Both"
+            },
+            "level_1": {
+              "type": "object",
+              "description": "Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.",
+              "properties": {
+                "key_type": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "7",
+                    "8a"
+                  ],
+                  "description": "Configure authentication key type. Default key_id is 0.",
+                  "title": "Key Type"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Password string.",
+                  "title": "Key"
+                },
+                "key_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "Configure authentication key-id.",
+                        "title": "ID"
+                      },
+                      "algorithm": {
+                        "type": "string",
+                        "enum": [
+                          "sha-1",
+                          "sha-224",
+                          "sha-256",
+                          "sha-384",
+                          "sha-512"
+                        ],
+                        "title": "Algorithm"
+                      },
+                      "key_type": {
+                        "type": "string",
+                        "enum": [
+                          "0",
+                          "7",
+                          "8a"
+                        ],
+                        "description": "Configure authentication key type.",
+                        "title": "Key Type"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "Password string.",
+                        "title": "Key"
+                      },
+                      "rfc_5310": {
+                        "description": "SHA digest computation according to rfc5310.",
+                        "type": "boolean",
+                        "title": "Rfc 5310"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "algorithm",
+                      "key_type",
+                      "key"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Key IDs"
+                },
+                "mode": {
+                  "type": "string",
+                  "description": "Authentication mode.",
+                  "enum": [
+                    "md5",
+                    "sha",
+                    "text",
+                    "shared_secret"
+                  ],
+                  "title": "Mode"
+                },
+                "sha": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'sha'.",
+                  "properties": {
+                    "key_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Key ID"
+                    }
+                  },
+                  "required": [
+                    "key_id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Sha"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'shared_secret'.",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "title": "Profile"
+                    },
+                    "algorithm": {
+                      "type": "string",
+                      "enum": [
+                        "md5",
+                        "sha-1",
+                        "sha-224",
+                        "sha-256",
+                        "sha-384",
+                        "sha-512"
+                      ],
+                      "title": "Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
+                "rx_disabled": {
+                  "type": "boolean",
+                  "title": "RX Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Level 1"
+            },
+            "level_2": {
+              "type": "object",
+              "description": "Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.",
+              "properties": {
+                "key_type": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "7",
+                    "8a"
+                  ],
+                  "description": "Configure authentication key type. Default key_id is 0.",
+                  "title": "Key Type"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Password string.",
+                  "title": "Key"
+                },
+                "key_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "Configure authentication key-id.",
+                        "title": "ID"
+                      },
+                      "algorithm": {
+                        "type": "string",
+                        "enum": [
+                          "sha-1",
+                          "sha-224",
+                          "sha-256",
+                          "sha-384",
+                          "sha-512"
+                        ],
+                        "title": "Algorithm"
+                      },
+                      "key_type": {
+                        "type": "string",
+                        "enum": [
+                          "0",
+                          "7",
+                          "8a"
+                        ],
+                        "description": "Configure authentication key type.",
+                        "title": "Key Type"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "Password string.",
+                        "title": "Key"
+                      },
+                      "rfc_5310": {
+                        "description": "SHA digest computation according to rfc5310.",
+                        "type": "boolean",
+                        "title": "Rfc 5310"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "algorithm",
+                      "key_type",
+                      "key"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Key IDs"
+                },
+                "mode": {
+                  "type": "string",
+                  "description": "Authentication mode.",
+                  "enum": [
+                    "md5",
+                    "sha",
+                    "text",
+                    "shared_secret"
+                  ],
+                  "title": "Mode"
+                },
+                "sha": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'sha'.",
+                  "properties": {
+                    "key_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Key ID"
+                    }
+                  },
+                  "required": [
+                    "key_id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Sha"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'shared_secret'.",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "title": "Profile"
+                    },
+                    "algorithm": {
+                      "type": "string",
+                      "enum": [
+                        "md5",
+                        "sha-1",
+                        "sha-224",
+                        "sha-256",
+                        "sha-384",
+                        "sha-512"
+                      ],
+                      "title": "Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
+                "rx_disabled": {
+                  "type": "boolean",
+                  "title": "RX Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Level 2"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Authentication"
         },
         "advertise": {
           "type": "object",
@@ -25755,6 +26359,11 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
+                  "border_router": {
+                    "type": "boolean",
+                    "description": "Configure PIM border router. EOS default is false.",
+                    "title": "Border Router"
+                  },
                   "dr_priority": {
                     "type": "integer",
                     "minimum": 0,

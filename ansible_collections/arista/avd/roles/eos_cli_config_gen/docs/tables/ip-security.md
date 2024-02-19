@@ -31,6 +31,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time</samp>](## "ip_security.profiles.[].dpd.time") | Integer | Required |  | Min: 10<br>Max: 3600 | Time (in seconds) after which the action is applied. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "ip_security.profiles.[].dpd.action") | String | Required |  | Valid Values:<br>- <code>clear</code><br>- <code>hold</code><br>- <code>restart</code> | Action to apply<br><br>* 'clear': Delete all connections<br>* 'hold': Re-negotiate connection on demand<br>* 'restart': Restart connection immediately<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ip_security.profiles.[].mode") | String |  |  | Valid Values:<br>- <code>transport</code><br>- <code>tunnel</code> | Ipsec mode type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_parallelization_encapsulation_udp</samp>](## "ip_security.profiles.[].flow_parallelization_encapsulation_udp") | Boolean |  |  |  | Enable flow parallelization.<br>When enabled, multiple cores are used to parallelize the IPsec encryption and decryption processing. |
     | [<samp>&nbsp;&nbsp;key_controller</samp>](## "ip_security.key_controller") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "ip_security.key_controller.profile") | String |  |  |  | IPsec profile name to use. |
     | [<samp>&nbsp;&nbsp;hardware_encryption_disabled</samp>](## "ip_security.hardware_encryption_disabled") | Boolean |  | `False` |  | Disable hardware encryption.<br>An SFE restart is needed for this change to take effect. |
@@ -105,6 +106,10 @@
 
           # Ipsec mode type.
           mode: <str; "transport" | "tunnel">
+
+          # Enable flow parallelization.
+          # When enabled, multiple cores are used to parallelize the IPsec encryption and decryption processing.
+          flow_parallelization_encapsulation_udp: <bool>
       key_controller:
 
         # IPsec profile name to use.
