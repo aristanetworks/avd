@@ -44,6 +44,7 @@ keys:
           - on-startup-config
           - on-maintenance
         trigger_on_maintenance:
+          description: Settings required for trigger 'on-maintenance'.
           type: dict
           keys:
             operation:
@@ -64,6 +65,7 @@ keys:
                   type: str
             stage:
               type: str
+              required: true
               valid_values:
               - after
               - before
