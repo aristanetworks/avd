@@ -58,7 +58,7 @@ def _insert_version() -> None:
         init_file.writelines(init_lines)
 
     # Update requirements files.
-    for req_file in ["requirements.txt", "requirements-dev.txt"]:
+    for req_file in ["requirements.txt"]:
         req_path = Path(__file__).parents[2].joinpath(f"ansible_collections/arista/avd/{req_file}")
         req = req_path.read_text(encoding="UTF-8")
         req_lines = req.split("\n")
