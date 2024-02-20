@@ -4,7 +4,6 @@
  that can be found in the LICENSE file.
 #}
 {# eos - monitor telemetry postcard #}
-
 {% if monitor_telemetry_postcard is arista.avd.defined %}
 !
 monitor telemetry postcard policy
@@ -26,8 +25,8 @@ monitor telemetry postcard policy
    profile {{ monitor_telemetry_postcard.profile.name }}
 {%         if monitor_telemetry_postcard.profile.ingress_sample_policy is arista.avd.defined %}
       ingress sample policy {{ monitor_telemetry_postcard.profile.ingress_sample_policy }}
-{%          endif %}
-{%      endif %}
+{%         endif %}
+{%     endif %}
 {%     if monitor_telemetry_postcard.sample_policy is arista.avd.defined %}
 {%         if monitor_telemetry_postcard.sample_policy.name is arista.avd.defined %}
    sample policy {{ monitor_telemetry_postcard.sample_policy.name }}
@@ -43,7 +42,7 @@ monitor telemetry postcard policy
 {%     if monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix1 is arista.avd.defined %}
 {%         set prefix_address = monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix1.prefix_address %}
 {%         set prefix_mask = monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix1.prefix_address %}
-         destination prefix {{ prefix_address }} {{prefix_mask }}
+         destination prefix {{ prefix_address }} {{ prefix_mask }}
 {%     endif %}
 {%     if monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix2 is arista.avd.defined %}
 {%         set prefix_address = monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix2.prefix_address %}
