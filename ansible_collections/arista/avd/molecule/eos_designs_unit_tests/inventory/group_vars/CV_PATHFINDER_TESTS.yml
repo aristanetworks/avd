@@ -101,6 +101,9 @@ wan_edge:
               wan_carrier: Colt
               wan_circuit_id: 10555
               ip_address: 172.15.5.5/31
+              peer_ip: 172.16.5.4
+              static_routes:
+                - prefix: 172.16.0.0/16
             - name: Ethernet3
               wan_carrier: Comcast-5G
               wan_circuit_id: AF830

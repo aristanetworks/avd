@@ -36,6 +36,7 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   - source_protocol: static
+    route_map: RM-STATIC-2-BGP
   neighbors:
   - ip_address: 172.17.0.0
     peer_group: IPv4-UNDERLAY-PEERS
@@ -274,6 +275,20 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+- name: RM-STATIC-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-STATIC-VRF-DEFAULT
+    set:
+    - extcommunity soo 192.168.42.1:511 additive
+static_routes:
+- destination_address_prefix: 172.16.0.0/16
+  gateway: 172.16.5.4
+- destination_address_prefix: 66.66.66.0/24
+  gateway: 172.17.0.0
+  vrf: default
 flow_tracking:
   hardware:
     trackers:
@@ -543,10 +558,6 @@ application_traffic_recognition:
     - name: CONTROL-PLANE-APP-DEST-PREFIXES
       prefix_values:
       - 192.168.144.1/32
-static_routes:
-- destination_address_prefix: 66.66.66.0/24
-  gateway: 172.17.0.0
-  vrf: default
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

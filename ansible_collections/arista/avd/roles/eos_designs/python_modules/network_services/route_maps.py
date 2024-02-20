@@ -96,7 +96,12 @@ class RouteMapsMixin(UtilsMixin):
             return None
 
         route_maps = strip_empties_from_list(
-            [self._evpn_export_vrf_default_route_map(), self._bgp_underlay_peers_route_map(), self._redistribute_connected_to_bgp_route_map()]
+            [
+                self._evpn_export_vrf_default_route_map(),
+                self._bgp_underlay_peers_route_map(),
+                self._redistribute_connected_to_bgp_route_map(),
+                self._redistribute_static_to_bgp_route_map(),
+            ]
         )
 
         return route_maps or None
@@ -251,3 +256,22 @@ class RouteMapsMixin(UtilsMixin):
             return None
 
         return {"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers}
+
+    def _redistribute_static_to_bgp_route_map(self) -> dict | None:
+        """
+        Append network services relevant entries to the route-map used to redistribute static routes to BGP
+        """
+        if not (self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]):
+            return None
+
+        return {
+            "name": "RM-STATIC-2-BGP",
+            "sequence_numbers": [
+                {
+                    "sequence": 10,
+                    "type": "permit",
+                    "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
+                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                }
+            ],
+        }
