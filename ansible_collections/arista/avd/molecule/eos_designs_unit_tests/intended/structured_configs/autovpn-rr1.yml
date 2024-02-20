@@ -27,6 +27,7 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
+    ttl_maximum_hops: 1
     route_reflector_client: true
   - name: WAN-RR-OVERLAY-PEERS
     type: wan
@@ -35,6 +36,7 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
+    ttl_maximum_hops: 1
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -121,12 +123,19 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.31.1:0 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
-  - sequence: 30
+  - sequence: 10
     type: permit
     match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    - extcommunity ECL-EVPN-SOO
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.31.1:0
 ip_security:
   ike_policies:
   - name: AUTOVPN-IKE
@@ -167,7 +176,6 @@ router_path_selection:
     ipsec_profile: AUTOVPN
   - name: LTE
     id: 102
-    ipsec_profile: AUTOVPN
   peer_dynamic_source: stun
   load_balance_policies:
   - name: LB-CONTROL-PLANE-PROFILE
@@ -235,6 +243,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
+  mtu: 9214
   ip_address: 192.168.131.1/32
 vxlan_interface:
   Vxlan1:

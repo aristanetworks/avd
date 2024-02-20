@@ -45,6 +45,9 @@ router_bgp:
     neighbor_default:
       encapsulation: mpls
       next_hop_self_source_interface: Loopback0
+    neighbors:
+      - ip_address: 192.168.255.3
+        activate: true
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
         activate: true

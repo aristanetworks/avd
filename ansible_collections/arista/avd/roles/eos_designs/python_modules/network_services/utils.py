@@ -199,6 +199,8 @@ class UtilsMixin:
     def _wan_control_plane_application_profile(self) -> str:
         """
         Control plane application profile name
+
+        TODO: make this configurable
         """
         return "CONTROL-PLANE-APPLICATION-PROFILE"
 
@@ -249,6 +251,7 @@ class UtilsMixin:
                 }
 
                 wan_load_balance_policy["path_groups"].append(path_group)
+
         if not at_least_one_priority_1_found:
             raise AristaAvdError(f"At least one path-group must be configured with preference '1' or 'preferred' for {context_path}'.")
 

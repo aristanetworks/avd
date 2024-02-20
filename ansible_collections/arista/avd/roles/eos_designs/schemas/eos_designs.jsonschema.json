@@ -400,7 +400,7 @@
       "title": "BFD Multihop"
     },
     "bgp_as": {
-      "description": "AS number to use to configure overlay when \"overlay_routing_protocol\" == ibgp.",
+      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\" to use to configure overlay when \"overlay_routing_protocol\" == ibgp.\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
       "type": "string",
       "title": "BGP As"
     },
@@ -528,12 +528,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Local As"
                 },
                 "description": {
@@ -874,12 +874,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Local As"
                 },
                 "description": {
@@ -1220,12 +1220,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Local As"
                 },
                 "description": {
@@ -1566,12 +1566,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Local As"
                 },
                 "description": {
@@ -1912,12 +1912,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Local As"
                 },
                 "description": {
@@ -2258,12 +2258,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Local As"
                 },
                 "description": {
@@ -2604,12 +2604,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Local As"
                 },
                 "description": {
@@ -2960,12 +2960,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Local As"
                 },
                 "description": {
@@ -3263,6 +3263,11 @@
                 "^_.+$": {}
               },
               "title": "Structured Config"
+            },
+            "ttl_maximum_hops": {
+              "type": "integer",
+              "default": 1,
+              "title": "TTL Maximum Hops"
             }
           },
           "additionalProperties": false,
@@ -3307,12 +3312,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                   "title": "Local As"
                 },
                 "description": {
@@ -3610,6 +3615,11 @@
                 "^_.+$": {}
               },
               "title": "Structured Config"
+            },
+            "ttl_maximum_hops": {
+              "type": "integer",
+              "default": 1,
+              "title": "TTL Maximum Hops"
             }
           },
           "additionalProperties": false,
@@ -3960,6 +3970,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -4203,6 +4218,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -5497,6 +5517,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -5740,6 +5765,11 @@
                             "type": "string"
                           },
                           "title": "Interfaces"
+                        },
+                        "channel_id": {
+                          "type": "integer",
+                          "description": "Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.",
+                          "title": "Channel ID"
                         }
                       },
                       "additionalProperties": false,
@@ -13893,9 +13923,9 @@
           "default_underlay_routing_protocol": {
             "type": "string",
             "default": "ebgp",
+            "description": "Set the default underlay routing_protocol.\nCan be overridden by setting \"underlay_routing_protocol\" host/group_vars.\n",
             "enum": [
               "ebgp",
-              "ibgp",
               "ospf",
               "ospf-ldp",
               "isis",
@@ -13904,7 +13934,6 @@
               "isis-sr-ldp",
               "none"
             ],
-            "description": "Set the default underlay routing_protocol.\nCan be overridden by setting \"underlay_routing_protocol\" host/group_vars.\n",
             "title": "Default Underlay Routing Protocol"
           },
           "default_overlay_routing_protocol": {
@@ -24460,15 +24489,16 @@
     },
     "underlay_routing_protocol": {
       "type": "string",
-      "description": "- The following underlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all devices in the fabric.\n*Only supported with core_interfaces data model.\n",
+      "description": "- The following underlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - OSPF.\n  - OSPF-LDP*.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - No underlay routing protocol (none)\n- The variables should be applied to all devices in the fabric.\n*Only supported with core_interfaces data model.\n",
       "enum": [
         "ebgp",
         "ospf",
+        "ospf-ldp",
         "isis",
         "isis-sr",
         "isis-ldp",
         "isis-sr-ldp",
-        "ospf-ldp"
+        "none"
       ],
       "title": "Underlay Routing Protocol"
     },
