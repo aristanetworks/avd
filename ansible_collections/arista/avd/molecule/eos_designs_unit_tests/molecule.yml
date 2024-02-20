@@ -16,7 +16,7 @@ dependency:
   name: galaxy
   enabled: false
 driver:
-  name: default
+  name: delegated
   options:
     managed: false
 platforms:

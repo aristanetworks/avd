@@ -51,6 +51,20 @@ router_bgp:
         - 654789:654789
     redistribute_routes:
     - source_protocol: connected
+  - name: SIT3
+    router_id: 10.10.0.3
+    rd: 10.10.0.3:654555
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 654555:654555
+      export:
+      - address_family: evpn
+        route_targets:
+        - 654555:654555
+    redistribute_routes:
+    - source_protocol: connected
   - name: SIT_VRF
     router_id: 10.10.0.3
     rd: 10.10.0.3:789654
@@ -109,6 +123,14 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: 1008-1009,1011-1012
+  - name: bundle4
+    rd: 1.1.1.1:444
+    route_targets:
+      both:
+      - 304:444
+    redistribute_routes:
+    - learned
+    vlan: 1014-1015
   - name: storage_prod
     tenant: StorageProd
     rd: 10.10.0.3:10010
@@ -129,6 +151,9 @@ vrfs:
 - name: MGMT
   ip_routing: false
 - name: SIT2
+  tenant: SIT
+  ip_routing: true
+- name: SIT3
   tenant: SIT
   ip_routing: true
 - name: SIT_VRF
@@ -188,6 +213,12 @@ vlans:
 - id: 1013
   name: SVI_6
   tenant: SIT
+- id: 1014
+  name: SVI_7
+  tenant: SIT
+- id: 1015
+  name: SVI_8
+  tenant: SIT
 - id: 1008
   name: SVI_1
   tenant: SIT
@@ -227,6 +258,20 @@ vlan_interfaces:
   description: SVI_6
   shutdown: false
   vrf: SIT2
+- name: Vlan1014
+  tenant: SIT
+  tags:
+  - sit
+  description: SVI_7
+  shutdown: false
+  vrf: SIT3
+- name: Vlan1015
+  tenant: SIT
+  tags:
+  - sit
+  description: SVI_8
+  shutdown: false
+  vrf: SIT3
 - name: Vlan1008
   tenant: SIT
   tags:
@@ -274,5 +319,7 @@ vxlan_interface:
       vrfs:
       - name: SIT2
         vni: 654789
+      - name: SIT3
+        vni: 654555
       - name: SIT_VRF
         vni: 789654

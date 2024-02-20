@@ -87,6 +87,19 @@ tenants:
             name: SVI_6
             enabled: true
             tags: ['sit']
+      - name: SIT3
+        vrf_vni: 654555
+        svis:
+          - id: 1014
+            name: SVI_7
+            enabled: true
+            evpn_vlan_bundle: bundle4
+            tags: ['sit']
+          - id: 1015
+            name: SVI_8
+            enabled: true
+            evpn_vlan_bundle: bundle4
+            tags: ['sit']
 
 evpn_vlan_bundles:
   - name: bundle1
@@ -102,3 +115,7 @@ evpn_vlan_bundles:
     id: 3
     rt_override: 333
     rd_override: 1.1.1.1:333
+  - name: bundle4
+    id: 4
+    rt_override: 444
+    rd_override: 1.1.1.1:444
