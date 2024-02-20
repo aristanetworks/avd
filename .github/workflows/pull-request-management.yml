@@ -88,9 +88,11 @@ jobs:
           python-version: |
             3.11
       - name: Install Python requirements
-        run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
-          make pyavd-editable-install
+        run: >
+          pip install -r ansible_collections/arista/avd/requirements.txt
+                      -r ansible_collections/arista/avd/requirements-dev.txt
+                      -e python-avd --config-settings editable_mode=compat
+                      --upgrade
       - name: Run pre-commit
         run: |
           pre-commit run --all-files --color always
@@ -147,7 +149,6 @@ jobs:
       - name: 'Install Python requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
-          make pyavd-editable-install
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
@@ -182,7 +183,7 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
+          pip_file: ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
@@ -217,7 +218,7 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
+          pip_file: ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
@@ -276,7 +277,7 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
+          pip_file: ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
@@ -315,7 +316,7 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
+          pip_file: ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
@@ -356,7 +357,7 @@ jobs:
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           # Temporarily using special requirements to install anta while the feature is in preview.
-          pip_file: ansible_collections/arista/avd/roles/eos_validate_state/preview_requirements.txt
+          pip_file: ansible_collections/arista/avd/roles/eos_validate_state/preview_requirements.txt -e python-avd --config-settings editable_mode=compat
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
@@ -384,8 +385,11 @@ jobs:
             3.11
             3.12
       - name: 'Install Python requirements'
-        run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+        run: >
+          pip install -r ansible_collections/arista/avd/requirements.txt
+                      -r ansible_collections/arista/avd/requirements-dev.txt
+                      -e python-avd --config-settings editable_mode=compat
+                       --upgrade
       - name: 'Run ansible-test sanity'
         run: |
           cd ansible_collections/arista/avd/
@@ -401,8 +405,11 @@ jobs:
           echo "PY_COLORS=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: 'Install Python requirements'
-        run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+        run: >
+          pip install -r ansible_collections/arista/avd/requirements.txt
+                      -r ansible_collections/arista/avd/requirements-dev.txt
+                      -e python-avd --config-settings editable_mode=compat
+                       --upgrade
       - name: 'Run ansible-test units test cases'
         run: |
           cd ansible_collections/arista/avd/
@@ -425,8 +432,11 @@ jobs:
             3.11
             3.12
       - name: 'Install Python requirements'
-        run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+        run: >
+          pip install -r ansible_collections/arista/avd/requirements.txt
+                      -r ansible_collections/arista/avd/requirements-dev.txt
+                      -e python-avd --config-settings editable_mode=compat
+                       --upgrade
       - name: 'Run ansible-test integration test cases'
         run: |
           cd ansible_collections/arista/avd/
@@ -448,9 +458,14 @@ jobs:
             3.10
             3.11
             3.12
-      - name: 'Install Python & Ansible requirements'
+      - name: 'Install Python requirements'
+        run: >
+          pip install -r ansible_collections/arista/avd/requirements.txt
+                      -r ansible_collections/arista/avd/requirements-dev.txt
+                      -e python-avd --config-settings editable_mode=compat
+                       --upgrade
+      - name: 'Install Ansible requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
           ansible-galaxy collection install -r ansible_collections/arista/avd/collections.yml
       - name: 'Run ansible-test integration test cases'
         run: |
@@ -472,9 +487,14 @@ jobs:
           python-version: |
             3.10
       - uses: actions/checkout@v3
-      - name: 'Install Python & Ansible requirements'
+      - name: 'Install Python requirements'
+        run: >
+          pip install -r ansible_collections/arista/avd/requirements.txt
+                      -r ansible_collections/arista/avd/requirements-dev.txt
+                      -e python-avd --config-settings editable_mode=compat
+                       --upgrade
+      - name: 'Install Ansible requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
           ansible-galaxy collection install -r ansible_collections/arista/avd/collections.yml
       - name: Install galaxy-importer
         # Install the specific version of galaxy-importer used on galaxy.ansible.com
