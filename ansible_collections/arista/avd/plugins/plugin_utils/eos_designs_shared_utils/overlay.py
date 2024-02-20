@@ -27,7 +27,7 @@ class OverlayMixin:
         """
         The default is Loopback1 except for WAN devices where the default is Dps1.
         """
-        default_vtep_loopback = "Dps1" if self.wan_role is not None else "Loopback1"
+        default_vtep_loopback = "Dps1" if self.is_wan_router else "Loopback1"
         return get(self.switch_data_combined, "vtep_loopback", default=default_vtep_loopback)
 
     @cached_property

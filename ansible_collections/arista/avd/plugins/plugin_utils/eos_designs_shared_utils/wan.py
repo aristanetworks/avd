@@ -42,6 +42,27 @@ class WanMixin:
         return wan_role
 
     @cached_property
+    def is_wan_router(self) -> bool:
+        if self.wan_role:
+            return True
+        else:
+            return False
+
+    @cached_property
+    def is_wan_server(self) -> bool:
+        if self.wan_role == "server":
+            return True
+        else:
+            return False
+
+    @cached_property
+    def is_wan_client(self) -> bool:
+        if self.wan_role == "client":
+            return True
+        else:
+            return False
+
+    @cached_property
     def wan_listen_ranges(self: SharedUtils) -> list:
         return get(
             self.bgp_peer_groups["wan_overlay_peers"],
@@ -57,9 +78,9 @@ class WanMixin:
 
         default_cv_pathfinder_role = get(self.node_type_key_data, "default_cv_pathfinder_role", default=None)
         cv_pathfinder_role = get(self.switch_data_combined, "cv_pathfinder_role", default=default_cv_pathfinder_role)
-        if cv_pathfinder_role == "pathfinder" and self.wan_role != "server":
+        if cv_pathfinder_role == "pathfinder" and not self.is_wan_server:
             raise AristaAvdError("'wan_role' must be 'server' when 'cv_pathfinder_role' is set to 'pathfinder'")
-        if cv_pathfinder_role in ["transit", "edge"] and self.wan_role != "client":
+        if cv_pathfinder_role in ["transit", "edge"] and not self.is_wan_client:
             raise AristaAvdError("'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'")
         return cv_pathfinder_role
 
@@ -71,7 +92,7 @@ class WanMixin:
         This may need to be made wider.
         This also may require a different format for the dictionaries inside the list.
         """
-        if self.wan_role is None:
+        if not self.is_wan_router:
             return []
 
         wan_interfaces = []
@@ -93,7 +114,7 @@ class WanMixin:
               - name: ...
                 ip: ... (for route-servers the IP may come from wan_route_servers)
         """
-        if not self.wan_role:
+        if not self.is_wan_router:
             return []
 
         local_carriers_dict = {}
@@ -135,7 +156,7 @@ class WanMixin:
               - name: ...
                 ip: ...
         """
-        if self.wan_role is None:
+        if not self.is_wan_router:
             return []
 
         local_path_groups_dict = {}
@@ -176,8 +197,12 @@ class WanMixin:
         For WAN route-servers we try to find the IP under wan_route_servers.path_groups.interfaces.
         If not found we use the IP under the interface, unless it is "dhcp" where we raise.
         """
-        if self.wan_role != "server":
+        if not self.is_wan_server:
             return interface["ip_address"]
+
+
+        if (not self.is_wan_server) != (self.wan_role != "server"):
+            raise Exception("AYUSH wan_role: ", self.wan_role,"is_wan_server" ,self.is_wan_server)
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:

@@ -59,7 +59,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         )
         platform_bgp_update_wait_install = get(self.shared_utils.platform_settings, "feature_support.bgp_update_wait_install", default=True) is True
 
-        if self.shared_utils.wan_role is not None:
+        if self.shared_utils.is_wan_router:
             # Special defaults for WAN routers
             default_maximum_paths = 16
             default_ecmp = None
@@ -532,7 +532,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
         if (cpu_max_allocation := get(self.shared_utils.switch_data_combined, "data_plane_cpu_allocation_max")) is not None:
             platform["sfe"] = {"data_plane_cpu_allocation_max": cpu_max_allocation}
-        elif self.shared_utils.wan_role == "server":
+        elif self.shared_utils.is_wan_server:
             # For AutoVPN Route Reflectors and Pathfinders, running on CloudEOS, setting
             # this value is required for the solution to work.
             raise AristaAvdMissingVariableError("For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set")
