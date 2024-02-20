@@ -1,0 +1,119 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# context used to hide password and keys #}
+{% set hide_passwords = eos_cli_config_gen_documentation.hide_passwords | arista.avd.default(true) %}
+# {{ hostname | arista.avd.default(inventory_hostname) }}
+
+## Table of Contents
+
+<!-- toc -->
+<!-- toc -->
+{# Management #}
+{% include 'device-doc/management.j2' %}
+{# CVX #}
+{% include 'device-doc/cvx.j2' %}
+{# Authentication #}
+{% include 'device-doc/authentication.j2' %}
+{# Address Locking #}
+{% include 'device-doc/address-locking.j2' %}
+{# Management Security #}
+{% include 'device-doc/management-security.j2' %}
+{# Prompt #}
+{% include 'device-doc/prompt.j2' %}
+{# Aliases #}
+{% include 'device-doc/aliases.j2' %}
+{# DHCP Relay #}
+{% include 'device-doc/dhcp-relay.j2' %}
+{# DHCP Servers #}
+{% include 'device-doc/dhcp-server.j2' %}
+{# System Boot Configuration #}
+{% include 'device-doc/boot.j2' %}
+{# Monitoring #}
+{% include 'device-doc/monitoring.j2' %}
+{# Monitor Connectivity #}
+{% include 'device-doc/monitor-connectivity.j2' %}
+{# Monitor Layer 1 #}
+{% include 'device-doc/monitor-layer1.j2' %}
+{# Hardware TCAM Profile #}
+{% include 'device-doc/tcam-profile.j2' %}
+{# Link Tracking Groups #}
+{% include 'device-doc/link-tracking-groups.j2' %}
+{# MLAG #}
+{% include 'device-doc/mlag-configuration.j2' %}
+{# LLDP #}
+{% include 'device-doc/lldp.j2' %}
+{# L2 Protocol forwarding #}
+{% include 'device-doc/l2-protocol-forwarding.j2' %}
+{# LACP #}
+{% include 'device-doc/lacp.j2' %}
+{# Spanning Tree #}
+{% include 'device-doc/spanning-tree.j2' %}
+{# Internal VLAN Allocation Policy #}
+{% include 'device-doc/vlan-internal-order.j2' %}
+{# VLANs #}
+{% include 'device-doc/vlans.j2' %}
+{# Mac address-table #}
+{% include 'device-doc/mac-address-table.j2' %}
+{# IP Security #}
+{% include 'device-doc/ip-security.j2' %}
+{# Interfaces #}
+{% include 'device-doc/interfaces.j2' %}
+{# Routing #}
+{% include 'device-doc/routing.j2' %}
+{# BFD #}
+{% include 'device-doc/bfd.j2' %}
+{# MPLS #}
+{% include 'device-doc/mpls.j2' %}
+{# Patch Panel #}
+{% include 'device-doc/patch-panel.j2' %}
+{# Queue Monitor #}
+{% include 'device-doc/queue-monitor.j2' %}
+{# Multicast #}
+{% include 'device-doc/multicast.j2' %}
+{# Filters #}
+{% include 'device-doc/filters.j2' %}
+{# dot1x #}
+{% include 'device-doc/dot1x.j2' %}
+{# poe #}
+{% include 'device-doc/poe.j2' %}
+{# ACL #}
+{% include 'device-doc/acl.j2' %}
+{# VRF Instances #}
+{% include 'device-doc/vrfs.j2' %}
+{# Virtual Source NAT #}
+{% include 'device-doc/virtual-source-nat-vrfs.j2' %}
+{# Platform #}
+{% include 'device-doc/platform.j2' %}
+{# System L1 #}
+{% include 'device-doc/system-l1.j2' %}
+{# Application traffic recognition #}
+{% include 'device-doc/application-traffic-recognition.j2' %}
+{# Router path-selection #}
+{% include 'device-doc/router-path-selection.j2' %}
+{# Router L2 VPN #}
+{% include 'device-doc/router-l2-vpn.j2' %}
+{# IP DHCP Relay #}
+{% include 'device-doc/ip-dhcp-relay.j2' %}
+{# IP DHCP Snooping #}
+{% include 'device-doc/ip-dhcp-snooping.j2' %}
+{# IP NAT #}
+{% include 'device-doc/ip-nat.j2' %}
+{# Errdisable #}
+{% include 'device-doc/errdisable.j2' %}
+{# MACsec #}
+{% include 'device-doc/mac-security.j2' %}
+{# Traffic Policies #}
+{% include 'device-doc/traffic-policies.j2' %}
+{# Quality Of Service #}
+{% include 'device-doc/quality-of-service.j2' %}
+{# Priority Flow Control #}
+{% include 'device-doc/priority-flow-control.j2' %}
+{# STUN #}
+{% include 'device-doc/stun.j2' %}
+{# Maintenance Mode #}
+{% include 'device-doc/maintenance-mode.j2' %}
+{# EOS CLI #}
+{% include 'device-doc/eos-cli.j2' %}

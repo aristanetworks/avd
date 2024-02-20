@@ -6,7 +6,7 @@ __pycache__/
 /tests/artifacts/
 /pyavd.egg-info/
 /pyavd/eos_cli_config_gen.templates.zip
-/pyavd/j2cache/
+/pyavd/j2templates/compiled-templates
 /pyavd/LICENSE
 /pyavd/vendor/
 /pyavd/version.py

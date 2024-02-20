@@ -6,13 +6,14 @@ __metaclass__ = type
 import json
 import os
 import sys
+from importlib import import_module
 from importlib.metadata import Distribution, PackageNotFoundError, version
 from subprocess import PIPE, Popen
 
 import yaml
 from ansible import constants as C
 from ansible.errors import AnsibleActionFail
-from ansible.module_utils.compat.importlib import import_module
+from ansible.module_utils.compat.importlib import import_module as ansible_import_module
 from ansible.plugins.action import ActionBase, display
 from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
 
@@ -276,7 +277,7 @@ def _get_collection_path(collection_name: str) -> str:
     """
     Retrieve the collection path based on the collection_name
     """
-    collection = import_module(f"ansible_collections.{collection_name}")
+    collection = ansible_import_module(f"ansible_collections.{collection_name}")
     return os.path.dirname(collection.__file__)
 
 
@@ -327,6 +328,17 @@ def _get_running_collection_version(running_collection_name: str, result: dict) 
     }
 
 
+def _validate_pyavd_artifacts() -> bool:
+    pyavd = import_module("pyavd")
+    if not pyavd.constants.RUNNING_FROM_SRC:
+        return True
+
+    # It takes about the same time to validate the templates instead of just recompiling them.
+    templar = pyavd.templater.Templar()
+    templar.compile_templates_in_paths(pyavd.constants.JINJA2_TEMPLATE_PATHS, log_function=display.vvv)
+    return True
+
+
 class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
@@ -373,6 +385,8 @@ class ActionModule(ActionBase):
         if not _validate_ansible_version(running_collection_name, running_ansible_version, info["ansible"], result):
             result["failed"] = True
         if not _validate_ansible_collections(running_collection_name, info["ansible"]):
+            result["failed"] = True
+        if not _validate_pyavd_artifacts():
             result["failed"] = True
 
         display.v(json.dumps(info, indent=4))

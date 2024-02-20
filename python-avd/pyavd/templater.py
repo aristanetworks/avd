@@ -57,7 +57,7 @@ class Undefined(StrictUndefined):
 
 
 class Templar:
-    def __init__(self, searchpaths: list[str] = None):
+    def __init__(self, searchpaths: list[str] | None = None):
         self.loader = ChoiceLoader(
             [
                 ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH),
@@ -77,12 +77,13 @@ class Templar:
     def render_template_from_file(self, template_file: str, template_vars: dict) -> str:
         return self.environment.get_template(template_file).render(template_vars)
 
-    def compile_templates_in_paths(self, searchpaths: list[str]) -> None:
-        print(JINJA2_PRECOMPILED_TEMPLATE_PATH)
+    def compile_templates_in_paths(self, searchpaths: list[str], log_function: object | None = None) -> None:
         self.environment.loader = FileSystemLoader(searchpaths)
+
         self.environment.compile_templates(
             zip=None,
-            log_function=print,
+            log_function=log_function or print,
+            extensions=("j2",),
             target=JINJA2_PRECOMPILED_TEMPLATE_PATH,
             ignore_errors=False,
         )

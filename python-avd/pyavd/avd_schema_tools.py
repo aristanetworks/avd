@@ -1,15 +1,11 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from typing import Generator
+from typing import Any, Generator
 
 from .validation_result import ValidationResult
 from .vendor.errors import AvdConversionWarning, AvdDeprecationWarning, AvdValidationError
 from .vendor.schema.avdschema import AvdSchema
-
-IGNORE_EXCEPTIONS = AvdConversionWarning
-VALIDATION_ERROR_EXCEPTIONS = AvdValidationError
-DEPRECATION_WARNING_EXCEPTIONS = AvdDeprecationWarning
 
 
 class AvdSchemaTools:
@@ -28,7 +24,29 @@ class AvdSchemaTools:
         """
         self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
 
-    def convert_data(self, data: dict) -> list[AvdDeprecationWarning]:
+    def _exceptions_handler(self, exceptions: Generator[Exception, Any, None], result: ValidationResult):
+        """
+        Sort the given exceptions and update the result object.
+        Unknown exceptions will be raised.
+        """
+        for exception in exceptions:
+            if isinstance(exception, AvdConversionWarning):
+                result.conversion_warnings.append(exception)
+                continue
+
+            if isinstance(exception, AvdValidationError):
+                result.validation_errors.append(exception)
+                result.failed = True
+                continue
+
+            if isinstance(exception, AvdDeprecationWarning):
+                result.deprecation_warnings.append(exception)
+                continue
+
+            if isinstance(exception, Exception):
+                raise exception
+
+    def convert_data(self, data: dict, result: None | ValidationResult = None) -> list[AvdDeprecationWarning]:
         """
         Convert data according to the schema (convert_types)
         The data conversion is done in-place (updating the original "data" dict).
@@ -36,60 +54,36 @@ class AvdSchemaTools:
         Args:
             data:
                 Input variables which should be converted according to the schema.
+            result:
+                Result object to update if given. Otherwise a new object will be created and returned.
 
         Returns:
-            List of AvdDeprecationWarnings
+            Validation result object with any validation errors, conversion warnings or deprecation warnings.
         """
+        result = result or ValidationResult(failed=False)
 
         # avdschema.convert returns a Generator, so we have to iterate through it to perform the actual conversions.
-        exceptions: Generator = self.avdschema.convert(data)
-
-        result = []
-        for exception in exceptions:
-            # Ignore conversions and deprecations
-            if isinstance(exception, IGNORE_EXCEPTIONS):
-                continue
-
-            if isinstance(exception, DEPRECATION_WARNING_EXCEPTIONS):
-                result.append(exception)
-                continue
-
-            if isinstance(exception, Exception):
-                raise exception
+        self._exceptions_handler(self.avdschema.convert(data), result)
 
         return result
 
-    def validate_data(self, data: dict) -> ValidationResult:
+    def validate_data(self, data: dict, result: ValidationResult) -> ValidationResult:
         """
         Validate data according to the schema
 
         Args:
             data:
                 Input variables which are to be validated according to the schema.
+            result:
+                Result object to update if given. Otherwise a new object will be created and returned.
 
         Returns:
-            Validation result object with any validation errors or deprecation warnings.
+            Validation result object with any validation errors, conversion warnings or deprecation warnings.
         """
-        result = ValidationResult(failed=False)
+        result = result or ValidationResult(failed=False)
 
         # avdschema.validate returns a Generator, so we have to iterate through it to perform the actual validations.
-        exceptions: Generator = self.avdschema.validate(data)
-        for exception in exceptions:
-            # Ignore conversions and deprecations
-            if isinstance(exception, IGNORE_EXCEPTIONS):
-                continue
-
-            if isinstance(exception, VALIDATION_ERROR_EXCEPTIONS):
-                result.validation_errors.append(exception)
-                result.failed = True
-                continue
-
-            if isinstance(exception, DEPRECATION_WARNING_EXCEPTIONS):
-                result.deprecation_warnings.append(exception)
-                continue
-
-            if isinstance(exception, Exception):
-                raise exception
+        self._exceptions_handler(self.avdschema.validate(data), result)
 
         return result
 
@@ -110,6 +104,7 @@ class AvdSchemaTools:
                 errors : list[Exception]
                     Any data validation issues.
         """
-        self.convert_data(data)
-        res = self.validate_data(data)
-        return {"failed": res.failed, "errors": res.validation_errors}
+        result = ValidationResult(failed=False)
+        self.convert_data(data, result)
+        self.validate_data(data, result)
+        return {"failed": result.failed, "errors": result.validation_errors}

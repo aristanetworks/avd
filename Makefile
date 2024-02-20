@@ -36,7 +36,7 @@ pyavd-install: pyavd-build ## Build and install PyAVD Python package
 
 .PHONY: pyavd-editable-install
 pyavd-editable-install: ## Build and install PyAVD as editable
-	pip install -e python-avd
+	pip install --config-settings editable_mode=compat -e python-avd
 
 #########################################
 # Code Validation using ansible-test 	#

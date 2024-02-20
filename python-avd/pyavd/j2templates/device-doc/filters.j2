@@ -1,0 +1,41 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{% if community_lists is arista.avd.defined
+       or ip_community_lists is arista.avd.defined
+       or peer_filters is arista.avd.defined
+       or dynamic_prefix_lists is arista.avd.defined
+       or prefix_lists is arista.avd.defined
+       or ipv6_prefix_lists is arista.avd.defined
+       or route_maps is arista.avd.defined
+       or ip_extcommunity_lists is arista.avd.defined
+       or ip_extcommunity_lists_regexp is arista.avd.defined
+       or match_list_input is arista.avd.defined
+       or as_path is arista.avd.defined %}
+
+## Filters
+{## Community-lists #}
+{%     include 'device-doc/community-lists.j2' %}
+{## Community-lists, improved data model #}
+{%     include 'device-doc/ip-community-lists.j2' %}
+{## Peer Filters #}
+{%     include 'device-doc/peer-filters.j2' %}
+{## Dynamic Prefix-lists #}
+{%     include 'device-doc/dynamic-prefix-lists.j2' %}
+{## Prefix-lists #}
+{%     include 'device-doc/prefix-lists.j2' %}
+{## IPv6 Prefix-lists #}
+{%     include 'device-doc/ipv6-prefix-lists.j2' %}
+{## Route-maps #}
+{%     include 'device-doc/route-maps.j2' %}
+{## IP Extended Community Lists #}
+{%     include 'device-doc/ip-extcommunity-lists.j2' %}
+{## IP Extended Community Lists Regexp #}
+{%     include 'device-doc/ip-extcommunity-lists-regexp.j2' %}
+{## Match-Lists #}
+{%     include 'device-doc/match-list-input.j2' %}
+{## AS Paths #}
+{%     include 'device-doc/as-path.j2' %}
+{% endif %}

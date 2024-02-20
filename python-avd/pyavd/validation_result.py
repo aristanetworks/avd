@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from .vendor.errors import AvdDeprecationWarning, AvdValidationError
+from .vendor.errors import AvdConversionWarning, AvdDeprecationWarning, AvdValidationError
 
 
 class ValidationResult:
@@ -17,8 +17,10 @@ class ValidationResult:
     failed: bool
     validation_errors: list[AvdValidationError]
     deprecation_warnings: list[AvdDeprecationWarning]
+    conversion_warnings: list[AvdConversionWarning]
 
-    def __init__(self, failed: bool, validation_errors: list = None, deprecation_warnings: list = None):
+    def __init__(self, failed: bool, validation_errors: list = None, deprecation_warnings: list = None, conversion_warnings: list = None):
         self.failed = failed
         self.validation_errors = validation_errors or []
         self.deprecation_warnings = deprecation_warnings or []
+        self.conversion_warnings = conversion_warnings or []
