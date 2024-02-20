@@ -135,6 +135,27 @@ class OverlayMixin:
         return get(self.hostvars, "fabric_evpn_encapsulation", default=get(self.node_type_key_data, "default_evpn_encapsulation", default="vxlan"))
 
     @cached_property
+    def evpn_soo(self: SharedUtils) -> str:
+        """
+        Site-Of-Origin used as BGP extended community.
+        - For regular VTEPs this is <vtep_ip>:1
+        - For WAN routers this is <router_id_of_primary_HA_router>:<site_id or 0>
+        - Otherwise this is <router_id>:1
+
+        TODO: Implement HA logic for WAN
+        TODO: Reconsider if suffix should just be :1 for all WAN routers.
+        """
+        if self.wan_role:
+            if self.is_cv_pathfinder_edge_or_transit:
+                return f"{self.router_id}:{self.wan_site['id']}"
+            return f"{self.router_id}:0"
+
+        if self.overlay_vtep:
+            return f"{self.vtep_ip}:1"
+
+        return f"{self.router_id}:1"
+
+    @cached_property
     def overlay_evpn(self: SharedUtils) -> bool:
         # Set overlay_evpn to enable EVPN on the node
         return (

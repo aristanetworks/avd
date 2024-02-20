@@ -8,34 +8,35 @@ from functools import cached_property
 from .utils import UtilsMixin
 
 
-class IpExtCommunityListsMixin(UtilsMixin):
+class AsPathMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
     Class should only be used as Mixin to a AvdStructuredConfig class
     """
 
     @cached_property
-    def ip_extcommunity_lists(self) -> list | None:
+    def as_path(self) -> list | None:
         """
-        Return structured config for ip_extcommunity_lists
+        Return structured config for as_path.
         """
-        if self.shared_utils.overlay_routing_protocol != "ibgp":
+        if self.shared_utils.underlay_routing_protocol != "ebgp":
             return None
 
-        if self.shared_utils.evpn_role == "server" and not self.shared_utils.wan_role:
-            return None
-
-        if self.shared_utils.overlay_vtep:
-            return [
+        access_lists = []
+        if self.shared_utils.is_cv_pathfinder_edge_or_transit:
+            access_lists.append(
                 {
-                    "name": "ECL-EVPN-SOO",
+                    "name": "ASPATH-WAN",
                     "entries": [
                         {
                             "type": "permit",
-                            "extcommunities": f"soo {self.shared_utils.evpn_soo}",
+                            "match": self.shared_utils.bgp_as,
                         },
                     ],
                 }
-            ]
+            )
+
+        if access_lists:
+            return {"access_lists": access_lists}
 
         return None

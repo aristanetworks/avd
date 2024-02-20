@@ -123,12 +123,19 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.31.1:0 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
-  - sequence: 30
+  - sequence: 10
     type: permit
     match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    - extcommunity ECL-EVPN-SOO
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.31.1:0
 ip_security:
   ike_policies:
   - name: AUTOVPN-IKE
@@ -169,7 +176,6 @@ router_path_selection:
     ipsec_profile: AUTOVPN
   - name: LTE
     id: 102
-    ipsec_profile: AUTOVPN
   peer_dynamic_source: stun
   load_balance_policies:
   - name: LB-CONTROL-PLANE-PROFILE
