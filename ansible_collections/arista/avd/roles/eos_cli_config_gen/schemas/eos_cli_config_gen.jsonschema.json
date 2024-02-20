@@ -16928,6 +16928,30 @@
               },
               "title": "Next Hop MPLS Resolution Ribs"
             },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
             "peer_groups": {
               "type": "array",
               "items": {
