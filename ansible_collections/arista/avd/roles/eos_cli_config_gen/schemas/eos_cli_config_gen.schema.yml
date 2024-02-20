@@ -10125,6 +10125,16 @@ keys:
                   type: str
                   description: The name of the tunnel-rib to use when using 'tunnel-rib'
                     type.
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
           peer_groups:
             type: list
             primary_key: name

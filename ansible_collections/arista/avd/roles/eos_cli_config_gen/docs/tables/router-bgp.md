@@ -253,6 +253,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop_mpls_resolution_ribs</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs") | List, items: Dictionary |  |  | Min Length: 1<br>Max Length: 3 | Specify the RIBs used to resolve MPLS next-hops. The order of this list determines the order of RIB lookups. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;rib_type</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.[].rib_type") | String | Required |  | Valid Values:<br>- <code>system-connected</code><br>- <code>tunnel-rib-colored</code><br>- <code>tunnel-rib</code> | Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rib_name</samp>](## "router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs.[].rib_name") | String |  |  |  | The name of the tunnel-rib to use when using 'tunnel-rib' type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_evpn.neighbors") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_evpn.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_evpn.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_evpn.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_evpn.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_evpn.peer_groups.[].activate") | Boolean |  |  |  |  |
@@ -1193,6 +1196,9 @@
 
             # The name of the tunnel-rib to use when using 'tunnel-rib' type.
             rib_name: <str>
+        neighbors:
+          - ip_address: <str; required; unique>
+            activate: <bool>
         peer_groups:
 
             # Peer-group name
