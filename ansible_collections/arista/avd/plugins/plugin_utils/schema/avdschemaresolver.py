@@ -7,7 +7,8 @@ __metaclass__ = type
 
 from copy import deepcopy
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from pyavd.errors import AristaAvdError
+
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
 

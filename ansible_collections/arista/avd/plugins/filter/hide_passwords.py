@@ -4,9 +4,18 @@
 #
 # arista.avd.hide_passwords filter
 #
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible.errors import AnsibleFilterError
+
+try:
+    from pyavd.j2filters.hide_passwords import hide_passwords
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
 
 DOCUMENTATION = r"""
 name: hide_passwords
@@ -40,14 +49,10 @@ _value:
 """
 
 
-def hide_passwords(value: str, hide_passwords: bool = False) -> str:
-    if not isinstance(hide_passwords, bool):
-        raise AristaAvdError(f"{hide_passwords} in hide_passwords filter is not of type bool")
-    return "<removed>" if hide_passwords else value
-
-
 class FilterModule(object):
     def filters(self):
+        if not HAS_PYAVD:
+            raise AnsibleFilterError("The Python library 'pyavd' cound not be found. Please install using 'pip3 install'")
         return {
             "hide_passwords": hide_passwords,
         }

@@ -8,9 +8,9 @@ __metaclass__ = type
 from contextlib import nullcontext as does_not_raise
 
 import pytest
+from pyavd.errors import AristaAvdError
 
 from ansible_collections.arista.avd.plugins.filter.hide_passwords import FilterModule, hide_passwords
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
 f = FilterModule()
 

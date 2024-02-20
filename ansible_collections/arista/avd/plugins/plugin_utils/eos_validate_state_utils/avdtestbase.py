@@ -8,7 +8,8 @@ from functools import cached_property
 from ipaddress import ip_interface
 from typing import Mapping
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 LOGGER = logging.getLogger(__name__)

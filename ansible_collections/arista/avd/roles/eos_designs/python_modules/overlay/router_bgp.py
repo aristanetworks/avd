@@ -6,8 +6,9 @@ from __future__ import annotations
 import ipaddress
 from functools import cached_property
 
+from pyavd.errors import AristaAvdError
+
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 

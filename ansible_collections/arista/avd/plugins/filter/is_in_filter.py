@@ -8,6 +8,15 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from ansible.errors import AnsibleFilterError
+
+try:
+    from pyavd.j2filters.is_in_filter import is_in_filter
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
+
 DOCUMENTATION = r"""
 ---
 name: is_in_filter
@@ -49,16 +58,9 @@ _value:
 
 
 class FilterModule(object):
-    def is_in_filter(self, hostname, hostname_filter):
-        if hostname_filter is None:
-            hostname_filter = ["all"]
-        if "all" in hostname_filter:
-            return True
-        elif any(element in hostname for element in hostname_filter):
-            return True
-        return False
-
     def filters(self):
+        if not HAS_PYAVD:
+            raise AnsibleFilterError("The Python library 'pyavd' cound not be found. Please install using 'pip3 install'")
         return {
-            "is_in_filter": self.is_in_filter,
+            "is_in_filter": is_in_filter,
         }

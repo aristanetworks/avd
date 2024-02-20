@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdSchemaError
+from pyavd.errors import AristaAvdError, AvdSchemaError
 
 if TYPE_CHECKING:
     from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema

@@ -5,8 +5,9 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from pyavd.errors import AristaAvdMissingVariableError
+
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get
 
 from .utils import UtilsMixin

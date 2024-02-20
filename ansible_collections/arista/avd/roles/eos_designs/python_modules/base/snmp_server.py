@@ -6,9 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from hashlib import sha1
 
+from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
+
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.filter.snmp_hash import snmp_hash
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, replace_or_append_item
 
@@ -30,7 +31,7 @@ class SnmpServerMixin(UtilsMixin):
         unique local_engine_id value based on hostname and mgmt_ip facts.
 
         If user.version is set to 'v3', compute_local_engineid and compute_v3_user_localized_key are set to 'True'
-        we will use hash_passphrase filter to create an instance of hashlib._hashlib.HASH corresponding to the auth_type
+        we will use snmp_hash filter to create an instance of hashlib._hashlib.HASH corresponding to the auth_type
         value based on various snmp_settings.users information.
         """
         source_interfaces_inputs = self._source_interfaces.get("snmp")
@@ -134,7 +135,7 @@ class SnmpServerMixin(UtilsMixin):
                     user_dict["auth"] = auth
                     if compute_v3_user_localized_key:
                         hash_filter = {"passphrase": auth_passphrase, "auth": auth, "engine_id": engine_ids["local"]}
-                        user_dict["auth_passphrase"] = hash_passphrase(hash_filter)
+                        user_dict["auth_passphrase"] = snmp_hash(hash_filter)
                     else:
                         user_dict["auth_passphrase"] = auth_passphrase
 
@@ -144,7 +145,7 @@ class SnmpServerMixin(UtilsMixin):
                         user_dict["priv"] = priv
                         if compute_v3_user_localized_key:
                             hash_filter.update({"passphrase": priv_passphrase, "priv": priv})
-                            user_dict["priv_passphrase"] = hash_passphrase(hash_filter)
+                            user_dict["priv_passphrase"] = snmp_hash(hash_filter)
                         else:
                             user_dict["priv_passphrase"] = priv_passphrase
 

@@ -10,8 +10,8 @@ import os
 import pytest
 import yaml
 from deepmerge import always_merger
+from pyavd.errors import AvdValidationError
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdValidationError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import DEFAULT_SCHEMA, AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.default_schemas import DEFAULT_SCHEMAS
 

@@ -16,8 +16,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.module_utils.compat.importlib import import_module as ansible_import_module
 from ansible.plugins.action import ActionBase, display
 from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
-
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from pyavd.errors import AristaAvdError
 
 try:
     # Relying on packaging installed by ansible

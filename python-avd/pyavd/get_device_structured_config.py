@@ -5,8 +5,8 @@ from collections import ChainMap
 
 from .avd_schema_tools import AvdSchemaTools
 from .constants import EOS_CLI_CONFIG_GEN_SCHEMA_ID
+from .errors import AristaAvdError
 from .vendor.eos_designs.get_structured_config import get_structured_config
-from .vendor.errors import AristaAvdError
 
 
 def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -> dict:

@@ -7,8 +7,9 @@ import re
 from collections import ChainMap
 from functools import cached_property
 
+from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
+
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, replace_or_append_item
 

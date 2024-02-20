@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from pyavd.errors import AristaAvdMissingVariableError
 
 
 def get_item(list_of_dicts: list, key, value, default=None, required=False, case_sensitive=False, var_name=None, custom_error_msg=None):

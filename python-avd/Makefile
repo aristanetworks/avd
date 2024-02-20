@@ -1,14 +1,12 @@
 CURRENT_DIR = $(shell pwd)
 PACKAGE_DIR = pyavd
-ANSIBLE_AVD_DIR ?= ..
+REPO_ROOT ?= ..
 VENDOR = vendor
 VENDOR_DIR = $(PACKAGE_DIR)/$(VENDOR)
 VENDOR_IMPORT = $(PACKAGE_DIR).$(VENDOR)
-J2_DIR = $(VENDOR_DIR)/j2
 TESTS_ARTIFACTS = $(CURRENT_DIR)/tests/pyavd/artifacts
 TOOLS_DIR = $(PACKAGE_DIR)/tools
 SCRIPTS_DIR = $(CURRENT_DIR)/scripts
-EOS_CLI_CONFIG_GEN_TEMPLATE_DIR = $(VENDOR_DIR)/templates
 SCHEMAS_DIR = $(VENDOR_DIR)/schemas
 EOS_DESIGNS_MODULES_DIR = $(VENDOR_DIR)/eos_designs
 # export PYTHONPATH=$(CURRENT_DIR) # Uncomment to test from source
@@ -47,24 +45,20 @@ compile-schemas:
 copy-libs: ## Copy files from Ansible AVD collection
 	rm -rf $(VENDOR_DIR)
 	mkdir -p $(VENDOR_DIR)
-	mkdir -p $(J2_DIR)
 	mkdir -p $(SCHEMAS_DIR)
-	mkdir -p $(EOS_CLI_CONFIG_GEN_TEMPLATE_DIR)
 	mkdir -p $(EOS_DESIGNS_MODULES_DIR)
 
-	cp $(ANSIBLE_AVD_DIR)/LICENSE $(PACKAGE_DIR)/LICENSE
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/plugin_utils/* $(VENDOR_DIR)
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/module_utils/* $(VENDOR_DIR)
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/filter $(J2_DIR)
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/test $(J2_DIR)
+	cp $(REPO_ROOT)/LICENSE $(PACKAGE_DIR)/LICENSE
+	cp -r $(REPO_ROOT)/ansible_collections/arista/avd/plugins/plugin_utils/* $(VENDOR_DIR)
+	cp -r $(REPO_ROOT)/ansible_collections/arista/avd/plugins/module_utils/* $(VENDOR_DIR)
 
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_designs/python_modules/* $(EOS_DESIGNS_MODULES_DIR)/
+	cp -r $(REPO_ROOT)/ansible_collections/arista/avd/roles/eos_designs/python_modules/* $(EOS_DESIGNS_MODULES_DIR)/
 	mv $(VENDOR_DIR)/eos_designs_* $(EOS_DESIGNS_MODULES_DIR)/
 
 	$(SCRIPTS_DIR)/build-schemas.py
-	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.pickle $(SCHEMAS_DIR)/
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.pickle $(SCHEMAS_DIR)/
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/plugin_utils/schema/avd_meta_schema.pickle $(SCHEMAS_DIR)/
+	cp $(REPO_ROOT)/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.pickle $(SCHEMAS_DIR)/
+	cp -r $(REPO_ROOT)/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.pickle $(SCHEMAS_DIR)/
+	cp -r $(REPO_ROOT)/ansible_collections/arista/avd/plugins/plugin_utils/schema/avd_meta_schema.pickle $(SCHEMAS_DIR)/
 
 .PHONY: fix-libs
 fix-libs: ## Fix/remove various Ansible specifics things from python files
@@ -73,7 +67,7 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 	find $(PACKAGE_DIR) -name '__pycache__' -exec rm -rf {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/^from __future__ import.*/from __future__ import annotations/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e '/^__metaclass__ = type/d' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible.errors import /from $(VENDOR_IMPORT).errors import /g' {} +
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible.errors import /from pyavd.errors import /g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/AnsibleFilterError/AristaAvdError/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/AnsibleError/AristaAvdError/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/AnsibleActionFail/AristaAvdError/g' {} +
@@ -81,7 +75,7 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.plugin_utils\.eos_designs_shared_utils/$(VENDOR_IMPORT)\.eos_designs\.eos_designs_shared_utils/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.plugin_utils/$(VENDOR_IMPORT)/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.module_utils/$(VENDOR_IMPORT)/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter/$(VENDOR_IMPORT)\.j2\.filter/g' {} +
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter/pyavd.j2filters/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.roles\.eos_designs\.python_modules/$(VENDOR_IMPORT)\.eos_designs/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible\.utils\.display/from $(VENDOR_IMPORT)\.utils\.display/g' {} +
 
@@ -97,13 +91,13 @@ copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 
 ## Workaround to get the lookup plugin to resolve this TCAM profile before exporting vars
 	mkdir -p $(SCRIPTS_DIR)/inventory
-	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/TCAM_TRAFFIC_POLICY.conf $(SCRIPTS_DIR)/inventory/
+	cp $(REPO_ROOT)/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/TCAM_TRAFFIC_POLICY.conf $(SCRIPTS_DIR)/inventory/
 
 ## Excluding prompt because the unsafe marker is lost during the export of hostvars.
 ## Excluding custom-templates since there is no jinja support in pyavd
 	ANSIBLE_COLLECTIONS_PATHS="..:/usr/share/ansible/collections" ansible-playbook \
 		--limit 'all:!prompt:!custom-templates' \
-		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/hosts.ini \
+		-i $(REPO_ROOT)/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/hosts.ini \
 		$(SCRIPTS_DIR)/export_test_vars.yml \
 		-e testdir=eos_cli_config_gen \
 		-f 10
@@ -117,7 +111,7 @@ copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 ## EOS_DESIGNS
 
 	ANSIBLE_COLLECTIONS_PATHS="..:/usr/share/ansible/collections" ansible-playbook \
-		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml $(SCRIPTS_DIR)/export_test_vars.yml \
+		-i $(REPO_ROOT)/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml $(SCRIPTS_DIR)/export_test_vars.yml \
 		-e testdir=eos_designs_unit_tests \
 		-f 10
 

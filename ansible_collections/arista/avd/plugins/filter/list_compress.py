@@ -8,9 +8,14 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from itertools import count, groupby
-
 from ansible.errors import AnsibleFilterError
+
+try:
+    from pyavd.j2filters.list_compress import list_compress
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
 
 DOCUMENTATION = r"""
 ---
@@ -44,15 +49,10 @@ _value:
 """
 
 
-def list_compress(list_to_compress):
-    if not isinstance(list_to_compress, list):
-        raise AnsibleFilterError(f"value must be of type list, got {type(list_to_compress)}")
-    G = (list(x) for y, x in groupby(sorted(list_to_compress), lambda x, c=count(): next(c) - x))
-    return ",".join("-".join(map(str, (g[0], g[-1])[: len(g)])) for g in G)
-
-
 class FilterModule(object):
     def filters(self):
+        if not HAS_PYAVD:
+            raise AnsibleFilterError("The Python library 'pyavd' cound not be found. Please install using 'pip3 install'")
         return {
             "list_compress": list_compress,
         }

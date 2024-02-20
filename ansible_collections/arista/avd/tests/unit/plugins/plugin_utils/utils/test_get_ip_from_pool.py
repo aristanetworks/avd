@@ -2,8 +2,8 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import pytest
+from pyavd.errors import AristaAvdError
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_ip_from_pool
 
 # default values for testcases

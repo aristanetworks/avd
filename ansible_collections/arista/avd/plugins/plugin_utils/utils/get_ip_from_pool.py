@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 import ipaddress
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from pyavd.errors import AristaAvdError
 
 
 def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:

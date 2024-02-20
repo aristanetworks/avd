@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from pyavd.errors import AristaAvdError
+
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 if TYPE_CHECKING:
@@ -103,11 +104,13 @@ class CvPathfinderMixin:
                             {
                                 "name": site["name"],
                                 "id": site["id"],
-                                "location": {
-                                    "address": site.get("location"),
-                                }
-                                if site.get("location")
-                                else None,
+                                "location": (
+                                    {
+                                        "address": site.get("location"),
+                                    }
+                                    if site.get("location")
+                                    else None
+                                ),
                             }
                             for site in region["sites"]
                         ],

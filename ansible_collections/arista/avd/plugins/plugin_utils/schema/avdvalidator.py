@@ -3,7 +3,8 @@
 # that can be found in the LICENSE file.
 from collections import ChainMap
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from pyavd.errors import AristaAvdError
+
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 

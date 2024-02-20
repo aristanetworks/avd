@@ -7,8 +7,8 @@ from typing import Generator
 
 from ansible.errors import AnsibleActionFail
 from ansible.utils.display import Display
+from pyavd.errors.errors import AvdDeprecationWarning
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AvdDeprecationWarning
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AristaAvdError, AvdSchema
 
 VALID_CONVERSION_MODES = ["disabled", "error", "warning", "info", "debug", "quiet"]

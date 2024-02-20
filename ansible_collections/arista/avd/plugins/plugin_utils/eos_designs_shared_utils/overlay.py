@@ -8,7 +8,8 @@ from ipaddress import ip_address
 from re import fullmatch
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:

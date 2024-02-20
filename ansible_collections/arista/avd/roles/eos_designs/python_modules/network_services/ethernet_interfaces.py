@@ -6,8 +6,9 @@ from __future__ import annotations
 import re
 from functools import cached_property
 
+from pyavd.errors import AristaAvdError
+
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from .utils import UtilsMixin

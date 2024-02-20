@@ -11,7 +11,7 @@ It is used  in the encrypt and decrypt filters
 
 import base64
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ...errors import AristaAvdError
 
 try:
     from cryptography.hazmat.backends import default_backend

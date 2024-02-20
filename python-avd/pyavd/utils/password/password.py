@@ -4,8 +4,7 @@
 """
 Used by Encrypt / Decrypt filters
 """
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-
+from ...errors import AristaAvdError, AristaAvdMissingVariableError
 from .password_utils import cbc_decrypt, cbc_encrypt
 
 

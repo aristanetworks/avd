@@ -5,8 +5,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generator
 
+from pyavd.errors import AvdConversionWarning, AvdDeprecationWarning
+
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdConversionWarning, AvdDeprecationWarning
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 SCHEMA_TO_PY_TYPE_MAP = {

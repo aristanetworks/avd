@@ -6,7 +6,8 @@ from __future__ import annotations
 from copy import deepcopy
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdSchemaError, AvdValidationError
+from pyavd.errors import AristaAvdError, AvdSchemaError, AvdValidationError
+
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avddataconverter import AvdDataConverter
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschemaresolver import AvdSchemaResolver
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AvdValidator

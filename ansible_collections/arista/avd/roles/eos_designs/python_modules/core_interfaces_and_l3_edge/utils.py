@@ -9,9 +9,10 @@ from functools import cached_property
 from ipaddress import ip_network
 from itertools import islice
 
+from pyavd.errors import AristaAvdMissingVariableError
+
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 

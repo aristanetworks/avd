@@ -4,16 +4,16 @@
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
 
 from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH
-from .vendor.j2.filter.convert_dicts import convert_dicts
-from .vendor.j2.filter.decrypt import decrypt
-from .vendor.j2.filter.default import default
-from .vendor.j2.filter.encrypt import encrypt
-from .vendor.j2.filter.hide_passwords import hide_passwords
-from .vendor.j2.filter.list_compress import list_compress
-from .vendor.j2.filter.natural_sort import natural_sort
-from .vendor.j2.filter.range_expand import range_expand
-from .vendor.j2.test.contains import contains
-from .vendor.j2.test.defined import defined
+from .j2filters.convert_dicts import convert_dicts
+from .j2filters.decrypt import decrypt
+from .j2filters.default import default
+from .j2filters.encrypt import encrypt
+from .j2filters.hide_passwords import hide_passwords
+from .j2filters.list_compress import list_compress
+from .j2filters.natural_sort import natural_sort
+from .j2filters.range_expand import range_expand
+from .j2tests.contains import contains
+from .j2tests.defined import defined
 
 JINJA2_CUSTOM_FILTERS = {
     "arista.avd.default": default,
