@@ -43,24 +43,15 @@ class WanMixin:
 
     @cached_property
     def is_wan_router(self) -> bool:
-        if self.wan_role:
-            return True
-        else:
-            return False
+        return bool(self.wan_role)
 
     @cached_property
     def is_wan_server(self) -> bool:
-        if self.wan_role == "server":
-            return True
-        else:
-            return False
+        return self.wan_role == "server"
 
     @cached_property
     def is_wan_client(self) -> bool:
-        if self.wan_role == "client":
-            return True
-        else:
-            return False
+        return self.wan_role == "client"
 
     @cached_property
     def wan_listen_ranges(self: SharedUtils) -> list:
@@ -199,10 +190,6 @@ class WanMixin:
         """
         if not self.is_wan_server:
             return interface["ip_address"]
-
-
-        if (not self.is_wan_server) != (self.wan_role != "server"):
-            raise Exception("AYUSH wan_role: ", self.wan_role,"is_wan_server" ,self.is_wan_server)
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:

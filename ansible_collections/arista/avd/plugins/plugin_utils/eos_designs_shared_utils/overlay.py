@@ -145,7 +145,7 @@ class OverlayMixin:
         TODO: Implement HA logic for WAN
         TODO: Reconsider if suffix should just be :1 for all WAN routers.
         """
-        if self.wan_role:
+        if self.is_wan_router:
             if self.is_cv_pathfinder_edge_or_transit:
                 return f"{self.router_id}:{self.wan_site['id']}"
             return f"{self.router_id}:0"
