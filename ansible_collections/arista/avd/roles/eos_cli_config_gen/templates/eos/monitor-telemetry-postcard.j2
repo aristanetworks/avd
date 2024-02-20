@@ -1,0 +1,53 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - monitor telemetry postcard #}
+
+{% if monitor_telemetry_postcard is arista.avd.defined %}
+!
+monitor telemetry postcard policy
+{%     if monitor_telemetry_postcard.disabled is arista.avd.defined and monitor_telemetry_postcard.disabled == false %}
+   no disabled
+{%     endif %}
+{%     if monitor_telemetry_postcard.ingress is arista.avd.defined %}
+{%         if monitor_telemetry_postcard.ingress.collection.source is arista.avd.defined and monitor_telemetry_postcard.ingress.collection.destination is arista.avd.defined %}
+   ingress collection gre source {{ monitor_telemetry_postcard.ingress.collection.source }} {{ monitor_telemetry_postcard.ingress.collection.destination }}
+{%         endif %}
+{%     endif %}
+{%     if monitor_telemetry_postcard.ingress.sample.rate is arista.avd.defined %}
+   ingress sample rate {{ monitor_telemetry_postcard.ingress.sample.rate }}
+{%     endif %}
+{%     if monitor_telemetry_postcard.ingress.sample.tcp_udp_checksum is arista.avd.defined %}
+   ingress sample tcp-udp-checksum {{ monitor_telemetry_postcard.ingress.sample.tcp_udp_checksum }}
+{%     endif %}
+{%     if monitor_telemetry_postcard.profile.name is arista.avd.defined %}
+   profile {{ monitor_telemetry_postcard.profile.name }}
+{%         if monitor_telemetry_postcard.profile.ingress_sample_policy is arista.avd.defined %}
+      ingress sample policy {{ monitor_telemetry_postcard.profile.ingress_sample_policy }}
+{%          endif %}
+{%      endif %}
+{%     if monitor_telemetry_postcard.sample_policy is arista.avd.defined %}
+{%         if monitor_telemetry_postcard.sample_policy.name is arista.avd.defined %}
+   sample policy {{ monitor_telemetry_postcard.sample_policy.name }}
+{%         endif %}
+{%     endif %}
+{%     if monitor_telemetry_postcard.sample_policy.match_rule.rule_name is arista.avd.defined %}
+      match rule {{ monitor_telemetry_postcard.sample_policy.match_rule.rule_name }} ipv4
+{%     else %}
+      match ipv4-all-default ipv4
+      !
+      match ipv6-all-default ipv6
+{%     endif %}
+{%     if monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix1 is arista.avd.defined %}
+{%         set prefix_address = monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix1.prefix_address %}
+{%         set prefix_mask = monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix1.prefix_address %}
+         destination prefix {{ prefix_address }} {{prefix_mask }}
+{%     endif %}
+{%     if monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix2 is arista.avd.defined %}
+{%         set prefix_address = monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix2.prefix_address %}
+{%         set prefix_mask = monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix2.prefix_mask %}
+          destination prefix {{ prefix_address }}/{{ prefix_mask }}
+{%     endif %}
+{% endif %}

@@ -11092,6 +11092,172 @@
       },
       "title": "Monitor Sessions"
     },
+    "monitor_telemetry_postcard": {
+      "type": "object",
+      "properties": {
+        "disabled": {
+          "type": "boolean",
+          "description": "Enable or disable the postcard telemetry feature",
+          "title": "Disabled"
+        },
+        "ingress": {
+          "type": "object",
+          "description": "Configure ingress parameters",
+          "properties": {
+            "collection": {
+              "type": "object",
+              "description": "Collector configuration",
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "title": "Source"
+                },
+                "destination": {
+                  "type": "string",
+                  "title": "Destination"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Collection"
+            },
+            "sample": {
+              "type": "object",
+              "description": "Configure sampling parameters",
+              "properties": {
+                "rate": {
+                  "type": "integer",
+                  "description": "Configure sampling rate",
+                  "enum": [
+                    16384,
+                    32768,
+                    65536
+                  ],
+                  "title": "Rate"
+                },
+                "tcp_udp_checksum": {
+                  "type": "integer",
+                  "description": "Configure TCP/UDP checksum or IP ID checksum",
+                  "title": "TCP UDP Checksum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Sample"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Ingress"
+        },
+        "profile": {
+          "type": "object",
+          "description": "Configure the postcard telemetry profile",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "ingress_sample_policy": {
+              "type": "string",
+              "description": "Configure ingress parameters",
+              "title": "Ingress Sample Policy"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Profile"
+        },
+        "sample_policy": {
+          "type": "object",
+          "description": "Configure sampling feature",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "match_rule": {
+              "type": "object",
+              "properties": {
+                "rule_name": {
+                  "type": "string",
+                  "title": "Rule Name"
+                },
+                "destination_prefix": {
+                  "type": "object",
+                  "properties": {
+                    "prefix1": {
+                      "type": "object",
+                      "properties": {
+                        "prefix_address": {
+                          "type": "string",
+                          "title": "Prefix Address"
+                        },
+                        "prefix_mask": {
+                          "type": "string",
+                          "title": "Prefix Mask"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Prefix1"
+                    },
+                    "prefix2": {
+                      "type": "object",
+                      "properties": {
+                        "prefix_address": {
+                          "type": "string",
+                          "title": "Prefix Address"
+                        },
+                        "prefix_mask": {
+                          "type": "integer",
+                          "title": "Prefix Mask"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Prefix2"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Destination Prefix"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Match Rule"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sample Policy"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Monitor Telemetry Postcard"
+    },
     "mpls": {
       "type": "object",
       "properties": {

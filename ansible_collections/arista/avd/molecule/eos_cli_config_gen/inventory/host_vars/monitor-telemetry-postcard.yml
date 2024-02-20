@@ -1,0 +1,20 @@
+monitor_telemetry_postcard:
+  disabled: false
+  ingress:
+    collection:
+      source: 10.3.3.3
+      destination: 19.33.33.33
+    sample:
+      rate: 16384
+      tcp_udp_checksum: 393993
+  profile:
+    name: abc
+    ingress_sample_policy: abcd
+  sample_policy:
+    name: abcde
+    match_rule:
+      rule_name: abcdef
+      destination_prefix:
+        prefix2:
+          prefix_address: 10.10.0.0
+          prefix_mask: 24

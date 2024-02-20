@@ -6531,6 +6531,79 @@ keys:
               description: Size in bytes
               convert_types:
               - str
+  monitor_telemetry_postcard:
+    type: dict
+    keys:
+      disabled:
+        type: bool
+        description: Enable or disable the postcard telemetry feature
+      ingress:
+        type: dict
+        description: Configure ingress parameters
+        keys:
+          collection:
+            type: dict
+            description: Collector configuration
+            keys:
+              source:
+                type: str
+              destination:
+                type: str
+          sample:
+            type: dict
+            description: Configure sampling parameters
+            keys:
+              rate:
+                type: int
+                description: Configure sampling rate
+                convert_types:
+                - str
+                valid_values:
+                - 16384
+                - 32768
+                - 65536
+              tcp_udp_checksum:
+                type: int
+                description: Configure TCP/UDP checksum or IP ID checksum
+                convert_types:
+                - str
+      profile:
+        type: dict
+        description: Configure the postcard telemetry profile
+        keys:
+          name:
+            type: str
+          ingress_sample_policy:
+            type: str
+            description: Configure ingress parameters
+      sample_policy:
+        type: dict
+        description: Configure sampling feature
+        keys:
+          name:
+            type: str
+          match_rule:
+            type: dict
+            keys:
+              rule_name:
+                type: str
+              destination_prefix:
+                type: dict
+                keys:
+                  prefix1:
+                    type: dict
+                    keys:
+                      prefix_address:
+                        type: str
+                      prefix_mask:
+                        type: str
+                  prefix2:
+                    type: dict
+                    keys:
+                      prefix_address:
+                        type: str
+                      prefix_mask:
+                        type: int
   mpls:
     type: dict
     keys:
