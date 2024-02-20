@@ -94,60 +94,58 @@ class RouteMapsMixin(UtilsMixin):
 
         # Route-map IN and OUT for SOO, rendered for WAN routers
         if self.shared_utils.underlay_routing_protocol == "ebgp" and self.shared_utils.wan_role == "client":
-            route_maps.append(
+            # RM-BGP-UNDERLAY-PEERS-IN
+            sequence_numbers = [
                 {
-                    "name": "RM-BGP-UNDERLAY-PEERS-IN",
-                    "sequence_numbers": [
-                        # TODO seq 10 maybe only needed when HA is true
-                        {
-                            "sequence": 10,
-                            "type": "deny",
-                            "description": "Deny prefixes with our SoO set",
-                            "match": ["extcommunity ECL-EVPN-SOO"],
-                        },
-                        {
-                            "sequence": 20,
-                            "type": "deny",
-                            "description": "Deny prefixes from WAN",
-                            "match": ["as-path ASPATH-WAN"],
-                        },
-                        {
-                            "sequence": 30,
-                            "type": "permit",
-                            "description": "Mark prefixes originated from the LAN",
-                            "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
-                        },
-                    ],
-                }
-            )
+                    "sequence": 20,
+                    "type": "deny",
+                    "description": "Deny prefixes from WAN",
+                    "match": ["as-path ASPATH-WAN"],
+                },
+                {
+                    "sequence": 30,
+                    "type": "permit",
+                    "description": "Mark prefixes originated from the LAN",
+                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                },
+            ]
+            if self.shared_utils.wan_ha:
+                sequence_numbers.append(
+                    {
+                        "sequence": 10,
+                        "type": "deny",
+                        "description": "Deny prefixes with our SoO set",
+                        "match": ["extcommunity ECL-EVPN-SOO"],
+                    },
+                )
+            route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-IN", "sequence_numbers": sequence_numbers})
 
-            route_maps.append(
+            # RM-BGP-UNDERLAY-PEERS-OUT
+            sequence_numbers = [
                 {
-                    "name": "RM-BGP-UNDERLAY-PEERS-OUT",
-                    "sequence_numbers": [
-                        {
-                            "sequence": 10,
-                            "type": "permit",
-                            "description": "Advertise local routes towards LAN",
-                            "match": ["extcommunity ECL-EVPN-SOO"],
-                        },
-                        {
-                            "sequence": 20,
-                            "type": "permit",
-                            "description": "Advertise routes received from WAN iBGP towards LAN",
-                            "match": ["route-type internal"],
-                        },
-                        # TODO seq 30 maybe only needed when HA is true
-                        {
-                            "sequence": 30,
-                            "type": "permit",
-                            "description": "Advertise WAN HA prefixes towards LAN and mark them with SoO",
-                            "match": [f"interface {uplink['interface']}" for uplink in self._uplinks],
-                            "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
-                        },
-                    ],
-                }
-            )
+                    "sequence": 10,
+                    "type": "permit",
+                    "description": "Advertise local routes towards LAN",
+                    "match": ["extcommunity ECL-EVPN-SOO"],
+                },
+                {
+                    "sequence": 20,
+                    "type": "permit",
+                    "description": "Advertise routes received from WAN iBGP towards LAN",
+                    "match": ["route-type internal"],
+                },
+            ]
+            if self.shared_utils.wan_ha:
+                sequence_numbers.append(
+                    {
+                        "sequence": 30,
+                        "type": "permit",
+                        "description": "Advertise WAN HA prefixes towards LAN and mark them with SoO",
+                        "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
+                        "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                    },
+                )
+            route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})
 
         if route_maps:
             return route_maps
