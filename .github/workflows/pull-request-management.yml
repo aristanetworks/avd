@@ -183,9 +183,8 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
+          ansible: ${{ matrix.ansible_version }} -r ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           check_git: true
           check_git_enforced: true
       # - uses: actions/upload-artifact@v3
@@ -218,9 +217,8 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
+          ansible: ${{ matrix.ansible_version }} -r ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           check_git: true
           check_git_enforced: true
       # - uses: actions/upload-artifact@v3
@@ -277,9 +275,8 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
+          ansible: ${{ matrix.ansible_version }} -r ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           check_git: true
           check_git_enforced: true
       # - uses: actions/upload-artifact@v3
@@ -316,9 +313,8 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
+          ansible: ${{ matrix.ansible_version }} -r ansible_collections/arista/avd/requirements.txt -e python-avd --config-settings editable_mode=compat
           check_git: true
           check_git_enforced: true
       # - uses: actions/upload-artifact@v3
@@ -357,9 +353,8 @@ jobs:
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           # Temporarily using special requirements to install anta while the feature is in preview.
-          pip_file: ansible_collections/arista/avd/roles/eos_validate_state/preview_requirements.txt -e python-avd --config-settings editable_mode=compat
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
+          ansible: ${{ matrix.ansible_version }} -r ansible_collections/arista/avd/roles/eos_validate_state/preview_requirements.txt -e python-avd --config-settings editable_mode=compat
           check_git: true
           check_git_enforced: true
 
