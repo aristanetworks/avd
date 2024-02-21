@@ -59,7 +59,7 @@ class AvdStructuredConfigOverlay(
                 self.shared_utils.overlay_evpn,
                 self.shared_utils.overlay_vpn_ipv4,
                 self.shared_utils.overlay_vpn_ipv6,
-                self.shared_utils.wan_role,
+                self.shared_utils.is_wan_router,
             ]
         ):
             return super().render()

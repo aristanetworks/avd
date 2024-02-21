@@ -27,7 +27,7 @@ class IpSecurityMixin(UtilsMixin):
         """
         # TODO - in future, the default algo/dh groups value must be clarified
 
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         wan_ipsec_profiles = get(self._hostvars, "wan_ipsec_profiles", required=True)
@@ -35,7 +35,7 @@ class IpSecurityMixin(UtilsMixin):
         # Structure initialization
         ip_security = {"ike_policies": [], "sa_policies": [], "profiles": []}
 
-        if self.shared_utils.wan_role == "client" and (data_plane := get(wan_ipsec_profiles, "data_plane")) is not None:
+        if self.shared_utils.is_wan_client and (data_plane := get(wan_ipsec_profiles, "data_plane")) is not None:
             self._append_data_plane(ip_security, data_plane)
         control_plane = get(wan_ipsec_profiles, "control_plane", required=True)
         self._append_control_plane(ip_security, control_plane)
@@ -116,7 +116,7 @@ class IpSecurityMixin(UtilsMixin):
         """
         Return a key_controller structure if the device is not a RR or pathfinder
         """
-        if self.shared_utils.wan_role != "client":
+        if self.shared_utils.is_wan_server:
             return None
 
         return {"profile": profile_name}

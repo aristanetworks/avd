@@ -22,7 +22,7 @@ class IpExtCommunityListsMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol != "ibgp":
             return None
 
-        if self.shared_utils.evpn_role == "server" and not self.shared_utils.wan_role:
+        if self.shared_utils.evpn_role == "server" and not self.shared_utils.is_wan_router:
             return None
 
         if self.shared_utils.overlay_vtep:
