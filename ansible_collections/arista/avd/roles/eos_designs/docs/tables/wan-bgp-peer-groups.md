@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;wan_overlay_peers</samp>](## "bgp_peer_groups.wan_overlay_peers") | Dictionary |  |  |  | PREVIEW: This key is currently not supported |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.wan_overlay_peers.name") | String |  | `WAN-OVERLAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_timers</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd_timers") | Dictionary |  |  |  | Specify the BFD timers to override the default values.<br>It is recommended to keep BFD total timeout longer than the DPS timeout.<br>The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd_timers.interval") | Integer | Required | `1000` | Min: 50<br>Max: 60000 | Interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd_timers.min_rx") | Integer | Required | `1000` | Min: 50<br>Max: 60000 | Rate in milliseconds. |
@@ -46,7 +46,7 @@
 
         # Type 7 encrypted password.
         password: <str>
-        bfd: <bool; default=False>
+        bfd: <bool; default=True>
 
         # Specify the BFD timers to override the default values.
         # It is recommended to keep BFD total timeout longer than the DPS timeout.

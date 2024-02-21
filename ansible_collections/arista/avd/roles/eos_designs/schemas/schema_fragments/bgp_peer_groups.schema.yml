@@ -45,7 +45,7 @@ keys:
             description: Type 7 encrypted password.
           bfd:
             type: bool
-            default: true
+            default: False
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
@@ -163,7 +163,7 @@ keys:
             description: Type 7 encrypted password.
           bfd:
             type: bool
-            default: False
+            default: True
           bfd_timers:
             type: dict
             description: |-

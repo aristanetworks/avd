@@ -234,7 +234,7 @@ keys:
             description: Type 7 encrypted password.
           bfd:
             type: bool
-            default: true
+            default: false
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
@@ -357,7 +357,7 @@ keys:
             description: Type 7 encrypted password.
           bfd:
             type: bool
-            default: false
+            default: true
           bfd_timers:
             type: dict
             description: 'Specify the BFD timers to override the default values.
