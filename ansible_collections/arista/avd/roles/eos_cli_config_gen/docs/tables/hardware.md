@@ -13,6 +13,8 @@
     | [<samp>&nbsp;&nbsp;speed_groups</samp>](## "hardware.speed_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;speed_group</samp>](## "hardware.speed_groups.[].speed_group") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serdes</samp>](## "hardware.speed_groups.[].serdes") | String |  |  |  | Serdes speed like "10g" or "25g" |
+    | [<samp>&nbsp;&nbsp;asset_tag</samp>](## "hardware.asset_tag") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switch</samp>](## "hardware.asset_tag.switch") | String |  |  |  | User-supplied asset tag/ID. |
 
 === "YAML"
 
@@ -25,4 +27,8 @@
 
           # Serdes speed like "10g" or "25g"
           serdes: <str>
+      asset_tag:
+
+        # User-supplied asset tag/ID.
+        switch: <str>
     ```

@@ -9,3 +9,5 @@ hardware:
       serdes: 25g
     - speed_group: 3/1
       serdes: 25g
+  asset_tag:
+    switch: Test_tag

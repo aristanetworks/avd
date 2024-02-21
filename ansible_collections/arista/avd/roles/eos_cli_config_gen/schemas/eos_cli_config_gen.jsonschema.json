@@ -5653,6 +5653,21 @@
             ]
           },
           "title": "Speed Groups"
+        },
+        "asset_tag": {
+          "type": "object",
+          "properties": {
+            "switch": {
+              "type": "string",
+              "description": "User-supplied asset tag/ID.",
+              "title": "Switch"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Asset Tag"
         }
       },
       "additionalProperties": false,

@@ -30,3 +30,9 @@ keys:
             serdes:
               type: str
               description: Serdes speed like "10g" or "25g"
+      asset_tag:
+        type: dict
+        keys:
+          switch:
+            type: str
+            description: User-supplied asset tag/ID.

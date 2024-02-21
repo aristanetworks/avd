@@ -16,3 +16,7 @@ hardware speed-group {{ speed_group.speed_group }} serdes {{ speed_group.serdes 
 {%         endif %}
 {%     endfor %}
 {% endif %}
+{% if hardware.asset_tag.switch is arista.avd.defined %}
+!
+hardware asset_tag switch {{ hardware.asset_tag.switch }}
+{% endif %}
