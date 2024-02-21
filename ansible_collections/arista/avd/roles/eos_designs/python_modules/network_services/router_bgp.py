@@ -9,9 +9,9 @@ from itertools import groupby as itertools_groupby
 from re import fullmatch as re_fullmatch
 
 from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd.j2filters.list_compress import list_compress
+from pyavd.j2filters.natural_sort import natural_sort
 
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item

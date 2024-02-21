@@ -5,7 +5,6 @@ from __future__ import absolute_import, division, print_function
 
 from pathlib import Path
 
-from ansible_collections.arista.avd.plugins.filter.add_md_toc import add_md_toc
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.get import get
 
 __metaclass__ = type
@@ -24,6 +23,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAn
 
 try:
     from pyavd import get_device_config, get_device_doc
+    from pyavd.j2filters.add_md_toc import add_md_toc
     from pyavd.utils.read_vars import read_vars
 
     HAS_PYAVD = True

@@ -5,9 +5,10 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.generate_esi import generate_esi
-from ansible_collections.arista.avd.plugins.filter.generate_lacp_id import generate_lacp_id
-from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
+from pyavd.j2filters.generate_esi import generate_esi
+from pyavd.j2filters.generate_lacp_id import generate_lacp_id
+from pyavd.j2filters.generate_route_target import generate_route_target
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from ..interface_descriptions.models import InterfaceDescriptionData

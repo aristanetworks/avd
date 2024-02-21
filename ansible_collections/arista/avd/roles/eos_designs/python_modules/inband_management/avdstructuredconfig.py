@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from ipaddress import ip_network
 
-from pyavd.errors.errors import AristaAvdMissingVariableError
+from pyavd.errors import AristaAvdMissingVariableError
+from pyavd.j2filters.natural_sort import natural_sort
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get

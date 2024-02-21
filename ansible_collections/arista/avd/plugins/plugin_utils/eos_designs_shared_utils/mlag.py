@@ -9,8 +9,8 @@ from re import findall
 from typing import TYPE_CHECKING
 
 from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd.j2filters.range_expand import range_expand
 
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 if TYPE_CHECKING:

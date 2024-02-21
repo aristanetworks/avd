@@ -8,10 +8,10 @@ from functools import cached_property
 from hashlib import sha256
 
 from pyavd.errors import AristaAvdError
+from pyavd.j2filters.convert_dicts import convert_dicts
+from pyavd.j2filters.generate_esi import generate_esi
+from pyavd.j2filters.generate_route_target import generate_route_target
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.generate_esi import generate_esi
-from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 

@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd.errors.errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from .avdipaddressing import AvdIpAddressing

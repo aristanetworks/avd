@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from pyavd.j2filters.range_expand import range_expand
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 if TYPE_CHECKING:

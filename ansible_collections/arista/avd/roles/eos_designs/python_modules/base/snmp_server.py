@@ -7,9 +7,9 @@ from functools import cached_property
 from hashlib import sha1
 
 from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd.j2filters.natural_sort import natural_sort
+from pyavd.j2filters.snmp_hash import snmp_hash
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.filter.snmp_hash import snmp_hash
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, replace_or_append_item
 

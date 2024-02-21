@@ -7,9 +7,9 @@ from functools import cached_property
 from typing import NoReturn
 
 from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd.j2filters.natural_sort import natural_sort
+from pyavd.j2filters.range_expand import range_expand
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, unique
 
 from .utils import UtilsMixin
