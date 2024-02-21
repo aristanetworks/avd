@@ -36,20 +36,34 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         return strip_empties_from_dict(router_path_selection)
 
+    @cached_property
+    def _cp_ipsec_profile_name(self) -> str:
+        """
+        Returns the IPsec profile name to use for Control-Plane
+        """
+        return get(self._hostvars, "wan_ipsec_profiles.control_plane.profile_name", default="CP-PROFILE")
+
+    @cached_property
+    def _dp_ipsec_profile_name(self) -> str:
+        """
+        Returns the IPsec profile name to use for Data-Plane
+        """
+        # TODO need to use CP one if 'wan_ipsec_profiles.data_plane' not present
+        return get(self._hostvars, "wan_ipsec_profiles.data_plane.profile_name", default="DP-PROFILE")
+
     def _get_path_groups(self) -> list:
         """
         Generate the required path-groups locally
         """
         path_groups = []
 
-        # TODO - need to have default value in one place only -> maybe facts / shared_utils ?
-        ipsec_profile_name = get(self._hostvars, "wan_ipsec_profiles.control_plane.profile_name", default="CP-PROFILE")
-
         if self.shared_utils.wan_role == "server":
             # Configure all path-groups on Pathfinders and AutoVPN RRs
             path_groups_to_configure = self.shared_utils.wan_path_groups
         else:
             path_groups_to_configure = self.shared_utils.wan_local_path_groups
+
+        local_path_groups_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
 
         for path_group in path_groups_to_configure:
             pg_name = path_group.get("name")
@@ -62,8 +76,9 @@ class RouterPathSelectionMixin(UtilsMixin):
                 "static_peers": self._get_static_peers_for_path_group(pg_name),
             }
 
-            if path_group.get("ipsec", True):
-                path_group_data["ipsec_profile"] = ipsec_profile_name
+            # On pathfinder IPsec profile is not required for non local path_groups
+            if pg_name in local_path_groups_names and path_group.get("ipsec", True):
+                path_group_data["ipsec_profile"] = self._cp_ipsec_profile_name
 
             path_groups.append(path_group_data)
 
@@ -114,7 +129,7 @@ class RouterPathSelectionMixin(UtilsMixin):
 
     def _get_static_peers_for_path_group(self, path_group_name: str) -> list | None:
         """
-        TODO
+        Retrieves the static peers to configure for a given path-group based on the connected nodes.
         """
         if not self.shared_utils.wan_role:
             return None

@@ -122,7 +122,7 @@ class RouterBgpMixin(UtilsMixin):
                 peer_group_config = {"remote_as": self.shared_utils.bgp_as}
                 if self.shared_utils.wan_role:
                     # WAN OVERLAY peer group
-                    # TODO Add TTL max hop to the peer group on the Pathfinder once agreed upon
+                    peer_group_config["ttl_maximum_hops"] = self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["ttl_maximum_hops"]
                     if self.shared_utils.wan_role == "server":
                         peer_group_config["route_reflector_client"] = True
                     peer_groups.append(
@@ -147,12 +147,11 @@ class RouterBgpMixin(UtilsMixin):
                 peer_groups.append({**self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
 
             if self._is_wan_server_with_peers:
-                peer_groups.append(
-                    {
-                        **self._generate_base_peer_group("wan", "wan_rr_overlay_peers", update_source=self.shared_utils.vtep_loopback),
-                        "remote_as": self.shared_utils.bgp_as,
-                    }
+                wan_rr_overlay_peer_group = self._generate_base_peer_group("wan", "wan_rr_overlay_peers", update_source=self.shared_utils.vtep_loopback)
+                wan_rr_overlay_peer_group.update(
+                    {"remote_as": self.shared_utils.bgp_as, "ttl_maximum_hops": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["ttl_maximum_hops"]}
                 )
+                peer_groups.append(wan_rr_overlay_peer_group)
 
         # same for ebgp and ibgp
         if self.shared_utils.overlay_ipvpn_gateway is True:
@@ -239,8 +238,7 @@ class RouterBgpMixin(UtilsMixin):
                     address_family_evpn["neighbor_default"]["next_hop_self_source_interface"] = "Loopback0"
 
             # partly duplicate with ebgp
-            # Do not render the route-maps if it is a WAN router
-            if self.shared_utils.overlay_vtep is True and self.shared_utils.wan_role is None:
+            if self.shared_utils.overlay_vtep is True and self.shared_utils.evpn_role != "server":
                 if (peer_group := get_item(peer_groups, "name", overlay_peer_group_name)) is not None:
                     peer_group.update(
                         {

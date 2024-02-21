@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_as</samp>](## "bgp_as") | String |  |  |  | AS number to use to configure overlay when "overlay_routing_protocol" == ibgp. |
+    | [<samp>bgp_as</samp>](## "bgp_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>" to use to configure overlay when "overlay_routing_protocol" == ibgp.<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>bgp_default_ipv4_unicast</samp>](## "bgp_default_ipv4_unicast") | Boolean |  | `False` |  | Default activation of IPv4 unicast address-family on all IPv4 neighbors.<br>It is best practice to disable activation.<br> |
     | [<samp>bgp_distance</samp>](## "bgp_distance") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;external_routes</samp>](## "bgp_distance.external_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
@@ -63,7 +63,8 @@
 === "YAML"
 
     ```yaml
-    # AS number to use to configure overlay when "overlay_routing_protocol" == ibgp.
+    # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>" to use to configure overlay when "overlay_routing_protocol" == ibgp.
+    # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
     bgp_as: <str>
 
     # Default activation of IPv4 unicast address-family on all IPv4 neighbors.

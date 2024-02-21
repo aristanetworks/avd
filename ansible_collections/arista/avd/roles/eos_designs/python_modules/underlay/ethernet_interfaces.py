@@ -110,6 +110,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                 if link.get("underlay_multicast") is True:
                     ethernet_interface["pim"] = {"ipv4": {"sparse_mode": True}}
 
+                # Configuring flow tracking on LAN interfaces
+                if self.shared_utils.wan_mode == "cv-pathfinder" and self.shared_utils.wan_role == "client":
+                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
+
                 # Structured Config
                 ethernet_interface["struct_cfg"] = link.get("structured_config")
 
@@ -179,6 +183,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                     if subinterface.get("ip_address") is not None:
                         ethernet_subinterface.update({"ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}"}),
 
+                    # Configuring flow tracking on LAN interfaces
+                    if self.shared_utils.wan_mode == "cv-pathfinder" and self.shared_utils.wan_role == "client":
+                        ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
+
                     ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
                     append_if_not_duplicate(
                         list_of_dicts=ethernet_interfaces,
@@ -216,6 +224,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "peer_type": "l3_interface",
                     "shutdown": False,
                 }
+
+                # Configuring flow tracking on LAN interfaces
+                if self.shared_utils.wan_mode == "cv-pathfinder" and self.shared_utils.wan_role == "client":
+                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
+
                 append_if_not_duplicate(
                     list_of_dicts=ethernet_interfaces,
                     primary_key="name",

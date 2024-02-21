@@ -10,10 +10,13 @@ router_bgp:
     paths: 16
   updates:
     wait_install: true
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    route_map_in: RM-BGP-UNDERLAY-PEERS-IN
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
@@ -22,14 +25,85 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
+    ttl_maximum_hops: 1
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  - source_protocol: static
+    route_map: RM-STATIC-2-BGP
+  neighbors:
+  - ip_address: 172.17.0.0
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: site-ha-disabled-leaf
+    description: site-ha-disabled-leaf_Ethernet1
+  - ip_address: 192.168.144.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder
+  vrfs:
+  - name: IT
+    router_id: 192.168.42.1
+    neighbors:
+    - ip_address: 172.17.0.0
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: site-ha-disabled-leaf_Ethernet1.100_vrf_IT
+    rd: 192.168.42.1:100
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 100:100
+      export:
+      - address_family: evpn
+        route_targets:
+        - 100:100
+    redistribute_routes:
+    - source_protocol: connected
+  - name: PROD
+    router_id: 192.168.42.1
+    neighbors:
+    - ip_address: 172.17.0.0
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: site-ha-disabled-leaf_Ethernet1.42_vrf_PROD
+    rd: 192.168.42.1:42
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: default
+    rd: 192.168.42.1:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: false
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -50,59 +124,9 @@ router_bgp:
         receive: true
         send:
           any: true
-  neighbors:
-  - ip_address: 192.168.144.1
-    peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
-  vrfs:
-  - name: default
-    rd: 192.168.42.1:1
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
-  - name: IT
-    router_id: 192.168.42.1
-    rd: 192.168.42.1:100
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-      export:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-    redistribute_routes:
-    - source_protocol: connected
-  - name: PROD
-    router_id: 192.168.42.1
-    rd: 192.168.42.1:42
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '42:42'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '42:42'
-    redistribute_routes:
-    - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
+transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 vrfs:
@@ -119,6 +143,39 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
+- name: Ethernet52
+  peer: site-ha-disabled-leaf
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 172.17.0.1/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet52.100
+  peer: site-ha-disabled-leaf
+  peer_interface: Ethernet1.100
+  peer_type: l3leaf
+  vrf: IT
+  description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet1.100_vrf_IT
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 100
+  mtu: 9214
+  ip_address: 172.17.0.1/31
+- name: Ethernet52.42
+  peer: site-ha-disabled-leaf
+  peer_interface: Ethernet1.42
+  peer_type: l3leaf
+  vrf: PROD
+  description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet1.42_vrf_PROD
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 42
+  mtu: 9214
+  ip_address: 172.17.0.1/31
 - name: Ethernet1
   peer_type: l3_interface
   ip_address: dhcp
@@ -146,11 +203,21 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.42.1/32
+as_path:
+  access_lists:
+  - name: ASPATH-WAN
+    entries:
+    - type: permit
+      match: '65000'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.42.0/24 eq 32
+- name: PL-STATIC-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 66.66.66.0/24
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -158,12 +225,66 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-- name: RM-EVPN-EXPORT-VRF-DEFAULT
+    set:
+    - extcommunity soo 192.168.42.1:511 additive
+- name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
+  - sequence: 20
+    type: deny
+    description: Deny prefixes from WAN
+    match:
+    - as-path ASPATH-WAN
   - sequence: 30
     type: permit
+    description: Mark prefixes originated from the LAN
+    set:
+    - extcommunity soo 192.168.42.1:511 additive
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Advertise local routes towards LAN
     match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+    description: Advertise routes received from WAN iBGP towards LAN
+    match:
+    - route-type internal
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 192.168.42.1:511 additive
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - extcommunity ECL-EVPN-SOO
+- name: RM-STATIC-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-STATIC-VRF-DEFAULT
+    set:
+    - extcommunity soo 192.168.42.1:511 additive
+static_routes:
+- destination_address_prefix: 172.16.0.0/16
+  gateway: 172.16.5.4
+- destination_address_prefix: 66.66.66.0/24
+  gateway: 172.17.0.0
+  vrf: default
 flow_tracking:
   hardware:
     trackers:
@@ -178,10 +299,13 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 5000
     shutdown: false
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.42.1:511
 ip_security:
   ike_policies:
-  - name: DP-IKE-POLICY
-    local_id: 192.168.142.1
   - name: CP-IKE-POLICY
     local_id: 192.168.142.1
   sa_policies:
@@ -195,7 +319,6 @@ ip_security:
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
-    ike_policy: DP-IKE-POLICY
     sa_policy: DP-SA-POLICY
     connection: start
     shared_key: ABCDEF1234567890666
@@ -434,6 +557,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
+  mtu: 9214
   ip_address: 192.168.142.1/32
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
@@ -462,6 +586,10 @@ metadata:
     - name: Site
       value: Site511
     interface_tags:
+    - interface: Ethernet52
+      tags:
+      - name: Type
+        value: lan
     - interface: Ethernet1
       tags:
       - name: Type

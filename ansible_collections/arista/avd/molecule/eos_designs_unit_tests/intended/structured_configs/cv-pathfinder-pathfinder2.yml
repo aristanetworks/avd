@@ -10,6 +10,39 @@ router_bgp:
     paths: 16
   updates:
     wait_install: true
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    route_map_in: RM-BGP-UNDERLAY-PEERS-IN
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    update_source: Dps1
+    bfd: true
+    password: htm4AZe9mIQOO1uiMuGgYQ==
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+    ttl_maximum_hops: 1
+    route_reflector_client: true
+  - name: WAN-RR-OVERLAY-PEERS
+    type: wan
+    update_source: Dps1
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+    ttl_maximum_hops: 42
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+    - name: WAN-RR-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -21,23 +54,6 @@ router_bgp:
   - prefix: 192.168.143.0/24
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
-  peer_groups:
-  - name: WAN-OVERLAY-PEERS
-    type: wan
-    update_source: Dps1
-    bfd: true
-    password: htm4AZe9mIQOO1uiMuGgYQ==
-    send_community: all
-    maximum_routes: 0
-    remote_as: '65000'
-    route_reflector_client: true
-  - name: WAN-RR-OVERLAY-PEERS
-    type: wan
-    update_source: Dps1
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-    remote_as: '65000'
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -46,12 +62,6 @@ router_bgp:
       activate: true
     next_hop:
       resolution_disabled: true
-  address_family_ipv4:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: false
-    - name: WAN-RR-OVERLAY-PEERS
-      activate: false
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -105,11 +115,7 @@ router_bgp:
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
 service_routing_protocols_model: multi-agent
 ip_routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
+transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 vrfs:
@@ -154,12 +160,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.44.3:0 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
-  - sequence: 30
+  - sequence: 10
     type: permit
     match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    - extcommunity ECL-EVPN-SOO
 flow_tracking:
   hardware:
     trackers:
@@ -174,6 +182,11 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 5000
     shutdown: false
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.44.3:0
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
@@ -309,13 +322,10 @@ router_path_selection:
     ipsec_profile: CP-PROFILE
   - name: LTE
     id: 102
-    ipsec_profile: CP-PROFILE
   - name: Equinix
     id: 103
-    ipsec_profile: CP-PROFILE
   - name: Satellite
     id: 104
-    ipsec_profile: CP-PROFILE
   peer_dynamic_source: stun
   load_balance_policies:
   - name: LB-CONTROL-PLANE-PROFILE
@@ -422,6 +432,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
+  mtu: 9214
   ip_address: 192.168.144.3/32
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
@@ -503,6 +514,10 @@ metadata:
           id: 422
           location:
             address: Somewhere
+        - name: Site423
+          id: 423
+          location:
+            address: Somewhere-warm
     - name: AVD_Land_East
       id: 43
       zones:
@@ -511,8 +526,6 @@ metadata:
         sites:
         - name: Site511
           id: 511
-        - name: Site512
-          id: 512
     vrfs:
     - name: default
       vni: 1

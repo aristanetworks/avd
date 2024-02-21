@@ -734,12 +734,19 @@ class RouterBgpMixin(UtilsMixin):
         Add redistribute static to default if either "redistribute_in_overlay" is set or
         "redistribute_in_underlay" and underlay protocol is BGP.
         """
-        if self._vrf_default_ipv4_static_routes["redistribute_in_overlay"] or (
-            self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self.shared_utils.underlay_bgp
+        if not (
+            self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]
+            or (self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self.shared_utils.underlay_bgp)
         ):
-            return [{"source_protocol": "static"}]
+            return None
 
-        return None
+        if self.shared_utils.wan_role:
+            # For WAN routers we only wish to redistribute static routes defined under the tenants to BGP.
+            if self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]:
+                return [{"source_protocol": "static", "route_map": "RM-STATIC-2-BGP"}]
+            return None
+
+        return [{"source_protocol": "static"}]
 
     @cached_property
     def _router_bgp_vpws(self) -> list[dict] | None:
