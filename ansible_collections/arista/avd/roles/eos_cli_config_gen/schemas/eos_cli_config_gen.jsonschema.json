@@ -11247,8 +11247,8 @@
                       "title": "Type Of Protocol"
                     },
                     "destination_port": {
-                      "type": "string",
-                      "description": "Enter the port number or range or multiple port numbers with comma seperated values.\nExamples:\n  \"65-78\"\n  \"55\"\n  \"44, 55, 66\"\n",
+                      "type": "array",
+                      "description": "Enter the port number or range or multiple port numbers with comma seperated values.\nExamples:\n  \"65-78\"\n  \"55\"\n  \"4, 55, 66\"\n",
                       "title": "Destination Port"
                     }
                   },

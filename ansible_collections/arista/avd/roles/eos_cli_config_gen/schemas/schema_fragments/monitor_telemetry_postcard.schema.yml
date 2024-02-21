@@ -87,7 +87,7 @@ keys:
                     type: str
                     valid_values: [ tcp, udp ]
                   destination_port:
-                    type: str
+                    type: list
                     description: |
                       Enter the port number or range or multiple port numbers with comma seperated values.
                       Examples:

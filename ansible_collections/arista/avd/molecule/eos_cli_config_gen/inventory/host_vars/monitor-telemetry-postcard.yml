@@ -23,4 +23,4 @@ monitor_telemetry_postcard:
         prefix_mask: 24
       protocol:
         type_of_protocol: tcp
-        destination_port: 77, 89, 99
+        destination_port: [ "77", "78-80", "www"]

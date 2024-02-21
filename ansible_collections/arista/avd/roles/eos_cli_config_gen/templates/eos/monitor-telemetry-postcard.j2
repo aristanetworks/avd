@@ -32,8 +32,8 @@ monitor telemetry postcard policy
    sample policy {{ monitor_telemetry_postcard.sample_policy.name }}
 {%         endif %}
 {%     endif %}
-{%     if monitor_telemetry_postcard.sample_policy.match_rule.rule_name is arista.avd.defined %}
-{%         if monitor_telemetry_postcard.sample_policy.match_rule.ipversion is arista.avd.defined %}
+{%     if monitor_telemetry_postcard.sample_policy.match_rule is arista.avd.defined %}
+{%         if monitor_telemetry_postcard.sample_policy.match_rule.ipversion is arista.avd.defined and monitor_telemetry_postcard.sample_policy.match_rule.rule_name is arista.avd.defined %}
       match rule {{ monitor_telemetry_postcard.sample_policy.match_rule.rule_name }} {{ monitor_telemetry_postcard.sample_policy.match_rule.ipversion }}
 {%         endif %}
 {%         if monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix_address is arista.avd.defined and monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix_mask is arista.avd.defined %}
@@ -44,9 +44,11 @@ monitor telemetry postcard policy
 {%         endif %}
 {%         if monitor_telemetry_postcard.sample_policy.match_rule.protocol is arista.avd.defined %}
 {%             if monitor_telemetry_postcard.sample_policy.match_rule.protocol.type_of_protocol is arista.avd.defined and monitor_telemetry_postcard.sample_policy.match_rule.protocol.destination_port is arista.avd.defined %}
-           protocol {{ monitor_telemetry_postcard.sample_policy.match_rule.protocol.type_of_protocol }} destination port {{ monitor_telemetry_postcard.sample_policy.match_rule.protocol.destination_port }}
+{%                 for protocol in monitor_telemetry_postcard.sample_policy.match_rule.protocol.destination_port | sort(reverse = True) %}
+         protocol {{ monitor_telemetry_postcard.sample_policy.match_rule.protocol.type_of_protocol }} destination port {{ protocol }}
+{%                 endfor %}
 {%             endif %}
-{%         endif %}
+{%         endif %} 
 {%     else %}
       match ipv4-all-default ipv4
       !

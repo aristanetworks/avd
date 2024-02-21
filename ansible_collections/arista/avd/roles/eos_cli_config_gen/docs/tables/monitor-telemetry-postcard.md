@@ -32,7 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_mask</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.source_prefix.prefix_mask") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.protocol") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_of_protocol</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.protocol.type_of_protocol") | String |  |  | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_port</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.protocol.destination_port") | String |  |  |  | Enter the port number or range or multiple port numbers with comma seperated values.<br>Examples:<br>  "65-78"<br>  "55"<br>  "44, 55, 66"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_port</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.protocol.destination_port") | List |  |  |  | Enter the port number or range or multiple port numbers with comma seperated values.<br>Examples:<br>  "65-78"<br>  "55"<br>  "4, 55, 66"<br> |
 
 === "YAML"
 
@@ -85,6 +85,6 @@
             # Examples:
             #   "65-78"
             #   "55"
-            #   "44, 55, 66"
-            destination_port: <str>
+            #   "4, 55, 66"
+            destination_port: <list>
     ```

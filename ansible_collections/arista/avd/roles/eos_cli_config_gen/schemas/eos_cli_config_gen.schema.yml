@@ -6619,10 +6619,10 @@ keys:
                     - tcp
                     - udp
                   destination_port:
-                    type: str
+                    type: list
                     description: "Enter the port number or range or multiple port
                       numbers with comma seperated values.\nExamples:\n  \"65-78\"\n
-                      \ \"55\"\n  \"44, 55, 66\"\n"
+                      \ \"55\"\n  \"4, 55, 66\"\n"
   mpls:
     type: dict
     keys:
