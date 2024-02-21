@@ -28,7 +28,7 @@ class WanMixin:
 
     @cached_property
     def wan_role(self: SharedUtils) -> str | None:
-        if self.underlay_router is False or self.wan_mode is None:
+        if self.underlay_router is False:
             return None
 
         default_wan_role = get(self.node_type_key_data, "default_wan_role", default=None)
