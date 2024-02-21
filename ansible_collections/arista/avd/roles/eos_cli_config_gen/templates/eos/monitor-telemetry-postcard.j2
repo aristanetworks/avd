@@ -48,7 +48,7 @@ monitor telemetry postcard policy
          protocol {{ monitor_telemetry_postcard.sample_policy.match_rule.protocol.type_of_protocol }} destination port {{ protocol }}
 {%                 endfor %}
 {%             endif %}
-{%         endif %} 
+{%         endif %}
 {%     else %}
       match ipv4-all-default ipv4
       !
