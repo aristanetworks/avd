@@ -187,7 +187,7 @@ ip_security:
   - name: CP-PROFILE
     ike_policy: CP-IKE-POLICY
     sa_policy: CP-SA-POLICY
-    connection: add
+    connection: start
     shared_key: ABCDEF1234567890
     dpd:
       interval: 10
