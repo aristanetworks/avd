@@ -322,6 +322,7 @@ wan_virtual_topologies:
             preference: alternate
       application_virtual_topologies:
         - application_profile: VOICE
+          lowest_hop_count: true
           path_groups:
             - names: [MPLS]
               preference: preferred

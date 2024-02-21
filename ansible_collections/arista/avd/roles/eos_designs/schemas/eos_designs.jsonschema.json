@@ -24921,6 +24921,11 @@
               "description": "Set DSCP for matched traffic.",
               "title": "DSCP"
             },
+            "lowest_hop_count": {
+              "type": "boolean",
+              "description": "Prefer paths with lowest hop-count.",
+              "title": "Lowest Hop Count"
+            },
             "constraints": {
               "type": "object",
               "properties": {
@@ -25038,6 +25043,11 @@
                       "description": "Set DSCP for matched traffic.",
                       "title": "DSCP"
                     },
+                    "lowest_hop_count": {
+                      "type": "boolean",
+                      "description": "Prefer paths with lowest hop-count.",
+                      "title": "Lowest Hop Count"
+                    },
                     "constraints": {
                       "type": "object",
                       "properties": {
@@ -25139,6 +25149,11 @@
                     "maximum": 63,
                     "description": "Set DSCP for matched traffic.",
                     "title": "DSCP"
+                  },
+                  "lowest_hop_count": {
+                    "type": "boolean",
+                    "description": "Prefer paths with lowest hop-count.",
+                    "title": "Lowest Hop Count"
                   },
                   "constraints": {
                     "type": "object",
