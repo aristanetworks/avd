@@ -27,6 +27,10 @@ router_bgp:
     remote_as: '65000'
     ttl_maximum_hops: 1
     route_reflector_client: true
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   - name: WAN-RR-OVERLAY-PEERS
     type: wan
     update_source: Dps1
@@ -35,6 +39,10 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     ttl_maximum_hops: 42
+    bfd_timers:
+      interval: 2020
+      min_rx: 2000
+      multiplier: 3
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
