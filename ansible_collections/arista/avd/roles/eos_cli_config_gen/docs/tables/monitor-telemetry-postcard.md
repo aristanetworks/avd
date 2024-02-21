@@ -23,13 +23,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "monitor_telemetry_postcard.sample_policy.name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;match_rule</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rule_name</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.rule_name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipversion</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.ipversion") | String |  |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_prefix</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix1</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix1") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_address</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix1.prefix_address") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_mask</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix1.prefix_mask") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix2</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix2") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_address</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix2.prefix_address") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_mask</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix2.prefix_mask") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_address</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix_address") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_mask</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.destination_prefix.prefix_mask") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_prefix</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.source_prefix") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_address</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.source_prefix.prefix_address") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_mask</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.source_prefix.prefix_mask") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.protocol") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_of_protocol</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.protocol.type_of_protocol") | String |  |  | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_port</samp>](## "monitor_telemetry_postcard.sample_policy.match_rule.protocol.destination_port") | String |  |  |  | Enter the port number or range or multiple port numbers with comma seperated values.<br>Examples:<br>  "65-78"<br>  "55"<br>  "44, 55, 66"<br> |
 
 === "YAML"
 
@@ -68,11 +71,20 @@
         name: <str>
         match_rule:
           rule_name: <str>
+          ipversion: <str; "ipv4" | "ipv6">
           destination_prefix:
-            prefix1:
-              prefix_address: <str>
-              prefix_mask: <str>
-            prefix2:
-              prefix_address: <str>
-              prefix_mask: <int>
+            prefix_address: <str>
+            prefix_mask: <int>
+          source_prefix:
+            prefix_address: <str>
+            prefix_mask: <int>
+          protocol:
+            type_of_protocol: <str; "tcp" | "udp">
+
+            # Enter the port number or range or multiple port numbers with comma seperated values.
+            # Examples:
+            #   "65-78"
+            #   "55"
+            #   "44, 55, 66"
+            destination_port: <str>
     ```

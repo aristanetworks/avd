@@ -6587,23 +6587,42 @@ keys:
             keys:
               rule_name:
                 type: str
+              ipversion:
+                type: str
+                valid_values:
+                - ipv4
+                - ipv6
               destination_prefix:
                 type: dict
                 keys:
-                  prefix1:
-                    type: dict
-                    keys:
-                      prefix_address:
-                        type: str
-                      prefix_mask:
-                        type: str
-                  prefix2:
-                    type: dict
-                    keys:
-                      prefix_address:
-                        type: str
-                      prefix_mask:
-                        type: int
+                  prefix_address:
+                    type: str
+                  prefix_mask:
+                    type: int
+                    convert_types:
+                    - str
+              source_prefix:
+                type: dict
+                keys:
+                  prefix_address:
+                    type: str
+                  prefix_mask:
+                    type: int
+                    convert_types:
+                    - str
+              protocol:
+                type: dict
+                keys:
+                  type_of_protocol:
+                    type: str
+                    valid_values:
+                    - tcp
+                    - udp
+                  destination_port:
+                    type: str
+                    description: "Enter the port number or range or multiple port
+                      numbers with comma seperated values.\nExamples:\n  \"65-78\"\n
+                      \ \"55\"\n  \"44, 55, 66\"\n"
   mpls:
     type: dict
     keys:

@@ -11191,44 +11191,24 @@
                   "type": "string",
                   "title": "Rule Name"
                 },
+                "ipversion": {
+                  "type": "string",
+                  "enum": [
+                    "ipv4",
+                    "ipv6"
+                  ],
+                  "title": "Ipversion"
+                },
                 "destination_prefix": {
                   "type": "object",
                   "properties": {
-                    "prefix1": {
-                      "type": "object",
-                      "properties": {
-                        "prefix_address": {
-                          "type": "string",
-                          "title": "Prefix Address"
-                        },
-                        "prefix_mask": {
-                          "type": "string",
-                          "title": "Prefix Mask"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "title": "Prefix1"
+                    "prefix_address": {
+                      "type": "string",
+                      "title": "Prefix Address"
                     },
-                    "prefix2": {
-                      "type": "object",
-                      "properties": {
-                        "prefix_address": {
-                          "type": "string",
-                          "title": "Prefix Address"
-                        },
-                        "prefix_mask": {
-                          "type": "integer",
-                          "title": "Prefix Mask"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "title": "Prefix2"
+                    "prefix_mask": {
+                      "type": "integer",
+                      "title": "Prefix Mask"
                     }
                   },
                   "additionalProperties": false,
@@ -11236,6 +11216,47 @@
                     "^_.+$": {}
                   },
                   "title": "Destination Prefix"
+                },
+                "source_prefix": {
+                  "type": "object",
+                  "properties": {
+                    "prefix_address": {
+                      "type": "string",
+                      "title": "Prefix Address"
+                    },
+                    "prefix_mask": {
+                      "type": "integer",
+                      "title": "Prefix Mask"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Source Prefix"
+                },
+                "protocol": {
+                  "type": "object",
+                  "properties": {
+                    "type_of_protocol": {
+                      "type": "string",
+                      "enum": [
+                        "tcp",
+                        "udp"
+                      ],
+                      "title": "Type Of Protocol"
+                    },
+                    "destination_port": {
+                      "type": "string",
+                      "description": "Enter the port number or range or multiple port numbers with comma seperated values.\nExamples:\n  \"65-78\"\n  \"55\"\n  \"44, 55, 66\"\n",
+                      "title": "Destination Port"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Protocol"
                 }
               },
               "additionalProperties": false,

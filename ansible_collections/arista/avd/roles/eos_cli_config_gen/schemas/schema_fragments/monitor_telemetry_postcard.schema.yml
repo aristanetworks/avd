@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -59,20 +59,38 @@ keys:
             keys:
               rule_name:
                 type: str
+              ipversion:
+                type: str
+                valid_values: [ ipv4, ipv6 ]
               destination_prefix:
                 type: dict
                 keys:
-                  prefix1:
-                    type: dict
-                    keys:
-                      prefix_address:
-                        type: str
-                      prefix_mask:
-                        type: str
-                  prefix2:
-                    type: dict
-                    keys:
-                      prefix_address:
-                        type: str
-                      prefix_mask:
-                        type: int
+                  prefix_address:
+                    type: str
+                  prefix_mask:
+                    type: int
+                    convert_types:
+                    - str
+              source_prefix:
+                type: dict
+                keys:
+                  prefix_address:
+                    type: str
+                  prefix_mask:
+                    type: int
+                    convert_types:
+                    - str
+              protocol:
+                type: dict
+                keys:
+                  type_of_protocol:
+                    type: str
+                    valid_values: [ tcp, udp ]
+                  destination_port:
+                    type: str
+                    description: |
+                      Enter the port number or range or multiple port numbers with comma seperated values.
+                      Examples:
+                        "65-78"
+                        "55"
+                        "44, 55, 66"
