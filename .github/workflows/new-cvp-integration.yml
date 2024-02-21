@@ -62,7 +62,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Run molecule action
         env:
-          CVAAS_AAWG_DEMO: ${{ secrets.CVAAS_AAWG_DEMO }}
+          CVAAS_AAWG_DEMO: ${{ secrets.CVAAS_AAWG_CI }}
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
