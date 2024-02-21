@@ -17,14 +17,14 @@ router_bgp:
     send_community: all
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
-  - remote_as: '65000'
-    name: WAN-OVERLAY-PEERS
+  - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
     bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0
+    remote_as: '65000'
     ttl_maximum_hops: 1
     bfd_timers:
       interval: 1000

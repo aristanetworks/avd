@@ -19,14 +19,14 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
   peer_groups:
-  - remote_as: '65000'
-    name: WAN-OVERLAY-PEERS
+  - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
     bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0
+    remote_as: '65000'
     ttl_maximum_hops: 1
     route_reflector_client: true
     bfd_timers:

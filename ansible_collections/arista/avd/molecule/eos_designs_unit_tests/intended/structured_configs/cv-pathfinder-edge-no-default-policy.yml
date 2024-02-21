@@ -14,14 +14,14 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   peer_groups:
-  - remote_as: '65000'
-    name: WAN-OVERLAY-PEERS
+  - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
     bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0
+    remote_as: '65000'
     ttl_maximum_hops: 42
     bfd_timers:
       interval: 1000
