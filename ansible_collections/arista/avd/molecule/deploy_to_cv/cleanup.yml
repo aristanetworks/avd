@@ -6,23 +6,19 @@
   vars:
     # cv_server: staticstudio-1-cfec4cc2-eos.topo.testdrive.arista.com
     cv_server: www.cv-staging.corp.arista.io
-    # token: "{{ lookup('file', playbook_dir ~ '/token-cvaas.tok')}}"
-    token: "{{ lookup('env', 'CVAAS_AAWG_DEMO') }}"
+    # token: "{{ lookup('file', playbook_dir ~ '/token-aawg-ci.tok')}}"
+    token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
     configuration_dir: "{{ playbook_dir }}/intended/configs/base_configs"
     structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
 
   tasks:
     - name: Generate random string
-      set_fact:
+      ansible.builtin.set_fact:
         r: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
       run_once: true
 
-    - name: Check token from env
-      ansible.builtin.shell: echo "token is read"
-      when: token != ''
-
-    - name: set facts
-      set_fact:
+    - name: Set facts
+      ansible.builtin.set_fact:
         ws_name: avd-static-studio-cleanup-{{ r }}
         ws_description: sample description
         ws_req_state: submitted
@@ -32,7 +28,7 @@
         cc_desctiption: sample description
       run_once: true
 
-    - name: Clean up = and provision CVP with with base AVD configuration
+    - name: Clean up and provision CVP with with base AVD configuration
       run_once: true
       delegate_to: localhost
       arista.avd.deploy_to_cv:
@@ -61,4 +57,4 @@
         #   workspace_build_timeout: 300.0
         #   change_control_creation_timeout: 300.0
         return_details: true
-      register: CVP_RESULTS
+      register: cvp_results
