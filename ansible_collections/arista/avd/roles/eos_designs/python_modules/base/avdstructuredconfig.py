@@ -304,10 +304,13 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         return daemon_terminattr
 
     @cached_property
-    def vlan_internal_order(self) -> dict:
+    def vlan_internal_order(self) -> dict | None:
         """
         vlan_internal_order set based on internal_vlan_order data-model
         """
+        if self.shared_utils.wan_role:
+            return None
+
         DEFAULT_INTERNAL_VLAN_ORDER = {
             "allocation": "ascending",
             "range": {
@@ -316,6 +319,16 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             },
         }
         return get(self._hostvars, "internal_vlan_order", default=DEFAULT_INTERNAL_VLAN_ORDER)
+
+    @cached_property
+    def transceiver_qsfp_default_mode_4x10(self) -> bool | None:
+        """
+        transceiver_qsfp_default_mode_4x10 is on by default in eos_cli_config_gen.
+
+        Set to false for WAN routers.
+        TODO: Add platform_setting to control this.
+        """
+        return False if self.shared_utils.wan_role else None
 
     @cached_property
     def event_monitor(self) -> dict | None:
