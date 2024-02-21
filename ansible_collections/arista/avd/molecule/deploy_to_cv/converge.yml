@@ -6,8 +6,8 @@
   vars:
     # cv_server: staticstudio-1-cfec4cc2-eos.topo.testdrive.arista.com
     cv_server: www.cv-staging.corp.arista.io
-    # token: "{{ lookup('file', playbook_dir ~ '/token-cvaas.tok')}}"
-    token: "{{ lookup('env', 'CVAAS_AAWG_DEMO') }}"
+    # token: "{{ lookup('file', playbook_dir ~ '/token-aawg-ci.tok')}}"
+    token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
     ws_url: https://{{ cv_server }}/api/v3/services/arista.configlet.v1.ConfigletService/GetOne
     cc_url: https://{{ cv_server }}/api/v3/services/arista.changecontrol.v1.ChangeControlService/GetOne
     tag_url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
@@ -26,12 +26,12 @@
 
   tasks:
     - name: Generate random string
-      set_fact:
+      ansible.builtin.set_fact:
         r: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
       run_once: true
 
-    - name: set facts
-      set_fact:
+    - name: Set facts
+      ansible.builtin.set_fact:
         ws_name: avd-static-studio-{{ r }}
         ws_description: sample description
         ws_req_state: submitted
@@ -70,42 +70,42 @@
         #   workspace_build_timeout: 300.0
         #   change_control_creation_timeout: 300.0
         return_details: true
-      register: CVP_RESULTS
+      register: cvp_results
 
     - name: 'Display CVP result'
       run_once: true
-      debug:
-        msg: '{{CVP_RESULTS}}'
+      ansible.builtin.debug:
+        msg: '{{ cvp_results }}'
 
-    - name: check CVP returns
+    - name: Check CVP returns
       vars:
         cc_id: Workspace-{{ ws_name }}
       ansible.builtin.assert:
         that:
           # workspace
-          - CVP_RESULTS.workspace.name == ws_name
-          - CVP_RESULTS.workspace.final_state == CVP_RESULTS.workspace.requested_state
-          - CVP_RESULTS.workspace.final_state
+          - cvp_results.workspace.name == ws_name
+          - cvp_results.workspace.final_state == cvp_results.workspace.requested_state
+          - cvp_results.workspace.final_state
           # errors and warnings
-          - CVP_RESULTS.errors == []
+          - cvp_results.errors == []
           # tags
-          - CVP_RESULTS.deployed_device_tags != []
-          - CVP_RESULTS.deployed_interface_tags != []
+          - cvp_results.deployed_device_tags != []
+          - cvp_results.deployed_interface_tags != []
           # Change control
-          - CVP_RESULTS.change_control.id == cc_id
-          - CVP_RESULTS.change_control.name == cc_name
-          - CVP_RESULTS.change_control.requested_state == cc_requested_state
-          - CVP_RESULTS.change_control.description == cc_desctiption
+          - cvp_results.change_control.id == cc_id
+          - cvp_results.change_control.name == cc_name
+          - cvp_results.change_control.requested_state == cc_requested_state
+          - cvp_results.change_control.description == cc_desctiption
 
-    - name: check tags from output
+    - name: Check tags from output
       ansible.builtin.assert:
         that:
           - item.0.label == item.1.label
           - item.0.value == item.1.value
-      loop: "{{ CVP_RESULTS.deployed_device_tags | zip(CVP_RESULTS.device_tags) | list }}"
+      loop: "{{ cvp_results.deployed_device_tags | zip(cvp_results.device_tags) | list }}"
 
     # WS asserts
-    - name: get workspace information
+    - name: Get workspace information
       delegate_to: localhost
       run_once: true
       ansible.builtin.uri:
@@ -142,12 +142,12 @@
         body:
           key:
             id: Workspace-{{ ws_name }}
-      register: CC_INFO
-      until: CC_INFO.json[0].value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
+      register: cc_info
+      until: cc_info.json[0].value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
       retries: 5
       delay: 30
 
-    - name: 'Set configlets facts'
+    - name: Set configlets facts
       run_once: true
       vars:
         configs: ['{{ configuration_dir }}/devel-s1-leaf1.cfg',
@@ -155,11 +155,11 @@
                   '{{ configuration_dir }}/devel-s1-leaf3.cfg',
                   '{{ configuration_dir }}/devel-s1-leaf4.cfg'
         ]
-      set_fact:
+      ansible.builtin.set_fact:
         response_configlet: "{{ response_configlet | default({}) | combine({item.0.json[0].value.body | trim: item.1}) }}"
       loop: "{{ result.results | zip(configs) | list }}"
 
-    - name: check configlets
+    - name: Check configlets
       ansible.builtin.assert:
         that:
           - item.key  == lookup('file', item.value)
@@ -209,7 +209,7 @@
       loop:
         "{{ intended_tags.metadata.cv_tags.interface_tags }}"
 
-    - name: Test Strict tags = Set tags
+    - name: Test Strict tags - Set tags
       run_once: true
       delegate_to: localhost
       vars:
@@ -238,7 +238,6 @@
           description: '{{ cc_desctiption_strict }}'
           requested_state: '{{ cc_requested_state_strict }}'
         return_details: true
-      register: CVP_STRICT_TAGS_RESULTS
 
     - name: Get Strict Device Tag information
       delegate_to: localhost
@@ -261,7 +260,7 @@
       loop:
         "{{ intended_strict_tags.metadata.cv_tags.device_tags }}"
 
-    - name: Test tags = Value change
+    - name: Test tags - Value change
       run_once: true
       delegate_to: localhost
       vars:
@@ -290,7 +289,6 @@
           description: '{{ cc_desctiption_value }}'
           requested_state: '{{ cc_requested_state_value }}'
         return_details: true
-      register: CVP_VALUE_TAGS_RESULTS
 
     - name: Get Value Device Tag information
       delegate_to: localhost
