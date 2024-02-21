@@ -159,7 +159,7 @@ wan_transit:
     uplink_interfaces: [ Ethernet52 ]
   node_groups:
     - group: TRANSIT_SITE_HA_ENABLED
-      # Disable HA IPsec 
+      # Disable HA IPsec
       wan_ha:
         ipsec: false
       nodes:
