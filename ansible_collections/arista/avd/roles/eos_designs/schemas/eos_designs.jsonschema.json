@@ -24923,6 +24923,7 @@
             },
             "lowest_hop_count": {
               "type": "boolean",
+              "default": false,
               "description": "Prefer paths with lowest hop-count.",
               "title": "Lowest Hop Count"
             },
@@ -25045,6 +25046,7 @@
                     },
                     "lowest_hop_count": {
                       "type": "boolean",
+                      "default": false,
                       "description": "Prefer paths with lowest hop-count.",
                       "title": "Lowest Hop Count"
                     },
@@ -25152,6 +25154,7 @@
                   },
                   "lowest_hop_count": {
                     "type": "boolean",
+                    "default": false,
                     "description": "Prefer paths with lowest hop-count.",
                     "title": "Lowest Hop Count"
                   },
