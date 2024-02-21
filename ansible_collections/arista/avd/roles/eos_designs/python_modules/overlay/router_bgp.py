@@ -125,8 +125,7 @@ class RouterBgpMixin(UtilsMixin):
                     peer_group_config["ttl_maximum_hops"] = self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["ttl_maximum_hops"]
                     if self.shared_utils.wan_role == "server":
                         peer_group_config["route_reflector_client"] = True
-                    if bfd_timers := self._generate_bfd_timers("wan_overlay_peers"):
-                        peer_group_config["bfd_timers"] = bfd_timers
+                    peer_group_config["bfd_timers"] = get(self.shared_utils.bgp_peer_groups["wan_overlay_peers"], "bfd_timers")
                     peer_groups.append(
                         {
                             **self._generate_base_peer_group("wan", "wan_overlay_peers", update_source=self.shared_utils.vtep_loopback),
@@ -153,8 +152,7 @@ class RouterBgpMixin(UtilsMixin):
                 wan_rr_overlay_peer_group.update(
                     {"remote_as": self.shared_utils.bgp_as, "ttl_maximum_hops": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["ttl_maximum_hops"]}
                 )
-                if bfd_timers := self._generate_bfd_timers("wan_rr_overlay_peers"):
-                    wan_rr_overlay_peer_group["bfd_timers"] = bfd_timers
+                wan_rr_overlay_peer_group["bfd_timers"] = get(self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"], "bfd_timers")
                 peer_groups.append(wan_rr_overlay_peer_group)
 
         # same for ebgp and ibgp
@@ -168,17 +166,6 @@ class RouterBgpMixin(UtilsMixin):
             )
 
         return peer_groups
-
-    def _generate_bfd_timers(self, peer_group) -> dict:
-        """
-        This function returns the bfd_timers value for the peer_group.
-        If bfd_timers is not present, returns default values {"interval": 1000, "min_rx": 1000, "multiplier": 10}.
-        """
-        if not self.shared_utils.bgp_peer_groups[peer_group]["bfd"]:
-            return {}
-
-        default_bfd_timers = {"interval": 1000, "min_rx": 1000, "multiplier": 10}
-        return get(self.shared_utils.bgp_peer_groups[peer_group], "bfd_timers", default=default_bfd_timers)
 
     def _address_family_ipv4(self) -> dict:
         """
