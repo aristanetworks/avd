@@ -20,7 +20,7 @@ router_bgp:
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
-    bfd: true
+    bfd: false
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0

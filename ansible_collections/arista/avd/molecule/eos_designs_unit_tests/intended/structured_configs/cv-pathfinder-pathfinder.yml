@@ -27,6 +27,10 @@ router_bgp:
     remote_as: '65000'
     ttl_maximum_hops: 1
     route_reflector_client: true
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
