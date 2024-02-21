@@ -253,7 +253,15 @@ prefix_lists:
 - name: PL-WAN-HA-PREFIXES
   sequence_numbers:
   - sequence: 10
-    action: permit 172.17.0.0/16 eq 31
+    action: permit 172.17.0.8/31
+  - sequence: 20
+    action: permit 172.17.0.10/31
+- name: PL-WAN-HA-PEER-PREFIXES
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.17.0.4/31
+  - sequence: 20
+    action: permit 172.17.0.6/31
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -269,21 +277,30 @@ route_maps:
     - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
-  - sequence: 20
-    type: deny
-    description: Deny prefixes from WAN
-    match:
-    - as-path ASPATH-WAN
-  - sequence: 30
+  - sequence: 40
     type: permit
     description: Mark prefixes originated from the LAN
     set:
     - extcommunity soo 192.168.42.2:423 additive
   - sequence: 10
-    type: deny
-    description: Deny prefixes with our SoO set
+    type: permit
+    description: Allow WAN HA peer interface prefixes
+    match:
+    - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
+  - sequence: 20
+    type: permit
+    description: Allow prefixes originated from the HA peer
     match:
     - extcommunity ECL-EVPN-SOO
+    set:
+    - as-path match all replacement auto auto
+  - sequence: 30
+    type: permit
+    description: Use WAN routes from HA peer as backup
+    match:
+    - as-path ASPATH-WAN
+    set:
+    - community no-advertise
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 10
@@ -298,11 +315,9 @@ route_maps:
     - route-type internal
   - sequence: 30
     type: permit
-    description: Advertise WAN HA prefixes towards LAN and mark them with SoO
+    description: Advertise WAN HA prefixes towards LAN
     match:
     - ip address prefix-list PL-WAN-HA-PREFIXES
-    set:
-    - extcommunity soo 192.168.42.2:423 additive
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10

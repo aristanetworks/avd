@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import ipaddress
 from functools import cached_property
 
 from .utils import UtilsMixin
@@ -48,8 +49,17 @@ class PrefixListsMixin(UtilsMixin):
 
         # TODO - may be needed in other situations
         if self.shared_utils.wan_ha and self.shared_utils.underlay_routing_protocol == "ebgp":
-            sequence_numbers = [{"sequence": 10, "action": f"permit {self.shared_utils.uplink_ipv4_pool} eq 31"}]
+            sequence_numbers = [
+                {"sequence": 10 * (index + 1), "action": f"permit {ipaddress.ip_network(ip_address, strict=False)}"}
+                for index, ip_address in enumerate(self.shared_utils.wan_ha_ip_addresses)
+            ]
             prefix_lists.append({"name": "PL-WAN-HA-PREFIXES", "sequence_numbers": sequence_numbers})
+
+            sequence_numbers = [
+                {"sequence": 10 * (index + 1), "action": f"permit {ipaddress.ip_network(ip_address, strict=False)}"}
+                for index, ip_address in enumerate(self.shared_utils.wan_ha_peer_ip_addresses)
+            ]
+            prefix_lists.append({"name": "PL-WAN-HA-PEER-PREFIXES", "sequence_numbers": sequence_numbers})
 
         return prefix_lists
 

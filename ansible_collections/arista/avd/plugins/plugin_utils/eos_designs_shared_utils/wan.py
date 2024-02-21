@@ -417,3 +417,49 @@ class WanMixin:
         elif self.switch_data_node_group_nodes[1]["name"] == self.hostname:
             return self.switch_data_node_group_nodes[0]["name"]
         raise AristaAvdError("Unable to find WAN HA peer within same node group")
+
+    @cached_property
+    def wan_ha_peer_ip_addresses(self) -> list:
+        """
+        Read the IP addresses/prefix length from HA peer uplinks
+        Used also to generate the prefix list of the PEER HA prefixes
+        """
+        peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
+        # For now only picking up uplink interfaces in VRF default on the router.
+        vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
+
+        ip_addresses = []
+        for uplink in vrf_default_peer_uplinks:
+            ip_address = get(
+                uplink,
+                "ip_address",
+                required=True,
+                org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address",
+            )
+            # We can use [] notation here because if there is an ip_address, there should be a prefix_length
+            prefix_length = uplink["prefix_length"]
+            ip_addresses.append(f"{ip_address}/{prefix_length}")
+
+        return ip_addresses
+
+    @cached_property
+    def wan_ha_ip_addresses(self) -> list:
+        """
+        Read the IP addresses/prefix length from this device uplinks used for HA.
+        Used to generate the prefix list.
+        """
+        vrf_default_uplinks = [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+
+        ip_addresses = []
+        for uplink in vrf_default_uplinks:
+            ip_address = get(
+                uplink,
+                "ip_address",
+                required=True,
+                org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA does not have an IP address",
+            )
+            # We can use [] notation here because if there is an ip_address, there should be a prefix_length
+            prefix_length = uplink["prefix_length"]
+            ip_addresses.append(f"{ip_address}/{prefix_length}")
+
+        return ip_addresses

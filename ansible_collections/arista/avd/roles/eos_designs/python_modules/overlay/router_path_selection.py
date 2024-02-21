@@ -108,7 +108,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                     {
                         "router_ip": self._wan_ha_peer_vtep_ip(),
                         "name": self.shared_utils.wan_ha_path_group_name,
-                        "ipv4_addresses": self._wan_ha_peer_ip_addresses(),
+                        "ipv4_addresses": [ip_address.split("/")[0] for ip_address in self.shared_utils.wan_ha_peer_ip_addresses],
                     }
                 ],
             }
@@ -123,26 +123,6 @@ class RouterPathSelectionMixin(UtilsMixin):
         Return list of interfaces for HA
         """
         return [uplink for uplink in self.shared_utils.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
-
-    def _wan_ha_peer_ip_addresses(self) -> list:
-        """
-        Read the IP addresses from HA peer uplinks
-        """
-        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer, required=True)
-        # For now only picking up uplink interfaces in VRF default on the router.
-        vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
-        return [
-            get(
-                uplink,
-                "ip_address",
-                required=True,
-                org_key=(
-                    f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer "
-                    f"{self.shared_utils.wan_ha_peer} interface does not have an IP address",
-                ),
-            )
-            for uplink in vrf_default_peer_uplinks
-        ]
 
     def _wan_ha_peer_vtep_ip(self) -> str:
         """ """

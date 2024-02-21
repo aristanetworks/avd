@@ -97,26 +97,36 @@ class RouteMapsMixin(UtilsMixin):
             # RM-BGP-UNDERLAY-PEERS-IN
             sequence_numbers = [
                 {
-                    "sequence": 20,
-                    "type": "deny",
-                    "description": "Deny prefixes from WAN",
-                    "match": ["as-path ASPATH-WAN"],
-                },
-                {
-                    "sequence": 30,
+                    "sequence": 40,
                     "type": "permit",
                     "description": "Mark prefixes originated from the LAN",
                     "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                 },
             ]
             if self.shared_utils.wan_ha:
-                sequence_numbers.append(
-                    {
-                        "sequence": 10,
-                        "type": "deny",
-                        "description": "Deny prefixes with our SoO set",
-                        "match": ["extcommunity ECL-EVPN-SOO"],
-                    },
+                sequence_numbers.extend(
+                    [
+                        {
+                            "sequence": 10,
+                            "type": "permit",
+                            "description": "Allow WAN HA peer interface prefixes",
+                            "match": ["ip address prefix-list PL-WAN-HA-PEER-PREFIXES"],
+                        },
+                        {
+                            "sequence": 20,
+                            "type": "permit",
+                            "description": "Allow prefixes originated from the HA peer",
+                            "match": ["extcommunity ECL-EVPN-SOO"],
+                            "set": ["as-path match all replacement auto auto"],
+                        },
+                        {
+                            "sequence": 30,
+                            "type": "permit",
+                            "description": "Use WAN routes from HA peer as backup",
+                            "match": ["as-path ASPATH-WAN"],
+                            "set": ["community no-advertise"],
+                        },
+                    ]
                 )
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-IN", "sequence_numbers": sequence_numbers})
 
@@ -140,9 +150,8 @@ class RouteMapsMixin(UtilsMixin):
                     {
                         "sequence": 30,
                         "type": "permit",
-                        "description": "Advertise WAN HA prefixes towards LAN and mark them with SoO",
+                        "description": "Advertise WAN HA prefixes towards LAN",
                         "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
-                        "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                     },
                 )
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})

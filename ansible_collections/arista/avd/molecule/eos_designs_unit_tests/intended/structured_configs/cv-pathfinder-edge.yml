@@ -233,12 +233,7 @@ route_maps:
     - extcommunity soo 192.168.42.1:511 additive
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
-  - sequence: 20
-    type: deny
-    description: Deny prefixes from WAN
-    match:
-    - as-path ASPATH-WAN
-  - sequence: 30
+  - sequence: 40
     type: permit
     description: Mark prefixes originated from the LAN
     set:
