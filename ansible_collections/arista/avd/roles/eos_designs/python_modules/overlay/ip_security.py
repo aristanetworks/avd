@@ -109,21 +109,19 @@ class IpSecurityMixin(UtilsMixin):
         Return one IPsec Profile
 
         The expectation is that potential None values are stripped later.
+
+        Using connection start on all routers as using connection add on Pathfinders
+        as suggested would prevent Pathfinders to establish IPsec tunnels between themselves
+        which is undesirable.
         """
         if self.shared_utils.wan_role is None:
             return None
-
-        # By default allow routers to initiate IPsec connection
-        connection = "start"
-        if self.shared_utils.wan_role == "server":
-            # For RRs, expects the client to initiate the connection
-            connection = "add"
 
         return {
             "name": profile_name,
             "ike_policy": ike_policy_name,
             "sa_policy": sa_policy_name,
-            "connection": connection,
+            "connection": "start",
             "shared_key": key,
             "dpd": {"interval": 10, "time": 50, "action": "clear"},
             "mode": "transport",
