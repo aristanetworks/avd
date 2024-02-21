@@ -45,7 +45,7 @@ default_node_types:
       - "cv-pathfinder-pathfinder.*"
   - node_type: wan_transit
     match_hostnames:
-      - "cv-pathfinder-transit"
+      - "cv-pathfinder-transit.*"
   - node_type: wan_edge
     match_hostnames:
       - "cv-pathfinder-edge.*"
@@ -107,13 +107,10 @@ wan_edge:
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site423
       uplink_type: p2p-vrfs
-      uplink_switches: [ site-ha-enabled-leaf1, site-ha-enabled-leaf2 ]
+      uplink_switches: [ site-ha-enabled-leaf2A, site-ha-enabled-leaf2B ]
       uplink_interfaces: [ Ethernet52, Ethernet53 ]
-      # Manual HA disable to try it out..
-      # wan_ha:
-      #  ipsec: false
       nodes:
-        - name: cv-pathfinder-edge2
+        - name: cv-pathfinder-edge2A
           id: 2
           l3_interfaces:
             - name: Ethernet1
@@ -122,7 +119,7 @@ wan_edge:
               dhcp_accept_default_route: true
               ip_address: dhcp
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
-        - name: cv-pathfinder-edge3
+        - name: cv-pathfinder-edge2B
           id: 3
           l3_interfaces:
             - name: Ethernet2
@@ -143,10 +140,12 @@ l3leaf:
   nodes:
     - name: site-ha-enabled-leaf1
       id: 1
-    - name: site-ha-enabled-leaf2
+    - name: site-ha-enabled-leaf2A
       id: 2
-    - name: site-ha-disabled-leaf
+    - name: site-ha-enabled-leaf2B
       id: 3
+    - name: site-ha-disabled-leaf
+      id: 4
 
 wan_transit:
   defaults:
@@ -154,21 +153,46 @@ wan_transit:
     vtep_loopback_ipv4_pool: 192.168.143.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA, TenantB]
-  nodes:
-    - name: cv-pathfinder-transit
-      cv_pathfinder_region: AVD_Land_West
-      cv_pathfinder_site: Site422
-      id: 1
-      l3_interfaces:
-        - name: Ethernet1.42
-          wan_carrier: Comcast
-          dhcp_accept_default_route: true
-          ip_address: dhcp
-        - name: Ethernet2.42
-          encapsulation_dot1q_vlan: 666
-          wan_carrier: Colt
-          wan_circuit_id: 10666
-          ip_address: 172.16.6.6/31
+    uplink_ipv4_pool: 172.17.0.0/16
+    uplink_type: p2p-vrfs
+    uplink_switches: [ site-ha-enabled-leaf1 ]
+    uplink_interfaces: [ Ethernet52 ]
+  node_groups:
+    - group: TRANSIT_SITE_HA_ENABLED
+      # Disable HA IPsec 
+      wan_ha:
+        ipsec: false
+      nodes:
+        - name: cv-pathfinder-transit1A
+          cv_pathfinder_region: AVD_Land_West
+          cv_pathfinder_site: Site422
+          id: 1
+          uplink_switch_interfaces: [Ethernet1]
+          l3_interfaces:
+            - name: Ethernet1.42
+              wan_carrier: Comcast
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+            - name: Ethernet2.42
+              encapsulation_dot1q_vlan: 666
+              wan_carrier: Colt
+              wan_circuit_id: 10666
+              ip_address: 172.16.6.6/31
+        - name: cv-pathfinder-transit1B
+          cv_pathfinder_region: AVD_Land_West
+          cv_pathfinder_site: Site422
+          id: 2
+          uplink_switch_interfaces: [Ethernet2]
+          l3_interfaces:
+            - name: Ethernet1.42
+              wan_carrier: Comcast
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+            - name: Ethernet2.42
+              encapsulation_dot1q_vlan: 666
+              wan_carrier: Colt
+              wan_circuit_id: 10666
+              ip_address: 172.16.6.6/31
 
 wan_rr:
   defaults:
