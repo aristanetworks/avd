@@ -4,23 +4,48 @@ monitor_telemetry_postcard:
     collection:
       source: 10.3.3.3
       destination: 10.3.3.4
+      version: 2
     sample:
       rate: 16384
       tcp_udp_checksum: 2343223
-  profile:
-    name: abc
-    ingress_sample_policy: ingresspo1
-  sample_policy:
-    name: samplepo1
-    match_rule:
-      rule_name: rule1
-      ipversion: ipv4
-      destination_prefix:
-        prefix_address: 10.3.3.0
-        prefix_mask: 24
-      source_prefix:
-        prefix_address: 3.4.5.0
-        prefix_mask: 24
-      protocol:
-        type_of_protocol: tcp
-        destination_port: [ "77", "78-80", "www"]
+  profiles:
+    - name: abc
+      ingress_sample_policy: ingresspo1
+    - name: def
+      ingress_sample_policy: ingresspo1
+  sample_policies:
+    - name: samplepo1
+      match_rules:
+        - rule_name: rule1
+          type: ipv4
+          destination_prefix: 10.3.3.0/24
+          source_prefix: 3.4.5.0/24
+          protocol:
+            protocol_type: tcp
+            destination_port:
+              - '77'
+              - 78-80
+              - www
+        - rule_name: rule2
+          type: ipv4
+          destination_prefix: 10.3.4.0/24
+          source_prefix: 3.4.4.0/24
+          protocol:
+            protocol_type: tcp
+            destination_port:
+              - '747'
+              - 748-800
+              - ssh
+    - name: samplepo2
+      match_rules:
+        - rule_name: rule1
+          type: ipv4
+          destination_prefix: 10.3.3.0/24
+          source_prefix: 3.4.5.0/24
+          protocol:
+            protocol_type: tcp
+            destination_port:
+              - '77'
+              - 78-80
+              - www
+    - name: samplepo3

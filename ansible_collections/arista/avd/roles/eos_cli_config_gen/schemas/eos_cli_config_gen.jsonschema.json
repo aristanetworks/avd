@@ -11110,11 +11110,22 @@
               "properties": {
                 "source": {
                   "type": "string",
+                  "description": "GRE source configuration",
                   "title": "Source"
                 },
                 "destination": {
                   "type": "string",
+                  "description": "GRE destination configuration",
                   "title": "Destination"
+                },
+                "version": {
+                  "type": "integer",
+                  "description": "Postcard version",
+                  "enum": [
+                    1,
+                    2
+                  ],
+                  "title": "Version"
                 }
               },
               "additionalProperties": false,
@@ -11156,121 +11167,119 @@
           },
           "title": "Ingress"
         },
-        "profile": {
-          "type": "object",
+        "profiles": {
+          "type": "array",
           "description": "Configure the postcard telemetry profile",
-          "properties": {
-            "name": {
-              "type": "string",
-              "title": "Name"
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Profile name",
+                "title": "Name"
+              },
+              "ingress_sample_policy": {
+                "type": "string",
+                "description": "Configure ingress parameters",
+                "title": "Ingress Sample Policy"
+              }
             },
-            "ingress_sample_policy": {
-              "type": "string",
-              "description": "Configure ingress parameters",
-              "title": "Ingress Sample Policy"
-            }
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
           },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "Profile"
+          "title": "Profiles"
         },
-        "sample_policy": {
-          "type": "object",
-          "description": "Configure sampling feature",
-          "properties": {
-            "name": {
-              "type": "string",
-              "title": "Name"
-            },
-            "match_rule": {
-              "type": "object",
-              "properties": {
-                "rule_name": {
-                  "type": "string",
-                  "title": "Rule Name"
-                },
-                "ipversion": {
-                  "type": "string",
-                  "enum": [
-                    "ipv4",
-                    "ipv6"
-                  ],
-                  "title": "Ipversion"
-                },
-                "destination_prefix": {
+        "sample_policies": {
+          "type": "array",
+          "description": "Configure sample policies",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Configure sample policy name",
+                "title": "Name"
+              },
+              "match_rules": {
+                "type": "array",
+                "description": "Configure match rules",
+                "items": {
                   "type": "object",
                   "properties": {
-                    "prefix_address": {
+                    "rule_name": {
                       "type": "string",
-                      "title": "Prefix Address"
+                      "description": "Match rule name",
+                      "title": "Rule Name"
                     },
-                    "prefix_mask": {
-                      "type": "integer",
-                      "title": "Prefix Mask"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "patternProperties": {
-                    "^_.+$": {}
-                  },
-                  "title": "Destination Prefix"
-                },
-                "source_prefix": {
-                  "type": "object",
-                  "properties": {
-                    "prefix_address": {
+                    "type": {
                       "type": "string",
-                      "title": "Prefix Address"
-                    },
-                    "prefix_mask": {
-                      "type": "integer",
-                      "title": "Prefix Mask"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "patternProperties": {
-                    "^_.+$": {}
-                  },
-                  "title": "Source Prefix"
-                },
-                "protocol": {
-                  "type": "object",
-                  "properties": {
-                    "type_of_protocol": {
-                      "type": "string",
+                      "description": "Select the IP version",
                       "enum": [
-                        "tcp",
-                        "udp"
+                        "ipv4",
+                        "ipv6"
                       ],
-                      "title": "Type Of Protocol"
+                      "title": "Type"
                     },
-                    "destination_port": {
-                      "type": "array",
-                      "description": "Enter the port number or range or multiple port numbers with comma seperated values.\nExamples:\n  \"65-78\"\n  \"55\"\n  \"4, 55, 66\"\n",
-                      "title": "Destination Port"
+                    "destination_prefix": {
+                      "type": "string",
+                      "description": "IPv4 Network/Mask",
+                      "title": "Destination Prefix"
+                    },
+                    "source_prefix": {
+                      "type": "string",
+                      "description": "IPv4 Network/Mask",
+                      "title": "Source Prefix"
+                    },
+                    "protocol": {
+                      "type": "object",
+                      "properties": {
+                        "protocol_type": {
+                          "type": "string",
+                          "description": "Select TCP/UDP",
+                          "enum": [
+                            "tcp",
+                            "udp"
+                          ],
+                          "title": "Protocol Type"
+                        },
+                        "destination_port": {
+                          "type": "array",
+                          "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]\n",
+                          "title": "Destination Port"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Protocol"
                     }
                   },
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
                   },
-                  "title": "Protocol"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              },
-              "title": "Match Rule"
-            }
+                  "required": [
+                    "rule_name"
+                  ]
+                },
+                "title": "Match Rules"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
           },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "Sample Policy"
+          "title": "Sample Policies"
         }
       },
       "additionalProperties": false,

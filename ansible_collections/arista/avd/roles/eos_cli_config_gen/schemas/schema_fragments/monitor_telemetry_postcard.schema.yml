@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -22,8 +22,14 @@ keys:
             keys:
               source:
                 type: str
+                description: GRE source configuration
               destination:
                 type: str
+                description: GRE destination configuration
+              version:
+                type: int
+                description: Postcard version
+                valid_values: [ 1, 2 ]
           sample:
             type: dict
             description: Configure sampling parameters
@@ -39,58 +45,59 @@ keys:
                 description: Configure TCP/UDP checksum or IP ID checksum
                 convert_types:
                 - str
-      profile:
-        type: dict
+      profiles:
+        type: list
         description: Configure the postcard telemetry profile
-        keys:
-          name:
-            type: str
-          ingress_sample_policy:
-            type: str
-            description: Configure ingress parameters
-      sample_policy:
-        type: dict
-        description: Configure sampling feature
-        keys:
-          name:
-            type: str
-          match_rule:
-            type: dict
-            keys:
-              rule_name:
-                type: str
-              ipversion:
-                type: str
-                valid_values: [ ipv4, ipv6 ]
-              destination_prefix:
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Profile name
+            ingress_sample_policy:
+              type: str
+              description: Configure ingress parameters
+      sample_policies:
+        type: list
+        primary_key: name
+        description: Configure sample policies
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Configure sample policy name
+            match_rules:
+              type: list
+              primary_key: rule_name
+              description: Configure match rules
+              items:
                 type: dict
                 keys:
-                  prefix_address:
+                  rule_name:
                     type: str
-                  prefix_mask:
-                    type: int
-                    convert_types:
-                    - str
-              source_prefix:
-                type: dict
-                keys:
-                  prefix_address:
+                    description: Match rule name
+                  type:
                     type: str
-                  prefix_mask:
-                    type: int
-                    convert_types:
-                    - str
-              protocol:
-                type: dict
-                keys:
-                  type_of_protocol:
+                    description: Select the IP version
+                    valid_values: [ ipv4, ipv6 ]
+                  destination_prefix:
                     type: str
-                    valid_values: [ tcp, udp ]
-                  destination_port:
-                    type: list
-                    description: |
-                      Enter the port number or range or multiple port numbers with comma seperated values.
-                      Examples:
-                        "65-78"
-                        "55"
-                        "4, 55, 66"
+                    description: IPv4 Network/Mask
+                  source_prefix:
+                    type: str
+                    description: IPv4 Network/Mask
+                  protocol:
+                    type: dict
+                    keys:
+                      protocol_type:
+                        type: str
+                        description: Select TCP/UDP
+                        valid_values: [ tcp, udp ]
+                      destination_port:
+                        type: list
+                        description: |
+                          Enter the port name or range or  port numbers in a list.
+                          Example:
+                            ["12","14-20", "www"]
