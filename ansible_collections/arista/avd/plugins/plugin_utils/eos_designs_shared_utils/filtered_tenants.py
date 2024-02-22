@@ -50,7 +50,7 @@ class FilteredTenantsMixin:
                     )
 
         no_vrf_default = all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"])
-        if self.wan_role is not None and no_vrf_default:
+        if self.is_wan_router and no_vrf_default:
             filtered_tenants.append(
                 {
                     "name": "WAN_DEFAULT",
@@ -70,7 +70,7 @@ class FilteredTenantsMixin:
                     "l2vlans": [],
                 }
             )
-        elif self.wan_role:
+        elif self.is_wan_router:
             # It is enough to check only the first occurence of default VRF as some other piece of code
             # checks that if the VRF is in multiple tenants, the configuration is consistent.
             for tenant in filtered_tenants:

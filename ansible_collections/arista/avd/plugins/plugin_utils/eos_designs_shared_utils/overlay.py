@@ -27,7 +27,7 @@ class OverlayMixin:
         """
         The default is Loopback1 except for WAN devices where the default is Dps1.
         """
-        default_vtep_loopback = "Dps1" if self.wan_role is not None else "Loopback1"
+        default_vtep_loopback = "Dps1" if self.is_wan_router else "Loopback1"
         return get(self.switch_data_combined, "vtep_loopback", default=default_vtep_loopback)
 
     @cached_property
@@ -133,6 +133,27 @@ class OverlayMixin:
         EVPN encapsulation based on fabric_evpn_encapsulation and node default_evpn_encapsulation.
         """
         return get(self.hostvars, "fabric_evpn_encapsulation", default=get(self.node_type_key_data, "default_evpn_encapsulation", default="vxlan"))
+
+    @cached_property
+    def evpn_soo(self: SharedUtils) -> str:
+        """
+        Site-Of-Origin used as BGP extended community.
+        - For regular VTEPs this is <vtep_ip>:1
+        - For WAN routers this is <router_id_of_primary_HA_router>:<site_id or 0>
+        - Otherwise this is <router_id>:1
+
+        TODO: Implement HA logic for WAN
+        TODO: Reconsider if suffix should just be :1 for all WAN routers.
+        """
+        if self.is_wan_router:
+            if self.is_cv_pathfinder_edge_or_transit:
+                return f"{self.router_id}:{self.wan_site['id']}"
+            return f"{self.router_id}:0"
+
+        if self.overlay_vtep:
+            return f"{self.vtep_ip}:1"
+
+        return f"{self.router_id}:1"
 
     @cached_property
     def overlay_evpn(self: SharedUtils) -> bool:

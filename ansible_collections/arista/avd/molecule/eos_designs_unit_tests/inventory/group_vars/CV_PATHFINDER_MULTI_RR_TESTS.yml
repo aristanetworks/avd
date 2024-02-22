@@ -17,3 +17,17 @@ wan_route_servers:
         interfaces:
           - name: Ethernet2
             ip_address: 10.50.50.50/31
+
+# Overwriting TTL
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.142.0/24
+      - 192.168.143.0/24
+  wan_rr_overlay_peers:
+    ttl_maximum_hops: 42
+    bfd_timers:
+      interval: 2020
+      min_rx: 2000
+      multiplier: 3

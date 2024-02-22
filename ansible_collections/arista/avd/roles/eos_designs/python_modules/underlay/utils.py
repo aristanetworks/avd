@@ -186,7 +186,7 @@ class UtilsMixin:
             interface["access_group_out"] = "ACL-WAN-TRANSPORT-OUT"
 
         if self.shared_utils.cv_pathfinder_role:
-            interface["flow_tracker"] = {"hardware": "WAN-FLOW-TRACKER"}
+            interface["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
 
         return strip_empties_from_dict(interface)
 

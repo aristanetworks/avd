@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
+from .as_path import AsPathMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
 from .ip_access_list import IPAccessListsMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
@@ -28,6 +29,7 @@ class AvdStructuredConfigUnderlay(
     PortChannelInterfacesMixin,
     LoopbackInterfacesMixin,
     RouterBgpMixin,
+    AsPathMixin,
     RouterOspfMixin,
     PrefixListsMixin,
     RouteMapsMixin,

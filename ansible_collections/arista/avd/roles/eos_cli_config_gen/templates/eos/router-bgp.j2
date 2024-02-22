@@ -572,6 +572,21 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
       {{ evpn_neighbor_default_encap_cli }}
 {%         endif %}
+{%         if router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs is arista.avd.defined %}
+{%             set evpn_mpls_resolution_ribs = [] %}
+{%             for rib in router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs %}
+{%                 if rib.rib_type is arista.avd.defined("tunnel-rib-colored") %}
+{%                     do evpn_mpls_resolution_ribs.append("tunnel-rib-colored system-colored-tunnel-rib") %}
+{%                 elif rib.rib_type is arista.avd.defined("tunnel-rib") and rib.rib_name is arista.avd.defined() %}
+{%                     do evpn_mpls_resolution_ribs.append("tunnel-rib " ~ rib.rib_name) %}
+{%                 elif rib.rib_type is arista.avd.defined %}
+{%                     do evpn_mpls_resolution_ribs.append(rib.rib_type) %}
+{%                 endif %}
+{%             endfor %}
+{%             if evpn_mpls_resolution_ribs %}
+      next-hop mpls resolution ribs {{ evpn_mpls_resolution_ribs | join(" ") }}
+{%             endif %}
+{%         endif %}
 {%         for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort('name') %}
 {%             if peer_group.route_map_in is arista.avd.defined %}
       neighbor {{ peer_group.name }} route-map {{ peer_group.route_map_in }} in
@@ -605,6 +620,13 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if peer_group.encapsulation is arista.avd.defined %}
       neighbor {{ peer_group.name }} encapsulation {{ peer_group.encapsulation }}
+{%             endif %}
+{%         endfor %}
+{%         for neighbor in router_bgp.address_family_evpn.neighbors | arista.avd.natural_sort('ip_address') %}
+{%             if neighbor.activate is arista.avd.defined(true) %}
+      neighbor {{ neighbor.ip_address }} activate
+{%             elif neighbor.activate is arista.avd.defined(false) %}
+      no neighbor {{ neighbor.ip_address }} activate
 {%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_evpn.next_hop.resolution_disabled is arista.avd.defined(true) %}

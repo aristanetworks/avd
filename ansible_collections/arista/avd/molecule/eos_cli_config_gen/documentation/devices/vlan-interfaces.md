@@ -478,7 +478,7 @@ interface Vlan4094
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Vlan89 | - | IPv4 | - | Loopback0 |
-| Vlan4094 | - | IPv4 | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Vlan89 | - | IPv4 | - | - | Loopback0 |
+| Vlan4094 | - | IPv4 | - | 200 | - |

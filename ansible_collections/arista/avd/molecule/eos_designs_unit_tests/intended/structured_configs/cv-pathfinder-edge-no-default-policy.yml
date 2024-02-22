@@ -22,10 +22,17 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
+    ttl_maximum_hops: 42
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -98,11 +105,7 @@ router_bgp:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
+transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 vrfs:
@@ -266,12 +269,28 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.42.1:511 additive
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 192.168.42.1:511 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
-  - sequence: 30
+  - sequence: 10
     type: permit
     match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    - extcommunity ECL-EVPN-SOO
 flow_tracking:
   hardware:
     trackers:
@@ -286,10 +305,13 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 5000
     shutdown: false
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.42.1:511
 ip_security:
   ike_policies:
-  - name: DP-IKE-POLICY
-    local_id: 192.168.255.1
   - name: CP-IKE-POLICY
     local_id: 192.168.255.1
   sa_policies:
@@ -303,7 +325,6 @@ ip_security:
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
-    ike_policy: DP-IKE-POLICY
     sa_policy: DP-SA-POLICY
     connection: start
     shared_key: ABCDEF1234567890666
@@ -440,6 +461,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
+  mtu: 9214
   ip_address: 192.168.255.1/32
   flow_tracker:
     hardware: WAN-FLOW-TRACKER

@@ -67,7 +67,6 @@ DEFAULT_NODE_TYPE_KEYS = {
             "default_wan_role": "client",
             "default_cv_pathfinder_role": "edge",
             "default_overlay_routing_protocol": "ibgp",
-            "default_underlay_routing_protocol": "none",
             "vtep": True,
             "network_services": {
                 "l3": True,
@@ -80,7 +79,6 @@ DEFAULT_NODE_TYPE_KEYS = {
             "default_wan_role": "client",
             "default_cv_pathfinder_role": "transit region",
             "default_overlay_routing_protocol": "ibgp",
-            "default_underlay_routing_protocol": "none",
             "vtep": True,
             "network_services": {
                 "l3": True,
@@ -93,7 +91,6 @@ DEFAULT_NODE_TYPE_KEYS = {
             "default_wan_role": "server",
             "default_cv_pathfinder_role": "pathfinder",
             "default_overlay_routing_protocol": "ibgp",
-            "default_underlay_routing_protocol": "none",
             "vtep": True,
             "network_services": {
                 "l3": True,

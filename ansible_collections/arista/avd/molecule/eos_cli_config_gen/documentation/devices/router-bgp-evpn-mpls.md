@@ -85,6 +85,10 @@ interface Management1
 
 #### Router BGP EVPN Address Family
 
+- Next-hop MPLS resolution Primary-RIB : tunnel-rib-colored system-colored-tunnel-rib
+- Next-hop MPLS resolution Secondary-RIB : tunnel-rib test-rib
+- Next-hop MPLS resolution Tertiary-RIB : system-connected
+
 ##### EVPN Peer Groups
 
 | Peer Group | Activate | Encapsulation |
@@ -125,5 +129,7 @@ router bgp 65101
    !
    address-family evpn
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
+      next-hop mpls resolution ribs tunnel-rib-colored system-colored-tunnel-rib tunnel-rib test-rib system-connected
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor 192.168.255.3 activate
 ```

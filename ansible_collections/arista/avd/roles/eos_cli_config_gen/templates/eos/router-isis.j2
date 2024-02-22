@@ -60,6 +60,20 @@ router isis {{ router_isis.instance }}
    timers local-convergence-delay protected-prefixes
 {%         endif %}
 {%     endif %}
+{%     if router_isis.set_overload_bit.enabled is arista.avd.defined %}
+   set-overload-bit
+{%     endif %}
+{%     if router_isis.set_overload_bit.on_startup is arista.avd.defined %}
+{%         if router_isis.set_overload_bit.on_startup.delay is arista.avd.defined %}
+   set-overload-bit on-startup {{ router_isis.set_overload_bit.on_startup.delay }}
+{%         elif router_isis.set_overload_bit.on_startup.wait_for_bgp.enabled is arista.avd.defined(true) %}
+{%             if router_isis.set_overload_bit.on_startup.wait_for_bgp.timeout is arista.avd.defined %}
+   set-overload-bit on-startup wait-for-bgp timeout {{ router_isis.set_overload_bit.on_startup.wait_for_bgp.timeout }}
+{%             else %}
+   set-overload-bit on-startup wait-for-bgp
+{%             endif %}
+{%         endif %}
+{%     endif %}
 {%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
    advertise passive-only
 {%     endif %}
@@ -68,6 +82,61 @@ router isis {{ router_isis.instance }}
    spf-interval {{ router_isis.spf_interval.interval }} {{ router_isis.spf_interval.wait_interval }}
 {%         else %}
    spf-interval {{ router_isis.spf_interval.interval }}
+{%         endif %}
+{%     endif %}
+{%     if router_isis.authentication.both.mode is arista.avd.defined
+          and (router_isis.authentication.both.mode in ["md5", "text"]
+               or (router_isis.authentication.both.mode == "sha" and router_isis.authentication.both.sha.key_id is arista.avd.defined)
+               or (router_isis.authentication.both.mode == "shared-secret"
+                   and router_isis.authentication.both.shared_secret.profile is arista.avd.defined
+                   and router_isis.authentication.both.shared_secret.algorithm is arista.avd.defined)) %}
+{%         set isis_auth_cli = "authentication mode " ~ router_isis.authentication.both.mode %}
+{%         if router_isis.authentication.both.mode == "sha" %}
+{%             set isis_auth_cli = isis_auth_cli ~ " key-id " ~ router_isis.authentication.both.sha.key_id %}
+{%         elif router_isis.authentication.both.mode == "shared-secret" %}
+{%             set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.both.shared_secret.profile %}
+{%             set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.both.shared_secret.algorithm %}
+{%         endif %}
+{%         if router_isis.authentication.both.rx_disabled is arista.avd.defined('true') %}
+{%             set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
+{%         endif %}
+   {{ isis_auth_cli }}
+{%     else %}
+{%         if router_isis.authentication.level_1.mode is arista.avd.defined
+               and (router_isis.authentication.level_1.mode in ["md5", "text"]
+               or (router_isis.authentication.level_1.mode == "sha" and router_isis.authentication.level_1.sha.key_id is arista.avd.defined)
+               or (router_isis.authentication.level_1.mode == "shared-secret"
+                   and router_isis.authentication.level_1.shared_secret.profile is arista.avd.defined
+                   and router_isis.authentication.level_1.shared_secret.algorithm is arista.avd.defined)) %}
+{%             set isis_auth_cli = "authentication mode " ~ router_isis.authentication.level_1.mode %}
+{%             if router_isis.authentication.level_1.mode == "sha" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ router_isis.authentication.level_1.sha.key_id %}
+{%             elif router_isis.authentication.level_1.mode == "shared-secret" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.level_1.shared_secret.profile %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.level_1.shared_secret.algorithm %}
+{%             endif %}
+{%             if router_isis.authentication.level_1.rx_disabled is arista.avd.defined('true') %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
+{%             endif %}
+   {{ isis_auth_cli }} level-1
+{%         endif %}
+{%         if router_isis.authentication.level_2.mode is arista.avd.defined
+               and (router_isis.authentication.level_2.mode in ["md5", "text"]
+               or (router_isis.authentication.level_2.mode == "sha" and router_isis.authentication.level_2.sha.key_id is arista.avd.defined)
+               or (router_isis.authentication.level_2.mode == "shared-secret"
+                   and router_isis.authentication.level_2.shared_secret.profile is arista.avd.defined
+                   and router_isis.authentication.level_2.shared_secret.algorithm is arista.avd.defined)) %}
+{%             set isis_auth_cli = "authentication mode " ~ router_isis.authentication.level_2.mode %}
+{%             if router_isis.authentication.level_2.mode == "sha" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ router_isis.authentication.level_2.sha.key_id %}
+{%             elif router_isis.authentication.level_2.mode == "shared-secret" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.level_2.shared_secret.profile %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.level_2.shared_secret.algorithm %}
+{%             endif %}
+{%             if router_isis.authentication.level_2.rx_disabled is arista.avd.defined('true') %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
+{%             endif %}
+   {{ isis_auth_cli }} level-2
 {%         endif %}
 {%     endif %}
 {%     if router_isis.graceful_restart is arista.avd.defined %}
@@ -82,6 +151,64 @@ router isis {{ router_isis.instance }}
 {%         endif %}
 {%         if router_isis.graceful_restart.restart_hold_time is arista.avd.defined %}
    graceful-restart restart-hold-time {{ router_isis.graceful_restart.restart_hold_time }}
+{%         endif %}
+{%     endif %}
+{%     if router_isis.authentication is arista.avd.defined %}
+{%         set both_key_ids = [] %}
+{%         if router_isis.authentication.both.key_ids is arista.avd.defined %}
+{%             for auth_key in router_isis.authentication.both.key_ids | arista.avd.natural_sort("id") %}
+{%                 if auth_key.id is arista.avd.defined
+                       and auth_key.algorithm is arista.avd.defined
+                       and auth_key.key_type is arista.avd.defined
+                       and auth_key.key is arista.avd.defined %}
+{%                     do both_key_ids.append(auth_key.id) %}
+{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }}
+{%                     else %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if router_isis.authentication.level_1.key_ids is arista.avd.defined %}
+{%             for auth_key in router_isis.authentication.level_1.key_ids %}
+{%                 if auth_key.id is arista.avd.defined
+                       and auth_key.id not in both_key_ids
+                       and auth_key.algorithm is arista.avd.defined
+                       and auth_key.key_type is arista.avd.defined
+                       and auth_key.key is arista.avd.defined %}
+{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-1
+{%                     else %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-1
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if router_isis.authentication.level_2.key_ids is arista.avd.defined %}
+{%             for auth_key in router_isis.authentication.level_2.key_ids %}
+{%                 if auth_key.id is arista.avd.defined
+                       and auth_key.id not in both_key_ids
+                       and auth_key.algorithm is arista.avd.defined
+                       and auth_key.key_type is arista.avd.defined
+                       and auth_key.key is arista.avd.defined %}
+{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-2
+{%                     else %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-2
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if router_isis.authentication.both.key_type is arista.avd.defined and router_isis.authentication.both.key is arista.avd.defined %}
+   authentication key {{ router_isis.authentication.both.key_type }} {{ router_isis.authentication.both.key }}
+{%         else %}
+{%             if router_isis.authentication.level_1.key_type is arista.avd.defined and router_isis.authentication.level_1.key is arista.avd.defined %}
+   authentication key {{ router_isis.authentication.level_1.key_type }} {{ router_isis.authentication.level_1.key }} level-1
+{%             endif %}
+{%             if router_isis.authentication.level_2.key_type is arista.avd.defined and router_isis.authentication.level_2.key is arista.avd.defined %}
+   authentication key {{ router_isis.authentication.level_2.key_type }} {{ router_isis.authentication.level_2.key }} level-2
+{%             endif %}
 {%         endif %}
 {%     endif %}
    !

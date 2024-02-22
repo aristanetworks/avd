@@ -23,7 +23,7 @@ class RouteMapsMixin(UtilsMixin):
         - Route map for connected routes redistribution in BGP
         - Route map to filter peer AS in underlay
         """
-        if not self.shared_utils.underlay_bgp and not self.shared_utils.wan_role:
+        if not self.shared_utils.underlay_bgp and not self.shared_utils.is_wan_router:
             return None
 
         route_maps = []
@@ -31,13 +31,15 @@ class RouteMapsMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol != "none" and self.shared_utils.underlay_filter_redistribute_connected:
             # RM-CONN-2-BGP
             sequence_numbers = []
-            sequence_numbers.append(
-                {
-                    "sequence": 10,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
-                }
-            )
+            sequence_10 = {
+                "sequence": 10,
+                "type": "permit",
+                "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
+            }
+            if self.shared_utils.wan_role:
+                sequence_10["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
+
+            sequence_numbers.append(sequence_10)
 
             # SEQ 20 is set by inband management if applicable, so avoid setting that here
 
@@ -59,6 +61,8 @@ class RouteMapsMixin(UtilsMixin):
                     }
                 )
 
+            # TODO in WAN HA PR, use 50 for PL-WAN-HA-INTERFACES
+
             route_maps.append({"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers})
 
         # RM-BGP-AS{{ asn }}-OUT
@@ -77,6 +81,51 @@ class RouteMapsMixin(UtilsMixin):
                             "sequence": 20,
                             "type": "permit",
                         },
+                    ],
+                }
+            )
+
+        # Route-map IN and OUT for SOO, rendered for WAN routers
+        if self.shared_utils.underlay_routing_protocol == "ebgp" and self.shared_utils.wan_role == "client":
+            route_maps.append(
+                {
+                    "name": "RM-BGP-UNDERLAY-PEERS-IN",
+                    "sequence_numbers": [
+                        # TODO sequence 10 is left to match prefixes from HA PEER
+                        # on which SOO will be have been set by peer
+                        {
+                            "sequence": 20,
+                            "type": "deny",
+                            "description": "Deny prefixes from WAN",
+                            "match": ["as-path ASPATH-WAN"],
+                        },
+                        {
+                            "sequence": 30,
+                            "type": "permit",
+                            "description": "Mark prefixes originated from the LAN",
+                            "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                        },
+                    ],
+                }
+            )
+
+            route_maps.append(
+                {
+                    "name": "RM-BGP-UNDERLAY-PEERS-OUT",
+                    "sequence_numbers": [
+                        {
+                            "sequence": 10,
+                            "type": "permit",
+                            "description": "Advertise local routes towards LAN",
+                            "match": ["extcommunity ECL-EVPN-SOO"],
+                        },
+                        {
+                            "sequence": 20,
+                            "type": "permit",
+                            "description": "Advertise routes received from WAN iBGP towards LAN",
+                            "match": ["route-type internal"],
+                        },
+                        # TODO match local HA prefix and mark them with SOO
                     ],
                 }
             )
