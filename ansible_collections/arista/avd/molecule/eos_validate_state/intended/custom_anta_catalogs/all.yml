@@ -1,4 +1,5 @@
 ---
+# These tests will be added to all the devices in the inventory
 anta.tests.aaa:
   - VerifyTacacsSourceIntf:
       intf: Management0
