@@ -57,11 +57,61 @@
   },
   {
     "name": "dc2-leaf2c",
+    "test": "VerifyRunningConfigDiffs",
+    "categories": [
+      "configuration"
+    ],
+    "description": "Verifies there is no difference between the running-config and the startup-config"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyZeroTouch",
+    "categories": [
+      "configuration"
+    ],
+    "description": "Verifies ZeroTouch is disabled"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyFieldNotice72Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyFieldNotice44Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
+  },
+  {
+    "name": "dc2-leaf2c",
     "test": "VerifyTemperature",
     "categories": [
       "hardware"
     ],
     "description": "Verifies if the device temperature is within the acceptable range."
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the device temperature is within the acceptable range."
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the fans status are within the accepted states list."
   },
   {
     "name": "dc2-leaf2c",
@@ -81,11 +131,51 @@
   },
   {
     "name": "dc2-leaf2c",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the power supplies status are within the accepted states list."
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyTransceiversTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies that all transceivers are operating within the acceptable temperature range."
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyEnvironmentSystemCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the system cooling status."
+  },
+  {
+    "name": "dc2-leaf2c",
     "test": "VerifyTransceiversManufacturers",
     "categories": [
       "hardware"
     ],
     "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyAdverseDrops",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc2-leaf2c",

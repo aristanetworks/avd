@@ -48,6 +48,9 @@ anta.tests.aaa:
     - exec
     - commands
     - dot1x
+anta.tests.configuration:
+- VerifyZeroTouch: null
+- VerifyRunningConfigDiffs: null
 anta.tests.connectivity:
 - VerifyLLDPNeighbors:
     neighbors:
@@ -175,6 +178,9 @@ anta.tests.connectivity:
       - IP Reachability
       custom_field: 'Source: dc2-spine1_Ethernet6 - Destination: dc2-leaf3b.arista.com_Ethernet1'
       description: ip reachability test p2p links
+anta.tests.field_notices:
+- VerifyFieldNotice44Resolution: null
+- VerifyFieldNotice72Resolution: null
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     states:
@@ -188,6 +194,21 @@ anta.tests.hardware:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
+- VerifyTransceiversManufacturers:
+    manufacturers:
+    - Not Present
+    - Arista Networks
+    - Arastra, Inc.
+- VerifyTemperature: null
+- VerifyTransceiversTemperature: null
+- VerifyEnvironmentSystemCooling: null
+- VerifyEnvironmentCooling:
+    states:
+    - ok
+- VerifyEnvironmentPower:
+    states:
+    - ok
+- VerifyAdverseDrops: null
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:

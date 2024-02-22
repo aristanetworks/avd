@@ -50,3 +50,29 @@ anta.tests.aaa:
         - exec
         - commands
         - dot1x
+
+anta.tests.configuration:
+  - VerifyZeroTouch:
+  - VerifyRunningConfigDiffs:
+
+anta.tests.field_notices:
+  - VerifyFieldNotice44Resolution:
+  - VerifyFieldNotice72Resolution:
+
+# Some of these hardware tests will be duplicated in the catalog, but ANTA will only run them once
+anta.tests.hardware:
+  - VerifyTransceiversManufacturers:
+      manufacturers:
+        - Not Present
+        - Arista Networks
+        - Arastra, Inc.
+  - VerifyTemperature:
+  - VerifyTransceiversTemperature:
+  - VerifyEnvironmentSystemCooling:
+  - VerifyEnvironmentCooling:
+      states:
+        - ok
+  - VerifyEnvironmentPower:
+      states:
+        - ok
+  - VerifyAdverseDrops:
