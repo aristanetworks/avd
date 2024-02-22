@@ -6616,10 +6616,10 @@ keys:
                     - ipv6
                   destination_prefix:
                     type: str
-                    description: IPv4 Network/Mask
+                    description: IPv4 Network/Mask or IPv6 Network/Mask
                   source_prefix:
                     type: str
-                    description: IPv4 Network/Mask
+                    description: IPv4 Network/Mask or IPv6 Network/Mask
                   protocol:
                     type: dict
                     keys:

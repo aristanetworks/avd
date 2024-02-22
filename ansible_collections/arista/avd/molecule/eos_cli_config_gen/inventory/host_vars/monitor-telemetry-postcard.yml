@@ -9,9 +9,9 @@ monitor_telemetry_postcard:
       rate: 16384
       tcp_udp_checksum: 2343223
   profiles:
-    - name: abc
+    - name: profile1
       ingress_sample_policy: ingresspo1
-    - name: def
+    - name: profile2
       ingress_sample_policy: ingresspo1
   sample_policies:
     - name: samplepo1
@@ -27,11 +27,11 @@ monitor_telemetry_postcard:
               - 78-80
               - www
         - rule_name: rule2
-          type: ipv4
+          type: ipv6
           destination_prefix: 10.3.4.0/24
           source_prefix: 3.4.4.0/24
           protocol:
-            protocol_type: tcp
+            protocol_type: udp
             destination_port:
               - '747'
               - 748-800
@@ -43,7 +43,7 @@ monitor_telemetry_postcard:
           destination_prefix: 10.3.3.0/24
           source_prefix: 3.4.5.0/24
           protocol:
-            protocol_type: tcp
+            protocol_type: udp
             destination_port:
               - '77'
               - 78-80

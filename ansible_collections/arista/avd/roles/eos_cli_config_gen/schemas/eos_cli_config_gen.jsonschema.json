@@ -11227,12 +11227,12 @@
                     },
                     "destination_prefix": {
                       "type": "string",
-                      "description": "IPv4 Network/Mask",
+                      "description": "IPv4 Network/Mask or IPv6 Network/Mask",
                       "title": "Destination Prefix"
                     },
                     "source_prefix": {
                       "type": "string",
-                      "description": "IPv4 Network/Mask",
+                      "description": "IPv4 Network/Mask or IPv6 Network/Mask",
                       "title": "Source Prefix"
                     },
                     "protocol": {
