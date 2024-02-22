@@ -1,0 +1,51 @@
+---
+anta.tests.aaa:
+  - VerifyTacacsSourceIntf:
+      intf: Management0
+      vrf: default
+  - VerifyTacacsServers:
+      servers:
+        - 1.1.1.1
+        - 2.2.2.2
+      vrf: default
+  - VerifyTacacsServerGroups:
+      groups:
+        - admin
+        - user
+  - VerifyAuthenMethods:
+      methods:
+        - local
+        - none
+        - logging
+      types:
+        - login
+        - enable
+        - dot1x
+  - VerifyAuthzMethods:
+      methods:
+        - local
+        - none
+        - logging
+      types:
+        - commands
+        - exec
+  - VerifyAcctDefaultMethods:
+      methods:
+        - local
+        - none
+        - logging
+      types:
+        - system
+        - exec
+        - commands
+        - dot1x
+  - VerifyAcctConsoleMethods:
+      methods:
+        - local
+        - none
+        - logging
+      types:
+        - system
+        - exec
+        - commands
+        - dot1x

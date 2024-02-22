@@ -27,7 +27,7 @@ class AvdTestMLAG(AvdTestBase):
             return None
 
         anta_tests = [
-            {"VerifyMlagStatus": {}},
+            {"VerifyMlagStatus": None},
         ]
 
         return {self.anta_module: anta_tests}
