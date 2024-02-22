@@ -45,28 +45,28 @@
 | BGP | 89 | 0 | 0 | 0 |
 | Configuration | 34 | 0 | 0 | 0 |
 | Field Notices | 34 | 0 | 0 | 0 |
-| Software | 70 | 0 | 0 | 0 |
+| Generic | 8 | 0 | 0 | 0 |
 | Hardware | 187 | 0 | 0 | 0 |
-| Interface State | 242 | 0 | 0 | 0 |
+| IGMP | 12 | 0 | 0 | 0 |
 | IP Reachability | 38 | 0 | 0 | 0 |
+| Interface State | 242 | 0 | 0 | 0 |
+| Interfaces | 26 | 0 | 0 | 0 |
 | LLDP Topology | 68 | 0 | 0 | 0 |
+| Logging | 48 | 0 | 0 | 0 |
 | Loopback0 Reachability | 143 | 0 | 0 | 0 |
 | MLAG | 39 | 0 | 0 | 0 |
+| Multicast | 12 | 0 | 0 | 0 |
 | NTP | 17 | 0 | 0 | 0 |
+| OSPF | 4 | 0 | 0 | 0 |
 | Profiles | 4 | 0 | 0 | 0 |
+| Routing | 18 | 0 | 0 | 0 |
 | Routing Table | 162 | 0 | 0 | 0 |
-| Security | 17 | 0 | 0 | 0 |
 | SNMP | 51 | 0 | 0 | 0 |
+| STP | 30 | 0 | 0 | 0 |
+| Security | 17 | 0 | 0 | 0 |
+| Software | 70 | 0 | 0 | 0 |
 | System | 136 | 0 | 0 | 0 |
 | VXLAN | 4 | 0 | 0 | 0 |
-| Interfaces | 26 | 0 | 0 | 0 |
-| Routing | 18 | 0 | 0 | 0 |
-| OSPF | 4 | 0 | 0 | 0 |
-| Generic | 8 | 0 | 0 | 0 |
-| Logging | 48 | 0 | 0 | 0 |
-| Multicast | 12 | 0 | 0 | 0 |
-| IGMP | 12 | 0 | 0 | 0 |
-| STP | 30 | 0 | 0 | 0 |
 
 ## Failed Test Results Summary
 
