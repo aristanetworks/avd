@@ -76,3 +76,23 @@ anta.tests.hardware:
       states:
         - ok
   - VerifyAdverseDrops:
+
+anta.tests.snmp:
+  - VerifySnmpStatus:
+      vrf: default
+  - VerifySnmpIPv4Acl:
+      number: 3
+      vrf: default
+  - VerifySnmpIPv6Acl:
+      number: 3
+      vrf: default
+
+anta.tests.software:
+  - VerifyEOSVersion:
+      versions:
+        - 4.25.4M
+        - 4.26.1F
+  - VerifyTerminAttrVersion:
+      versions:
+        - v1.13.6
+        - v1.8.0
