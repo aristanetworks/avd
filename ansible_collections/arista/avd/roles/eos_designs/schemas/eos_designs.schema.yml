@@ -3742,7 +3742,7 @@ keys:
           for the `default_virtual_topology`.\n  * if the policy is associated with
           the default VRF, a special control-plane rule is injected\n    in the policy
           with index `1` referring to a control-plane load-balance policy as defined
-          under\n    `control_plane_virtual_topology`.\n\n\nFor CV Pathfinder, each
+          under\n    `control_plane_virtual_topology`.\n\nFor CV Pathfinder, each
           item in the list creates:\n  * one policy with:\n      * one `match` entry
           per `application_virtual_topologies` item ordered as in the model.\n      *
           one last match entry for the `default` application-profile using `default_virtual_topology`
