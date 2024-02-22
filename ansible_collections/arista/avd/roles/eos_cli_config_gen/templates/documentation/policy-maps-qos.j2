@@ -19,24 +19,20 @@
 {%             for set in class.set | arista.avd.default([]) %}
 | {{ class.name }} | {{ set }} | {{ class.set[set] }} | - |
 {%             endfor %}
-{%             if class.police.cir is arista.avd.defined %}
-{%                 if class.police.cir.cir_rate is arista.avd.defined and class.police.cir.bc is arista.avd.defined %}
-| {{ class.name }} | - | - | police cir {{ class.police.cir.cir_rate }} {{ class.police.cir.cir_unit | arista.avd.default('bps') }} bc {{ class.police.cir.bc }} {{ class.police.cir.bc_unit | arista.avd.default('bytes') }} |
-{%                 endif %}
-{%             elif class.police.rate is arista.avd.defined %}
+{%             if class.police.rate is arista.avd.defined %}
+{%                 set police_cli = "| " ~ class.name ~ " | - | - | rate " %}
 {%                 if class.police.rate.lower_rate is arista.avd.defined and class.police.rate.lower_rate_burst_size is arista.avd.defined %}
+{%                     set police_cli = police_cli ~ class.police.rate.lower_rate ~ " " ~ class.police.rate.rate_unit | arista.avd.default('bps') ~ " burst-size " ~ class.police.rate.lower_rate_burst_size ~ " " ~ class.police.rate.burst_size_unit | arista.avd.default('bytes') %}
 {%                     if class.police.rate.higher_rate is arista.avd.defined and class.police.rate.higher_rate_burst_size is arista.avd.defined %}
 {%                         if class.police.rate.action is arista.avd.defined("dscp") and class.police.rate.dscp_value is arista.avd.defined %}
-| {{ class.name }} | - | - | rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }} action set dscp {{ class.police.rate.dscp_value }} rate {{ class.police.rate.higher_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} {{ class.police.rate.higher_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }} |
+{%                             set police_cli = police_cli ~ " action set dscp " ~ class.police.rate.dscp_value %}
 {%                         elif class.police.rate.action is arista.avd.defined("drop-precedence") %}
-| {{ class.name }} | - | - | rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }} action set drop-precedence rate {{ class.police.rate.higher_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} {{ class.police.rate.higher_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }} |
-{%                         else %}
-| {{ class.name }} | - | - | rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }} rate {{ class.police.rate.higher_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} {{ class.police.rate.higher_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }} |
+{%                             set police_cli = police_cli ~ " action set drop-precedence" %}
 {%                         endif %}
-{%                     else %}
-| {{ class.name }} | - | - | rate {{ class.police.rate.lower_rate }} {{ class.police.rate.rate_unit | arista.avd.default('bps') }} burst-size {{ class.police.rate.lower_rate_burst_size }} {{ class.police.rate.burst_size_unit | arista.avd.default('bytes') }} |
+{%                         set police_cli = police_cli ~ " rate " ~ class.police.rate.higher_rate ~ " " ~ class.police.rate.rate_unit | arista.avd.default('bps') ~ " burst-size " ~ class.police.rate.higher_rate_burst_size ~ " " ~ class.police.rate.burst_size_unit | arista.avd.default('bytes') %}
 {%                     endif %}
 {%                 endif %}
+{{ police_cli }} |
 {%             endif %}
 {%         endfor %}
 {%     endfor %}

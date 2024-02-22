@@ -28,11 +28,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "policy_maps.qos.[].classes.[].set.traffic_class") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_precedence</samp>](## "policy_maps.qos.[].classes.[].set.drop_precedence") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;police</samp>](## "policy_maps.qos.[].classes.[].police") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cir</samp>](## "policy_maps.qos.[].classes.[].police.cir") | Dictionary |  |  |  | Set committed information rate. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cir_rate</samp>](## "policy_maps.qos.[].classes.[].police.cir.cir_rate") | Integer | Required |  |  | Specify lower rate.<br>Lower rate range in kbps - <8-200000000>. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cir_unit</samp>](## "policy_maps.qos.[].classes.[].police.cir.cir_unit") | String |  | `bps` | Valid Values:<br>- <code>bps</code><br>- <code>kbps</code><br>- <code>mbps</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bc</samp>](## "policy_maps.qos.[].classes.[].police.cir.bc") | Integer | Required |  |  | Set committed burst rate. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bc_unit</samp>](## "policy_maps.qos.[].classes.[].police.cir.bc_unit") | String |  | `bytes` | Valid Values:<br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate</samp>](## "policy_maps.qos.[].classes.[].police.rate") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lower_rate</samp>](## "policy_maps.qos.[].classes.[].police.rate.lower_rate") | Integer |  |  |  | Specify lower rate.<br>Lower rate range in kbps - <8-200000000>. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_unit</samp>](## "policy_maps.qos.[].classes.[].police.rate.rate_unit") | String |  | `bps` | Valid Values:<br>- <code>bps</code><br>- <code>kbps</code><br>- <code>mbps</code><br>- <code>pps</code> |  |
@@ -86,18 +81,6 @@
                 traffic_class: <int>
                 drop_precedence: <int>
               police:
-
-                # Set committed information rate.
-                cir:
-
-                  # Specify lower rate.
-                  # Lower rate range in kbps - <8-200000000>.
-                  cir_rate: <int; required>
-                  cir_unit: <str; "bps" | "kbps" | "mbps"; default="bps">
-
-                  # Set committed burst rate.
-                  bc: <int; required>
-                  bc_unit: <str; "bytes" | "kbytes" | "mbytes"; default="bytes">
                 rate:
 
                   # Specify lower rate.

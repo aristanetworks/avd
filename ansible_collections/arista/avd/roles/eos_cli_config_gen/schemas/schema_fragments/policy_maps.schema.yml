@@ -98,38 +98,6 @@ keys:
                   police:
                     type: dict
                     keys:
-                      cir:
-                        type: dict
-                        description: Set committed information rate.
-                        keys:
-                          cir_rate:
-                            required: true
-                            type: int
-                            convert_types:
-                              - str
-                            description: |-
-                              Specify lower rate.
-                              Lower rate range in kbps - <8-200000000>.
-                          cir_unit:
-                            type: str
-                            valid_values:
-                              - "bps"
-                              - "kbps"
-                              - "mbps"
-                            default: "bps"
-                          bc:
-                            description: Set committed burst rate.
-                            required: true
-                            type: int
-                            convert_types:
-                              - str
-                          bc_unit:
-                            type: str
-                            valid_values:
-                              - "bytes"
-                              - "kbytes"
-                              - "mbytes"
-                            default: bytes
                       rate:
                         type: dict
                         keys:

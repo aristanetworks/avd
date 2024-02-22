@@ -74,7 +74,7 @@ policy-map type pbr PM_PBR_BREAKOUT
 | CM_REPLICATION_LD | dscp | af11 | - |
 | CM_REPLICATION_LD | traffic_class | 2 | - |
 | CM_REPLICATION_LD | drop_precedence | 1 | - |
-| CM_REPLICATION_LD | - | - | rate 10 kbps burst-size 260 kbytes action set drop-precedence rate 30 kbps 270 kbytes |
+| CM_REPLICATION_LD | - | - | rate 10 kbps burst-size 260 kbytes action set drop-precedence rate 30 kbps burst-size 270 kbytes |
 | CM_REPLICATION_LD_2 | dscp | af11 | - |
 | CM_REPLICATION_LD_2 | traffic_class | 2 | - |
 
@@ -84,7 +84,7 @@ policy-map type pbr PM_PBR_BREAKOUT
 | ----- | --- | ----- | ------ |
 | CM_REPLICATION_LD | dscp | af11 | - |
 | CM_REPLICATION_LD | cos | 4 | - |
-| CM_REPLICATION_LD | - | - | police cir 12 bps bc 267 kbytes |
+| CM_REPLICATION_LD | - | - | rate 30 kbps burst-size 280 bytes rate 20 kbps burst-size 270 bytes |
 
 ##### PM_REPLICATION_LD3
 
@@ -103,7 +103,7 @@ policy-map type quality-of-service PM_REPLICATION_LD
       set dscp af11
       set traffic-class 2
       set drop-precedence 1
-      police rate 10 kbps burst-size 260 kbytes action set drop-precedence rate 30 kbps 270 kbytes
+      police rate 10 kbps burst-size 260 kbytes action set drop-precedence rate 30 kbps burst-size 270 kbytes
    !
    class CM_REPLICATION_LD_2
       set dscp af11
@@ -113,7 +113,7 @@ policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
       set dscp af11
       set cos 4
-      police cir 12 bps bc 267 kbytes
+      police rate 30 kbps burst-size 280 bytes rate 20 kbps burst-size 270 bytes
 !
 policy-map type quality-of-service PM_REPLICATION_LD3
    class CM_REPLICATION_LD

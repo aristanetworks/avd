@@ -27,10 +27,12 @@ policy_maps:
             dscp: af11
             cos: 4
           police:
-            cir:
-              cir_rate: 12
-              bc: 267
-              bc_unit: kbytes
+            rate:
+              lower_rate: 30
+              rate_unit: kbps
+              lower_rate_burst_size: 280
+              higher_rate: 20
+              higher_rate_burst_size: 270
     - name: PM_REPLICATION_LD3
       classes:
         - name: CM_REPLICATION_LD

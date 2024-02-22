@@ -12355,51 +12355,6 @@
                     "police": {
                       "type": "object",
                       "properties": {
-                        "cir": {
-                          "type": "object",
-                          "description": "Set committed information rate.",
-                          "properties": {
-                            "cir_rate": {
-                              "type": "integer",
-                              "description": "Specify lower rate.\nLower rate range in kbps - <8-200000000>.",
-                              "title": "Cir Rate"
-                            },
-                            "cir_unit": {
-                              "type": "string",
-                              "enum": [
-                                "bps",
-                                "kbps",
-                                "mbps"
-                              ],
-                              "default": "bps",
-                              "title": "Cir Unit"
-                            },
-                            "bc": {
-                              "description": "Set committed burst rate.",
-                              "type": "integer",
-                              "title": "Bc"
-                            },
-                            "bc_unit": {
-                              "type": "string",
-                              "enum": [
-                                "bytes",
-                                "kbytes",
-                                "mbytes"
-                              ],
-                              "default": "bytes",
-                              "title": "Bc Unit"
-                            }
-                          },
-                          "required": [
-                            "cir_rate",
-                            "bc"
-                          ],
-                          "additionalProperties": false,
-                          "patternProperties": {
-                            "^_.+$": {}
-                          },
-                          "title": "Cir"
-                        },
                         "rate": {
                           "type": "object",
                           "properties": {
