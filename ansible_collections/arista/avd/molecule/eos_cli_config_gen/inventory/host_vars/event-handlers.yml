@@ -19,9 +19,7 @@ event_handlers:
     trigger: on-maintenance
     trigger_on_maintenance:
       operation: enter
-      interface:
-        interface_type: Ethernet
-        interface_number: 4
+      interface: Ethernet4
       stage: all
     action_type: bash
     action: echo "on-maintenance"
@@ -31,9 +29,7 @@ event_handlers:
       operation: enter
       bgp:
         neighbor_address_ipv4: 10.0.0.2
-      interface:
-        interface_type: Management
-        interface_number: 3
+      interface: Management3
       stage: after
       after_before_stage: linkdown
     action_type: bash

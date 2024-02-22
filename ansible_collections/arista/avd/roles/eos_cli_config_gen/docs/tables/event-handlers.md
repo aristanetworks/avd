@@ -19,12 +19,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor_address_ipv4</samp>](## "event_handlers.[].trigger_on_maintenance.bgp.neighbor_address_ipv4") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor_address_ipv6</samp>](## "event_handlers.[].trigger_on_maintenance.bgp.neighbor_address_ipv6") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_group_name</samp>](## "event_handlers.[].trigger_on_maintenance.bgp.peer_group_name") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage</samp>](## "event_handlers.[].trigger_on_maintenance.stage") | String | Required |  | Valid Values:<br>- <code>after</code><br>- <code>before</code><br>- <code>all</code><br>- <code>begin</code><br>- <code>end</code><br>- <code>vrf</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage</samp>](## "event_handlers.[].trigger_on_maintenance.stage") | String | Required |  | Valid Values:<br>- <code>after</code><br>- <code>before</code><br>- <code>all</code><br>- <code>begin</code><br>- <code>end</code><br>- <code>vrf</code> | Stages of maintenance operation. "vrf" stage can be defined for "bgp" only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;after_before_stage</samp>](## "event_handlers.[].trigger_on_maintenance.after_before_stage") | String |  |  | Valid Values:<br>- <code>bgp</code><br>- <code>linkdown</code><br>- <code>mlag</code><br>- <code>ratemon</code> | Action is triggered after/before specified stage. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "event_handlers.[].trigger_on_maintenance.vrf") | String |  |  |  | VRF name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "event_handlers.[].trigger_on_maintenance.interface") | Dictionary |  |  |  | Trigger condition occurs on maintenance operation of specified interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_type</samp>](## "event_handlers.[].trigger_on_maintenance.interface.interface_type") | String | Required |  | Valid Values:<br>- <code>Ethernet</code><br>- <code>Fabric</code><br>- <code>Loopback</code><br>- <code>Management</code><br>- <code>Port-Channel</code><br>- <code>Tunnel</code><br>- <code>Vlan</code><br>- <code>Vxlan</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_number</samp>](## "event_handlers.[].trigger_on_maintenance.interface.interface_number") | Integer | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "event_handlers.[].trigger_on_maintenance.interface") | String |  |  |  | Trigger condition occurs on maintenance operation of specified interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "event_handlers.[].trigger_on_maintenance.unit") | String |  |  |  | Name of unit. Trigger condition occurs on maintenance operation of specified unit |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") | String |  |  |  | Regular expression to use for searching log messages. Required for on-logging trigger<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous</samp>](## "event_handlers.[].asynchronous") | Boolean |  | `False` |  | Set the action to be non-blocking.<br> |
@@ -59,6 +57,8 @@
             neighbor_address_ipv4: <str>
             neighbor_address_ipv6: <str>
             peer_group_name: <str>
+
+          # Stages of maintenance operation. "vrf" stage can be defined for "bgp" only.
           stage: <str; "after" | "before" | "all" | "begin" | "end" | "vrf"; required>
 
           # Action is triggered after/before specified stage.
@@ -68,9 +68,7 @@
           vrf: <str>
 
           # Trigger condition occurs on maintenance operation of specified interface.
-          interface:
-            interface_type: <str; "Ethernet" | "Fabric" | "Loopback" | "Management" | "Port-Channel" | "Tunnel" | "Vlan" | "Vxlan"; required>
-            interface_number: <int; required>
+          interface: <str>
 
           # Name of unit. Trigger condition occurs on maintenance operation of specified unit
           unit: <str>

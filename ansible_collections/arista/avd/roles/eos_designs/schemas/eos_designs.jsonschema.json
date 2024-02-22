@@ -4843,6 +4843,7 @@
               },
               "stage": {
                 "type": "string",
+                "description": "Stages of maintenance operation. \"vrf\" stage can be defined for \"bgp\" only.",
                 "enum": [
                   "after",
                   "before",
@@ -4870,36 +4871,8 @@
                 "title": "VRF"
               },
               "interface": {
+                "type": "string",
                 "description": "Trigger condition occurs on maintenance operation of specified interface.",
-                "type": "object",
-                "properties": {
-                  "interface_type": {
-                    "type": "string",
-                    "enum": [
-                      "Ethernet",
-                      "Fabric",
-                      "Loopback",
-                      "Management",
-                      "Port-Channel",
-                      "Tunnel",
-                      "Vlan",
-                      "Vxlan"
-                    ],
-                    "title": "Interface Type"
-                  },
-                  "interface_number": {
-                    "type": "integer",
-                    "title": "Interface Number"
-                  }
-                },
-                "required": [
-                  "interface_type",
-                  "interface_number"
-                ],
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
                 "title": "Interface"
               },
               "unit": {
@@ -21299,6 +21272,7 @@
                         },
                         "stage": {
                           "type": "string",
+                          "description": "Stages of maintenance operation. \"vrf\" stage can be defined for \"bgp\" only.",
                           "enum": [
                             "after",
                             "before",
@@ -21326,36 +21300,8 @@
                           "title": "VRF"
                         },
                         "interface": {
+                          "type": "string",
                           "description": "Trigger condition occurs on maintenance operation of specified interface.",
-                          "type": "object",
-                          "properties": {
-                            "interface_type": {
-                              "type": "string",
-                              "enum": [
-                                "Ethernet",
-                                "Fabric",
-                                "Loopback",
-                                "Management",
-                                "Port-Channel",
-                                "Tunnel",
-                                "Vlan",
-                                "Vxlan"
-                              ],
-                              "title": "Interface Type"
-                            },
-                            "interface_number": {
-                              "type": "integer",
-                              "title": "Interface Number"
-                            }
-                          },
-                          "required": [
-                            "interface_type",
-                            "interface_number"
-                          ],
-                          "additionalProperties": false,
-                          "patternProperties": {
-                            "^_.+$": {}
-                          },
                           "title": "Interface"
                         },
                         "unit": {
