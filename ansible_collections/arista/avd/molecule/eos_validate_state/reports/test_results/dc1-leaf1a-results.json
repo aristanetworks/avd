@@ -868,5 +868,101 @@
       "software"
     ],
     "description": "Verifies the device is running one of the allowed TerminAttr version."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if there are core dump files in the /var/core directory."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no agent crash reports are present on the device."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyCPUUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the CPU utilization is below 75%."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyMemoryUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the memory utilization is below 75%."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyVxlan1Interface",
+    "categories": [
+      "vxlan"
+    ],
+    "description": "This test verifies if the Vxlan1 interface is configured and 'up/up'."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyVxlanConfigSanity",
+    "categories": [
+      "vxlan"
+    ],
+    "description": "This test verifies that no issues are detected with the VXLAN configuration."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyVxlanVniBinding",
+    "categories": [
+      "vxlan"
+    ],
+    "description": "Verifies the VNI-VLAN bindings of the Vxlan1 interface"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyVxlanVtep",
+    "categories": [
+      "vxlan"
+    ],
+    "description": "Verifies the VTEP peers of the Vxlan1 interface"
   }
 ]

@@ -766,3 +766,23 @@ anta.tests.system:
       - NTP
       custom_field: NTP
       description: Synchronised with NTP server
+- VerifyUptime:
+    minimum: 86400
+- VerifyReloadCause: null
+- VerifyCoredump: null
+- VerifyAgentLogs: null
+- VerifyCPUUtilization: null
+- VerifyMemoryUtilization: null
+- VerifyFileSystemUtilization: null
+- VerifyNTP: null
+anta.tests.vxlan:
+- VerifyVxlan1Interface: null
+- VerifyVxlanConfigSanity: null
+- VerifyVxlanVniBinding:
+    bindings:
+      10010: 10
+      10020: 20
+- VerifyVxlanVtep:
+    vteps:
+    - 10.1.1.5
+    - 10.1.1.6

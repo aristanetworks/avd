@@ -36,3 +36,21 @@ anta.tests.multicast:
         12: False
   - VerifyIGMPSnoopingGlobal:
       enabled: True
+
+anta.tests.stp:
+  - VerifySTPMode:
+      mode: rapidPvst
+      vlans:
+        - 10
+        - 20
+  - VerifySTPBlockedPorts:
+  - VerifySTPCounters:
+  - VerifySTPForwardingPorts:
+      vlans:
+        - 10
+        - 20
+  - VerifySTPRootPriority:
+      priority: 32768
+      instances:
+        - 10
+        - 20

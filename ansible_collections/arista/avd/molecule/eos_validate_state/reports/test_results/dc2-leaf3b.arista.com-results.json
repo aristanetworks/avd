@@ -930,5 +930,109 @@
       "software"
     ],
     "description": "Verifies the device is running one of the allowed TerminAttr version."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifySTPForwardingPorts",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies that all interfaces are forwarding for a provided list of VLAN(s)."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifySTPMode",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies the configured STP mode for a provided list of VLAN(s)."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifySTPRootPriority",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies the STP root priority for a provided list of VLAN or MST instance ID(s)."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifySTPCounters",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies there is no errors in STP BPDU packets."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifySTPBlockedPorts",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies there is no STP blocked ports."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if there are core dump files in the /var/core directory."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no agent crash reports are present on the device."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifyCPUUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the CPU utilization is below 75%."
+  },
+  {
+    "name": "dc2-leaf3b.arista.com",
+    "test": "VerifyMemoryUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the memory utilization is below 75%."
   }
 ]

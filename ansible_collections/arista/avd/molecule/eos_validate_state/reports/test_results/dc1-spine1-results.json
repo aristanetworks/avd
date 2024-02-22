@@ -57,105 +57,6 @@
   },
   {
     "name": "dc1-spine1",
-    "test": "VerifyRoutingProtocolModel",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the configured routing protocol model.",
-    "custom_field": "Routing protocol model: multi-agent"
-  },
-  {
-    "name": "dc1-spine1",
-    "test": "VerifyBGPSpecificPeers",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: 10.255.0.3"
-  },
-  {
-    "name": "dc1-spine1",
-    "test": "VerifyBGPSpecificPeers",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: 10.255.0.4"
-  },
-  {
-    "name": "dc1-spine1",
-    "test": "VerifyBGPSpecificPeers",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: 10.255.0.5"
-  },
-  {
-    "name": "dc1-spine1",
-    "test": "VerifyBGPSpecificPeers",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.1"
-  },
-  {
-    "name": "dc1-spine1",
-    "test": "VerifyBGPSpecificPeers",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.5"
-  },
-  {
-    "name": "dc1-spine1",
-    "test": "VerifyBGPSpecificPeers",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.9"
-  },
-  {
-    "name": "dc1-spine1",
-    "test": "VerifyBGPSpecificPeers",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 123.1.1.10"
-  },
-  {
-    "name": "dc1-spine1",
-    "test": "VerifyBGPSpecificPeers",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 123.1.1.11"
-  },
-  {
-    "name": "dc1-spine1",
-    "test": "VerifyBGPSpecificPeers",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv6 Unicast Peer: fd5a:fe45:8831:06c5::a"
-  },
-  {
-    "name": "dc1-spine1",
-    "test": "VerifyBGPSpecificPeers",
-    "categories": [
-      "BGP"
-    ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv6 Unicast Peer: fd5a:fe45:8831:06c5::b"
-  },
-  {
-    "name": "dc1-spine1",
     "test": "VerifyRunningConfigDiffs",
     "categories": [
       "configuration"
@@ -490,6 +391,87 @@
   },
   {
     "name": "dc1-spine1",
+    "test": "VerifyOSPFNeighborState",
+    "categories": [
+      "routing",
+      "ospf"
+    ],
+    "description": "Verifies all OSPF neighbors are in FULL state."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing",
+      "generic"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyRoutingProtocolModel",
+    "categories": [
+      "routing",
+      "generic"
+    ],
+    "description": "Verifies the configured routing protocol model is the expected one and if there is no mismatch between the configured and operating routing protocol model."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPPeerCount",
+    "categories": [
+      "routing",
+      "bgp"
+    ],
+    "description": "Verifies the count of BGP peers."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPPeersHealth",
+    "categories": [
+      "routing",
+      "bgp"
+    ],
+    "description": "Verifies the health of BGP peers"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "routing",
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s)."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyOSPFNeighborCount",
+    "categories": [
+      "routing",
+      "ospf"
+    ],
+    "description": "Verifies the number of OSPF neighbors in FULL state is the one we expect."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyRoutingTableSize",
+    "categories": [
+      "routing",
+      "generic"
+    ],
+    "description": "Verifies the size of the IP routing table (default VRF). Should be between the two provided thresholds."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBFD",
+    "categories": [
+      "routing",
+      "generic"
+    ],
+    "description": "Verifies there is no BFD peer in down state (all VRF, IPv4 neighbors)."
+  },
+  {
+    "name": "dc1-spine1",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
       "security"
@@ -535,5 +517,69 @@
       "software"
     ],
     "description": "Verifies the device is running one of the allowed TerminAttr version."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if there are core dump files in the /var/core directory."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no agent crash reports are present on the device."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyCPUUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the CPU utilization is below 75%."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyMemoryUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the memory utilization is below 75%."
   }
 ]

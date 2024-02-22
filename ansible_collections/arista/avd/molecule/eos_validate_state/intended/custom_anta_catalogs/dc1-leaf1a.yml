@@ -8,3 +8,15 @@ anta.tests.profiles:
 
 anta.tests.software:
   - VerifyEOSExtensions:
+
+anta.tests.vxlan:
+  - VerifyVxlan1Interface:
+  - VerifyVxlanConfigSanity:
+  - VerifyVxlanVniBinding:
+      bindings:
+        10010: 10
+        10020: 20
+  - VerifyVxlanVtep:
+      vteps:
+        - 10.1.1.5
+        - 10.1.1.6

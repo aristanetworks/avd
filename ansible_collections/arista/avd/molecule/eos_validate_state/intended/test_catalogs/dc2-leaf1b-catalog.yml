@@ -776,6 +776,23 @@ anta.tests.software:
     versions:
     - v1.13.6
     - v1.8.0
+anta.tests.stp:
+- VerifySTPMode:
+    mode: rapidPvst
+    vlans:
+    - 10
+    - 20
+- VerifySTPBlockedPorts: null
+- VerifySTPCounters: null
+- VerifySTPForwardingPorts:
+    vlans:
+    - 10
+    - 20
+- VerifySTPRootPriority:
+    instances:
+    - 10
+    - 20
+    priority: 32768
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:
@@ -783,3 +800,12 @@ anta.tests.system:
       - NTP
       custom_field: NTP
       description: Synchronised with NTP server
+- VerifyUptime:
+    minimum: 86400
+- VerifyReloadCause: null
+- VerifyCoredump: null
+- VerifyAgentLogs: null
+- VerifyCPUUtilization: null
+- VerifyMemoryUtilization: null
+- VerifyFileSystemUtilization: null
+- VerifyNTP: null

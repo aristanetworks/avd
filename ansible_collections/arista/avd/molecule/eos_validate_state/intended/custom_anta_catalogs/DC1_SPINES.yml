@@ -38,3 +38,60 @@ anta.tests.interfaces:
         - Vxlan1
       specific_mtu:
         - Ethernet1/1: 1500
+
+anta.tests.routing:
+  generic:
+    - VerifyRoutingProtocolModel:
+        model: multi-agent
+    - VerifyRoutingTableSize:
+        minimum: 2
+        maximum: 20
+    - VerifyBFD:
+    - VerifyRoutingTableEntry:
+        vrf: default
+        routes:
+          - 10.1.0.1
+          - 10.1.0.2
+  bgp:
+    - VerifyBGPPeerCount:
+        address_families:
+          - afi: "evpn"
+            num_peers: 2
+          - afi: "ipv4"
+            safi: "unicast"
+            vrf: "PROD"
+            num_peers: 2
+          - afi: "ipv4"
+            safi: "unicast"
+            vrf: "default"
+            num_peers: 3
+          - afi: "ipv4"
+            safi: "multicast"
+            vrf: "DEV"
+            num_peers: 3
+    - VerifyBGPPeersHealth:
+        address_families:
+          - afi: "evpn"
+          - afi: "ipv4"
+            safi: "unicast"
+            vrf: "default"
+          - afi: "ipv6"
+            safi: "unicast"
+            vrf: "DEV"
+    - VerifyBGPSpecificPeers:
+        address_families:
+          - afi: "evpn"
+            peers:
+              - 10.1.0.1
+              - 10.1.0.2
+          - afi: "ipv4"
+            safi: "unicast"
+            peers:
+              - 10.1.254.1
+              - 10.1.255.0
+              - 10.1.255.2
+              - 10.1.255.4
+  ospf:
+    - VerifyOSPFNeighborState:
+    - VerifyOSPFNeighborCount:
+        number: 3

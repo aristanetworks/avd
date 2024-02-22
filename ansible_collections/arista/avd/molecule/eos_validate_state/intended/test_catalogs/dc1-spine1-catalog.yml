@@ -234,6 +234,62 @@ anta.tests.interfaces:
     mtu: 1500
     specific_mtu:
     - Ethernet1/1: 1500
+anta.tests.routing:
+  bgp:
+  - VerifyBGPPeerCount:
+      address_families:
+      - afi: evpn
+        num_peers: 2
+      - afi: ipv4
+        num_peers: 2
+        safi: unicast
+        vrf: PROD
+      - afi: ipv4
+        num_peers: 3
+        safi: unicast
+        vrf: default
+      - afi: ipv4
+        num_peers: 3
+        safi: multicast
+        vrf: DEV
+  - VerifyBGPPeersHealth:
+      address_families:
+      - afi: evpn
+      - afi: ipv4
+        safi: unicast
+        vrf: default
+      - afi: ipv6
+        safi: unicast
+        vrf: DEV
+  - VerifyBGPSpecificPeers:
+      address_families:
+      - afi: evpn
+        peers:
+        - 10.1.0.1
+        - 10.1.0.2
+      - afi: ipv4
+        peers:
+        - 10.1.254.1
+        - 10.1.255.0
+        - 10.1.255.2
+        - 10.1.255.4
+        safi: unicast
+  generic:
+  - VerifyRoutingProtocolModel:
+      model: multi-agent
+  - VerifyRoutingTableSize:
+      maximum: 20
+      minimum: 2
+  - VerifyBFD: null
+  - VerifyRoutingTableEntry:
+      routes:
+      - 10.1.0.1
+      - 10.1.0.2
+      vrf: default
+  ospf:
+  - VerifyOSPFNeighborState: null
+  - VerifyOSPFNeighborCount:
+      number: 3
 anta.tests.routing.bgp:
 - VerifyBGPSpecificPeers:
     address_families:
@@ -368,3 +424,12 @@ anta.tests.system:
       - NTP
       custom_field: NTP
       description: Synchronised with NTP server
+- VerifyUptime:
+    minimum: 86400
+- VerifyReloadCause: null
+- VerifyCoredump: null
+- VerifyAgentLogs: null
+- VerifyCPUUtilization: null
+- VerifyMemoryUtilization: null
+- VerifyFileSystemUtilization: null
+- VerifyNTP: null
