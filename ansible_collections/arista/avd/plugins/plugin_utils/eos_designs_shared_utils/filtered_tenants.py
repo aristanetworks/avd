@@ -165,7 +165,7 @@ class FilteredTenantsMixin:
 
         AND
 
-        - filter.not_vrfs == [] OR (filter.not_vrfs != ["all"] AND VRF is NOT in filter.not_vrfs)
+        - filter.not_vrfs == [] OR VRF is NOT in filter.not_vrfs
         """
         return ("all" in self.filter_vrfs or vrf["name"] in self.filter_vrfs) and (not self.filter_not_vrfs or vrf["name"] not in self.filter_not_vrfs)
 
