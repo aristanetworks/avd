@@ -58,39 +58,39 @@
 
         # PREVIEW: This key is currently not supported
         # Override the default WAN role.
-
+        #
         # This is used both for AutoVPN and Pathfinder designs.
         # That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
         # `server` indicates that the router is a route-reflector.
-
+        #
         # Only supported if `overlay_routing_protocol` is set to `ibgp`.
         wan_role: <str; "client" | "server">
 
         # PREVIEW: This key is currently not supported
         # Override the default CV Pathfinder role.
-
+        #
         # This key is used for Pathfinder designs only when the `wan_mode` root
         # key is set to `cv_pathfinder`.
-
+        #
         # `pathfinder` is only a valid if `wan_role` is `server`.
         # `edge` and `transit region` are only valid if `wan_role` is `client`.
         cv_pathfinder_role: <str; "edge" | "transit region" | "pathfinder">
 
         # PREVIEW: This key is currently not supported
-
+        #
         # The CV Pathfinder region name.
         cv_pathfinder_region: <str>
 
         # PREVIEW: This key is currently not supported
-
+        #
         # The CV Pathfinder site name.
         cv_pathfinder_site: <str>
 
         # PREVIEW: This key is currently not supported
-
+        #
         # The key is supported only if `wan_mode` == `cv-pathfinder`.
         # AutoVPN support is still to be determined.
-
+        #
         # Maximum 2 devices supported by group for HA.
         wan_ha:
 
@@ -101,7 +101,7 @@
           ipsec: <bool; default=True>
 
         # PREVIEW: This key is currently not supported
-
+        #
         # IPv4 MSS value configured under "router path-selection" on WAN Devices.
         dps_mss_ipv4: <str; default="auto">
 
@@ -120,39 +120,39 @@
 
               # PREVIEW: This key is currently not supported
               # Override the default WAN role.
-
+              #
               # This is used both for AutoVPN and Pathfinder designs.
               # That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
               # `server` indicates that the router is a route-reflector.
-
+              #
               # Only supported if `overlay_routing_protocol` is set to `ibgp`.
               wan_role: <str; "client" | "server">
 
               # PREVIEW: This key is currently not supported
               # Override the default CV Pathfinder role.
-
+              #
               # This key is used for Pathfinder designs only when the `wan_mode` root
               # key is set to `cv_pathfinder`.
-
+              #
               # `pathfinder` is only a valid if `wan_role` is `server`.
               # `edge` and `transit region` are only valid if `wan_role` is `client`.
               cv_pathfinder_role: <str; "edge" | "transit region" | "pathfinder">
 
               # PREVIEW: This key is currently not supported
-
+              #
               # The CV Pathfinder region name.
               cv_pathfinder_region: <str>
 
               # PREVIEW: This key is currently not supported
-
+              #
               # The CV Pathfinder site name.
               cv_pathfinder_site: <str>
 
               # PREVIEW: This key is currently not supported
-
+              #
               # The key is supported only if `wan_mode` == `cv-pathfinder`.
               # AutoVPN support is still to be determined.
-
+              #
               # Maximum 2 devices supported by group for HA.
               wan_ha:
 
@@ -163,45 +163,45 @@
                 ipsec: <bool; default=True>
 
               # PREVIEW: This key is currently not supported
-
+              #
               # IPv4 MSS value configured under "router path-selection" on WAN Devices.
               dps_mss_ipv4: <str; default="auto">
 
           # PREVIEW: This key is currently not supported
           # Override the default WAN role.
-
+          #
           # This is used both for AutoVPN and Pathfinder designs.
           # That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
           # `server` indicates that the router is a route-reflector.
-
+          #
           # Only supported if `overlay_routing_protocol` is set to `ibgp`.
           wan_role: <str; "client" | "server">
 
           # PREVIEW: This key is currently not supported
           # Override the default CV Pathfinder role.
-
+          #
           # This key is used for Pathfinder designs only when the `wan_mode` root
           # key is set to `cv_pathfinder`.
-
+          #
           # `pathfinder` is only a valid if `wan_role` is `server`.
           # `edge` and `transit region` are only valid if `wan_role` is `client`.
           cv_pathfinder_role: <str; "edge" | "transit region" | "pathfinder">
 
           # PREVIEW: This key is currently not supported
-
+          #
           # The CV Pathfinder region name.
           cv_pathfinder_region: <str>
 
           # PREVIEW: This key is currently not supported
-
+          #
           # The CV Pathfinder site name.
           cv_pathfinder_site: <str>
 
           # PREVIEW: This key is currently not supported
-
+          #
           # The key is supported only if `wan_mode` == `cv-pathfinder`.
           # AutoVPN support is still to be determined.
-
+          #
           # Maximum 2 devices supported by group for HA.
           wan_ha:
 
@@ -212,7 +212,7 @@
             ipsec: <bool; default=True>
 
           # PREVIEW: This key is currently not supported
-
+          #
           # IPv4 MSS value configured under "router path-selection" on WAN Devices.
           dps_mss_ipv4: <str; default="auto">
 
@@ -224,39 +224,39 @@
 
           # PREVIEW: This key is currently not supported
           # Override the default WAN role.
-
+          #
           # This is used both for AutoVPN and Pathfinder designs.
           # That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
           # `server` indicates that the router is a route-reflector.
-
+          #
           # Only supported if `overlay_routing_protocol` is set to `ibgp`.
           wan_role: <str; "client" | "server">
 
           # PREVIEW: This key is currently not supported
           # Override the default CV Pathfinder role.
-
+          #
           # This key is used for Pathfinder designs only when the `wan_mode` root
           # key is set to `cv_pathfinder`.
-
+          #
           # `pathfinder` is only a valid if `wan_role` is `server`.
           # `edge` and `transit region` are only valid if `wan_role` is `client`.
           cv_pathfinder_role: <str; "edge" | "transit region" | "pathfinder">
 
           # PREVIEW: This key is currently not supported
-
+          #
           # The CV Pathfinder region name.
           cv_pathfinder_region: <str>
 
           # PREVIEW: This key is currently not supported
-
+          #
           # The CV Pathfinder site name.
           cv_pathfinder_site: <str>
 
           # PREVIEW: This key is currently not supported
-
+          #
           # The key is supported only if `wan_mode` == `cv-pathfinder`.
           # AutoVPN support is still to be determined.
-
+          #
           # Maximum 2 devices supported by group for HA.
           wan_ha:
 
@@ -267,7 +267,7 @@
             ipsec: <bool; default=True>
 
           # PREVIEW: This key is currently not supported
-
+          #
           # IPv4 MSS value configured under "router path-selection" on WAN Devices.
           dps_mss_ipv4: <str; default="auto">
     ```

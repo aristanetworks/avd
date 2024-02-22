@@ -125,7 +125,7 @@
       defaults:
 
         # PREVIEW: This key is currently not supported
-
+        #
         # L3 Interfaces currently only use for WAN interfaces.
         l3_interfaces:
 
@@ -204,7 +204,7 @@
             - name: <str; required; unique>
 
               # PREVIEW: This key is currently not supported
-
+              #
               # L3 Interfaces currently only use for WAN interfaces.
               l3_interfaces:
 
@@ -270,7 +270,7 @@
                   structured_config: <dict>
 
           # PREVIEW: This key is currently not supported
-
+          #
           # L3 Interfaces currently only use for WAN interfaces.
           l3_interfaces:
 
@@ -342,7 +342,7 @@
         - name: <str; required; unique>
 
           # PREVIEW: This key is currently not supported
-
+          #
           # L3 Interfaces currently only use for WAN interfaces.
           l3_interfaces:
 
@@ -408,7 +408,7 @@
               structured_config: <dict>
 
     # PREVIEW: This key is currently not supported
-
+    #
     # Profiles to inherit common settings for l3_interfaces defined under the node type key.
     # These profiles will *not* work for `l3_interfaces` defined under `vrfs`.
     l3_interface_profiles:

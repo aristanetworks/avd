@@ -57,9 +57,9 @@
 
     ```yaml
     # PREVIEW: WAN Preview
-
+    #
     # Configure Virtual Topologies for CV Pathfinder and AutoVPN.
-
+    #
     # Auto create a control plane profile/policy/application and enforce it being first in the default VRF.
     wan_virtual_topologies:
 
@@ -74,7 +74,7 @@
           policy: <str>
 
       # Always injected into the default VRF policy as the first entry.
-
+      #
       # By default, if no path-groups are specified, all locally available path-groups
       # are used in the generated load-balance policy.
       # ID is hardcoded to 254 for the AVT profile in CV Pathfinder mode.
@@ -106,13 +106,13 @@
               - <str>
 
             # Valid values are 1-255 | preferred | alternate.
-
+            #
             # preferred is converted to priority 1.
             # alternate is converted to priority 2.
             preference: <str; default="preferred">
 
       # List of virtual toplogies policies.
-
+      #
       # For AutoVPN, each item in the list creates:
       #   * one policy with:
       #       * one `match` entry per `application_virtual_topologies` item
@@ -122,8 +122,8 @@
       #   * if the policy is associated with the default VRF, a special control-plane rule is injected
       #     in the policy with index `1` referring to a control-plane load-balance policy as defined under
       #     `control_plane_virtual_topology`.
-
-
+      #
+      #
       # For CV Pathfinder, each item in the list creates:
       #   * one policy with:
       #       * one `match` entry per `application_virtual_topologies` item ordered as in the model.
@@ -177,7 +177,7 @@
                     - <str>
 
                   # Valid values are 1-255 | preferred | alternate.
-
+                  #
                   # preferred is converted to priority 1.
                   # alternate is converted to priority 2.
                   preference: <str; default="preferred">
@@ -216,7 +216,7 @@
                   - <str>
 
                 # Valid values are 1-255 | preferred | alternate.
-
+                #
                 # preferred is converted to priority 1.
                 # alternate is converted to priority 2.
                 preference: <str; default="preferred">
