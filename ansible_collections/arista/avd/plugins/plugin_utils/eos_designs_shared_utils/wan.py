@@ -376,7 +376,10 @@ class WanMixin:
 
     @cached_property
     def cv_pathfinder_role(self: SharedUtils) -> str | None:
-        """ """
+        """
+        Return the CV Pathfinder role based on the wan_role (server or client) and the
+        node.cv_pathfinder_transit_mode key.
+        """
         if self.wan_mode != "cv-pathfinder" or not self.is_wan_router:
             return None
 
