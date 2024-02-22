@@ -66,6 +66,7 @@ keys:
             stage:
               type: str
               required: true
+              description: Stages of maintenance operation. "vrf" stage can be defined for "bgp" only.
               valid_values:
               - after
               - before
@@ -85,26 +86,8 @@ keys:
               type: str
               description: VRF name.
             interface:
+              type: str
               description: Trigger condition occurs on maintenance operation of specified interface.
-              type: dict
-              keys:
-                interface_type:
-                  type: str
-                  required: true
-                  valid_values:
-                  - Ethernet
-                  - Fabric
-                  - Loopback
-                  - Management
-                  - Port-Channel
-                  - Tunnel
-                  - Vlan
-                  - Vxlan
-                interface_number:
-                  type: int
-                  convert_types:
-                  - str
-                  required: true
             unit:
               type: str
               description: Name of unit. Trigger condition occurs on maintenance operation of specified unit

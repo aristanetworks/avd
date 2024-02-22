@@ -71,7 +71,7 @@ event-handler trigger-on-boot
    action bash echo "on-boot"
 !
 event-handler trigger-on-maintenance
-   trigger on-maintenance enter interface Ethernet 4 all
+   trigger on-maintenance enter interface Ethernet4 all
    action bash echo "on-maintenance"
 !
 event-handler trigger-on-maintenance1
