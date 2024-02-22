@@ -15,6 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip_address</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].dhcp_ip_address") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address/Mask to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used in ACLs in certain scenarios. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address/Mask.<br>This will be used to get the public IP in case device is behind NAT.<br>This IP can be used in the case of defining ACLs or for some specific use cases<br>where we need the public ip of the interface.<br>In case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`<br>if both are mentioned.<br>In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered<br>over the the `public_ip` and then the interface IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].dhcp_accept_default_route") | Boolean |  | `False` |  | Accept a default route from DHCP if `ip_address` is set to `dhcp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
@@ -40,6 +41,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].dhcp_ip_address") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address/Mask to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used in ACLs in certain scenarios. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address/Mask.<br>This will be used to get the public IP in case device is behind NAT.<br>This IP can be used in the case of defining ACLs or for some specific use cases<br>where we need the public ip of the interface.<br>In case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`<br>if both are mentioned.<br>In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered<br>over the the `public_ip` and then the interface IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].dhcp_accept_default_route") | Boolean |  | `False` |  | Accept a default route from DHCP if `ip_address` is set to `dhcp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
@@ -61,6 +63,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip_address</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].dhcp_ip_address") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address/Mask to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used in ACLs in certain scenarios. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address/Mask.<br>This will be used to get the public IP in case device is behind NAT.<br>This IP can be used in the case of defining ACLs or for some specific use cases<br>where we need the public ip of the interface.<br>In case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`<br>if both are mentioned.<br>In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered<br>over the the `public_ip` and then the interface IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].dhcp_accept_default_route") | Boolean |  | `False` |  | Accept a default route from DHCP if `ip_address` is set to `dhcp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
@@ -84,6 +87,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip_address</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].dhcp_ip_address") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address/Mask to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used in ACLs in certain scenarios. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address/Mask.<br>This will be used to get the public IP in case device is behind NAT.<br>This IP can be used in the case of defining ACLs or for some specific use cases<br>where we need the public ip of the interface.<br>In case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`<br>if both are mentioned.<br>In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered<br>over the the `public_ip` and then the interface IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].dhcp_accept_default_route") | Boolean |  | `False` |  | Accept a default route from DHCP if `ip_address` is set to `dhcp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
@@ -105,6 +109,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_interface_profiles.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "l3_interface_profiles.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip_address</samp>](## "l3_interface_profiles.[].dhcp_ip_address") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address/Mask to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used in ACLs in certain scenarios. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "l3_interface_profiles.[].public_ip") | String |  |  |  | Node IPv4 address/Mask.<br>This will be used to get the public IP in case device is behind NAT.<br>This IP can be used in the case of defining ACLs or for some specific use cases<br>where we need the public ip of the interface.<br>In case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`<br>if both are mentioned.<br>In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered<br>over the the `public_ip` and then the interface IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "l3_interface_profiles.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "l3_interface_profiles.[].dhcp_accept_default_route") | Boolean |  | `False` |  | Accept a default route from DHCP if `ip_address` is set to `dhcp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_interface_profiles.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
@@ -152,6 +157,16 @@
             # IPv4 address/Mask to be allocated on the interface if known.
             # This is not rendered in the configuration but can be used in ACLs in certain scenarios.
             dhcp_ip_address: <str>
+
+            # Node IPv4 address/Mask.
+            # This will be used to get the public IP in case device is behind NAT.
+            # This IP can be used in the case of defining ACLs or for some specific use cases
+            # where we need the public ip of the interface.
+            # In case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`
+            # if both are mentioned.
+            # In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered
+            # over the the `public_ip` and then the interface IP.
+            public_ip: <str>
 
             # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
             encapsulation_dot1q_vlan: <int; 1-4094>
@@ -237,6 +252,16 @@
                   # This is not rendered in the configuration but can be used in ACLs in certain scenarios.
                   dhcp_ip_address: <str>
 
+                  # Node IPv4 address/Mask.
+                  # This will be used to get the public IP in case device is behind NAT.
+                  # This IP can be used in the case of defining ACLs or for some specific use cases
+                  # where we need the public ip of the interface.
+                  # In case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`
+                  # if both are mentioned.
+                  # In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered
+                  # over the the `public_ip` and then the interface IP.
+                  public_ip: <str>
+
                   # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                   encapsulation_dot1q_vlan: <int; 1-4094>
 
@@ -307,6 +332,16 @@
               # IPv4 address/Mask to be allocated on the interface if known.
               # This is not rendered in the configuration but can be used in ACLs in certain scenarios.
               dhcp_ip_address: <str>
+
+              # Node IPv4 address/Mask.
+              # This will be used to get the public IP in case device is behind NAT.
+              # This IP can be used in the case of defining ACLs or for some specific use cases
+              # where we need the public ip of the interface.
+              # In case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`
+              # if both are mentioned.
+              # In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered
+              # over the the `public_ip` and then the interface IP.
+              public_ip: <str>
 
               # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
               encapsulation_dot1q_vlan: <int; 1-4094>
@@ -385,6 +420,16 @@
               # This is not rendered in the configuration but can be used in ACLs in certain scenarios.
               dhcp_ip_address: <str>
 
+              # Node IPv4 address/Mask.
+              # This will be used to get the public IP in case device is behind NAT.
+              # This IP can be used in the case of defining ACLs or for some specific use cases
+              # where we need the public ip of the interface.
+              # In case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`
+              # if both are mentioned.
+              # In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered
+              # over the the `public_ip` and then the interface IP.
+              public_ip: <str>
+
               # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
               encapsulation_dot1q_vlan: <int; 1-4094>
 
@@ -456,6 +501,16 @@
         # IPv4 address/Mask to be allocated on the interface if known.
         # This is not rendered in the configuration but can be used in ACLs in certain scenarios.
         dhcp_ip_address: <str>
+
+        # Node IPv4 address/Mask.
+        # This will be used to get the public IP in case device is behind NAT.
+        # This IP can be used in the case of defining ACLs or for some specific use cases
+        # where we need the public ip of the interface.
+        # In case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`
+        # if both are mentioned.
+        # In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered
+        # over the the `public_ip` and then the interface IP.
+        public_ip: <str>
 
         # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
         encapsulation_dot1q_vlan: <int; 1-4094>

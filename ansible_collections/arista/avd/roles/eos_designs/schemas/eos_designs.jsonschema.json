@@ -5935,6 +5935,11 @@
             "description": "When the `ip_address` is `dhcp`, this optional field allows to indicate the expected\nIPv4 address/Mask to be allocated on the interface if known.\nThis is not rendered in the configuration but can be used in ACLs in certain scenarios.",
             "title": "DHCP IP Address"
           },
+          "public_ip": {
+            "type": "string",
+            "description": "Node IPv4 address/Mask.\nThis will be used to get the public IP in case device is behind NAT.\nThis IP can be used in the case of defining ACLs or for some specific use cases\nwhere we need the public ip of the interface.\nIn case of wan_routers(edge/transit), to get public IP for an interface, we prioritise the `public_ip` over the `ip_address`\nif both are mentioned.\nIn case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address` is preferrered\nover the the `public_ip` and then the interface IP.",
+            "title": "Public IP"
+          },
           "encapsulation_dot1q_vlan": {
             "description": "For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.",
             "type": "integer",

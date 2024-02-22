@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Literal
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
@@ -180,13 +180,14 @@ class WanMixin:
         """
         Takes a dict which looks like `l3_interface` from node config
 
-        If not a WAN route-server this just returns the interface IP.
+        If not a WAN route-server this returns public IP and if not found then the interface IP.
 
         For WAN route-servers we try to find the IP under wan_route_servers.path_groups.interfaces.
-        If not found we use the IP under the interface, unless it is "dhcp" where we raise.
+        If not found we look for the public_ip and then the ip_address under the interface.
+        If there is no public_ip and if ip_address is "dhcp" we raise an error.
         """
         if not self.is_wan_server:
-            return interface["ip_address"]
+            return default(interface.get("public_ip"), interface["ip_address"])
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:
@@ -194,6 +195,9 @@ class WanMixin:
 
             if found_interface.get("ip_address") is not None:
                 return found_interface["ip_address"]
+
+        if interface.get("public_ip") is not None:
+            return interface["public_ip"]
 
         if interface["ip_address"] == "dhcp":
             raise AristaAvdError(
