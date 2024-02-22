@@ -2,8 +2,6 @@
 # Testing cv-pathfinder
 wan_mode: cv-pathfinder
 
-bgp_as: 65000
-
 cv_pathfinder_regions:
   - name: AVD_Land_West
     id: 42
@@ -60,6 +58,7 @@ wan_edge:
     filter:
       always_include_vrfs_in_tenants: [TenantA]
     uplink_ipv4_pool: 172.17.0.0/16
+    bgp_as: 65000
   # Testing HA and disabling HA
   node_groups:
     # SITE_HA_DISABLED
@@ -157,6 +156,7 @@ wan_transit:
     uplink_type: p2p-vrfs
     uplink_switches: [ site-ha-enabled-leaf1 ]
     uplink_interfaces: [ Ethernet52 ]
+    bgp_as: 65000
   node_groups:
     - group: TRANSIT_SITE_HA_ENABLED
       # Disable HA IPsec
@@ -199,6 +199,7 @@ wan_rr:
     loopback_ipv4_pool: 192.168.44.0/24
     vtep_loopback_ipv4_pool: 192.168.144.0/24
     data_plane_cpu_allocation_max: 1
+    bgp_as: 65000
   nodes:
     - name: cv-pathfinder-pathfinder
       id: 1

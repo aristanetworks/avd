@@ -45,7 +45,7 @@ router_bgp:
   neighbors:
   - ip_address: 172.17.0.2
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65000'
+    remote_as: '65199'
     peer: site-ha-enabled-leaf1
     description: site-ha-enabled-leaf1_Ethernet2
   - ip_address: 192.168.144.1
@@ -58,7 +58,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.17.0.2
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65000'
+      remote_as: '65199'
       description: site-ha-enabled-leaf1_Ethernet2.100_vrf_IT
     rd: 192.168.43.2:100
     route_targets:
@@ -77,7 +77,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.17.0.2
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65000'
+      remote_as: '65199'
       description: site-ha-enabled-leaf1_Ethernet2.42_vrf_PROD
     rd: 192.168.43.2:42
     route_targets:
@@ -517,7 +517,7 @@ router_path_selection:
     - name: Ethernet52
     static_peers:
     - router_ip: 192.168.143.1
-      name: LAN_HA
+      name: cv-pathfinder-transit1A
       ipv4_addresses:
       - 172.17.0.1
   load_balance_policies:

@@ -107,7 +107,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 "static_peers": [
                     {
                         "router_ip": self._wan_ha_peer_vtep_ip(),
-                        "name": self.shared_utils.wan_ha_path_group_name,
+                        "name": self.shared_utils.wan_ha_peer,
                         "ipv4_addresses": [ip_address.split("/")[0] for ip_address in self.shared_utils.wan_ha_peer_ip_addresses],
                     }
                 ],

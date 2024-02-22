@@ -38,7 +38,7 @@ router_bgp:
   neighbors:
   - ip_address: 172.17.0.2
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65000'
+    remote_as: '65199'
     peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet2
   vrfs:
@@ -47,7 +47,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.17.0.2
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65000'
+      remote_as: '65199'
       description: site-ha-disabled-leaf_Ethernet2.100_vrf_IT
     rd: 192.168.42.2:100
     route_targets:
@@ -66,7 +66,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.17.0.2
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65000'
+      remote_as: '65199'
       description: site-ha-disabled-leaf_Ethernet2.42_vrf_PROD
     rd: 192.168.42.2:42
     route_targets:
