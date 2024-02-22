@@ -172,6 +172,7 @@ router_bgp:
       description: External IPv4 BGP peer
       send_community: standard extended
       maximum_routes: 0
+      maximum_routes_warning_only: true
       default_originate:
         always: false
         route_map: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
