@@ -156,8 +156,7 @@ The HA tunnel will come up properly today but route redistribution will be missi
 
 ### New node types in L3LS eos_designs
 
-- `wan_edge`: Edge routers for AutoVPN or Pathfinder depending on the `wan_mode` value.
-- `wan_transit`: Transit routers in Pathfinder context, not supported for AutoVPN.
+- `wan_edge`: Edge routers for AutoVPN or Edge and Transit routers for CV Pathfinder depending on the `wan_mode` value.
 - `wan_rr`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
 
 The following table indicates the settings:
@@ -166,7 +165,6 @@ The following table indicates the settings:
 | ------------- | --------------- | ----------- | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | -------------------------- |
 | wan_rr        | ✅               | p2p         | server            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | server          | pathfinder                 |
 | wan_edge      | ✅               | p2p         | client            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | client          | edge                       |
-| wan_transit   | ✅               | p2p         | client            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | client          | transit region             |
 
 All these node types are defined with `default_underlay_routing_protocol: none` and `default_overlay_routing_protocol: ibgp`.
 

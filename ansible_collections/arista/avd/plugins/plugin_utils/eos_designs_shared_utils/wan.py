@@ -63,17 +63,14 @@ class WanMixin:
         )
 
     @cached_property
-    def cv_pathfinder_role(self: SharedUtils) -> str | None:
+    def cv_pathfinder_transit_mode(self: SharedUtils) -> str | None:
+        """
+        When wan_mode is CV Pathfinder, return the transit mode none (edge), zone or region.
+        """
         if self.underlay_router is False or self.wan_mode != "cv-pathfinder":
             return None
 
-        default_cv_pathfinder_role = get(self.node_type_key_data, "default_cv_pathfinder_role", default=None)
-        cv_pathfinder_role = get(self.switch_data_combined, "cv_pathfinder_role", default=default_cv_pathfinder_role)
-        if cv_pathfinder_role == "pathfinder" and not self.is_wan_server:
-            raise AristaAvdError("'wan_role' must be 'server' when 'cv_pathfinder_role' is set to 'pathfinder'")
-        if cv_pathfinder_role in ["transit", "edge"] and not self.is_wan_client:
-            raise AristaAvdError("'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'")
-        return cv_pathfinder_role
+        return get(self.switch_data_combined, "cv_pathfinder_transit_mode", default="none")
 
     @cached_property
     def wan_interfaces(self: SharedUtils) -> list:
@@ -215,7 +212,7 @@ class WanMixin:
             self.switch_data_combined,
             "cv_pathfinder_site",
             required=True,
-            org_key="A node variable 'cv_pathfinder_site' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
+            org_key="A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
         )
         sites = get(self.wan_region, "sites", required=True, org_key=f"The CV Pathfinder region '{self.wan_region['name']}' is missing a list of sites")
         return get_item(
@@ -240,7 +237,7 @@ class WanMixin:
             self.switch_data_combined,
             "cv_pathfinder_region",
             required=True,
-            org_key="A node variable 'cv_pathfinder_region' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
+            org_key="A node variable 'cv_pathfinder_region' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
         )
         regions = get(
             self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
@@ -369,11 +366,27 @@ class WanMixin:
         """
         return "WAN-FLOW-TRACKER"
 
+    # TODO should we keep this or change it?
     @cached_property
     def is_cv_pathfinder_edge_or_transit(self: SharedUtils) -> bool:
         """
         Return True is the current wan_mode is cv-pathfinder and the device is either an edge or a transit device
         """
+        return self.wan_mode == "cv-pathfinder" and self.is_wan_client
+
+    @cached_property
+    def cv_pathfinder_role(self: SharedUtils) -> str | None:
+        """ """
+        if self.wan_mode != "cv-pathfinder" or not self.is_wan_router:
+            return None
+
+        if self.is_wan_server:
+            return "pathfinder"
+        elif self.cv_pathfinder_transit_mode == "none":
+            return "edge"
+        else:
+            # cv_pathfinder_transit_mode is zone or region
+            return f"transit {self.cv_pathfinder_transit_mode}"
         return self.wan_mode == "cv-pathfinder" and self.cv_pathfinder_role in ["edge", "transit region"]
 
     @cached_property

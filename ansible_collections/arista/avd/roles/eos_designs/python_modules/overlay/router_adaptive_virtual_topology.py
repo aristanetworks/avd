@@ -39,6 +39,4 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 }
             )
 
-        # TODO - handle Policy/Profile/VRF here or rather in network_services in future PR
-
         return router_adaptive_virtual_topology
