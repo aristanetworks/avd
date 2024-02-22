@@ -23,7 +23,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         Return structured config for router path-selection (DPS)
         """
 
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         router_path_selection = {

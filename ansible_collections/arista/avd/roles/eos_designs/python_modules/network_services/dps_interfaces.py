@@ -21,7 +21,7 @@ class DpsInterfacesMixin(UtilsMixin):
 
         Only used for WAN devices
         """
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         dps1 = {

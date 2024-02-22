@@ -20,7 +20,7 @@ router_bgp:
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
-    bfd: true
+    bfd: false
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0
@@ -120,11 +120,7 @@ router_bgp:
           any: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
+transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 vrfs:

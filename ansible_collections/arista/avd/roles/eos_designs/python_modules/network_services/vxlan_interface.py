@@ -33,7 +33,7 @@ class VxlanInterfaceMixin(UtilsMixin):
         This function also detects duplicate VNIs and raise an error in case of duplicates between
         all Network Services deployed on this device.
         """
-        if not (self.shared_utils.overlay_vtep or self.shared_utils.wan_role):
+        if not (self.shared_utils.overlay_vtep or self.shared_utils.is_wan_router):
             return None
 
         vxlan = {
@@ -146,7 +146,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                 vrf_data = {"name": vrf_name, "vni": vni}
 
                 # TODO need to handle this better from a design point of view
-                if self.shared_utils.wan_role and vni > 255:
+                if self.shared_utils.is_wan_router and vni > 255:
                     raise AristaAvdError("VNI for WAN with DPS use cases cannot be > 255, got '{vni}' for vrf '{vrf_name}' in tenant '{tenant['name']}'.")
 
                 if get(vrf, "_evpn_l3_multicast_enabled"):

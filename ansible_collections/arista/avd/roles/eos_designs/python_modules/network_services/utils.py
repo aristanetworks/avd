@@ -242,7 +242,7 @@ class UtilsMixin:
                 at_least_one_priority_1_found = True
             for path_group_name in policy_entry.get("names"):
                 # Skip path-group on this device if not present on the router except for pathfinders
-                if path_group_name not in wan_local_path_group_names and self.shared_utils.wan_role != "server":
+                if path_group_name not in wan_local_path_group_names and not self.shared_utils.is_wan_server:
                     continue
 
                 path_group = {
@@ -294,7 +294,7 @@ class UtilsMixin:
         """
         Return a list of WAN router path-selection load-balance policies based on the local path-groups.
         """
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return []
 
         # Control plane Load Balancing policy - if not configured, render the default one.
@@ -356,7 +356,7 @@ class UtilsMixin:
 
         for avt_vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
             vrf_name = avt_vrf["name"]
-            if vrf_name in self.shared_utils.vrfs or self.shared_utils.wan_role == "server":
+            if vrf_name in self.shared_utils.vrfs or self.shared_utils.is_wan_server:
                 # TODO check that the policy exists or raise
                 wan_vrf = {
                     "name": vrf_name,

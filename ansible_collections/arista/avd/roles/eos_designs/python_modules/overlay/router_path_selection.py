@@ -23,7 +23,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         Return structured config for router path-selection (DPS)
         """
 
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         router_path_selection = {
@@ -31,7 +31,7 @@ class RouterPathSelectionMixin(UtilsMixin):
             "path_groups": self._get_path_groups(),
         }
 
-        if self.shared_utils.wan_role == "server":
+        if self.shared_utils.is_wan_server:
             router_path_selection["peer_dynamic_source"] = "stun"
 
         return strip_empties_from_dict(router_path_selection)
@@ -57,7 +57,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         path_groups = []
 
-        if self.shared_utils.wan_role == "server":
+        if self.shared_utils.is_wan_server:
             # Configure all path-groups on Pathfinders and AutoVPN RRs
             path_groups_to_configure = self.shared_utils.wan_path_groups
         else:
@@ -110,7 +110,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         for interface in path_group.get("interfaces", []):
             local_interface = {"name": get(interface, "name", required=True)}
 
-            if self.shared_utils.wan_role == "client" and self.shared_utils.should_connect_to_wan_rs([path_group_name]):
+            if self.shared_utils.is_wan_client and self.shared_utils.should_connect_to_wan_rs([path_group_name]):
                 stun_server_profiles = self._stun_server_profiles.get(path_group_name, [])
                 if stun_server_profiles:
                     local_interface["stun"] = {"server_profiles": [profile["name"] for profile in stun_server_profiles]}
@@ -123,7 +123,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         TODO support ip_local and ipsec ?
         """
-        if self.shared_utils.wan_role != "client":
+        if not self.shared_utils.is_wan_client:
             return None
         return {"enabled": True}
 
@@ -131,7 +131,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         Retrieves the static peers to configure for a given path-group based on the connected nodes.
         """
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         static_peers = []
