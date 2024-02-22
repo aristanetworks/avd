@@ -539,6 +539,70 @@
   },
   {
     "name": "dc2-leaf2a",
+    "test": "VerifyLoggingWarning",
+    "categories": [
+      "logging"
+    ],
+    "description": "This test verifies there are no syslog messages with a severity of ERRORS or higher."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyLoggingAccounting",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if AAA accounting logs are generated."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyLoggingPersistent",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logging persistent is enabled and logs are saved in flash."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyLoggingTimestamp",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated with the appropriate timestamp."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyLoggingHostname",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated with the device FQDN."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyLoggingLogsGeneration",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyLoggingHosts",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies logging hosts (syslog servers) for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyLoggingSourceInt",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies logging source-interface for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf2a",
     "test": "VerifyReachability",
     "categories": [
       "Loopback0 Reachability"
@@ -656,11 +720,69 @@
   },
   {
     "name": "dc2-leaf2a",
+    "test": "VerifyMlagDualPrimary",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies the dual-primary detection and its parameters of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf2a",
     "test": "VerifyMlagStatus",
     "categories": [
       "mlag"
     ],
     "description": "This test verifies the health status of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyMlagStatus",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies the health status of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyMlagReloadDelay",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies the reload-delay parameters of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyMlagInterfaces",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies there are no inactive or active-partial MLAG ports."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyMlagConfigSanity",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies there are no MLAG config-sanity inconsistencies."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyIGMPSnoopingVlans",
+    "categories": [
+      "multicast",
+      "igmp"
+    ],
+    "description": "Verifies the IGMP snooping configuration for some VLANs."
+  },
+  {
+    "name": "dc2-leaf2a",
+    "test": "VerifyIGMPSnoopingGlobal",
+    "categories": [
+      "multicast",
+      "igmp"
+    ],
+    "description": "Verifies the IGMP snooping global configuration."
   },
   {
     "name": "dc2-leaf2a",

@@ -529,8 +529,41 @@ anta.tests.interfaces:
       - Interface State
       custom_field: Vxlan1
       description: Vxlan Interface Status & Line Protocol == 'up'
+anta.tests.logging:
+- VerifyLoggingPersistent: null
+- VerifyLoggingSourceIntf:
+    interface: Management0
+    vrf: default
+- VerifyLoggingHosts:
+    hosts:
+    - 1.1.1.1
+    - 2.2.2.2
+    vrf: default
+- VerifyLoggingLogsGeneration: null
+- VerifyLoggingHostname: null
+- VerifyLoggingTimestamp: null
+- VerifyLoggingAccounting: null
+- VerifyLoggingErrors: null
 anta.tests.mlag:
 - VerifyMlagStatus: null
+- VerifyMlagStatus: null
+- VerifyMlagInterfaces: null
+- VerifyMlagConfigSanity: null
+- VerifyMlagReloadDelay:
+    reload_delay: 300
+    reload_delay_non_mlag: 330
+- VerifyMlagDualPrimary:
+    detection_delay: 200
+    errdisabled: true
+    recovery_delay: 60
+    recovery_delay_non_mlag: 0
+anta.tests.multicast:
+- VerifyIGMPSnoopingVlans:
+    vlans:
+      10: false
+      12: false
+- VerifyIGMPSnoopingGlobal:
+    enabled: true
 anta.tests.routing.bgp:
 - VerifyBGPSpecificPeers:
     address_families:
