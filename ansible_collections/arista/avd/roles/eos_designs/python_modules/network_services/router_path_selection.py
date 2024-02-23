@@ -66,25 +66,33 @@ class RouterPathSelectionMixin(UtilsMixin):
                     {
                         "id": 10,
                         "application_profile": self._wan_control_plane_application_profile,
-                        "load_balance": f"LB-{self._wan_control_plane_profile}",
+                        "load_balance": self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile),
                     }
                 )
                 rule_id_offset = 1
 
             for rule_id, application_virtual_topology in enumerate(get(policy, "application_virtual_topologies", []), start=1):
-                name = get(application_virtual_topology, "name", default=f"{policy['name']}-{application_virtual_topology['application_profile']}")
+                name = get(
+                    application_virtual_topology,
+                    "name",
+                    default=self._default_profile_name(policy["name"], application_virtual_topology["application_profile"]),
+                )
                 application_profile = get(application_virtual_topology, "application_profile", required=True)
                 autovpn_policy.setdefault("rules", []).append(
                     {
                         "id": 10 * (rule_id + rule_id_offset),
                         "application_profile": application_profile,
-                        "load_balance": f"LB-{name}",
+                        "load_balance": self.shared_utils.generate_lb_policy_name(name),
                     }
                 )
             default_virtual_topology = get(policy, "default_virtual_topology", required=True)
             if not get(default_virtual_topology, "drop_unmatched", default=False):
-                name = get(default_virtual_topology, "name", default=f"{policy['name']}-DEFAULT")
-                autovpn_policy["default_match"] = {"load_balance": f"LB-{name}"}
+                name = get(
+                    default_virtual_topology,
+                    "name",
+                    default=self._default_profile_name(policy["name"], "DEFAULT"),
+                )
+                autovpn_policy["default_match"] = {"load_balance": self.shared_utils.generate_lb_policy_name(name)}
 
             autovpn_policies.append(autovpn_policy)
 
