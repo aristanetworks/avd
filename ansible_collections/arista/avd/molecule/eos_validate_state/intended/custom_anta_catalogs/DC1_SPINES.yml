@@ -24,9 +24,9 @@ anta.tests.interfaces:
   - VerifyL3MTU:
       mtu: 1500
       ignored_interfaces:
-          - Vxlan1
+        - Vxlan1
       specific_mtu:
-          - Ethernet1: 2500
+        - Ethernet1: 2500
   - VerifyIPProxyARP:
       interfaces:
         - Ethernet1
