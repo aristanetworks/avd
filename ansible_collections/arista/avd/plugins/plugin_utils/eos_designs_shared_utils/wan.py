@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
@@ -63,14 +63,14 @@ class WanMixin:
         )
 
     @cached_property
-    def cv_pathfinder_transit_mode(self: SharedUtils) -> str | None:
+    def cv_pathfinder_transit_mode(self: SharedUtils) -> Literal["region", "zone"] | None:
         """
-        When wan_mode is CV Pathfinder, return the transit mode none (edge), zone or region.
+        When wan_mode is CV Pathfinder, return the transit mode "region", "zone" or None.
         """
-        if self.underlay_router is False or self.wan_mode != "cv-pathfinder":
+        if not self.is_cv_pathfinder_client:
             return None
 
-        return get(self.switch_data_combined, "cv_pathfinder_transit_mode", default="none")
+        return get(self.switch_data_combined, "cv_pathfinder_transit_mode")
 
     @cached_property
     def wan_interfaces(self: SharedUtils) -> list:
@@ -366,38 +366,48 @@ class WanMixin:
         """
         return "WAN-FLOW-TRACKER"
 
-    # TODO should we keep this or change it?
     @cached_property
-    def is_cv_pathfinder_edge_or_transit(self: SharedUtils) -> bool:
+    def is_cv_pathfinder_router(self: SharedUtils) -> bool:
+        """
+        Return True is the current wan_mode is cv-pathfinder and the device is a wan router.
+        """
+        return self.wan_mode == "cv-pathfinder" and self.is_wan_router
+
+    @cached_property
+    def is_cv_pathfinder_client(self: SharedUtils) -> bool:
         """
         Return True is the current wan_mode is cv-pathfinder and the device is either an edge or a transit device
         """
-        return self.wan_mode == "cv-pathfinder" and self.is_wan_client
+        return self.is_cv_pathfinder_router and self.is_wan_client
+
+    @cached_property
+    def is_cv_pathfinder_server(self: SharedUtils) -> bool:
+        """
+        Return True is the current wan_mode is cv-pathfinder and the device is a pathfinder device
+        """
+        return self.is_cv_pathfinder_router and self.is_wan_server
 
     @cached_property
     def cv_pathfinder_role(self: SharedUtils) -> str | None:
-        """
-        Return the CV Pathfinder role based on the wan_role (server or client) and the
-        node.cv_pathfinder_transit_mode key.
-        """
-        if self.wan_mode != "cv-pathfinder" or not self.is_wan_router:
+        if not self.is_cv_pathfinder_router:
             return None
 
-        if self.is_wan_server:
+        if self.is_cv_pathfinder_server:
             return "pathfinder"
-        elif self.cv_pathfinder_transit_mode == "none":
-            return "edge"
-        else:
-            # cv_pathfinder_transit_mode is zone or region
-            return f"transit {self.cv_pathfinder_transit_mode}"
-        return self.wan_mode == "cv-pathfinder" and self.cv_pathfinder_role in ["edge", "transit region"]
+
+        # Transit
+        if (transit_mode := self.cv_pathfinder_transit_mode) is not None:
+            return f"transit {transit_mode}"
+
+        # Edge
+        return "edge"
 
     @cached_property
     def wan_ha(self: SharedUtils) -> bool:
         """
         Only trigger HA if 2 devices are in the same group and wan_ha.enabled is true
         """
-        if self.cv_pathfinder_role in [None, "pathfinder"]:
+        if not self.is_cv_pathfinder_client:
             return False
         return get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
 

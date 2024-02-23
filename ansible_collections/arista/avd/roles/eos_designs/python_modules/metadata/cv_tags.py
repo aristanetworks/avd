@@ -53,7 +53,7 @@ class CvTagsMixin:
         """
         Generate the data structure `metadata.cv_tags`.
         """
-        if not self._generate_cv_tags and not self.shared_utils.cv_pathfinder_role:
+        if not self._generate_cv_tags and not self.shared_utils.is_cv_pathfinder_router:
             return None
 
         device_tags = self._get_topology_hints()
@@ -92,20 +92,20 @@ class CvTagsMixin:
         """
         Return list of device_tags for cv_pathfinder solution
         Example: [
-            {"name": "Region", "value": <value copied from cv_pathfinder_region if cv_pathfinder_role is set but not 'pathfinder'>},
-            {"name": "Zone", "value": <always "DEFAULT-ZONE" if cv_pathfinder_role is set but not 'pathfinder'>},
-            {"name": "Site", "value": <value copied from cv_pathfinder_site if cv_pathfinder_role is set but not 'pathfinder'>},
-            {"name": "PathfinderSet", "value": <value copied from node group or default "PATHFINDERS" if cv_pathfinder_role is 'pathfinder'>},
-            {"name": "Role", "value": <value copied from cv_pathfinder_role if set>}
+            {"name": "Region", "value": <value copied from cv_pathfinder_region for pathfinder clients>},
+            {"name": "Zone", "value": <always "DEFAULT-ZONE" for pathfinder clients>},
+            {"name": "Site", "value": <value copied from cv_pathfinder_site for pathfinder clients>},
+            {"name": "PathfinderSet", "value": <value copied from node group or default "PATHFINDERS" for pathfinder servers>},
+            {"name": "Role", "value": <'pathfinder', 'edge', 'transit region' or 'transit zone'>}
         ]
         """
-        if self.shared_utils.cv_pathfinder_role is None:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return []
 
         device_tags = [
             self._tag_dict("Role", self.shared_utils.cv_pathfinder_role),
         ]
-        if self.shared_utils.cv_pathfinder_role == "pathfinder":
+        if self.shared_utils.is_cv_pathfinder_server:
             device_tags.append(self._tag_dict("PathfinderSet", self.shared_utils.group or "PATHFINDERS"))
         else:
             device_tags.extend(
@@ -156,7 +156,7 @@ class CvTagsMixin:
         """
         Return list of interface_tags
         """
-        if not (tags_to_generate := get(self._generate_cv_tags, "interface_tags", default=[])) and not self.shared_utils.cv_pathfinder_role:
+        if not (tags_to_generate := get(self._generate_cv_tags, "interface_tags", default=[])) and not self.shared_utils.is_cv_pathfinder_router:
             return []
 
         interface_tags = []
@@ -193,13 +193,12 @@ class CvTagsMixin:
         """
         Return list of device_tags for cv_pathfinder solution
         Example: [
-            {"name": "Type", <"lan" or "wan" if cv_pathfinder_role is set>},
-            {"name": "Carrier", <value copied from wan_carrier if cv_pathfinder_role is set and this is a wan interface>},
-            {"name": "Circuit", <value copied from wan_circuit_id if cv_pathfinder_role is set and this is a wan interface>}
+            {"name": "Type", <"lan" or "wan">},
+            {"name": "Carrier", <value copied from wan_carrier if this is a wan interface>},
+            {"name": "Circuit", <value copied from wan_circuit_id if this is a wan interface>}
         ]
         """
-        # Skip if not cv_pathfinder_role or if this is a subinterface.
-        if self.shared_utils.cv_pathfinder_role is None or "." in ethernet_interface["name"]:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return []
 
         if ethernet_interface["name"] in self._wan_interface_names:

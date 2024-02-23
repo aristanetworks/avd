@@ -1136,16 +1136,14 @@ $defs:
               table: node-type-wan-configuration
             type: str
             valid_values:
-              - none
-              - zone
               - region
-            default: none
+              - zone
             description: |-
               PREVIEW: This key is currently not supported
               Configure the transit mode for a WAN client for CV Pathfinder designs
               only when the `wan_mode` root key is set to `cv_pathfinder`.
 
-              'zone' is not supported today.
+              'zone' is currently not supported.
           cv_pathfinder_region:
             documentation_options:
               table: node-type-wan-configuration
