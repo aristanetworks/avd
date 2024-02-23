@@ -172,6 +172,8 @@ router bgp 65101
       neighbor EVPN-OVERLAY-PEERS activate
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
       route import match-failure action discard
+      route import ethernet-segment ip mass-withdraw
+      route export ethernet-segment ip mass-withdraw
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate

@@ -45,6 +45,8 @@ router_bgp:
       threshold: 1
     route:
       import_match_failure_action: discard
+      import_ethernet_segment_ip_mass_withdraw: true
+      export_ethernet_segment_ip_mass_withdraw: true
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
