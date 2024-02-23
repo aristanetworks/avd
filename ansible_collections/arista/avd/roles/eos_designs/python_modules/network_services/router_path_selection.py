@@ -30,16 +30,17 @@ class RouterPathSelectionMixin(UtilsMixin):
             "load_balance_policies": self._wan_load_balance_policies,
         }
 
-        # When running CV Pathfinder, only load balance policies
-        if self.shared_utils.is_cv_pathfinder_router:
-            return strip_empties_from_dict(router_path_selection)
+        # When running CV Pathfinder, only load balance policies are configured
+        # for AutoVPN, need also vrfs and policies.
+        if self.shared_utils.wan_mode == "autovpn":
+            vrfs = [{"name": vrf["name"], "path_selection_policy": vrf["policy"]} for vrf in self._filtered_wan_vrfs]
 
-        router_path_selection.update(
-            {
-                "policies": self._autovpn_policies,
-                "vrfs": self._filtered_wan_vrfs,
-            }
-        )
+            router_path_selection.update(
+                {
+                    "policies": self._autovpn_policies,
+                    "vrfs": vrfs,
+                }
+            )
 
         return strip_empties_from_dict(router_path_selection)
 
@@ -57,8 +58,6 @@ class RouterPathSelectionMixin(UtilsMixin):
             }
 
             if get(policy, "is_default", default=False):
-                # Update policy name
-                autovpn_policy["name"] = f"{autovpn_policy['name']}-WITH-CP"
                 autovpn_policy.setdefault("rules", []).append(
                     {
                         "id": 10,
@@ -67,6 +66,8 @@ class RouterPathSelectionMixin(UtilsMixin):
                     }
                 )
                 rule_id_offset = 1
+                # Eurk
+                policy["name"] = policy["original_name"]
 
             for rule_id, application_virtual_topology in enumerate(get(policy, "application_virtual_topologies", []), start=1):
                 name = get(

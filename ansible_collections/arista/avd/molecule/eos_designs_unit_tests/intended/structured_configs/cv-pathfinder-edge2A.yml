@@ -458,6 +458,10 @@ router_adaptive_virtual_topology:
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: LB-CONTROL-PLANE-PROFILE
+  - name: DEFAULT-AVT-POLICY-WITH-CP-VIDEO
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-WITH-CP-VIDEO
+  - name: DEFAULT-AVT-POLICY-WITH-CP-DEFAULT
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-WITH-CP-DEFAULT
   - name: PROD-AVT-POLICY-VOICE
     load_balance_policy: LB-PROD-AVT-POLICY-VOICE
   - name: PROD-AVT-POLICY-VIDEO
@@ -468,6 +472,8 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: DEFAULT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
   vrfs:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
@@ -494,7 +500,20 @@ router_adaptive_virtual_topology:
       id: 3
     - name: DEFAULT-AVT-POLICY-DEFAULT
       id: 1
+  - name: ATTRACTED-VRF-FROM-UPLINK
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
   policies:
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    matches:
+    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-AVT-POLICY-VIDEO
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY
     matches:
     - application_profile: VOICE
@@ -509,14 +528,10 @@ router_adaptive_virtual_topology:
       avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
       avt_profile: DEFAULT-AVT-POLICY-DEFAULT
-  - name: DEFAULT-AVT-POLICY-WITH-CP
+  - name: DEFAULT-POLICY
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
-    - application_profile: VIDEO
-      avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
+      avt_profile: DEFAULT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300
@@ -561,6 +576,14 @@ router_path_selection:
     path_groups:
     - name: LAN_HA
     - name: INET
+  - name: LB-DEFAULT-AVT-POLICY-VIDEO
+    path_groups:
+    - name: LAN_HA
+    - name: INET
+  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: LAN_HA
+    - name: INET
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
     - name: LAN_HA
@@ -577,11 +600,7 @@ router_path_selection:
     path_groups:
     - name: LAN_HA
     - name: INET
-  - name: LB-DEFAULT-AVT-POLICY-VIDEO
-    path_groups:
-    - name: LAN_HA
-    - name: INET
-  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+  - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: LAN_HA
     - name: INET
@@ -596,15 +615,15 @@ stun:
       ip_address: 10.9.9.9
 application_traffic_recognition:
   application_profiles:
-  - name: VOICE
-    applications:
-    - name: CUSTOM-VOICE-APPLICATION
   - name: VIDEO
     categories:
     - name: VIDEO1
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+  - name: VOICE
+    applications:
+    - name: CUSTOM-VOICE-APPLICATION
   - name: CONTROL-PLANE-APPLICATION-PROFILE
     applications:
     - name: CONTROL-PLANE-APPLICATION

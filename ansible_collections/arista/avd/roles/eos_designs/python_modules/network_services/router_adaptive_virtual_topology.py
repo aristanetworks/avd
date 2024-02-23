@@ -41,17 +41,15 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         wan_vrfs = []
 
         for vrf in self._filtered_wan_vrfs:
-            wan_vrf = vrf.copy()
+            wan_vrf = {"name": vrf["name"], "policy": vrf["policy"]}
 
             # Need to allocate an ID for each profile in the policy, for now picked up from the input.
             policy = get_item(
                 self._augmented_cv_pathfinder_policies,
                 "name",
-                wan_vrf[self._wan_policy_key],
+                wan_vrf["policy"],
                 required=True,
-                custom_error_msg=(
-                    f"The policy {wan_vrf[self._wan_policy_key]} used in vrf {wan_vrf['name']} is not configured under 'wan_virtual_topologies.policies'."
-                ),
+                custom_error_msg=(f"The policy {wan_vrf['policy']} used in vrf {wan_vrf['name']} is not configured under 'wan_virtual_topologies.policies'."),
             )
 
             for match in policy.get("matches", []):
@@ -70,8 +68,6 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
     def _augmented_cv_pathfinder_policies(self) -> list:
         """
         Return a list of augmented CV_Pathfinder Policies with an `_id` key to be used when rendering VRFs.
-
-        Insert the policy for default VRF using  {name}-WITH-CP
         """
         if not self.shared_utils.is_cv_pathfinder_router:
             return []
@@ -87,8 +83,6 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
             }
 
             if get(avt_policy, "is_default", default=False):
-                # Update policy name
-                cv_pathfinder_policy["name"] = f"{cv_pathfinder_policy['name']}-WITH-CP"
                 cv_pathfinder_policy["matches"].append(
                     {
                         "application_profile": self._wan_control_plane_application_profile,
@@ -98,6 +92,8 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                         "_id": 254,
                     }
                 )
+                # TODO - refactor logic so that we don't need this as this is not very good looking
+                avt_policy["name"] = avt_policy["original_name"]
 
             for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
                 application_profile = get(application_virtual_topology, "application_profile", required=True)

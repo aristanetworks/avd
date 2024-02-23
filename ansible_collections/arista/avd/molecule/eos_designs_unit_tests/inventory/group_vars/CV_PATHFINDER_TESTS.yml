@@ -278,7 +278,6 @@ tenants:
     vrfs:
       - name: default
         vrf_id: 1
-        wan_vni: 1
         # Checking static route on VRF default is redistributed in a route-map
         static_routes:
           - destination_address_prefix: 66.66.66.0/24
@@ -287,14 +286,12 @@ tenants:
       - name: PROD
         # Showing that wan_vni and vrf_id can be different. `vrf_id` influences the subinterface id.
         vrf_id: 142
-        wan_vni: 42
         svis:
           - id: 100
             name: VLAN100
             ip_address_virtual: 10.0.100.1/24
       - name: IT
         vrf_id: 1000
-        wan_vni: 100
     l2vlans:
       - id: 101
         name: VLAN101
@@ -302,10 +299,8 @@ tenants:
     vrfs:
       - name: default
         vrf_id: 1
-        wan_vni: 1
       - name: TRANSIT
         vrf_id: 66
-        wan_vni: 66
       # Test that a VRF with address_families: [] on a WAN router is not configured on Vxlan1 interface nor BGP
       - name: NOT-WAN-VRF
         vrf_id: 13
@@ -316,7 +311,6 @@ tenants:
       # Test adding a VRF on an uplink switch and seeing it configured on the WAN routers
       - name: ATTRACTED-VRF-FROM-UPLINK
         vrf_id: 666
-        wan_vni: 166
         svis:
           - id: 666
             name: VLAN666
@@ -329,14 +323,20 @@ wan_virtual_topologies:
   vrfs:
     - name: default
       policy: DEFAULT-AVT-POLICY
+      wan_vni: 1
     - name: PROD
       policy: PROD-AVT-POLICY
+      wan_vni: 42
     # Testing reusing the same policy as default VRF
     - name: IT
       policy: DEFAULT-AVT-POLICY
+      wan_vni: 100
     # Testing a VRF only on transit and not edge
     - name: TRANSIT
       policy: TRANSIT-AVT-POLICY
+      wan_vni: 66
+    - name: ATTRACTED-VRF-FROM-UPLINK
+      wan_vni: 166
   policies:
     - name: PROD-AVT-POLICY
       default_virtual_topology:

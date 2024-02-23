@@ -73,10 +73,12 @@ tenants:
         vrf_id: 1
       - name: PROD
         vrf_id: 42
-        wan_vni: 42
       - name: IT
         vrf_id: 100
-        wan_vni: 100
 
-# empty
-wan_virtual_topologies: null
+wan_virtual_topologies:
+  vrfs:
+    - name: PROD
+      wan_vni: 42
+    - name: IT
+      wan_vni: 100

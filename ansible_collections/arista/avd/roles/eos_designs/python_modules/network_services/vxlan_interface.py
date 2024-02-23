@@ -9,7 +9,7 @@ from typing import NoReturn
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, unique
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item, unique
 
 from .utils import UtilsMixin
 
@@ -100,6 +100,16 @@ class VxlanInterfaceMixin(UtilsMixin):
             }
         }
 
+    def _get_wan_vrf(self, name: str) -> dict | None:
+        """
+        Retrieve the VRF object from `wan_virtual_topologies.vrfs` list.
+        Return None if not found
+        """
+        if not self.shared_utils.is_wan_router:
+            return None
+        wan_vrfs = get(self._hostvars, "wan_virtual_topologies.vrfs", default=[])
+        return get_item(wan_vrfs, "name", name)
+
     def _get_vxlan_interface_config_for_vrf(self, vrf: dict, tenant: dict, vrfs: list, vlans: list, vnis: list) -> None:
         """
         In place updates of the vlans, vnis and vrfs list
@@ -132,20 +142,15 @@ class VxlanInterfaceMixin(UtilsMixin):
             if "evpn" not in vrf.get("address_families", ["evpn"]):
                 return
 
-            if self.shared_utils.is_wan_router:
+            if (wan_vrf := self._get_wan_vrf(vrf_name)) is not None:
                 vni = get(
-                    vrf,
+                    wan_vrf,
                     "wan_vni",
                     required=True,
-                    # TODO  when adding VRF filter, change the error message
-                    # org_key=(
-                    #     f"VRF {vrf_name} in tenant {tenant['name']} does not have a `wan_vni` defined. "
-                    #     "If this VRF was not intended to be extended over WAN, set 'address_families: []' under the VRF definition."
-                    #     "If not intended on the WAN router, use the VRF filter"
-                    # )
                     org_key=(
                         f"VRF {vrf_name} in tenant {tenant['name']} does not have a `wan_vni` defined. "
                         "If this VRF was not intended to be extended over WAN, set 'address_families: []' under the VRF definition."
+                        "If not intended on the WAN router, use the VRF filter"
                     ),
                 )
             else:

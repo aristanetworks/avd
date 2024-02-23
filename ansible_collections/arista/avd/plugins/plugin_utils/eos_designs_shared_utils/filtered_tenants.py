@@ -57,7 +57,6 @@ class FilteredTenantsMixin:
                     "vrfs": [
                         {
                             "name": "default",
-                            "wan_vni": 1,
                             "vrf_id": 1,
                             "svis": [],
                             "l3_interfaces": [],
@@ -82,10 +81,6 @@ class FilteredTenantsMixin:
                         raise AristaAvdError(
                             "WAN configuration requires EVPN to be enabled for VRF 'default'. Got 'address_families: {vrf_default['address_families']}."
                         )
-                # Injecting `wan_vni` on WAN routers if it is missing to make sure that VRF default is always included
-                # on the WAN.
-                if vrf_default.get("wan_vni") is None:
-                    vrf_default["wan_vni"] = 1
                 break
 
         return natural_sort(filtered_tenants, "name")

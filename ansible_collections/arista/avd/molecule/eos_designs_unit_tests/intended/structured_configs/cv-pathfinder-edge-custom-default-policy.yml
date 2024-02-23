@@ -1,4 +1,4 @@
-hostname: cv-pathfinder-edge-no-default-policy
+hostname: cv-pathfinder-edge-custom-default-policy
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -162,7 +162,7 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.42.1:511 additive
+    - extcommunity soo 192.168.42.1:1 additive
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -176,7 +176,7 @@ route_maps:
   - sequence: 10
     type: permit
     set:
-    - extcommunity soo 192.168.42.1:511 additive
+    - extcommunity soo 192.168.42.1:1 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -201,7 +201,7 @@ ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.42.1:511
+    extcommunities: soo 192.168.42.1:1
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
@@ -240,48 +240,55 @@ ip_security:
 router_adaptive_virtual_topology:
   topology_role: edge
   region:
-    name: AVD_Land_East
-    id: 43
+    name: AVD_Land_West
+    id: 42
   zone:
     name: DEFAULT-ZONE
     id: 1
   site:
-    name: Site511
-    id: 511
+    name: Site1
+    id: 1
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: LB-CONTROL-PLANE-PROFILE
-  - name: DEFAULT-POLICY-DEFAULT
-    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-WITH-CP-VIDEO
+    load_balance_policy: LB-DEFAULT-POLICY-WITH-CP-VIDEO
   - name: DEFAULT-POLICY-WITH-CP-DEFAULT
     load_balance_policy: LB-DEFAULT-POLICY-WITH-CP-DEFAULT
+  - name: DEFAULT-POLICY-VIDEO
+    load_balance_policy: LB-DEFAULT-POLICY-VIDEO
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
   vrfs:
-  - name: PROD
-    policy: DEFAULT-POLICY
-    profiles:
-    - name: DEFAULT-POLICY-DEFAULT
-      id: 1
-  - name: IT
-    policy: DEFAULT-POLICY
-    profiles:
-    - name: DEFAULT-POLICY-DEFAULT
-      id: 1
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
     - name: CONTROL-PLANE-PROFILE
       id: 254
+    - name: DEFAULT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+  - name: PROD
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-VIDEO
+      id: 3
     - name: DEFAULT-POLICY-DEFAULT
       id: 1
   policies:
-  - name: DEFAULT-POLICY
-    matches:
-    - application_profile: default
-      avt_profile: DEFAULT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-WITH-CP
     matches:
     - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
       avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-POLICY-VIDEO
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY
+    matches:
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-POLICY-VIDEO
     - application_profile: default
       avt_profile: DEFAULT-POLICY-DEFAULT
 router_bfd:
@@ -332,15 +339,19 @@ router_path_selection:
       enabled: true
     ipsec_profile: CP-PROFILE
   load_balance_policies:
-  - name: LB-DEFAULT-POLICY-DEFAULT
-    path_groups:
-    - name: INET
-    - name: MPLS
-    - name: LTE
   - name: LB-CONTROL-PLANE-PROFILE
     path_groups:
     - name: INET
     - name: MPLS
+  - name: LB-DEFAULT-POLICY-VIDEO
+    path_groups:
+    - name: MPLS
+    - name: INET
+  - name: LB-DEFAULT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
+    - name: LTE
+      priority: 42
 router_traffic_engineering:
   enabled: true
 stun:
@@ -354,6 +365,10 @@ stun:
       ip_address: 172.16.0.1
 application_traffic_recognition:
   application_profiles:
+  - name: VIDEO
+    applications:
+    - name: CUSTOM-APPLICATION-1
+    - name: skype
   - name: CONTROL-PLANE-APPLICATION-PROFILE
     applications:
     - name: CONTROL-PLANE-APPLICATION
@@ -375,7 +390,7 @@ dps_interfaces:
     hardware: WAN-FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
-    description: cv-pathfinder-edge-no-default-policy_VTEP
+    description: cv-pathfinder-edge-custom-default-policy_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1
@@ -392,11 +407,11 @@ metadata:
     - name: Role
       value: edge
     - name: Region
-      value: AVD_Land_East
+      value: AVD_Land_West
     - name: Zone
       value: DEFAULT-ZONE
     - name: Site
-      value: Site511
+      value: Site1
     interface_tags:
     - interface: Ethernet1
       tags:
@@ -425,9 +440,9 @@ metadata:
   cv_pathfinder:
     role: edge
     vtep_ip: 192.168.255.1
-    region: AVD_Land_East
+    region: AVD_Land_West
     zone: DEFAULT-ZONE
-    site: Site511
+    site: Site1
     interfaces:
     - name: Ethernet1
       carrier: ATT
