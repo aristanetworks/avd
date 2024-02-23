@@ -6777,7 +6777,7 @@ $defs:
                   type: str
                 default:
                 - all
-              vrfs:
+              allow_vrfs:
                 type: list
                 description: 'Limit configured Network Services to those defined under
                   these VRFs. Set to [''all''] for all VRFs (default).
@@ -6789,7 +6789,7 @@ $defs:
                   - int
                 default:
                 - all
-              not_vrfs:
+              deny_vrfs:
                 type: list
                 description: 'Prevent configuration of Network Services defined under
                   these VRFs.

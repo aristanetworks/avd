@@ -161,13 +161,15 @@ class FilteredTenantsMixin:
         """
         Returns True if
 
-        - filter.vrfs == ["all"] OR VRF is included in filter.vrfs.
+        - filter.allow_vrfs == ["all"] OR VRF is included in filter.allow_vrfs.
 
         AND
 
-        - filter.not_vrfs == [] OR VRF is NOT in filter.not_vrfs
+        - filter.not_vrfs == [] OR VRF is NOT in filter.deny_vrfs
         """
-        return ("all" in self.filter_vrfs or vrf["name"] in self.filter_vrfs) and (not self.filter_not_vrfs or vrf["name"] not in self.filter_not_vrfs)
+        return ("all" in self.filter_allow_vrfs or vrf["name"] in self.filter_allow_vrfs) and (
+            not self.filter_deny_vrfs or vrf["name"] not in self.filter_deny_vrfs
+        )
 
     def filtered_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
         """

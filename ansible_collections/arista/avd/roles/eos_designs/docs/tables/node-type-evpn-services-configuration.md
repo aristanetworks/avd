@@ -15,10 +15,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.filter.tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<node_type_keys.key>.defaults.filter.tags") | List, items: String |  | `['all']` |  | Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.filter.tags.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "<node_type_keys.key>.defaults.filter.vrfs") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).<br>This list also limits VRFs included by `always_include_vrfs_in_tenants`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.filter.vrfs.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;not_vrfs</samp>](## "<node_type_keys.key>.defaults.filter.not_vrfs") | List, items: String |  | `['all']` |  | Prevent configuration of Network Services defined under these VRFs.<br>This list prevents the given VRFs to be included by any other filtering mechanism. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.filter.not_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vrfs</samp>](## "<node_type_keys.key>.defaults.filter.allow_vrfs") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).<br>This list also limits VRFs included by `always_include_vrfs_in_tenants`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.filter.allow_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deny_vrfs</samp>](## "<node_type_keys.key>.defaults.filter.deny_vrfs") | List, items: String |  | `['all']` |  | Prevent configuration of Network Services defined under these VRFs.<br>This list prevents the given VRFs to be included by any other filtering mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.filter.deny_vrfs.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always_include_vrfs_in_tenants</samp>](## "<node_type_keys.key>.defaults.filter.always_include_vrfs_in_tenants") | List, items: String |  |  |  | List of tenants where VRFs will be configured even if VLANs are not included in tags.<br>Useful for L3 "border" leaf.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.filter.always_include_vrfs_in_tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_vlans_in_use</samp>](## "<node_type_keys.key>.defaults.filter.only_vlans_in_use") | Boolean |  | `False` |  | Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.<br>Note! This feature only considers configuration managed by eos_designs.<br>This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.<br> |
@@ -33,10 +33,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.tags") | List, items: String |  | `['all']` |  | Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.tags.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.vrfs") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).<br>This list also limits VRFs included by `always_include_vrfs_in_tenants`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.vrfs.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;not_vrfs</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.not_vrfs") | List, items: String |  | `['all']` |  | Prevent configuration of Network Services defined under these VRFs.<br>This list prevents the given VRFs to be included by any other filtering mechanism. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.not_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vrfs</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.allow_vrfs") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).<br>This list also limits VRFs included by `always_include_vrfs_in_tenants`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.allow_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deny_vrfs</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.deny_vrfs") | List, items: String |  | `['all']` |  | Prevent configuration of Network Services defined under these VRFs.<br>This list prevents the given VRFs to be included by any other filtering mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.deny_vrfs.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always_include_vrfs_in_tenants</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.always_include_vrfs_in_tenants") | List, items: String |  |  |  | List of tenants where VRFs will be configured even if VLANs are not included in tags.<br>Useful for L3 "border" leaf.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.always_include_vrfs_in_tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_vlans_in_use</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].filter.only_vlans_in_use") | Boolean |  | `False` |  | Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.<br>Note! This feature only considers configuration managed by eos_designs.<br>This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.<br> |
@@ -47,10 +47,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].filter.tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<node_type_keys.key>.node_groups.[].filter.tags") | List, items: String |  | `['all']` |  | Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].filter.tags.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "<node_type_keys.key>.node_groups.[].filter.vrfs") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).<br>This list also limits VRFs included by `always_include_vrfs_in_tenants`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].filter.vrfs.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;not_vrfs</samp>](## "<node_type_keys.key>.node_groups.[].filter.not_vrfs") | List, items: String |  | `['all']` |  | Prevent configuration of Network Services defined under these VRFs.<br>This list prevents the given VRFs to be included by any other filtering mechanism. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].filter.not_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vrfs</samp>](## "<node_type_keys.key>.node_groups.[].filter.allow_vrfs") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).<br>This list also limits VRFs included by `always_include_vrfs_in_tenants`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].filter.allow_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deny_vrfs</samp>](## "<node_type_keys.key>.node_groups.[].filter.deny_vrfs") | List, items: String |  | `['all']` |  | Prevent configuration of Network Services defined under these VRFs.<br>This list prevents the given VRFs to be included by any other filtering mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].filter.deny_vrfs.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always_include_vrfs_in_tenants</samp>](## "<node_type_keys.key>.node_groups.[].filter.always_include_vrfs_in_tenants") | List, items: String |  |  |  | List of tenants where VRFs will be configured even if VLANs are not included in tags.<br>Useful for L3 "border" leaf.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].filter.always_include_vrfs_in_tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_vlans_in_use</samp>](## "<node_type_keys.key>.node_groups.[].filter.only_vlans_in_use") | Boolean |  | `False` |  | Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.<br>Note! This feature only considers configuration managed by eos_designs.<br>This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.<br> |
@@ -63,10 +63,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].filter.tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<node_type_keys.key>.nodes.[].filter.tags") | List, items: String |  | `['all']` |  | Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].filter.tags.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "<node_type_keys.key>.nodes.[].filter.vrfs") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).<br>This list also limits VRFs included by `always_include_vrfs_in_tenants`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].filter.vrfs.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;not_vrfs</samp>](## "<node_type_keys.key>.nodes.[].filter.not_vrfs") | List, items: String |  | `['all']` |  | Prevent configuration of Network Services defined under these VRFs.<br>This list prevents the given VRFs to be included by any other filtering mechanism. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].filter.not_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vrfs</samp>](## "<node_type_keys.key>.nodes.[].filter.allow_vrfs") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).<br>This list also limits VRFs included by `always_include_vrfs_in_tenants`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].filter.allow_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deny_vrfs</samp>](## "<node_type_keys.key>.nodes.[].filter.deny_vrfs") | List, items: String |  | `['all']` |  | Prevent configuration of Network Services defined under these VRFs.<br>This list prevents the given VRFs to be included by any other filtering mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].filter.deny_vrfs.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always_include_vrfs_in_tenants</samp>](## "<node_type_keys.key>.nodes.[].filter.always_include_vrfs_in_tenants") | List, items: String |  |  |  | List of tenants where VRFs will be configured even if VLANs are not included in tags.<br>Useful for L3 "border" leaf.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].filter.always_include_vrfs_in_tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_vlans_in_use</samp>](## "<node_type_keys.key>.nodes.[].filter.only_vlans_in_use") | Boolean |  | `False` |  | Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.<br>Note! This feature only considers configuration managed by eos_designs.<br>This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.<br> |
@@ -100,12 +100,12 @@
 
           # Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).
           # This list also limits VRFs included by `always_include_vrfs_in_tenants`.
-          vrfs: # default=['all']
+          allow_vrfs: # default=['all']
             - <str>
 
           # Prevent configuration of Network Services defined under these VRFs.
           # This list prevents the given VRFs to be included by any other filtering mechanism.
-          not_vrfs: # default=['all']
+          deny_vrfs: # default=['all']
             - <str>
 
           # List of tenants where VRFs will be configured even if VLANs are not included in tags.
@@ -154,12 +154,12 @@
 
                 # Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).
                 # This list also limits VRFs included by `always_include_vrfs_in_tenants`.
-                vrfs: # default=['all']
+                allow_vrfs: # default=['all']
                   - <str>
 
                 # Prevent configuration of Network Services defined under these VRFs.
                 # This list prevents the given VRFs to be included by any other filtering mechanism.
-                not_vrfs: # default=['all']
+                deny_vrfs: # default=['all']
                   - <str>
 
                 # List of tenants where VRFs will be configured even if VLANs are not included in tags.
@@ -195,12 +195,12 @@
 
             # Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).
             # This list also limits VRFs included by `always_include_vrfs_in_tenants`.
-            vrfs: # default=['all']
+            allow_vrfs: # default=['all']
               - <str>
 
             # Prevent configuration of Network Services defined under these VRFs.
             # This list prevents the given VRFs to be included by any other filtering mechanism.
-            not_vrfs: # default=['all']
+            deny_vrfs: # default=['all']
               - <str>
 
             # List of tenants where VRFs will be configured even if VLANs are not included in tags.
@@ -242,12 +242,12 @@
 
             # Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).
             # This list also limits VRFs included by `always_include_vrfs_in_tenants`.
-            vrfs: # default=['all']
+            allow_vrfs: # default=['all']
               - <str>
 
             # Prevent configuration of Network Services defined under these VRFs.
             # This list prevents the given VRFs to be included by any other filtering mechanism.
-            not_vrfs: # default=['all']
+            deny_vrfs: # default=['all']
               - <str>
 
             # List of tenants where VRFs will be configured even if VLANs are not included in tags.

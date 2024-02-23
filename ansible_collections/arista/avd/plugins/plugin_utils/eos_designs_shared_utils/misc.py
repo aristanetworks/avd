@@ -68,12 +68,12 @@ class MiscMixin:
         return filter_tags
 
     @cached_property
-    def filter_vrfs(self: SharedUtils) -> list:
-        return get(self.switch_data_combined, "filter.vrfs", default=["all"])
+    def filter_allow_vrfs(self: SharedUtils) -> list:
+        return get(self.switch_data_combined, "filter.allow_vrfs", default=["all"])
 
     @cached_property
-    def filter_not_vrfs(self: SharedUtils) -> list:
-        return get(self.switch_data_combined, "filter.not_vrfs", default=[])
+    def filter_deny_vrfs(self: SharedUtils) -> list:
+        return get(self.switch_data_combined, "filter.deny_vrfs", default=[])
 
     @cached_property
     def filter_tenants(self: SharedUtils) -> list:
