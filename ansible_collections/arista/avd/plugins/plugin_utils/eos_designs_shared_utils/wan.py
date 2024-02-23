@@ -386,7 +386,7 @@ class WanMixin:
         return get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
 
     @cached_property
-    def wan_ha_path_group_name(self) -> str:
+    def wan_ha_path_group_name(self: SharedUtils) -> str:
         """
         Return HA path group name for the WAN design.
         Used in both network services and overlay python modules.
@@ -396,7 +396,7 @@ class WanMixin:
         return "LAN_HA"
 
     @cached_property
-    def is_first_ha_peer(self) -> bool:
+    def is_first_ha_peer(self: SharedUtils) -> bool:
         """
         Returns True if the device is the first device in the node_group,
         false otherwise.
@@ -419,7 +419,7 @@ class WanMixin:
         raise AristaAvdError("Unable to find WAN HA peer within same node group")
 
     @cached_property
-    def wan_ha_peer_ip_addresses(self) -> list:
+    def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:
         """
         Read the IP addresses/prefix length from HA peer uplinks
         Used also to generate the prefix list of the PEER HA prefixes
@@ -443,7 +443,7 @@ class WanMixin:
         return ip_addresses
 
     @cached_property
-    def wan_ha_ip_addresses(self) -> list:
+    def wan_ha_ip_addresses(self: SharedUtils) -> list:
         """
         Read the IP addresses/prefix length from this device uplinks used for HA.
         Used to generate the prefix list.

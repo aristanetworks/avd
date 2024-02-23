@@ -1177,7 +1177,7 @@ $defs:
               enabled:
                 type: bool
                 default: true
-                description: Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in node group.
+                description: Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group.
               ipsec:
                 type: bool
                 default: true

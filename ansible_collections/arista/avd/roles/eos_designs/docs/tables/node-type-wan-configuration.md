@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_region</samp>](## "<node_type_keys.key>.defaults.cv_pathfinder_region") | String |  |  |  | PREVIEW: This key is currently not supported<br><br>The CV Pathfinder region name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_site</samp>](## "<node_type_keys.key>.defaults.cv_pathfinder_site") | String |  |  |  | PREVIEW: This key is currently not supported<br><br>The CV Pathfinder site name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_ha</samp>](## "<node_type_keys.key>.defaults.wan_ha") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>The key is supported only if `wan_mode` == `cv-pathfinder`.<br>AutoVPN support is still to be determined.<br><br>Maximum 2 devices supported by group for HA. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in node group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "<node_type_keys.key>.defaults.wan_ha.ipsec") | Boolean |  | `True` |  | Enable / Disable IPsec over HA path-group when HA is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.defaults.dps_mss_ipv4") | String |  | `auto` |  | PREVIEW: This key is currently not supported<br><br>IPv4 MSS value configured under "router path-selection" on WAN Devices. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
@@ -26,7 +26,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_region</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].cv_pathfinder_region") | String |  |  |  | PREVIEW: This key is currently not supported<br><br>The CV Pathfinder region name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_site</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].cv_pathfinder_site") | String |  |  |  | PREVIEW: This key is currently not supported<br><br>The CV Pathfinder site name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>The key is supported only if `wan_mode` == `cv-pathfinder`.<br>AutoVPN support is still to be determined.<br><br>Maximum 2 devices supported by group for HA. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in node group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.ipsec") | Boolean |  | `True` |  | Enable / Disable IPsec over HA path-group when HA is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].dps_mss_ipv4") | String |  | `auto` |  | PREVIEW: This key is currently not supported<br><br>IPv4 MSS value configured under "router path-selection" on WAN Devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_role</samp>](## "<node_type_keys.key>.node_groups.[].wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | PREVIEW: This key is currently not supported<br>Override the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector.<br><br>Only supported if `overlay_routing_protocol` is set to `ibgp`. |
@@ -34,7 +34,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_region</samp>](## "<node_type_keys.key>.node_groups.[].cv_pathfinder_region") | String |  |  |  | PREVIEW: This key is currently not supported<br><br>The CV Pathfinder region name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_site</samp>](## "<node_type_keys.key>.node_groups.[].cv_pathfinder_site") | String |  |  |  | PREVIEW: This key is currently not supported<br><br>The CV Pathfinder site name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>The key is supported only if `wan_mode` == `cv-pathfinder`.<br>AutoVPN support is still to be determined.<br><br>Maximum 2 devices supported by group for HA. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in node group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.ipsec") | Boolean |  | `True` |  | Enable / Disable IPsec over HA path-group when HA is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.node_groups.[].dps_mss_ipv4") | String |  | `auto` |  | PREVIEW: This key is currently not supported<br><br>IPv4 MSS value configured under "router path-selection" on WAN Devices. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
@@ -44,7 +44,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_region</samp>](## "<node_type_keys.key>.nodes.[].cv_pathfinder_region") | String |  |  |  | PREVIEW: This key is currently not supported<br><br>The CV Pathfinder region name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_site</samp>](## "<node_type_keys.key>.nodes.[].cv_pathfinder_site") | String |  |  |  | PREVIEW: This key is currently not supported<br><br>The CV Pathfinder site name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha</samp>](## "<node_type_keys.key>.nodes.[].wan_ha") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>The key is supported only if `wan_mode` == `cv-pathfinder`.<br>AutoVPN support is still to be determined.<br><br>Maximum 2 devices supported by group for HA. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in node group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.ipsec") | Boolean |  | `True` |  | Enable / Disable IPsec over HA path-group when HA is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.nodes.[].dps_mss_ipv4") | String |  | `auto` |  | PREVIEW: This key is currently not supported<br><br>IPv4 MSS value configured under "router path-selection" on WAN Devices. |
 
@@ -94,7 +94,7 @@
         # Maximum 2 devices supported by group for HA.
         wan_ha:
 
-          # Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in node group.
+          # Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group.
           enabled: <bool; default=True>
 
           # Enable / Disable IPsec over HA path-group when HA is enabled.
@@ -156,7 +156,7 @@
               # Maximum 2 devices supported by group for HA.
               wan_ha:
 
-                # Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in node group.
+                # Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group.
                 enabled: <bool; default=True>
 
                 # Enable / Disable IPsec over HA path-group when HA is enabled.
@@ -205,7 +205,7 @@
           # Maximum 2 devices supported by group for HA.
           wan_ha:
 
-            # Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in node group.
+            # Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group.
             enabled: <bool; default=True>
 
             # Enable / Disable IPsec over HA path-group when HA is enabled.
@@ -260,7 +260,7 @@
           # Maximum 2 devices supported by group for HA.
           wan_ha:
 
-            # Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in node group.
+            # Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group.
             enabled: <bool; default=True>
 
             # Enable / Disable IPsec over HA path-group when HA is enabled.
