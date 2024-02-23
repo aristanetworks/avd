@@ -56,5 +56,6 @@ class AvdStructuredConfigMetadata(AvdFacts, CvTagsMixin, CvPathfinderMixin):
             "platform": self.shared_utils.platform,
             "cv_tags": self._cv_tags(),
             "cv_pathfinder": self._cv_pathfinder(),
+            "system_mac_address": self.shared_utils.system_mac_address,
         }
         return strip_empties_from_dict(metadata) or None
