@@ -116,3 +116,7 @@ class InbandManagementMixin:
             return f"Vlan{self.inband_mgmt_vlan}"
 
         return None
+
+    @cached_property
+    def inband_ztp_parent(self: SharedUtils) -> bool:
+        return default(get(self.switch_data_combined, "inband_ztp_parent"), False)

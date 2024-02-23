@@ -84,6 +84,7 @@ class UtilsMixin:
                         "ipv6_enable": get(uplink, "ipv6_enable"),
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
                         "structured_config": get(uplink, "structured_config"),
+                        "child_mgmt_vlan": get(peer_facts, "inband_mgmt_vlan"),
                     }
                     if (subinterfaces := get(uplink, "subinterfaces")) is not None:
                         link["subinterfaces"] = [

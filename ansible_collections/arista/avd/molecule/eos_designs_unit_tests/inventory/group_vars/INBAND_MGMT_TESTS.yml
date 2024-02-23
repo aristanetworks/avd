@@ -25,6 +25,7 @@ l3leaf:
       only_vlans_in_use: true
   nodes:
     - name: inband-mgmt-parent
+      inband_ztp_parent: true
       id: 1
     - name: inband-mgmt-parent-vrf
       inband_mgmt_vrf: INBANDMGMT

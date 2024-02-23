@@ -129,6 +129,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                             },
                         }
                     )
+                    if self.shared_utils.inband_ztp_parent and get(link, "child_mgmt_vlan"):
+                        ethernet_interface.update({"mode": "access", "vlans": link["child_mgmt_vlan"]})
                 else:
                     vlans = get(link, "vlans", default=[])
                     ethernet_interface.update(
