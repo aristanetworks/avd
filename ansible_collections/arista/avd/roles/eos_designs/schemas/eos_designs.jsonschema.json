@@ -9068,6 +9068,118 @@
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
                 "title": "EOS CLI"
+              },
+              "ip_igmp_host_proxy": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "groups": {
+                    "type": "array",
+                    "description": "Group Address.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "group": {
+                          "type": "string",
+                          "title": "Group"
+                        },
+                        "exclude": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "source": {
+                                "type": "string",
+                                "title": "Source"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "source"
+                            ]
+                          },
+                          "title": "Exclude"
+                        },
+                        "include": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "source": {
+                                "type": "string",
+                                "title": "Source"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "source"
+                            ]
+                          },
+                          "title": "Include"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "group"
+                      ]
+                    },
+                    "title": "Groups"
+                  },
+                  "report_interval": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 31744,
+                    "default": 1,
+                    "description": "Time interval between unsolicited reports.",
+                    "title": "Report Interval"
+                  },
+                  "access_lists": {
+                    "type": "array",
+                    "description": "Non-standard Access List name.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Access Lists"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 3,
+                    "default": 3,
+                    "description": "IGMP version on IGMP host-proxy interface.",
+                    "title": "Version"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "IP IGMP Host Proxy"
               }
             },
             "additionalProperties": false,
@@ -11807,6 +11919,118 @@
                     "type": "string",
                     "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
                     "title": "EOS CLI"
+                  },
+                  "ip_igmp_host_proxy": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "groups": {
+                        "type": "array",
+                        "description": "Group Address.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "group": {
+                              "type": "string",
+                              "title": "Group"
+                            },
+                            "exclude": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "source": {
+                                    "type": "string",
+                                    "title": "Source"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "required": [
+                                  "source"
+                                ]
+                              },
+                              "title": "Exclude"
+                            },
+                            "include": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "source": {
+                                    "type": "string",
+                                    "title": "Source"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "required": [
+                                  "source"
+                                ]
+                              },
+                              "title": "Include"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "group"
+                          ]
+                        },
+                        "title": "Groups"
+                      },
+                      "report_interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 31744,
+                        "default": 1,
+                        "description": "Time interval between unsolicited reports.",
+                        "title": "Report Interval"
+                      },
+                      "access_lists": {
+                        "type": "array",
+                        "description": "Non-standard Access List name.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "Name"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "title": "Access Lists"
+                      },
+                      "version": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 3,
+                        "default": 3,
+                        "description": "IGMP version on IGMP host-proxy interface.",
+                        "title": "Version"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "IP IGMP Host Proxy"
                   }
                 },
                 "additionalProperties": false,
@@ -14556,6 +14780,118 @@
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
                 "title": "EOS CLI"
+              },
+              "ip_igmp_host_proxy": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "groups": {
+                    "type": "array",
+                    "description": "Group Address.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "group": {
+                          "type": "string",
+                          "title": "Group"
+                        },
+                        "exclude": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "source": {
+                                "type": "string",
+                                "title": "Source"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "source"
+                            ]
+                          },
+                          "title": "Exclude"
+                        },
+                        "include": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "source": {
+                                "type": "string",
+                                "title": "Source"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "source"
+                            ]
+                          },
+                          "title": "Include"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "group"
+                      ]
+                    },
+                    "title": "Groups"
+                  },
+                  "report_interval": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 31744,
+                    "default": 1,
+                    "description": "Time interval between unsolicited reports.",
+                    "title": "Report Interval"
+                  },
+                  "access_lists": {
+                    "type": "array",
+                    "description": "Non-standard Access List name.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Access Lists"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 3,
+                    "default": 3,
+                    "description": "IGMP version on IGMP host-proxy interface.",
+                    "title": "Version"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "IP IGMP Host Proxy"
               }
             },
             "additionalProperties": false,
@@ -18116,6 +18452,118 @@
                     "type": "string",
                     "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
                     "title": "EOS CLI"
+                  },
+                  "ip_igmp_host_proxy": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "groups": {
+                        "type": "array",
+                        "description": "Group Address.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "group": {
+                              "type": "string",
+                              "title": "Group"
+                            },
+                            "exclude": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "source": {
+                                    "type": "string",
+                                    "title": "Source"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "required": [
+                                  "source"
+                                ]
+                              },
+                              "title": "Exclude"
+                            },
+                            "include": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "source": {
+                                    "type": "string",
+                                    "title": "Source"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "required": [
+                                  "source"
+                                ]
+                              },
+                              "title": "Include"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "group"
+                          ]
+                        },
+                        "title": "Groups"
+                      },
+                      "report_interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 31744,
+                        "default": 1,
+                        "description": "Time interval between unsolicited reports.",
+                        "title": "Report Interval"
+                      },
+                      "access_lists": {
+                        "type": "array",
+                        "description": "Non-standard Access List name.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "Name"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "title": "Access Lists"
+                      },
+                      "version": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 3,
+                        "default": 3,
+                        "description": "IGMP version on IGMP host-proxy interface.",
+                        "title": "Version"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "IP IGMP Host Proxy"
                   }
                 },
                 "additionalProperties": false,
@@ -20865,6 +21313,118 @@
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
                 "title": "EOS CLI"
+              },
+              "ip_igmp_host_proxy": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "groups": {
+                    "type": "array",
+                    "description": "Group Address.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "group": {
+                          "type": "string",
+                          "title": "Group"
+                        },
+                        "exclude": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "source": {
+                                "type": "string",
+                                "title": "Source"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "source"
+                            ]
+                          },
+                          "title": "Exclude"
+                        },
+                        "include": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "source": {
+                                "type": "string",
+                                "title": "Source"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "source"
+                            ]
+                          },
+                          "title": "Include"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "group"
+                      ]
+                    },
+                    "title": "Groups"
+                  },
+                  "report_interval": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 31744,
+                    "default": 1,
+                    "description": "Time interval between unsolicited reports.",
+                    "title": "Report Interval"
+                  },
+                  "access_lists": {
+                    "type": "array",
+                    "description": "Non-standard Access List name.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Access Lists"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 3,
+                    "default": 3,
+                    "description": "IGMP version on IGMP host-proxy interface.",
+                    "title": "Version"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "IP IGMP Host Proxy"
               }
             },
             "additionalProperties": false,
@@ -22434,6 +22994,118 @@
                       "minimum": 1,
                       "maximum": 3,
                       "title": "IP IGMP Version"
+                    },
+                    "ip_igmp_host_proxy": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "groups": {
+                          "type": "array",
+                          "description": "Group Address.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "title": "Group"
+                              },
+                              "exclude": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "source": {
+                                      "type": "string",
+                                      "title": "Source"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  },
+                                  "required": [
+                                    "source"
+                                  ]
+                                },
+                                "title": "Exclude"
+                              },
+                              "include": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "source": {
+                                      "type": "string",
+                                      "title": "Source"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  },
+                                  "required": [
+                                    "source"
+                                  ]
+                                },
+                                "title": "Include"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "group"
+                            ]
+                          },
+                          "title": "Groups"
+                        },
+                        "report_interval": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 31744,
+                          "default": 1,
+                          "description": "Time interval between unsolicited reports.",
+                          "title": "Report Interval"
+                        },
+                        "access_lists": {
+                          "type": "array",
+                          "description": "Non-standard Access List name.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "name"
+                            ]
+                          },
+                          "title": "Access Lists"
+                        },
+                        "version": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3,
+                          "default": 3,
+                          "description": "IGMP version on IGMP host-proxy interface.",
+                          "title": "Version"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IP IGMP Host Proxy"
                     },
                     "ip_helpers": {
                       "type": "array",
@@ -24170,6 +24842,118 @@
                 "minimum": 1,
                 "maximum": 3,
                 "title": "IP IGMP Version"
+              },
+              "ip_igmp_host_proxy": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "groups": {
+                    "type": "array",
+                    "description": "Group Address.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "group": {
+                          "type": "string",
+                          "title": "Group"
+                        },
+                        "exclude": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "source": {
+                                "type": "string",
+                                "title": "Source"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "source"
+                            ]
+                          },
+                          "title": "Exclude"
+                        },
+                        "include": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "source": {
+                                "type": "string",
+                                "title": "Source"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "source"
+                            ]
+                          },
+                          "title": "Include"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "group"
+                      ]
+                    },
+                    "title": "Groups"
+                  },
+                  "report_interval": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 31744,
+                    "default": 1,
+                    "description": "Time interval between unsolicited reports.",
+                    "title": "Report Interval"
+                  },
+                  "access_lists": {
+                    "type": "array",
+                    "description": "Non-standard Access List name.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Access Lists"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 3,
+                    "default": 3,
+                    "description": "IGMP version on IGMP host-proxy interface.",
+                    "title": "Version"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "IP IGMP Host Proxy"
               },
               "ip_helpers": {
                 "type": "array",
