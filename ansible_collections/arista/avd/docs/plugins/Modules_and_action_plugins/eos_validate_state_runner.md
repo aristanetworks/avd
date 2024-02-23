@@ -39,6 +39,7 @@ The plugin offers the following capabilities:
 | <samp>save_catalog</samp> | bool | optional | False |  | Indicates whether to save the test catalog for each device. |
 | <samp>device_catalog_path</samp> | str | optional | None |  | The absolute path where the device test catalog will be saved.<br>Required if `save_catalog` is set to `True`. |
 | <samp>test_results_dir</samp> | str | optional | None |  | The directory where the test results JSON file for each host will be saved. |
+| <samp>custom_anta_catalogs_dir</samp> | any | optional | None |  | The directory where custom ANTA test catalogs are stored.<br>Files must be named after the device hostname or the Ansible group name and have a `.yml` or `.yaml` extension. |
 | <samp>skipped_tests</samp> | list | optional | None |  | A list of dictionaries specifying categories and, optionally, tests to skip.<br>Each dictionary must have a key `category` and can optionally include a `tests` key. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;category</samp> | str | optional | None |  | The name of an AvdTest category (e.g., `AvdTestHardware`). |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;tests</samp> | list | optional | None |  | An optional list of specific tests in the category to skip (e.g., `VerifyRoutingProtocolModel` in `AvdTestBGP`).<br>If not specified, all tests in the category are considered.<br>For a complete list of available tests, see [link to the test list](https://avd.sh/en/stable/roles/eos_validate_state/ANTA-Preview.html#test-categories). |
@@ -65,6 +66,7 @@ The plugin offers the following capabilities:
     save_catalog: true
     device_catalog_path: "/my_avd_project/intended/test_catalogs/{{ inventory_hostname }}-catalog.yml"
     test_results_dir: "/my_avd_project/reports/test_results"
+    custom_anta_catalogs_dir: "/my_avd_project/intended/custom_anta_catalogs"
     skipped_tests:
       - category: AvdTestHardware
       - category: AvdTestBGP

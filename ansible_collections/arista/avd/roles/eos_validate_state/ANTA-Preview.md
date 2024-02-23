@@ -38,9 +38,10 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 !!! note
     Subject to change. No commitments implied.
 
-- Provide a custom ANTA test catalog as a YAML file or by input variables.
-- Ability to exclude some interfaces from the report.
-- More tests!
+- Add more tests generated from the structured configuration
+
+!!! tip
+    You can now provide your own custom ANTA catalogs to the AVD `eos_validate_state` role! Please refer to the [Custom ANTA catalog](#custom-anta-catalog) section for more details.
 
 ## Expected changes
 
@@ -179,6 +180,10 @@ fabric_name: "all"
 eos_validate_state_md_report_path: "{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md"
 eos_validate_state_csv_report_path: "{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv"
 
+# Input directory for custom ANTA catalogs:
+custom_anta_catalogs_dir_name: "custom_anta_catalogs"
+custom_anta_catalogs_dir: "{{ output_dir }}/{{ custom_anta_catalogs_dir_name }}"
+
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
 
@@ -221,6 +226,21 @@ skipped_tests:
     tests:
       - VerifyEnvironmentCooling
 ```
+
+## Custom ANTA catalog
+
+You can now provide custom ANTA catalogs to the AVD `eos_validate_state` role. By default, AVD will search for catalog YAML files in the `intended/custom_anta_catalogs` directory and incorporate these tests into the existing dynamically created catalog from AVD. The custom catalog files must be named as follows:`
+
+- `<hostname>.yml` or `<hostname>.yaml`
+- `<group>.yml` or `<group>.yaml`
+
+When specifying a group, it must be a group from the Ansible inventory. The custom tests will then be added to all devices that are part of this group. You can also use the `all` group to target all the devices in your inventory. The directory where the custom catalogs are stored can be changed with the `custom_anta_catalogs_dir` variable.
+
+!!! warning
+    The `skipped_tests` variable will ONLY skip the dynamically generated tests from the AVD validate state role. It will **not** skip tests added from custom catalogs.
+
+!!! info
+    The final catalog will be validated by ANTA before running the tests on your network. Duplicate tests will be automatically removed.
 
 ## Example Playbook
 
