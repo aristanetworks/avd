@@ -105,15 +105,24 @@ interface {{ vlan_interface.name }}
 {%         if vlan_interface.ip_igmp_host_proxy.groups is arista.avd.defined %}
 {%             for proxy_group in vlan_interface.ip_igmp_host_proxy.groups %}
 {%                 if proxy_group.exclude is arista.avd.defined or proxy_group.include is arista.avd.defined %}
-{%                     if proxy_group.exclude is arista.avd.defined %}
-   {{ host_proxy_cli }} {{ proxy_group.group }} exclude {{ proxy_group.exclude }}
-{%                     endif %}
 {%                     if proxy_group.include is arista.avd.defined %}
-   {{ host_proxy_cli }} {{ proxy_group.group }} include {{ proxy_group.include }}
+{%                         for include_source in proxy_group.include %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} include {{ include_source.source }}
+{%                         endfor %}
+{%                     endif %}
+{%                     if proxy_group.exclude is arista.avd.defined %}
+{%                         for exclude_source in proxy_group.exclude %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} exclude {{ exclude_source.source }}
+{%                         endfor %}
 {%                     endif %}
 {%                 elif proxy_group.group is arista.avd.defined %}
    {{ host_proxy_cli }} {{ proxy_group.group }}
 {%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if vlan_interface.ip_igmp_host_proxy.access_lists is arista.avd.defined %}
+{%             for access_list in vlan_interface.ip_igmp_host_proxy.access_lists %}
+   {{ host_proxy_cli }} access-list {{ access_list.name }}
 {%             endfor %}
 {%         endif %}
 {%         if vlan_interface.ip_igmp_host_proxy.report_interval is arista.avd.defined %}

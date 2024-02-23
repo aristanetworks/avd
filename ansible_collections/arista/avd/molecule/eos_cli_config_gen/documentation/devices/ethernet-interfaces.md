@@ -347,6 +347,18 @@ interface Ethernet1
    ip verify unicast source reachable-via rx
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
+   ip igmp host-proxy
+   ip igmp host-proxy 239.0.0.1
+   ip igmp host-proxy 239.0.0.2 exclude 10.0.2.1
+   ip igmp host-proxy 239.0.0.3 include 10.0.3.1
+   ip igmp host-proxy 239.0.0.4 include 10.0.4.3
+   ip igmp host-proxy 239.0.0.4 include 10.0.4.4
+   ip igmp host-proxy 239.0.0.4 exclude 10.0.4.1
+   ip igmp host-proxy 239.0.0.4 exclude 10.0.4.2
+   ip igmp host-proxy access-list ACL1
+   ip igmp host-proxy access-list ACL2
+   ip igmp host-proxy report-interval 2
+   ip igmp host-proxy version 2
    switchport port-security
    priority-flow-control on
    priority-flow-control priority 5 drop
@@ -355,14 +367,6 @@ interface Ethernet1
    Comment created from eos_cli under ethernet_interfaces.Ethernet1
    EOF
 
-   ip igmp host-proxy
-   ip igmp host-proxy 239.0.0.1
-   ip igmp host-proxy 239.0.0.2 exclude [{'source': '10.0.2.1'}]
-   ip igmp host-proxy 239.0.0.3 include [{'source': '10.0.3.1'}]
-   ip igmp host-proxy 239.0.0.4 exclude [{'source': '10.0.4.1'}, {'source': '10.0.4.2'}]
-   ip igmp host-proxy 239.0.0.4 include [{'source': '10.0.4.3'}, {'source': '10.0.4.4'}]
-   ip igmp host-proxy report-interval 2
-   ip igmp host-proxy version 2
 !
 interface Ethernet2
    description SRV-POD02_Eth1
