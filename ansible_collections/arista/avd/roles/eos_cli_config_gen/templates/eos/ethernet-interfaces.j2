@@ -811,4 +811,28 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.eos_cli is arista.avd.defined %}
    {{ ethernet_interface.eos_cli | indent(3, false) }}
 {%     endif %}
+{%     if ethernet_interface.ip_igmp_host_proxy.enabled is arista.avd.defined(true) %}
+{%         set host_proxy_cli =  "ip igmp host-proxy" %}
+   {{ host_proxy_cli }}
+{%         if ethernet_interface.ip_igmp_host_proxy.groups is arista.avd.defined %}
+{%             for proxy_group in ethernet_interface.ip_igmp_host_proxy.groups %}
+{%                 if proxy_group.exclude is arista.avd.defined or proxy_group.include is arista.avd.defined %}
+{%                     if proxy_group.exclude is arista.avd.defined %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} exclude {{ proxy_group.exclude }}
+{%                     endif %}
+{%                     if proxy_group.include is arista.avd.defined %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} include {{ proxy_group.include }}
+{%                     endif %}
+{%                 elif proxy_group.group is arista.avd.defined %}
+   {{ host_proxy_cli }} {{ proxy_group.group }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.ip_igmp_host_proxy.report_interval is arista.avd.defined %}
+   {{ host_proxy_cli }} report-interval {{ ethernet_interface.ip_igmp_host_proxy.report_interval }}
+{%         endif %}
+{%         if ethernet_interface.ip_igmp_host_proxy.version is arista.avd.defined %}
+   {{ host_proxy_cli }} version {{ ethernet_interface.ip_igmp_host_proxy.version }}
+{%         endif %}
+{%     endif %}
 {% endfor %}

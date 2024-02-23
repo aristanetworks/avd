@@ -779,3 +779,66 @@ keys:
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration
+        ip_igmp_host_proxy:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            groups:
+              type: list
+              primary_key: group
+              convert_types:
+                - dict
+              description: Group Address.
+              items:
+                type: dict
+                keys:
+                  group:
+                    type: str
+                  exclude:
+                    type: list
+                    primary_key: source
+                    convert_types:
+                      - dict
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+                  include:
+                    type: list
+                    primary_key: source
+                    convert_types:
+                      - dict
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+            report_interval:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 31744
+              default: 1
+              description: Time interval between unsolicited reports.
+            access_lists:
+              type: list
+              primary_key: name
+              convert_types:
+                - dict
+              description: Non-standard Access List name.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+            version:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 3
+              default: 3
+              description: IGMP version on IGMP host-proxy interface.

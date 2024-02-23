@@ -28,7 +28,28 @@ port_channel_interfaces:
       comment
       Comment created from eos_cli under port_channel_interfaces.Port-Channel5
       EOF
-
+    ip_igmp_host_proxy:
+      enabled: true
+      groups:
+        - group: 239.0.0.1
+        - group: 239.0.0.2
+          exclude:
+            - source: 10.0.2.1
+        - group: 239.0.0.3
+          include:
+            - source: 10.0.3.1
+        - group: 239.0.0.4
+          exclude:
+            - source: 10.0.4.1
+            - source: 10.0.4.2
+          include:
+            - source: 10.0.4.3
+            - source: 10.0.4.4
+      report_interval: 2
+      access_lists:
+        - name: ACL1
+        - name: ACL2
+      version: 2
   - name: Port-Channel15
     description: DC1_L2LEAF3_Po1
     vlans: 110,201
