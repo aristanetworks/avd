@@ -198,7 +198,8 @@ class CvTagsMixin:
             {"name": "Circuit", <value copied from wan_circuit_id if this is a wan interface>}
         ]
         """
-        if not self.shared_utils.is_cv_pathfinder_router:
+        # Skip if not cv_pathfinder_role or if this is a subinterface.
+        if not self.shared_utils.is_cv_pathfinder_router or "." in ethernet_interface["name"]:
             return []
 
         if ethernet_interface["name"] in self._wan_interface_names:

@@ -146,7 +146,7 @@ class OverlayMixin:
         """
         if self.is_wan_router:
             # for Pathfinder, no HA, no Site ID
-            if not self.is_cv_pathfinder_edge_or_transit:
+            if not self.is_cv_pathfinder_client:
                 return f"{self.router_id}:0"
             if not self.wan_ha:
                 return f"{self.router_id}:{self.wan_site['id']}"

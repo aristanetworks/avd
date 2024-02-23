@@ -405,11 +405,9 @@ class WanMixin:
     @cached_property
     def wan_ha(self: SharedUtils) -> bool:
         """
-        Only trigger HA if 2 devices are in the same group and wan_ha.enabled is true
+        Only trigger HA if 2 cv_pathfinder clients are in the same group and wan_ha.enabled is true
         """
-        if not self.is_cv_pathfinder_client:
-            return False
-        return get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
+        return self.is_cv_pathfinder_client and get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
 
     @cached_property
     def wan_ha_path_group_name(self: SharedUtils) -> str:

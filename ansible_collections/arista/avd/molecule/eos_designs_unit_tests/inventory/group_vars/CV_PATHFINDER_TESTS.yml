@@ -124,6 +124,8 @@ wan_router:
               wan_circuit_id: 10423
               ip_address: 172.15.6.6/31
           uplink_switch_interfaces: [Ethernet2, Ethernet2]
+
+    # TRANSIT_SITE_HA_ENABLED
     - group: TRANSIT_SITE_HA_ENABLED
       loopback_ipv4_pool: 192.168.43.0/24
       vtep_loopback_ipv4_pool: 192.168.143.0/24
@@ -133,6 +135,7 @@ wan_router:
       uplink_type: p2p-vrfs
       uplink_switches: [ site-ha-enabled-leaf1 ]
       uplink_interfaces: [ Ethernet52 ]
+      cv_pathfinder_transit_mode: region
       # Disable HA IPsec
       wan_ha:
         ipsec: false
@@ -437,5 +440,5 @@ application_classification:
           - 30000-30100
           - 31000-31100
 
-wan_transit:
-  blah: test_da_stuff
+# wan_transit:
+#   blah: test_da_stuff
