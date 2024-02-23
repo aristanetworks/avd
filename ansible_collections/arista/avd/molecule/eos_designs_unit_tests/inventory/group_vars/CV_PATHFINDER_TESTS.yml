@@ -41,7 +41,7 @@ default_node_types:
   - node_type: wan_rr
     match_hostnames:
       - "cv-pathfinder-pathfinder.*"
-  - node_type: wan_edge
+  - node_type: wan_router
     match_hostnames:
       - "cv-pathfinder-edge.*"
       - "cv-pathfinder-transit.*"
@@ -49,7 +49,7 @@ default_node_types:
     match_hostnames:
       - ".*leaf.*"
 
-wan_edge:
+wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 192.168.142.0/24

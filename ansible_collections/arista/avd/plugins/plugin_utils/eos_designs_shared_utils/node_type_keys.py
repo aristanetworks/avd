@@ -61,8 +61,8 @@ DEFAULT_NODE_TYPE_KEYS = {
             "cv_tags_topology_type": "spine",
         },
         {
-            "key": "wan_edge",
-            "type": "wan_edge",
+            "key": "wan_router",
+            "type": "wan_router",
             "default_evpn_role": "client",
             "default_wan_role": "client",
             "default_overlay_routing_protocol": "ibgp",

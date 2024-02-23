@@ -3674,12 +3674,12 @@ keys:
 
       was in PREVIEW MODE.
 
-      Migrate your existing transit nodes to using `wan_edge` node_type and set
+      Migrate your existing transit nodes to using `wan_router` node_type and set
 
       `cv_pathfinder_transit_mode: region` under node settings.'
     deprecation:
       warning: true
-      new_key: 'node_type `wan_edge` and set `cv_pathfinder_transit_mode: region`
+      new_key: 'node_type `wan_router` and set `cv_pathfinder_transit_mode: region`
         under node settings'
       removed: true
       remove_in_version: 4.7.0
