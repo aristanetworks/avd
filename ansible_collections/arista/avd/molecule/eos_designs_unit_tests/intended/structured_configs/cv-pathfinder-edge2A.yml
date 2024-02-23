@@ -1,8 +1,8 @@
-hostname: cv-pathfinder-edge
+hostname: cv-pathfinder-edge2A
 is_deployed: true
 router_bgp:
   as: '65000'
-  router_id: 192.168.42.1
+  router_id: 192.168.42.2
   bgp:
     default:
       ipv4_unicast: false
@@ -17,6 +17,9 @@ router_bgp:
     send_community: all
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
+    allowas_in:
+      enabled: true
+      times: 1
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
@@ -39,27 +42,34 @@ router_bgp:
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
-  - source_protocol: static
-    route_map: RM-STATIC-2-BGP
   neighbors:
-  - ip_address: 172.17.0.0
+  - ip_address: 172.17.0.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65199'
-    peer: site-ha-disabled-leaf
-    description: site-ha-disabled-leaf_Ethernet1
+    peer: site-ha-enabled-leaf2A
+    description: site-ha-enabled-leaf2A_Ethernet1
+  - ip_address: 172.17.0.6
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65199'
+    peer: site-ha-enabled-leaf2B
+    description: site-ha-enabled-leaf2B_Ethernet1
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder
   vrfs:
   - name: IT
-    router_id: 192.168.42.1
+    router_id: 192.168.42.2
     neighbors:
-    - ip_address: 172.17.0.0
+    - ip_address: 172.17.0.4
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-disabled-leaf_Ethernet1.100_vrf_IT
-    rd: 192.168.42.1:100
+      description: site-ha-enabled-leaf2A_Ethernet1.100_vrf_IT
+    - ip_address: 172.17.0.6
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65199'
+      description: site-ha-enabled-leaf2B_Ethernet1.100_vrf_IT
+    rd: 192.168.42.2:100
     route_targets:
       import:
       - address_family: evpn
@@ -72,13 +82,17 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: PROD
-    router_id: 192.168.42.1
+    router_id: 192.168.42.2
     neighbors:
-    - ip_address: 172.17.0.0
+    - ip_address: 172.17.0.4
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-disabled-leaf_Ethernet1.42_vrf_PROD
-    rd: 192.168.42.1:42
+      description: site-ha-enabled-leaf2A_Ethernet1.42_vrf_PROD
+    - ip_address: 172.17.0.6
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65199'
+      description: site-ha-enabled-leaf2B_Ethernet1.42_vrf_PROD
+    rd: 192.168.42.2:42
     route_targets:
       import:
       - address_family: evpn
@@ -91,7 +105,7 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: default
-    rd: 192.168.42.1:1
+    rd: 192.168.42.2:1
     route_targets:
       import:
       - address_family: evpn
@@ -148,38 +162,71 @@ management_api_http:
   enable_https: true
 ethernet_interfaces:
 - name: Ethernet52
-  peer: site-ha-disabled-leaf
+  peer: site-ha-enabled-leaf2A
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet1
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet1
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 172.17.0.1/31
+  ip_address: 172.17.0.5/31
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.100
-  peer: site-ha-disabled-leaf
+  peer: site-ha-enabled-leaf2A
   peer_interface: Ethernet1.100
   peer_type: l3leaf
   vrf: IT
-  description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet1.100_vrf_IT
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet1.100_vrf_IT
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 100
   mtu: 9214
-  ip_address: 172.17.0.1/31
+  ip_address: 172.17.0.5/31
 - name: Ethernet52.42
-  peer: site-ha-disabled-leaf
+  peer: site-ha-enabled-leaf2A
   peer_interface: Ethernet1.42
   peer_type: l3leaf
   vrf: PROD
-  description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet1.42_vrf_PROD
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet1.42_vrf_PROD
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
   mtu: 9214
-  ip_address: 172.17.0.1/31
+  ip_address: 172.17.0.5/31
+- name: Ethernet53
+  peer: site-ha-enabled-leaf2B
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 172.17.0.7/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet53.100
+  peer: site-ha-enabled-leaf2B
+  peer_interface: Ethernet1.100
+  peer_type: l3leaf
+  vrf: IT
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet1.100_vrf_IT
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 100
+  mtu: 9214
+  ip_address: 172.17.0.7/31
+- name: Ethernet53.42
+  peer: site-ha-enabled-leaf2B
+  peer_interface: Ethernet1.42
+  peer_type: l3leaf
+  vrf: PROD
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet1.42_vrf_PROD
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 42
+  mtu: 9214
+  ip_address: 172.17.0.7/31
 - name: Ethernet1
   peer_type: l3_interface
   ip_address: dhcp
@@ -188,25 +235,11 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
-- name: Ethernet2
-  peer_type: l3_interface
-  ip_address: 172.15.5.5/31
-  shutdown: false
-  type: routed
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
-- name: Ethernet3
-  peer_type: l3_interface
-  ip_address: 172.20.20.20/31
-  shutdown: false
-  type: routed
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
   shutdown: false
-  ip_address: 192.168.42.1/32
+  ip_address: 192.168.42.2/32
 as_path:
   access_lists:
   - name: ASPATH-WAN
@@ -218,10 +251,18 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.42.0/24 eq 32
-- name: PL-STATIC-VRF-DEFAULT
+- name: PL-WAN-HA-PREFIXES
   sequence_numbers:
   - sequence: 10
-    action: permit 66.66.66.0/24
+    action: permit 172.17.0.4/31
+  - sequence: 20
+    action: permit 172.17.0.6/31
+- name: PL-WAN-HA-PEER-PREFIXES
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.17.0.8/31
+  - sequence: 20
+    action: permit 172.17.0.10/31
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -230,14 +271,37 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.42.1:511 additive
+    - extcommunity soo 192.168.42.2:423 additive
+  - sequence: 50
+    type: permit
+    match:
+    - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
   - sequence: 40
     type: permit
     description: Mark prefixes originated from the LAN
     set:
-    - extcommunity soo 192.168.42.1:511 additive
+    - extcommunity soo 192.168.42.2:423 additive
+  - sequence: 10
+    type: permit
+    description: Allow WAN HA peer interface prefixes
+    match:
+    - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
+  - sequence: 20
+    type: permit
+    description: Allow prefixes originated from the HA peer
+    match:
+    - extcommunity ECL-EVPN-SOO
+    set:
+    - as-path match all replacement auto auto
+  - sequence: 30
+    type: permit
+    description: Use WAN routes from HA peer as backup
+    match:
+    - as-path ASPATH-WAN
+    set:
+    - community no-advertise
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 10
@@ -250,6 +314,11 @@ route_maps:
     description: Advertise routes received from WAN iBGP towards LAN
     match:
     - route-type internal
+  - sequence: 30
+    type: permit
+    description: Advertise WAN HA prefixes towards LAN
+    match:
+    - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -263,27 +332,13 @@ route_maps:
   - sequence: 10
     type: permit
     set:
-    - extcommunity soo 192.168.42.1:511 additive
+    - extcommunity soo 192.168.42.2:423 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
-- name: RM-STATIC-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-STATIC-VRF-DEFAULT
-    set:
-    - extcommunity soo 192.168.42.1:511 additive
-static_routes:
-- destination_address_prefix: 172.16.0.0/16
-  gateway: 172.16.5.4
-- destination_address_prefix: 66.66.66.0/24
-  gateway: 172.17.0.0
-  vrf: default
 flow_tracking:
   hardware:
     trackers:
@@ -302,11 +357,13 @@ ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.42.1:511
+    extcommunities: soo 192.168.42.2:423
 ip_security:
   ike_policies:
+  - name: DP-IKE-POLICY
+    local_id: 192.168.142.2
   - name: CP-IKE-POLICY
-    local_id: 192.168.142.1
+    local_id: 192.168.142.2
   sa_policies:
   - name: DP-SA-POLICY
     esp:
@@ -318,6 +375,7 @@ ip_security:
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
+    ike_policy: DP-IKE-POLICY
     sa_policy: DP-SA-POLICY
     connection: start
     shared_key: ABCDEF1234567890666
@@ -341,14 +399,14 @@ ip_security:
 router_adaptive_virtual_topology:
   topology_role: edge
   region:
-    name: AVD_Land_East
-    id: 43
+    name: AVD_Land_West
+    id: 42
   zone:
     name: DEFAULT-ZONE
     id: 1
   site:
-    name: Site511
-    id: 511
+    name: Site423
+    id: 423
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: LB-CONTROL-PLANE-PROFILE
@@ -437,59 +495,48 @@ router_path_selection:
       - 10.7.7.7
       - 10.9.9.9
     ipsec_profile: CP-PROFILE
-  - name: MPLS
-    id: 100
+  - name: LAN_HA
+    id: 65535
+    flow_assignment: lan
     local_interfaces:
-    - name: Ethernet2
-      stun:
-        server_profiles:
-        - MPLS-cv-pathfinder-pathfinder-Ethernet2
-    dynamic_peers:
-      enabled: true
+    - name: Ethernet52
+    - name: Ethernet53
     static_peers:
-    - router_ip: 192.168.144.1
-      name: cv-pathfinder-pathfinder
+    - router_ip: 192.168.142.3
+      name: cv-pathfinder-edge2B
       ipv4_addresses:
-      - 172.16.0.1
-  - name: LTE
-    id: 102
-    local_interfaces:
-    - name: Ethernet3
-    dynamic_peers:
-      enabled: true
-    ipsec_profile: CP-PROFILE
+      - 172.17.0.9
+      - 172.17.0.11
+    ipsec_profile: DP-PROFILE
   load_balance_policies:
   - name: LB-CONTROL-PLANE-PROFILE
     path_groups:
+    - name: LAN_HA
     - name: INET
-    - name: MPLS
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
-    - name: MPLS
+    - name: LAN_HA
     - name: INET
       priority: 2
     jitter: 42
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
-    - name: MPLS
-    - name: LTE
+    - name: LAN_HA
     - name: INET
       priority: 2
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
-    - name: MPLS
-      priority: 2
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
-    - name: MPLS
+    - name: LAN_HA
     - name: INET
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
-    - name: MPLS
-      priority: 42
 router_traffic_engineering:
   enabled: true
 stun:
@@ -499,8 +546,6 @@ stun:
       ip_address: 10.7.7.7
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
-    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
-      ip_address: 172.16.0.1
 application_traffic_recognition:
   application_profiles:
   - name: VOICE
@@ -557,12 +602,12 @@ dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9214
-  ip_address: 192.168.142.1/32
+  ip_address: 192.168.142.2/32
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
-    description: cv-pathfinder-edge_VTEP
+    description: cv-pathfinder-edge2A_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1
@@ -579,13 +624,17 @@ metadata:
     - name: Role
       value: edge
     - name: Region
-      value: AVD_Land_East
+      value: AVD_Land_West
     - name: Zone
       value: DEFAULT-ZONE
     - name: Site
-      value: Site511
+      value: Site423
     interface_tags:
     - interface: Ethernet52
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet53
       tags:
       - name: Type
         value: lan
@@ -596,41 +645,17 @@ metadata:
       - name: Carrier
         value: ATT
       - name: Circuit
-        value: '666'
-    - interface: Ethernet2
-      tags:
-      - name: Type
-        value: wan
-      - name: Carrier
-        value: Colt
-      - name: Circuit
-        value: '10555'
-    - interface: Ethernet3
-      tags:
-      - name: Type
-        value: wan
-      - name: Carrier
-        value: Comcast-5G
-      - name: Circuit
-        value: AF830
+        value: 423-01
   cv_pathfinder:
     role: edge
-    vtep_ip: 192.168.142.1
-    region: AVD_Land_East
+    vtep_ip: 192.168.142.2
+    region: AVD_Land_West
     zone: DEFAULT-ZONE
-    site: Site511
+    site: Site423
     interfaces:
     - name: Ethernet1
       carrier: ATT
-      circuit_id: '666'
+      circuit_id: 423-01
       pathgroup: INET
-    - name: Ethernet2
-      carrier: Colt
-      circuit_id: '10555'
-      pathgroup: MPLS
-    - name: Ethernet3
-      carrier: Comcast-5G
-      circuit_id: AF830
-      pathgroup: LTE
     pathfinders:
     - vtep_ip: 192.168.144.1

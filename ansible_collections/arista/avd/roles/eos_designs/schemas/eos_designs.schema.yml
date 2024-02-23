@@ -7559,6 +7559,30 @@ $defs:
 
 
               The CV Pathfinder site name.'
+          wan_ha:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: dict
+            description: 'PREVIEW: This key is currently not supported
+
+
+              The key is supported only if `wan_mode` == `cv-pathfinder`.
+
+              AutoVPN support is still to be determined.
+
+
+              Maximum 2 devices supported by group for HA.'
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable / Disable auto CV-Pathfinder HA, when two nodes
+                  are defined in the same node_group.
+              ipsec:
+                type: bool
+                default: true
+                description: Enable / Disable IPsec over HA path-group when HA is
+                  enabled.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration

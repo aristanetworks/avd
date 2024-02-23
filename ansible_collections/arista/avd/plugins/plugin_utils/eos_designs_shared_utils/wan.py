@@ -375,3 +375,91 @@ class WanMixin:
         Return True is the current wan_mode is cv-pathfinder and the device is either an edge or a transit device
         """
         return self.wan_mode == "cv-pathfinder" and self.cv_pathfinder_role in ["edge", "transit region"]
+
+    @cached_property
+    def wan_ha(self: SharedUtils) -> bool:
+        """
+        Only trigger HA if 2 devices are in the same group and wan_ha.enabled is true
+        """
+        if self.cv_pathfinder_role in [None, "pathfinder"]:
+            return False
+        return get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
+
+    @cached_property
+    def wan_ha_path_group_name(self: SharedUtils) -> str:
+        """
+        Return HA path group name for the WAN design.
+        Used in both network services and overlay python modules.
+
+        TODO make this configurable
+        """
+        return "LAN_HA"
+
+    @cached_property
+    def is_first_ha_peer(self: SharedUtils) -> bool:
+        """
+        Returns True if the device is the first device in the node_group,
+        false otherwise.
+
+        This should be called only from functions which have checked that HA is enabled.
+        """
+        return self.switch_data_node_group_nodes[0]["name"] == self.hostname
+
+    @cached_property
+    def wan_ha_peer(self: SharedUtils) -> str | None:
+        """
+        Return the name of the WAN HA peer.
+        """
+        if not self.wan_ha:
+            return None
+        if self.is_first_ha_peer:
+            return self.switch_data_node_group_nodes[1]["name"]
+        elif self.switch_data_node_group_nodes[1]["name"] == self.hostname:
+            return self.switch_data_node_group_nodes[0]["name"]
+        raise AristaAvdError("Unable to find WAN HA peer within same node group")
+
+    @cached_property
+    def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:
+        """
+        Read the IP addresses/prefix length from HA peer uplinks
+        Used also to generate the prefix list of the PEER HA prefixes
+        """
+        peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
+        # For now only picking up uplink interfaces in VRF default on the router.
+        vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
+
+        ip_addresses = []
+        for uplink in vrf_default_peer_uplinks:
+            ip_address = get(
+                uplink,
+                "ip_address",
+                required=True,
+                org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address",
+            )
+            # We can use [] notation here because if there is an ip_address, there should be a prefix_length
+            prefix_length = uplink["prefix_length"]
+            ip_addresses.append(f"{ip_address}/{prefix_length}")
+
+        return ip_addresses
+
+    @cached_property
+    def wan_ha_ip_addresses(self: SharedUtils) -> list:
+        """
+        Read the IP addresses/prefix length from this device uplinks used for HA.
+        Used to generate the prefix list.
+        """
+        vrf_default_uplinks = [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+
+        ip_addresses = []
+        for uplink in vrf_default_uplinks:
+            ip_address = get(
+                uplink,
+                "ip_address",
+                required=True,
+                org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA does not have an IP address",
+            )
+            # We can use [] notation here because if there is an ip_address, there should be a prefix_length
+            prefix_length = uplink["prefix_length"]
+            ip_addresses.append(f"{ip_address}/{prefix_length}")
+
+        return ip_addresses

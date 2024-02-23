@@ -213,19 +213,20 @@ class UtilsMixin:
 
     def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, context_path: str) -> dict:
         """
-        Generate and return a router path-selection load-balance policy.
+        Generate and return a router path-selection load-balance policy. If HA is enabled, inject the HA path-group with priority 1.
 
         Attrs:
         ------
         name (str): The name of the load balance policy
         input_dict (dict): The dictionary containing the list of path-groups and their preference.
         context_path (str): Key used for context for error messages.
-
-        TODO:
-        * add LAN_HA with prio 1 when HA is implemented
         """
         wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
         wan_load_balance_policy = {"name": name, "path_groups": [], **get(input_dict, "constraints", default={})}
+
+        if self.shared_utils.wan_ha or self.shared_utils.cv_pathfinder_role == "pathfinder":
+            # Adding HA path-group with priority 1 - it does not count as an entry with priority 1
+            wan_load_balance_policy["path_groups"].append({"name": self.shared_utils.wan_ha_path_group_name})
 
         # An entry is composed of a list of path-groups in `names` and a `priority`
         policy_entries = get(input_dict, "path_groups", [])
