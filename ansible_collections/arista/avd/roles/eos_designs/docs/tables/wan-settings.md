@@ -7,6 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>wan_edge</samp>](## "wan_edge") <span style="color:red">removed</span> | Dictionary |  |  |  | The `wan_edge` node type was introduced and removed while the AVD WAN feature was in PREVIEW MODE.<br>Migrate your existing edge nodes to using `wan_router` node_type.<span style="color:red">This key was removed. Support was removed in AVD version 4.6.0-dev1. Use <samp>wan_router</samp> instead.</span> |
     | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>Define IPsec profiles parameters for WAN configuration. |
     | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  | PREVIEW: This key is currently not supported |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.control_plane.ike_policy_name") | String |  | `CP-IKE-POLICY` |  | Name of the IKE policy. |
@@ -27,7 +28,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "wan_route_servers.[].path_groups.[].interfaces") | List, items: Dictionary | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].path_groups.[].interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].path_groups.[].interfaces.[].ip_address") | String |  |  |  | The public IP address of the Route Reflector for this path-group. |
-    | [<samp>wan_transit</samp>](## "wan_transit") <span style="color:red">removed</span> | Dictionary |  |  |  | `wan_transit` node type was removed while AVD WAN development feature<br>was in PREVIEW MODE.<br>Migrate your existing transit nodes to using `wan_router` node_type and set<br>`cv_pathfinder_transit_mode: region` under node settings.<span style="color:red">This key was removed. Support was removed in AVD version 4.7.0. Use <samp>node_type `wan_router` and set `cv_pathfinder_transit_mode: region` under node settings</samp> instead.</span> |
+    | [<samp>wan_transit</samp>](## "wan_transit") <span style="color:red">removed</span> | Dictionary |  |  |  | The `wan_transit` node type was introduced and removed while the AVD WAN feature was in PREVIEW MODE.<br>Migrate your existing transit nodes to using `wan_router` node_type and set<br>`cv_pathfinder_transit_mode: region` under node settings.<span style="color:red">This key was removed. Support was removed in AVD version 4.6.0-dev1. Use <samp>node_type `wan_router` and set `cv_pathfinder_transit_mode: region` under node settings</samp> instead.</span> |
 
 === "YAML"
 
