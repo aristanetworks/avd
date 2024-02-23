@@ -209,11 +209,11 @@ ip_security:
   sa_policies:
   - name: DP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
