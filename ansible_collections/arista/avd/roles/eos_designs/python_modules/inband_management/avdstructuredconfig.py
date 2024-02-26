@@ -255,24 +255,25 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         )
 
     def get_parent_svi_cfg(self, vlan: int, subnet: str | None, ipv6_subnet: str | None) -> dict:
+        svidict = {
+            "name": f"Vlan{vlan}",
+            "description": self.shared_utils.inband_mgmt_description,
+            "shutdown": False,
+            "mtu": self.shared_utils.inband_mgmt_mtu,
+            "vrf": self.shared_utils.inband_mgmt_vrf,
+        }
+
         network = False
         v6_network = False
-        ip_address = None
-        gateway = None
-        ipv6_address = None
-        v6_gateway = None
-        ipv6_enable = None
-        v6_attached_host_export = None
-        v4_attached_host_export = None
 
         if subnet is not None:
             network = ip_network(subnet, strict=False)
-            v4_attached_host_export = {"enabled": True, "distance": 19}
+            svidict["ip_attached_host_route_export"] = {"enabled": True, "distance": 19}
 
         if ipv6_subnet is not None:
-            ipv6_enable = True
+            svidict["ipv6_enable"] = True
             v6_network = ip_network(ipv6_subnet, strict=False)
-            v6_attached_host_export = {"enabled": True, "distance": 19}
+            svidict["ipv6_attached_host_route_export"] = {"enabled": True, "distance": 19}
 
         if self.shared_utils.mlag_role == "secondary":
             if network:
@@ -286,26 +287,11 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                 ipv6 = str(v6_network[2])
 
         if network:
-            ip_address = f"{ip}/{network.prefixlen}"
-            gateway = str(network[1])
+            svidict["ip_address"] = f"{ip}/{network.prefixlen}"
+            svidict["ip_virtual_router_addresses"] = [str(network[1])]
 
         if v6_network:
-            ipv6_address = f"{ipv6}/{v6_network.prefixlen}"
-            v6_gateway = str(v6_network[1])
+            svidict["ipv6_address"] = f"{ipv6}/{v6_network.prefixlen}"
+            svidict["ipv6_virtual_router_addresses"] = [str(v6_network[1])]
 
-        return strip_empties_from_dict(
-            {
-                "name": f"Vlan{vlan}",
-                "description": self.shared_utils.inband_mgmt_description,
-                "shutdown": False,
-                "mtu": self.shared_utils.inband_mgmt_mtu,
-                "vrf": self.shared_utils.inband_mgmt_vrf,
-                "ip_address": ip_address,
-                "ip_virtual_router_addresses": [gateway],
-                "ipv6_enable": ipv6_enable,
-                "ipv6_address": ipv6_address,
-                "ipv6_virtual_router_addresses": [v6_gateway],
-                "ip_attached_host_route_export": v4_attached_host_export,
-                "ipv6_attached_host_route_export": v6_attached_host_export,
-            }
-        )
+        return strip_empties_from_dict(svidict)

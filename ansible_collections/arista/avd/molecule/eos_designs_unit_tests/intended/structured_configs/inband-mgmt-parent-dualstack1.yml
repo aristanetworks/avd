@@ -150,19 +150,19 @@ vlan_interfaces:
   description: Inband Management
   shutdown: false
   mtu: 1500
-  ip_address: 192.168.104.2/24
-  ip_virtual_router_addresses:
-  - 192.168.104.1
-  ipv6_enable: true
-  ipv6_address: 2a00:104::2/64
-  ipv6_virtual_router_addresses:
-  - 2a00:104::1
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ipv6_enable: true
   ipv6_attached_host_route_export:
     enabled: true
     distance: 19
+  ip_address: 192.168.104.2/24
+  ip_virtual_router_addresses:
+  - 192.168.104.1
+  ipv6_address: 2a00:104::2/64
+  ipv6_virtual_router_addresses:
+  - 2a00:104::1
 port_channel_interfaces:
 - name: Port-Channel11
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Po11
