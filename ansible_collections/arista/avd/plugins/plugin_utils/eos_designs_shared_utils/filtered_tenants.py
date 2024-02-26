@@ -50,7 +50,7 @@ class FilteredTenantsMixin:
                     )
 
         no_vrf_default = all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"])
-        if self.wan_role is not None and no_vrf_default:
+        if self.is_wan_router and no_vrf_default:
             filtered_tenants.append(
                 {
                     "name": "WAN_DEFAULT",
@@ -70,7 +70,7 @@ class FilteredTenantsMixin:
                     "l2vlans": [],
                 }
             )
-        elif self.wan_role:
+        elif self.is_wan_router:
             # It is enough to check only the first occurence of default VRF as some other piece of code
             # checks that if the VRF is in multiple tenants, the configuration is consistent.
             for tenant in filtered_tenants:
@@ -157,6 +157,20 @@ class FilteredTenantsMixin:
 
         return accepted_vlans
 
+    def is_accepted_vrf(self: SharedUtils, vrf: dict) -> bool:
+        """
+        Returns True if
+
+        - filter.allow_vrfs == ["all"] OR VRF is included in filter.allow_vrfs.
+
+        AND
+
+        - filter.not_vrfs == [] OR VRF is NOT in filter.deny_vrfs
+        """
+        return ("all" in self.filter_allow_vrfs or vrf["name"] in self.filter_allow_vrfs) and (
+            not self.filter_deny_vrfs or vrf["name"] not in self.filter_deny_vrfs
+        )
+
     def filtered_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
         """
         Return sorted and filtered vrf list from given tenant.
@@ -169,6 +183,9 @@ class FilteredTenantsMixin:
 
         vrfs: list[dict] = natural_sort(convert_dicts(tenant.get("vrfs", []), "name"), "name")
         for original_vrf in vrfs:
+            if not self.is_accepted_vrf(original_vrf):
+                continue
+
             # Copying original_vrf and setting "tenant" for use by child objects like SVIs
             vrf = {**original_vrf, "tenant": tenant["name"]}
 

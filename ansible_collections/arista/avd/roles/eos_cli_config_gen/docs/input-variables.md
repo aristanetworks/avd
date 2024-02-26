@@ -647,6 +647,12 @@ roles/eos_cli_config_gen/docs/tables/monitor-connectivity.md
 roles/eos_cli_config_gen/docs/tables/monitor-sessions.md
 --8<--
 
+### Monitor layer 1
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/monitor-layer1.md
+--8<--
+
 ### SFLOW
 
 --8<--

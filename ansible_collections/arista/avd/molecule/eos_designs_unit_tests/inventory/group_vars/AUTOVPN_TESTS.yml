@@ -1,6 +1,8 @@
 ---
 # Testing autovpn
 wan_mode: autovpn
+# Disabling underlay for tests
+underlay_routing_protocol: none
 
 bgp_as: 65000
 
@@ -31,11 +33,11 @@ default_node_types:
   - node_type: wan_rr
     match_hostnames:
       - "autovpn-rr.*"
-  - node_type: wan_edge
+  - node_type: wan_router
     match_hostnames:
       - "autovpn-edge"
 
-wan_edge:
+wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.30.0/24
     vtep_loopback_ipv4_pool: 192.168.130.0/24

@@ -23,7 +23,7 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
         return
 
     existing_devices = await verify_devices_in_cloudvision_inventory(devices, skip_missing_devices, warnings, cv_client)
-    await verify_devices_in_topology_studio(existing_devices, workspace_id, skip_missing_devices, warnings, cv_client)
+    await verify_devices_in_topology_studio(existing_devices, workspace_id, cv_client)
     return
 
 
@@ -108,40 +108,42 @@ async def verify_devices_in_cloudvision_inventory(
     return existing_devices
 
 
-async def verify_devices_in_topology_studio(
-    existing_devices: list[CVDevice], workspace_id: str, skip_missing_devices: bool, warnings: list[Exception], cv_client: CVClient
-) -> None:
+async def verify_devices_in_topology_studio(existing_devices: list[CVDevice], workspace_id: str, cv_client: CVClient) -> None:
     """
-    Verify that the given Devices are already present in the Inventory & Topology Studio.
+    Insert and/or update given Devices in the Inventory & Topology Studio.
+
+    Since we only get devices which are already verified to be in the inventory, we can trust the given information.
+
+    Existing devices are updated with hostname and system mac address.
+    Missing devices are added with device id, hostname, system mac address.
     """
+
+    existing_device_tuples = set((device.serial_number, device.hostname, device.system_mac_address) for device in existing_devices)
 
     cv_topology_inputs = await cv_client.get_topology_studio_inputs(
         workspace_id=workspace_id,
         device_ids=list({device.serial_number for device in existing_devices}),
     )
-    LOGGER.info("verify_devices_in_cloudvision_inventory: %s devices.", len(existing_devices))
+    LOGGER.info("verify_devices_in_topology_studio: %s unique devices for %s device objects.", len(existing_device_tuples), len(existing_devices))
     LOGGER.info("verify_devices_in_topology_studio: got %s devices from I&T Studio.", len(cv_topology_inputs))
     topology_inputs_dict_by_serial = {topology_input.key.device_id: topology_input for topology_input in cv_topology_inputs}
 
     # List of tuples holding the info we need to update in I&T Studio
-    # [(<device_id>, <hostname>)]
+    # [(<device_id>, <hostname>, <system_mac>)]
     update_topology_inputs = []
 
-    for device in existing_devices:
-        if device.serial_number not in topology_inputs_dict_by_serial:
-            device._exists_on_cv = False
-            continue
-            # TODO: Onboard the device to I&T since we know we have it on CV.
+    for serial_number, hostname, system_mac_address in existing_device_tuples:
+        if serial_number not in topology_inputs_dict_by_serial:
+            update_topology_inputs.append((serial_number, hostname, system_mac_address))
+        elif (
+            hostname != topology_inputs_dict_by_serial[serial_number].device_info.hostname
+            or system_mac_address != topology_inputs_dict_by_serial[serial_number].device_info.mac_address
+        ):
+            update_topology_inputs.append((serial_number, hostname, system_mac_address))
 
-        if device.hostname != topology_inputs_dict_by_serial[device.serial_number].device_info.hostname:
-            update_topology_inputs.append((device.serial_number, device.hostname))
-
-    LOGGER.info("verify_devices_in_topology_studio: need hostname updates for %s devices in I&T Studio.", len(update_topology_inputs))
     if update_topology_inputs:
+        LOGGER.info("verify_devices_in_topology_studio: need updates for %s unique devices in I&T Studio.", len(update_topology_inputs))
         await cv_client.set_topology_studio_inputs(workspace_id=workspace_id, device_inputs=update_topology_inputs)
-
-    if missing_devices := [device for device in existing_devices if not device._exists_on_cv]:
-        warnings.append(missing_devices_handler(missing_devices, skip_missing_devices, "Inventory & Topology Studio"))
 
 
 def missing_devices_handler(missing_devices: list[CVDevice], skip_missing_devices: bool, context: str) -> Exception:

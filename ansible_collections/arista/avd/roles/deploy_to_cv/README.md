@@ -25,7 +25,7 @@ Depending on the configured options, the role supports multiple operations:
 
 - Deploys configurations for one or more devices using the "Static Configuration Studio".
 - Deploys device and interface Tags for one or more devices.
-- Updates device hostname in the "Inventory & Topology Studio".
+- Adds missing devices and updates device details for existing devices in the "Inventory & Topology Studio".
 - Creates, builds, submits Workspaces.
 - Creates, approves, starts Change Controls.
 - Deploys special metadata for CV Pathfinder solution.
@@ -196,7 +196,7 @@ By default the role will
     When deploying CloudVision Tag assignments, the builtin behavior is to unassign any other tags
     with the same labels but different values. This is not configurable.
 
-    It is possible to assign _any_ other tag from the devices by setting `cv_strict_tags: true`.
+    It is possible to unassign _any_ other tag from the devices by setting `cv_strict_tags: true`.
     This may remove tags used for studios and other things, so this is *not* recommended.
 
 These settings allow modifying the default behavior as needed. The values below are the default values.

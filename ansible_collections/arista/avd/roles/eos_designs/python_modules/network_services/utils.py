@@ -199,6 +199,8 @@ class UtilsMixin:
     def _wan_control_plane_application_profile(self) -> str:
         """
         Control plane application profile name
+
+        TODO: make this configurable
         """
         return "CONTROL-PLANE-APPLICATION-PROFILE"
 
@@ -211,19 +213,20 @@ class UtilsMixin:
 
     def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, context_path: str) -> dict:
         """
-        Generate and return a router path-selection load-balance policy.
+        Generate and return a router path-selection load-balance policy. If HA is enabled, inject the HA path-group with priority 1.
 
         Attrs:
         ------
         name (str): The name of the load balance policy
         input_dict (dict): The dictionary containing the list of path-groups and their preference.
         context_path (str): Key used for context for error messages.
-
-        TODO:
-        * add LAN_HA with prio 1 when HA is implemented
         """
         wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
         wan_load_balance_policy = {"name": name, "path_groups": [], **get(input_dict, "constraints", default={})}
+
+        if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
+            # Adding HA path-group with priority 1 - it does not count as an entry with priority 1
+            wan_load_balance_policy["path_groups"].append({"name": self.shared_utils.wan_ha_path_group_name})
 
         # An entry is composed of a list of path-groups in `names` and a `priority`
         policy_entries = get(input_dict, "path_groups", [])
@@ -240,7 +243,7 @@ class UtilsMixin:
                 at_least_one_priority_1_found = True
             for path_group_name in policy_entry.get("names"):
                 # Skip path-group on this device if not present on the router except for pathfinders
-                if path_group_name not in wan_local_path_group_names and self.shared_utils.wan_role != "server":
+                if path_group_name not in wan_local_path_group_names and not self.shared_utils.is_wan_server:
                     continue
 
                 path_group = {
@@ -249,6 +252,7 @@ class UtilsMixin:
                 }
 
                 wan_load_balance_policy["path_groups"].append(path_group)
+
         if not at_least_one_priority_1_found:
             raise AristaAvdError(f"At least one path-group must be configured with preference '1' or 'preferred' for {context_path}'.")
 
@@ -291,7 +295,7 @@ class UtilsMixin:
         """
         Return a list of WAN router path-selection load-balance policies based on the local path-groups.
         """
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return []
 
         # Control plane Load Balancing policy - if not configured, render the default one.
@@ -302,19 +306,29 @@ class UtilsMixin:
         )
 
         wan_load_balance_policies = [
-            self._generate_wan_load_balance_policy(f"LB-{self._wan_control_plane_profile}", control_plane_virtual_topology, self._default_vrf_policy["name"])
+            self._generate_wan_load_balance_policy(
+                self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile),
+                control_plane_virtual_topology,
+                self._default_vrf_policy["name"],
+            )
         ]
         for policy in self._filtered_wan_policies:
             for application_virtual_topology in get(policy, "application_virtual_topologies", []):
                 # TODO add internet exit once supported
-                name = get(application_virtual_topology, "name", default=f"{policy['name']}-{application_virtual_topology['application_profile']}")
+                name = get(
+                    application_virtual_topology,
+                    "name",
+                    default=self._default_profile_name(policy["name"], application_virtual_topology["application_profile"]),
+                )
                 context_path = (
                     f"wan_virtual_topologies.policies[{policy['name']}].application_virtual_topologies[{application_virtual_topology['application_profile']}]"
                 )
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", application_virtual_topology, context_path),
+                    new_dict=self._generate_wan_load_balance_policy(
+                        self.shared_utils.generate_lb_policy_name(name), application_virtual_topology, context_path
+                    ),
                     context="Router Path-Selection Load-Balance policies.",
                     context_keys=["name"],
                 )
@@ -323,7 +337,7 @@ class UtilsMixin:
                 policy, "default_virtual_topology", required=True, org_key=f"wan_virtual_topologies.policies[{policy['name']}].default_virtual_toplogy"
             )
             if not get(default_virtual_topology, "drop_unmatched", default=False):
-                name = get(default_virtual_topology, "name", default=f"{policy['name']}-DEFAULT")
+                name = get(default_virtual_topology, "name", default=self._default_profile_name(policy["name"], "DEFAULT"))
                 context_path = f"wan_virtual_topologies.policies[{policy['name']}].default_virtual_topology"
 
                 # Verify that path_groups are set or raise
@@ -337,7 +351,7 @@ class UtilsMixin:
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", default_virtual_topology, context_path),
+                    new_dict=self._generate_wan_load_balance_policy(self.shared_utils.generate_lb_policy_name(name), default_virtual_topology, context_path),
                     context="Router Path-Selection Load-Balance policies.",
                     context_keys=["name"],
                 )
@@ -353,7 +367,7 @@ class UtilsMixin:
 
         for avt_vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
             vrf_name = avt_vrf["name"]
-            if vrf_name in self.shared_utils.vrfs or self.shared_utils.wan_role == "server":
+            if vrf_name in self.shared_utils.vrfs or self.shared_utils.is_wan_server:
                 # TODO check that the policy exists or raise
                 wan_vrf = {
                     "name": vrf_name,
@@ -432,3 +446,11 @@ class UtilsMixin:
         default_policy["is_default"] = True
 
         return default_policy
+
+    def _default_profile_name(self, profile_name: str, application_profile: str) -> str:
+        """
+        Helper function to consistently return the default name of a profile
+
+        Returns {profile_name}-{application_profile}
+        """
+        return f"{profile_name}-{application_profile}"

@@ -43,3 +43,5 @@ snmp_server:
     version: v2c
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  system_mac_address: '42:42:42:42:42:42'

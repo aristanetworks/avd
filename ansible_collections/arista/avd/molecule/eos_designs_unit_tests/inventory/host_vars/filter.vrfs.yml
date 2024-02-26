@@ -1,0 +1,46 @@
+type: l3leaf
+
+l3leaf:
+  nodes:
+    - name: filter.vrfs
+      id: 1
+      loopback_ipv4_pool: 10.0.0.0/24
+      bgp_as: 65001
+      vtep: false
+      filter:
+        # deny_vrfs takes precedence over allow_vrfs, so VRF1 & VRF4 will be denied even when listed under allow_vrfs.
+        deny_vrfs: [VRF1, VRF4]
+        allow_vrfs: [VRF1, VRF2, VRF4, VRF5]
+        always_include_vrfs_in_tenants: [TENANT2]
+tenants:
+  - name: TENANT1
+    vrfs:
+      - name: VRF1
+        description: This VRF would have been configured because it is attracted by Loopback, but it is prevented by filter.deny_vrfs
+        loopbacks:
+          - loopback: 1
+            node: filter.vrfs
+            ip_address: 192.168.1.1/32
+      - name: VRF2
+        description: This VRF is attracted by Loopback and will be configured because it is permitted by filter.allow_vrfs
+        loopbacks:
+          - loopback: 2
+            node: filter.vrfs
+            ip_address: 192.168.1.1/32
+      - name: VRF3
+        description: >-
+          This VRF would have been configured because it is attracted by Loopback,
+          but it is prevented because it is not permitted by filter.allow_vrfs
+        loopbacks:
+          - loopback: 3
+            node: filter.vrfs
+            ip_address: 192.168.1.1/32
+
+  - name: TENANT2
+    vrfs:
+      - name: VRF4
+        description: This VRF would have been configured because of always_include_vrfs_in_tenants, but it is prevented by filter.deny_vrfs
+      - name: VRF5
+        description: This VRF will be configured because of always_include_vrfs_in_tenants and it is permitted by filter.allow_vrfs
+      - name: VRF6
+        description: This VRF will not be configured because it is not permitted by filter.allow_vrfs

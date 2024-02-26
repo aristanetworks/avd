@@ -109,8 +109,11 @@ keys:
   bgp_as:
     documentation_options:
       table: bgp-settings
-    description: AS number to use to configure overlay when "overlay_routing_protocol"
-      == ibgp.
+    description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+      to use to configure overlay when "overlay_routing_protocol" == ibgp.
+
+      For asdot notation in YAML inputs, the value must be put in quotes, to prevent
+      it from being interpreted as a float number.'
     type: str
     convert_types:
     - int
@@ -354,7 +357,26 @@ keys:
             description: Type 7 encrypted password.
           bfd:
             type: bool
-            default: false
+            default: true
+          bfd_timers:
+            type: dict
+            description: 'Specify the BFD timers to override the default values.
+
+              It is recommended to keep BFD total timeout longer than the DPS timeout.
+
+              The Default BFD timeout is 10 x 1 seconds and the default DPS timeout
+              is 5 x 1 seconds.'
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/keys/bfd_timers
+            keys:
+              interval:
+                type: int
+                default: 1000
+              min_rx:
+                type: int
+                default: 1000
+              multiplier:
+                type: int
+                default: 10
           listen_range_prefixes:
             type: list
             description: 'Only used for nodes where `wan_role` is `server` like AutoVPN
@@ -372,6 +394,11 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+            - str
+            default: 1
       wan_rr_overlay_peers:
         type: dict
         documentation_options:
@@ -392,6 +419,25 @@ keys:
           bfd:
             type: bool
             default: true
+          bfd_timers:
+            type: dict
+            description: 'Specify the BFD timers to override the default values.
+
+              It is recommended to keep BFD total timeout longer than the DPS timeout.
+
+              The Default BFD timeout is 10 x 1 seconds and the default DPS timeout
+              is 5 x 1 seconds.'
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/keys/bfd_timers
+            keys:
+              interval:
+                type: int
+                default: 1000
+              min_rx:
+                type: int
+                default: 1000
+              multiplier:
+                type: int
+                default: 10
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
@@ -399,6 +445,11 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+            - str
+            default: 1
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
@@ -1634,19 +1685,12 @@ keys:
           default: 127
           description: Default PTP priority 1
         default_underlay_routing_protocol:
+          documentation_options:
+            table: node-type-keys
           type: str
           default: ebgp
           convert_to_lower_case: true
-          valid_values:
-          - ebgp
-          - ibgp
-          - ospf
-          - ospf-ldp
-          - isis
-          - isis-sr
-          - isis-ldp
-          - isis-sr-ldp
-          - none
+          $ref: eos_designs#/keys/underlay_routing_protocol
           description: 'Set the default underlay routing_protocol.
 
             Can be overridden by setting "underlay_routing_protocol" host/group_vars.
@@ -1721,29 +1765,6 @@ keys:
 
 
             Only supported if `overlay_routing_protocol` is set to `ibgp`.
-
-            '
-        default_cv_pathfinder_role:
-          documentation_options:
-            table: node-type-key-wan-configuration
-          type: str
-          valid_values:
-          - edge
-          - transit region
-          - pathfinder
-          description: 'PREVIEW: This key is currently not supported
-
-            Set the default CV Pathfinder role.
-
-
-            This key is used for Pathfinder designs only when the `wan_mode` root
-
-            key is set to `cv-pathfinder`.
-
-
-            `pathfinder` is only a valid if `wan_role` is `server`.
-
-            `edge` and `transit` are only valid if `wan_role` is `client`.
 
             '
         mlag_support:
@@ -3431,17 +3452,19 @@ keys:
     type: str
     convert_to_lower_case: true
     description: "- The following underlay routing protocols are supported:\n  - EBGP
-      (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n
-      \ - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all
-      devices in the fabric.\n*Only supported with core_interfaces data model.\n"
+      (default for l3ls-evpn)\n  - OSPF.\n  - OSPF-LDP*.\n  - ISIS.\n  - ISIS-SR*.\n
+      \ - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - No underlay routing protocol (none)\n-
+      The variables should be applied to all devices in the fabric.\n*Only supported
+      with core_interfaces data model.\n"
     valid_values:
     - ebgp
     - ospf
+    - ospf-ldp
     - isis
     - isis-sr
     - isis-ldp
     - isis-sr-ldp
-    - ospf-ldp
+    - none
   uplink_ptp:
     documentation_options:
       table: fabric-settings
@@ -3499,6 +3522,19 @@ keys:
           type: str
           description: The path-group to which this carrier belongs.
           required: true
+  wan_edge:
+    documentation_options:
+      table: wan-settings
+    type: dict
+    description: 'The `wan_edge` node type was introduced and removed while the AVD
+      WAN feature was in PREVIEW MODE.
+
+      Migrate your existing edge nodes to using `wan_router` node_type.'
+    deprecation:
+      warning: true
+      new_key: wan_router
+      removed: true
+      remove_in_version: 4.6.0-dev1
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
@@ -3653,6 +3689,22 @@ keys:
                       type: str
                       description: The public IP address of the Route Reflector for
                         this path-group.
+  wan_transit:
+    documentation_options:
+      table: wan-settings
+    type: dict
+    description: 'The `wan_transit` node type was introduced and removed while the
+      AVD WAN feature was in PREVIEW MODE.
+
+      Migrate your existing transit nodes to using `wan_router` node_type and set
+
+      `cv_pathfinder_transit_mode: region` under node settings.'
+    deprecation:
+      warning: true
+      new_key: 'node_type `wan_router` and set `cv_pathfinder_transit_mode: region`
+        under node settings'
+      removed: true
+      remove_in_version: 4.6.0-dev1
   wan_virtual_topologies:
     type: dict
     description: 'PREVIEW: WAN Preview
@@ -3706,7 +3758,7 @@ keys:
           for the `default_virtual_topology`.\n  * if the policy is associated with
           the default VRF, a special control-plane rule is injected\n    in the policy
           with index `1` referring to a control-plane load-balance policy as defined
-          under\n    `control_plane_virtual_topology`.\n\n\nFor CV Pathfinder, each
+          under\n    `control_plane_virtual_topology`.\n\nFor CV Pathfinder, each
           item in the list creates:\n  * one policy with:\n      * one `match` entry
           per `application_virtual_topologies` item ordered as in the model.\n      *
           one last match entry for the `default` application-profile using `default_virtual_topology`
@@ -5655,8 +5707,11 @@ $defs:
                       type: str
                       convert_types:
                       - int
-                      description: Remote BGP AS <1-4294967295> or AS number in asdot
-                        notation "<1-65535>.<0-65535>".
+                      description: 'BGP AS <1-4294967295> or AS number in asdot notation
+                        "<1-65535>.<0-65535>".
+
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                     description:
                       type: str
                     password:
@@ -5681,6 +5736,8 @@ $defs:
                       min: 0
                       max: 4294967294
                       description: Maximum number of routes (0 means unlimited).
+                    maximum_routes_warning_only:
+                      type: bool
                     default_originate:
                       type: dict
                       keys:
@@ -5745,11 +5802,11 @@ $defs:
                       type: str
                       convert_types:
                       - int
-                      description: 'Local BGP ASN.
+                      description: 'Local BGP AS <1-4294967295> or AS number in asdot
+                        notation "<1-65535>.<0-65535>".
 
-                        eg. "65001.1200".
-
-                        '
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                     weight:
                       type: int
                       convert_types:
@@ -6657,7 +6714,12 @@ $defs:
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration
-            description: Required with eBGP.
+            description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+              For asdot notation in YAML inputs, the value must be put in quotes,
+              to prevent it from being interpreted as a float number.
+
+              Required with eBGP.'
             type: str
             convert_types:
             - int
@@ -6715,14 +6777,45 @@ $defs:
             keys:
               tenants:
                 type: list
+                description: 'Limit configured Network Services to those defined under
+                  these Tenants. Set to [''all''] for all Tenants (default).
+
+                  This list also limits Tenants included by `always_include_vrfs_in_tenants`.'
                 items:
                   type: str
                 default:
                 - all
               tags:
                 type: list
+                description: Limit configured VLANs to those matching the given tags.
+                  Set to ['all'] for all VLANs (default).
                 items:
                   type: str
+                default:
+                - all
+              allow_vrfs:
+                type: list
+                description: 'Limit configured Network Services to those defined under
+                  these VRFs. Set to [''all''] for all VRFs (default).
+
+                  This list also limits VRFs included by `always_include_vrfs_in_tenants`.'
+                items:
+                  type: str
+                  convert_types:
+                  - int
+                default:
+                - all
+              deny_vrfs:
+                type: list
+                description: 'Prevent configuration of Network Services defined under
+                  these VRFs.
+
+                  This list prevents the given VRFs to be included by any other filtering
+                  mechanism.'
+                items:
+                  type: str
+                  convert_types:
+                  - int
                 default:
                 - all
               always_include_vrfs_in_tenants:
@@ -6792,7 +6885,11 @@ $defs:
                       type: str
                       format: ipv4
                     bgp_as:
-                      description: BGP ASN of remote Route Server.
+                      description: 'Remote Route Server''s BGP AS <1-4294967295> or
+                        AS number in asdot notation "<1-65535>.<0-65535>".
+
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                       type: str
                       convert_types:
                       - int
@@ -6851,7 +6948,12 @@ $defs:
                 - str
                 default: 0
               local_as:
-                description: Apply local-as to peering with IPVPN remote peers.
+                description: 'Local BGP AS applied to peering with IPVPN remote peers.
+
+                  BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+                  For asdot notation in YAML inputs, the value must be put in quotes,
+                  to prevent it from being interpreted as a float number.'
                 type: str
                 convert_types:
                 - int
@@ -6878,7 +6980,11 @@ $defs:
                       format: ipv4
                       required: true
                     bgp_as:
-                      description: BGP ASN of remote IPVPN Peer.
+                      description: 'Remote IPVPN Peer''s BGP AS <1-4294967295> or
+                        AS number in asdot notation "<1-65535>.<0-65535>".
+
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                       type: str
                       required: true
                       convert_types:
@@ -7466,24 +7572,21 @@ $defs:
 
 
               Only supported if `overlay_routing_protocol` is set to `ibgp`.'
-          cv_pathfinder_role:
+          cv_pathfinder_transit_mode:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            $ref: eos_designs#/keys/node_type_keys/items/keys/default_cv_pathfinder_role
+            valid_values:
+            - region
+            - zone
             description: 'PREVIEW: This key is currently not supported
 
-              Override the default CV Pathfinder role.
+              Configure the transit mode for a WAN client for CV Pathfinder designs
+
+              only when the `wan_mode` root key is set to `cv_pathfinder`.
 
 
-              This key is used for Pathfinder designs only when the `wan_mode` root
-
-              key is set to `cv_pathfinder`.
-
-
-              `pathfinder` is only a valid if `wan_role` is `server`.
-
-              `edge` and `transit region` are only valid if `wan_role` is `client`.'
+              ''zone'' is currently not supported.'
           cv_pathfinder_region:
             documentation_options:
               table: node-type-wan-configuration
@@ -7500,6 +7603,30 @@ $defs:
 
 
               The CV Pathfinder site name.'
+          wan_ha:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: dict
+            description: 'PREVIEW: This key is currently not supported
+
+
+              The key is supported only if `wan_mode` == `cv-pathfinder`.
+
+              AutoVPN support is still to be determined.
+
+
+              Maximum 2 devices supported by group for HA.'
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable / Disable auto CV-Pathfinder HA, when two nodes
+                  are defined in the same node_group.
+              ipsec:
+                type: bool
+                default: true
+                description: Enable / Disable IPsec over HA path-group when HA is
+                  enabled.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration

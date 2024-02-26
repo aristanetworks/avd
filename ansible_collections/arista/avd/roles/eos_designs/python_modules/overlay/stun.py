@@ -21,15 +21,15 @@ class StunMixin(UtilsMixin):
         Return structured config for stun
         """
 
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         stun = {}
-        if self.shared_utils.wan_role == "server":
+        if self.shared_utils.is_wan_server:
             local_interfaces = [wan_interface["name"] for wan_interface in self.shared_utils.wan_interfaces]
             stun["server"] = {"local_interfaces": local_interfaces}
 
-        if self.shared_utils.wan_role == "client":
+        if self.shared_utils.is_wan_client:
             if server_profiles := list(itertools.chain.from_iterable(self._stun_server_profiles.values())):
                 stun["client"] = {"server_profiles": server_profiles}
 

@@ -455,7 +455,10 @@ $defs:
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration
-            description: Required with eBGP.
+            description: |-
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+                Required with eBGP.
             type: str
             convert_types:
               - int
@@ -504,14 +507,40 @@ $defs:
             keys:
               tenants:
                 type: list
+                description: |-
+                  Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all Tenants (default).
+                  This list also limits Tenants included by `always_include_vrfs_in_tenants`.
                 items:
                   type: str
                 default:
                   - all
               tags:
                 type: list
+                description: Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default).
                 items:
                   type: str
+                default:
+                  - all
+              allow_vrfs:
+                type: list
+                description: |-
+                  Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).
+                  This list also limits VRFs included by `always_include_vrfs_in_tenants`.
+                items:
+                  type: str
+                  convert_types:
+                    - int
+                default:
+                  - all
+              deny_vrfs:
+                type: list
+                description: |-
+                  Prevent configuration of Network Services defined under these VRFs.
+                  This list prevents the given VRFs to be included by any other filtering mechanism.
+                items:
+                  type: str
+                  convert_types:
+                    - int
                 default:
                   - all
               always_include_vrfs_in_tenants:
@@ -561,7 +590,9 @@ $defs:
                       type: str
                       format: ipv4
                     bgp_as:
-                      description: BGP ASN of remote Route Server.
+                      description: |-
+                        Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                       type: str
                       convert_types:
                         - int
@@ -613,7 +644,10 @@ $defs:
                   - str
                 default: 0
               local_as:
-                description: Apply local-as to peering with IPVPN remote peers.
+                description: |-
+                  Local BGP AS applied to peering with IPVPN remote peers.
+                  BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                  For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                 type: str
                 convert_types:
                   - int
@@ -639,7 +673,9 @@ $defs:
                       format: ipv4
                       required: true
                     bgp_as:
-                      description: BGP ASN of remote IPVPN Peer.
+                      description: |-
+                        Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                       type: str
                       required: true
                       convert_types:
@@ -1121,20 +1157,19 @@ $defs:
               `server` indicates that the router is a route-reflector.
 
               Only supported if `overlay_routing_protocol` is set to `ibgp`.
-          cv_pathfinder_role:
+          cv_pathfinder_transit_mode:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            $ref: "eos_designs#/keys/node_type_keys/items/keys/default_cv_pathfinder_role"
+            valid_values:
+              - region
+              - zone
             description: |-
               PREVIEW: This key is currently not supported
-              Override the default CV Pathfinder role.
+              Configure the transit mode for a WAN client for CV Pathfinder designs
+              only when the `wan_mode` root key is set to `cv_pathfinder`.
 
-              This key is used for Pathfinder designs only when the `wan_mode` root
-              key is set to `cv_pathfinder`.
-
-              `pathfinder` is only a valid if `wan_role` is `server`.
-              `edge` and `transit region` are only valid if `wan_role` is `client`.
+              'zone' is currently not supported.
           cv_pathfinder_region:
             documentation_options:
               table: node-type-wan-configuration
@@ -1151,6 +1186,27 @@ $defs:
               PREVIEW: This key is currently not supported
 
               The CV Pathfinder site name.
+          wan_ha:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: dict
+            description: |-
+              PREVIEW: This key is currently not supported
+
+              The key is supported only if `wan_mode` == `cv-pathfinder`.
+              AutoVPN support is still to be determined.
+
+              Maximum 2 devices supported by group for HA.
+
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group.
+              ipsec:
+                type: bool
+                default: true
+                description: Enable / Disable IPsec over HA path-group when HA is enabled.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration

@@ -102,17 +102,17 @@
 
       # This data model allows to configure the list of hardware counters feature
       # available on Arista platforms.
-
+      #
       # The `name` key accepts a list of valid_values which MUST be updated to support
       # new feature as they are released in EOS.
-
+      #
       # The available values of the different keys like 'direction' or 'address_type'
       # are feature and hardware dependent and this model DOES NOT validate that the
       # combinations are valid. It is the responsability of the user of this data model
       # to make sure that the rendered CLI is accepted by the targeted device.
-
+      #
       # Examples:
-
+      #
       #   * Use:
       #     ```yaml
       #     hardware_counters:
@@ -122,7 +122,7 @@
       #           layer3: true
       #           units_packets: true
       #     ```
-
+      #
       #     to render:
       #     ```eos
       #     hardware counter feature ip out layer3 units packets
@@ -136,7 +136,7 @@
       #           vrf: test
       #           prefix: 192.168.0.0/24
       #     ```
-
+      #
       #     to render:
       #     ```eos
       #     hardware counter feature route ipv4 vrf test 192.168.0.0/24
