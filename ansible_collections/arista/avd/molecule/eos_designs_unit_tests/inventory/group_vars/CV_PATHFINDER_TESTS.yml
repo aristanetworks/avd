@@ -386,6 +386,7 @@ wan_virtual_topologies:
             preference: alternate
       application_virtual_topologies:
         - application_profile: VOICE
+          name: CUSTOM-VOICE-PROFILE-NAME
           path_groups:
             - names: [MPLS]
               preference: preferred

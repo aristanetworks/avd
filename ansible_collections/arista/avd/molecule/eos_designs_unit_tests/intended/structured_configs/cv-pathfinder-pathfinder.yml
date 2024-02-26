@@ -213,8 +213,8 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: DEFAULT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
-  - name: TRANSIT-AVT-POLICY-VOICE
-    load_balance_policy: LB-TRANSIT-AVT-POLICY-VOICE
+  - name: CUSTOM-VOICE-PROFILE-NAME
+    load_balance_policy: LB-CUSTOM-VOICE-PROFILE-NAME
   - name: TRANSIT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-TRANSIT-AVT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-DEFAULT
@@ -248,7 +248,7 @@ router_adaptive_virtual_topology:
   - name: TRANSIT
     policy: TRANSIT-AVT-POLICY
     profiles:
-    - name: TRANSIT-AVT-POLICY-VOICE
+    - name: CUSTOM-VOICE-PROFILE-NAME
       id: 42
     - name: TRANSIT-AVT-POLICY-DEFAULT
       id: 1
@@ -283,7 +283,7 @@ router_adaptive_virtual_topology:
   - name: TRANSIT-AVT-POLICY
     matches:
     - application_profile: VOICE
-      avt_profile: TRANSIT-AVT-POLICY-VOICE
+      avt_profile: CUSTOM-VOICE-PROFILE-NAME
     - application_profile: default
       avt_profile: TRANSIT-AVT-POLICY-DEFAULT
   - name: DEFAULT-POLICY
@@ -358,7 +358,7 @@ router_path_selection:
     - name: INET
     - name: MPLS
       priority: 2
-  - name: LB-TRANSIT-AVT-POLICY-VOICE
+  - name: LB-CUSTOM-VOICE-PROFILE-NAME
     path_groups:
     - name: LAN_HA
     - name: MPLS
@@ -639,7 +639,7 @@ metadata:
       vni: 66
       avts:
       - id: 42
-        name: TRANSIT-AVT-POLICY-VOICE
+        name: CUSTOM-VOICE-PROFILE-NAME
         pathgroups:
         - name: LAN_HA
           preference: preferred
