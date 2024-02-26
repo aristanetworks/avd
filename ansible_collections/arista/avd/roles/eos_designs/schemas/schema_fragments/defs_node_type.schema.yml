@@ -507,14 +507,40 @@ $defs:
             keys:
               tenants:
                 type: list
+                description: |-
+                  Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all Tenants (default).
+                  This list also limits Tenants included by `always_include_vrfs_in_tenants`.
                 items:
                   type: str
                 default:
                   - all
               tags:
                 type: list
+                description: Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default).
                 items:
                   type: str
+                default:
+                  - all
+              allow_vrfs:
+                type: list
+                description: |-
+                  Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).
+                  This list also limits VRFs included by `always_include_vrfs_in_tenants`.
+                items:
+                  type: str
+                  convert_types:
+                    - int
+                default:
+                  - all
+              deny_vrfs:
+                type: list
+                description: |-
+                  Prevent configuration of Network Services defined under these VRFs.
+                  This list prevents the given VRFs to be included by any other filtering mechanism.
+                items:
+                  type: str
+                  convert_types:
+                    - int
                 default:
                   - all
               always_include_vrfs_in_tenants:
