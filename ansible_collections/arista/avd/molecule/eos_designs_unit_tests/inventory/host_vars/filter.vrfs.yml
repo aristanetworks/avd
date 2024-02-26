@@ -8,6 +8,7 @@ l3leaf:
       bgp_as: 65001
       vtep: false
       filter:
+        # deny_vrfs takes precedence over allow_vrfs, so VRF1 & VRF4 will be denied even when listed under allow_vrfs.
         deny_vrfs: [VRF1, VRF4]
         allow_vrfs: [VRF1, VRF2, VRF4, VRF5]
         always_include_vrfs_in_tenants: [TENANT2]
