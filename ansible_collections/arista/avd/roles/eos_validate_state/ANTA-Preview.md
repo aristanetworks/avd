@@ -229,7 +229,7 @@ skipped_tests:
 
 ## Custom ANTA catalog
 
-You can now provide custom ANTA catalogs to the AVD `eos_validate_state` role. By default, AVD will search for catalog YAML files in the `intended/custom_anta_catalogs` directory and incorporate these tests into the existing dynamically created catalog from AVD. The custom catalog files must be named as follows:`
+You can now provide custom ANTA catalogs to the AVD `eos_validate_state` role. By default, AVD will search for catalog YAML files in the `intended/custom_anta_catalogs` directory and incorporate these tests into the existing dynamically created catalog from AVD. The custom catalog files must be named as follows:
 
 - `<hostname>.yml` or `<hostname>.yaml`
 - `<group>.yml` or `<group>.yaml`

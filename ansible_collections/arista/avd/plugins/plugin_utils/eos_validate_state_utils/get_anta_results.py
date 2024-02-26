@@ -137,14 +137,15 @@ def load_custom_catalogs(catalog_files: list[Path]) -> dict:
 
     Returns:
     -------
-      custom_catalog (dict): The merged custom ANTA catalog.
+      dict: The merged custom ANTA catalog.
     """
-    custom_catalog = {}
+    catalog_list = []
     for file in catalog_files:
         with file.open("r", encoding="UTF-8") as fd:
-            data = load(fd, Loader=CSafeLoader)
-        custom_catalog = merge_catalogs(custom_catalog, data)
-    return custom_catalog
+            catalog = load(fd, Loader=CSafeLoader)
+            catalog_list.append(catalog)
+
+    return merge_catalogs(*catalog_list) if catalog_list else {}
 
 
 def dump_to_file(tests: dict, filename: Path, yaml_dumper: Dumper = NoAliasDumper) -> None:
