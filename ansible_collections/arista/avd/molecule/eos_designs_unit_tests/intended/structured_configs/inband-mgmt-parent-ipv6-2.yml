@@ -103,24 +103,24 @@ vlan_interfaces:
   mtu: 1500
   vrf: INBANDMGMT
   ipv6_enable: true
-  ipv6_address: 2a00:106::3/64
-  ipv6_virtual_router_addresses:
-  - 2a00:106::1
   ipv6_attached_host_route_export:
     enabled: true
     distance: 19
+  ipv6_address: 2a00:106::3/64
+  ipv6_virtual_router_addresses:
+  - 2a00:106::1
 - name: Vlan107
   description: Inband Management
   shutdown: false
   mtu: 1500
   vrf: INBANDMGMT
   ipv6_enable: true
-  ipv6_address: 2a00:107::3/64
-  ipv6_virtual_router_addresses:
-  - 2a00:107::1
   ipv6_attached_host_route_export:
     enabled: true
     distance: 19
+  ipv6_address: 2a00:107::3/64
+  ipv6_virtual_router_addresses:
+  - 2a00:107::1
 port_channel_interfaces:
 - name: Port-Channel11
   description: MLAG_PEER_inband-mgmt-parent-ipv6-1_Po11
