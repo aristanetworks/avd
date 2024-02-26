@@ -370,7 +370,7 @@ class UtilsMixin:
             if vrf_name in self.shared_utils.vrfs or self.shared_utils.is_wan_server:
                 wan_vrf = {
                     "name": vrf_name,
-                    "policy": get(vrf, "policy", default="DEFAULT-POLICY"),
+                    "policy": get(vrf, "policy", default=self._default_wan_policy["name"]),
                     "wan_vni": get(
                         vrf, "wan_vni", required=True, org_key=f"Required `wan_vni` is missing for VRF {vrf_name} under `wan_virtual_topologies.vrfs`."
                     ),
@@ -383,9 +383,9 @@ class UtilsMixin:
             wan_vrfs.append(
                 {
                     "name": "default",
-                    "policy": f"{self._default_avt_policy['name']}-WITH-CP",
+                    "policy": f"{self._default_wan_policy['name']}-WITH-CP",
                     "wan_vni": 1,
-                    "original_policy": self._default_avt_policy["name"],
+                    "original_policy": self._default_wan_policy["name"],
                 }
             )
         else:
@@ -398,9 +398,9 @@ class UtilsMixin:
     def _wan_policies(self) -> list:
         """ """
         policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
-        # If not overwritten, inject the DEFAULT-POLICY in case it is required for one of the VRFs
-        if get_item(policies, "name", "DEFAULT-POLICY") is None:
-            policies.append(self._default_avt_policy)
+        # If not overwritten, inject the default policy in case it is required for one of the VRFs
+        if get_item(policies, "name", self._default_wan_policy["name"]) is None:
+            policies.append(self._default_wan_policy)
 
         return policies
 
@@ -440,7 +440,7 @@ class UtilsMixin:
         return filtered_policies
 
     @cached_property
-    def _default_avt_policy(self) -> dict:
+    def _default_wan_policy(self) -> dict:
         """
         If no policy is defined for a VRF under 'wan_virtual_topologies.vrfs', a default policy named DEFAULT-POLICY is used
         where all traffic is matched in the default category and distributed amongst all path-groups.
