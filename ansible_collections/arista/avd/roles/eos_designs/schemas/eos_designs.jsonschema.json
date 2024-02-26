@@ -24892,7 +24892,7 @@
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 255,
-                "description": "Required for VRFs carried over AutoVPN or CV Pathfinder WAN.\n\nA VRF can have a different VNI in the Datacenters and in the WAN.\nNote that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with\n`wan_vni` set to `1`.\nIn addition either `vrf_id` or `vrf_vni` must be set to enforce consistant route-targets across domains.\n",
+                "description": "Required for VRFs carried over AutoVPN or CV Pathfinder WAN.\n\nA VRF can have different VNIs between the Datacenters and the WAN.\nNote that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with\n`wan_vni` set to `1`.\nIn addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains.",
                 "title": "Wan Vni"
               }
             },

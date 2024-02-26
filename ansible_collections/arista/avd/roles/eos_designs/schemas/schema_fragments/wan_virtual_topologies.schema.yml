@@ -51,13 +51,13 @@ keys:
               min: 1
               max: 255
               required: true
-              description: |
+              description: |-
                 Required for VRFs carried over AutoVPN or CV Pathfinder WAN.
 
-                A VRF can have a different VNI in the Datacenters and in the WAN.
+                A VRF can have different VNIs between the Datacenters and the WAN.
                 Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with
                 `wan_vni` set to `1`.
-                In addition either `vrf_id` or `vrf_vni` must be set to enforce consistant route-targets across domains.
+                In addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains.
       control_plane_virtual_topology:
         type: dict
         description: |-

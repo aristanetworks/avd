@@ -148,9 +148,10 @@ class VxlanInterfaceMixin(UtilsMixin):
                     "wan_vni",
                     required=True,
                     org_key=(
-                        f"VRF {vrf_name} in tenant {tenant['name']} does not have a `wan_vni` defined. "
-                        "If this VRF was not intended to be extended over WAN, set 'address_families: []' under the VRF definition."
-                        "If not intended on the WAN router, use the VRF filter"
+                        f"The VRF '{vrf_name}' does not have a `wan_vni` defined under 'wan_virtual_topologies'. "
+                        "If this VRF was not intended to be extended over the WAN, but still required to be configured on the WAN router, "
+                        "set 'address_families: []' under the VRF definition."
+                        "If this VRF was not intended to be configured on the WAN router, use the VRF filter 'deny_vrfs' under the node settings."
                     ),
                 )
             else:

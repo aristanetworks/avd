@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "wan_virtual_topologies.vrfs") | List, items: Dictionary |  |  |  | Map a VRF that exists in network_services to an AVT policy.<br>TODO: missing default VRF behavior |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_virtual_topologies.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "wan_virtual_topologies.vrfs.[].policy") | String |  | `DEFAULT-POLICY` |  | Name of the policy to apply to this VRF.<br>It is possible to overwrite the default policy for all VRFs using it<br>by redefining it in the `wan_virtual_topologies.policies` list using the<br>default name `DEFAULT-POLICY`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_vni</samp>](## "wan_virtual_topologies.vrfs.[].wan_vni") | Integer | Required |  | Min: 1<br>Max: 255 | Required for VRFs carried over AutoVPN or CV Pathfinder WAN.<br><br>A VRF can have a different VNI in the Datacenters and in the WAN.<br>Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with<br>`wan_vni` set to `1`.<br>In addition either `vrf_id` or `vrf_vni` must be set to enforce consistant route-targets across domains.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_vni</samp>](## "wan_virtual_topologies.vrfs.[].wan_vni") | Integer | Required |  | Min: 1<br>Max: 255 | Required for VRFs carried over AutoVPN or CV Pathfinder WAN.<br><br>A VRF can have different VNIs between the Datacenters and the WAN.<br>Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with<br>`wan_vni` set to `1`.<br>In addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains. |
     | [<samp>&nbsp;&nbsp;control_plane_virtual_topology</samp>](## "wan_virtual_topologies.control_plane_virtual_topology") | Dictionary |  |  |  | Always injected into the default VRF policy as the first entry.<br><br>By default, if no path-groups are specified, all locally available path-groups<br>are used in the generated load-balance policy.<br>ID is hardcoded to 254 for the AVT profile in CV Pathfinder mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.name") | String |  |  |  | Optional name, if not set `CONTROL-PLANE-PROFILE` is used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
@@ -79,10 +79,10 @@
 
           # Required for VRFs carried over AutoVPN or CV Pathfinder WAN.
           #
-          # A VRF can have a different VNI in the Datacenters and in the WAN.
+          # A VRF can have different VNIs between the Datacenters and the WAN.
           # Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with
           # `wan_vni` set to `1`.
-          # In addition either `vrf_id` or `vrf_vni` must be set to enforce consistant route-targets across domains.
+          # In addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains.
           wan_vni: <int; 1-255; required>
 
       # Always injected into the default VRF policy as the first entry.
