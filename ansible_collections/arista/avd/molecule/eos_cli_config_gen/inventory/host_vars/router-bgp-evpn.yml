@@ -106,6 +106,9 @@ router_bgp:
     next_hop:
       resolution_disabled: true
     next_hop_unchanged: true
+    route:
+      import_ethernet_segment_ip_mass_withdraw: true
+      export_ethernet_segment_ip_mass_withdraw: true
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
