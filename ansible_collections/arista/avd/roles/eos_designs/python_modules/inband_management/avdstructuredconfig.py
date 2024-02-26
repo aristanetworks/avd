@@ -263,17 +263,6 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             "vrf": self.shared_utils.inband_mgmt_vrf,
         }
 
-        if self.shared_utils.mlag_role == "secondary":
-            if network:
-                ip = str(network[3])
-            if v6_network:
-                ipv6 = str(v6_network[3])
-        else:
-            if network:
-                ip = str(network[2])
-            if v6_network:
-                ipv6 = str(v6_network[2])
-
         if subnet is not None:
             network = ip_network(subnet, strict=False)
             ip = str(network[3]) if self.shared_utils.mlag_role == "secondary" else str(network[2])
