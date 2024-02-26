@@ -83,7 +83,7 @@
         # Pointer to interface used for inband management.
         # All configuration must be done using other data models like network services or structured_config.
         # 'inband_mgmt_interface' is only used to refer to this interface as source in various management protocol settings (future feature).
-
+        #
         # On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
         inband_mgmt_interface: <str>
 
@@ -102,23 +102,23 @@
         # l2leafs       : <subnet> + 3 + <l2leaf id>
         # GW on l2leafs : <subnet> + 1
         # Assign range larger than total l2leafs + 5
-
+        #
         # Setting is ignored if 'inband_mgmt_ip' is set.
-
+        #
         # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
         inband_mgmt_subnet: <str>
 
         # IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
         # This overrides 'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
-
+        #
         # If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
         # The VLAN and SVI on the parent switches must be created using network services data models.
-
+        #
         # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
         inband_mgmt_ip: <str>
 
         # Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway is derived from 'inband_mgmt_subnet' if set.
-
+        #
         # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
         inband_mgmt_gateway: <str>
 
@@ -153,7 +153,7 @@
         inband_mgmt_ipv6_gateway: <str>
 
         # Description configured on the Inband Management SVI.
-
+        #
         # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
         inband_mgmt_description: <str; default="Inband Management">
 
@@ -180,9 +180,9 @@
         # l2leafs       : <subnet> + 3 + <l2leaf id>
         # GW on l2leafs : <subnet> + 1
         # Assign range larger than total l2leafs + 5
-
+        #
         # Setting is ignored if 'inband_mgmt_ip' is set.
-
+        #
         # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
         # This key is deprecated.
         # Support will be removed in AVD version 5.0.0.
@@ -213,7 +213,7 @@
               # Pointer to interface used for inband management.
               # All configuration must be done using other data models like network services or structured_config.
               # 'inband_mgmt_interface' is only used to refer to this interface as source in various management protocol settings (future feature).
-
+              #
               # On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
               inband_mgmt_interface: <str>
 
@@ -232,23 +232,23 @@
               # l2leafs       : <subnet> + 3 + <l2leaf id>
               # GW on l2leafs : <subnet> + 1
               # Assign range larger than total l2leafs + 5
-
+              #
               # Setting is ignored if 'inband_mgmt_ip' is set.
-
+              #
               # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
               inband_mgmt_subnet: <str>
 
               # IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
               # This overrides 'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
-
+              #
               # If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
               # The VLAN and SVI on the parent switches must be created using network services data models.
-
+              #
               # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
               inband_mgmt_ip: <str>
 
               # Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway is derived from 'inband_mgmt_subnet' if set.
-
+              #
               # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
               inband_mgmt_gateway: <str>
 
@@ -283,7 +283,7 @@
               inband_mgmt_ipv6_gateway: <str>
 
               # Description configured on the Inband Management SVI.
-
+              #
               # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
               inband_mgmt_description: <str; default="Inband Management">
 
@@ -310,9 +310,9 @@
               # l2leafs       : <subnet> + 3 + <l2leaf id>
               # GW on l2leafs : <subnet> + 1
               # Assign range larger than total l2leafs + 5
-
+              #
               # Setting is ignored if 'inband_mgmt_ip' is set.
-
+              #
               # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
               # This key is deprecated.
               # Support will be removed in AVD version 5.0.0.
@@ -330,7 +330,7 @@
           # Pointer to interface used for inband management.
           # All configuration must be done using other data models like network services or structured_config.
           # 'inband_mgmt_interface' is only used to refer to this interface as source in various management protocol settings (future feature).
-
+          #
           # On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
           inband_mgmt_interface: <str>
 
@@ -349,23 +349,23 @@
           # l2leafs       : <subnet> + 3 + <l2leaf id>
           # GW on l2leafs : <subnet> + 1
           # Assign range larger than total l2leafs + 5
-
+          #
           # Setting is ignored if 'inband_mgmt_ip' is set.
-
+          #
           # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_subnet: <str>
 
           # IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
           # This overrides 'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
-
+          #
           # If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
           # The VLAN and SVI on the parent switches must be created using network services data models.
-
+          #
           # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_ip: <str>
 
           # Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway is derived from 'inband_mgmt_subnet' if set.
-
+          #
           # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_gateway: <str>
 
@@ -400,7 +400,7 @@
           inband_mgmt_ipv6_gateway: <str>
 
           # Description configured on the Inband Management SVI.
-
+          #
           # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
           inband_mgmt_description: <str; default="Inband Management">
 
@@ -427,9 +427,9 @@
           # l2leafs       : <subnet> + 3 + <l2leaf id>
           # GW on l2leafs : <subnet> + 1
           # Assign range larger than total l2leafs + 5
-
+          #
           # Setting is ignored if 'inband_mgmt_ip' is set.
-
+          #
           # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           # This key is deprecated.
           # Support will be removed in AVD version 5.0.0.
@@ -453,7 +453,7 @@
           # Pointer to interface used for inband management.
           # All configuration must be done using other data models like network services or structured_config.
           # 'inband_mgmt_interface' is only used to refer to this interface as source in various management protocol settings (future feature).
-
+          #
           # On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
           inband_mgmt_interface: <str>
 
@@ -472,23 +472,23 @@
           # l2leafs       : <subnet> + 3 + <l2leaf id>
           # GW on l2leafs : <subnet> + 1
           # Assign range larger than total l2leafs + 5
-
+          #
           # Setting is ignored if 'inband_mgmt_ip' is set.
-
+          #
           # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_subnet: <str>
 
           # IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
           # This overrides 'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
-
+          #
           # If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
           # The VLAN and SVI on the parent switches must be created using network services data models.
-
+          #
           # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_ip: <str>
 
           # Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway is derived from 'inband_mgmt_subnet' if set.
-
+          #
           # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_gateway: <str>
 
@@ -523,7 +523,7 @@
           inband_mgmt_ipv6_gateway: <str>
 
           # Description configured on the Inband Management SVI.
-
+          #
           # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
           inband_mgmt_description: <str; default="Inband Management">
 
@@ -550,9 +550,9 @@
           # l2leafs       : <subnet> + 3 + <l2leaf id>
           # GW on l2leafs : <subnet> + 1
           # Assign range larger than total l2leafs + 5
-
+          #
           # Setting is ignored if 'inband_mgmt_ip' is set.
-
+          #
           # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           # This key is deprecated.
           # Support will be removed in AVD version 5.0.0.

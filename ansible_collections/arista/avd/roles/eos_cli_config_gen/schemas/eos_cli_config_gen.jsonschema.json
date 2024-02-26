@@ -10261,6 +10261,10 @@
           "type": "string",
           "title": "Platform"
         },
+        "system_mac_address": {
+          "type": "string",
+          "title": "System MAC Address"
+        },
         "cv_tags": {
           "type": "object",
           "properties": {

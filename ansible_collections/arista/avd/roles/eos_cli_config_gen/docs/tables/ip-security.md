@@ -98,7 +98,7 @@
             time: <int; 10-3600; required>
 
             # Action to apply
-
+            #
             # * 'clear': Delete all connections
             # * 'hold': Re-negotiate connection on demand
             # * 'restart': Restart connection immediately

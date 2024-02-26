@@ -98,10 +98,10 @@
       - name: <str; required; unique>
 
         # VRFs will only be configured on a node if any of the underlying objects like `svis` or `l3_interfaces` apply to the node.
-
+        #
         # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
         # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
-
+        #
         # VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,
         # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
         # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
@@ -227,7 +227,7 @@
                     # By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
                     # The rt_override allows us to override this value and statically define it.
                     # rt_override will default to vni_override if set.
-
+                    #
                     # rt_override supports two formats:
                     #   - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
                     #   - A full RT string with colon seperator which will override the full RT.
@@ -236,7 +236,7 @@
                     # By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
                     # The rt_override allows us to override this value and statically define it.
                     # rd_override will default to rt_override or vni_override if set.
-
+                    #
                     # rd_override supports two formats:
                     #   - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
                     #   - A full RD string with colon seperator which will override the full RD.
@@ -350,7 +350,7 @@
                 # By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
                 # The rt_override allows us to override this value and statically define it.
                 # rt_override will default to vni_override if set.
-
+                #
                 # rt_override supports two formats:
                 #   - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
                 #   - A full RT string with colon seperator which will override the full RT.
@@ -359,7 +359,7 @@
                 # By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
                 # The rt_override allows us to override this value and statically define it.
                 # rd_override will default to rt_override or vni_override if set.
-
+                #
                 # rd_override supports two formats:
                 #   - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
                 #   - A full RD string with colon seperator which will override the full RD.

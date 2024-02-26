@@ -147,6 +147,8 @@ class YamlLineGenBase(ABC):
         if self.schema.description:
             indentation = self.get_indentation(honor_first_list_key=False)
             description = indent(self.schema.description.strip(), f"{indentation}# ")
+            # Insert # with no extra whitespace for blank lines.
+            description = indent(description, f"{indentation}#", lambda line: line == "\n")
             yield YamlLine(line=f"\n{description}")
 
     def render_deprecation_description(self) -> Generator[YamlLine]:

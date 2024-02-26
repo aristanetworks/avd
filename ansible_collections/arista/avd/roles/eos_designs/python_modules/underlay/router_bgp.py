@@ -23,7 +23,7 @@ class RouterBgpMixin(UtilsMixin):
         """
 
         if not self.shared_utils.underlay_bgp:
-            if self.shared_utils.wan_role:
+            if self.shared_utils.is_wan_router:
                 # Configure redistribute connected with or without route-map in case it the underlay is not BGP.
                 # TODO: Currently only implemented for WAN routers but should probably be
                 # implemented for anything with EVPN services in default VRF.
@@ -43,10 +43,12 @@ class RouterBgpMixin(UtilsMixin):
             "struct_cfg": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["structured_config"],
         }
 
-        # For HA will need to add allowas_in 1
         if self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.wan_mode == "cv-pathfinder" and self.shared_utils.wan_role is not None:
             peer_group["route_map_in"] = "RM-BGP-UNDERLAY-PEERS-IN"
             peer_group["route_map_out"] = "RM-BGP-UNDERLAY-PEERS-OUT"
+            if self.shared_utils.wan_ha:
+                # For HA need to add allowas_in 1
+                peer_group["allowas_in"] = {"enabled": True, "times": 1}
 
         router_bgp["peer_groups"] = [strip_empties_from_dict(peer_group)]
 

@@ -92,7 +92,7 @@ class RouteMapsMixin(UtilsMixin):
         if not self._vrf_default_evpn:
             return None
 
-        if not any([self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.wan_role]):
+        if not any([self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.is_wan_router]):
             return None
 
         route_maps = strip_empties_from_list(
@@ -154,7 +154,7 @@ class RouteMapsMixin(UtilsMixin):
         * for WAN routers, all the routes matching the SOO (which includes the two above)
         """
         sequence_numbers = []
-        if self.shared_utils.wan_role:
+        if self.shared_utils.is_wan_router:
             sequence_numbers.append(
                 {
                     "sequence": 10,
@@ -196,7 +196,7 @@ class RouteMapsMixin(UtilsMixin):
         """
         sequence_numbers = []
 
-        if self.shared_utils.wan_role:
+        if self.shared_utils.is_wan_router:
             return None
 
         if self._vrf_default_ipv4_subnets:

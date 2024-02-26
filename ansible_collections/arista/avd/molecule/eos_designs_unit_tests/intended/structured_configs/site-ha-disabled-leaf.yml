@@ -1,8 +1,8 @@
 hostname: site-ha-disabled-leaf
 is_deployed: true
 router_bgp:
-  as: '65000'
-  router_id: 192.168.45.3
+  as: '65199'
+  router_id: 192.168.45.4
   bgp:
     default:
       ipv4_unicast: false
@@ -45,7 +45,7 @@ router_bgp:
     description: cv-pathfinder-edge-no-common-path-group_Ethernet52
   vrfs:
   - name: IT
-    router_id: 192.168.45.3
+    router_id: 192.168.45.4
     neighbors:
     - ip_address: 172.17.0.1
       peer_group: IPv4-UNDERLAY-PEERS
@@ -55,7 +55,7 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
       description: cv-pathfinder-edge-no-common-path-group_Ethernet52.100_vrf_IT
-    rd: 192.168.45.3:100
+    rd: 192.168.45.4:100
     route_targets:
       import:
       - address_family: evpn
@@ -68,7 +68,7 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: PROD
-    router_id: 192.168.45.3
+    router_id: 192.168.45.4
     neighbors:
     - ip_address: 172.17.0.1
       peer_group: IPv4-UNDERLAY-PEERS
@@ -78,7 +78,7 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
       description: cv-pathfinder-edge-no-common-path-group_Ethernet52.42_vrf_PROD
-    rd: 192.168.45.3:42
+    rd: 192.168.45.4:42
     route_targets:
       import:
       - address_family: evpn
@@ -91,7 +91,7 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: default
-    rd: 192.168.45.3:1
+    rd: 192.168.45.4:1
     route_targets:
       import:
       - address_family: evpn
@@ -108,7 +108,7 @@ router_bgp:
   vlans:
   - id: 100
     tenant: TenantA
-    rd: 192.168.45.3:1100
+    rd: 192.168.45.4:1100
     route_targets:
       both:
       - 1100:1100
@@ -116,7 +116,7 @@ router_bgp:
     - learned
   - id: 101
     tenant: TenantA
-    rd: 192.168.45.3:1101
+    rd: 192.168.45.4:1101
     route_targets:
       both:
       - 1101:1101
@@ -146,7 +146,7 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: cv-pathfinder-edge
   peer_interface: Ethernet52
-  peer_type: wan_edge
+  peer_type: wan_router
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE_Ethernet52
   shutdown: false
   mtu: 9214
@@ -155,7 +155,7 @@ ethernet_interfaces:
 - name: Ethernet1.100
   peer: cv-pathfinder-edge
   peer_interface: Ethernet52.100
-  peer_type: wan_edge
+  peer_type: wan_router
   vrf: IT
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE_Ethernet52.100_vrf_IT
   shutdown: false
@@ -166,7 +166,7 @@ ethernet_interfaces:
 - name: Ethernet1.42
   peer: cv-pathfinder-edge
   peer_interface: Ethernet52.42
-  peer_type: wan_edge
+  peer_type: wan_router
   vrf: PROD
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE_Ethernet52.42_vrf_PROD
   shutdown: false
@@ -177,7 +177,7 @@ ethernet_interfaces:
 - name: Ethernet2
   peer: cv-pathfinder-edge-no-common-path-group
   peer_interface: Ethernet52
-  peer_type: wan_edge
+  peer_type: wan_router
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE-NO-COMMON-PATH-GROUP_Ethernet52
   shutdown: false
   mtu: 9214
@@ -186,7 +186,7 @@ ethernet_interfaces:
 - name: Ethernet2.100
   peer: cv-pathfinder-edge-no-common-path-group
   peer_interface: Ethernet52.100
-  peer_type: wan_edge
+  peer_type: wan_router
   vrf: IT
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE-NO-COMMON-PATH-GROUP_Ethernet52.100_vrf_IT
   shutdown: false
@@ -197,7 +197,7 @@ ethernet_interfaces:
 - name: Ethernet2.42
   peer: cv-pathfinder-edge-no-common-path-group
   peer_interface: Ethernet52.42
-  peer_type: wan_edge
+  peer_type: wan_router
   vrf: PROD
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE-NO-COMMON-PATH-GROUP_Ethernet52.42_vrf_PROD
   shutdown: false
@@ -209,11 +209,11 @@ loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
   shutdown: false
-  ip_address: 192.168.45.3/32
+  ip_address: 192.168.45.4/32
 - name: Loopback1
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
-  ip_address: 192.168.255.3/32
+  ip_address: 192.168.255.4/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

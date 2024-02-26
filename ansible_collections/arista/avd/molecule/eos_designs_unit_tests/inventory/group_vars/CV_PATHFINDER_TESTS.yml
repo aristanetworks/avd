@@ -2,8 +2,6 @@
 # Testing cv-pathfinder
 wan_mode: cv-pathfinder
 
-bgp_as: 65000
-
 cv_pathfinder_regions:
   - name: AVD_Land_West
     id: 42
@@ -43,23 +41,23 @@ default_node_types:
   - node_type: wan_rr
     match_hostnames:
       - "cv-pathfinder-pathfinder.*"
-  - node_type: wan_transit
-    match_hostnames:
-      - "cv-pathfinder-transit"
-  - node_type: wan_edge
+  - node_type: wan_router
     match_hostnames:
       - "cv-pathfinder-edge.*"
+      - "cv-pathfinder-transit.*"
   - node_type: l3leaf
     match_hostnames:
       - ".*leaf.*"
 
-wan_edge:
+wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 192.168.142.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA]
     uplink_ipv4_pool: 172.17.0.0/16
+    bgp_as: 65000
+  # Testing HA and disabling HA
   node_groups:
     # SITE_HA_DISABLED
     - group: Site511
@@ -68,25 +66,8 @@ wan_edge:
       uplink_interfaces: [ Ethernet52 ]
       cv_pathfinder_region: AVD_Land_East
       cv_pathfinder_site: Site511
-      id: 1
-      l3_interfaces:
-        - name: Ethernet1
-          wan_carrier: ATT
-          wan_circuit_id: 666
-          dhcp_accept_default_route: true
-          ip_address: dhcp
-        - name: Ethernet2
-          wan_carrier: Colt
-          wan_circuit_id: 10555
-          ip_address: 172.15.5.5/31
-        - name: Ethernet3
-          wan_carrier: Comcast-5G
-          wan_circuit_id: AF830
-          ip_address: 172.20.20.20/31
-          connected_to_pathfinder: False
-      # Disabling HA - TODO once implemented, for now it is disabled by default
-      # wan_ha:
-      #  enabled: False
+      wan_ha:
+        enabled: False
       nodes:
         - name: cv-pathfinder-edge
           id: 1
@@ -118,6 +99,77 @@ wan_edge:
               wan_circuit_id: S511
               dhcp_accept_default_route: true
               ip_address: dhcp
+    # SITE_HA_ENABLED
+    - group: Site423
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site423
+      uplink_type: p2p-vrfs
+      uplink_switches: [ site-ha-enabled-leaf2A, site-ha-enabled-leaf2B ]
+      uplink_interfaces: [ Ethernet52, Ethernet53 ]
+      nodes:
+        - name: cv-pathfinder-edge2A
+          id: 2
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: ATT
+              wan_circuit_id: 423-01
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: cv-pathfinder-edge2B
+          id: 3
+          l3_interfaces:
+            - name: Ethernet2
+              wan_carrier: Colt
+              wan_circuit_id: 10423
+              ip_address: 172.15.6.6/31
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+
+    # TRANSIT_SITE_HA_ENABLED
+    - group: TRANSIT_SITE_HA_ENABLED
+      loopback_ipv4_pool: 192.168.43.0/24
+      vtep_loopback_ipv4_pool: 192.168.143.0/24
+      filter:
+        always_include_vrfs_in_tenants: [TenantA, TenantB]
+      uplink_ipv4_pool: 172.17.0.0/16
+      uplink_type: p2p-vrfs
+      uplink_switches: [ site-ha-enabled-leaf1 ]
+      uplink_interfaces: [ Ethernet52 ]
+      cv_pathfinder_transit_mode: region
+      # Disable HA IPsec
+      wan_ha:
+        ipsec: false
+      nodes:
+        - name: cv-pathfinder-transit1A
+          cv_pathfinder_region: AVD_Land_West
+          cv_pathfinder_site: Site422
+          id: 1
+          uplink_switch_interfaces: [Ethernet1]
+          l3_interfaces:
+            - name: Ethernet1.42
+              wan_carrier: Comcast
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+            - name: Ethernet2.42
+              encapsulation_dot1q_vlan: 666
+              wan_carrier: Colt
+              wan_circuit_id: 10666
+              ip_address: 172.16.6.6/31
+        - name: cv-pathfinder-transit1B
+          cv_pathfinder_region: AVD_Land_West
+          cv_pathfinder_site: Site422
+          id: 2
+          uplink_switch_interfaces: [Ethernet2]
+          l3_interfaces:
+            - name: Ethernet1.42
+              wan_carrier: Comcast
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+            - name: Ethernet2.42
+              encapsulation_dot1q_vlan: 666
+              wan_carrier: Colt
+              wan_circuit_id: 10666
+              ip_address: 172.16.6.6/31
 
 # Fake DC1
 l3leaf:
@@ -129,41 +181,21 @@ l3leaf:
     filter:
       always_include_vrfs_in_tenants: [TenantA]
   nodes:
-    # Used for HA in HA PR
-    #- name: site-ha-enabled-leaf1
-    #  id: 1
-    #- name: site-ha-enabled-leaf2
-    #  id: 2
-    - name: site-ha-disabled-leaf
-      id: 3
-
-wan_transit:
-  defaults:
-    loopback_ipv4_pool: 192.168.43.0/24
-    vtep_loopback_ipv4_pool: 192.168.143.0/24
-    filter:
-      always_include_vrfs_in_tenants: [TenantA, TenantB]
-  nodes:
-    - name: cv-pathfinder-transit
-      cv_pathfinder_region: AVD_Land_West
-      cv_pathfinder_site: Site422
+    - name: site-ha-enabled-leaf1
       id: 1
-      l3_interfaces:
-        - name: Ethernet1.42
-          wan_carrier: Comcast
-          dhcp_accept_default_route: true
-          ip_address: dhcp
-        - name: Ethernet2.42
-          encapsulation_dot1q_vlan: 666
-          wan_carrier: Colt
-          wan_circuit_id: 10666
-          ip_address: 172.16.6.6/31
+    - name: site-ha-enabled-leaf2A
+      id: 2
+    - name: site-ha-enabled-leaf2B
+      id: 3
+    - name: site-ha-disabled-leaf
+      id: 4
 
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.44.0/24
     vtep_loopback_ipv4_pool: 192.168.144.0/24
     data_plane_cpu_allocation_max: 1
+    bgp_as: 65000
   nodes:
     - name: cv-pathfinder-pathfinder
       id: 1

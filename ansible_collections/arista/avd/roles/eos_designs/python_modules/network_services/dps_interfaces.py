@@ -21,7 +21,7 @@ class DpsInterfacesMixin(UtilsMixin):
 
         Only used for WAN devices
         """
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         dps1 = {
@@ -37,7 +37,7 @@ class DpsInterfacesMixin(UtilsMixin):
         # TODO do IPv6 when needed - for now no easy way in AVD to detect if this is needed
         # When needed - need a default value if different than IPv4
 
-        if self.shared_utils.cv_pathfinder_role:
-            dps1["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
+        if self.shared_utils.is_cv_pathfinder_router:
+            dps1["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
         return [dps1]

@@ -6117,6 +6117,8 @@ keys:
     keys:
       platform:
         type: str
+      system_mac_address:
+        type: str
       cv_tags:
         type: dict
         keys:

@@ -26,6 +26,10 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     ttl_maximum_hops: 1
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -40,7 +44,7 @@ router_bgp:
   neighbors:
   - ip_address: 172.17.0.0
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65000'
+    remote_as: '65199'
     peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet1
   - ip_address: 192.168.144.1
@@ -53,7 +57,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.17.0.0
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65000'
+      remote_as: '65199'
       description: site-ha-disabled-leaf_Ethernet1.100_vrf_IT
     rd: 192.168.42.1:100
     route_targets:
@@ -72,7 +76,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.17.0.0
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65000'
+      remote_as: '65199'
       description: site-ha-disabled-leaf_Ethernet1.42_vrf_PROD
     rd: 192.168.42.1:42
     route_targets:
@@ -229,12 +233,7 @@ route_maps:
     - extcommunity soo 192.168.42.1:511 additive
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
-  - sequence: 20
-    type: deny
-    description: Deny prefixes from WAN
-    match:
-    - as-path ASPATH-WAN
-  - sequence: 30
+  - sequence: 40
     type: permit
     description: Mark prefixes originated from the LAN
     set:
@@ -311,11 +310,11 @@ ip_security:
   sa_policies:
   - name: DP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE

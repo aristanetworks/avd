@@ -20,9 +20,9 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
     @cached_property
     def application_traffic_recognition(self) -> dict | None:
         """
-        Return structured config for application_traffic_recognition if `wan_role` is not None
+        Return structured config for application_traffic_recognition if wan router
         """
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         filtered_application_classification = self._filtered_application_classification()
@@ -102,7 +102,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         ipv4_applications = get(app_dict, "applications.ipv4_applications", [])
         if get_item(ipv4_applications, "name", self._wan_control_plane_application) is not None:
             return
-        if self.shared_utils.wan_role == "client":
+        if self.shared_utils.is_wan_client:
             app_dict.setdefault("applications", {}).setdefault("ipv4_applications", []).append(
                 {
                     "name": self._wan_control_plane_application,
@@ -120,7 +120,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     "prefix_values": pathfinder_vtep_ips,
                 }
             )
-        elif self.shared_utils.wan_role == "server":
+        elif self.shared_utils.is_wan_server:
             app_dict.setdefault("applications", {}).setdefault("ipv4_applications", []).append(
                 {
                     "name": self._wan_control_plane_application,

@@ -27,7 +27,7 @@ class OverlayMixin:
         """
         The default is Loopback1 except for WAN devices where the default is Dps1.
         """
-        default_vtep_loopback = "Dps1" if self.wan_role is not None else "Loopback1"
+        default_vtep_loopback = "Dps1" if self.is_wan_router else "Loopback1"
         return get(self.switch_data_combined, "vtep_loopback", default=default_vtep_loopback)
 
     @cached_property
@@ -142,13 +142,19 @@ class OverlayMixin:
         - For WAN routers this is <router_id_of_primary_HA_router>:<site_id or 0>
         - Otherwise this is <router_id>:1
 
-        TODO: Implement HA logic for WAN
         TODO: Reconsider if suffix should just be :1 for all WAN routers.
         """
-        if self.wan_role:
-            if self.is_cv_pathfinder_edge_or_transit:
+        if self.is_wan_router:
+            # for Pathfinder, no HA, no Site ID
+            if not self.is_cv_pathfinder_client:
+                return f"{self.router_id}:0"
+            if not self.wan_ha:
                 return f"{self.router_id}:{self.wan_site['id']}"
-            return f"{self.router_id}:0"
+            if self.is_first_ha_peer:
+                return f"{self.router_id}:{self.wan_site['id']}"
+            else:
+                peer_fact = self.get_peer_facts(self.wan_ha_peer, required=True)
+                return f"{peer_fact['router_id']}:{self.wan_site['id']}"
 
         if self.overlay_vtep:
             return f"{self.vtep_ip}:1"
