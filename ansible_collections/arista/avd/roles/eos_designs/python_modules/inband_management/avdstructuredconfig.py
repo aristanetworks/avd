@@ -263,17 +263,6 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             "vrf": self.shared_utils.inband_mgmt_vrf,
         }
 
-        network = False
-        v6_network = False
-
-        if subnet is not None:
-            network = ip_network(subnet, strict=False)
-            svidict["ip_attached_host_route_export"] = {"enabled": True, "distance": 19}
-
-        if ipv6_subnet is not None:
-            svidict["ipv6_enable"] = True
-            v6_network = ip_network(ipv6_subnet, strict=False)
-            svidict["ipv6_attached_host_route_export"] = {"enabled": True, "distance": 19}
 
         if self.shared_utils.mlag_role == "secondary":
             if network:
@@ -286,12 +275,19 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             if v6_network:
                 ipv6 = str(v6_network[2])
 
-        if network:
+        if subnet is not None:
+            network = ip_network(subnet, strict=False)
+            ip = str(network[3]) if self.shared_utils.mlag_role == "secondary" else str(network[2])
+            svidict["ip_attached_host_route_export"] = {"enabled": True, "distance": 19}
             svidict["ip_address"] = f"{ip}/{network.prefixlen}"
             svidict["ip_virtual_router_addresses"] = [str(network[1])]
 
-        if v6_network:
+        if ipv6_subnet is not None:
+            v6_network = ip_network(ipv6_subnet, strict=False)
+            ipv6 = str(v6_network[3]) if self.shared_utils.mlag_role == "secondary" else str(v6_network[2])
             svidict["ipv6_address"] = f"{ipv6}/{v6_network.prefixlen}"
+            svidict["ipv6_enable"] = True
+            svidict["ipv6_attached_host_route_export"] = {"enabled": True, "distance": 19}
             svidict["ipv6_virtual_router_addresses"] = [str(v6_network[1])]
 
         return strip_empties_from_dict(svidict)
