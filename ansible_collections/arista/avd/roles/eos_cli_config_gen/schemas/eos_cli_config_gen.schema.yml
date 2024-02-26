@@ -8000,6 +8000,8 @@ keys:
         valid_values:
         - boundary
         - transparent
+      boundary_one_step:
+        type: bool
       forward_unicast:
         type: bool
       clock_identity:

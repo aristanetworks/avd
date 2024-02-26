@@ -31,7 +31,11 @@ ptp message-type general dscp {{ ptp.message_type.general.dscp }} default
 ptp message-type event dscp {{ ptp.message_type.event.dscp }} default
 {%     endif %}
 {%     if ptp.mode is arista.avd.defined %}
+{%         if ptp.mode is arista.avd.defined('boundary') and ptp.boundary_one_step is arista.avd.defined(true) %}
+ptp mode boundary one-step
+{%         else %}
 ptp mode {{ ptp.mode }}
+{%         endif %}
 {%     endif %}
 {%     if ptp.forward_unicast is arista.avd.defined(true) %}
 ptp forward-unicast

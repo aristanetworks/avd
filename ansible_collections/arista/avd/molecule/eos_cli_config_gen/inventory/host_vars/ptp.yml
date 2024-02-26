@@ -14,6 +14,7 @@ ptp:
     event:
       dscp: 46
   mode: boundary
+  boundary_one_step: true
   forward_unicast: true
   monitor:
     # enabled: true (default)
