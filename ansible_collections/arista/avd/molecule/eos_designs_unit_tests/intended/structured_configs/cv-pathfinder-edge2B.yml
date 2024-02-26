@@ -514,6 +514,7 @@ router_path_selection:
     - name: LAN_HA
     - name: MPLS
     jitter: 42
+    lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
     - name: LAN_HA
