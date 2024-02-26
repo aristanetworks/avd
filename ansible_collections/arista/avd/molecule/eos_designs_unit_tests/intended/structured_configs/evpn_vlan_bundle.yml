@@ -122,7 +122,7 @@ router_bgp:
       - 303:333
     redistribute_routes:
     - learned
-    vlan: 1008-1009,1011-1012
+    vlan: 90,100,1008-1009,1011-1012
   - name: bundle4
     rd: 1.1.1.1:444
     route_targets:
@@ -228,6 +228,12 @@ vlans:
 - id: 1010
   name: SVI_3
   tenant: SIT
+- id: 90
+  name: vlan90
+  tenant: SIT
+- id: 100
+  name: vlan100
+  tenant: SIT
 - id: 10
   name: storage_prod
   tenant: StorageProd
@@ -312,6 +318,10 @@ vxlan_interface:
         vni: 21013
       - id: 1010
         vni: 21010
+      - id: 90
+        vni: 20090
+      - id: 100
+        vni: 20100
       - id: 10
         vni: 10010
       - id: 20
