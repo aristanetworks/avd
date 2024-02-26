@@ -27,20 +27,20 @@ class AvdStructuredConfigMetadata(AvdFacts, CvTagsMixin, CvPathfinderMixin):
                     {"name": "topolgoy_hint_rack", "value": <value copied from rack field if it is defined for the node>},
                     {"name": "<custom_tag_name>", "value": "custom tag value"},
                     {"name": "<custom_tag_name>", "value": "<value extracted from structured_config>"},
-                    {"name": "Region", "value": <value copied from cv_pathfinder_region if cv_pathfinder_role is set but not 'pathfinder'>},
-                    {"name": "Zone", "value": <always "DEFAULT-ZONE" if cv_pathfinder_role is set but not 'pathfinder'>},
-                    {"name": "Site", "value": <value copied from cv_pathfinder_site if cv_pathfinder_role is set but not 'pathfinder'>},
-                    {"name": "PathfinderSet", "value": <value copied from node group or default "PATHFINDERS" if cv_pathfinder_role is 'pathfinder'>},
-                    {"name": "Role", "value": <value copied from cv_pathfinder_role if set>}
+                    {"name": "Region", "value": <value copied from cv_pathfinder_region for pathfinder clients>},
+                    {"name": "Zone", "value": <always "DEFAULT-ZONE" for pathfinder clients>},
+                    {"name": "Site", "value": <value copied from cv_pathfinder_site for pathfinder clients>},
+                    {"name": "PathfinderSet", "value": <value copied from node group or default "PATHFINDERS" for pathfinder servers>},
+                    {"name": "Role", "value": <'pathfinder', 'edge', 'transit region' or 'transit zone'>}
                 },
                 "interface_tags": [
                     {
                         "interface": "Ethernet1",
                         "tags":[
                             {"name": "peer", "value": "leaf1a"}
-                            {"name": "Type", <"lan" or "wan" if cv_pathfinder_role is set>},
-                            {"name": "Carrier", <value copied from wan_carrier if cv_pathfinder_role is set and this is a wan interface>},
-                            {"name": "Circuit", <value copied from wan_circuit_id if cv_pathfinder_role is set and this is a wan interface>}
+                            {"name": "Type", <"lan" or "wan">},
+                            {"name": "Carrier", <value copied from wan_carrier if this is a wan interface>},
+                            {"name": "Circuit", <value copied from wan_circuit_id if this is a wan interface>}
                         ]
                     }
                 ]

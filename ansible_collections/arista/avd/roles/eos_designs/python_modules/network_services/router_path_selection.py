@@ -31,7 +31,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         }
 
         # When running CV Pathfinder, only load balance policies
-        if self.shared_utils.cv_pathfinder_role:
+        if self.shared_utils.is_cv_pathfinder_router:
             return strip_empties_from_dict(router_path_selection)
 
         router_path_selection.update(
@@ -48,9 +48,6 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         Return a list of AutoVPN Policies.
         """
-        if self.shared_utils.cv_pathfinder_role:
-            return []
-
         autovpn_policies = []
 
         for policy in self._filtered_wan_policies:
