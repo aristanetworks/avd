@@ -263,7 +263,6 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             "vrf": self.shared_utils.inband_mgmt_vrf,
         }
 
-
         if self.shared_utils.mlag_role == "secondary":
             if network:
                 ip = str(network[3])
