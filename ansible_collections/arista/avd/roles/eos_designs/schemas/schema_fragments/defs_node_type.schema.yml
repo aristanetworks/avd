@@ -873,7 +873,7 @@ $defs:
               table: node-type-inband-management-configuration
             description: |
               IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
-              This overrides 'inband_mgmt_ipv6_subnet', hence all behavior of 'inband_mgmt_ipv6_subnet' is removed.
+              This overrides 'inband_mgmt_ipv6_subnet', hence the configuration of 'inband_mgmt_ipv6_subnet' is ignored.
 
               If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
               The VLAN and SVI on the parent switches must be created using network services data models.
