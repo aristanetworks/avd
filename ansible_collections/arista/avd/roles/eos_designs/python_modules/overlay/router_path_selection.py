@@ -82,7 +82,7 @@ class RouterPathSelectionMixin(UtilsMixin):
 
             path_groups.append(path_group_data)
 
-        if (self.shared_utils.cv_pathfinder_role and self.shared_utils.wan_ha) or self.shared_utils.cv_pathfinder_role == "pathfinder":
+        if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
             path_groups.append(self._generate_ha_path_group())
 
         return path_groups
@@ -96,7 +96,7 @@ class RouterPathSelectionMixin(UtilsMixin):
             "id": self._get_path_group_id(self.shared_utils.wan_ha_path_group_name),
             "flow_assignment": "lan",
         }
-        if self.shared_utils.cv_pathfinder_role == "pathfinder":
+        if self.shared_utils.is_cv_pathfinder_server:
             return ha_path_group
 
         # not a pathfinder device

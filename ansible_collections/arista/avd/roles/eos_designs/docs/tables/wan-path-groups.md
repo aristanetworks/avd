@@ -27,7 +27,7 @@
       - name: <str; required; unique>
 
         # Path-group id.
-
+        #
         # TODO: Required until an auto ID algorithm is implemented.
         id: <int; required>
 
@@ -35,7 +35,7 @@
         description: <str>
 
         # Flag to configure IPsec at the path-group level.
-
+        #
         # When set to `true`, IPsec is enabled for both the static and dynamic peers.
         ipsec: <bool; default=True>
 

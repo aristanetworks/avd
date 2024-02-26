@@ -157,6 +157,20 @@ class FilteredTenantsMixin:
 
         return accepted_vlans
 
+    def is_accepted_vrf(self: SharedUtils, vrf: dict) -> bool:
+        """
+        Returns True if
+
+        - filter.allow_vrfs == ["all"] OR VRF is included in filter.allow_vrfs.
+
+        AND
+
+        - filter.not_vrfs == [] OR VRF is NOT in filter.deny_vrfs
+        """
+        return ("all" in self.filter_allow_vrfs or vrf["name"] in self.filter_allow_vrfs) and (
+            not self.filter_deny_vrfs or vrf["name"] not in self.filter_deny_vrfs
+        )
+
     def filtered_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
         """
         Return sorted and filtered vrf list from given tenant.
@@ -169,6 +183,9 @@ class FilteredTenantsMixin:
 
         vrfs: list[dict] = natural_sort(convert_dicts(tenant.get("vrfs", []), "name"), "name")
         for original_vrf in vrfs:
+            if not self.is_accepted_vrf(original_vrf):
+                continue
+
             # Copying original_vrf and setting "tenant" for use by child objects like SVIs
             vrf = {**original_vrf, "tenant": tenant["name"]}
 

@@ -106,7 +106,7 @@
             dest_prefix_set_name: <str>
 
             # List of protocols to consider for this application.
-
+            #
             # To use port field-sets (source, destination or both), the list
             # must contain only one or two protocols, either `tcp` or `udp`.
             # When using both protocols, one line is rendered for each in the configuration,
@@ -122,25 +122,25 @@
               - <str>
 
             # Name of field set for UDP source ports.
-
+            #
             # When the `protocols` list contain both `tcp` and `udp`, this key value
             # must be the same as `tcp_src_port_set_name`.
             udp_src_port_set_name: <str>
 
             # Name of field set for TCP source ports.
-
+            #
             # When the `protocols` list contain both `tcp` and `udp`, this key value
             # must be the same as `udp_src_port_set_name`.
             tcp_src_port_set_name: <str>
 
             # Name of field set for UDP destination ports.
-
+            #
             # When the `protocols` list contain both `tcp` and `udp`, this key value
             # must be the same as `tcp_dest_port_set_name`.
             udp_dest_port_set_name: <str>
 
             # Name of field set for TCP destination ports.
-
+            #
             # When the `protocols` list contain both `tcp` and `udp`, this key value
             # must be the same as `udp_dest_port_set_name`.
             tcp_dest_port_set_name: <str>

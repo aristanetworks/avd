@@ -72,13 +72,13 @@
     overlay_mlag_rfc5549: <bool; default=False>
 
     # Configuration options for the Administrator subfield (first part of RD) and the Assigned Number subfield (second part of RD).
-
+    #
     # By default Route Distinguishers (RD) are set to:
     # - `<overlay_loopback>:<mac_vrf_id_base + vlan_id or mac_vrf_vni_base + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.
     # - `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.
     # - `<overlay_loopback>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.
     # - `<overlay_loopback>:<vrf_id>` for VRFs.
-
+    #
     # Note:
     # RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
     # When using loopback or 32-bit ASN/number the assigned number can only be a 16-bit number. This may be a problem with large VNIs.
@@ -107,7 +107,7 @@
       # - Any <IPv4 Address> without mask.
       # - Integer between <0-65535>.
       # - Integer between <0-4294967295>.
-
+      #
       # 'vrf_admin_subfield' takes precedence for VRF RDs if set. Otherwise the 'admin_subfield' value will be used.
       vrf_admin_subfield: <str>
 
@@ -119,7 +119,7 @@
       # - 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.
       # - 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.
       # - 'vlan_id' will only use the 'vlan_id' and ignores all base values.
-
+      #
       # These methods can be overridden per VLAN if either 'rd_override', 'rt_override' or 'vni_override' is set (preferred in this order).
       vlan_assigned_number_subfield: <str; "mac_vrf_id" | "mac_vrf_vni" | "vlan_id"; default="mac_vrf_id">
 
@@ -136,13 +136,13 @@
     overlay_routing_protocol_address_family: <str; "ipv4" | "ipv6"; default="ipv4">
 
     # Configuration options for the Administrator subfield (first part of RT) and the Assigned Number subfield (second part of RT).
-
+    #
     # By default Route Targets (RT) are set to:
     # - `<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>:<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.
     # - `<vlan_aware_bundle_number_base + vrf_id>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.
     # - `<vlan_aware_bundle_number_base + id>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.
     # - `<vrf_id>:<vrf_id>` for VRFs.
-
+    #
     # Notes:
     # RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
     # When using 32-bit ASN/number the VNI can only be a 16-bit number. Alternatively use vlan_id/vrf_id as assigned number.
@@ -156,7 +156,7 @@
       # - 'bgp_as' means the AS number of the device.
       # - Integer between <0-65535>.
       # - Integer between <0-4294967295>.
-
+      #
       # The 'vrf_id' and 'vrf_vni' methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).
       # The 'vrf_id', 'vrf_vni' and 'id' methods can be overridden per bundle defined under `evpn_vlan_bundles` using 'rt_override'.
       admin_subfield: <str; default="vrf_id">
@@ -168,7 +168,7 @@
       # - 'bgp_as' means the AS number of the device.
       # - Integer between <0-65535>.
       # - Integer between <0-4294967295>.
-
+      #
       # 'vrf_admin_subfield' takes precedence for VRF RDs if set. Otherwise the 'admin_subfield' value will be used.
       vrf_admin_subfield: <str; default="vrf_id">
 
@@ -176,7 +176,7 @@
       # - 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.
       # - 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.
       # - 'vlan_id' will only use the 'vlan_id' and ignores all base values.
-
+      #
       # These methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).
       vlan_assigned_number_subfield: <str; "mac_vrf_id" | "mac_vrf_vni" | "vlan_id"; default="mac_vrf_id">
 

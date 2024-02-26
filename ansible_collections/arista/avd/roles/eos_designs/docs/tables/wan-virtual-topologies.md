@@ -23,7 +23,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].preference") | String |  | `preferred` |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
-    | [<samp>&nbsp;&nbsp;policies</samp>](## "wan_virtual_topologies.policies") | List, items: Dictionary |  |  |  | List of virtual toplogies policies.<br><br>For AutoVPN, each item in the list creates:<br>  * one policy with:<br>      * one `match` entry per `application_virtual_topologies` item<br>        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.<br>      * one `default-match`<br>  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.<br>  * if the policy is associated with the default VRF, a special control-plane rule is injected<br>    in the policy with index `1` referring to a control-plane load-balance policy as defined under<br>    `control_plane_virtual_topology`.<br><br><br>For CV Pathfinder, each item in the list creates:<br>  * one policy with:<br>      * one `match` entry per `application_virtual_topologies` item ordered as in the model.<br>      * one last match entry for the `default` application-profile using `default_virtual_topology` information.<br>  * one profile per `application_virtual_topologies` item.<br>  * one profile for the `default_virtual_topology`..<br>  * one load-balance policy per `application_virtual_topologies`.<br>  * one load_balance policy for the `default_virtual_topology`.<br>  * if the policy is associated with the default VRF, a special control-plane profile is configured<br>    and injected first in the policy assigned to the `default` VRF. This profile points to a<br>    control-plane load-balance policy as defined under `control_plane_virtual_topology`. |
+    | [<samp>&nbsp;&nbsp;policies</samp>](## "wan_virtual_topologies.policies") | List, items: Dictionary |  |  |  | List of virtual toplogies policies.<br><br>For AutoVPN, each item in the list creates:<br>  * one policy with:<br>      * one `match` entry per `application_virtual_topologies` item<br>        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.<br>      * one `default-match`<br>  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.<br>  * if the policy is associated with the default VRF, a special control-plane rule is injected<br>    in the policy with index `1` referring to a control-plane load-balance policy as defined under<br>    `control_plane_virtual_topology`.<br><br>For CV Pathfinder, each item in the list creates:<br>  * one policy with:<br>      * one `match` entry per `application_virtual_topologies` item ordered as in the model.<br>      * one last match entry for the `default` application-profile using `default_virtual_topology` information.<br>  * one profile per `application_virtual_topologies` item.<br>  * one profile for the `default_virtual_topology`..<br>  * one load-balance policy per `application_virtual_topologies`.<br>  * one load_balance policy for the `default_virtual_topology`.<br>  * if the policy is associated with the default VRF, a special control-plane profile is configured<br>    and injected first in the policy assigned to the `default` VRF. This profile points to a<br>    control-plane load-balance policy as defined under `control_plane_virtual_topology`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].name") | String | Required, Unique |  |  | Name of the AVT policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_virtual_topologies</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies") | List, items: Dictionary |  |  |  | List of application specific virtual topologies. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_profile</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].application_profile") | String | Required, Unique |  |  | The application profile to use for this virtual topology. It must be a defined `application_profile`. |
@@ -57,9 +57,9 @@
 
     ```yaml
     # PREVIEW: WAN Preview
-
+    #
     # Configure Virtual Topologies for CV Pathfinder and AutoVPN.
-
+    #
     # Auto create a control plane profile/policy/application and enforce it being first in the default VRF.
     wan_virtual_topologies:
 
@@ -74,7 +74,7 @@
           policy: <str>
 
       # Always injected into the default VRF policy as the first entry.
-
+      #
       # By default, if no path-groups are specified, all locally available path-groups
       # are used in the generated load-balance policy.
       # ID is hardcoded to 254 for the AVT profile in CV Pathfinder mode.
@@ -106,13 +106,13 @@
               - <str>
 
             # Valid values are 1-255 | preferred | alternate.
-
+            #
             # preferred is converted to priority 1.
             # alternate is converted to priority 2.
             preference: <str; default="preferred">
 
       # List of virtual toplogies policies.
-
+      #
       # For AutoVPN, each item in the list creates:
       #   * one policy with:
       #       * one `match` entry per `application_virtual_topologies` item
@@ -122,8 +122,7 @@
       #   * if the policy is associated with the default VRF, a special control-plane rule is injected
       #     in the policy with index `1` referring to a control-plane load-balance policy as defined under
       #     `control_plane_virtual_topology`.
-
-
+      #
       # For CV Pathfinder, each item in the list creates:
       #   * one policy with:
       #       * one `match` entry per `application_virtual_topologies` item ordered as in the model.
@@ -177,7 +176,7 @@
                     - <str>
 
                   # Valid values are 1-255 | preferred | alternate.
-
+                  #
                   # preferred is converted to priority 1.
                   # alternate is converted to priority 2.
                   preference: <str; default="preferred">
@@ -216,7 +215,7 @@
                   - <str>
 
                 # Valid values are 1-255 | preferred | alternate.
-
+                #
                 # preferred is converted to priority 1.
                 # alternate is converted to priority 2.
                 preference: <str; default="preferred">

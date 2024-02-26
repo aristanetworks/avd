@@ -41,17 +41,15 @@ default_node_types:
   - node_type: wan_rr
     match_hostnames:
       - "cv-pathfinder-pathfinder.*"
-  - node_type: wan_transit
-    match_hostnames:
-      - "cv-pathfinder-transit.*"
-  - node_type: wan_edge
+  - node_type: wan_router
     match_hostnames:
       - "cv-pathfinder-edge.*"
+      - "cv-pathfinder-transit.*"
   - node_type: l3leaf
     match_hostnames:
       - ".*leaf.*"
 
-wan_edge:
+wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 192.168.142.0/24
@@ -127,38 +125,17 @@ wan_edge:
               ip_address: 172.15.6.6/31
           uplink_switch_interfaces: [Ethernet2, Ethernet2]
 
-# Fake DC1
-l3leaf:
-  defaults:
-    bgp_as: 65199
-    loopback_ipv4_pool: 192.168.45.0/24
-    vtep_loopback_ipv4_pool: 192.168.255.0/24
-    virtual_router_mac_address: 00:1c:73:00:00:01
-    filter:
-      always_include_vrfs_in_tenants: [TenantA]
-  nodes:
-    - name: site-ha-enabled-leaf1
-      id: 1
-    - name: site-ha-enabled-leaf2A
-      id: 2
-    - name: site-ha-enabled-leaf2B
-      id: 3
-    - name: site-ha-disabled-leaf
-      id: 4
-
-wan_transit:
-  defaults:
-    loopback_ipv4_pool: 192.168.43.0/24
-    vtep_loopback_ipv4_pool: 192.168.143.0/24
-    filter:
-      always_include_vrfs_in_tenants: [TenantA, TenantB]
-    uplink_ipv4_pool: 172.17.0.0/16
-    uplink_type: p2p-vrfs
-    uplink_switches: [ site-ha-enabled-leaf1 ]
-    uplink_interfaces: [ Ethernet52 ]
-    bgp_as: 65000
-  node_groups:
+    # TRANSIT_SITE_HA_ENABLED
     - group: TRANSIT_SITE_HA_ENABLED
+      loopback_ipv4_pool: 192.168.43.0/24
+      vtep_loopback_ipv4_pool: 192.168.143.0/24
+      filter:
+        always_include_vrfs_in_tenants: [TenantA, TenantB]
+      uplink_ipv4_pool: 172.17.0.0/16
+      uplink_type: p2p-vrfs
+      uplink_switches: [ site-ha-enabled-leaf1 ]
+      uplink_interfaces: [ Ethernet52 ]
+      cv_pathfinder_transit_mode: region
       # Disable HA IPsec
       wan_ha:
         ipsec: false
@@ -193,6 +170,25 @@ wan_transit:
               wan_carrier: Colt
               wan_circuit_id: 10666
               ip_address: 172.16.6.6/31
+
+# Fake DC1
+l3leaf:
+  defaults:
+    bgp_as: 65199
+    loopback_ipv4_pool: 192.168.45.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+    virtual_router_mac_address: 00:1c:73:00:00:01
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+  nodes:
+    - name: site-ha-enabled-leaf1
+      id: 1
+    - name: site-ha-enabled-leaf2A
+      id: 2
+    - name: site-ha-enabled-leaf2B
+      id: 3
+    - name: site-ha-disabled-leaf
+      id: 4
 
 wan_rr:
   defaults:

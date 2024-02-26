@@ -224,7 +224,7 @@ class UtilsMixin:
         wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
         wan_load_balance_policy = {"name": name, "path_groups": [], **get(input_dict, "constraints", default={})}
 
-        if self.shared_utils.wan_ha or self.shared_utils.cv_pathfinder_role == "pathfinder":
+        if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
             # Adding HA path-group with priority 1 - it does not count as an entry with priority 1
             wan_load_balance_policy["path_groups"].append({"name": self.shared_utils.wan_ha_path_group_name})
 
@@ -306,19 +306,29 @@ class UtilsMixin:
         )
 
         wan_load_balance_policies = [
-            self._generate_wan_load_balance_policy(f"LB-{self._wan_control_plane_profile}", control_plane_virtual_topology, self._default_vrf_policy["name"])
+            self._generate_wan_load_balance_policy(
+                self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile),
+                control_plane_virtual_topology,
+                self._default_vrf_policy["name"],
+            )
         ]
         for policy in self._filtered_wan_policies:
             for application_virtual_topology in get(policy, "application_virtual_topologies", []):
                 # TODO add internet exit once supported
-                name = get(application_virtual_topology, "name", default=f"{policy['name']}-{application_virtual_topology['application_profile']}")
+                name = get(
+                    application_virtual_topology,
+                    "name",
+                    default=self._default_profile_name(policy["name"], application_virtual_topology["application_profile"]),
+                )
                 context_path = (
                     f"wan_virtual_topologies.policies[{policy['name']}].application_virtual_topologies[{application_virtual_topology['application_profile']}]"
                 )
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", application_virtual_topology, context_path),
+                    new_dict=self._generate_wan_load_balance_policy(
+                        self.shared_utils.generate_lb_policy_name(name), application_virtual_topology, context_path
+                    ),
                     context="Router Path-Selection Load-Balance policies.",
                     context_keys=["name"],
                 )
@@ -327,7 +337,7 @@ class UtilsMixin:
                 policy, "default_virtual_topology", required=True, org_key=f"wan_virtual_topologies.policies[{policy['name']}].default_virtual_toplogy"
             )
             if not get(default_virtual_topology, "drop_unmatched", default=False):
-                name = get(default_virtual_topology, "name", default=f"{policy['name']}-DEFAULT")
+                name = get(default_virtual_topology, "name", default=self._default_profile_name(policy["name"], "DEFAULT"))
                 context_path = f"wan_virtual_topologies.policies[{policy['name']}].default_virtual_topology"
 
                 # Verify that path_groups are set or raise
@@ -341,7 +351,7 @@ class UtilsMixin:
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", default_virtual_topology, context_path),
+                    new_dict=self._generate_wan_load_balance_policy(self.shared_utils.generate_lb_policy_name(name), default_virtual_topology, context_path),
                     context="Router Path-Selection Load-Balance policies.",
                     context_keys=["name"],
                 )
@@ -436,3 +446,11 @@ class UtilsMixin:
         default_policy["is_default"] = True
 
         return default_policy
+
+    def _default_profile_name(self, profile_name: str, application_profile: str) -> str:
+        """
+        Helper function to consistently return the default name of a profile
+
+        Returns {profile_name}-{application_profile}
+        """
+        return f"{profile_name}-{application_profile}"
