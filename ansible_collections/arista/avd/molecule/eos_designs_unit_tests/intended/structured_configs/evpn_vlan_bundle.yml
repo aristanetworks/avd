@@ -314,8 +314,20 @@ vxlan_interface:
         vni: 10070
       - id: 80
         vni: 10080
+      - id: 1011
+        vni: 21011
+      - id: 1012
+        vni: 21012
       - id: 1013
         vni: 21013
+      - id: 1014
+        vni: 21014
+      - id: 1015
+        vni: 21015
+      - id: 1008
+        vni: 21008
+      - id: 1009
+        vni: 21009
       - id: 1010
         vni: 21010
       - id: 90
