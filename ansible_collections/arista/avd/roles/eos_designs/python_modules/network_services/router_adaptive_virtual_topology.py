@@ -105,7 +105,9 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                     {
                         "application_profile": application_profile,
                         "avt_profile": get(
-                            application_virtual_topology, "name", default=f"{avt_policy['name']}-{application_virtual_topology['application_profile']}"
+                            application_virtual_topology,
+                            "name",
+                            default=self._default_profile_name(avt_policy["name"], application_virtual_topology["application_profile"]),
                         ),
                         "traffic_class": get(application_virtual_topology, "traffic_class"),
                         "dscp": get(application_virtual_topology, "dscp"),
@@ -120,7 +122,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 cv_pathfinder_policy["matches"].append(
                     {
                         "application_profile": application_profile,
-                        "avt_profile": get(default_virtual_topology, "name", default=f"{avt_policy['name']}-DEFAULT"),
+                        "avt_profile": get(default_virtual_topology, "name", default=self._default_profile_name(avt_policy["name"], "DEFAULT")),
                         "traffic_class": get(default_virtual_topology, "traffic_class"),
                         "dscp": get(default_virtual_topology, "dscp"),
                         # Storing id as _id to avoid schema validation and be able to pick up in VRFs
@@ -155,29 +157,39 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
             return []
 
         # Control Plan profile
-        cv_pathfinder_profiles = [{"name": self._wan_control_plane_profile, "load_balance_policy": f"LB-{self._wan_control_plane_profile}"}]
+        cv_pathfinder_profiles = [
+            {"name": self._wan_control_plane_profile, "load_balance_policy": self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile)}
+        ]
         for avt_policy in self._filtered_wan_policies:
             for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
-                name = get(application_virtual_topology, "name", default=f"{avt_policy['name']}-{application_virtual_topology['application_profile']}")
+                name = get(
+                    application_virtual_topology,
+                    "name",
+                    default=self._default_profile_name(avt_policy["name"], application_virtual_topology["application_profile"]),
+                )
                 append_if_not_duplicate(
                     list_of_dicts=cv_pathfinder_profiles,
                     primary_key="name",
                     new_dict={
                         "name": name,
-                        "load_balance_policy": f"LB-{name}",
+                        "load_balance_policy": self.shared_utils.generate_lb_policy_name(name),
                     },
                     context="Router Adaptive Virtual Topology profiles.",
                     context_keys=["name"],
                 )
             default_virtual_topology = get(avt_policy, "default_virtual_topology", required=True)
             if not get(default_virtual_topology, "drop_unmatched", default=False):
-                name = get(default_virtual_topology, "name", default=f"{avt_policy['name']}-DEFAULT")
+                name = get(
+                    default_virtual_topology,
+                    "name",
+                    default=self._default_profile_name(avt_policy["name"], "DEFAULT"),
+                )
                 append_if_not_duplicate(
                     list_of_dicts=cv_pathfinder_profiles,
                     primary_key="name",
                     new_dict={
                         "name": name,
-                        "load_balance_policy": f"LB-{name}",
+                        "load_balance_policy": self.shared_utils.generate_lb_policy_name(name),
                     },
                     context="Router Adaptive Virtual Topology profiles.",
                     context_keys=["name"],

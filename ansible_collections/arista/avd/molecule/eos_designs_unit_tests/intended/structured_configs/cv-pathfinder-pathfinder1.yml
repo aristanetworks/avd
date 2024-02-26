@@ -195,7 +195,7 @@ ip_security:
   sa_policies:
   - name: CP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
   - name: CP-PROFILE

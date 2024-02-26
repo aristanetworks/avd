@@ -159,7 +159,7 @@ class CvPathfinderMixin:
                         ],
                     }
                     for profile in vrf["profiles"]
-                    for lb_policy in [get_item(load_balance_policies, "name", f"LB-{profile['name']}", required=True)]
+                    for lb_policy in [get_item(load_balance_policies, "name", self.shared_utils.generate_lb_policy_name(profile["name"]), required=True)]
                 ],
             }
             for vrf in avt_vrfs
