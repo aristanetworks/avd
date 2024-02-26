@@ -125,7 +125,7 @@
         # All subinterfaces use the same IP address as the physical interface.
         # Multicast is not supported.
         # Only BGP is supported for subinterfaces.
-
+        #
         # For `lan`, a single uplink interface is supported and will be configured as an L3 Interface with
         # subinterfaces for each SVI defined under the VRFs in `network_services` as long as the uplink switch also
         # has the VLAN permitted by tag/tenant filtering.
