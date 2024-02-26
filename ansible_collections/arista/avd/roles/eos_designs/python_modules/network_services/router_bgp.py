@@ -559,7 +559,7 @@ class RouterBgpMixin(UtilsMixin):
 
         return bundles or None
 
-    def _router_bgp_vlan_aware_bundles_vrf(self, vrf, tenant) -> list | None:
+    def _router_bgp_vlan_aware_bundles_vrf(self, vrf, tenant) -> dict | None:
         """
         Return structured config for one vrf under router_bgp.vlan_aware_bundles
         """
