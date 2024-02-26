@@ -206,7 +206,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             route_map["sequence_numbers"].append({"sequence": 20, "type": "permit", "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"]})
 
         if self._inband_mgmt_ipv6_parent:
-            route_map["sequence_numbers"].append({"sequence": 50, "type": "permit", "match": ["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]})
+            route_map["sequence_numbers"].append({"sequence": 60, "type": "permit", "match": ["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]})
 
         return [route_map]
 

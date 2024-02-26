@@ -332,7 +332,7 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
-  - sequence: 50
+  - sequence: 60
     type: permit
     match:
     - ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT
