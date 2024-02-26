@@ -77,8 +77,9 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={"id": 254})
 
         for avt_policy in self._filtered_wan_policies:
+            policy_name = avt_policy["name"]
             cv_pathfinder_policy = {
-                "name": avt_policy["name"],
+                "name": policy_name,
                 "matches": [],
             }
 
@@ -93,7 +94,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                     }
                 )
                 # TODO - refactor logic so that we don't need this as this is not very good looking
-                avt_policy["name"] = avt_policy["original_name"]
+                policy_name = avt_policy["original_name"]
 
             for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
                 application_profile = get(application_virtual_topology, "application_profile", required=True)
@@ -103,7 +104,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                         "avt_profile": get(
                             application_virtual_topology,
                             "name",
-                            default=self._default_profile_name(avt_policy["name"], application_virtual_topology["application_profile"]),
+                            default=self._default_profile_name(policy_name, application_virtual_topology["application_profile"]),
                         ),
                         "traffic_class": get(application_virtual_topology, "traffic_class"),
                         "dscp": get(application_virtual_topology, "dscp"),
@@ -118,7 +119,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 cv_pathfinder_policy["matches"].append(
                     {
                         "application_profile": application_profile,
-                        "avt_profile": get(default_virtual_topology, "name", default=self._default_profile_name(avt_policy["name"], "DEFAULT")),
+                        "avt_profile": get(default_virtual_topology, "name", default=self._default_profile_name(policy_name, "DEFAULT")),
                         "traffic_class": get(default_virtual_topology, "traffic_class"),
                         "dscp": get(default_virtual_topology, "dscp"),
                         # Storing id as _id to avoid schema validation and be able to pick up in VRFs

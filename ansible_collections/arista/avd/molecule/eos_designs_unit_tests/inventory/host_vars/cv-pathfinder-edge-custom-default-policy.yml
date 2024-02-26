@@ -44,6 +44,7 @@ wan_router:
     vtep_loopback_ipv4_pool: 192.168.255.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA]
+      deny_vrfs: [IT]
   nodes:
     - name: cv-pathfinder-edge-custom-default-policy
       cv_pathfinder_region: AVD_Land_West

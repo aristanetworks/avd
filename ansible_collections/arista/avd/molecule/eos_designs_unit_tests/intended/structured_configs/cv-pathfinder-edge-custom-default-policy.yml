@@ -75,20 +75,6 @@ router_bgp:
         route_targets:
         - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
-  - name: IT
-    router_id: 192.168.42.1
-    rd: 192.168.42.1:100
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-      export:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-    redistribute_routes:
-    - source_protocol: connected
   - name: PROD
     router_id: 192.168.42.1
     rd: 192.168.42.1:42
@@ -111,9 +97,6 @@ spanning_tree:
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: IT
-  tenant: TenantA
-  ip_routing: true
 - name: PROD
   tenant: TenantA
   ip_routing: true
@@ -397,8 +380,6 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
-      - name: IT
-        vni: 100
       - name: PROD
         vni: 42
 metadata:

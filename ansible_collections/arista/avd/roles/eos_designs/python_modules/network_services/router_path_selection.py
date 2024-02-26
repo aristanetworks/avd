@@ -53,8 +53,9 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         for policy in self._filtered_wan_policies:
             rule_id_offset = 0
+            policy_name = policy["name"]
             autovpn_policy = {
-                "name": policy["name"],
+                "name": policy_name,
             }
 
             if get(policy, "is_default", default=False):
@@ -66,14 +67,14 @@ class RouterPathSelectionMixin(UtilsMixin):
                     }
                 )
                 rule_id_offset = 1
-                # Eurk
-                policy["name"] = policy["original_name"]
+                # TODO - refactor logic so that we don't need this as this is not very good looking
+                policy_name = policy["original_name"]
 
             for rule_id, application_virtual_topology in enumerate(get(policy, "application_virtual_topologies", []), start=1):
                 name = get(
                     application_virtual_topology,
                     "name",
-                    default=self._default_profile_name(policy["name"], application_virtual_topology["application_profile"]),
+                    default=self._default_profile_name(policy_name, application_virtual_topology["application_profile"]),
                 )
                 application_profile = get(application_virtual_topology, "application_profile", required=True)
                 autovpn_policy.setdefault("rules", []).append(
@@ -88,7 +89,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 name = get(
                     default_virtual_topology,
                     "name",
-                    default=self._default_profile_name(policy["name"], "DEFAULT"),
+                    default=self._default_profile_name(policy_name, "DEFAULT"),
                 )
                 autovpn_policy["default_match"] = {"load_balance": self.shared_utils.generate_lb_policy_name(name)}
 

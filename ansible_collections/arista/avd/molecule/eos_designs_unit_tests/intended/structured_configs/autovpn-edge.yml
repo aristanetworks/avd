@@ -68,20 +68,6 @@ router_bgp:
         route_targets:
         - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
-  - name: IT
-    router_id: 192.168.30.1
-    rd: 192.168.30.1:100
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-      export:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-    redistribute_routes:
-    - source_protocol: connected
   - name: PROD
     router_id: 192.168.30.1
     rd: 192.168.30.1:42
@@ -293,7 +279,5 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
-      - name: IT
-        vni: 100
       - name: PROD
         vni: 42

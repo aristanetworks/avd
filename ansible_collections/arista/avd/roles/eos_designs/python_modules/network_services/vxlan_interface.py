@@ -100,16 +100,6 @@ class VxlanInterfaceMixin(UtilsMixin):
             }
         }
 
-    def _get_wan_vrf(self, name: str) -> dict | None:
-        """
-        Retrieve the VRF object from `wan_virtual_topologies.vrfs` list.
-        Return None if not found
-        """
-        if not self.shared_utils.is_wan_router:
-            return None
-        wan_vrfs = get(self._hostvars, "wan_virtual_topologies.vrfs", default=[])
-        return get_item(wan_vrfs, "name", name)
-
     def _get_vxlan_interface_config_for_vrf(self, vrf: dict, tenant: dict, vrfs: list, vlans: list, vnis: list) -> None:
         """
         In place updates of the vlans, vnis and vrfs list
@@ -142,18 +132,16 @@ class VxlanInterfaceMixin(UtilsMixin):
             if "evpn" not in vrf.get("address_families", ["evpn"]):
                 return
 
-            if (wan_vrf := self._get_wan_vrf(vrf_name)) is not None:
-                vni = get(
-                    wan_vrf,
-                    "wan_vni",
-                    required=True,
-                    org_key=(
-                        f"The VRF '{vrf_name}' does not have a `wan_vni` defined under 'wan_virtual_topologies'. "
-                        "If this VRF was not intended to be extended over the WAN, but still required to be configured on the WAN router, "
-                        "set 'address_families: []' under the VRF definition."
-                        "If this VRF was not intended to be configured on the WAN router, use the VRF filter 'deny_vrfs' under the node settings."
-                    ),
+            if self.shared_utils.is_wan_router:
+                # Every VRF with EVPN on a WAN router must have a wan_vni defined.
+                error_message = (
+                    f"The VRF '{vrf_name}' does not have a `wan_vni` defined under 'wan_virtual_topologies'. "
+                    "If this VRF was not intended to be extended over the WAN, but still required to be configured on the WAN router, "
+                    "set 'address_families: []' under the VRF definition. If this VRF was not intended to be configured on the WAN router, "
+                    "use the VRF filter 'deny_vrfs' under the node settings."
                 )
+                wan_vrf = get_item(self._filtered_wan_vrfs, "name", vrf_name, required=True, custom_error_msg=error_message)
+                vni = get(wan_vrf, "wan_vni", required=True, org_key=error_message)
             else:
                 vni = default(
                     vrf.get("vrf_vni"),
