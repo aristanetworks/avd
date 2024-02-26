@@ -23,13 +23,13 @@ class CvPathfinderMixin:
     def _cv_pathfinder(self: AvdStructuredConfigMetadata) -> dict | None:
         """
         Generate metadata for CV Pathfinder feature.
-        Only relevant if cv_pathfinder_role is not None
+        Only relevant for cv_pathfinder routers
         """
-        if self.shared_utils.cv_pathfinder_role is None:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return None
 
         # Pathfinder
-        if self.shared_utils.cv_pathfinder_role == "pathfinder":
+        if self.shared_utils.is_cv_pathfinder_server:
             return {
                 "role": self.shared_utils.cv_pathfinder_role,
                 "ssl_profile": None,  # TODO: Pick up ssl profile from self.shared_utils.this_wan_route_server.ssl_profile_name
@@ -58,7 +58,7 @@ class CvPathfinderMixin:
                 "carrier": carrier["name"],
                 "circuit_id": interface.get("wan_circuit_id"),
                 "pathgroup": carrier["path_group"],
-                "public_ip": str(interface["ip_address"]).split("/", maxsplit=1)[0] if self.shared_utils.cv_pathfinder_role == "pathfinder" else None,
+                "public_ip": str(interface["ip_address"]).split("/", maxsplit=1)[0] if self.shared_utils.is_cv_pathfinder_server else None,
             }
             for carrier in self.shared_utils.wan_local_carriers
             for interface in carrier["interfaces"]
@@ -103,11 +103,13 @@ class CvPathfinderMixin:
                             {
                                 "name": site["name"],
                                 "id": site["id"],
-                                "location": {
-                                    "address": site.get("location"),
-                                }
-                                if site.get("location")
-                                else None,
+                                "location": (
+                                    {
+                                        "address": site.get("location"),
+                                    }
+                                    if site.get("location")
+                                    else None
+                                ),
                             }
                             for site in region["sites"]
                         ],

@@ -146,7 +146,7 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: cv-pathfinder-edge
   peer_interface: Ethernet52
-  peer_type: wan_edge
+  peer_type: wan_router
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE_Ethernet52
   shutdown: false
   mtu: 9214
@@ -155,7 +155,7 @@ ethernet_interfaces:
 - name: Ethernet1.100
   peer: cv-pathfinder-edge
   peer_interface: Ethernet52.100
-  peer_type: wan_edge
+  peer_type: wan_router
   vrf: IT
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE_Ethernet52.100_vrf_IT
   shutdown: false
@@ -166,7 +166,7 @@ ethernet_interfaces:
 - name: Ethernet1.42
   peer: cv-pathfinder-edge
   peer_interface: Ethernet52.42
-  peer_type: wan_edge
+  peer_type: wan_router
   vrf: PROD
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE_Ethernet52.42_vrf_PROD
   shutdown: false
@@ -177,7 +177,7 @@ ethernet_interfaces:
 - name: Ethernet2
   peer: cv-pathfinder-edge-no-common-path-group
   peer_interface: Ethernet52
-  peer_type: wan_edge
+  peer_type: wan_router
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE-NO-COMMON-PATH-GROUP_Ethernet52
   shutdown: false
   mtu: 9214
@@ -186,7 +186,7 @@ ethernet_interfaces:
 - name: Ethernet2.100
   peer: cv-pathfinder-edge-no-common-path-group
   peer_interface: Ethernet52.100
-  peer_type: wan_edge
+  peer_type: wan_router
   vrf: IT
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE-NO-COMMON-PATH-GROUP_Ethernet52.100_vrf_IT
   shutdown: false
@@ -197,7 +197,7 @@ ethernet_interfaces:
 - name: Ethernet2.42
   peer: cv-pathfinder-edge-no-common-path-group
   peer_interface: Ethernet52.42
-  peer_type: wan_edge
+  peer_type: wan_router
   vrf: PROD
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE-NO-COMMON-PATH-GROUP_Ethernet52.42_vrf_PROD
   shutdown: false

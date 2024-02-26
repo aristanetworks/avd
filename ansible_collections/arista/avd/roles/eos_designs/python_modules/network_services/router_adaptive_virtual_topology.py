@@ -22,7 +22,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         """
         Return structured config for profiles, policies and VRFs for router adaptive-virtual-topology (AVT)
         """
-        if not self.shared_utils.cv_pathfinder_role:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return None
 
         router_adaptive_virtual_topology = {
@@ -73,7 +73,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
 
         Insert the policy for default VRF using  {name}-WITH-CP
         """
-        if not self.shared_utils.cv_pathfinder_role:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return []
 
         cv_pathfinder_policies = []
@@ -153,7 +153,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
 
         TODO: add internet exit once supported
         """
-        if not self.shared_utils.cv_pathfinder_role:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return []
 
         # Control Plan profile

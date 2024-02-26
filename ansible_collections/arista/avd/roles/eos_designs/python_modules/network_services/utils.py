@@ -224,7 +224,7 @@ class UtilsMixin:
         wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
         wan_load_balance_policy = {"name": name, "path_groups": [], **get(input_dict, "constraints", default={})}
 
-        if self.shared_utils.wan_ha or self.shared_utils.cv_pathfinder_role == "pathfinder":
+        if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
             # Adding HA path-group with priority 1 - it does not count as an entry with priority 1
             wan_load_balance_policy["path_groups"].append({"name": self.shared_utils.wan_ha_path_group_name})
 

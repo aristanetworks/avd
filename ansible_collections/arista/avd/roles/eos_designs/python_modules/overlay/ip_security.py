@@ -98,7 +98,7 @@ class IpSecurityMixin(UtilsMixin):
         By default using aes256gcm128 as GCM variants give higher performance.
         """
         sa_policy = {"name": name}
-        if self.shared_utils.cv_pathfinder_role:
+        if self.shared_utils.is_cv_pathfinder_router:
             # TODO, provide options to change this cv_pathfinder_wide
             sa_policy["esp"] = {"encryption": "aes256gcm128"}
             sa_policy["pfs_dh_group"] = 14

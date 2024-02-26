@@ -30,11 +30,11 @@ wan_ipsec_profiles:
     shared_key: ABCDEF1234567890
 
 default_node_types:
-  - node_type: wan_edge
+  - node_type: wan_router
     match_hostnames:
       - "autovpn-edge.*"
 
-wan_edge:
+wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.30.0/24
     vtep_loopback_ipv4_pool: 192.168.255.0/24
