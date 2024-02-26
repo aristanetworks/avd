@@ -254,6 +254,72 @@ The tags will only be generated when `wan_mode` is set to `cv-pathfinder`.
 
 ### Global settings
 
+!!! Warning
+
+    These global settings must be the same for every WAN device participating
+    in the WAN network. When using multiple inventories, the recommendation is
+    to use Global Variables, for instance leveraging the `arista.avd.global_vars`
+    Ansible plugin.
+
+#### TL;DR
+
+The following top level keys must be defined globally and have the same value for every single WAN router.
+
+- `wan_mode`: `< autovpn | cv-pathfinder; default: cv-pathfinder>`
+- `wan_virtual_topologies`: to define the Policies and the VRF to policy mappings
+- `wan_path_groups`: to define the list of path-groups in the network
+- `wan_carriers`: to define the list of carriers in the network, each carrier is assigned to a path-group
+- `wan_ipsec_profiles`: to define the shared key for the Control Plane and Data Plane IPSec profiles.
+- `cv_pathfinder_regions`: to define the Region/Zone/Site hierarchy, not required for AutoVPN.
+- `tenants`: the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF informaiton
+- `application_classification`: to define the specific traffic classification required for the WAN if any.
+
+The following keys must be set for each WAN router but can have different values
+
+ - `wan_route_servers`: To indicate to which WAN route servers the WAN router should connect to.
+
+The following keys must be set for the WAN route servers for the connectivity to work:
+
+- `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes`: To set the ranges of IP address from which to expect BGP peerings for the WAN.
+
+#### WAN mode
+
+AVD supports two design types for WAN:
+* AutoVPN
+* CV Pathfinder
+
+By default the mode is set to `cv-pathfinder` and can be changed using:
+
+```yaml
+---
+wan_mode: autovpn | cv-pathfinder
+```
+
+#### WAN node_types
+
+There are two built-in node types for WAN:
+* `wan_router`: WAN routers can be AutoVPN edges, CV Pathfinder edges or transits.
+* `wan_rr`: WAN route servers, used for the AutoVPN RRs and CV Pathfinder Pathfinder nodes.
+
+#### WAN route servers
+
+The AVD model for WAN has been built with the intention that it should be possible to have the different WAN routers in different inventories.
+
+The top level `wan_route_servers` allow to indicate to which AutoVPN RRs or to which Pathinders node the routers should connect to.
+
+When the WAN route servers are part of the same inventory, each WAN routers in the inventory is able to pick up the required information to generate the configuration from the inventory device.
+However, if the WAN route servers are in a different inventory, it is then necessary to add some information under the 
+
+#### CV Pathfinder hierarchy
+
+When deploying CV Pathfinder, it is required to define a hierarchy using the top
+level key `cv_pathfinder_regions` in order to then be able to allocat a region
+and a site to each WAN routers in the node settings.
+
+
+
+
+
 TODO - cover here WAN hierarchy, wan mode, route-servers, path-groups and carriers and how they are linked together.
 
 ### WAN interfaces
