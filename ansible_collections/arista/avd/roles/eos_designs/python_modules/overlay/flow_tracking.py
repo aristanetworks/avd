@@ -21,7 +21,7 @@ class FlowTrackingMixin(UtilsMixin):
 
         TODO: Make this configurable.
         """
-        if not self.shared_utils.cv_pathfinder_role:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return None
 
         return {

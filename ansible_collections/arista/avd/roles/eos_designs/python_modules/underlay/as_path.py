@@ -23,7 +23,7 @@ class AsPathMixin(UtilsMixin):
             return None
 
         access_lists = []
-        if self.shared_utils.is_cv_pathfinder_edge_or_transit:
+        if self.shared_utils.is_cv_pathfinder_client:
             access_lists.append(
                 {
                     "name": "ASPATH-WAN",

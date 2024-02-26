@@ -1767,29 +1767,6 @@ keys:
             Only supported if `overlay_routing_protocol` is set to `ibgp`.
 
             '
-        default_cv_pathfinder_role:
-          documentation_options:
-            table: node-type-key-wan-configuration
-          type: str
-          valid_values:
-          - edge
-          - transit region
-          - pathfinder
-          description: 'PREVIEW: This key is currently not supported
-
-            Set the default CV Pathfinder role.
-
-
-            This key is used for Pathfinder designs only when the `wan_mode` root
-
-            key is set to `cv-pathfinder`.
-
-
-            `pathfinder` is only a valid if `wan_role` is `server`.
-
-            `edge` and `transit` are only valid if `wan_role` is `client`.
-
-            '
         mlag_support:
           type: bool
           default: false
@@ -3535,6 +3512,19 @@ keys:
           type: str
           description: The path-group to which this carrier belongs.
           required: true
+  wan_edge:
+    documentation_options:
+      table: wan-settings
+    type: dict
+    description: 'The `wan_edge` node type was introduced and removed while the AVD
+      WAN feature was in PREVIEW MODE.
+
+      Migrate your existing edge nodes to using `wan_router` node_type.'
+    deprecation:
+      warning: true
+      new_key: wan_router
+      removed: true
+      remove_in_version: 4.6.0-dev1
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
@@ -3689,6 +3679,22 @@ keys:
                       type: str
                       description: The public IP address of the Route Reflector for
                         this path-group.
+  wan_transit:
+    documentation_options:
+      table: wan-settings
+    type: dict
+    description: 'The `wan_transit` node type was introduced and removed while the
+      AVD WAN feature was in PREVIEW MODE.
+
+      Migrate your existing transit nodes to using `wan_router` node_type and set
+
+      `cv_pathfinder_transit_mode: region` under node settings.'
+    deprecation:
+      warning: true
+      new_key: 'node_type `wan_router` and set `cv_pathfinder_transit_mode: region`
+        under node settings'
+      removed: true
+      remove_in_version: 4.6.0-dev1
   wan_virtual_topologies:
     type: dict
     description: 'PREVIEW: WAN Preview
@@ -7525,24 +7531,21 @@ $defs:
 
 
               Only supported if `overlay_routing_protocol` is set to `ibgp`.'
-          cv_pathfinder_role:
+          cv_pathfinder_transit_mode:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            $ref: eos_designs#/keys/node_type_keys/items/keys/default_cv_pathfinder_role
+            valid_values:
+            - region
+            - zone
             description: 'PREVIEW: This key is currently not supported
 
-              Override the default CV Pathfinder role.
+              Configure the transit mode for a WAN client for CV Pathfinder designs
+
+              only when the `wan_mode` root key is set to `cv_pathfinder`.
 
 
-              This key is used for Pathfinder designs only when the `wan_mode` root
-
-              key is set to `cv_pathfinder`.
-
-
-              `pathfinder` is only a valid if `wan_role` is `server`.
-
-              `edge` and `transit region` are only valid if `wan_role` is `client`.'
+              ''zone'' is currently not supported.'
           cv_pathfinder_region:
             documentation_options:
               table: node-type-wan-configuration
