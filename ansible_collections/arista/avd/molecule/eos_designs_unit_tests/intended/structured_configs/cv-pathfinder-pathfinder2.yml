@@ -27,6 +27,10 @@ router_bgp:
     remote_as: '65000'
     ttl_maximum_hops: 1
     route_reflector_client: true
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   - name: WAN-RR-OVERLAY-PEERS
     type: wan
     update_source: Dps1
@@ -35,6 +39,10 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     ttl_maximum_hops: 42
+    bfd_timers:
+      interval: 2020
+      min_rx: 2000
+      multiplier: 3
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -115,11 +123,7 @@ router_bgp:
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
 service_routing_protocols_model: multi-agent
 ip_routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
+transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 vrfs:
@@ -198,7 +202,7 @@ ip_security:
   sa_policies:
   - name: CP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
   - name: CP-PROFILE
@@ -330,20 +334,26 @@ router_path_selection:
     id: 103
   - name: Satellite
     id: 104
+  - name: LAN_HA
+    id: 65535
+    flow_assignment: lan
   peer_dynamic_source: stun
   load_balance_policies:
   - name: LB-CONTROL-PLANE-PROFILE
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
     jitter: 42
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: LTE
     - name: INET
@@ -351,26 +361,31 @@ router_path_selection:
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: Equinix
     - name: MPLS
       priority: 42
   - name: LB-TRANSIT-AVT-POLICY-VOICE
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
   - name: LB-TRANSIT-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
@@ -537,6 +552,8 @@ metadata:
       - id: 254
         name: CONTROL-PLANE-PROFILE
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: MPLS
@@ -544,6 +561,8 @@ metadata:
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -551,6 +570,8 @@ metadata:
       - id: 1
         name: DEFAULT-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: Equinix
@@ -565,6 +586,8 @@ metadata:
         id: 2
         name: PROD-AVT-POLICY-VOICE
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -572,6 +595,8 @@ metadata:
       - id: 4
         name: PROD-AVT-POLICY-VIDEO
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: LTE
@@ -581,6 +606,8 @@ metadata:
       - id: 1
         name: PROD-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: MPLS
@@ -591,6 +618,8 @@ metadata:
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -598,6 +627,8 @@ metadata:
       - id: 1
         name: DEFAULT-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: Equinix
@@ -610,6 +641,8 @@ metadata:
       - id: 42
         name: TRANSIT-AVT-POLICY-VOICE
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -617,6 +650,8 @@ metadata:
       - id: 1
         name: TRANSIT-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: MPLS

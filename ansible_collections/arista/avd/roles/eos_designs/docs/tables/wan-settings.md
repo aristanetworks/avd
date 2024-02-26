@@ -32,7 +32,7 @@
 
     ```yaml
     # PREVIEW: This key is currently not supported
-
+    #
     # Define IPsec profiles parameters for WAN configuration.
     wan_ipsec_profiles:
 
@@ -69,15 +69,15 @@
         shared_key: <str; required>
 
     # PREVIEW: This key is currently not supported
-
+    #
     # Select if the WAN should be run using CV Pathfinder or Auto VPN only.
     wan_mode: <str; "autovpn" | "cv-pathfinder"; default="cv-pathfinder">
 
     # PREVIEW: This key is currently not supported
-
+    #
     # List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders
     # when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
-
+    #
     # When the route server is part of the same inventory as the WAN routers,
     # only the name is required.
     wan_route_servers:

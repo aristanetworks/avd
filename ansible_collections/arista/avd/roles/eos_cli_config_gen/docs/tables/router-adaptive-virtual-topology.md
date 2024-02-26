@@ -70,7 +70,7 @@
           internet_exit_policy: <str>
 
       # A sequence of application profiles mapped to some virtual topologies.
-
+      #
       # When `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index> in the list.
       policies:
 

@@ -49,7 +49,7 @@
             # By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
             # The rt_override allows us to override this value and statically define it.
             # rt_override will default to vni_override if set.
-
+            #
             # rt_override supports two formats:
             #   - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
             #   - A full RT string with colon seperator which will override the full RT.
@@ -58,7 +58,7 @@
             # By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
             # The rt_override allows us to override this value and statically define it.
             # rd_override will default to rt_override or vni_override if set.
-
+            #
             # rd_override supports two formats:
             #   - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
             #   - A full RD string with colon seperator which will override the full RD.

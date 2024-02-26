@@ -228,7 +228,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
         if self._mpls_lsr is True:
             return "LSR_Router_ID"
 
-        if self.shared_utils.wan_role is not None:
+        if self.shared_utils.is_wan_router:
             return "Router_ID"
 
         # Covers L2LS

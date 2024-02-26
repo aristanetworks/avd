@@ -23,7 +23,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         Return structured config for router path-selection (DPS)
         """
 
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         router_path_selection = {
@@ -31,7 +31,7 @@ class RouterPathSelectionMixin(UtilsMixin):
             "path_groups": self._get_path_groups(),
         }
 
-        if self.shared_utils.wan_role == "server":
+        if self.shared_utils.is_wan_server:
             router_path_selection["peer_dynamic_source"] = "stun"
 
         return strip_empties_from_dict(router_path_selection)
@@ -57,7 +57,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         path_groups = []
 
-        if self.shared_utils.wan_role == "server":
+        if self.shared_utils.is_wan_server:
             # Configure all path-groups on Pathfinders and AutoVPN RRs
             path_groups_to_configure = self.shared_utils.wan_path_groups
         else:
@@ -82,18 +82,59 @@ class RouterPathSelectionMixin(UtilsMixin):
 
             path_groups.append(path_group_data)
 
-        if self.shared_utils.cv_pathfinder_role:
-            pass
-            # implement LAN_HA here
+        if (self.shared_utils.cv_pathfinder_role and self.shared_utils.wan_ha) or self.shared_utils.cv_pathfinder_role == "pathfinder":
+            path_groups.append(self._generate_ha_path_group())
 
         return path_groups
+
+    def _generate_ha_path_group(self) -> dict:
+        """
+        Called only when self.shared_utils.wan_ha is True or on Pathfinders
+        """
+        ha_path_group = {
+            "name": self.shared_utils.wan_ha_path_group_name,
+            "id": self._get_path_group_id(self.shared_utils.wan_ha_path_group_name),
+            "flow_assignment": "lan",
+        }
+        if self.shared_utils.cv_pathfinder_role == "pathfinder":
+            return ha_path_group
+
+        # not a pathfinder device
+        ha_path_group.update(
+            {
+                # This should be the LAN interface over which a DPS tunnel is built
+                "local_interfaces": [{"name": interface["interface"]} for interface in self._wan_ha_interfaces()],
+                "static_peers": [
+                    {
+                        "router_ip": self._wan_ha_peer_vtep_ip(),
+                        "name": self.shared_utils.wan_ha_peer,
+                        "ipv4_addresses": [ip_address.split("/")[0] for ip_address in self.shared_utils.wan_ha_peer_ip_addresses],
+                    }
+                ],
+            }
+        )
+        if get(self.shared_utils.switch_data_combined, "wan_ha.ipsec", default=True):
+            ha_path_group["ipsec_profile"] = self._dp_ipsec_profile_name
+
+        return ha_path_group
+
+    def _wan_ha_interfaces(self) -> list:
+        """
+        Return list of interfaces for HA
+        """
+        return [uplink for uplink in self.shared_utils.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+
+    def _wan_ha_peer_vtep_ip(self) -> str:
+        """ """
+        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer, required=True)
+        return get(peer_facts, "vtep_ip", required=True)
 
     def _get_path_group_id(self, path_group_name: str, config_id: int | None = None) -> int:
         """
         TODO - implement algorithm to auto assign IDs - cf internal documenation
         TODO - also implement algorithm for cross connects on public path_groups
         """
-        if path_group_name == "LAN_HA":
+        if path_group_name == self.shared_utils.wan_ha_path_group_name:
             return 65535
         if config_id is not None:
             return config_id
@@ -110,7 +151,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         for interface in path_group.get("interfaces", []):
             local_interface = {"name": get(interface, "name", required=True)}
 
-            if self.shared_utils.wan_role == "client" and self.shared_utils.should_connect_to_wan_rs([path_group_name]):
+            if self.shared_utils.is_wan_client and self.shared_utils.should_connect_to_wan_rs([path_group_name]):
                 stun_server_profiles = self._stun_server_profiles.get(path_group_name, [])
                 if stun_server_profiles:
                     local_interface["stun"] = {"server_profiles": [profile["name"] for profile in stun_server_profiles]}
@@ -123,7 +164,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         TODO support ip_local and ipsec ?
         """
-        if self.shared_utils.wan_role != "client":
+        if not self.shared_utils.is_wan_client:
             return None
         return {"enabled": True}
 
@@ -131,7 +172,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         Retrieves the static peers to configure for a given path-group based on the connected nodes.
         """
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         static_peers = []

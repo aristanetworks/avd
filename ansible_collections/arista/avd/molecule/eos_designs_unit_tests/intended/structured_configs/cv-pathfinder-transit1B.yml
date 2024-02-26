@@ -1,8 +1,8 @@
-hostname: cv-pathfinder-transit
+hostname: cv-pathfinder-transit1B
 is_deployed: true
 router_bgp:
   as: '65000'
-  router_id: 192.168.43.1
+  router_id: 192.168.43.2
   bgp:
     default:
       ipv4_unicast: false
@@ -17,6 +17,9 @@ router_bgp:
     send_community: all
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
+    allowas_in:
+      enabled: true
+      times: 1
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
@@ -26,6 +29,10 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     ttl_maximum_hops: 1
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -35,6 +42,81 @@ router_bgp:
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
+  neighbors:
+  - ip_address: 172.17.0.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65199'
+    peer: site-ha-enabled-leaf1
+    description: site-ha-enabled-leaf1_Ethernet2
+  - ip_address: 192.168.144.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder
+  vrfs:
+  - name: IT
+    router_id: 192.168.43.2
+    neighbors:
+    - ip_address: 172.17.0.2
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65199'
+      description: site-ha-enabled-leaf1_Ethernet2.100_vrf_IT
+    rd: 192.168.43.2:100
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 100:100
+      export:
+      - address_family: evpn
+        route_targets:
+        - 100:100
+    redistribute_routes:
+    - source_protocol: connected
+  - name: PROD
+    router_id: 192.168.43.2
+    neighbors:
+    - ip_address: 172.17.0.2
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65199'
+      description: site-ha-enabled-leaf1_Ethernet2.42_vrf_PROD
+    rd: 192.168.43.2:42
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: default
+    rd: 192.168.43.2:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+  - name: TRANSIT
+    router_id: 192.168.43.2
+    rd: 192.168.43.2:66
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 66:66
+      export:
+      - address_family: evpn
+        route_targets:
+        - 66:66
+    redistribute_routes:
+    - source_protocol: connected
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -61,73 +143,9 @@ router_bgp:
         receive: true
         send:
           any: true
-  neighbors:
-  - ip_address: 192.168.144.1
-    peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
-  vrfs:
-  - name: default
-    rd: 192.168.43.1:1
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
-  - name: IT
-    router_id: 192.168.43.1
-    rd: 192.168.43.1:100
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-      export:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-    redistribute_routes:
-    - source_protocol: connected
-  - name: PROD
-    router_id: 192.168.43.1
-    rd: 192.168.43.1:42
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '42:42'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '42:42'
-    redistribute_routes:
-    - source_protocol: connected
-  - name: TRANSIT
-    router_id: 192.168.43.1
-    rd: 192.168.43.1:66
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 66:66
-      export:
-      - address_family: evpn
-        route_targets:
-        - 66:66
-    redistribute_routes:
-    - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
+transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 vrfs:
@@ -147,6 +165,39 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
+- name: Ethernet52
+  peer: site-ha-enabled-leaf1
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet2
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 172.17.0.3/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet52.100
+  peer: site-ha-enabled-leaf1
+  peer_interface: Ethernet2.100
+  peer_type: l3leaf
+  vrf: IT
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet2.100_vrf_IT
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 100
+  mtu: 9214
+  ip_address: 172.17.0.3/31
+- name: Ethernet52.42
+  peer: site-ha-enabled-leaf1
+  peer_interface: Ethernet2.42
+  peer_type: l3leaf
+  vrf: PROD
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet2.42_vrf_PROD
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 42
+  mtu: 9214
+  ip_address: 172.17.0.3/31
 - name: Ethernet1.42
   peer_type: l3_interface
   ip_address: dhcp
@@ -176,7 +227,7 @@ loopback_interfaces:
 - name: Loopback0
   description: Router_ID
   shutdown: false
-  ip_address: 192.168.43.1/32
+  ip_address: 192.168.43.2/32
 as_path:
   access_lists:
   - name: ASPATH-WAN
@@ -188,6 +239,14 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.43.0/24 eq 32
+- name: PL-WAN-HA-PREFIXES
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.17.0.2/31
+- name: PL-WAN-HA-PEER-PREFIXES
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.17.0.0/31
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -197,18 +256,36 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
     - extcommunity soo 192.168.43.1:422 additive
+  - sequence: 50
+    type: permit
+    match:
+    - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
-  - sequence: 20
-    type: deny
-    description: Deny prefixes from WAN
-    match:
-    - as-path ASPATH-WAN
-  - sequence: 30
+  - sequence: 40
     type: permit
     description: Mark prefixes originated from the LAN
     set:
     - extcommunity soo 192.168.43.1:422 additive
+  - sequence: 10
+    type: permit
+    description: Allow WAN HA peer interface prefixes
+    match:
+    - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
+  - sequence: 20
+    type: permit
+    description: Allow prefixes originated from the HA peer
+    match:
+    - extcommunity ECL-EVPN-SOO
+    set:
+    - as-path match all replacement auto auto
+  - sequence: 30
+    type: permit
+    description: Use WAN routes from HA peer as backup
+    match:
+    - as-path ASPATH-WAN
+    set:
+    - community no-advertise
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 10
@@ -221,6 +298,11 @@ route_maps:
     description: Advertise routes received from WAN iBGP towards LAN
     match:
     - route-type internal
+  - sequence: 30
+    type: permit
+    description: Advertise WAN HA prefixes towards LAN
+    match:
+    - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -262,19 +344,22 @@ ip_extcommunity_lists:
     extcommunities: soo 192.168.43.1:422
 ip_security:
   ike_policies:
+  - name: DP-IKE-POLICY
+    local_id: 192.168.143.2
   - name: CP-IKE-POLICY
-    local_id: 192.168.143.1
+    local_id: 192.168.143.2
   sa_policies:
   - name: DP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
+    ike_policy: DP-IKE-POLICY
     sa_policy: DP-SA-POLICY
     connection: start
     shared_key: ABCDEF1234567890666
@@ -425,44 +510,62 @@ router_path_selection:
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
       - 172.16.0.1
+  - name: LAN_HA
+    id: 65535
+    flow_assignment: lan
+    local_interfaces:
+    - name: Ethernet52
+    static_peers:
+    - router_ip: 192.168.143.1
+      name: cv-pathfinder-transit1A
+      ipv4_addresses:
+      - 172.17.0.1
   load_balance_policies:
   - name: LB-CONTROL-PLANE-PROFILE
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
     jitter: 42
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 42
   - name: LB-TRANSIT-AVT-POLICY-VOICE
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
   - name: LB-TRANSIT-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
@@ -533,12 +636,12 @@ dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9214
-  ip_address: 192.168.143.1/32
+  ip_address: 192.168.143.2/32
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
-    description: cv-pathfinder-transit_VTEP
+    description: cv-pathfinder-transit1B_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1
@@ -563,6 +666,10 @@ metadata:
     - name: Site
       value: Site422
     interface_tags:
+    - interface: Ethernet52
+      tags:
+      - name: Type
+        value: lan
     - interface: Ethernet1
       tags:
       - name: Type
@@ -573,7 +680,7 @@ metadata:
         value: lan
   cv_pathfinder:
     role: transit region
-    vtep_ip: 192.168.143.1
+    vtep_ip: 192.168.143.2
     region: AVD_Land_West
     zone: DEFAULT-ZONE
     site: Site422

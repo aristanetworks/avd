@@ -24,20 +24,20 @@
 
         # PREVIEW: This key is currently not supported
         # Set the default WAN role.
-
+        #
         # This is used both for AutoVPN and Pathfinder designs.
         # That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
         # `server` indicates that the router is a route-reflector.
-
+        #
         # Only supported if `overlay_routing_protocol` is set to `ibgp`.
         default_wan_role: <str; "client" | "server">
 
         # PREVIEW: This key is currently not supported
         # Set the default CV Pathfinder role.
-
+        #
         # This key is used for Pathfinder designs only when the `wan_mode` root
         # key is set to `cv-pathfinder`.
-
+        #
         # `pathfinder` is only a valid if `wan_role` is `server`.
         # `edge` and `transit` are only valid if `wan_role` is `client`.
         default_cv_pathfinder_role: <str; "edge" | "transit region" | "pathfinder">

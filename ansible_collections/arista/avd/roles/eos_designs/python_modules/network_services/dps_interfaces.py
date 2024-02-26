@@ -21,7 +21,7 @@ class DpsInterfacesMixin(UtilsMixin):
 
         Only used for WAN devices
         """
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         dps1 = {
@@ -38,6 +38,6 @@ class DpsInterfacesMixin(UtilsMixin):
         # When needed - need a default value if different than IPv4
 
         if self.shared_utils.cv_pathfinder_role:
-            dps1["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
+            dps1["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
         return [dps1]

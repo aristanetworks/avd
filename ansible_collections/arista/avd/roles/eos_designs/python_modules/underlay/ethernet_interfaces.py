@@ -112,7 +112,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                 # Configuring flow tracking on LAN interfaces
                 if self.shared_utils.wan_mode == "cv-pathfinder" and self.shared_utils.wan_role == "client":
-                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
+                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
                 # Structured Config
                 ethernet_interface["struct_cfg"] = link.get("structured_config")
@@ -185,7 +185,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                     # Configuring flow tracking on LAN interfaces
                     if self.shared_utils.wan_mode == "cv-pathfinder" and self.shared_utils.wan_role == "client":
-                        ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
+                        ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
                     ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
                     append_if_not_duplicate(
@@ -227,7 +227,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                 # Configuring flow tracking on LAN interfaces
                 if self.shared_utils.wan_mode == "cv-pathfinder" and self.shared_utils.wan_role == "client":
-                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
+                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
                 append_if_not_duplicate(
                     list_of_dicts=ethernet_interfaces,

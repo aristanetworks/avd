@@ -357,7 +357,26 @@ keys:
             description: Type 7 encrypted password.
           bfd:
             type: bool
-            default: false
+            default: true
+          bfd_timers:
+            type: dict
+            description: 'Specify the BFD timers to override the default values.
+
+              It is recommended to keep BFD total timeout longer than the DPS timeout.
+
+              The Default BFD timeout is 10 x 1 seconds and the default DPS timeout
+              is 5 x 1 seconds.'
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/keys/bfd_timers
+            keys:
+              interval:
+                type: int
+                default: 1000
+              min_rx:
+                type: int
+                default: 1000
+              multiplier:
+                type: int
+                default: 10
           listen_range_prefixes:
             type: list
             description: 'Only used for nodes where `wan_role` is `server` like AutoVPN
@@ -400,6 +419,25 @@ keys:
           bfd:
             type: bool
             default: true
+          bfd_timers:
+            type: dict
+            description: 'Specify the BFD timers to override the default values.
+
+              It is recommended to keep BFD total timeout longer than the DPS timeout.
+
+              The Default BFD timeout is 10 x 1 seconds and the default DPS timeout
+              is 5 x 1 seconds.'
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/keys/bfd_timers
+            keys:
+              interval:
+                type: int
+                default: 1000
+              min_rx:
+                type: int
+                default: 1000
+              multiplier:
+                type: int
+                default: 10
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
@@ -3704,7 +3742,7 @@ keys:
           for the `default_virtual_topology`.\n  * if the policy is associated with
           the default VRF, a special control-plane rule is injected\n    in the policy
           with index `1` referring to a control-plane load-balance policy as defined
-          under\n    `control_plane_virtual_topology`.\n\n\nFor CV Pathfinder, each
+          under\n    `control_plane_virtual_topology`.\n\nFor CV Pathfinder, each
           item in the list creates:\n  * one policy with:\n      * one `match` entry
           per `application_virtual_topologies` item ordered as in the model.\n      *
           one last match entry for the `default` application-profile using `default_virtual_topology`
@@ -5691,6 +5729,8 @@ $defs:
                       min: 0
                       max: 4294967294
                       description: Maximum number of routes (0 means unlimited).
+                    maximum_routes_warning_only:
+                      type: bool
                     default_originate:
                       type: dict
                       keys:
@@ -7528,6 +7568,30 @@ $defs:
 
 
               The CV Pathfinder site name.'
+          wan_ha:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: dict
+            description: 'PREVIEW: This key is currently not supported
+
+
+              The key is supported only if `wan_mode` == `cv-pathfinder`.
+
+              AutoVPN support is still to be determined.
+
+
+              Maximum 2 devices supported by group for HA.'
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable / Disable auto CV-Pathfinder HA, when two nodes
+                  are defined in the same node_group.
+              ipsec:
+                type: bool
+                default: true
+                description: Enable / Disable IPsec over HA path-group when HA is
+                  enabled.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration

@@ -23,6 +23,10 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     ttl_maximum_hops: 42
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -101,11 +105,7 @@ router_bgp:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
+transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 vrfs:
@@ -209,11 +209,11 @@ ip_security:
   sa_policies:
   - name: DP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
