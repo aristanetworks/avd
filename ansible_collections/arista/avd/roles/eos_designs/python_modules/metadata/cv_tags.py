@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from pyavd.errors import AristaAvdError
+
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict, strip_empties_from_list
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 

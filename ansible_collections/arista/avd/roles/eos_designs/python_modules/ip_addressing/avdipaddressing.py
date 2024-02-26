@@ -4,8 +4,9 @@
 import ipaddress
 from collections import ChainMap
 
+from pyavd.errors import AristaAvdError
+
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_ip_from_pool
 
 from .utils import UtilsMixin

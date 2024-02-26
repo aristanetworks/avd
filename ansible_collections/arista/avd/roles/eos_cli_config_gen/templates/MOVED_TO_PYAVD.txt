@@ -1,0 +1,1 @@
+Templates have been moved to /python-avd/pyavd/j2templates.

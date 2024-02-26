@@ -7,9 +7,10 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from pyavd.j2filters.convert_dicts import convert_dicts
+from pyavd.j2filters.list_compress import list_compress
+from pyavd.j2filters.range_expand import range_expand
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:

@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from pyavd.errors import AristaAvdError
+from pyavd.j2filters.convert_dicts import convert_dicts
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 if TYPE_CHECKING:

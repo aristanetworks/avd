@@ -5,7 +5,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
+from pyavd.j2filters.list_compress import list_compress
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services.utils import UtilsMixin
 

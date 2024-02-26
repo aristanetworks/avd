@@ -6,8 +6,9 @@ from __future__ import annotations
 import ipaddress
 from functools import cached_property
 
+from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
+
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item
 
 

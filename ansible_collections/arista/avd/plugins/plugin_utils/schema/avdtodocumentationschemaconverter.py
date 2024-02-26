@@ -5,7 +5,8 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from pyavd.errors import AristaAvdError
+
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 
 # The DEFAULT_TABLE value is only used a dummy value for unset "table" value.

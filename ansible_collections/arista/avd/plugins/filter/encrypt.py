@@ -1,8 +1,18 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.password_utils import METHODS_DIR
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+from ansible.errors import AnsibleFilterError
+
+try:
+    from pyavd.j2filters.encrypt import encrypt
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
 
 DOCUMENTATION = r"""
 ---
@@ -81,21 +91,10 @@ _value:
 """
 
 
-def encrypt(value, passwd_type=None, key=None, **kwargs) -> str:
-    """
-    Umbrella function to execute the correct encrypt method based on the input type
-    """
-    if not passwd_type:
-        raise AristaAvdMissingVariableError("type keyword must be present to use this test")
-    try:
-        encrypt_method = METHODS_DIR[passwd_type][0]
-    except KeyError as exc:
-        raise AristaAvdError(f"Type {passwd_type} is not supported for the encrypt filter") from exc
-    return encrypt_method(str(value), key=key, **kwargs)
-
-
 class FilterModule(object):
     def filters(self):
+        if not HAS_PYAVD:
+            raise AnsibleFilterError("The Python library 'pyavd' cound not be found. Please install using 'pip3 install'")
         return {
             "encrypt": encrypt,
         }

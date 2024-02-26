@@ -12,8 +12,7 @@ from urllib.error import HTTPError
 
 from ansible.errors import AnsibleConnectionFailure
 from ansible.module_utils.connection import ConnectionError
-
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from pyavd.errors import AristaAvdError
 
 logger = getLogger(__name__)
 

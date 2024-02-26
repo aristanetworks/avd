@@ -7,7 +7,7 @@ __metaclass__ = type
 
 import pytest
 
-from ansible_collections.arista.avd.plugins.filter.markdown_rendering import FilterModule
+from ansible_collections.arista.avd.plugins.filter.status_render import FilterModule
 
 STATE_STRINGS = ["PASS", "FAIL"]
 RENDERING_VALID = "github"

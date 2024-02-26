@@ -7,9 +7,9 @@ import logging
 from asyncio import run
 from typing import TYPE_CHECKING, Mapping
 
+from pyavd.errors import AristaAvdError
 from yaml import dump
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge_catalogs
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper, get_item
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import AVD_TEST_CLASSES

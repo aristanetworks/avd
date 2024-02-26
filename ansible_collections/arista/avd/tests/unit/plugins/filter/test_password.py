@@ -8,18 +8,11 @@ __metaclass__ = type
 from contextlib import nullcontext as does_not_raise
 
 import pytest
+from pyavd.errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd.utils.password import bgp_decrypt, bgp_encrypt, ospf_message_digest_decrypt, ospf_message_digest_encrypt, ospf_simple_decrypt, ospf_simple_encrypt
 
 from ansible_collections.arista.avd.plugins.filter.decrypt import decrypt
 from ansible_collections.arista.avd.plugins.filter.encrypt import encrypt
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import (
-    bgp_decrypt,
-    bgp_encrypt,
-    ospf_message_digest_decrypt,
-    ospf_message_digest_encrypt,
-    ospf_simple_decrypt,
-    ospf_simple_encrypt,
-)
 
 ##########
 # BGP

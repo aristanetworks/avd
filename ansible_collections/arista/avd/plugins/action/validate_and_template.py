@@ -11,15 +11,24 @@ import pstats
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.filter.add_md_toc import add_md_toc
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, template
+
+try:
+    from pyavd.j2filters.add_md_toc import add_md_toc
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
 
 
 class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
             task_vars = {}
+
+        if not HAS_PYAVD:
+            raise AnsibleActionFail("The Python library 'pyavd' was not found. Install using 'pip3 install'.")
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect

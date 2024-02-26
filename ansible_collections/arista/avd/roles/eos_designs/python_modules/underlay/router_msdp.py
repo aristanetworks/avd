@@ -5,7 +5,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from pyavd.j2filters.natural_sort import natural_sort
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 from .utils import UtilsMixin

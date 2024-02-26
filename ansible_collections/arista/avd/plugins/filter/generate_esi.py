@@ -5,6 +5,15 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from ansible.errors import AnsibleFilterError
+
+try:
+    from pyavd.j2filters.generate_esi import generate_esi
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
+
 DOCUMENTATION = r"""
 ---
 name: generate_esi
@@ -38,12 +47,10 @@ _value:
 """
 
 
-def generate_esi(esi_short, esi_prefix="0000:0000:"):
-    return esi_prefix + esi_short
-
-
 class FilterModule(object):
     def filters(self):
+        if not HAS_PYAVD:
+            raise AnsibleFilterError("The Python library 'pyavd' cound not be found. Please install using 'pip3 install'")
         return {
             "generate_esi": generate_esi,
         }

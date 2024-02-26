@@ -1,0 +1,29 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+#
+# natural_sort filter
+#
+import re
+
+from jinja2.runtime import Undefined
+from jinja2.utils import Namespace
+
+
+def _convert(text):
+    return int(text) if text.isdigit() else text.lower()
+
+
+def natural_sort(iterable, sort_key=None):
+    if isinstance(iterable, Undefined) or iterable is None:
+        return []
+
+    def alphanum_key(key):
+        if sort_key is not None and isinstance(key, dict):
+            return [_convert(c) for c in re.split("([0-9]+)", str(key.get(sort_key, key)))]
+        elif sort_key is not None and isinstance(key, Namespace):
+            return [_convert(c) for c in re.split("([0-9]+)", getattr(key, sort_key))]
+        else:
+            return [_convert(c) for c in re.split("([0-9]+)", str(key))]
+
+    return sorted(iterable, key=alphanum_key)

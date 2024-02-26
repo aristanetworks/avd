@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from ipaddress import IPv4Network
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from pyavd.j2filters.natural_sort import natural_sort
 
 from .utils import UtilsMixin
 
