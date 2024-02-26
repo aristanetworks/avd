@@ -905,7 +905,9 @@ $defs:
             documentation_options:
               table: node-type-inband-management-configuration
             description: |
-              Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ipv6_address'. Otherwise gateway is derived from 'inband_mgmt_ipv6_subnet' if set.
+              Default gateway configured in the 'inband_mgmt_vrf'.
+              Used when `inband_mgmt_ipv6_address` is set. 
+              Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
               This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
             type: str
