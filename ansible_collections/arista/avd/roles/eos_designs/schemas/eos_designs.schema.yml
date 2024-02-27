@@ -1803,8 +1803,8 @@ keys:
           - p2p-vrfs
           - lan
           default: p2p
-          description: '`uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router`
-            is true.
+          description: '`uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep`
+            or `underlay_router` is true.
 
 
             For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface
