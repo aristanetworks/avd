@@ -1021,7 +1021,7 @@ $defs:
                 valid_values:
                   - boundary
                   - transparent
-              boundary_one_step:
+              mode_one_step:
                 type: bool
                 default: false
               profile:

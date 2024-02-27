@@ -114,7 +114,7 @@ ptp:
         delay_resp: 3
         follow_up: 3
         sync: 3
-  boundary_one_step: true
+  mode_one_step: true
 ethernet_interfaces:
 - name: Ethernet1
   peer: ptp-tests-leaf1
