@@ -5334,6 +5334,16 @@
       "type": "integer",
       "title": "ISIS Maximum Paths"
     },
+    "isis_system_id_format": {
+      "title": "ISIS Default IS System-ID format",
+      "description": "Configures source for the system-id within the ISIS net id. If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings will be ignored.",
+      "type": "string",
+      "enum": [
+        "node_id",
+        "underlay_loopback"
+      ],
+      "default": "node_id"
+    },
     "isis_ti_lfa": {
       "type": "object",
       "properties": {
