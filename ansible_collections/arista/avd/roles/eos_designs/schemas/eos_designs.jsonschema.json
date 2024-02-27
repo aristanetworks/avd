@@ -9673,6 +9673,11 @@
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
+              "ptp_mpass": {
+                "type": "boolean",
+                "default": false,
+                "title": "PTP Mpass"
+              },
               "short_esi": {
                 "type": "string",
                 "description": "In format xxxx:xxxx:xxxx or \"auto\".\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.",
@@ -10655,6 +10660,10 @@
                   "vmtracer": {
                     "type": "boolean",
                     "title": "VMTracer"
+                  },
+                  "ptp_mpass": {
+                    "type": "boolean",
+                    "title": "PTP Mpass"
                   },
                   "ptp": {
                     "type": "object",
@@ -15791,6 +15800,11 @@
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
+              "ptp_mpass": {
+                "type": "boolean",
+                "default": false,
+                "title": "PTP Mpass"
+              },
               "short_esi": {
                 "type": "string",
                 "description": "In format xxxx:xxxx:xxxx or \"auto\".\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.",
@@ -16773,6 +16787,10 @@
                   "vmtracer": {
                     "type": "boolean",
                     "title": "VMTracer"
+                  },
+                  "ptp_mpass": {
+                    "type": "boolean",
+                    "title": "PTP Mpass"
                   },
                   "ptp": {
                     "type": "object",

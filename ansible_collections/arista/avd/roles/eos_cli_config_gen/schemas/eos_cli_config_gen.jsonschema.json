@@ -12818,6 +12818,10 @@
             "type": "boolean",
             "title": "VMTracer"
           },
+          "ptp_mpass": {
+            "type": "boolean",
+            "title": "PTP Mpass"
+          },
           "ptp": {
             "type": "object",
             "properties": {
