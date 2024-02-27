@@ -374,6 +374,7 @@ router_path_selection:
     - name: INET
       priority: 2
     jitter: 42
+    lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
     - name: LAN_HA
