@@ -13592,9 +13592,9 @@
           ],
           "title": "Mode"
         },
-        "boundary_one_step": {
+        "mode_one_step": {
           "type": "boolean",
-          "title": "Boundary One Step"
+          "title": "Mode One Step"
         },
         "forward_unicast": {
           "type": "boolean",
