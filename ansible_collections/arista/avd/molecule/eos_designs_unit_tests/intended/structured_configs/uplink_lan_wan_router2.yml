@@ -1,5 +1,77 @@
 hostname: uplink_lan_wan_router2
 is_deployed: true
+router_bgp:
+  as: '65100'
+  router_id: 192.168.1.2
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 16
+  updates:
+    wait_install: true
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  peer_groups:
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    update_source: Dps1
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65100'
+    ttl_maximum_hops: 1
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
+  address_family_evpn:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
+  vrfs:
+  - name: VRF1
+    router_id: 192.168.1.2
+    rd: 192.168.1.2:123
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 123:123
+      export:
+      - address_family: evpn
+        route_targets:
+        - 123:123
+    redistribute_routes:
+    - source_protocol: connected
+  - name: default
+    rd: 192.168.1.2:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
 service_routing_protocols_model: multi-agent
 ip_routing: true
 transceiver_qsfp_default_mode_4x10: false
@@ -55,26 +127,6 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.1.2/32
-router_bgp:
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  peer_groups: []
-  address_family_evpn:
-    peer_groups: []
-  address_family_ipv4:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: false
-  address_family_path_selection:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-    bgp:
-      additional_paths:
-        receive: true
-        send:
-          any: true
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -108,6 +160,31 @@ route_maps:
     description: Advertise routes received from WAN iBGP towards LAN
     match:
     - route-type internal
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 192.168.1.2:0 additive
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - extcommunity ECL-EVPN-SOO
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.1.2:0
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
@@ -177,3 +254,8 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Dps1
+      vrfs:
+      - name: VRF1
+        vni: 123
+      - name: default
+        vni: 1
