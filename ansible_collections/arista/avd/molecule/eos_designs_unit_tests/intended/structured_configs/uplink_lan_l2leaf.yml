@@ -15,10 +15,10 @@ management_api_http:
   enable_https: true
 ethernet_interfaces:
 - name: Ethernet1
-  peer: uplink_lan_wan_edge1
+  peer: uplink_lan_wan_router1
   peer_interface: Ethernet2
-  peer_type: wan_edge
-  description: UPLINK_LAN_WAN_EDGE1_Ethernet2
+  peer_type: wan_router
+  description: UPLINK_LAN_WAN_ROUTER1_Ethernet2
   shutdown: false
   type: switched
   vlans: 10,100
@@ -26,10 +26,10 @@ ethernet_interfaces:
   native_vlan: 10
   spanning_tree_portfast: edge
 - name: Ethernet2
-  peer: uplink_lan_wan_edge2
+  peer: uplink_lan_wan_router2
   peer_interface: Ethernet2
-  peer_type: wan_edge
-  description: UPLINK_LAN_WAN_EDGE2_Ethernet2
+  peer_type: wan_router
+  description: UPLINK_LAN_WAN_ROUTER2_Ethernet2
   shutdown: false
   type: switched
   vlans: 10,100

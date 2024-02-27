@@ -1,12 +1,8 @@
-hostname: uplink_lan_wan_edge2
+hostname: uplink_lan_wan_router2
 is_deployed: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
+transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 vrfs:
@@ -91,6 +87,27 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.1.2:0 additive
+- name: RM-BGP-UNDERLAY-PEERS-IN
+  sequence_numbers:
+  - sequence: 40
+    type: permit
+    description: Mark prefixes originated from the LAN
+    set:
+    - extcommunity soo 192.168.1.2:0 additive
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Advertise local routes towards LAN
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+    description: Advertise routes received from WAN iBGP towards LAN
+    match:
+    - route-type internal
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
@@ -147,10 +164,11 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
+  mtu: 9214
   ip_address: 192.168.2.2/32
 vxlan_interface:
   Vxlan1:
-    description: uplink_lan_wan_edge2_VTEP
+    description: uplink_lan_wan_router2_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1

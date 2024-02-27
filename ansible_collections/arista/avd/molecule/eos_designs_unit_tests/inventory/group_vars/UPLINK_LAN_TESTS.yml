@@ -1,8 +1,8 @@
 default_node_types:
   - node_type: l2leaf
     match_hostnames: [.*l2leaf]
-  - node_type: wan_edge
-    match_hostnames: [.*wan_edge\d]
+  - node_type: wan_router
+    match_hostnames: [.*wan_router\d]
 
 l2leaf: # dynamic_key: node_type
   defaults:
@@ -10,7 +10,7 @@ l2leaf: # dynamic_key: node_type
     filter:
       tags: [l2leaf]
 
-wan_edge: # dynamic_key: node_type
+wan_router: # dynamic_key: node_type
   defaults:
     bgp_as: 65100
     id: 1
@@ -20,13 +20,13 @@ wan_edge: # dynamic_key: node_type
     uplink_switches: [uplink_lan_l2leaf]
     uplink_interfaces: [Ethernet2]
     filter:
-      tags: [wan_edge]
+      tags: [wan_router]
   nodes:
-    - name: uplink_lan_wan_edge1
+    - name: uplink_lan_wan_router1
       id: 1
       uplink_switch_interfaces: [Ethernet1]
       uplink_native_vlan: 10
-    - name: uplink_lan_wan_edge2
+    - name: uplink_lan_wan_router2
       uplink_switch_interfaces: [Ethernet2]
       id: 2
 
@@ -41,7 +41,7 @@ tenants: # dynamic_key: network_services
             name: VLAN10_NATIVE
             ip_address: 10.0.10.1/24
             enabled: true
-            tags: [wan_edge, l2leaf]
+            tags: [wan_router, l2leaf]
             mtu: 9214
           - id: 100
             name: VLAN100
@@ -50,7 +50,7 @@ tenants: # dynamic_key: network_services
             ipv6_address: cafe::cafe/64
             ipv6_enable: true
             enabled: true
-            tags: [wan_edge, l2leaf]
+            tags: [wan_router, l2leaf]
             raw_eos_cli: |-
               comment yo
             structured_config:
@@ -61,7 +61,7 @@ tenants: # dynamic_key: network_services
             name: VLAN101
             ip_address: 10.0.101.1/24
             enabled: true
-            tags: [wan_edge]
+            tags: [wan_router]
           - id: 102
             name: VLAN102
             ip_address: 10.0.102.1/24
