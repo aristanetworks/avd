@@ -1016,6 +1016,14 @@ $defs:
               enabled:
                 type: bool
                 default: false
+              mode:
+                type: str
+                valid_values:
+                  - boundary
+                  - transparent
+              boundary_one_step:
+                type: bool
+                default: false
               profile:
                 type: str
                 valid_values:

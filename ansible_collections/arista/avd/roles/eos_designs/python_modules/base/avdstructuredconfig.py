@@ -715,6 +715,8 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                 },
             },
         }
+        if ptp["mode"] == "boundary" and (boundary_one_step := get(self.shared_utils.switch_data_combined, "ptp.boundary_one_step", default="false")) is True:
+            ptp.update({"boundary_one_step": boundary_one_step})
         ptp = strip_null_from_data(ptp, (None, {}))
         return ptp
 
