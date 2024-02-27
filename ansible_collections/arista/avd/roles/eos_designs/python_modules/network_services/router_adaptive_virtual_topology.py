@@ -41,17 +41,15 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         wan_vrfs = []
 
         for vrf in self._filtered_wan_vrfs:
-            wan_vrf = vrf.copy()
+            wan_vrf = {"name": vrf["name"], "policy": vrf["policy"]}
 
             # Need to allocate an ID for each profile in the policy, for now picked up from the input.
             policy = get_item(
                 self._augmented_cv_pathfinder_policies,
                 "name",
-                wan_vrf[self._wan_policy_key],
+                wan_vrf["policy"],
                 required=True,
-                custom_error_msg=(
-                    f"The policy {wan_vrf[self._wan_policy_key]} used in vrf {wan_vrf['name']} is not configured under 'wan_virtual_topologies.policies'."
-                ),
+                custom_error_msg=(f"The policy {wan_vrf['policy']} used in vrf {wan_vrf['name']} is not configured under 'wan_virtual_topologies.policies'."),
             )
 
             for match in policy.get("matches", []):
@@ -70,8 +68,6 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
     def _augmented_cv_pathfinder_policies(self) -> list:
         """
         Return a list of augmented CV_Pathfinder Policies with an `_id` key to be used when rendering VRFs.
-
-        Insert the policy for default VRF using  {name}-WITH-CP
         """
         if not self.shared_utils.is_cv_pathfinder_router:
             return []
@@ -87,8 +83,6 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
             }
 
             if get(avt_policy, "is_default", default=False):
-                # Update policy name
-                cv_pathfinder_policy["name"] = f"{cv_pathfinder_policy['name']}-WITH-CP"
                 cv_pathfinder_policy["matches"].append(
                     {
                         "application_profile": self._wan_control_plane_application_profile,
@@ -107,7 +101,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                         "avt_profile": get(
                             application_virtual_topology,
                             "name",
-                            default=self._default_profile_name(avt_policy["name"], application_virtual_topology["application_profile"]),
+                            default=self._default_profile_name(avt_policy["profile_prefix"], application_virtual_topology["application_profile"]),
                         ),
                         "traffic_class": get(application_virtual_topology, "traffic_class"),
                         "dscp": get(application_virtual_topology, "dscp"),
@@ -122,7 +116,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 cv_pathfinder_policy["matches"].append(
                     {
                         "application_profile": application_profile,
-                        "avt_profile": get(default_virtual_topology, "name", default=self._default_profile_name(avt_policy["name"], "DEFAULT")),
+                        "avt_profile": get(default_virtual_topology, "name", default=self._default_profile_name(avt_policy["profile_prefix"], "DEFAULT")),
                         "traffic_class": get(default_virtual_topology, "traffic_class"),
                         "dscp": get(default_virtual_topology, "dscp"),
                         # Storing id as _id to avoid schema validation and be able to pick up in VRFs
@@ -156,7 +150,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         if not self.shared_utils.is_cv_pathfinder_router:
             return []
 
-        # Control Plan profile
+        # Control Plane profile
         cv_pathfinder_profiles = [
             {"name": self._wan_control_plane_profile, "load_balance_policy": self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile)}
         ]
@@ -165,7 +159,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 name = get(
                     application_virtual_topology,
                     "name",
-                    default=self._default_profile_name(avt_policy["name"], application_virtual_topology["application_profile"]),
+                    default=self._default_profile_name(avt_policy["profile_prefix"], application_virtual_topology["application_profile"]),
                 )
                 append_if_not_duplicate(
                     list_of_dicts=cv_pathfinder_profiles,
@@ -182,7 +176,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 name = get(
                     default_virtual_topology,
                     "name",
-                    default=self._default_profile_name(avt_policy["name"], "DEFAULT"),
+                    default=self._default_profile_name(avt_policy["profile_prefix"], "DEFAULT"),
                 )
                 append_if_not_duplicate(
                     list_of_dicts=cv_pathfinder_profiles,

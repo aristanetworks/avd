@@ -24884,17 +24884,26 @@
               },
               "policy": {
                 "type": "string",
-                "description": "Name of the AVT policy to apply to this VRF.",
+                "description": "Name of the policy to apply to this VRF.\nIt is possible to overwrite the default policy for all VRFs using it\nby redefining it in the `wan_virtual_topologies.policies` list using the\ndefault name `DEFAULT-POLICY`.",
+                "default": "DEFAULT-POLICY",
                 "title": "Policy"
+              },
+              "wan_vni": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 255,
+                "description": "Required for VRFs carried over AutoVPN or CV Pathfinder WAN.\n\nA VRF can have different VNIs between the Datacenters and the WAN.\nNote that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with\n`wan_vni` set to `1`.\nIn addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains.",
+                "title": "Wan Vni"
               }
             },
+            "required": [
+              "wan_vni",
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            },
-            "required": [
-              "name"
-            ]
+            }
           },
           "title": "VRFs"
         },

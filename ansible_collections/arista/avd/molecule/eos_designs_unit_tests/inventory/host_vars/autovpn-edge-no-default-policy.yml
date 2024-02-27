@@ -76,5 +76,9 @@ tenants:
       - name: IT
         vrf_id: 100
 
-# empty
-wan_virtual_topologies: null
+wan_virtual_topologies:
+  vrfs:
+    - name: PROD
+      wan_vni: 42
+    - name: IT
+      wan_vni: 100

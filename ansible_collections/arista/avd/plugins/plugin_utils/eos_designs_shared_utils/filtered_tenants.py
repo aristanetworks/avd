@@ -171,15 +171,31 @@ class FilteredTenantsMixin:
             not self.filter_deny_vrfs or vrf["name"] not in self.filter_deny_vrfs
         )
 
+    def is_forced_vrf(self: SharedUtils, vrf: dict) -> bool:
+        """
+        Returns True if the given VRF name should be configured even without any loopbacks or SVIs etc.
+
+        There can be various causes for this:
+        - The VRF is part of a tenant set under 'always_include_vrfs_in_tenants'
+        - 'always_include_vrfs_in_tenants' is set to ['all']
+        - This is a WAN router and the VRF present on the uplink switch.
+          Note that if the attracted VRF does not have a wan_vni configured, the code for interface Vxlan1 will raise an error.
+        """
+        if "all" in self.always_include_vrfs_in_tenants or vrf["tenant"] in self.always_include_vrfs_in_tenants:
+            return True
+
+        if self.is_wan_client and vrf["name"] in (self.get_switch_fact("wan_router_uplink_vrfs", required=False) or []):
+            return True
+
+        return False
+
     def filtered_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
         """
         Return sorted and filtered vrf list from given tenant.
-        Filtering based on svi tags, l3interfaces and filter.always_include_vrfs_in_tenants.
+        Filtering based on svi tags, l3interfaces, loopbacks or self.is_forced_vrf() check.
         Keys of VRF data model will be converted to lists.
         """
         filtered_vrfs = []
-
-        always_include_vrfs_in_tenants = get(self.switch_data_combined, "filter.always_include_vrfs_in_tenants", default=[])
 
         vrfs: list[dict] = natural_sort(convert_dicts(tenant.get("vrfs", []), "name"), "name")
         for original_vrf in vrfs:
@@ -254,13 +270,7 @@ class FilteredTenantsMixin:
                 )
             ]
 
-            if (
-                vrf["svis"]
-                or vrf["l3_interfaces"]
-                or vrf["loopbacks"]
-                or "all" in always_include_vrfs_in_tenants
-                or tenant["name"] in always_include_vrfs_in_tenants
-            ):
+            if vrf["svis"] or vrf["l3_interfaces"] or vrf["loopbacks"] or self.is_forced_vrf(vrf):
                 filtered_vrfs.append(vrf)
 
         return filtered_vrfs

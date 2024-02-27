@@ -30,16 +30,17 @@ class RouterPathSelectionMixin(UtilsMixin):
             "load_balance_policies": self._wan_load_balance_policies,
         }
 
-        # When running CV Pathfinder, only load balance policies
-        if self.shared_utils.is_cv_pathfinder_router:
-            return strip_empties_from_dict(router_path_selection)
+        # When running CV Pathfinder, only load balance policies are configured
+        # for AutoVPN, need also vrfs and policies.
+        if self.shared_utils.wan_mode == "autovpn":
+            vrfs = [{"name": vrf["name"], "path_selection_policy": vrf["policy"]} for vrf in self._filtered_wan_vrfs]
 
-        router_path_selection.update(
-            {
-                "policies": self._autovpn_policies,
-                "vrfs": self._filtered_wan_vrfs,
-            }
-        )
+            router_path_selection.update(
+                {
+                    "policies": self._autovpn_policies,
+                    "vrfs": vrfs,
+                }
+            )
 
         return strip_empties_from_dict(router_path_selection)
 
@@ -57,8 +58,6 @@ class RouterPathSelectionMixin(UtilsMixin):
             }
 
             if get(policy, "is_default", default=False):
-                # Update policy name
-                autovpn_policy["name"] = f"{autovpn_policy['name']}-WITH-CP"
                 autovpn_policy.setdefault("rules", []).append(
                     {
                         "id": 10,
@@ -72,7 +71,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 name = get(
                     application_virtual_topology,
                     "name",
-                    default=self._default_profile_name(policy["name"], application_virtual_topology["application_profile"]),
+                    default=self._default_profile_name(policy["profile_prefix"], application_virtual_topology["application_profile"]),
                 )
                 application_profile = get(application_virtual_topology, "application_profile", required=True)
                 autovpn_policy.setdefault("rules", []).append(
@@ -87,7 +86,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 name = get(
                     default_virtual_topology,
                     "name",
-                    default=self._default_profile_name(policy["name"], "DEFAULT"),
+                    default=self._default_profile_name(policy["profile_prefix"], "DEFAULT"),
                 )
                 autovpn_policy["default_match"] = {"load_balance": self.shared_utils.generate_lb_policy_name(name)}
 
