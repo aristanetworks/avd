@@ -24922,9 +24922,9 @@
               "title": "DSCP"
             },
             "lowest_hop_count": {
+              "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
               "type": "boolean",
               "default": false,
-              "description": "Prefer paths with lowest hop-count.",
               "title": "Lowest Hop Count"
             },
             "constraints": {
@@ -25045,9 +25045,9 @@
                       "title": "DSCP"
                     },
                     "lowest_hop_count": {
+                      "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
                       "type": "boolean",
                       "default": false,
-                      "description": "Prefer paths with lowest hop-count.",
                       "title": "Lowest Hop Count"
                     },
                     "constraints": {
@@ -25153,9 +25153,9 @@
                     "title": "DSCP"
                   },
                   "lowest_hop_count": {
+                    "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
                     "type": "boolean",
                     "default": false,
-                    "description": "Prefer paths with lowest hop-count.",
                     "title": "Lowest Hop Count"
                   },
                   "constraints": {
