@@ -7763,6 +7763,8 @@ keys:
           - network
         vmtracer:
           type: bool
+        ptp_mpass:
+          type: bool
         ptp:
           type: dict
           keys:
