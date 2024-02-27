@@ -17111,6 +17111,14 @@
                     "discard"
                   ],
                   "title": "Import Match Failure Action"
+                },
+                "import_ethernet_segment_ip_mass_withdraw": {
+                  "type": "boolean",
+                  "title": "Import Ethernet Segment IP Mass Withdraw"
+                },
+                "export_ethernet_segment_ip_mass_withdraw": {
+                  "type": "boolean",
+                  "title": "Export Ethernet Segment IP Mass Withdraw"
                 }
               },
               "additionalProperties": false,

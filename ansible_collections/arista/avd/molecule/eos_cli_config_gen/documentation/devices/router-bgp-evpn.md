@@ -265,6 +265,8 @@ router bgp 65101
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
       next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
+      route import ethernet-segment ip mass-withdraw
+      route export ethernet-segment ip mass-withdraw
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
