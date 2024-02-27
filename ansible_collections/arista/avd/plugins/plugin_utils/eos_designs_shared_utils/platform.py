@@ -96,6 +96,14 @@ DEFAULT_PLATFORM_SETTINGS = [
         },
     },
     {
+        "platforms": ["7358X4"],
+        "management_interface": "Management1/1",
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+    },
+    {
         "platforms": ["7368X4"],
         "management_interface": "Management0",
         "reload_delay": {
