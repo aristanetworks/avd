@@ -301,7 +301,7 @@ class UplinksMixin:
 
     def _get_l2_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
         """
-        Return a single uplink dictionary for an L2 uplink. Reused for both uplink_type port-channel, lan and lan-port-channel.
+        Return a single uplink dictionary for an L2 uplink. Reused for both uplink_type port-channel, lan and TODO lan-port-channel.
         """
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
         uplink = {
