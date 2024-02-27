@@ -79,3 +79,8 @@ wan_carriers: []
 bgp_peer_groups:
   wan_overlay_peers:
     listen_range_prefixes: [0.0.0.0/0]
+
+wan_virtual_topologies:
+  vrfs:
+    - name: VRF1
+      wan_vni: 123
