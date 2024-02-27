@@ -299,7 +299,6 @@ def range_expand(input_ranges) -> list:
     for input_range in input_ranges:
         if not isinstance(input_range, str):
             raise TypeError(f"range_expand only accepts input_range items as strings. Got {type(input_range)}.")
-        # raise Exception(_parser(_tokenizer(input_range)))
         output.extend(_parser(_tokenizer(input_range)))
 
     return output
