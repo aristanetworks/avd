@@ -66,7 +66,7 @@ The plugin offers the following capabilities:
     save_catalog: true
     device_catalog_path: "/my_avd_project/intended/test_catalogs/{{ inventory_hostname }}-catalog.yml"
     test_results_dir: "/my_avd_project/reports/test_results"
-    custom_anta_catalogs_dir: "/my_avd_project/intended/custom_anta_catalogs"
+    custom_anta_catalogs_dir: "/my_avd_project/custom_anta_catalogs"
     skipped_tests:
       - category: AvdTestHardware
       - category: AvdTestBGP
