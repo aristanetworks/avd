@@ -24777,6 +24777,30 @@
               }
             },
             "title": "Import Path Groups"
+          },
+          "dps_keepalive": {
+            "type": "object",
+            "description": "Period between the transmission of consecutive keepalive messages, and failure threshold.",
+            "properties": {
+              "interval": {
+                "type": "string",
+                "description": "Interval in milliseconds. Valid values are 50-60000 | \"auto\"\n\nWhen auto, the interval and failure_threshold are automatically determined based on\npath state.",
+                "title": "Interval"
+              },
+              "failure_threshold": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 100,
+                "default": 5,
+                "description": "Failure threshold in number of lost keep-alive messages.",
+                "title": "Failure Threshold"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "DPS Keepalive"
           }
         },
         "required": [

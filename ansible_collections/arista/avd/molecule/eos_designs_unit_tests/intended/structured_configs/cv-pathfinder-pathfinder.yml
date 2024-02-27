@@ -299,6 +299,9 @@ router_path_selection:
     id: 100
     local_interfaces:
     - name: Ethernet2
+    keepalive:
+      interval: 300
+      failure_threshold: 5
   - name: INET
     id: 101
     local_interfaces:

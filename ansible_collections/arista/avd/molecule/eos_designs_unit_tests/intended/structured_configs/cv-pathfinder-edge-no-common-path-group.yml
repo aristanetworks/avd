@@ -429,6 +429,8 @@ router_path_selection:
     dynamic_peers:
       enabled: true
     ipsec_profile: CP-PROFILE
+    keepalive:
+      auto: true
   load_balance_policies:
   - name: LB-CONTROL-PLANE-PROFILE
     path_groups:

@@ -561,6 +561,9 @@ router_path_selection:
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
       - 172.16.0.1
+    keepalive:
+      interval: 300
+      failure_threshold: 5
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
