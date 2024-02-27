@@ -217,7 +217,7 @@ ISIS_INVALID_INPUT_DECRYPT = [
 @pytest.mark.parametrize("key, mode, password, encrypted_password", ISIS_INPUT_EXPECTED)
 def test_isis_encrypt(key, mode, password, encrypted_password):
     """
-    Test isis_simple_encrypt
+    Test isis_encrypt
     """
     assert isis_encrypt(password, key=key, mode=mode) == encrypted_password
 
