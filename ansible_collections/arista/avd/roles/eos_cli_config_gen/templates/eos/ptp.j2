@@ -31,7 +31,12 @@ ptp message-type general dscp {{ ptp.message_type.general.dscp }} default
 ptp message-type event dscp {{ ptp.message_type.event.dscp }} default
 {%     endif %}
 {%     if ptp.mode is arista.avd.defined %}
+{# Update one-step support for "e2etransparent" mode as well, when it is available in valid_values of ptp.mode #}
+{%         if ptp.mode is arista.avd.defined('boundary') and ptp.mode_one_step is arista.avd.defined(true) %}
+ptp mode {{ ptp.mode }} one-step
+{%         else %}
 ptp mode {{ ptp.mode }}
+{%         endif %}
 {%     endif %}
 {%     if ptp.forward_unicast is arista.avd.defined(true) %}
 ptp forward-unicast
