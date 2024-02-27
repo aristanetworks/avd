@@ -703,6 +703,49 @@ $defs:
                       type: str
                       description: |
                         EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.
+              loopbacks:
+                documentation_options:
+                  table: network-services-vrfs-loopbacks-settings
+                type: list
+                description: |
+                  List of Loopback interfaces.
+                  This will create Loopback interfaces inside the VRF.
+                items:
+                  type: dict
+                  keys:
+                    node:
+                      type: str
+                      required: true
+                    loopback:
+                      type: int
+                      required: true
+                      min: 0
+                      max: 8191
+                    ip_address:
+                      type: str
+                      required: true
+                    description:
+                      type: str
+                    enabled:
+                      type: bool
+                      default: True
+                    ospf:
+                      type: dict
+                      description: OSPF interface configuration.
+                      keys:
+                        enabled:
+                          type: bool
+                          default: False
+                        area:
+                          type: str
+                          convert_types:
+                            - int
+                          description: OSPF area ID.
+                          default: "0"
+                    raw_eos_cli:
+                      type: str
+                      description: |
+                        EOS CLI rendered directly on the Loopback interface in the final EOS configuration.
               static_routes:
                 type: list
                 description: |
@@ -819,7 +862,9 @@ $defs:
                       type: str
                       convert_types:
                         - int
-                      description: Remote BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                      description: |-
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     description:
                       type: str
                     password:
@@ -841,6 +886,8 @@ $defs:
                       min: 0
                       max: 4294967294
                       description: Maximum number of routes (0 means unlimited).
+                    maximum_routes_warning_only:
+                      type: bool
                     default_originate:
                       type: dict
                       keys:
@@ -892,9 +939,9 @@ $defs:
                       type: str
                       convert_types:
                         - int
-                      description: |
-                        Local BGP ASN.
-                        eg. "65001.1200".
+                      description: |-
+                        Local BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     weight:
                       type: int
                       convert_types:

@@ -19,13 +19,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -68,6 +68,9 @@ interface Management1
 | Vlan92 | SVI Description | default | - | - |
 | Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | False |
 | Vlan333 | Multiple VRIDs and tracking | default | - | False |
+| Vlan334 | v6 attached host exports | default | - | - |
+| Vlan335 | v6 attached host exports | default | - | - |
+| Vlan336 | v6 attached host exports | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -107,6 +110,9 @@ interface Management1
 | Vlan92 |  default  |  10.10.92.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan110 |  Tenant_A  |  10.0.101.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan333 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
+| Vlan334 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan335 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan336 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
 | Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
@@ -151,6 +157,9 @@ interface Management1
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - |
 | Vlan333 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
+| Vlan334 | default | 2a00:1::1/64 | - | - | - | - | - | - | - |
+| Vlan335 | default | 2a00:2::1/64 | - | - | - | - | - | - | - |
+| Vlan336 | default | 2a00:3::1/64 | - | - | - | - | - | - | - |
 | Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | True | - | - | - |
 | Vlan667 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
 | Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - |
@@ -370,6 +379,24 @@ interface Vlan333
    vrrp 3 ipv4 100.64.0.1
    vrrp 3 ipv4 version 3
 !
+interface Vlan334
+   description v6 attached host exports
+   ipv6 attached-host route export 19
+   ipv6 enable
+   ipv6 address 2a00:1::1/64
+!
+interface Vlan335
+   description v6 attached host exports
+   ipv6 attached-host route export prefix-length 64
+   ipv6 enable
+   ipv6 address 2a00:2::1/64
+!
+interface Vlan336
+   description v6 attached host exports
+   ipv6 attached-host route export 18 prefix-length 64
+   ipv6 enable
+   ipv6 address 2a00:3::1/64
+!
 interface Vlan501
    description SVI Description
    no shutdown
@@ -413,6 +440,7 @@ interface Vlan1002
 interface Vlan2001
    description SVI Description
    vrf Tenant_B
+   logging event link-status
    ip address virtual 10.2.1.1/24
    comment
    Comment created from eos_cli under vlan_interfaces.Vlan2001
@@ -423,6 +451,7 @@ interface Vlan2002
    description SVI Description
    no autostate
    vrf Tenant_B
+   ip verify unicast source reachable-via rx
    isis enable EVPN_UNDERLAY
    ip address virtual 10.2.2.1/24
 !
@@ -449,7 +478,7 @@ interface Vlan4094
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Vlan89 | - | IPv4 | - | Loopback0 |
-| Vlan4094 | - | IPv4 | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Vlan89 | - | IPv4 | - | - | Loopback0 |
+| Vlan4094 | - | IPv4 | - | 200 | - |

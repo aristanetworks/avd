@@ -31,13 +31,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -344,6 +344,7 @@ interface Ethernet1
    bgp session tracker ST1
    no switchport
    ip address 172.31.255.1/31
+   ip verify unicast source reachable-via rx
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
    priority-flow-control on
@@ -418,6 +419,7 @@ interface Ethernet5
    ip ospf area 100
    ip ospf message-digest-key 1 sha512 7 <removed>
    pim ipv4 sparse-mode
+   pim ipv4 border-router
    pim ipv4 dr-priority 200
    isis enable ISIS_TEST
    isis circuit-type level-2
@@ -978,9 +980,9 @@ interface Ethernet69
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Ethernet5 | - | IPv4 | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Ethernet5 | - | IPv4 | True | 200 | - |
 
 ## 802.1X Port Security
 

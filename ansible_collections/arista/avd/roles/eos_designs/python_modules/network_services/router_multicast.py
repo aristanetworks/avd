@@ -27,7 +27,7 @@ class RouterMulticastMixin(UtilsMixin):
             return None
 
         vrfs = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if get(vrf, "_evpn_l3_multicast_enabled"):
                     vrf_config = {"name": vrf["name"], "ipv4": {"routing": True}}

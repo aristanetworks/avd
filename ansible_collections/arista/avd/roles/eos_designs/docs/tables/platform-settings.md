@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
+  ~ Copyright (c) 2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -120,10 +120,18 @@
         - feature_support:
             poe: true
             queue_monitor_length_notify: false
+          management_interface: Management0
           platforms:
           - '750'
           - '755'
           - '758'
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+          platforms:
           - 720DP
           - 722XP
           - 710P

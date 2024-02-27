@@ -322,6 +322,9 @@ the values are not part of the officially supported data models, and may change 
 
 ### Context for interface_descriptions templates
 
+!!! warning  "Caveat"
+    In AVD 4.x, it is not possible to completely overwrite the description of the subinterfaces when `uplink_type` is set to `p2p-vrfs`. The string `_vrf_<VRF>` is always appended to the description.
+
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
 underlay_ethernet_interfaces:
@@ -1074,6 +1077,7 @@ The supported network services for each tenant cover:
 - VRFs
   - SVIs
   - L3 Interfaces
+  - Loopbacks
   - BGP routing
   - OSPF routing
 - L2 VLANs
@@ -1087,6 +1091,10 @@ The default available keys is `tenants`.
 
 --8<--
 roles/eos_designs/docs/tables/network-services.md
+--8<--
+
+--8<--
+roles/eos_designs/docs/tables/new-network-services-bgp-vrf-config.md
 --8<--
 
 #### Network services VRFs configuration
@@ -1105,6 +1113,17 @@ roles/eos_designs/docs/tables/network-services-vrfs-svis-settings.md
 
 --8<--
 roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
+--8<--
+
+#### Network services VRF Loopbacks configuration
+
+Loopbacks are usually configured with `vtep_diagnostic` which supports IP pools etc.
+
+`loopbacks` is used to provision extra loopback interfaces with manually assigned
+IP addresses on individual nodes.
+
+--8<--
+roles/eos_designs/docs/tables/network-services-vrfs-loopbacks-settings.md
 --8<--
 
 #### Network services VRF BGP configuration

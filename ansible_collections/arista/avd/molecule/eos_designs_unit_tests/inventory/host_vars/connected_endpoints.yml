@@ -46,3 +46,24 @@ servers:
         port_channel:
           mode: "active"
           description: "PORT_CHANNEL_DESCRIPTION"
+  # port-channel with lacp fallback individual and profile for member interfaces
+  - name: INDIVIDUAL_1
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet12, Ethernet13]
+        port_channel:
+          mode: "active"
+          description: "INDIVIDUAL_1"
+          lacp_fallback:
+            mode: individual
+            individual:
+              profile: INDIVIDUAL_TRUNK
+
+port_profiles:
+  - profile: INDIVIDUAL_TRUNK
+    mode: trunk
+    vlans: "1,2,3,4,5,6,7,123,234"
+    native_vlan_tag: False
+    native_vlan: 123
+    spanning_tree_portfast: "edge"
+    spanning_tree_bpdufilter: True

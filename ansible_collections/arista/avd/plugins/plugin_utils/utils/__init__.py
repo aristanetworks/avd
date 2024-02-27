@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from .append_if_not_duplicate import append_if_not_duplicate
+from .batch import batch
 from .compare_dicts import compare_dicts
 from .compile_searchpath import compile_searchpath
 from .cprofile_decorator import cprofile
@@ -21,10 +22,12 @@ from .replace_or_append_item import replace_or_append_item
 from .template import template
 from .template_var import template_var
 from .unique import unique
-from .yaml_dumper import NoAliasDumper
+from .yaml_dumper import NoAliasDumper, YamlDumper
+from .yaml_loader import YamlLoader
 
 __all__ = [
     "append_if_not_duplicate",
+    "batch",
     "compare_dicts",
     "compile_searchpath",
     "default",
@@ -46,4 +49,6 @@ __all__ = [
     "get_validated_path",
     "get_validated_value",
     "cprofile",
+    "YamlDumper",
+    "YamlLoader",
 ]

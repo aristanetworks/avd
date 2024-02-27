@@ -32,7 +32,7 @@ class VlansMixin(UtilsMixin):
             return None
 
         vlans = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     vlan = self._get_vlan_config(svi)

@@ -9,8 +9,9 @@ keys:
   bgp_ecmp:
     documentation_options:
       table: bgp-settings
-    description: Maximum ECMP for BGP multi-path.
+    description: |-
+      Maximum ECMP for BGP multi-path.
+      The default value is 4 except for WAN Routers where the default value is unset (falls back to EOS default).
     type: int
     convert_types:
       - str
-    default: 4

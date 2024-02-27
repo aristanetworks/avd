@@ -54,7 +54,6 @@ class IpAddressingMixin:
         """
         if self.mlag is True:
             return self.ip_addressing.vtep_ip_mlag()
-
         else:
             return self.ip_addressing.vtep_ip()
 

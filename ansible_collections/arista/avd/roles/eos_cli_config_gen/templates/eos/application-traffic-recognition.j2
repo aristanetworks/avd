@@ -78,18 +78,20 @@ application traffic recognition
 {%     if application_traffic_recognition.field_sets is arista.avd.defined %}
 {%         for prefix_set in application_traffic_recognition.field_sets.ipv4_prefixes | arista.avd.natural_sort('name') %}
 {%             if prefix_set.name is arista.avd.defined %}
-{%                 do prefix_set.prefix_values.sort() %}
    !
    field-set ipv4 prefix {{ prefix_set.name }}
-      {{ prefix_set.prefix_values | join(" ") }}
+{%                 if prefix_set.prefix_values is arista.avd.defined %}
+      {{ prefix_set.prefix_values | arista.avd.default([]) | sort | join(" ") }}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%         for port_set in application_traffic_recognition.field_sets.l4_ports | arista.avd.natural_sort('name') %}
 {%             if port_set.name is arista.avd.defined %}
-{%                 do port_set.port_values.sort() %}
    !
    field-set l4-port {{ port_set.name }}
-      {{ port_set.port_values | join(", ") }}
+{%                 if port_set.port_values is arista.avd.defined %}
+      {{ port_set.port_values | arista.avd.natural_sort | join(", ") }}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}

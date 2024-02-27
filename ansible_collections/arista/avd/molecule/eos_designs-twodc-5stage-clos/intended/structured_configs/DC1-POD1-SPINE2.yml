@@ -1,6 +1,4 @@
 hostname: DC1-POD1-SPINE2
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 serial_number: DEADBEEFC0FFEE
 router_bgp:
@@ -198,3 +196,5 @@ loopback_interfaces:
   description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.110.2/32
+metadata:
+  platform: vEOS-LAB

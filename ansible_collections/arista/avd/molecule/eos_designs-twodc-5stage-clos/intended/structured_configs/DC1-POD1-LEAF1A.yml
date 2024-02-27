@@ -1,6 +1,4 @@
 hostname: DC1-POD1-LEAF1A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65111.100'
@@ -256,3 +254,5 @@ vlan_interfaces:
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+metadata:
+  platform: vEOS-LAB

@@ -1,6 +1,4 @@
 hostname: LEAF3D
-metadata:
-  platform: cEOSLab
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -3080,3 +3078,5 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.10.10.12/24
   type: inband_mgmt
+metadata:
+  platform: cEOSLab

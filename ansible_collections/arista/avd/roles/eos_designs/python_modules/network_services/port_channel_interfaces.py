@@ -36,7 +36,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         port_channel_interfaces = []
         subif_parent_interfaces = []
 
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             if "point_to_point_services" not in tenant:
                 continue
 

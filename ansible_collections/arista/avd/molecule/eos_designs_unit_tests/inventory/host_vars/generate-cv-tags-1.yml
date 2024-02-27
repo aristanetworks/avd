@@ -1,0 +1,39 @@
+type: spine
+
+spine:
+  nodes:
+    - name: generate-cv-tags-1
+      id: 1
+      loopback_ipv4_pool: 10.10.255.0/24
+      bgp_as: 65000
+      rack: ABC567
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 10.20.30.40/24
+          description: Test interface
+          peer: Someotherdevice
+          peer_ip: 10.20.30.50/24
+
+dc_name: DC23
+pod_name: POD1
+
+generate_cv_tags:
+  topology_hints: true
+  device_tags:
+    - name: static-device-tag
+      value: myvalue
+    - name: dynamic_device_tag
+      data_path: router_bgp.as
+    - name: nonexisting_dynamic_device_tag
+      data_path: some.key.that.we.do.not.have
+    - name: UPPERCASE_DEVICE_TAG
+      value: something with spaces
+  interface_tags:
+    - name: static-interface-tag
+      value: myinterfacevalue
+    - name: dynamic_interface_tag
+      data_path: peer
+    - name: nonexisting_dynamic_interface_tag
+      data_path: some.key.that.we.do.not.have
+    - name: UPPERCASE_INTERFACE_TAG
+      value: something else with spaces

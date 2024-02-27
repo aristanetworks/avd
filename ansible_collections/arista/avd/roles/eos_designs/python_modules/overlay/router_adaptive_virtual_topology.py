@@ -19,26 +19,23 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         """
         Return structured config for router adaptive-virtual-topology (AVT)
         """
-        if not (role := self.shared_utils.cv_pathfinder_role):
+        if not self.shared_utils.is_cv_pathfinder_router:
             return None
 
-        router_adaptive_virtual_topology = {"topology_role": role}
+        # A Pathfinder has no region, zone, site info.
+        if self.shared_utils.is_cv_pathfinder_server:
+            return {"topology_role": "pathfinder"}
 
-        if role != "pathfinder":
-            router_adaptive_virtual_topology.update(
-                {
-                    "region": {
-                        "name": self._wan_region["name"],
-                        "id": self._wan_region["id"],
-                    },
-                    "zone": self._wan_zone,
-                    "site": {
-                        "name": self._wan_site["name"],
-                        "id": self._wan_site["id"],
-                    },
-                }
-            )
-
-        # TODO - handle Policy/Profile/VRF here or rather in network_services in future PR
-
-        return router_adaptive_virtual_topology
+        # Edge or Transit
+        return {
+            "topology_role": self.shared_utils.cv_pathfinder_role,
+            "region": {
+                "name": self.shared_utils.wan_region["name"],
+                "id": self.shared_utils.wan_region["id"],
+            },
+            "zone": self.shared_utils.wan_zone,
+            "site": {
+                "name": self.shared_utils.wan_site["name"],
+                "id": self.shared_utils.wan_site["id"],
+            },
+        }

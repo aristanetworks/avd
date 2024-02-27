@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
@@ -24,22 +23,33 @@ class RouterPathSelectionMixin(UtilsMixin):
         Return structured config for router path-selection (DPS)
         """
 
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
-        path_groups = self._get_path_groups()
-
         router_path_selection = {
-            "path_groups": path_groups,
-            "load_balance_policies": self._get_load_balance_policies(path_groups),
-            "policies": self._get_policies(),
-            "vrfs": self._get_vrfs(),
+            "tcp_mss_ceiling": {"ipv4_segment_size": get(self.shared_utils.switch_data_combined, "dps_mss_ipv4", default="auto")},
+            "path_groups": self._get_path_groups(),
         }
 
-        if self.shared_utils.wan_role == "server":
+        if self.shared_utils.is_wan_server:
             router_path_selection["peer_dynamic_source"] = "stun"
 
         return strip_empties_from_dict(router_path_selection)
+
+    @cached_property
+    def _cp_ipsec_profile_name(self) -> str:
+        """
+        Returns the IPsec profile name to use for Control-Plane
+        """
+        return get(self._hostvars, "wan_ipsec_profiles.control_plane.profile_name", default="CP-PROFILE")
+
+    @cached_property
+    def _dp_ipsec_profile_name(self) -> str:
+        """
+        Returns the IPsec profile name to use for Data-Plane
+        """
+        # TODO need to use CP one if 'wan_ipsec_profiles.data_plane' not present
+        return get(self._hostvars, "wan_ipsec_profiles.data_plane.profile_name", default="DP-PROFILE")
 
     def _get_path_groups(self) -> list:
         """
@@ -47,10 +57,15 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         path_groups = []
 
-        # TODO - need to have default value in one place only -> maybe facts / shared_utils ?
-        ipsec_profile_name = get(self._hostvars, "wan_ipsec_profiles.control_plane.profile_name", default="CP-PROFILE")
+        if self.shared_utils.is_wan_server:
+            # Configure all path-groups on Pathfinders and AutoVPN RRs
+            path_groups_to_configure = self.shared_utils.wan_path_groups
+        else:
+            path_groups_to_configure = self.shared_utils.wan_local_path_groups
 
-        for path_group in self.shared_utils.wan_local_path_groups:
+        local_path_groups_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
+
+        for path_group in path_groups_to_configure:
             pg_name = path_group.get("name")
 
             path_group_data = {
@@ -61,57 +76,65 @@ class RouterPathSelectionMixin(UtilsMixin):
                 "static_peers": self._get_static_peers_for_path_group(pg_name),
             }
 
-            if path_group.get("ipsec", True):
-                path_group_data["ipsec_profile"] = ipsec_profile_name
+            # On pathfinder IPsec profile is not required for non local path_groups
+            if pg_name in local_path_groups_names and path_group.get("ipsec", True):
+                path_group_data["ipsec_profile"] = self._cp_ipsec_profile_name
 
             path_groups.append(path_group_data)
 
-        if self.shared_utils.cv_pathfinder_role:
-            pass
-            # implement LAN_HA here
+        if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
+            path_groups.append(self._generate_ha_path_group())
 
         return path_groups
 
-    def _get_load_balance_policies(self, path_groups: dict) -> dict | None:
-        """ """
-        unique_path_groups = natural_sort({path_group.get("name") for path_group in path_groups}, "name")
-        return [
+    def _generate_ha_path_group(self) -> dict:
+        """
+        Called only when self.shared_utils.wan_ha is True or on Pathfinders
+        """
+        ha_path_group = {
+            "name": self.shared_utils.wan_ha_path_group_name,
+            "id": self._get_path_group_id(self.shared_utils.wan_ha_path_group_name),
+            "flow_assignment": "lan",
+        }
+        if self.shared_utils.is_cv_pathfinder_server:
+            return ha_path_group
+
+        # not a pathfinder device
+        ha_path_group.update(
             {
-                "name": "LBPOLICY",
-                "path_groups": [{"name": pg_name} for pg_name in unique_path_groups],
+                # This should be the LAN interface over which a DPS tunnel is built
+                "local_interfaces": [{"name": interface["interface"]} for interface in self._wan_ha_interfaces()],
+                "static_peers": [
+                    {
+                        "router_ip": self._wan_ha_peer_vtep_ip(),
+                        "name": self.shared_utils.wan_ha_peer,
+                        "ipv4_addresses": [ip_address.split("/")[0] for ip_address in self.shared_utils.wan_ha_peer_ip_addresses],
+                    }
+                ],
             }
-        ]
+        )
+        if get(self.shared_utils.switch_data_combined, "wan_ha.ipsec", default=True):
+            ha_path_group["ipsec_profile"] = self._dp_ipsec_profile_name
 
-    def _get_policies(self) -> list | None:
-        """
-        Only configure a default DPS policy for the default VRF if wan_mode is autovpn
-        for cv-pathfinder, the VRFs are confgured under adaptive_virtual_topology.
-        """
-        policies = []
-        if self.shared_utils.wan_mode == "autovpn":
-            # TODO DPS policies - for now adding one default one - MAYBE NEED TO REMOVED
-            policies = [{"name": "dps-policy-default", "default_match": {"load_balance": "LBPOLICY"}}]
-            return policies
-        return None
+        return ha_path_group
 
-    def _get_vrfs(self) -> list | None:
+    def _wan_ha_interfaces(self) -> list:
         """
-        Only configure a default VRF if wan_mode is autovpn
-        for cv-pathfinder, the VRFs are confgured under adaptive_virtual_topology.
+        Return list of interfaces for HA
         """
-        vrfs = []
-        if self.shared_utils.wan_mode == "autovpn":
-            # TODO - Adding default VRF here - check if it makes sense later
-            vrfs = [{"name": "default", "path_selection_policy": "dps-policy-default"}]
-            return vrfs
-        return None
+        return [uplink for uplink in self.shared_utils.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+
+    def _wan_ha_peer_vtep_ip(self) -> str:
+        """ """
+        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer, required=True)
+        return get(peer_facts, "vtep_ip", required=True)
 
     def _get_path_group_id(self, path_group_name: str, config_id: int | None = None) -> int:
         """
         TODO - implement algorithm to auto assign IDs - cf internal documenation
         TODO - also implement algorithm for cross connects on public path_groups
         """
-        if path_group_name == "LAN_HA":
+        if path_group_name == self.shared_utils.wan_ha_path_group_name:
             return 65535
         if config_id is not None:
             return config_id
@@ -128,7 +151,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         for interface in path_group.get("interfaces", []):
             local_interface = {"name": get(interface, "name", required=True)}
 
-            if self.shared_utils.wan_role == "client" and self._should_connect_to_wan_rs([path_group_name]):
+            if self.shared_utils.is_wan_client and self.shared_utils.should_connect_to_wan_rs([path_group_name]):
                 stun_server_profiles = self._stun_server_profiles.get(path_group_name, [])
                 if stun_server_profiles:
                     local_interface["stun"] = {"server_profiles": [profile["name"] for profile in stun_server_profiles]}
@@ -141,20 +164,20 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         TODO support ip_local and ipsec ?
         """
-        if self.shared_utils.wan_role != "client":
+        if not self.shared_utils.is_wan_client:
             return None
         return {"enabled": True}
 
     def _get_static_peers_for_path_group(self, path_group_name: str) -> list | None:
         """
-        TODO
+        Retrieves the static peers to configure for a given path-group based on the connected nodes.
         """
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         static_peers = []
-        for wan_route_server, data in self._filtered_wan_route_servers.items():
-            if (path_group := get_item(data["wan_path_groups"], "name", path_group_name)) is not None:
+        for wan_route_server_name, wan_route_server in self.shared_utils.filtered_wan_route_servers.items():
+            if (path_group := get_item(get(wan_route_server, "wan_path_groups", default=[]), "name", path_group_name)) is not None:
                 ipv4_addresses = []
 
                 for interface_dict in get(path_group, "interfaces", required=True):
@@ -163,8 +186,8 @@ class RouterPathSelectionMixin(UtilsMixin):
                         ipv4_addresses.append(ip_address.split("/")[0])
                 static_peers.append(
                     {
-                        "router_ip": get(data, "router_id", required=True),
-                        "name": wan_route_server,
+                        "router_ip": get(wan_route_server, "vtep_ip", required=True),
+                        "name": wan_route_server_name,
                         "ipv4_addresses": ipv4_addresses,
                     }
                 )

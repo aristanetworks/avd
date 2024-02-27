@@ -39,6 +39,8 @@ class InterfaceDescriptionData:
     """Port channel ID of peer"""
     port_channel_description: str | None
     """Set description for port-channel"""
+    vrf: str | None
+    """Interface VRF"""
 
     def __init__(
         self,
@@ -50,6 +52,7 @@ class InterfaceDescriptionData:
         peer_interface: str | None = None,
         peer_channel_group_id: int | None = None,
         port_channel_description: str | None = None,
+        vrf: str | None = None,
     ):
         self._shared_utils = shared_utils
         self.description = description
@@ -59,6 +62,7 @@ class InterfaceDescriptionData:
         self.peer_interface = peer_interface
         self.peer_channel_group_id = peer_channel_group_id
         self.port_channel_description = port_channel_description
+        self.vrf = vrf
 
     @cached_property
     def mpls_overlay_role(self) -> str:

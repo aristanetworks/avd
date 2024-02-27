@@ -363,6 +363,12 @@ roles/eos_cli_config_gen/docs/tables/port-channel-interfaces.md
 roles/eos_cli_config_gen/docs/tables/switchport-default.md
 --8<--
 
+### Transceiver QSFP default mode 4x10
+
+--8<--
+transceiver-qsfp-default-mode-4x10.md
+--8<--
+
 ### Tunnel interfaces
 
 --8<--
@@ -641,6 +647,12 @@ roles/eos_cli_config_gen/docs/tables/monitor-connectivity.md
 roles/eos_cli_config_gen/docs/tables/monitor-sessions.md
 --8<--
 
+### Monitor layer 1
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/monitor-layer1.md
+--8<--
+
 ### SFLOW
 
 --8<--
@@ -759,6 +771,7 @@ roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-dhcp-snooping.md
+--8<--
 
 ### DHCP Servers
 

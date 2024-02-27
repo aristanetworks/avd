@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import Generator
+from typing import TYPE_CHECKING, Generator
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdConversionWarning, AvdDeprecationWarning
@@ -23,16 +23,16 @@ SIMPLE_CONVERTERS = {
     "bool": bool,
 }
 
+if TYPE_CHECKING:
+    from .avdschema import AvdSchema
+
 
 class AvdDataConverter:
     """
     AvdDataConverter is used to convert AVD Data Types based on schema options.
-
-    avdschema argument is an instance of AvdSchema. Type hinting is not working because of circular import
-    TODO: Refactor to take a fully resolved schema as dict
     """
 
-    def __init__(self, avdschema):
+    def __init__(self, avdschema: AvdSchema):
         self._avdschema = avdschema
 
         # We run through all the regular keys first, to ensure that all data has been converted
@@ -44,15 +44,11 @@ class AvdDataConverter:
             "deprecation": self.deprecation,
         }
 
-    def convert_data(self, data, schema: dict = None, path: list[str] = None) -> Generator:
+    def convert_data(self, data, schema: dict, path: list[str] = None) -> Generator:
         """
         Perform in-place conversion of data according to the provided schema.
         Main entry function which is recursively called from the child functions performing the actual conversion of keys/items.
         """
-        if schema is None:
-            # Get fully resolved schema (where all $ref has been expanded recursively)
-            schema = self._avdschema.resolved_schema
-
         if path is None:
             path = []
 

@@ -42,8 +42,10 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
             - mpls_lsr
             - overlay_routing_protocol
             - type
+            - vrf
         """
-        return self.underlay_ethernet_interfaces(link_type=data.link_type, link_peer=data.peer, link_peer_interface=data.peer_interface)
+        desc = self.underlay_ethernet_interfaces(link_type=data.link_type, link_peer=data.peer, link_peer_interface=data.peer_interface)
+        return f"{desc}_vrf_{data.vrf}" if data.vrf is not None else desc
 
     def underlay_ethernet_interfaces(self, link_type: str, link_peer: str, link_peer_interface: str) -> str:
         """TODO: AVD5.0.0 move this to the new function."""
@@ -226,7 +228,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
         if self._mpls_lsr is True:
             return "LSR_Router_ID"
 
-        if self.shared_utils.wan_role is not None:
+        if self.shared_utils.is_wan_router:
             return "Router_ID"
 
         # Covers L2LS

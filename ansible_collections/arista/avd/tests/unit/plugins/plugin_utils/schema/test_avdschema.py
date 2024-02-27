@@ -186,7 +186,12 @@ class TestAvdSchema:
                 continue
             test_schema["keys"][id] = {"type": "dict", "$ref": f"{id}#/"}
 
+        # For performance reasons $ref is no longer supported at runtime.
+        # The $ref must be resolved before loading the schema.
         avdschema = AvdSchema(test_schema)
+        resolved_test_schema = avdschema.resolved_schema
+
+        avdschema = AvdSchema(resolved_test_schema)
         for id in DEFAULT_SCHEMAS:
             if id == "avd_meta_schema":
                 continue

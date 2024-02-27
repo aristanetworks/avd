@@ -19,13 +19,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -40,6 +40,8 @@ interface Management1
 ```
 
 ## IP Security
+
+- Hardware encryption is disabled
 
 ### IKE policies
 
@@ -58,10 +60,11 @@ interface Management1
 
 ### IPSec profiles
 
-| Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode |
-| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- |
-| Profile-1 | IKE-1 | SA-1 | start | - | - | - | transport |
-| Profile-2 | - | SA-2 | start | - | - | - | tunnel |
+| Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
+| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
+| Profile-1 | IKE-1 | SA-1 | start | - | - | - | transport | - |
+| Profile-2 | - | SA-2 | start | - | - | - | tunnel | False |
+| Profile-3 | - | SA-3 | start | - | - | - | tunnel | True |
 
 ### Key controller
 
@@ -110,6 +113,14 @@ ip security
       shared-key 7 <removed>
       mode tunnel
    !
+   profile Profile-3
+      sa-policy SA-3
+      connection start
+      shared-key 7 <removed>
+      flow parallelization encapsulation udp
+      mode tunnel
+   !
    key controller
       profile Profile-1
+   hardware encryption disabled
 ```

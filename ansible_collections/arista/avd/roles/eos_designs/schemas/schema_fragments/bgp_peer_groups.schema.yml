@@ -163,7 +163,24 @@ keys:
             description: Type 7 encrypted password.
           bfd:
             type: bool
-            default: False
+            default: True
+          bfd_timers:
+            type: dict
+            description: |-
+              Specify the BFD timers to override the default values.
+              It is recommended to keep BFD total timeout longer than the DPS timeout.
+              The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds.
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/keys/bfd_timers"
+            keys:
+              interval:
+                type: int
+                default: 1000
+              min_rx:
+                type: int
+                default: 1000
+              multiplier:
+                type: int
+                default: 10
           listen_range_prefixes:
             type: list
             description: |-
@@ -178,6 +195,58 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+              - str
+            default: 1
+      wan_rr_overlay_peers:
+        type: dict
+        documentation_options:
+          table: wan-bgp-peer-groups
+        description: |-
+          PREVIEW: This key is currently not supported
+          Configuration options for the peer-group created to peer between
+          AutoVPN RRs or CV-Pathfinders.
+        keys:
+          name:
+            type: str
+            default: WAN-RR-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
+          bfd_timers:
+            type: dict
+            description: |-
+              Specify the BFD timers to override the default values.
+              It is recommended to keep BFD total timeout longer than the DPS timeout.
+              The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds.
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/keys/bfd_timers"
+            keys:
+              interval:
+                type: int
+                default: 1000
+              min_rx:
+                type: int
+                default: 1000
+              multiplier:
+                type: int
+                default: 10
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+              - str
+            default: 1
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:

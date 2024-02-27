@@ -1,10 +1,14 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
+  application_classification:
+    type: dict
+    description: 'PREVIEW: WAN Preview'
+    $ref: eos_cli_config_gen#/keys/application_traffic_recognition
   avd_data_conversion_mode:
     documentation_options:
       table: role-input-validation
@@ -39,7 +43,9 @@ keys:
 
       "debug" will produce hidden debug messages viewable with -v.
 
-      "quiet" will not produce any messages'
+      "quiet" will not produce any messages
+
+      '
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -66,7 +72,9 @@ keys:
 
       "info" will produce regular log messages.
 
-      "debug" will produce hidden debug messages viewable with -v.'
+      "debug" will produce hidden debug messages viewable with -v.
+
+      '
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -101,8 +109,11 @@ keys:
   bgp_as:
     documentation_options:
       table: bgp-settings
-    description: AS number to use to configure overlay when "overlay_routing_protocol"
-      == ibgp.
+    description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+      to use to configure overlay when "overlay_routing_protocol" == ibgp.
+
+      For asdot notation in YAML inputs, the value must be put in quotes, to prevent
+      it from being interpreted as a float number.'
     type: str
     convert_types:
     - int
@@ -124,11 +135,13 @@ keys:
   bgp_ecmp:
     documentation_options:
       table: bgp-settings
-    description: Maximum ECMP for BGP multi-path.
+    description: 'Maximum ECMP for BGP multi-path.
+
+      The default value is 4 except for WAN Routers where the default value is unset
+      (falls back to EOS default).'
     type: int
     convert_types:
     - str
-    default: 4
   bgp_graceful_restart:
     documentation_options:
       table: bgp-settings
@@ -159,11 +172,12 @@ keys:
   bgp_maximum_paths:
     documentation_options:
       table: bgp-settings
-    description: Maximum Paths for BGP multi-path.
+    description: 'Maximum Paths for BGP multi-path.
+
+      The default value is 4 except for WAN Routers where the default value is 16.'
     type: int
     convert_types:
     - str
-    default: 4
     min: 1
     max: 512
   bgp_mesh_pes:
@@ -174,7 +188,9 @@ keys:
     description: 'Configure an iBGP full mesh between PEs, either because there is
       no RR used or other reasons.
 
-      Only supported in combination with MPLS overlay.'
+      Only supported in combination with MPLS overlay.
+
+      '
   bgp_peer_groups:
     documentation_options:
       table: bgp-settings
@@ -341,7 +357,26 @@ keys:
             description: Type 7 encrypted password.
           bfd:
             type: bool
-            default: false
+            default: true
+          bfd_timers:
+            type: dict
+            description: 'Specify the BFD timers to override the default values.
+
+              It is recommended to keep BFD total timeout longer than the DPS timeout.
+
+              The Default BFD timeout is 10 x 1 seconds and the default DPS timeout
+              is 5 x 1 seconds.'
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/keys/bfd_timers
+            keys:
+              interval:
+                type: int
+                default: 1000
+              min_rx:
+                type: int
+                default: 1000
+              multiplier:
+                type: int
+                default: 10
           listen_range_prefixes:
             type: list
             description: 'Only used for nodes where `wan_role` is `server` like AutoVPN
@@ -359,6 +394,62 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+            - str
+            default: 1
+      wan_rr_overlay_peers:
+        type: dict
+        documentation_options:
+          table: wan-bgp-peer-groups
+        description: 'PREVIEW: This key is currently not supported
+
+          Configuration options for the peer-group created to peer between
+
+          AutoVPN RRs or CV-Pathfinders.'
+        keys:
+          name:
+            type: str
+            default: WAN-RR-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: true
+          bfd_timers:
+            type: dict
+            description: 'Specify the BFD timers to override the default values.
+
+              It is recommended to keep BFD total timeout longer than the DPS timeout.
+
+              The Default BFD timeout is 10 x 1 seconds and the default DPS timeout
+              is 5 x 1 seconds.'
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/keys/bfd_timers
+            keys:
+              interval:
+                type: int
+                default: 1000
+              min_rx:
+                type: int
+                default: 1000
+              multiplier:
+                type: int
+                default: 10
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+            - str
+            default: 1
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
@@ -552,6 +643,19 @@ keys:
                 type: str
               site_after_hours_contact:
                 type: str
+  cv_tags_topology_type:
+    documentation_options:
+      table: cloudvision-tags
+    description: 'PREVIEW: This key is currently not supported
+
+      Device type that CloudVision should use when generating the Topology. Defaults
+      to the setting under node_type_keys.'
+    type: str
+    valid_values:
+    - leaf
+    - spine
+    - core
+    - edge
   cv_topology:
     documentation_options:
       table: cv-topology
@@ -613,7 +717,9 @@ keys:
     description: 'IPv4 address or DNS name for CloudVision.
 
       This variable only supports an on-premise single-node cluster or the DNS name
-      of a CloudVision as a Service instance.'
+      of a CloudVision as a Service instance.
+
+      '
   cvp_instance_ips:
     documentation_options:
       table: cloudvision-settings
@@ -1028,7 +1134,9 @@ keys:
           keys:
             raw_eos_cli:
               type: str
-              description: EOS cli commands rendered on router_bgp.vlans-aware-bundle.
+              description: 'EOS cli commands rendered on router_bgp.vlans-aware-bundle.
+
+                '
   fabric_evpn_encapsulation:
     documentation_options:
       table: evpn-settings
@@ -1090,6 +1198,75 @@ keys:
       in the Fabric, **must** be an inventory group name.
     type: str
     required: true
+  generate_cv_tags:
+    documentation_options:
+      table: cloudvision-tags
+    type: dict
+    description: 'PREVIEW: This key is currently not supported
+
+      Generate CloudVision Tags based on AVD data.'
+    keys:
+      topology_hints:
+        type: bool
+        default: false
+        description: Enable the generation of CloudVision Topology Tags (hints).
+      interface_tags:
+        description: List of interface tags that should be generated.
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          description: Each tag can either have a static value or a dynamic value
+            sourced from structured configuration.
+          keys:
+            name:
+              description: Tag name to be assigned to generated tags. Tag names must
+                be lower case.
+              convert_to_lower_case: true
+              required: true
+              type: str
+            data_path:
+              description: 'Structured config field/key path to be used to find the
+                value for the tag. Dot notation is supported to reference values inside
+                dictionaries.
+
+                For Example: ''data_path: channel_group.id'' would set the tag with
+                the value of the channel id of the interface. If there is no channel
+                id, the tag is not created.
+
+                `data_path` is ignored if `value` is set.'
+              type: str
+            value:
+              description: Value to be assigned to the tag.
+              type: str
+      device_tags:
+        description: List of device tags that should be generated.
+        type: list
+        items:
+          type: dict
+          description: Each tag can either have a static value or a dynamic value
+            sourced from structured configuration.
+          keys:
+            name:
+              description: Tag name to be assigned to generated tags. Tag names must
+                be lower case.
+              convert_to_lower_case: true
+              required: true
+              type: str
+            data_path:
+              description: 'Structured config field/key path to be used to find the
+                value for the tag. Dot notation is supported to reference values inside
+                dictionaries.
+
+                For Example: ''data_path: router_bfd.multihop.interval'' would set
+                the tag with the value of the interval for multihop bfd. If this value
+                is not specified in the structured config, the tag is not created.
+
+                `data_path` is ignored if `value` is set.'
+              type: str
+            value:
+              description: Value to be assigned to the tag.
+              type: str
   hardware_counters:
     documentation_options:
       table: system-settings
@@ -1151,7 +1328,9 @@ keys:
     format: ipv6
     description: 'OOB Management interface gateway in IPv6 format.
 
-      Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks''.'
+      Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks''.
+
+      '
   is_deployed:
     documentation_options:
       table: is-deployed
@@ -1188,8 +1367,10 @@ keys:
     - level-1
     - level-2
     default: level-2
-    description: These fabric level parameters can be used with core_interfaces running
+    description: 'These fabric level parameters can be used with core_interfaces running
       ISIS, and may be overridden on link profile or link level.
+
+      '
   isis_default_is_type:
     display_name: ISIS Default IS Type
     documentation_options:
@@ -1207,8 +1388,10 @@ keys:
     convert_types:
     - str
     default: 50
-    description: These fabric level parameters can be used with core_interfaces running
+    description: 'These fabric level parameters can be used with core_interfaces running
       ISIS, and may be overridden at link profile or link level.
+
+      '
   isis_maximum_paths:
     documentation_options:
       table: isis-settings
@@ -1319,7 +1502,9 @@ keys:
     type: str
     description: 'OOB Management interface gateway in IPv4 format.
 
-      Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks''.'
+      Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks''.
+
+      '
   mgmt_interface:
     documentation_options:
       table: management-interface-settings
@@ -1373,6 +1558,18 @@ keys:
         min: 1
         max: 4093
         default: 3000
+  mlag_on_orphan_port_channel_downlink:
+    type: bool
+    documentation_options:
+      table: fabric-settings
+    description: 'If `true` (default) an MLAG ID will always be configured on a Port-Channel
+      downlink even if the downlink is only on one node in the MLAG pair.
+
+      If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed
+      to two MLAG switches.
+
+      Note the default value will change to `false` in AVD version 5.0'
+    default: true
   name_servers:
     documentation_options:
       table: management-settings
@@ -1431,6 +1628,20 @@ keys:
           type: str
     default:
     - name: tenants
+  new_network_services_bgp_vrf_config:
+    type: bool
+    description: 'Set this key to `true` in the node type to generate full BGP configuration
+
+      for network services even when `evpn` is not in the address families
+
+      (`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).
+
+
+      This is `false` by default except if `uplink_type` is set to `p2p-vrfs`, then
+      the default value is `true`.
+
+
+      This may introduce breaking changes to your configuration.'
   node_type_keys:
     type: list
     description: 'Define Node Type Keys, to specify the properties of each node type
@@ -1474,19 +1685,12 @@ keys:
           default: 127
           description: Default PTP priority 1
         default_underlay_routing_protocol:
+          documentation_options:
+            table: node-type-keys
           type: str
           default: ebgp
           convert_to_lower_case: true
-          valid_values:
-          - ebgp
-          - ibgp
-          - ospf
-          - ospf-ldp
-          - isis
-          - isis-sr
-          - isis-ldp
-          - isis-sr-ldp
-          - none
+          $ref: eos_designs#/keys/underlay_routing_protocol
           description: 'Set the default underlay routing_protocol.
 
             Can be overridden by setting "underlay_routing_protocol" host/group_vars.
@@ -1563,29 +1767,6 @@ keys:
             Only supported if `overlay_routing_protocol` is set to `ibgp`.
 
             '
-        default_cv_pathfinder_role:
-          documentation_options:
-            table: node-type-key-wan-configuration
-          type: str
-          valid_values:
-          - edge
-          - transit region
-          - pathfinder
-          description: 'PREVIEW: This key is currently not supported
-
-            Set the default CV Pathfinder role.
-
-
-            This key is used for Pathfinder designs only when the `wan_mode` root
-
-            key is set to `cv-pathfinder`.
-
-
-            `pathfinder` is only a valid if `wan_role` is `server`.
-
-            `edge` and `transit` are only valid if `wan_role` is `client`.
-
-            '
         mlag_support:
           type: bool
           default: false
@@ -1619,9 +1800,29 @@ keys:
           valid_values:
           - p2p
           - port-channel
+          - p2p-vrfs
           default: p2p
-          description: '`uplink_type` must be "p2p" if `vtep` or `underlay_router`
-            is true.'
+          description: '`uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router`
+            is true.
+
+
+            For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface
+            for each VRF
+
+            in `network_services` present on both the uplink and the downlink switch.
+
+            The subinterface ID is the `vrf_id`.
+
+            ''underlay_router'' and ''network_services.l3'' must be set to true.
+
+            VRF `default` is always configured on the physical interface using the
+            underlay routing protocol.
+
+            All subinterfaces use the same IP address as the physical interface.
+
+            Multicast is not supported.
+
+            Only BGP is supported for subinterfaces.'
         vtep:
           type: bool
           default: false
@@ -1715,6 +1916,18 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to Custom J2 template.
+        cv_tags_topology_type:
+          documentation_options:
+            table: cloudvision-tags
+          description: 'PREVIEW: This key is currently not supported
+
+            Type that CloudVision should use when generating the Topology.'
+          type: str
+          valid_values:
+          - leaf
+          - spine
+          - core
+          - edge
   ntp_settings:
     documentation_options:
       table: management-settings
@@ -1800,7 +2013,9 @@ keys:
     type: list
     items:
       type: str
-      description: '''inventory_hostname'' of CVX server'
+      description: '''inventory_hostname'' of CVX server
+
+        '
   overlay_her_flood_list_per_vni:
     documentation_options:
       table: overlay-settings
@@ -1973,7 +2188,9 @@ keys:
 
 
           These methods can be overridden per VLAN if either ''rd_override'', ''rt_override''
-          or ''vni_override'' is set (preferred in this order).'
+          or ''vni_override'' is set (preferred in this order).
+
+          '
   overlay_routing_protocol:
     documentation_options:
       table: overlay-settings
@@ -2116,7 +2333,9 @@ keys:
 
 
           These methods can be overridden per VLAN if either ''rt_override'' or ''vni_override''
-          is set (preferred in this order).'
+          is set (preferred in this order).
+
+          '
   p2p_uplinks_mtu:
     documentation_options:
       table: fabric-settings
@@ -2143,6 +2362,8 @@ keys:
           type: list
           items:
             type: str
+            convert_types:
+            - int
         trident_forwarding_table_partition:
           type: str
           description: Only applied when evpn_multicast is true.
@@ -2263,6 +2484,14 @@ keys:
       - '750'
       - '755'
       - '758'
+      management_interface: Management0
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+    - platforms:
       - 720DP
       - 722XP
       - 710P
@@ -2357,6 +2586,8 @@ keys:
       keys:
         platform:
           type: str
+          convert_types:
+          - int
         speeds:
           type: list
           primary_key: speed
@@ -2414,7 +2645,9 @@ keys:
           description: 'Parent profile is optional.
 
             Port_profiles can refer to another port_profile to inherit settings in
-            up to two levels (adapter->profile->parent_profile).'
+            up to two levels (adapter->profile->parent_profile).
+
+            '
   ptp:
     documentation_options:
       table: ptp
@@ -2519,7 +2752,9 @@ keys:
         description: 'If True, `eos_designs` will configure `queue-monitor length
           notifying` according to the
 
-          `platform_settings.[].feature_support.queue_monitor_length_notify` setting.'
+          `platform_settings.[].feature_support.queue_monitor_length_notify` setting.
+
+          '
   redundancy:
     documentation_options:
       table: system-settings
@@ -2582,7 +2817,9 @@ keys:
       role interface tests.
 
       - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-      are not present in the network.'
+      are not present in the network.
+
+      '
   snmp_settings:
     documentation_options:
       table: management-snmp-settings
@@ -2911,7 +3148,9 @@ keys:
           description: 'Parent SVI profile name to apply.
 
             svi_profiles can refer to another svi_profile to inherit settings in up
-            to two levels (svi -> svi_profile -> svi_parent_profile).'
+            to two levels (svi -> svi_profile -> svi_parent_profile).
+
+            '
   system_mac_address:
     documentation_options:
       table: system-settings
@@ -2921,7 +3160,9 @@ keys:
 
       "system_mac_address" can also be set under node type settings.
 
-      If both are set, the value under node type settings takes precedence.'
+      If both are set, the value under node type settings takes precedence.
+
+      '
   terminattr_disable_aaa:
     documentation_options:
       table: cloudvision-settings
@@ -2996,7 +3237,9 @@ keys:
     description: 'The `type:` variable needs to be defined for each device in the
       fabric.
 
-      This is leveraged to load the appropriate template to generate the configuration.'
+      This is leveraged to load the appropriate template to generate the configuration.
+
+      '
   underlay_filter_peer_as:
     documentation_options:
       table: fabric-settings
@@ -3153,7 +3396,9 @@ keys:
           type: str
           convert_types:
           - int
-          description: Name of standard Access-List.
+          description: 'Name of standard Access-List.
+
+            '
   underlay_ospf_area:
     documentation_options:
       table: ospf-settings
@@ -3197,17 +3442,19 @@ keys:
     type: str
     convert_to_lower_case: true
     description: "- The following underlay routing protocols are supported:\n  - EBGP
-      (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n
-      \ - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all
-      devices in the fabric.\n*Only supported with core_interfaces data model.\n"
+      (default for l3ls-evpn)\n  - OSPF.\n  - OSPF-LDP*.\n  - ISIS.\n  - ISIS-SR*.\n
+      \ - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - No underlay routing protocol (none)\n-
+      The variables should be applied to all devices in the fabric.\n*Only supported
+      with core_interfaces data model.\n"
     valid_values:
     - ebgp
     - ospf
+    - ospf-ldp
     - isis
     - isis-sr
     - isis-ldp
     - isis-sr-ldp
-    - ospf-ldp
+    - none
   uplink_ptp:
     documentation_options:
       table: fabric-settings
@@ -3265,6 +3512,19 @@ keys:
           type: str
           description: The path-group to which this carrier belongs.
           required: true
+  wan_edge:
+    documentation_options:
+      table: wan-settings
+    type: dict
+    description: 'The `wan_edge` node type was introduced and removed while the AVD
+      WAN feature was in PREVIEW MODE.
+
+      Migrate your existing edge nodes to using `wan_router` node_type.'
+    deprecation:
+      warning: true
+      new_key: wan_router
+      removed: true
+      remove_in_version: 4.6.0-dev1
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
@@ -3389,9 +3649,10 @@ keys:
         hostname:
           type: str
           description: Route-Reflector hostname.
-        router_id:
+        vtep_ip:
           type: str
-          description: Route-Reflector router id.
+          description: Route-Reflector VTEP IP Address. This is usually the IP address
+            under `interface Dps1`.
         path_groups:
           type: list
           description: Path-groups through which the Route Reflector/Pathfinder is
@@ -3418,6 +3679,171 @@ keys:
                       type: str
                       description: The public IP address of the Route Reflector for
                         this path-group.
+  wan_transit:
+    documentation_options:
+      table: wan-settings
+    type: dict
+    description: 'The `wan_transit` node type was introduced and removed while the
+      AVD WAN feature was in PREVIEW MODE.
+
+      Migrate your existing transit nodes to using `wan_router` node_type and set
+
+      `cv_pathfinder_transit_mode: region` under node settings.'
+    deprecation:
+      warning: true
+      new_key: 'node_type `wan_router` and set `cv_pathfinder_transit_mode: region`
+        under node settings'
+      removed: true
+      remove_in_version: 4.6.0-dev1
+  wan_virtual_topologies:
+    type: dict
+    description: 'PREVIEW: WAN Preview
+
+
+      Configure Virtual Topologies for CV Pathfinder and AutoVPN.
+
+
+      Auto create a control plane profile/policy/application and enforce it being
+      first in the default VRF.'
+    keys:
+      vrfs:
+        type: list
+        description: 'Map a VRF that exists in network_services to an AVT policy.
+
+          TODO: missing default VRF behavior'
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+              - int
+              description: VRF name.
+            policy:
+              type: str
+              description: 'Name of the policy to apply to this VRF.
+
+                It is possible to overwrite the default policy for all VRFs using
+                it
+
+                by redefining it in the `wan_virtual_topologies.policies` list using
+                the
+
+                default name `DEFAULT-POLICY`.'
+              default: DEFAULT-POLICY
+            wan_vni:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 255
+              required: true
+              description: 'Required for VRFs carried over AutoVPN or CV Pathfinder
+                WAN.
+
+
+                A VRF can have different VNIs between the Datacenters and the WAN.
+
+                Note that if no VRF default is configured for WAN, AVD will automatically
+                inject the VRF default with
+
+                `wan_vni` set to `1`.
+
+                In addition either `vrf_id` or `vrf_vni` must be set to enforce consistent
+                route-targets across domains.'
+      control_plane_virtual_topology:
+        type: dict
+        description: 'Always injected into the default VRF policy as the first entry.
+
+
+          By default, if no path-groups are specified, all locally available path-groups
+
+          are used in the generated load-balance policy.
+
+          ID is hardcoded to 254 for the AVT profile in CV Pathfinder mode.'
+        $ref: eos_designs#/$defs/virtual_topology
+        keys:
+          name:
+            type: str
+            description: Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
+      policies:
+        type: list
+        description: "List of virtual toplogies policies.\n\nFor AutoVPN, each item
+          in the list creates:\n  * one policy with:\n      * one `match` entry per
+          `application_virtual_topologies` item\n        they are indexed using `10
+          * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n
+          \ * one load-balance policy per `application_virtual_topologies` and one
+          for the `default_virtual_topology`.\n  * if the policy is associated with
+          the default VRF, a special control-plane rule is injected\n    in the policy
+          with index `1` referring to a control-plane load-balance policy as defined
+          under\n    `control_plane_virtual_topology`.\n\nFor CV Pathfinder, each
+          item in the list creates:\n  * one policy with:\n      * one `match` entry
+          per `application_virtual_topologies` item ordered as in the model.\n      *
+          one last match entry for the `default` application-profile using `default_virtual_topology`
+          information.\n  * one profile per `application_virtual_topologies` item.\n
+          \ * one profile for the `default_virtual_topology`..\n  * one load-balance
+          policy per `application_virtual_topologies`.\n  * one load_balance policy
+          for the `default_virtual_topology`.\n  * if the policy is associated with
+          the default VRF, a special control-plane profile is configured\n    and
+          injected first in the policy assigned to the `default` VRF. This profile
+          points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`."
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the AVT policy.
+            application_virtual_topologies:
+              type: list
+              description: List of application specific virtual topologies.
+              primary_key: application_profile
+              items:
+                type: dict
+                $ref: eos_designs#/$defs/virtual_topology
+                keys:
+                  application_profile:
+                    type: str
+                    description: The application profile to use for this virtual topology.
+                      It must be a defined `application_profile`.
+                  name:
+                    type: str
+                    description: Optional name, if not set `<policy_name>-<application_profile>`
+                      is used.
+                  id:
+                    type: int
+                    $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id
+                    required: false
+                    min: 2
+                    max: 253
+                    description: 'ID of the AVT in each VRFs. ID must be unique across
+                      all virtual topologies in a policy.
+
+                      ID 1 is reserved for the default_virtual_toplogy.
+
+                      ID 254 is reserved for the control_plane_virtual_topology.'
+            default_virtual_topology:
+              type: dict
+              description: 'Default match for the policy.
+
+                If no default match should be configured, set `drop_unmatched` to
+                `true`.
+
+                Otherwise, in CV Pathfinder mode, a default AVT profile will be configured
+                with ID 1.'
+              $ref: eos_designs#/$defs/virtual_topology
+              required: true
+              keys:
+                name:
+                  type: str
+                  description: Optional name, if not set `<policy_name>-DEFAULT` is
+                    used.
+                drop_unmatched:
+                  type: bool
+                  description: When set, no `catch-all` match is configured for the
+                    policy and unmatched traffic is dropped.
+                  default: false
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -3959,7 +4385,21 @@ $defs:
                 type: str
                 valid_values:
                 - static
-                description: Currently only static mode is supported.
+                - individual
+                description: 'Either static or individual mode is supported.
+
+                  If the mode is set to "individual" the "individual.profile" setting
+                  must be defined.
+
+                  '
+              individual:
+                type: dict
+                description: Define parameters for port-channel member interfaces.
+                  Applies only if LACP fallback is set to "individual".
+                keys:
+                  profile:
+                    type: str
+                    description: Port-profile name to inherit configuration.
               timeout:
                 type: int
                 convert_types:
@@ -4047,6 +4487,10 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items/
+      validate_state:
+        type: bool
+        description: Set to false to disable interface validation by the `eos_validate_state`
+          role.
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final
@@ -5101,6 +5545,53 @@ $defs:
                         in the final EOS configuration.
 
                         '
+              loopbacks:
+                documentation_options:
+                  table: network-services-vrfs-loopbacks-settings
+                type: list
+                description: 'List of Loopback interfaces.
+
+                  This will create Loopback interfaces inside the VRF.
+
+                  '
+                items:
+                  type: dict
+                  keys:
+                    node:
+                      type: str
+                      required: true
+                    loopback:
+                      type: int
+                      required: true
+                      min: 0
+                      max: 8191
+                    ip_address:
+                      type: str
+                      required: true
+                    description:
+                      type: str
+                    enabled:
+                      type: bool
+                      default: true
+                    ospf:
+                      type: dict
+                      description: OSPF interface configuration.
+                      keys:
+                        enabled:
+                          type: bool
+                          default: false
+                        area:
+                          type: str
+                          convert_types:
+                          - int
+                          description: OSPF area ID.
+                          default: '0'
+                    raw_eos_cli:
+                      type: str
+                      description: 'EOS CLI rendered directly on the Loopback interface
+                        in the final EOS configuration.
+
+                        '
               static_routes:
                 type: list
                 description: 'List of static routes for v4 and/or v6.
@@ -5235,8 +5726,11 @@ $defs:
                       type: str
                       convert_types:
                       - int
-                      description: Remote BGP AS <1-4294967295> or AS number in asdot
-                        notation "<1-65535>.<0-65535>".
+                      description: 'BGP AS <1-4294967295> or AS number in asdot notation
+                        "<1-65535>.<0-65535>".
+
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                     description:
                       type: str
                     password:
@@ -5261,6 +5755,8 @@ $defs:
                       min: 0
                       max: 4294967294
                       description: Maximum number of routes (0 means unlimited).
+                    maximum_routes_warning_only:
+                      type: bool
                     default_originate:
                       type: dict
                       keys:
@@ -5325,11 +5821,11 @@ $defs:
                       type: str
                       convert_types:
                       - int
-                      description: 'Local BGP ASN.
+                      description: 'Local BGP AS <1-4294967295> or AS number in asdot
+                        notation "<1-65535>.<0-65535>".
 
-                        eg. "65001.1200".
-
-                        '
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                     weight:
                       type: int
                       convert_types:
@@ -5704,6 +6200,8 @@ $defs:
               table: node-type-common-configuration
             description: Arista platform family.
             type: str
+            convert_types:
+            - int
           mac_address:
             documentation_options:
               table: node-type-common-configuration
@@ -6235,7 +6733,12 @@ $defs:
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration
-            description: Required with eBGP.
+            description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+              For asdot notation in YAML inputs, the value must be put in quotes,
+              to prevent it from being interpreted as a float number.
+
+              Required with eBGP.'
             type: str
             convert_types:
             - int
@@ -6293,14 +6796,45 @@ $defs:
             keys:
               tenants:
                 type: list
+                description: 'Limit configured Network Services to those defined under
+                  these Tenants. Set to [''all''] for all Tenants (default).
+
+                  This list also limits Tenants included by `always_include_vrfs_in_tenants`.'
                 items:
                   type: str
                 default:
                 - all
               tags:
                 type: list
+                description: Limit configured VLANs to those matching the given tags.
+                  Set to ['all'] for all VLANs (default).
                 items:
                   type: str
+                default:
+                - all
+              allow_vrfs:
+                type: list
+                description: 'Limit configured Network Services to those defined under
+                  these VRFs. Set to [''all''] for all VRFs (default).
+
+                  This list also limits VRFs included by `always_include_vrfs_in_tenants`.'
+                items:
+                  type: str
+                  convert_types:
+                  - int
+                default:
+                - all
+              deny_vrfs:
+                type: list
+                description: 'Prevent configuration of Network Services defined under
+                  these VRFs.
+
+                  This list prevents the given VRFs to be included by any other filtering
+                  mechanism.'
+                items:
+                  type: str
+                  convert_types:
+                  - int
                 default:
                 - all
               always_include_vrfs_in_tenants:
@@ -6370,7 +6904,11 @@ $defs:
                       type: str
                       format: ipv4
                     bgp_as:
-                      description: BGP ASN of remote Route Server.
+                      description: 'Remote Route Server''s BGP AS <1-4294967295> or
+                        AS number in asdot notation "<1-65535>.<0-65535>".
+
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                       type: str
                       convert_types:
                       - int
@@ -6429,7 +6967,12 @@ $defs:
                 - str
                 default: 0
               local_as:
-                description: Apply local-as to peering with IPVPN remote peers.
+                description: 'Local BGP AS applied to peering with IPVPN remote peers.
+
+                  BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+                  For asdot notation in YAML inputs, the value must be put in quotes,
+                  to prevent it from being interpreted as a float number.'
                 type: str
                 convert_types:
                 - int
@@ -6456,7 +6999,11 @@ $defs:
                       format: ipv4
                       required: true
                     bgp_as:
-                      description: BGP ASN of remote IPVPN Peer.
+                      description: 'Remote IPVPN Peer''s BGP AS <1-4294967295> or
+                        AS number in asdot notation "<1-65535>.<0-65535>".
+
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.'
                       type: str
                       required: true
                       convert_types:
@@ -7044,24 +7591,21 @@ $defs:
 
 
               Only supported if `overlay_routing_protocol` is set to `ibgp`.'
-          cv_pathfinder_role:
+          cv_pathfinder_transit_mode:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            $ref: eos_designs#/keys/node_type_keys/items/keys/default_cv_pathfinder_role
+            valid_values:
+            - region
+            - zone
             description: 'PREVIEW: This key is currently not supported
 
-              Override the default CV Pathfinder role.
+              Configure the transit mode for a WAN client for CV Pathfinder designs
+
+              only when the `wan_mode` root key is set to `cv_pathfinder`.
 
 
-              This key is used for Pathfinder designs only when the `wan_mode` root
-
-              key is set to `cv_pathfinder`.
-
-
-              `pathfinder` is only a valid if `wan_role` is `server`.
-
-              `edge` and `transit region` are only valid if `wan_role` is `client`.'
+              ''zone'' is currently not supported.'
           cv_pathfinder_region:
             documentation_options:
               table: node-type-wan-configuration
@@ -7078,18 +7622,40 @@ $defs:
 
 
               The CV Pathfinder site name.'
-          dps_mss_ipv4:
+          wan_ha:
             documentation_options:
               table: node-type-wan-configuration
-            type: int
-            $ref: eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4
+            type: dict
             description: 'PREVIEW: This key is currently not supported
 
 
-              MSS value for IPv4 the DPS interface.
+              The key is supported only if `wan_mode` == `cv-pathfinder`.
 
-              If not set, and the device is WAN device, a default value of 1000 is
-              used.'
+              AutoVPN support is still to be determined.
+
+
+              Maximum 2 devices supported by group for HA.'
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable / Disable auto CV-Pathfinder HA, when two nodes
+                  are defined in the same node_group.
+              ipsec:
+                type: bool
+                default: true
+                description: Enable / Disable IPsec over HA path-group when HA is
+                  enabled.
+          dps_mss_ipv4:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            $ref: eos_cli_config_gen#/keys/router_path_selection/keys/tcp_mss_ceiling/keys/ipv4_segment_size
+            description: 'PREVIEW: This key is currently not supported
+
+
+              IPv4 MSS value configured under "router path-selection" on WAN Devices.'
+            default: auto
           l3_interfaces:
             type: list
             $ref: eos_designs#/$defs/node_type_l3_interfaces
@@ -7107,6 +7673,15 @@ $defs:
                   description: 'L3 interface profile name. Profile defined under `l3_interface_profiles`.
 
                     '
+          data_plane_cpu_allocation_max:
+            documentation_options:
+              table: system-settings
+            type: int
+            $ref: eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max
+            description: 'Set the maximum number of CPU used for the data plane.
+
+              This setting is useful on virtual Route Reflectors and Pathfinders where
+              more CPU cores should be allocated for control plane.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -7151,26 +7726,32 @@ $defs:
       keys:
         name:
           type: str
-          description: Ethernet interface name like 'Ethernet2'.
-          pattern: Ethernet[\d/]+
+          description: 'Ethernet interface name like ''Ethernet2'' or subinterface
+            name like ''Ethernet2.42''
+
+            For a subinterface, the parent physical interface is automatically created.'
+          pattern: Ethernet[\d/]+(.[\d]+)?
         description:
           type: str
           description: 'Interface description.
 
             If not set a default description will be configured with ''[<peer>[ <peer_interface>]]'''
-        ip:
+        ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        set_default_route:
+        encapsulation_dot1q_vlan:
+          description: For subinterfaces the dot1q vlan is derived from the interface
+            name by default, but can also be specified.
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 4094
+        dhcp_accept_default_route:
           type: bool
           default: false
-          description: 'Insert a default route to the `peer_ip` if `ip` is an ip address
-
-            or configure to accept a default route from DHCP if `ip` is `dhcp`.
-
-
-            AVD will error out if set to true, `ip` is an ip address and `peer_ip`
-            is missing.'
+          description: Accept a default route from DHCP if `ip_address` is set to
+            `dhcp`.
         enabled:
           type: bool
           default: true
@@ -7189,6 +7770,17 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        static_routes:
+          description: Configure IPv4 static routes pointing to `peer_ip`.
+          type: list
+          min_length: 1
+          items:
+            type: dict
+            keys:
+              prefix:
+                type: str
+                required: true
+                description: IPv4_network/Mask
         qos_profile:
           type: str
           description: QOS service profile.
@@ -7378,10 +7970,24 @@ $defs:
                       'node1 interface2' ].
                     items:
                       type: str
+                  channel_id:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Port-Channel ID. If no channel_id is specified, an
+                      id is generated from the first switch port in the port channel.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in
             the final EOS configuration.
+        routing_protocol:
+          type: str
+          valid_values:
+          - ebgp
+          description: 'Enables deviation of the routing protocol used on this link
+            from the fabric underlay default.
+
+            - ebgp: Enforce plain IPv4 BGP peering'
         structured_config:
           type: dict
           documentation_options:
@@ -7742,3 +8348,51 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
+  virtual_topology:
+    type: dict
+    keys:
+      name:
+        type: str
+        description: Optional name.
+      traffic_class:
+        type: int
+        $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/traffic_class
+      dscp:
+        type: int
+        $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp
+      constraints:
+        type: dict
+        keys:
+          jitter:
+            type: int
+            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/jitter
+          latency:
+            type: int
+            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/latency
+          loss_rate:
+            type: str
+            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/loss_rate
+      path_groups:
+        type: list
+        min_length: 1
+        items:
+          type: dict
+          keys:
+            names:
+              type: list
+              description: List of path-group names.
+              required: true
+              min_length: 1
+              items:
+                type: str
+            preference:
+              type: str
+              convert_types:
+              - int
+              description: 'Valid values are 1-255 | preferred | alternate.
+
+
+                preferred is converted to priority 1.
+
+                alternate is converted to priority 2.'
+              default: preferred

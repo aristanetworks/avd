@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
+  ~ Copyright (c) 2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints</samp>](## "node_type_keys.[].connected_endpoints") | Boolean |  | `False` |  | Are endpoints connected to this node type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_evpn_role</samp>](## "node_type_keys.[].default_evpn_role") | String |  | `none` | Valid Values:<br>- <code>none</code><br>- <code>client</code><br>- <code>server</code> | Default evpn_role. Can be overridden in topology vars. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_ptp_priority1</samp>](## "node_type_keys.[].default_ptp_priority1") | Integer |  | `127` | Min: 0<br>Max: 255 | Default PTP priority 1 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_underlay_routing_protocol</samp>](## "node_type_keys.[].default_underlay_routing_protocol") | String |  | `ebgp` | Value is converted to lower case.<br>Valid Values:<br>- <code>ebgp</code><br>- <code>ibgp</code><br>- <code>ospf</code><br>- <code>ospf-ldp</code><br>- <code>isis</code><br>- <code>isis-sr</code><br>- <code>isis-ldp</code><br>- <code>isis-sr-ldp</code><br>- <code>none</code> | Set the default underlay routing_protocol.<br>Can be overridden by setting "underlay_routing_protocol" host/group_vars.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_underlay_routing_protocol</samp>](## "node_type_keys.[].default_underlay_routing_protocol") | String |  | `ebgp` | Value is converted to lower case.<br>Valid Values:<br>- <code>ebgp</code><br>- <code>ospf</code><br>- <code>ospf-ldp</code><br>- <code>isis</code><br>- <code>isis-sr</code><br>- <code>isis-ldp</code><br>- <code>isis-sr-ldp</code><br>- <code>none</code> | Set the default underlay routing_protocol.<br>Can be overridden by setting "underlay_routing_protocol" host/group_vars.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_overlay_routing_protocol</samp>](## "node_type_keys.[].default_overlay_routing_protocol") | String |  | `ebgp` | Value is converted to lower case.<br>Valid Values:<br>- <code>ebgp</code><br>- <code>ibgp</code><br>- <code>her</code><br>- <code>cvx</code><br>- <code>none</code> | Set the default overlay routing_protocol.<br>Can be overridden by setting "overlay_routing_protocol" host/group_vars.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_mpls_overlay_role</samp>](## "node_type_keys.[].default_mpls_overlay_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Set the default mpls overlay role.<br>Acting role in overlay control plane.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_overlay_address_families</samp>](## "node_type_keys.[].default_overlay_address_families") | List, items: String |  |  |  | Set the default overlay address families.<br> |
@@ -25,7 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2</samp>](## "node_type_keys.[].network_services.l2") | Boolean |  | `False` |  | Vlans |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3</samp>](## "node_type_keys.[].network_services.l3") | Boolean |  | `False` |  | VRFs, SVIs (if l2 is true).<br>Only supported with underlay_router.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_router</samp>](## "node_type_keys.[].underlay_router") | Boolean |  | `True` |  | Is this node type a L3 device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "node_type_keys.[].uplink_type") | String |  | `p2p` | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code> | `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "node_type_keys.[].uplink_type") | String |  | `p2p` | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code> | `uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router` is true.<br><br>For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF<br>in `network_services` present on both the uplink and the downlink switch.<br>The subinterface ID is the `vrf_id`.<br>'underlay_router' and 'network_services.l3' must be set to true.<br>VRF `default` is always configured on the physical interface using the underlay routing protocol.<br>All subinterfaces use the same IP address as the physical interface.<br>Multicast is not supported.<br>Only BGP is supported for subinterfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep</samp>](## "node_type_keys.[].vtep") | Boolean |  | `False` |  | Is this switch an EVPN VTEP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_lsr</samp>](## "node_type_keys.[].mpls_lsr") | Boolean |  | `False` |  | Is this switch an MPLS LSR. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_addressing</samp>](## "node_type_keys.[].ip_addressing") | Dictionary |  |  |  | Override ip_addressing templates. |
@@ -79,7 +79,7 @@
 
         # Set the default underlay routing_protocol.
         # Can be overridden by setting "underlay_routing_protocol" host/group_vars.
-        default_underlay_routing_protocol: <str; "ebgp" | "ibgp" | "ospf" | "ospf-ldp" | "isis" | "isis-sr" | "isis-ldp" | "isis-sr-ldp" | "none"; default="ebgp">
+        default_underlay_routing_protocol: <str; "ebgp" | "ospf" | "ospf-ldp" | "isis" | "isis-sr" | "isis-ldp" | "isis-sr-ldp" | "none"; default="ebgp">
 
         # Set the default overlay routing_protocol.
         # Can be overridden by setting "overlay_routing_protocol" host/group_vars.
@@ -115,8 +115,17 @@
         # Is this node type a L3 device.
         underlay_router: <bool; default=True>
 
-        # `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true.
-        uplink_type: <str; "p2p" | "port-channel"; default="p2p">
+        # `uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router` is true.
+        #
+        # For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF
+        # in `network_services` present on both the uplink and the downlink switch.
+        # The subinterface ID is the `vrf_id`.
+        # 'underlay_router' and 'network_services.l3' must be set to true.
+        # VRF `default` is always configured on the physical interface using the underlay routing protocol.
+        # All subinterfaces use the same IP address as the physical interface.
+        # Multicast is not supported.
+        # Only BGP is supported for subinterfaces.
+        uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs"; default="p2p">
 
         # Is this switch an EVPN VTEP.
         vtep: <bool; default=False>

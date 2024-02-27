@@ -1,0 +1,5 @@
+---
+platform_settings:
+  - platforms: ['default']
+    feature_support:
+      queue_monitor_length_notify: false

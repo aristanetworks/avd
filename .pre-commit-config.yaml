@@ -10,7 +10,7 @@ repos:
         exclude_types: [svg, json]
         exclude: ansible_collections/arista/avd/molecule
       - id: check-added-large-files
-        exclude: ansible_collections/arista/avd/molecule
+        exclude: (ansible_collections/arista/avd/molecule|pickle$)
       - id: check-merge-conflict
         exclude: ansible_collections/arista/avd/molecule
 
@@ -92,6 +92,8 @@ repos:
         # ignoring errors and selecting line length as per
         # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
         types: [python]
+        # The cv_client api is generated from proto files, so it should not be linted.
+        exclude: ^ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/
 
   - repo: https://github.com/pycqa/pylint
     rev: "v2.16.1"
@@ -153,15 +155,8 @@ repos:
         files: ansible_collections/arista/avd/plugins/vars/
 
       - id: schemas
-        name: Build AVD Schemas
-        entry: sh -c 'exec env ANSIBLE_COLLECTIONS_PATHS=`pwd` ansible-playbook --forks 10 arista.avd._build_schemas'
-        language: system
-        files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
-        pass_filenames: false
-
-      - id: schemas
-        name: Build AVD Docs
-        entry: sh -c 'exec python-avd/scripts/build-schema-tables.py'
+        name: Build AVD Schemas and Docs
+        entry: sh -c 'exec python-avd/scripts/build-schemas.py'
         language: system
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false

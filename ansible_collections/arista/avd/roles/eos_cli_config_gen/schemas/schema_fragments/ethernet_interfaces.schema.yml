@@ -276,6 +276,11 @@ keys:
           type: list
           items:
             type: str
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+            - any
+            - rx
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP
@@ -455,6 +460,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                border_router:
+                  type: bool
+                  description: Configure PIM border router. EOS default is false.
                 dr_priority:
                   type: int
                   convert_types:
@@ -683,6 +691,8 @@ keys:
                   type: bool
                 storm_control_discards:
                   type: bool
+                  description: |
+                    Discards due to storm-control.
         lldp:
           type: dict
           keys:
@@ -1237,6 +1247,9 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address
+        validate_state:
+          type: bool
+          description: Set to false to disable interface validation by the `eos_validate_state` role
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration

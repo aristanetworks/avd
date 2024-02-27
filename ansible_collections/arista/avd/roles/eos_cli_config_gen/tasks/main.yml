@@ -46,6 +46,7 @@
     schema_id: "{{ role_name }}"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
+    #cprofile_file: "config-{{inventory_hostname}}.prof"
   delegate_to: localhost
   register: eosconfig
 
@@ -60,5 +61,6 @@
     validation_mode: "{{ avd_data_validation_mode }}"
     add_md_toc: true
     md_toc_skip_lines: 3
+    #cprofile_file: "docs-{{inventory_hostname}}.prof"
   delegate_to: localhost
   when: generate_device_documentation | arista.avd.default(true)

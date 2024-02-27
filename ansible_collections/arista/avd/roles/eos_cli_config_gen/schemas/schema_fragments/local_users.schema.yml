@@ -45,6 +45,8 @@ keys:
             If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
         ssh_key:
           type: str
+        secondary_ssh_key:
+          type: str
         shell:
           type: str
           description: |

@@ -11,16 +11,19 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 # eos_validate_state - Preview Integration with ANTA
 
 !!! warning
-    eos_validate_state intergration with ANTA is in preview. Everything is subject to change.
-    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
+    eos_validate_state integration with ANTA is in preview. Everything is subject to change.
+    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
-## Overview
+!!! warning
+    ANTA version has been bumped to **0.12.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode).
+
+# Overview
 
 **eos_validate_state** is a role leveraged to validate Arista EOS devices' operational states.
 
 **eos_validate_state** role:
 
-- Consumes structured EOS configuration file, the same input as the role [eos_cli_config_gen](../eos_cli_config_gen/README.md). This input is considered the source of truth (the desired state).
+- Consumes structured EOS configuration file, the same input as the role [eos_cli_config_gen](../eos_cli_config_gen/README.md). This input is considered the system of record (the desired state).
 - Connects to EOS devices to collect operational states (actual state). This requires access to the configured devices.
 - Compares the actual states against the desired state.
 - Generates CSV and Markdown reports of the results.
@@ -41,7 +44,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 
 ## Expected changes
 
-- You should expect faster execution, and if not please report on the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
+- You should expect faster execution, and if not please report on the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 - Hardware tests are now collapsed.
 - Some description of tests have been updated to be more precise.
 - Sorting of the test results is now done per device as opposed to per category.
@@ -55,6 +58,8 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 
 !!! note
     Starting from version 4.30.1F, `service_routing_protocols_model` is preset to `multi-agent` by default on EOS devices.
+
+- Inband management reachability test has been refactored to support the new AVD 4.x.x inband management [data model](https://avd.sh/en/stable/roles/eos_designs/docs/input-variables.html#node-type-inband-management).
 
 ## How to run eos_validate_state in ANTA mode
 
@@ -120,7 +125,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
   - VerifyReachability: Validate IP reachability for point-to-point l3 ethernet interfaces.
 
 - AvdTestInbandReachability (Ansible tags: `loopback_reachability`, `loopback0_reachability`, `optional`)
-  - VerifyReachability: Validate loopback reachability between devices.
+  - VerifyReachability: Validate loopback reachability from the inband management VLAN interface.
 
 - AvdTestLoopback0Reachability (Ansible tags: `loopback_reachability`, `loopback0_reachability`)
   - VerifyReachability: Validate loopback reachability between devices.

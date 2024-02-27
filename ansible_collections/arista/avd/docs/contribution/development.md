@@ -8,13 +8,13 @@
 
 ## Overview
 
-Two methods can be used to get Ansible up and running quickly with all the requirements to leverage ansible-avd: a Python Virtual Environment or a Docker container.
+Two methods can be used to get Ansible up and running quickly with all the requirements to leverage AVD: a Python Virtual Environment or a Docker container.
 
 The best way to use the development files is to copy them to the root directory where your repositories are cloned. For example, see the file/folder structure below.
 
 ```shell
 ├── git_projects
-│   ├── ansible-avd
+│   ├── avd
 │   ├── ansible-cvp
 │   ├── netdevops-examples
 |   ├── <YOUR OWN TESTING REPOSITORY>
@@ -44,13 +44,13 @@ Since the AVD Docker image is now automatically published on [**docker-hub**](ht
 ```shell
 # Start development stack
 $ make start
-docker-compose -f ansible-avd/development/docker-compose.yml up -d
+docker-compose -f avd/development/docker-compose.yml up -d
 Recreating development_ansible_1    ... done
 Recreating development_webdoc_cvp_1 ... done
 Recreating development_webdoc_avd_1 ... done
 
 # List containers started with stack
-$ docker-compose -f ansible-avd/development/docker-compose.yml ps
+$ docker-compose -f avd/development/docker-compose.yml ps
         Name                       Command               State           Ports
 -----------------------------------------------------------------------------
 ansible_avd   /bin/sh -c while true; do  ...   Up
@@ -59,7 +59,7 @@ webdoc_cvp    sh -c pip install -r ansib ...   Up      0.0.0.0:8001->8000/tcp
 
 # Get a shell with ansible (if not in shell from previous command)
 $ make dev-run
-docker-compose -f ansible-avd/development/docker-compose.yml exec ansible zsh
+docker-compose -f avd/development/docker-compose.yml exec ansible zsh
 Agent pid 52
 ➜  /projects
 
@@ -74,8 +74,8 @@ $ curl -s http://127.0.0.1:8000 | head -n 10
 
 # Stop development stack
 $ make dev-stop
-docker-compose -f ansible-avd/development/docker-compose.yml kill &&\
-        docker-compose -f ansible-avd/development/docker-compose.yml rm -f
+docker-compose -f avd/development/docker-compose.yml kill &&\
+        docker-compose -f avd/development/docker-compose.yml rm -f
 Killing development_ansible_1 ... done
 Killing development_webdoc_1  ... done
 Going to remove development_ansible_1, development_webdoc_1
@@ -87,7 +87,7 @@ Removing development_webdoc_1  ... done
 
 ### Pre-commit hook
 
-[pre-commit](https://github.com/aristanetworks/ansible-avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. Pointing these issues out before code review allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
+[pre-commit](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. Pointing these issues out before code review allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
 
 Repository implements the following hooks:
 
@@ -96,15 +96,15 @@ Repository implements the following hooks:
 - `check-yaml`: Checks that all YAML files are valid.
 - `check-added-large-files`: Check if no large file is included in the repository.
 - `check-merge-conflict`: Validate there is no `MERGE` syntax related to an invalid merge process.
-- `pylint`: Run Python linting with settings defined in [pylintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc).
-- `yamllint`: Validate all YAML files using configuration from [yamllintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/.github/yamllintrc).
+- `pylint`: Run Python linting with settings defined in [pylintrc](https://github.com/aristanetworks/avd/blob/devel/pylintrc).
+- `yamllint`: Validate all YAML files using configuration from [yamllintrc](https://github.com/aristanetworks/avd/blob/devel/.github/yamllintrc).
 - `ansible-lint`: Validate YAML files with Ansible proven practices, patters, and behaviors.
 - `Flake8`: Style guide enforcement for Python code base.
 - `markdownlint-cli`: Validates markdown files for common errors as referenced [here](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md).
 
 #### Installation
 
-`pre-commit` is part of [**development requirements**](https://github.com/aristanetworks/ansible-avd/blob/devel/development/requirements-dev.txt). To install, run `pip command` in **ansible-avd** folder:
+`pre-commit` is part of [**development requirements**](https://github.com/aristanetworks/avd/blob/devel/development/requirements-dev.txt). To install, run `pip command` in **avd** folder:
 
 ```shell
 $ pip install -r development/requirements-dev.txt

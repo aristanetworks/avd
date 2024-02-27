@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
+  ~ Copyright (c) 2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -87,7 +87,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forced</samp>](## "qos_profiles.[].priority_flow_control.watchdog.timer.forced") | Boolean |  |  |  | Force recover any stuck queue(s) after the duration,<br>irrespective of whether PFC frames are being<br>received or not.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priorities</samp>](## "qos_profiles.[].priority_flow_control.priorities") | List, items: Dictionary |  |  |  | Set the drop/no_drop on each queue<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;priority</samp>](## "qos_profiles.[].priority_flow_control.priorities.[].priority") | Integer | Required, Unique |  | Min: 0<br>Max: 7 | Priority queue number (COS value)<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_drop</samp>](## "qos_profiles.[].priority_flow_control.priorities.[].no_drop") | Boolean | Required |  |  | Enable Priority Flow Control frames on this queue |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_drop</samp>](## "qos_profiles.[].priority_flow_control.priorities.[].no_drop") | Boolean | Required |  |  | Enable Priority Flow Control frames on this queue<br> |
 
 === "YAML"
 

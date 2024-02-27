@@ -138,7 +138,7 @@ Role configuration settings can be set either as regular inventory variables or 
 
 ## vEOS-LAB Know Caveats and Recommendations
 
-- vEOS-LAB is a great tool to learn and test ansible-avd automation framework. This is the primary tool leveraged by Arista Ansible Team for development and testing efforts.
+- vEOS-LAB is a great tool to learn and test the AVD automation framework. This is the primary tool leveraged by Arista Ansible Team for development and testing efforts.
 - vEOS-lab enables you to create and run replicas of physical networks within a risk-free virtual environment.
 - Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
 - vEOS-lab isn't a network simulator but the exact EOS implementation that runs on the hardware platforms.

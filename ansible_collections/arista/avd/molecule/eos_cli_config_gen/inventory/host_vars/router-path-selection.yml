@@ -45,12 +45,17 @@ router_path_selection:
       dynamic_peers:
         enabled: true
         ipsec: false
+      keepalive:
+        auto: true
     - name: PG-1
       id: 666
       dynamic_peers:
         enabled: true
         ip_local: true
         ipsec: true
+      keepalive:
+        interval: 200
+        failure_threshold: 3
       static_peers:
         # Out of order to test sorting
         - router_ip: 172.16.42.42
@@ -91,6 +96,7 @@ router_path_selection:
           priority: 42
         - name: PG-2
           priority: 42
+    - name: LB-EMPTY
   policies:
     # Out of order to test sorting
     - name: DPS-P-2
@@ -122,3 +128,5 @@ router_path_selection:
       path_selection_policy: DPS-P-1
     # testing VRF without path_selection_policy
     - name: VRF-3
+  tcp_mss_ceiling:
+    ipv4_segment_size: 200

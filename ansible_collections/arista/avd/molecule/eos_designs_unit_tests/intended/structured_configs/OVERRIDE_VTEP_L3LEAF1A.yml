@@ -1,6 +1,4 @@
 hostname: OVERRIDE_VTEP_L3LEAF1A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '923'
@@ -181,3 +179,5 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
+metadata:
+  platform: vEOS-LAB

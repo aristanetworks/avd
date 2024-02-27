@@ -14,24 +14,29 @@ $defs:
       keys:
         name:
           type: str
-          description: Ethernet interface name like 'Ethernet2'.
-          pattern: "Ethernet[\\d/]+"
+          description: |-
+            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'
+            For a subinterface, the parent physical interface is automatically created.
+          pattern: "Ethernet[\\d/]+(.[\\d]+)?"
         description:
           type: str
           description: |-
             Interface description.
             If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
-        ip:
+        ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        set_default_route:
+        encapsulation_dot1q_vlan:
+          description: For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
+          type: int
+          convert_types:
+            - str
+          min: 1
+          max: 4094
+        dhcp_accept_default_route:
           type: bool
           default: false
-          description: |-
-            Insert a default route to the `peer_ip` if `ip` is an ip address
-            or configure to accept a default route from DHCP if `ip` is `dhcp`.
-
-            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+          description: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
         enabled:
           type: bool
           default: true
@@ -52,6 +57,17 @@ $defs:
           type: str
           description: |-
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
+        static_routes:
+          description: Configure IPv4 static routes pointing to `peer_ip`.
+          type: list
+          min_length: 1
+          items:
+            type: dict
+            keys:
+              prefix:
+                type: str
+                required: true
+                description: IPv4_network/Mask
         qos_profile:
           type: str
           description: QOS service profile.
@@ -69,7 +85,7 @@ $defs:
             This is not rendered in the configuration but used for WAN designs.
         connected_to_pathfinder:
           type: bool
-          default: True
+          default: true
           description: |-
             For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
         raw_eos_cli:

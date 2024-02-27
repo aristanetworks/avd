@@ -18,7 +18,7 @@ Supported features:
 - Generation of device configuration.
 - Generation of device documentation.
 
-Feedback is very welcome. Please use [GitHub discussions](https://github.com/aristanetworks/ansible-avd/discussions).
+Feedback is very welcome. Please use [GitHub discussions](https://github.com/aristanetworks/avd/discussions).
 
 ## Functions overview
 

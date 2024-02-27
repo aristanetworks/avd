@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
+  ~ Copyright (c) 2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -9,6 +9,9 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>flow_tracking</samp>](## "flow_tracking") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;sampled</samp>](## "flow_tracking.sampled") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "flow_tracking.sampled.encapsulation") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_ipv6</samp>](## "flow_tracking.sampled.encapsulation.ipv4_ipv6") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "flow_tracking.sampled.encapsulation.mpls") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sample</samp>](## "flow_tracking.sampled.sample") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware_offload</samp>](## "flow_tracking.sampled.hardware_offload") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "flow_tracking.sampled.hardware_offload.ipv4") | Boolean |  |  |  | Configure hardware offload for IPv4 traffic. |
@@ -73,6 +76,9 @@
     ```yaml
     flow_tracking:
       sampled:
+        encapsulation:
+          ipv4_ipv6: <bool>
+          mpls: <bool>
         sample: <int; 1-4294967295>
         hardware_offload:
 

@@ -1,6 +1,4 @@
 hostname: pe3
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65001'
@@ -232,3 +230,5 @@ router_ospf:
     - Ethernet2
     redistribute:
       bgp: {}
+metadata:
+  platform: vEOS-lab

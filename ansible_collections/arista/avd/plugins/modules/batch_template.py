@@ -35,7 +35,5 @@ EXAMPLES = r"""
   arista.avd.batch_template:
     template: avd_schema_documentation.j2
     dest_format_str: "{{ role_documentation_dir }}/{item}.md"
-    items: "{{ documentation_schema | list }}"
-  vars:
-    documentation_schema: "{{ role_name | arista.avd.convert_schema(type='documentation') }}"
+    items: "{{ data_in_list_form }}"
 """

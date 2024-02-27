@@ -108,15 +108,17 @@ class AvdTestBase:
 
     def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:
         """
-        Check if an interface is shutdown or not, considering EOS defaults.
+        Update the interface shutdown key, considering EOS default.
+
+        For Ethernet interfaces:
+        - If the interface shutdown key is not set, the host interface_defaults.ethernet.shutdown key is used
+        - If the host interface_defaults.ethernet.shutdown key is not set, the interface shutdown key is set to False.
+
+        For other interfaces, the shutdown key is updated using the interface shutdown key if available or set to False.
 
         Args:
             interface (dict): The interface to verify.
             host (str): Host to verify. Defaults to the host running the test.
-
-        Returns:
-            bool: Returns the interface shutdown key's value, or `interface_defaults.ethernet` if not available.
-                  Returns False if both are absent, which is the default EOS behavior.
         """
         host_struct_cfg = self.get_host_structured_config(host=host) if host else self.structured_config
         if "Ethernet" in get(interface, "name", ""):
@@ -253,7 +255,7 @@ class AvdTestBase:
                 - "loopback0_mapping": a list of tuples where each tuple contains a hostname and its Loopback0 IP address.
                 - "vtep_mapping": a list of tuples where each tuple contains a hostname and its VTEP IP address if `Vxlan1` is the source_interface.
 
-        # FIXME @cbaillar: Need to refactor this: https://github.com/aristanetworks/ansible-avd/issues/3304
+        # FIXME @cbaillar: Need to refactor this: https://github.com/aristanetworks/avd/issues/3304
         """
         results = {"loopback0_mapping": [], "vtep_mapping": []}
 

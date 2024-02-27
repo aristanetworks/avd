@@ -4,13 +4,13 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Contribute to Arista ansible-avd collection
+# Contribute to the AVD Project
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
-- [Contribute to Arista ansible-avd collection](#contribute-to-arista-ansible-avd-collection)
+- [Contribute to the AVD Project](#contribute-to-the-avd-project)
   - [Reporting Bugs](#reporting-bugs)
   - [Feature Requests](#feature-requests)
   - [Using the issue tracker](#using-the-issue-tracker)
@@ -29,11 +29,11 @@ patches and features.
 
 ## Reporting Bugs
 
-- First, ensure that you've installed the [latest stable version](https://github.com/aristanetworks/ansible-avd/releases)
-of **ansible-avd**. If you're running an older version, it's possible that the bug has
+- First, ensure that you've installed the [latest stable version](https://github.com/aristanetworks/avd/releases)
+of **arista.avd** or **PyAVD**. If you're running an older version, it's possible that the bug has
 already been fixed.
 
-- Next, check the GitHub [issues list](https://github.com/aristanetworks/ansible-avd/issues)
+- Next, check the GitHub [issues list](https://github.com/aristanetworks/avd/issues)
 to see if the bug you've found has already been reported. If you think you may
 be experiencing a reported issue that hasn't already been resolved, please
 click "add a reaction" in the top right corner of the issue and add a thumbs
@@ -43,12 +43,12 @@ affected.
 
 - If you haven't found an existing issue that describes your suspected bug, **do not** file an issue until you
 have received confirmation that it is in fact a bug. Invalid issues are very
-distracting and slow the pace at which **ansible-avd** is developed.
+distracting and slow the pace at which **AVD** is developed.
 
 - When submitting an issue, please be as descriptive as possible. Be sure to
 include:
 
-  - The environment in which **ansible-avd** is running
+  - The environment in which **AVD** is running
   - The exact steps that can be taken to reproduce the issue (if applicable)
   - Any error messages generated
   - Screenshots (if applicable)
@@ -63,7 +63,7 @@ your issue.
 
 ## Feature Requests
 
-- First, check the GitHub [issues list](https://github.com/aristanetworks/ansible-avd/issues)
+- First, check the GitHub [issues list](https://github.com/aristanetworks/avd/issues)
 to see if the feature you're requesting is already listed. (Be sure to search
 closed issues as well, since some feature requests have been rejected.) If the
 feature you'd like to see has already been requested and is open, click "add a
@@ -86,8 +86,7 @@ implemented. Overly broad feature requests will be closed.
 following:
 
   - A detailed description of the proposed functionality
-  - A use case for the feature; who would use it and what value it would add
-      to **ansible-avd**
+  - A use case for the feature; who would use it and what value it would add to **AVD**
   - A rough description of changes necessary
   - Any third-party libraries or other resources which would be involved
 
@@ -114,7 +113,7 @@ requests**](#pull-requests), but please respect the following restrictions:
 ## Pull requests
 
 - Be sure to open an issue **before** starting work on a pull request, and
-discuss your idea with the **ansible-avd** maintainers before beginning work. This will
+discuss your idea with the **AVD** maintainers before beginning work. This will
 help prevent wasting time on something that might we might not be able to
 implement. When suggesting a new feature, also make sure it won't conflict with
 any work that's already in progress.
@@ -144,13 +143,13 @@ merged:
 
    ```bash
    # Clone your fork of the repo into the current directory
-   git clone https://github.com/<your-username>/ansible-avd
+   git clone https://github.com/<your-username>/avd
 
    # Navigate to the newly cloned directory
-   cd ansible-avd
+   cd avd
 
    # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/aristanetworks/ansible-avd.git
+   git remote add upstream https://github.com/aristanetworks/avd.git
    ```
 
 - If you cloned a while ago, get the latest changes from upstream:
@@ -185,5 +184,5 @@ merged:
    git push origin <topic-branch-name>
    ```
 
-- [Open a Pull Request](https://github.com/aristanetworks/ansible-avd/pulls)
+- [Open a Pull Request](https://github.com/aristanetworks/avd/pulls)
     with a clear title and description.

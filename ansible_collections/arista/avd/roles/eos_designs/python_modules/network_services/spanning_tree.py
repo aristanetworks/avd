@@ -32,7 +32,7 @@ class SpanningTreeMixin(UtilsMixin):
 
         vlan_stp_priorities = {}
         non_default_vlans = set()
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if (priority := get(svi, "spanning_tree_priority")) is None:

@@ -30,7 +30,7 @@ class VlanInterfacesMixin(UtilsMixin):
             return None
 
         vlan_interfaces = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     vlan_interface = self._get_vlan_interface_config_for_svi(svi, vrf)

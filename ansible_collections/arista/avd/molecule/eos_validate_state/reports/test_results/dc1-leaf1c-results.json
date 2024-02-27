@@ -5,11 +5,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the device temperature is within the acceptable range."
   },
   {
     "name": "dc1-leaf1c",
@@ -17,11 +13,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the fans status are within the accepted states list.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the fans status are within the accepted states list."
   },
   {
     "name": "dc1-leaf1c",
@@ -29,11 +21,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the power supplies status are within the accepted states list."
   },
   {
     "name": "dc1-leaf1c",
@@ -41,11 +29,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
   },
   {
     "name": "dc1-leaf1c",
@@ -54,9 +38,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet1 - DC1-LEAF1A_Ethernet8"
   },
   {
@@ -66,9 +47,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet2 - DC1-LEAF1B_Ethernet8"
   },
   {
@@ -78,9 +56,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet5 - dc1-leaf1-server1_iLO"
   },
   {
@@ -90,10 +65,16 @@
       "Interface State"
     ],
     "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Port-Channel1 - DC1_L3_LEAF1_Po8"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "custom_field": "Vlan4085 - L2LEAF_INBAND_MGMT"
   },
   {
     "name": "dc1-leaf1c",
@@ -102,9 +83,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet1 - remote: dc1-leaf1a_Ethernet8"
   },
   {
@@ -114,10 +92,124 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet2 - remote: dc1-leaf1b_Ethernet8"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.1"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.2"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.3"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.4"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.5"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.11"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.12"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.13"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.14"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.15"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.16"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.17"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.18"
   },
   {
     "name": "dc1-leaf1c",
@@ -126,9 +218,6 @@
       "NTP"
     ],
     "description": "Synchronised with NTP server",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "NTP"
   },
   {
@@ -137,10 +226,6 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
   }
 ]

@@ -1,6 +1,4 @@
 hostname: ptp-tests-spine3
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65200'
@@ -106,3 +104,5 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
+metadata:
+  platform: vEOS-LAB

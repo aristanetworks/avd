@@ -44,15 +44,17 @@ class AvdSchema:
         AVD Schema as dictionary. Will be validated towards AVD_META_SCHEMA.
     schema_id : str
         ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
+    load_store_from_yaml : bool
+        Force loading the YAML schema files into the store. By default schemas are loaded from pickled files.
     """
 
-    def __init__(self, schema: dict = None, schema_id: str = None):
+    def __init__(self, schema: dict = None, schema_id: str = None, load_store_from_yaml=False):
         if JSONSCHEMA_IMPORT_ERROR:
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
         if DEEPMERGE_IMPORT_ERROR:
             raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
 
-        self.store = create_store()
+        self.store = create_store(load_from_yaml=load_store_from_yaml)
         self._schema_validator = jsonschema.Draft7Validator(self.store["avd_meta_schema"])
         self.load_schema(schema, schema_id)
 
@@ -119,7 +121,7 @@ class AvdSchema:
             yield self._error_handler(error)
 
     def convert(self, data):
-        conversion_errors = self._dataconverter.convert_data(data)
+        conversion_errors = self._dataconverter.convert_data(data, self._schema)
 
         try:
             for conversion_error in conversion_errors:
@@ -202,7 +204,7 @@ class AvdSchema:
         if not isinstance(datapath, list):
             raise AvdSchemaError(f"The datapath argument must be a list. Got {type(datapath)}")
 
-        schema = self.resolved_schema
+        schema = self._schema
 
         def recursive_function(datapath, schema):
             """

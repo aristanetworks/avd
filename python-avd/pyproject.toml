@@ -21,7 +21,7 @@ requires-python = ">=3.10"
 
 [project.urls]
 homepage = "https://avd.arista.com"
-repository = "https://github.com/aristanetworks/ansible-avd"
+repository = "https://github.com/aristanetworks/avd"
 
 [build-system]
 requires = [

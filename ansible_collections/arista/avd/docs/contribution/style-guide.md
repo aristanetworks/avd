@@ -6,7 +6,7 @@
 
 # AVD Coding Style
 
-This page lists guidelines for developing Python code or Jinja2 templates in the AVD context. These rules apply to creating or updating any Python or Jinja2 file available in a `aristanetworks/ansible-avd` repository.
+This page lists guidelines for developing Python code or Jinja2 templates in the AVD context. These rules apply to creating or updating any Python or Jinja2 file available in a `aristanetworks/avd` repository.
 
 ## Python code style
 
@@ -22,10 +22,10 @@ Furthermore, the CI Pipeline (& pre-commit) for AVD enforces the following:
 
 Configurations for the above tools can be found in:
 
-- [pyproject.toml](https://github.com/aristanetworks/ansible-avd/blob/devel/pyproject.toml)
-- [.pre-commit-config.yaml](https://github.com/aristanetworks/ansible-avd/blob/devel/.pre-commit-config.yaml)
-- [.flake8](https://github.com/aristanetworks/ansible-avd/blob/devel/.flake8)
-- [pylintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc)
+- [pyproject.toml](https://github.com/aristanetworks/avd/blob/devel/pyproject.toml)
+- [.pre-commit-config.yaml](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml)
+- [.flake8](https://github.com/aristanetworks/avd/blob/devel/.flake8)
+- [pylintrc](https://github.com/aristanetworks/avd/blob/devel/pylintrc)
 
 ## Jinja2 Syntax guidelines
 

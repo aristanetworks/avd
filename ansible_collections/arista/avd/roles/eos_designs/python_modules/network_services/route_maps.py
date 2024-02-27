@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_list
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
 
 from .utils import UtilsMixin
@@ -31,9 +32,9 @@ class RouteMapsMixin(UtilsMixin):
 
         route_maps = []
 
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
-                # BGP Peers are already filtered in _filtered_tenants
+                # BGP Peers are already filtered in filtered_tenants
                 #  so we only have entries with our hostname in them.
                 for bgp_peer in vrf["bgp_peers"]:
                     ipv4_next_hop = bgp_peer.get("set_ipv4_next_hop")
@@ -85,81 +86,25 @@ class RouteMapsMixin(UtilsMixin):
         Route-maps for EVPN services in VRF "default"
 
         Called from main route_maps function
+
+        Also checked under router_bgp_vrfs to figure out if a route-map should be set on EVPN export.
         """
         if not self._vrf_default_evpn:
             return None
 
-        subnets = self._vrf_default_ipv4_subnets
-        static_routes = self._vrf_default_ipv4_static_routes["static_routes"]
-        if not subnets and not static_routes:
+        if not any([self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.is_wan_router]):
             return None
 
-        vrf_default = {
-            "name": "RM-EVPN-EXPORT-VRF-DEFAULT",
-            "sequence_numbers": [],
-        }
+        route_maps = strip_empties_from_list(
+            [
+                self._evpn_export_vrf_default_route_map(),
+                self._bgp_underlay_peers_route_map(),
+                self._redistribute_connected_to_bgp_route_map(),
+                self._redistribute_static_to_bgp_route_map(),
+            ]
+        )
 
-        peers_out = {
-            "name": "RM-BGP-UNDERLAY-PEERS-OUT",
-            "sequence_numbers": [
-                {
-                    "sequence": 20,
-                    "type": "permit",
-                },
-            ],
-        }
-
-        if subnets:
-            vrf_default["sequence_numbers"].append(
-                {
-                    "sequence": 10,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                }
-            )
-
-            peers_out["sequence_numbers"].append(
-                {
-                    "sequence": 10,
-                    "type": "deny",
-                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                }
-            )
-
-        if static_routes:
-            vrf_default["sequence_numbers"].append(
-                {
-                    "sequence": 20,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-                }
-            )
-
-            peers_out["sequence_numbers"].append(
-                {
-                    "sequence": 15,
-                    "type": "deny",
-                    "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-                }
-            )
-
-        if not self.shared_utils.underlay_filter_redistribute_connected:
-            return [vrf_default, peers_out]
-
-        bgp = {
-            "name": "RM-CONN-2-BGP",
-            "sequence_numbers": [
-                # Add subnets to redistribution in default VRF
-                # sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here
-                {
-                    "sequence": 30,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                },
-            ],
-        }
-
-        return [vrf_default, peers_out, bgp]
+        return route_maps or None
 
     def _bgp_mlag_peer_group_route_map(self) -> dict:
         """
@@ -197,5 +142,136 @@ class RouteMapsMixin(UtilsMixin):
                     "sequence": 20,
                     "type": "permit",
                 },
+            ],
+        }
+
+    def _evpn_export_vrf_default_route_map(self) -> dict | None:
+        """
+        Match the following prefixes to be exported in EVPN for VRF default:
+        * SVI subnets in VRF default
+        * Static routes subnets in VRF default
+
+        * for WAN routers, all the routes matching the SOO (which includes the two above)
+        """
+        sequence_numbers = []
+        if self.shared_utils.is_wan_router:
+            sequence_numbers.append(
+                {
+                    "sequence": 10,
+                    "type": "permit",
+                    "match": ["extcommunity ECL-EVPN-SOO"],
+                }
+            )
+        else:
+            # TODO refactor existing behavior to SoO?
+            if self._vrf_default_ipv4_subnets:
+                sequence_numbers.append(
+                    {
+                        "sequence": 10,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+                    }
+                )
+
+            if self._vrf_default_ipv4_static_routes["static_routes"]:
+                sequence_numbers.append(
+                    {
+                        "sequence": 20,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
+                    }
+                )
+
+        if not sequence_numbers:
+            return None
+
+        return {"name": "RM-EVPN-EXPORT-VRF-DEFAULT", "sequence_numbers": sequence_numbers}
+
+    def _bgp_underlay_peers_route_map(self) -> dict | None:
+        """
+        For non WAN routers filter EVPN routes away from underlay.
+
+        For WAN routers the underlay towards LAN side also permits the tenant routes for VRF default,
+        so routes should not be filtered.
+        """
+        sequence_numbers = []
+
+        if self.shared_utils.is_wan_router:
+            return None
+
+        if self._vrf_default_ipv4_subnets:
+            sequence_numbers.append(
+                {
+                    "sequence": 10,
+                    "type": "deny",
+                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+                }
+            )
+
+        if self._vrf_default_ipv4_static_routes["static_routes"]:
+            sequence_numbers.append(
+                {
+                    "sequence": 15,
+                    "type": "deny",
+                    "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
+                }
+            )
+
+        if not sequence_numbers:
+            return None
+
+        sequence_numbers.append(
+            {
+                "sequence": 20,
+                "type": "permit",
+            },
+        )
+
+        return {"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers}
+
+    def _redistribute_connected_to_bgp_route_map(self) -> dict | None:
+        """
+        Append network services relevant entries to the route-map used to redistribute connected subnets in BGP
+
+        sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here
+        """
+        if not self.shared_utils.underlay_filter_redistribute_connected:
+            return None
+
+        sequence_numbers = []
+
+        if self._vrf_default_ipv4_subnets:
+            # Add subnets to redistribution in default VRF
+            sequence_30 = {
+                "sequence": 30,
+                "type": "permit",
+                "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+            }
+            if self.shared_utils.wan_role:
+                sequence_30["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
+
+            sequence_numbers.append(sequence_30)
+
+        if not sequence_numbers:
+            return None
+
+        return {"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers}
+
+    def _redistribute_static_to_bgp_route_map(self) -> dict | None:
+        """
+        Append network services relevant entries to the route-map used to redistribute static routes to BGP
+        """
+        if not (self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]):
+            return None
+
+        return {
+            "name": "RM-STATIC-2-BGP",
+            "sequence_numbers": [
+                {
+                    "sequence": 10,
+                    "type": "permit",
+                    "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
+                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                }
             ],
         }

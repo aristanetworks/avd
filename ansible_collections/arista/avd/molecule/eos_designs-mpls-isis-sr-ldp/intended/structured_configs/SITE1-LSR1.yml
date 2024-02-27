@@ -1,6 +1,4 @@
 hostname: SITE1-LSR1
-metadata:
-  platform: 7280SR
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -158,3 +156,5 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
+metadata:
+  platform: 7280SR

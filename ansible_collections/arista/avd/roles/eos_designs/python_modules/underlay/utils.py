@@ -79,11 +79,23 @@ class UtilsMixin:
                         "ptp": get(uplink, "ptp"),
                         "mac_security": get(uplink, "mac_security"),
                         "short_esi": get(uplink, "peer_short_esi"),
+                        "mlag": get(uplink, "peer_mlag"),
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
                         "structured_config": get(uplink, "structured_config"),
                     }
+                    if (subinterfaces := get(uplink, "subinterfaces")) is not None:
+                        link["subinterfaces"] = [
+                            {
+                                **subinterface,
+                                "interface": subinterface["peer_interface"],
+                                "peer_interface": subinterface["interface"],
+                                "ip_address": subinterface.get("peer_ip_address"),
+                                "peer_ip_address": subinterface.get("ip_address"),
+                            }
+                            for subinterface in subinterfaces
+                        ]
                     underlay_links.append(strip_empties_from_dict(link))
 
         return natural_sort(underlay_links, "interface")
@@ -126,6 +138,11 @@ class UtilsMixin:
         Returns structured_configuration for one L3 interface
         """
         interface_name = get(l3_interface, "name", required=True, org_key=f"<node_type_key>...[node={self.shared_utils.hostname}].l3_interfaces[].name]")
+        if "." in interface_name:
+            iface_type = "l3dot1q"
+            encapsulation = int(get(l3_interface, "encapsulation_dot1q_vlan", default=interface_name.split(".")[-1]))
+        else:
+            iface_type = "routed"
 
         # TODO move this to description module?
         interface_description = (
@@ -137,9 +154,9 @@ class UtilsMixin:
         # TODO catch if ip_address is not valid or not dhcp
         ip_address = get(
             l3_interface,
-            "ip",
+            "ip_address",
             required=True,
-            org_key=f"{self.shared_utils.node_type_key_data['key']}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}.ip]",
+            org_key=f"{self.shared_utils.node_type_key_data['key']}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}].ip_address",
         )
 
         interface = {
@@ -149,7 +166,7 @@ class UtilsMixin:
             "peer_interface": l3_interface.get("peer_interface"),
             "ip_address": ip_address,
             "shutdown": not l3_interface.get("enabled", True),
-            "type": "routed",
+            "type": iface_type,
             "description": interface_description,
             "speed": l3_interface.get("speed"),
             "service_profile": l3_interface.get("qos_profile"),
@@ -157,10 +174,13 @@ class UtilsMixin:
             "struct_cfg": l3_interface.get("structured_config"),
         }
 
-        if ip_address == "dhcp" and l3_interface.get("set_default_route", False):
+        if iface_type == "l3dot1q":
+            interface["encapsulation_dot1q_vlan"] = encapsulation
+
+        if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", False):
             interface["dhcp_client_accept_default_route"] = True
 
-        if self.shared_utils.cv_pathfinder_role:
-            interface["flow_tracker"] = {"hardware": "WAN-FLOW-TRACKER"}
+        if self.shared_utils.is_cv_pathfinder_router:
+            interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
         return strip_empties_from_dict(interface)

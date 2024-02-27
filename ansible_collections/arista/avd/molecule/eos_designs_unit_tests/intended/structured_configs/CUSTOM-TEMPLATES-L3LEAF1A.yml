@@ -1,6 +1,4 @@
 hostname: CUSTOM-TEMPLATES-L3LEAF1A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65101'
@@ -267,3 +265,5 @@ vxlan_interface:
       vrfs:
       - name: TEST_VRF
         vni: 1
+metadata:
+  platform: vEOS-LAB

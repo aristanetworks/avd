@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
+  ~ Copyright (c) 2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -16,15 +16,15 @@
     # - Custom templates can be added below the playbook directory.
     # - If a location above the directory is desired, a symbolic link can be used.
     # - Example under the `playbooks` directory create symbolic link with the following command:
-
+    #
     #   ```bash
     #   ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
     #   ```
-
+    #
     # - The output will be rendered at the end of the configuration.
     # - The order of custom templates in the list can be important if they overlap.
     # - It is recommended to use a `!` delimiter at the top of each custom template.
-
+    #
     # Add `custom_templates` to group/host variables:
     custom_templates:
 
