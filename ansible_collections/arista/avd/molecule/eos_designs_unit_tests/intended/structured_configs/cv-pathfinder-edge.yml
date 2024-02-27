@@ -385,20 +385,16 @@ router_adaptive_virtual_topology:
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: LB-CONTROL-PLANE-PROFILE
-  - name: DEFAULT-AVT-POLICY-WITH-CP-VIDEO
-    load_balance_policy: LB-DEFAULT-AVT-POLICY-WITH-CP-VIDEO
-  - name: DEFAULT-AVT-POLICY-WITH-CP-DEFAULT
-    load_balance_policy: LB-DEFAULT-AVT-POLICY-WITH-CP-DEFAULT
+  - name: DEFAULT-AVT-POLICY-VIDEO
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
+  - name: DEFAULT-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY-VOICE
     load_balance_policy: LB-PROD-AVT-POLICY-VOICE
   - name: PROD-AVT-POLICY-VIDEO
     load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
   - name: PROD-AVT-POLICY-DEFAULT
     load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
-  - name: DEFAULT-AVT-POLICY-VIDEO
-    load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
-  - name: DEFAULT-AVT-POLICY-DEFAULT
-    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
   vrfs:

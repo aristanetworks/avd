@@ -302,26 +302,26 @@ class UtilsMixin:
         wan_load_balance_policies = []
 
         for policy in self._filtered_wan_policies:
-            policy_name = policy["name"]
             if get(policy, "is_default", default=False):
                 # for the default policy, need to render the control_plane_virtual_topology
                 wan_load_balance_policies.append(
                     self._generate_wan_load_balance_policy(
                         self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile),
                         control_plane_virtual_topology,
-                        policy["original_name"],
+                        policy["name"],
                     )
                 )
-                policy_name = policy["original_name"]
+
             for application_virtual_topology in get(policy, "application_virtual_topologies", []):
                 # TODO add internet exit once supported
                 name = get(
                     application_virtual_topology,
                     "name",
-                    default=self._default_profile_name(policy_name, application_virtual_topology["application_profile"]),
+                    default=self._default_profile_name(policy["profile_prefix"], application_virtual_topology["application_profile"]),
                 )
                 context_path = (
-                    f"wan_virtual_topologies.policies[{policy_name}].application_virtual_topologies[{application_virtual_topology['application_profile']}]"
+                    f"wan_virtual_topologies.policies[{policy['profile_prefix']}]."
+                    f"application_virtual_topologies[{application_virtual_topology['application_profile']}]"
                 )
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
@@ -334,11 +334,14 @@ class UtilsMixin:
                 )
 
             default_virtual_topology = get(
-                policy, "default_virtual_topology", required=True, org_key=f"wan_virtual_topologies.policies[{policy_name}].default_virtual_toplogy"
+                policy,
+                "default_virtual_topology",
+                required=True,
+                org_key=f"wan_virtual_topologies.policies[{policy['profile_prefix']}].default_virtual_toplogy",
             )
             if not get(default_virtual_topology, "drop_unmatched", default=False):
-                name = get(default_virtual_topology, "name", default=self._default_profile_name(policy_name, "DEFAULT"))
-                context_path = f"wan_virtual_topologies.policies[{policy['name']}].default_virtual_topology"
+                name = get(default_virtual_topology, "name", default=self._default_profile_name(policy["profile_prefix"], "DEFAULT"))
+                context_path = f"wan_virtual_topologies.policies[{policy['profile_prefix']}].default_virtual_topology"
 
                 # Verify that path_groups are set or raise
                 get(
@@ -425,13 +428,14 @@ class UtilsMixin:
                     f"The policy {lookup_name} applied to vrf {vrf['name']} under `wan_virtual_topologies.vrfs` is not "
                     "defined under `wan_virtual_topologies.policies`."
                 ),
-            )
+            ).copy()
 
             if vrf["name"] == "default":
-                vrf_policy = vrf_policy.copy()
                 vrf_policy["is_default"] = True
-                vrf_policy["original_name"] = lookup_name
+                vrf_policy["profile_prefix"] = lookup_name
                 vrf_policy["name"] = f"{vrf_policy['name']}-WITH-CP"
+            else:
+                vrf_policy["profile_prefix"] = vrf_policy["name"]
 
             if vrf_policy["name"] not in filtered_policy_names:
                 filtered_policy_names.append(vrf_policy["name"])

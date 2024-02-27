@@ -253,8 +253,6 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-CONTROL-PLANE-PROFILE
   - name: DEFAULT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
-  - name: DEFAULT-POLICY-WITH-CP-DEFAULT
-    load_balance_policy: LB-DEFAULT-POLICY-WITH-CP-DEFAULT
   vrfs:
   - name: PROD
     policy: DEFAULT-POLICY

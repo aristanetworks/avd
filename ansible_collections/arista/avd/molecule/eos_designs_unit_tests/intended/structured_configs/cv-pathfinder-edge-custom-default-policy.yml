@@ -234,10 +234,6 @@ router_adaptive_virtual_topology:
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: LB-CONTROL-PLANE-PROFILE
-  - name: DEFAULT-POLICY-WITH-CP-VIDEO
-    load_balance_policy: LB-DEFAULT-POLICY-WITH-CP-VIDEO
-  - name: DEFAULT-POLICY-WITH-CP-DEFAULT
-    load_balance_policy: LB-DEFAULT-POLICY-WITH-CP-DEFAULT
   - name: DEFAULT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-POLICY-VIDEO
   - name: DEFAULT-POLICY-DEFAULT
