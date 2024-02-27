@@ -3732,7 +3732,36 @@ keys:
               description: VRF name.
             policy:
               type: str
-              description: Name of the AVT policy to apply to this VRF.
+              description: 'Name of the policy to apply to this VRF.
+
+                It is possible to overwrite the default policy for all VRFs using
+                it
+
+                by redefining it in the `wan_virtual_topologies.policies` list using
+                the
+
+                default name `DEFAULT-POLICY`.'
+              default: DEFAULT-POLICY
+            wan_vni:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 255
+              required: true
+              description: 'Required for VRFs carried over AutoVPN or CV Pathfinder
+                WAN.
+
+
+                A VRF can have different VNIs between the Datacenters and the WAN.
+
+                Note that if no VRF default is configured for WAN, AVD will automatically
+                inject the VRF default with
+
+                `wan_vni` set to `1`.
+
+                In addition either `vrf_id` or `vrf_vni` must be set to enforce consistent
+                route-targets across domains.'
       control_plane_virtual_topology:
         type: dict
         description: 'Always injected into the default VRF policy as the first entry.

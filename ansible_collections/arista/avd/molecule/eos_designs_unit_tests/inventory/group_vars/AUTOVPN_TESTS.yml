@@ -108,6 +108,7 @@ tenants:
             ip_address_virtual: 10.0.100.1/24
       - name: IT
         vrf_id: 100
+        address_families: []
     l2vlans:
       - id: 101
         name: VLAN101
@@ -115,11 +116,13 @@ tenants:
 wan_virtual_topologies:
   vrfs:
     - name: default
-      policy: DEFAULT-AVT-POLICY
+      policy: DEFAULT-AUTOVPN-POLICY
+      wan_vni: 1
     - name: PROD
-      policy: PROD-AVT-POLICY
+      policy: PROD-AUTOVPN-POLICY
+      wan_vni: 42
   policies:
-    - name: PROD-AVT-POLICY
+    - name: PROD-AUTOVPN-POLICY
       default_virtual_topology:
         path_groups:
           - names: [INET]
@@ -133,7 +136,7 @@ wan_virtual_topologies:
           path_groups:
             - names: [INET]
               preference: preferred
-    - name: DEFAULT-AVT-POLICY
+    - name: DEFAULT-AUTOVPN-POLICY
       default_virtual_topology:
         drop_unmatched: true
       application_virtual_topologies:

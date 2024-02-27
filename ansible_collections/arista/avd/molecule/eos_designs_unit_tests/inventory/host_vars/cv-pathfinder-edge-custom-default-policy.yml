@@ -12,17 +12,9 @@ cv_pathfinder_regions:
     id: 42
     description: AVD Region
     sites:
-      - name: Site422
-        id: 422
-        location: Somewhere
-  - name: AVD_Land_East
-    id: 43
-    description: AVD Region
-    sites:
-      - name: Site511
-        id: 511
-      - name: Site512
-        id: 512
+      - name: Site1
+        id: 1
+        location: one place
 
 bgp_peer_groups:
   wan_overlay_peers:
@@ -52,10 +44,11 @@ wan_router:
     vtep_loopback_ipv4_pool: 192.168.255.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA]
+      deny_vrfs: [IT]
   nodes:
-    - name: cv-pathfinder-edge-no-default-policy
-      cv_pathfinder_region: AVD_Land_East
-      cv_pathfinder_site: Site511
+    - name: cv-pathfinder-edge-custom-default-policy
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site1
       id: 1
       l3_interfaces:
         - name: Ethernet1
@@ -121,7 +114,33 @@ tenants:
 
 wan_virtual_topologies:
   vrfs:
+    # No policy for default or PROD, going to use DEFAULT-POLICY
+    # overwrite DEFAULT-POLICY below
+    - name: default
+      wan_vni: 1
     - name: PROD
       wan_vni: 42
-    - name: IT
-      wan_vni: 100
+  policies:
+    # Name of the DEFAULT-POLICY being overwritten
+    - name: DEFAULT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET]
+          - names: [LTE]
+            preference: 42
+      application_virtual_topologies:
+        - application_profile: VIDEO
+          path_groups:
+            - names: [MPLS, INET]
+              preference: preferred
+          id: 3
+
+application_classification:
+  application_profiles:
+    - name: VIDEO
+      # Testing categories filtering
+      applications:
+        # Testing applications in application-profiles filtering
+        - name: CUSTOM-APPLICATION-1
+        # Builtin application that should not raise
+        - name: skype

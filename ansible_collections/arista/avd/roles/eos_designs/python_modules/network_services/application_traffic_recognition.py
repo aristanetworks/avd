@@ -142,7 +142,6 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         input_application_classification = get(self._hostvars, "application_classification", {})
         # Application profiles first
         application_profiles = []
-        # TODO inject "application_profile": "CONTROL-PLANE-APPLICATION-PROFILE",
 
         def _append_object_to_list_of_dicts(path: str, obj_name: str, list_of_dicts: list, message: str | None = None, required=True) -> None:
             """
