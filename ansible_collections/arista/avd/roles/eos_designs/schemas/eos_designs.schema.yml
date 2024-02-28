@@ -3689,22 +3689,35 @@ keys:
                       type: str
                       description: The public IP address of the Route Reflector for
                         this path-group.
-        disable_stun_ssl:
-          type: bool
-          default: false
-          description: 'Set this to true in case of AutoVPN or cv-pathfinder without
-            CloudVision.
+  wan_stun_dtls_disable:
+    type: bool
+    documentation_options:
+      table: wan-settings
+    default: false
+    description: 'PREVIEW: This key is currently not supported
 
-            In case of AutoVPN if this is set to `false`, user needs to deploy the
-            ssl certificates manually into devices.'
-        stun_ssl_profile:
-          type: str
-          description: 'stun_ssl_profile will be used as the name for the certificate
-            and keys used for communication with stun server.
 
-            When using CV Pathfinder integration with CVaaS, the certificates and
-            keys will be created by CVP and pushed to respective devices.'
-          default: SSL-STUN
+      WAN STUN connections will be authenticated and secured with DTLS by default.
+
+      For CV-Pathfinder deployments CloudVision will automatically deploy certificates
+      on the devices.
+
+      In case of AutoVPN the certificates must be deployed manually to all devices.
+
+
+      For LAB environments this can be disabled, if there are no certificates available.
+
+      This should NOT be disabled for a WAN network connected to the internet, since
+      it will leave the STUN service exposed with no authentication.'
+  wan_stun_dtls_profile_name:
+    type: str
+    documentation_options:
+      table: wan-settings
+    default: STUN-DTLS
+    description: 'PREVIEW: This key is currently not supported
+
+
+      Name of SSL profile used for DTLS on WAN STUN connections.'
   wan_transit:
     documentation_options:
       table: wan-settings
@@ -7793,14 +7806,6 @@ $defs:
 
               This setting is useful on virtual Route Reflectors and Pathfinders where
               more CPU cores should be allocated for control plane.'
-          ssl_profile:
-            type: str
-            description: 'ssl_profile_name will be used as a name for cert,
-
-              keys which will be internally created by CVP and pushed to respective
-              devices.
-
-              Used for communication with stun server.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

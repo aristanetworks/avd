@@ -28,8 +28,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "wan_route_servers.[].path_groups.[].interfaces") | List, items: Dictionary | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].path_groups.[].interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].path_groups.[].interfaces.[].ip_address") | String |  |  |  | The public IP address of the Route Reflector for this path-group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disable_stun_ssl</samp>](## "wan_route_servers.[].disable_stun_ssl") | Boolean |  | `False` |  | Set this to true in case of AutoVPN or cv-pathfinder without CloudVision.<br>In case of AutoVPN if this is set to `false`, user needs to deploy the ssl certificates manually into devices. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;stun_ssl_profile</samp>](## "wan_route_servers.[].stun_ssl_profile") | String |  | `SSL-STUN` |  | stun_ssl_profile will be used as the name for the certificate and keys used for communication with stun server.<br>When using CV Pathfinder integration with CVaaS, the certificates and keys will be created by CVP and pushed to respective devices. |
+    | [<samp>wan_stun_dtls_disable</samp>](## "wan_stun_dtls_disable") | Boolean |  | `False` |  | PREVIEW: This key is currently not supported<br><br>WAN STUN connections will be authenticated and secured with DTLS by default.<br>For CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.<br>In case of AutoVPN the certificates must be deployed manually to all devices.<br><br>For LAB environments this can be disabled, if there are no certificates available.<br>This should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication. |
+    | [<samp>wan_stun_dtls_profile_name</samp>](## "wan_stun_dtls_profile_name") | String |  | `STUN-DTLS` |  | PREVIEW: This key is currently not supported<br><br>Name of SSL profile used for DTLS on WAN STUN connections. |
     | [<samp>wan_transit</samp>](## "wan_transit") <span style="color:red">removed</span> | Dictionary |  |  |  | The `wan_transit` node type was introduced and removed while the AVD WAN feature was in PREVIEW MODE.<br>Migrate your existing transit nodes to using `wan_router` node_type and set<br>`cv_pathfinder_transit_mode: region` under node settings.<span style="color:red">This key was removed. Support was removed in AVD version 4.6.0-dev1. Use <samp>node_type `wan_router` and set `cv_pathfinder_transit_mode: region` under node settings</samp> instead.</span> |
 
 === "YAML"
@@ -105,11 +105,18 @@
                 # The public IP address of the Route Reflector for this path-group.
                 ip_address: <str>
 
-        # Set this to true in case of AutoVPN or cv-pathfinder without CloudVision.
-        # In case of AutoVPN if this is set to `false`, user needs to deploy the ssl certificates manually into devices.
-        disable_stun_ssl: <bool; default=False>
+    # PREVIEW: This key is currently not supported
+    #
+    # WAN STUN connections will be authenticated and secured with DTLS by default.
+    # For CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.
+    # In case of AutoVPN the certificates must be deployed manually to all devices.
+    #
+    # For LAB environments this can be disabled, if there are no certificates available.
+    # This should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication.
+    wan_stun_dtls_disable: <bool; default=False>
 
-        # stun_ssl_profile will be used as the name for the certificate and keys used for communication with stun server.
-        # When using CV Pathfinder integration with CVaaS, the certificates and keys will be created by CVP and pushed to respective devices.
-        stun_ssl_profile: <str; default="SSL-STUN">
+    # PREVIEW: This key is currently not supported
+    #
+    # Name of SSL profile used for DTLS on WAN STUN connections.
+    wan_stun_dtls_profile_name: <str; default="STUN-DTLS">
     ```

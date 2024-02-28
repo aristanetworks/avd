@@ -16,30 +16,23 @@ class ManagementSecurityMixin(UtilsMixin):
 
     @cached_property
     def management_security(self) -> dict | None:
-        if not self.shared_utils.stun_ssl_profiles():
+        """
+        Return structured config for management_security.
+
+        Currently only relevant on WAN routers where STUN DTLS has not been disabled.
+        """
+        if (profile_name := self.shared_utils.wan_stun_dtls_profile_name) is None:
             return None
 
-        management_security = {}
-        ssl_profiles = []
-        ssl_profiles.extend(self._get_stun_ssl_profiles())
-
-        if ssl_profiles:
-            management_security["ssl_profiles"] = ssl_profiles
-
-        return management_security
-
-    def _get_stun_ssl_profiles(self) -> list:
-        ssl_profiles = self.shared_utils.stun_ssl_profiles()
-        stun_ssl_profiles = []
-        for ssl_profile in ssl_profiles:
-            stun_ssl_profiles.append(
+        return {
+            "ssl_profiles": [
                 {
-                    "name": ssl_profile,
+                    "name": profile_name,
                     "certificate": {
-                        "file": ssl_profile + ".crt",
-                        "key": ssl_profile + ".key",
+                        "file": f"{profile_name}.crt",
+                        "key": f"{profile_name}.key",
                     },
                     "trust_certificate": {"certificates": ["aristaDeviceCertProvisionerDefaultRootCA.crt"]},
                 }
-            )
-        return stun_ssl_profiles
+            ]
+        }

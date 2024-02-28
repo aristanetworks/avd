@@ -225,10 +225,10 @@ ip_security:
     profile: DP-PROFILE
 management_security:
   ssl_profiles:
-  - name: SSL-STUN
+  - name: STUN-DTLS
     certificate:
-      file: SSL-STUN.crt
-      key: SSL-STUN.key
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
     trust_certificate:
       certificates:
       - aristaDeviceCertProvisionerDefaultRootCA.crt
@@ -350,13 +350,13 @@ stun:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
       ip_address: 10.7.7.7
-      ssl_profile: SSL-STUN
+      ssl_profile: STUN-DTLS
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
-      ssl_profile: SSL-STUN
+      ssl_profile: STUN-DTLS
     - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
       ip_address: 172.16.0.1
-      ssl_profile: SSL-STUN
+      ssl_profile: STUN-DTLS
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO

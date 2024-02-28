@@ -52,15 +52,3 @@ keys:
                     ip_address:
                       type: str
                       description: The public IP address of the Route Reflector for this path-group.
-        disable_stun_ssl:
-          type: bool
-          default: false
-          description: |-
-            Set this to true in case of AutoVPN or cv-pathfinder without CloudVision.
-            In case of AutoVPN if this is set to `false`, user needs to deploy the ssl certificates manually into devices.
-        stun_ssl_profile:
-          type: str
-          description: |-
-            stun_ssl_profile will be used as the name for the certificate and keys used for communication with stun server.
-            When using CV Pathfinder integration with CVaaS, the certificates and keys will be created by CVP and pushed to respective devices.
-          default: SSL-STUN

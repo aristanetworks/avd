@@ -498,33 +498,9 @@ class WanMixin:
         """
         return f"LB-{name}"
 
-    def stun_ssl_profiles(self: SharedUtils) -> list:
-        """
-        Returns the ssl profile names for server or client.
-        A stun server can have only one ssl profile now but a client can have
-        multiple depending on the server it connects to.
-        """
+    @cached_property
+    def wan_stun_dtls_profile_name(self: SharedUtils) -> str | None:
+        if not self.is_wan_router or get(self.hostvars, "wan_stun_dtls_disable") is True:
+            return None
 
-        if not get(self.hostvars, "wan_route_servers", default=[]) or not self.is_wan_router:
-            return []
-
-        default_ssl_profile = "SSL-STUN"
-        ssl_profiles = []
-        # Only one stun ssl profile is associated to a server.
-        if self.is_wan_server:
-            wan_route_servers_list = get(self.hostvars, "wan_route_servers", default=[])
-            for wan_rs in wan_route_servers_list:
-                if wan_rs.get("hostname") == self.hostname:
-                    if get(wan_rs, "disable_stun_ssl", default=False):
-                        return None
-                    ssl_profiles = [get(wan_rs, "stun_ssl_profile", default=default_ssl_profile)]
-        # return the ssl profiles associated to pathfinders to which this device should connect to.
-        elif self.is_wan_client:
-            if wan_route_servers := self.filtered_wan_route_servers:
-                for wan_rs in list(wan_route_servers.values()):
-                    if get(wan_rs, "disable_stun_ssl", default=False):
-                        continue
-                    ssl_profile = get(wan_rs, "stun_ssl_profile", default=default_ssl_profile)
-                    if ssl_profile and ssl_profile not in ssl_profiles:
-                        ssl_profiles.append(ssl_profile)
-        return ssl_profiles
+        return get(self.hostvars, "wan_stun_dtls_profile_name", default="STUN-DTLS")

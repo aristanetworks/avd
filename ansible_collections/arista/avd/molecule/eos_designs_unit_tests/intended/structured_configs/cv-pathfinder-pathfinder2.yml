@@ -219,10 +219,10 @@ ip_security:
     mode: transport
 management_security:
   ssl_profiles:
-  - name: profileC
+  - name: profileB
     certificate:
-      file: profileC.crt
-      key: profileC.key
+      file: profileB.crt
+      key: profileB.key
     trust_certificate:
       certificates:
       - aristaDeviceCertProvisionerDefaultRootCA.crt
@@ -424,7 +424,7 @@ stun:
     local_interfaces:
     - Ethernet1
     - Ethernet2
-    ssl_profile: profileC
+    ssl_profile: profileB
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO

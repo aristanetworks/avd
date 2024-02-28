@@ -1285,12 +1285,6 @@ $defs:
             description: |-
               Set the maximum number of CPU used for the data plane.
               This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
-          ssl_profile:
-            type: str
-            description: |-
-              ssl_profile_name will be used as a name for cert,
-              keys which will be internally created by CVP and pushed to respective devices.
-              Used for communication with stun server.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

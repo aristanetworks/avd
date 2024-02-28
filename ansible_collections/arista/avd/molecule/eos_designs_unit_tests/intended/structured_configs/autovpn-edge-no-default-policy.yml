@@ -183,10 +183,10 @@ ip_security:
     profile: AUTOVPN
 management_security:
   ssl_profiles:
-  - name: SSL-STUN
+  - name: STUN-DTLS
     certificate:
-      file: SSL-STUN.crt
-      key: SSL-STUN.key
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
     trust_certificate:
       certificates:
       - aristaDeviceCertProvisionerDefaultRootCA.crt
@@ -244,7 +244,7 @@ stun:
     server_profiles:
     - name: INET-autovpn-rr3-Ethernet1
       ip_address: 10.7.7.7
-      ssl_profile: SSL-STUN
+      ssl_profile: STUN-DTLS
 application_traffic_recognition:
   application_profiles:
   - name: APP-PROFILE-CONTROL-PLANE
