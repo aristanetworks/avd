@@ -24931,6 +24931,12 @@
               "description": "Set DSCP for matched traffic.",
               "title": "DSCP"
             },
+            "lowest_hop_count": {
+              "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+              "type": "boolean",
+              "default": false,
+              "title": "Lowest Hop Count"
+            },
             "constraints": {
               "type": "object",
               "properties": {
@@ -25048,6 +25054,12 @@
                       "description": "Set DSCP for matched traffic.",
                       "title": "DSCP"
                     },
+                    "lowest_hop_count": {
+                      "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+                      "type": "boolean",
+                      "default": false,
+                      "title": "Lowest Hop Count"
+                    },
                     "constraints": {
                       "type": "object",
                       "properties": {
@@ -25149,6 +25161,12 @@
                     "maximum": 63,
                     "description": "Set DSCP for matched traffic.",
                     "title": "DSCP"
+                  },
+                  "lowest_hop_count": {
+                    "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Lowest Hop Count"
                   },
                   "constraints": {
                     "type": "object",

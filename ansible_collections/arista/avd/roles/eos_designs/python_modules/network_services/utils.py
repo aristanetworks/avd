@@ -216,7 +216,13 @@ class UtilsMixin:
         context_path (str): Key used for context for error messages.
         """
         wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
-        wan_load_balance_policy = {"name": name, "path_groups": [], **get(input_dict, "constraints", default={})}
+        wan_load_balance_policy = {
+            "name": name,
+            "path_groups": [],
+            **get(input_dict, "constraints", default={}),
+        }
+        if self.shared_utils.wan_mode == "cv-pathfinder":
+            wan_load_balance_policy["lowest_hop_count"] = get(input_dict, "lowest_hop_count")
 
         if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
             # Adding HA path-group with priority 1 - it does not count as an entry with priority 1
