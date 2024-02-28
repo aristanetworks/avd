@@ -30,7 +30,7 @@ class AvdTestHardware(AvdTestBase):
         anta_tests = [
             {"VerifyEnvironmentPower": {"states": get(self.structured_config, "validation_role.pwr_supply_states", ["ok"])}},
             {"VerifyEnvironmentCooling": {"states": get(self.structured_config, "validation_role.fan_states", ["ok"])}},
-            {"VerifyTemperature": {}},
+            {"VerifyTemperature": None},
             {"VerifyTransceiversManufacturers": {"manufacturers": xcvr_manufacturers}},
         ]
 

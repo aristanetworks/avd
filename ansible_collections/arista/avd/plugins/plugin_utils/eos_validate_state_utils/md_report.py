@@ -210,7 +210,7 @@ class SummaryTotalsPerCategory(MDReportBase):
 
     def generate_rows(self) -> Generator[str, None, None]:
         """Generate the rows of the summary totals per category table."""
-        for category, stat in self.results.category_stats.items():
+        for category, stat in self.results.sorted_category_stats.items():
             total_tests = stat["tests_passed"] + stat["tests_failed"] + stat["tests_skipped"] + stat["tests_not_run"]
             yield f"| {category} | {total_tests} | {stat['tests_passed']} | {stat['tests_failed']} | {stat['tests_skipped']} |\n"
 
