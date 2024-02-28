@@ -9169,6 +9169,15 @@ keys:
           it from being interpreted as a float number.'
         convert_types:
         - int
+      as_notation:
+        display_name: ASN Notation
+        type: str
+        description: BGP AS can be deplayed in the asplain <1-4294967295> or asdot
+          notation "<1-65535>.<0-65535>". This flag indicates which mode is preferred
+          - asplain is the default.
+        valid_values:
+        - asdot
+        - asplain
       router_id:
         type: str
         description: In IP address format A.B.C.D
