@@ -12,6 +12,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
+from ..interface_descriptions import InterfaceDescriptionData
+
 
 class UtilsMixin:
     """
@@ -147,12 +149,18 @@ class UtilsMixin:
         else:
             iface_type = "routed"
 
-        # TODO move this to description module?
-        interface_description = (
-            l3_interface.get("description")
-            or "_".join([elem for elem in [l3_interface.get("peer"), l3_interface.get("peer_interface")] if elem is not None])
-            or None
-        )
+        interface_description = l3_interface.get("description")
+        if not interface_description:
+            interface_description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=interface_name,
+                    peer=l3_interface.get("peer"),
+                    peer_interface=l3_interface.get("peer_interface"),
+                    wan_carrier=l3_interface.get("wan_carrier"),
+                    wan_circuit_id=l3_interface.get("wan_circuit_id"),
+                )
+            )
 
         # TODO catch if ip_address is not valid or not dhcp
         ip_address = get(

@@ -116,6 +116,7 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: routed
+  description: Comcast_666
   dhcp_client_accept_default_route: true
 loopback_interfaces:
 - name: Loopback0

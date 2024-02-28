@@ -142,6 +142,7 @@ ethernet_interfaces:
   ip_address: 10.9.9.9/31
   shutdown: false
   type: routed
+  description: SFR_999
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet2
@@ -149,6 +150,7 @@ ethernet_interfaces:
   ip_address: 172.19.9.9/31
   shutdown: false
   type: routed
+  description: ATT-MPLS_10999
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:

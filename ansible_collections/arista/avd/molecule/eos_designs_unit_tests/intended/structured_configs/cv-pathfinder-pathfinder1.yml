@@ -142,6 +142,7 @@ ethernet_interfaces:
   ip_address: 10.8.8.8/31
   shutdown: false
   type: routed
+  description: Orange_888
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:

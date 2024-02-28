@@ -215,9 +215,12 @@ ethernet_interfaces:
   ip_address: 172.17.0.1/31
 - name: Ethernet1
   peer_type: l3_interface
+  peer: peer3
+  peer_interface: Ethernet42
   ip_address: dhcp
   shutdown: false
   type: routed
+  description: ATT_666_peer3_Ethernet42
   dhcp_client_accept_default_route: true
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
@@ -226,6 +229,7 @@ ethernet_interfaces:
   ip_address: 172.15.5.5/31
   shutdown: false
   type: routed
+  description: Colt_10555
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet3
@@ -233,6 +237,7 @@ ethernet_interfaces:
   ip_address: 172.20.20.20/31
   shutdown: false
   type: routed
+  description: Comcast-5G_AF830
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:

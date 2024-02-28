@@ -280,6 +280,7 @@ ethernet_interfaces:
   ip_address: 172.15.6.6/31
   shutdown: false
   type: routed
+  description: Colt_10423
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
