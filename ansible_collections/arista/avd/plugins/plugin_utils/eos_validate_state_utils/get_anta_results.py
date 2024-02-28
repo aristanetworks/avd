@@ -7,7 +7,7 @@ import logging
 from asyncio import run
 from typing import TYPE_CHECKING, Mapping
 
-from yaml import dump
+from yaml import CSafeLoader, YAMLError, dump, load
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge_catalogs
@@ -45,6 +45,7 @@ def get_anta_results(
     skipped_tests: list[dict],
     ansible_tags: dict | None = None,
     save_catalog_name: Path | None = None,
+    custom_anta_catalogs: list[Path] | None = None,
     yaml_dumper: Dumper | None = NoAliasDumper,
     *,
     dry_run: bool = False,
@@ -62,6 +63,7 @@ def get_anta_results(
       ansible_tags (dict): An optional dictionary containing the tags to maintain legacy filtering behavior for
                            `eos_validate_state`. This is ignored if `skipped_tests` is set.
       save_catalog_name (str): When set, the generated catalog is saved to a file using this name.
+      custom_anta_catalogs (list[Path]): An optional list of custom ANTA catalog files to merge with the generated catalog.
       yaml_dumper (Dumper): Dumper to use to dump the ANTA catalog. Default is NoAliasDumper to avoid anchors.
       dry_run (bool): If True, no test is actually run. Useful in conjunction with `save_catalog_name`.
 
@@ -88,8 +90,11 @@ def get_anta_results(
 
     device_name = anta_device.name
 
+    # Load and merge the custom catalogs for the device if any
+    custom_catalog = load_custom_catalogs(custom_anta_catalogs) if custom_anta_catalogs else None
+
     # Create the ANTA Catalog object with the appropriate skipped tests if any
-    tests = generate_tests(device_name, hostvars, skipped_tests)
+    tests = generate_tests(device_name, hostvars, skipped_tests, custom_catalog)
     anta_catalog = AntaCatalog.from_dict(data=tests) if tests else AntaCatalog()
 
     if save_catalog_name is not None:
@@ -121,6 +126,30 @@ def get_anta_results(
             result.get("custom_field", "").lower(),
         ),
     )
+
+
+def load_custom_catalogs(catalog_files: list[Path]) -> dict:
+    """Load the custom ANTA catalogs from the provided files and merge them together.
+
+    Args:
+    ----
+      catalog_files (list[Path]): List of Path objects pointing to the custom ANTA catalog files.
+
+    Returns:
+    -------
+      dict: The merged custom ANTA catalog.
+    """
+    catalog_list = []
+    for file in catalog_files:
+        try:
+            with file.open("r", encoding="UTF-8") as fd:
+                catalog = load(fd, Loader=CSafeLoader)
+                catalog_list.append(catalog)
+        except (OSError, YAMLError) as error:
+            msg = f"Failed to load the custom ANTA catalog from {file}: {error!s}"
+            raise AristaAvdError(msg) from error
+
+    return merge_catalogs(*catalog_list) if catalog_list else {}
 
 
 def dump_to_file(tests: dict, filename: Path, yaml_dumper: Dumper = NoAliasDumper) -> None:
@@ -168,10 +197,11 @@ def get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]
     return result
 
 
-def generate_tests(device_name: str, hostvars: Mapping, skipped_tests: list[dict]) -> RawCatalogInput:
+def generate_tests(device_name: str, hostvars: Mapping, skipped_tests: list[dict], custom_catalog: dict | None = None) -> RawCatalogInput:
     """Create the test catalog in a dictionnary format generated from the AVD test classes.
 
-    Test definitions are generated from the AVD structured_config for each AVD test classes and are merged together to create the final catalog.
+    Test definitions are generated from the AVD structured_config for each AVD test classes and are merged together
+    with an optional custom_catalog to create the final catalog.
 
     Tests can be skipped from the catalog depending on `skipped_tests`.
 
@@ -181,6 +211,7 @@ def generate_tests(device_name: str, hostvars: Mapping, skipped_tests: list[dict
         hostvars (Mapping): A mapping that contains a key for each device with a value of the structured_config.
                             When using Ansible, this is the `task_vars['hostvars']` object.
         skipped_tests (list[dict]): A list of dictionary containing the categories and/or tests to skip.
+        custom_catalog (dict): An optional custom catalog to merge with the generated catalog.
 
     Returns:
     -------
@@ -211,7 +242,8 @@ def generate_tests(device_name: str, hostvars: Mapping, skipped_tests: list[dict
 
         catalog = merge_catalogs(catalog, generated_tests)
 
-    return catalog
+    # Return the merged generated catalog with the custom catalog if any
+    return merge_catalogs(catalog, custom_catalog) if custom_catalog else catalog
 
 
 def create_dry_run_report(device_name: str, catalog: AntaCatalog, manager: ResultManager) -> None:

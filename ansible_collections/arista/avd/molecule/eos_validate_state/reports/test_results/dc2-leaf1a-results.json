@@ -1,6 +1,62 @@
 [
   {
     "name": "dc2-leaf1a",
+    "test": "VerifyTacacsServerGroups",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyAcctConsoleMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA accounting console method lists for different accounting types (system, exec, commands, dot1x)."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyAcctDefaultMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA accounting default method lists for different accounting types (system, exec, commands, dot1x)."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyAuthenMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA authentication method lists for different authentication types (login, enable, dot1x)."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyAuthzMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA authorization method lists for different authorization types (commands, exec)."
+  },
+  {
+    "name": "dc2-leaf1a",
     "test": "VerifyRoutingProtocolModel",
     "categories": [
       "BGP"
@@ -55,11 +111,61 @@
   },
   {
     "name": "dc2-leaf1a",
+    "test": "VerifyRunningConfigDiffs",
+    "categories": [
+      "configuration"
+    ],
+    "description": "Verifies there is no difference between the running-config and the startup-config"
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyZeroTouch",
+    "categories": [
+      "configuration"
+    ],
+    "description": "Verifies ZeroTouch is disabled"
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyFieldNotice72Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyFieldNotice44Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
+  },
+  {
+    "name": "dc2-leaf1a",
     "test": "VerifyTemperature",
     "categories": [
       "hardware"
     ],
     "description": "Verifies if the device temperature is within the acceptable range."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the device temperature is within the acceptable range."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the fans status are within the accepted states list."
   },
   {
     "name": "dc2-leaf1a",
@@ -79,11 +185,51 @@
   },
   {
     "name": "dc2-leaf1a",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the power supplies status are within the accepted states list."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyTransceiversTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies that all transceivers are operating within the acceptable temperature range."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyEnvironmentSystemCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the system cooling status."
+  },
+  {
+    "name": "dc2-leaf1a",
     "test": "VerifyTransceiversManufacturers",
     "categories": [
       "hardware"
     ],
     "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyAdverseDrops",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc2-leaf1a",
@@ -348,6 +494,70 @@
   },
   {
     "name": "dc2-leaf1a",
+    "test": "VerifyLoggingWarning",
+    "categories": [
+      "logging"
+    ],
+    "description": "This test verifies there are no syslog messages with a severity of ERRORS or higher."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyLoggingAccounting",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if AAA accounting logs are generated."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyLoggingPersistent",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logging persistent is enabled and logs are saved in flash."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyLoggingTimestamp",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated with the appropriate timestamp."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyLoggingHostname",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated with the device FQDN."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyLoggingLogsGeneration",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyLoggingHosts",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies logging hosts (syslog servers) for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyLoggingSourceInt",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies logging source-interface for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf1a",
     "test": "VerifyReachability",
     "categories": [
       "Loopback0 Reachability"
@@ -465,11 +675,69 @@
   },
   {
     "name": "dc2-leaf1a",
+    "test": "VerifyMlagDualPrimary",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies the dual-primary detection and its parameters of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf1a",
     "test": "VerifyMlagStatus",
     "categories": [
       "mlag"
     ],
     "description": "This test verifies the health status of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyMlagStatus",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies the health status of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyMlagReloadDelay",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies the reload-delay parameters of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyMlagInterfaces",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies there are no inactive or active-partial MLAG ports."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyMlagConfigSanity",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies there are no MLAG config-sanity inconsistencies."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyIGMPSnoopingVlans",
+    "categories": [
+      "multicast",
+      "igmp"
+    ],
+    "description": "Verifies the IGMP snooping configuration for some VLANs."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyIGMPSnoopingGlobal",
+    "categories": [
+      "multicast",
+      "igmp"
+    ],
+    "description": "Verifies the IGMP snooping global configuration."
   },
   {
     "name": "dc2-leaf1a",
@@ -649,5 +917,149 @@
       "security"
     ],
     "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifySnmpIPv4Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv4 ACL(s) configured."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifySnmpIPv6Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv6 ACL(s) configured."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifySnmpStatus",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent is enabled."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyEOSVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed EOS version."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyTerminAttrVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed TerminAttr version."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifySTPForwardingPorts",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies that all interfaces are forwarding for a provided list of VLAN(s)."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifySTPMode",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies the configured STP mode for a provided list of VLAN(s)."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifySTPRootPriority",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies the STP root priority for a provided list of VLAN or MST instance ID(s)."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifySTPCounters",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies there is no errors in STP BPDU packets."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifySTPBlockedPorts",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies there is no STP blocked ports."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if there are core dump files in the /var/core directory."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no agent crash reports are present on the device."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyCPUUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the CPU utilization is below 75%."
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyMemoryUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the memory utilization is below 75%."
   }
 ]
