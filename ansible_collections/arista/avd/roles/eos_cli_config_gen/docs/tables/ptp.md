@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ptp</samp>](## "ptp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;mode</samp>](## "ptp.mode") | String |  |  | Valid Values:<br>- <code>boundary</code><br>- <code>transparent</code> |  |
+    | [<samp>&nbsp;&nbsp;mode_one_step</samp>](## "ptp.mode_one_step") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;forward_unicast</samp>](## "ptp.forward_unicast") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;clock_identity</samp>](## "ptp.clock_identity") | String |  |  |  | The clock-id in xx:xx:xx:xx:xx:xx format |
     | [<samp>&nbsp;&nbsp;source</samp>](## "ptp.source") | Dictionary |  |  |  |  |
@@ -47,6 +48,7 @@
     ```yaml
     ptp:
       mode: <str; "boundary" | "transparent">
+      mode_one_step: <bool>
       forward_unicast: <bool>
 
       # The clock-id in xx:xx:xx:xx:xx:xx format

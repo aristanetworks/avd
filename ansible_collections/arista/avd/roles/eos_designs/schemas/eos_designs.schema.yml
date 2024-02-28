@@ -8360,6 +8360,13 @@ $defs:
       dscp:
         type: int
         $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp
+      lowest_hop_count:
+        description: 'Prefer paths with lowest hop-count.
+
+          Only applicable for `wan_mode: "cv-pathfinder"`.'
+        type: bool
+        default: false
+        $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/lowest_hop_count
       constraints:
         type: dict
         keys:
