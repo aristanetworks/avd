@@ -243,6 +243,7 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: l3dot1q
+  description: Comcast
   encapsulation_dot1q_vlan: 42
   dhcp_client_accept_default_route: true
   flow_tracker:
@@ -252,6 +253,7 @@ ethernet_interfaces:
   ip_address: 172.16.6.6/31
   shutdown: false
   type: l3dot1q
+  description: Colt_10666
   encapsulation_dot1q_vlan: 666
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
@@ -595,6 +597,7 @@ router_path_selection:
     - name: INET
       priority: 2
     jitter: 42
+    lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
     - name: LAN_HA

@@ -111,6 +111,7 @@ ethernet_interfaces:
   ip_address: 10.7.7.7/31
   shutdown: false
   type: routed
+  description: Bouygues_Telecom_777
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet2
@@ -118,6 +119,7 @@ ethernet_interfaces:
   ip_address: 172.16.0.1/31
   shutdown: false
   type: routed
+  description: Colt_10000
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet3
@@ -125,6 +127,7 @@ ethernet_interfaces:
   ip_address: 10.9.9.9/31
   shutdown: false
   type: routed
+  description: Another-ISP_999
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
@@ -340,6 +343,7 @@ router_path_selection:
     - name: INET
       priority: 2
     jitter: 42
+    lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
     - name: LAN_HA
