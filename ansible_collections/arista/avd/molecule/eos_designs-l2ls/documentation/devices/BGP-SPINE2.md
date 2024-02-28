@@ -397,6 +397,8 @@ ip route 10.0.0.0/8 10.1.100.100
 
 ### Router BGP
 
+ASN Notation: asplain
+
 #### Router BGP Summary
 
 | BGP AS | Router ID |
