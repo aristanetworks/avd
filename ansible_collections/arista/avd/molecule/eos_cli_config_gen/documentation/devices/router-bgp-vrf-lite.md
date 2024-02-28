@@ -62,7 +62,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 
 ### Router BGP
 
-ASN Notation Mode: asplain
+ASN Notation: asplain
 
 #### Router BGP Summary
 

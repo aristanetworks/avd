@@ -124,7 +124,7 @@ ip security
 
 ### Router BGP
 
-ASN Notation Mode: asplain
+ASN Notation: asplain
 
 #### Router BGP Summary
 
