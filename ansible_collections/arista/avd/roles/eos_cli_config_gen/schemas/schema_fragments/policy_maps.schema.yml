@@ -107,7 +107,7 @@ keys:
                               - str
                             description: |-
                               Specify lower rate.
-                              Lower rate range in kbps - <8-200000000>.
+                              Range in kbps <8-200000000>.
                           rate_unit:
                             type: str
                             valid_values:
@@ -120,8 +120,7 @@ keys:
                             type: int
                             convert_types:
                               - str
-                            min: 256
-                            max: 128000000
+                            description: Range in bytes <256-128000000>.
                           burst_size_unit:
                             type: str
                             valid_values:
@@ -146,9 +145,9 @@ keys:
                               - str
                             description: |-
                               Specify higher rate.
+                              Range in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>.
                           higher_rate_burst_size:
                             type: int
                             convert_types:
                               - str
-                            min: 256
-                            max: 128000000
+                            description: Range in bytes <256-128000000>.

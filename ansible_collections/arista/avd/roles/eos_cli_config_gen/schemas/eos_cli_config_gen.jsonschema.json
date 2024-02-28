@@ -12360,7 +12360,7 @@
                           "properties": {
                             "lower_rate": {
                               "type": "integer",
-                              "description": "Specify lower rate.\nLower rate range in kbps - <8-200000000>.",
+                              "description": "Specify lower rate.\nRange in kbps <8-200000000>.",
                               "title": "Lower Rate"
                             },
                             "rate_unit": {
@@ -12376,8 +12376,7 @@
                             },
                             "lower_rate_burst_size": {
                               "type": "integer",
-                              "minimum": 256,
-                              "maximum": 128000000,
+                              "description": "Range in bytes <256-128000000>.",
                               "title": "Lower Rate Burst Size"
                             },
                             "burst_size_unit": {
@@ -12406,13 +12405,12 @@
                             },
                             "higher_rate": {
                               "type": "integer",
-                              "description": "Specify higher rate.",
+                              "description": "Specify higher rate.\nRange in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>.",
                               "title": "Higher Rate"
                             },
                             "higher_rate_burst_size": {
                               "type": "integer",
-                              "minimum": 256,
-                              "maximum": 128000000,
+                              "description": "Range in bytes <256-128000000>.",
                               "title": "Higher Rate Burst Size"
                             }
                           },
