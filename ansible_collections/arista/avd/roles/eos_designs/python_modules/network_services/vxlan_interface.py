@@ -9,7 +9,7 @@ from typing import NoReturn
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, unique
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item, unique
 
 from .utils import UtilsMixin
 
@@ -132,10 +132,23 @@ class VxlanInterfaceMixin(UtilsMixin):
             if "evpn" not in vrf.get("address_families", ["evpn"]):
                 return
 
-            vni = default(
-                vrf.get("vrf_vni"),
-                vrf.get("vrf_id"),
-            )
+            if self.shared_utils.is_wan_router:
+                # Every VRF with EVPN on a WAN router must have a wan_vni defined.
+                error_message = (
+                    f"The VRF '{vrf_name}' does not have a `wan_vni` defined under 'wan_virtual_topologies'. "
+                    "If this VRF was not intended to be extended over the WAN, but still required to be configured on the WAN router, "
+                    "set 'address_families: []' under the VRF definition. If this VRF was not intended to be configured on the WAN router, "
+                    "use the VRF filter 'deny_vrfs' under the node settings."
+                )
+                wan_vrf = get_item(self._filtered_wan_vrfs, "name", vrf_name, required=True, custom_error_msg=error_message)
+                vni = get(wan_vrf, "wan_vni", required=True, org_key=error_message)
+            else:
+                vni = default(
+                    vrf.get("vrf_vni"),
+                    vrf.get("vrf_id"),
+                )
+
+            # NOTE: this can never be None here, it would be caught previously in the code
             id = default(
                 vrf.get("vrf_id"),
                 vrf.get("vrf_vni"),
@@ -144,10 +157,6 @@ class VxlanInterfaceMixin(UtilsMixin):
                 # Silently ignore if we cannot set a VNI
                 # This is legacy behavior so we will leave stricter enforcement to the schema
                 vrf_data = {"name": vrf_name, "vni": vni}
-
-                # TODO need to handle this better from a design point of view
-                if self.shared_utils.is_wan_router and vni > 255:
-                    raise AristaAvdError("VNI for WAN with DPS use cases cannot be > 255, got '{vni}' for vrf '{vrf_name}' in tenant '{tenant['name']}'.")
 
                 if get(vrf, "_evpn_l3_multicast_enabled"):
                     underlay_l3_multicast_group_ipv4_pool = get(

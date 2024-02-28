@@ -10,11 +10,13 @@
     | [<samp>wan_virtual_topologies</samp>](## "wan_virtual_topologies") | Dictionary |  |  |  | PREVIEW: WAN Preview<br><br>Configure Virtual Topologies for CV Pathfinder and AutoVPN.<br><br>Auto create a control plane profile/policy/application and enforce it being first in the default VRF. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "wan_virtual_topologies.vrfs") | List, items: Dictionary |  |  |  | Map a VRF that exists in network_services to an AVT policy.<br>TODO: missing default VRF behavior |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_virtual_topologies.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "wan_virtual_topologies.vrfs.[].policy") | String |  |  |  | Name of the AVT policy to apply to this VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "wan_virtual_topologies.vrfs.[].policy") | String |  | `DEFAULT-POLICY` |  | Name of the policy to apply to this VRF.<br>It is possible to overwrite the default policy for all VRFs using it<br>by redefining it in the `wan_virtual_topologies.policies` list using the<br>default name `DEFAULT-POLICY`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_vni</samp>](## "wan_virtual_topologies.vrfs.[].wan_vni") | Integer | Required |  | Min: 1<br>Max: 255 | Required for VRFs carried over AutoVPN or CV Pathfinder WAN.<br><br>A VRF can have different VNIs between the Datacenters and the WAN.<br>Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with<br>`wan_vni` set to `1`.<br>In addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains. |
     | [<samp>&nbsp;&nbsp;control_plane_virtual_topology</samp>](## "wan_virtual_topologies.control_plane_virtual_topology") | Dictionary |  |  |  | Always injected into the default VRF policy as the first entry.<br><br>By default, if no path-groups are specified, all locally available path-groups<br>are used in the generated load-balance policy.<br>ID is hardcoded to 254 for the AVT profile in CV Pathfinder mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.name") | String |  |  |  | Optional name, if not set `CONTROL-PLANE-PROFILE` is used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.lowest_hop_count") | Boolean |  | `False` |  | Prefer paths with lowest hop-count.<br>Only applicable for `wan_mode: "cv-pathfinder"`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
@@ -31,6 +33,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].id") | Integer |  |  | Min: 2<br>Max: 253 | ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.<br>ID 1 is reserved for the default_virtual_toplogy.<br>ID 254 is reserved for the control_plane_virtual_topology. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].lowest_hop_count") | Boolean |  | `False` |  | Prefer paths with lowest hop-count.<br>Only applicable for `wan_mode: "cv-pathfinder"`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
@@ -44,6 +47,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_unmatched</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.drop_unmatched") | Boolean |  | `False` |  | When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.lowest_hop_count") | Boolean |  | `False` |  | Prefer paths with lowest hop-count.<br>Only applicable for `wan_mode: "cv-pathfinder"`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
@@ -70,8 +74,19 @@
           # VRF name.
         - name: <str; required; unique>
 
-          # Name of the AVT policy to apply to this VRF.
-          policy: <str>
+          # Name of the policy to apply to this VRF.
+          # It is possible to overwrite the default policy for all VRFs using it
+          # by redefining it in the `wan_virtual_topologies.policies` list using the
+          # default name `DEFAULT-POLICY`.
+          policy: <str; default="DEFAULT-POLICY">
+
+          # Required for VRFs carried over AutoVPN or CV Pathfinder WAN.
+          #
+          # A VRF can have different VNIs between the Datacenters and the WAN.
+          # Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with
+          # `wan_vni` set to `1`.
+          # In addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains.
+          wan_vni: <int; 1-255; required>
 
       # Always injected into the default VRF policy as the first entry.
       #
@@ -88,6 +103,10 @@
 
         # Set DSCP for matched traffic.
         dscp: <int; 0-63>
+
+        # Prefer paths with lowest hop-count.
+        # Only applicable for `wan_mode: "cv-pathfinder"`.
+        lowest_hop_count: <bool; default=False>
         constraints:
 
           # Jitter requirement for this load balance policy in milliseconds.
@@ -158,6 +177,10 @@
 
               # Set DSCP for matched traffic.
               dscp: <int; 0-63>
+
+              # Prefer paths with lowest hop-count.
+              # Only applicable for `wan_mode: "cv-pathfinder"`.
+              lowest_hop_count: <bool; default=False>
               constraints:
 
                 # Jitter requirement for this load balance policy in milliseconds.
@@ -197,6 +220,10 @@
 
             # Set DSCP for matched traffic.
             dscp: <int; 0-63>
+
+            # Prefer paths with lowest hop-count.
+            # Only applicable for `wan_mode: "cv-pathfinder"`.
+            lowest_hop_count: <bool; default=False>
             constraints:
 
               # Jitter requirement for this load balance policy in milliseconds.

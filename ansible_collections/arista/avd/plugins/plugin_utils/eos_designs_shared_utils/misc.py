@@ -80,6 +80,10 @@ class MiscMixin:
         return get(self.switch_data_combined, "filter.tenants", default=["all"])
 
     @cached_property
+    def always_include_vrfs_in_tenants(self: SharedUtils) -> list:
+        return get(self.switch_data_combined, "filter.always_include_vrfs_in_tenants", default=[])
+
+    @cached_property
     def igmp_snooping_enabled(self: SharedUtils) -> bool:
         default_igmp_snooping_enabled = get(self.hostvars, "default_igmp_snooping_enabled", default=True)
         return get(self.switch_data_combined, "igmp_snooping_enabled", default=default_igmp_snooping_enabled) is True
