@@ -189,7 +189,7 @@ class UtilsMixin:
 
         return strip_empties_from_dict(interface)
 
-    def _get_l3_uplink_with_l2_as_subint(self, link: dict) -> (dict, list[dict]):
+    def _get_l3_uplink_with_l2_as_subint(self, link: dict) -> tuple[dict, list[dict]]:
         """
         Return a tuple with main uplink interface, list of subinterfaces representing each SVI.
         """

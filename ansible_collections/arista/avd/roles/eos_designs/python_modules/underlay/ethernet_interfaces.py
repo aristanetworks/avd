@@ -124,29 +124,31 @@ class EthernetInterfacesMixin(UtilsMixin):
                     main_interface, ethernet_subinterfaces = self._get_l3_uplink_with_l2_as_subint(link)
                     ethernet_interface.update(main_interface)
 
+                elif (channel_group_id := link.get("channel_group_id")) is not None:
+                    # Render port-channel member
+                    ethernet_interface.update(
+                        {
+                            "type": "port-channel-member",
+                            "channel_group": {
+                                "id": int(channel_group_id),
+                                "mode": "active",
+                            },
+                        }
+                    )
+
                 else:
-                    if (channel_group_id := link.get("channel_group_id")) is not None:
-                        ethernet_interface.update(
-                            {
-                                "type": "port-channel-member",
-                                "channel_group": {
-                                    "id": int(channel_group_id),
-                                    "mode": "active",
-                                },
-                            }
-                        )
-                    else:
-                        ethernet_interface.update(
-                            {
-                                "type": "switched",
-                                "vlans": link["vlans"],
-                                "mode": "trunk",
-                                "native_vlan": link.get("native_vlan"),
-                                "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
-                                "link_tracking_groups": link.get("link_tracking_groups"),
-                                "spanning_tree_portfast": link.get("spanning_tree_portfast"),
-                            }
-                        )
+                    # Render trunk interface
+                    ethernet_interface.update(
+                        {
+                            "type": "switched",
+                            "vlans": link["vlans"],
+                            "mode": "trunk",
+                            "native_vlan": link.get("native_vlan"),
+                            "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
+                            "link_tracking_groups": link.get("link_tracking_groups"),
+                            "spanning_tree_portfast": link.get("spanning_tree_portfast"),
+                        }
+                    )
 
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
