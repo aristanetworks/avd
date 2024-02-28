@@ -144,6 +144,7 @@ ptp:
         delay_resp: 3
         follow_up: 3
         sync: 3
+  mode_one_step: true
 vlans:
 - id: 4093
   tenant: system

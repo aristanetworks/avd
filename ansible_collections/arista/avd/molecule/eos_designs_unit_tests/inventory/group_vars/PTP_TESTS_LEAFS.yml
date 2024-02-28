@@ -29,6 +29,8 @@ l3leaf:
             - Ethernet1
             - Ethernet2
           ptp:
+            mode: boundary
+            mode_one_step: true
             clock_identity: "11:11:11:11:11:11"
 
         - name: ptp-tests-leaf2
