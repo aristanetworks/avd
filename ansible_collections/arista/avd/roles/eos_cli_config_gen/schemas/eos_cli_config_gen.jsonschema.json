@@ -4597,6 +4597,118 @@
             },
             "title": "BGP"
           },
+          "ip_igmp_host_proxy": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "groups": {
+                "type": "array",
+                "description": "Group Address.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "group": {
+                      "type": "string",
+                      "title": "Group"
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Exclude"
+                    },
+                    "include": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Include"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "group"
+                  ]
+                },
+                "title": "Groups"
+              },
+              "report_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 31744,
+                "default": 1,
+                "description": "Time interval between unsolicited reports.",
+                "title": "Report Interval"
+              },
+              "access_lists": {
+                "type": "array",
+                "description": "Non-standard Access List name.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Access Lists"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3,
+                "default": 3,
+                "description": "IGMP version on IGMP host-proxy interface.",
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP IGMP Host Proxy"
+          },
           "peer": {
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
@@ -5156,118 +5268,6 @@
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
             "title": "EOS CLI"
-          },
-          "ip_igmp_host_proxy": {
-            "type": "object",
-            "properties": {
-              "enabled": {
-                "type": "boolean",
-                "title": "Enabled"
-              },
-              "groups": {
-                "type": "array",
-                "description": "Group Address.",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "group": {
-                      "type": "string",
-                      "title": "Group"
-                    },
-                    "exclude": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "source": {
-                            "type": "string",
-                            "title": "Source"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
-                        },
-                        "required": [
-                          "source"
-                        ]
-                      },
-                      "title": "Exclude"
-                    },
-                    "include": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "source": {
-                            "type": "string",
-                            "title": "Source"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
-                        },
-                        "required": [
-                          "source"
-                        ]
-                      },
-                      "title": "Include"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "patternProperties": {
-                    "^_.+$": {}
-                  },
-                  "required": [
-                    "group"
-                  ]
-                },
-                "title": "Groups"
-              },
-              "report_interval": {
-                "type": "integer",
-                "minimum": 1,
-                "maximum": 31744,
-                "default": 1,
-                "description": "Time interval between unsolicited reports.",
-                "title": "Report Interval"
-              },
-              "access_lists": {
-                "type": "array",
-                "description": "Non-standard Access List name.",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "title": "Name"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "patternProperties": {
-                    "^_.+$": {}
-                  },
-                  "required": [
-                    "name"
-                  ]
-                },
-                "title": "Access Lists"
-              },
-              "version": {
-                "type": "integer",
-                "minimum": 1,
-                "maximum": 3,
-                "default": 3,
-                "description": "IGMP version on IGMP host-proxy interface.",
-                "title": "Version"
-              }
-            },
-            "additionalProperties": false,
-            "patternProperties": {
-              "^_.+$": {}
-            },
-            "title": "IP IGMP Host Proxy"
           }
         },
         "additionalProperties": false,
@@ -13841,63 +13841,6 @@
             },
             "title": "BGP"
           },
-          "peer": {
-            "type": "string",
-            "description": "Key only used for documentation or validation purposes",
-            "title": "Peer"
-          },
-          "peer_interface": {
-            "type": "string",
-            "description": "Key only used for documentation or validation purposes",
-            "title": "Peer Interface"
-          },
-          "peer_type": {
-            "type": "string",
-            "description": "Key only used for documentation or validation purposes",
-            "title": "Peer Type"
-          },
-          "sflow": {
-            "type": "object",
-            "properties": {
-              "enable": {
-                "type": "boolean",
-                "title": "Enable"
-              },
-              "egress": {
-                "type": "object",
-                "properties": {
-                  "enable": {
-                    "type": "boolean",
-                    "title": "Enable"
-                  },
-                  "unmodified_enable": {
-                    "type": "boolean",
-                    "title": "Unmodified Enable"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "Egress"
-              }
-            },
-            "additionalProperties": false,
-            "patternProperties": {
-              "^_.+$": {}
-            },
-            "title": "Sflow"
-          },
-          "validate_state": {
-            "type": "boolean",
-            "description": "Set to false to disable interface validation by the `eos_validate_state` role",
-            "title": "Validate State"
-          },
-          "eos_cli": {
-            "type": "string",
-            "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
-            "title": "EOS CLI"
-          },
           "ip_igmp_host_proxy": {
             "type": "object",
             "properties": {
@@ -14009,6 +13952,63 @@
               "^_.+$": {}
             },
             "title": "IP IGMP Host Proxy"
+          },
+          "peer": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer"
+          },
+          "peer_interface": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer Interface"
+          },
+          "peer_type": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer Type"
+          },
+          "sflow": {
+            "type": "object",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              },
+              "egress": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "unmodified_enable": {
+                    "type": "boolean",
+                    "title": "Unmodified Enable"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Egress"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Sflow"
+          },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Set to false to disable interface validation by the `eos_validate_state` role",
+            "title": "Validate State"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
+            "title": "EOS CLI"
           }
         },
         "additionalProperties": false,

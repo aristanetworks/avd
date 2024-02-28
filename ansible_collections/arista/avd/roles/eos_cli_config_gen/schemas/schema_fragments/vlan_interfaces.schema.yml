@@ -97,8 +97,6 @@ keys:
             groups:
               type: list
               primary_key: group
-              convert_types:
-                - dict
               description: Group Address.
               items:
                 type: dict
@@ -108,8 +106,6 @@ keys:
                   exclude:
                     type: list
                     primary_key: source
-                    convert_types:
-                      - dict
                     items:
                       type: dict
                       keys:
@@ -118,8 +114,6 @@ keys:
                   include:
                     type: list
                     primary_key: source
-                    convert_types:
-                      - dict
                     items:
                       type: dict
                       keys:
@@ -136,8 +130,6 @@ keys:
             access_lists:
               type: list
               primary_key: name
-              convert_types:
-                - dict
               description: Non-standard Access List name.
               items:
                 type: dict
