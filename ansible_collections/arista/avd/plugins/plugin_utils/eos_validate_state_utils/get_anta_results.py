@@ -7,7 +7,7 @@ import logging
 from asyncio import run
 from typing import TYPE_CHECKING, Mapping
 
-from yaml import CSafeLoader, dump, load
+from yaml import CSafeLoader, YAMLError, dump, load
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge_catalogs
@@ -141,9 +141,13 @@ def load_custom_catalogs(catalog_files: list[Path]) -> dict:
     """
     catalog_list = []
     for file in catalog_files:
-        with file.open("r", encoding="UTF-8") as fd:
-            catalog = load(fd, Loader=CSafeLoader)
-            catalog_list.append(catalog)
+        try:
+            with file.open("r", encoding="UTF-8") as fd:
+                catalog = load(fd, Loader=CSafeLoader)
+                catalog_list.append(catalog)
+        except (OSError, YAMLError) as error:
+            msg = f"Failed to load the custom ANTA catalog from {file}: {error!s}"
+            raise AristaAvdError(msg) from error
 
     return merge_catalogs(*catalog_list) if catalog_list else {}
 
