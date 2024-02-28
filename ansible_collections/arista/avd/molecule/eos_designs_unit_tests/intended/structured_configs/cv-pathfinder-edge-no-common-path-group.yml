@@ -208,6 +208,7 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: routed
+  description: Inmrasat_S511
   dhcp_client_accept_default_route: true
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
