@@ -333,11 +333,7 @@ class WanMixin:
             wan_rs_result_dict = {
                 "vtep_ip": vtep_ip,
                 "wan_path_groups": [path_group for path_group in wan_path_groups if self.should_connect_to_wan_rs([path_group["name"]])],
-                "disable_stun_ssl": get(wan_rs_dict, "disable_stun_ssl", default=False),
             }
-
-            if ssl_profile := get(wan_rs_dict, "stun_ssl_profile"):
-                wan_rs_result_dict["stun_ssl_profile"] = ssl_profile
 
             # If no common path-group then skip
             # TODO - this may need to change when `import` path-groups is available
