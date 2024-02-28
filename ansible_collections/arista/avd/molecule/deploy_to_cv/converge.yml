@@ -6,20 +6,20 @@
   vars:
     # cv_server: staticstudio-1-cfec4cc2-eos.topo.testdrive.arista.com
     cv_server: www.cv-staging.corp.arista.io
-    # token: "{{ lookup('file', playbook_dir ~ '/token-aawg-ci.tok')}}"
-    token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
+    token: "{{ lookup('file', playbook_dir ~ '/token-aawg-ci.tok')}}"
+    # token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
     ws_url: https://{{ cv_server }}/api/v3/services/arista.configlet.v1.ConfigletService/GetOne
     cc_url: https://{{ cv_server }}/api/v3/services/arista.changecontrol.v1.ChangeControlService/GetOne
     tag_url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
-    configuration_dir: "{{ playbook_dir }}/intended/configs"
-    structured_config_dir: "{{ playbook_dir }}/intended/structured_configs"
+    configuration_dir: "{{ playbook_dir }}/intended/configs/test_configs"
+    structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
     strict_configuration_dir: "{{ playbook_dir }}/intended/configs/strict_tags"
     strict_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/strict_tags"
     value_configuration_dir: "{{ playbook_dir }}/intended/configs/change_tags"
     value_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/change_tags"
-    intended_tag_device: devel-s1-leaf1
+    intended_tag_device: ci-s1-leaf1
     intended_tags: "{{ lookup('file', structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
-    # intended_strict_tag_device: devel-s1-leaf1-strict_tags
+    # intended_strict_tag_device: ci-s1-leaf1-strict_tags
     intended_strict_tags: "{{ lookup('file', strict_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
     intended_value_tags: "{{ lookup('file', value_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
 
@@ -49,7 +49,7 @@
         structured_config_dir: "{{ structured_config_dir }}"
         # structured_config_suffix: "yml"
         # device_list: "{{ ansible_play_hosts }}"
-        device_list: ["devel-s1-leaf1", "devel-s1-leaf2", "devel-s1-leaf3", "devel-s1-leaf4", "devel-s1-spine1", "devel-s1-spine2"]
+        device_list: ["ci-s1-leaf1", "ci-s1-leaf2", "ci-s1-leaf3", "ci-s1-leaf4", "ci-s1-spine1", "ci-s1-spine2"]
         strict_tags: true
         # skip_strict_devices: false
         # configlet_name_template: "AVD-${hostname}"
@@ -121,10 +121,10 @@
             workspace_id: '{{ ws_name }}'
             configlet_id: '{{ item }}'
       loop:
-        - "avd-devel-s1-leaf1"
-        - "avd-devel-s1-leaf2"
-        - "avd-devel-s1-leaf3"
-        - "avd-devel-s1-leaf4"
+        - "avd-ci-s1-leaf1"
+        - "avd-ci-s1-leaf2"
+        - "avd-ci-s1-leaf3"
+        - "avd-ci-s1-leaf4"
       register: result
 
     # CC information
@@ -150,10 +150,10 @@
     - name: Set configlets facts
       run_once: true
       vars:
-        configs: ['{{ configuration_dir }}/devel-s1-leaf1.cfg',
-                  '{{ configuration_dir }}/devel-s1-leaf2.cfg',
-                  '{{ configuration_dir }}/devel-s1-leaf3.cfg',
-                  '{{ configuration_dir }}/devel-s1-leaf4.cfg'
+        configs: ['{{ configuration_dir }}/ci-s1-leaf1.cfg',
+                  '{{ configuration_dir }}/ci-s1-leaf2.cfg',
+                  '{{ configuration_dir }}/ci-s1-leaf3.cfg',
+                  '{{ configuration_dir }}/ci-s1-leaf4.cfg'
         ]
       ansible.builtin.set_fact:
         response_configlet: "{{ response_configlet | default({}) | combine({item.0.json[0].value.body | trim: item.1}) }}"
@@ -223,7 +223,7 @@
       arista.avd.deploy_to_cv:
         configuration_dir: "{{ strict_configuration_dir }}"
         structured_config_dir: "{{ strict_structured_config_dir }}"
-        device_list: ["devel-s1-leaf1"]
+        device_list: ["ci-s1-leaf1"]
         strict_tags: true
         cv_servers: [ '{{ cv_server }}' ]
         cv_token: '{{ token }}'
@@ -274,7 +274,7 @@
       arista.avd.deploy_to_cv:
         configuration_dir: "{{ value_configuration_dir }}"
         structured_config_dir: "{{ value_structured_config_dir }}"
-        device_list: ["devel-s1-leaf1"]
+        device_list: ["ci-s1-leaf1"]
         strict_tags: true
         cv_servers: [ '{{ cv_server }}' ]
         cv_token: '{{ token }}'

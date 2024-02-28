@@ -36,7 +36,7 @@
         structured_config_dir: "{{ structured_config_dir }}"
         # structured_config_suffix: "yml"
         # device_list: "{{ ansible_play_hosts }}"
-        device_list: ["devel-s1-leaf1", "devel-s1-leaf2", "devel-s1-leaf3", "devel-s1-leaf4", "devel-s1-spine1", "devel-s1-spine2"]
+        device_list: ["ci-s1-leaf1", "ci-s1-leaf2", "ci-s1-leaf3", "ci-s1-leaf4", "ci-s1-spine1", "ci-s1-spine2"]
         strict_tags: true
         # skip_strict_devices: false
         # configlet_name_template: "AVD-${hostname}"
