@@ -200,8 +200,8 @@ ip_security:
 router_adaptive_virtual_topology:
   topology_role: pathfinder
   profiles:
-  - name: CONTROL-PLANE-PROFILE
-    load_balance_policy: LB-CONTROL-PLANE-PROFILE
+  - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
   - name: DEFAULT-AVT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: DEFAULT-AVT-POLICY-DEFAULT
@@ -222,7 +222,7 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
-    - name: CONTROL-PLANE-PROFILE
+    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
       id: 254
     - name: DEFAULT-AVT-POLICY-VIDEO
       id: 3
@@ -259,8 +259,8 @@ router_adaptive_virtual_topology:
   policies:
   - name: DEFAULT-AVT-POLICY-WITH-CP
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-AVT-POLICY-CONTROL-PLANE
     - application_profile: VIDEO
       avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
@@ -319,7 +319,7 @@ router_path_selection:
     flow_assignment: lan
   peer_dynamic_source: stun
   load_balance_policies:
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
     - name: LAN_HA
     - name: INET
@@ -394,9 +394,9 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   categories:
   - name: VIDEO1
     applications:
@@ -414,8 +414,8 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
-    - name: CONTROL-PLANE-APPLICATION
-      src_prefix_set_name: CONTROL-PLANE-APP-SRC-PREFIXES
+    - name: APP-CONTROL-PLANE
+      src_prefix_set_name: APP-SRC-PFX-CONTROL-PLANE
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -432,7 +432,7 @@ application_traffic_recognition:
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: CONTROL-PLANE-APP-SRC-PREFIXES
+    - name: APP-SRC-PFX-CONTROL-PLANE
       prefix_values:
       - 192.168.144.1/32
 dps_interfaces:
@@ -550,7 +550,7 @@ metadata:
       vni: 1
       avts:
       - id: 254
-        name: CONTROL-PLANE-PROFILE
+        name: DEFAULT-AVT-POLICY-CONTROL-PLANE
         pathgroups:
         - name: LAN_HA
           preference: preferred
