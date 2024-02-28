@@ -196,7 +196,8 @@ def get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]
 def generate_tests(device_name: str, hostvars: Mapping, skipped_tests: list[dict], custom_catalog: dict | None = None) -> RawCatalogInput:
     """Create the test catalog in a dictionnary format generated from the AVD test classes.
 
-    Test definitions are generated from the AVD structured_config for each AVD test classes and are merged together to create the final catalog.
+    Test definitions are generated from the AVD structured_config for each AVD test classes and are merged together
+    with an optional custom_catalog to create the final catalog.
 
     Tests can be skipped from the catalog depending on `skipped_tests`.
 

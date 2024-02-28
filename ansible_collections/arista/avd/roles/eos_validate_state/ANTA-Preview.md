@@ -240,7 +240,7 @@ When specifying a group, it must be a group from the Ansible inventory. The cust
     The `skipped_tests` variable will ONLY skip the dynamically generated tests from the AVD validate state role. It will **not** skip tests added from custom catalogs.
 
 !!! info
-    The final catalog will be validated by ANTA before running the tests on your network. Duplicate tests will be automatically removed.
+    The final catalog will be validated by ANTA before running the tests on your network. Duplicate tests with the same inputs will be automatically removed. Therefore, dynamically generated tests by AVD will never be overwritten. To overwrite them, you should first skip them using the `skipped_tests` variable and provide your own tests with inputs via a custom catalog.
 
 ## Example Playbook
 
