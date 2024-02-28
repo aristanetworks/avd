@@ -4,10 +4,9 @@
   connection: local
   gather_facts: false
   vars:
-    # cv_server: staticstudio-1-cfec4cc2-eos.topo.testdrive.arista.com
     cv_server: www.cv-staging.corp.arista.io
-    token: "{{ lookup('file', playbook_dir ~ '/token-aawg-ci.tok')}}"
-    # token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
+    # token: "{{ lookup('file', playbook_dir ~ '/token-aawg-ci.tok')}}"
+    token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
     configuration_dir: "{{ playbook_dir }}/intended/configs/base_configs"
     structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
 
