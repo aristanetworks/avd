@@ -1033,7 +1033,7 @@ keys:
           eos_cli:
             type: str
             description: |
-              Multiline EOS CLI rendered directly on the Router BGP, Address family EVPN in the final EOS configuration           
+              Multiline EOS CLI rendered directly on the Router BGP, Address family EVPN in the final EOS configuration
       address_family_rtc:
         type: dict
         keys:
