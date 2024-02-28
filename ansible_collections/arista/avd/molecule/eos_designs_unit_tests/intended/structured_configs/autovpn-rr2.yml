@@ -109,6 +109,7 @@ ethernet_interfaces:
   ip_address: 10.8.8.8/31
   shutdown: false
   type: routed
+  description: ATT_888
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
