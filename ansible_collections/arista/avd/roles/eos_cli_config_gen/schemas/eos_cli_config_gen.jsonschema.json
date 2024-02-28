@@ -10261,6 +10261,10 @@
           "type": "string",
           "title": "Platform"
         },
+        "system_mac_address": {
+          "type": "string",
+          "title": "System MAC Address"
+        },
         "cv_tags": {
           "type": "object",
           "properties": {
@@ -13587,6 +13591,10 @@
             "transparent"
           ],
           "title": "Mode"
+        },
+        "mode_one_step": {
+          "type": "boolean",
+          "title": "Mode One Step"
         },
         "forward_unicast": {
           "type": "boolean",
@@ -17107,6 +17115,14 @@
                     "discard"
                   ],
                   "title": "Import Match Failure Action"
+                },
+                "import_ethernet_segment_ip_mass_withdraw": {
+                  "type": "boolean",
+                  "title": "Import Ethernet Segment IP Mass Withdraw"
+                },
+                "export_ethernet_segment_ip_mass_withdraw": {
+                  "type": "boolean",
+                  "title": "Export Ethernet Segment IP Mass Withdraw"
                 }
               },
               "additionalProperties": false,

@@ -2,8 +2,6 @@
 # Testing cv-pathfinder
 wan_mode: cv-pathfinder
 
-bgp_as: 65000
-
 cv_pathfinder_regions:
   - name: AVD_Land_West
     id: 42
@@ -43,23 +41,23 @@ default_node_types:
   - node_type: wan_rr
     match_hostnames:
       - "cv-pathfinder-pathfinder.*"
-  - node_type: wan_transit
-    match_hostnames:
-      - "cv-pathfinder-transit"
-  - node_type: wan_edge
+  - node_type: wan_router
     match_hostnames:
       - "cv-pathfinder-edge.*"
+      - "cv-pathfinder-transit.*"
   - node_type: l3leaf
     match_hostnames:
       - ".*leaf.*"
 
-wan_edge:
+wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 192.168.142.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA]
     uplink_ipv4_pool: 172.17.0.0/16
+    bgp_as: 65000
+  # Testing HA and disabling HA
   node_groups:
     # SITE_HA_DISABLED
     - group: Site511
@@ -68,25 +66,8 @@ wan_edge:
       uplink_interfaces: [ Ethernet52 ]
       cv_pathfinder_region: AVD_Land_East
       cv_pathfinder_site: Site511
-      id: 1
-      l3_interfaces:
-        - name: Ethernet1
-          wan_carrier: ATT
-          wan_circuit_id: 666
-          dhcp_accept_default_route: true
-          ip_address: dhcp
-        - name: Ethernet2
-          wan_carrier: Colt
-          wan_circuit_id: 10555
-          ip_address: 172.15.5.5/31
-        - name: Ethernet3
-          wan_carrier: Comcast-5G
-          wan_circuit_id: AF830
-          ip_address: 172.20.20.20/31
-          connected_to_pathfinder: False
-      # Disabling HA - TODO once implemented, for now it is disabled by default
-      # wan_ha:
-      #  enabled: False
+      wan_ha:
+        enabled: False
       nodes:
         - name: cv-pathfinder-edge
           id: 1
@@ -118,6 +99,77 @@ wan_edge:
               wan_circuit_id: S511
               dhcp_accept_default_route: true
               ip_address: dhcp
+    # SITE_HA_ENABLED
+    - group: Site423
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site423
+      uplink_type: p2p-vrfs
+      uplink_switches: [ site-ha-enabled-leaf2A, site-ha-enabled-leaf2B ]
+      uplink_interfaces: [ Ethernet52, Ethernet53 ]
+      nodes:
+        - name: cv-pathfinder-edge2A
+          id: 2
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: ATT
+              wan_circuit_id: 423-01
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: cv-pathfinder-edge2B
+          id: 3
+          l3_interfaces:
+            - name: Ethernet2
+              wan_carrier: Colt
+              wan_circuit_id: 10423
+              ip_address: 172.15.6.6/31
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+
+    # TRANSIT_SITE_HA_ENABLED
+    - group: TRANSIT_SITE_HA_ENABLED
+      loopback_ipv4_pool: 192.168.43.0/24
+      vtep_loopback_ipv4_pool: 192.168.143.0/24
+      filter:
+        always_include_vrfs_in_tenants: [TenantA, TenantB]
+      uplink_ipv4_pool: 172.17.0.0/16
+      uplink_type: p2p-vrfs
+      uplink_switches: [ site-ha-enabled-leaf1 ]
+      uplink_interfaces: [ Ethernet52 ]
+      cv_pathfinder_transit_mode: region
+      # Disable HA IPsec
+      wan_ha:
+        ipsec: false
+      nodes:
+        - name: cv-pathfinder-transit1A
+          cv_pathfinder_region: AVD_Land_West
+          cv_pathfinder_site: Site422
+          id: 1
+          uplink_switch_interfaces: [Ethernet1]
+          l3_interfaces:
+            - name: Ethernet1.42
+              wan_carrier: Comcast
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+            - name: Ethernet2.42
+              encapsulation_dot1q_vlan: 666
+              wan_carrier: Colt
+              wan_circuit_id: 10666
+              ip_address: 172.16.6.6/31
+        - name: cv-pathfinder-transit1B
+          cv_pathfinder_region: AVD_Land_West
+          cv_pathfinder_site: Site422
+          id: 2
+          uplink_switch_interfaces: [Ethernet2]
+          l3_interfaces:
+            - name: Ethernet1.42
+              wan_carrier: Comcast
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+            - name: Ethernet2.42
+              encapsulation_dot1q_vlan: 666
+              wan_carrier: Colt
+              wan_circuit_id: 10666
+              ip_address: 172.16.6.6/31
 
 # Fake DC1
 l3leaf:
@@ -129,41 +181,21 @@ l3leaf:
     filter:
       always_include_vrfs_in_tenants: [TenantA]
   nodes:
-    # Used for HA in HA PR
-    #- name: site-ha-enabled-leaf1
-    #  id: 1
-    #- name: site-ha-enabled-leaf2
-    #  id: 2
-    - name: site-ha-disabled-leaf
-      id: 3
-
-wan_transit:
-  defaults:
-    loopback_ipv4_pool: 192.168.43.0/24
-    vtep_loopback_ipv4_pool: 192.168.143.0/24
-    filter:
-      always_include_vrfs_in_tenants: [TenantA, TenantB]
-  nodes:
-    - name: cv-pathfinder-transit
-      cv_pathfinder_region: AVD_Land_West
-      cv_pathfinder_site: Site422
+    - name: site-ha-enabled-leaf1
       id: 1
-      l3_interfaces:
-        - name: Ethernet1.42
-          wan_carrier: Comcast
-          dhcp_accept_default_route: true
-          ip_address: dhcp
-        - name: Ethernet2.42
-          encapsulation_dot1q_vlan: 666
-          wan_carrier: Colt
-          wan_circuit_id: 10666
-          ip_address: 172.16.6.6/31
+    - name: site-ha-enabled-leaf2A
+      id: 2
+    - name: site-ha-enabled-leaf2B
+      id: 3
+    - name: site-ha-disabled-leaf
+      id: 4
 
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.44.0/24
     vtep_loopback_ipv4_pool: 192.168.144.0/24
     data_plane_cpu_allocation_max: 1
+    bgp_as: 65000
   nodes:
     - name: cv-pathfinder-pathfinder
       id: 1
@@ -246,18 +278,20 @@ tenants:
     vrfs:
       - name: default
         vrf_id: 1
+        # Checking static route on VRF default is redistributed in a route-map
         static_routes:
           - destination_address_prefix: 66.66.66.0/24
             gateway: 172.17.0.0
             nodes: [cv-pathfinder-edge]
       - name: PROD
-        vrf_id: 42
+        # Showing that wan_vni and vrf_id can be different. `vrf_id` influences the subinterface id.
+        vrf_id: 142
         svis:
           - id: 100
             name: VLAN100
             ip_address_virtual: 10.0.100.1/24
       - name: IT
-        vrf_id: 100
+        vrf_id: 1000
     l2vlans:
       - id: 101
         name: VLAN101
@@ -267,19 +301,42 @@ tenants:
         vrf_id: 1
       - name: TRANSIT
         vrf_id: 66
+      # Test that a VRF with address_families: [] on a WAN router is not configured on Vxlan1 interface nor BGP
+      - name: NOT-WAN-VRF
+        vrf_id: 13
+        address_families: []
+  - name: TenantC
+    mac_vrf_vni_base: 1000
+    vrfs:
+      # Test adding a VRF on an uplink switch and seeing it configured on the WAN routers
+      - name: ATTRACTED-VRF-FROM-UPLINK
+        vrf_id: 666
+        svis:
+          - id: 666
+            name: VLAN666
+            ip_address_virtual: 10.66.66.66/24
+            nodes:
+              - node: site-ha-disabled-leaf
+                ip_address: 10.66.66.1
 
 wan_virtual_topologies:
   vrfs:
     - name: default
       policy: DEFAULT-AVT-POLICY
+      wan_vni: 1
     - name: PROD
       policy: PROD-AVT-POLICY
+      wan_vni: 42
     # Testing reusing the same policy as default VRF
     - name: IT
       policy: DEFAULT-AVT-POLICY
+      wan_vni: 100
     # Testing a VRF only on transit and not edge
     - name: TRANSIT
       policy: TRANSIT-AVT-POLICY
+      wan_vni: 66
+    - name: ATTRACTED-VRF-FROM-UPLINK
+      wan_vni: 166
   policies:
     - name: PROD-AVT-POLICY
       default_virtual_topology:
@@ -290,6 +347,7 @@ wan_virtual_topologies:
             preference: alternate
       application_virtual_topologies:
         - application_profile: VOICE
+          lowest_hop_count: true
           path_groups:
             - names: [MPLS]
               preference: preferred
@@ -329,6 +387,7 @@ wan_virtual_topologies:
             preference: alternate
       application_virtual_topologies:
         - application_profile: VOICE
+          name: CUSTOM-VOICE-PROFILE-NAME
           path_groups:
             - names: [MPLS]
               preference: preferred

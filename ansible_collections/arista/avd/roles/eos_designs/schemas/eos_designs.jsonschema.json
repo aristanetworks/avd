@@ -14068,16 +14068,6 @@
             "description": "PREVIEW: This key is currently not supported\nSet the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
             "title": "Default Wan Role"
           },
-          "default_cv_pathfinder_role": {
-            "type": "string",
-            "enum": [
-              "edge",
-              "transit region",
-              "pathfinder"
-            ],
-            "description": "PREVIEW: This key is currently not supported\nSet the default CV Pathfinder role.\n\nThis key is used for Pathfinder designs only when the `wan_mode` root\nkey is set to `cv-pathfinder`.\n\n`pathfinder` is only a valid if `wan_role` is `server`.\n`edge` and `transit` are only valid if `wan_role` is `client`.\n",
-            "title": "Default Cv Pathfinder Role"
-          },
           "mlag_support": {
             "type": "boolean",
             "default": false,
@@ -24894,17 +24884,26 @@
               },
               "policy": {
                 "type": "string",
-                "description": "Name of the AVT policy to apply to this VRF.",
+                "description": "Name of the policy to apply to this VRF.\nIt is possible to overwrite the default policy for all VRFs using it\nby redefining it in the `wan_virtual_topologies.policies` list using the\ndefault name `DEFAULT-POLICY`.",
+                "default": "DEFAULT-POLICY",
                 "title": "Policy"
+              },
+              "wan_vni": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 255,
+                "description": "Required for VRFs carried over AutoVPN or CV Pathfinder WAN.\n\nA VRF can have different VNIs between the Datacenters and the WAN.\nNote that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with\n`wan_vni` set to `1`.\nIn addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains.",
+                "title": "Wan Vni"
               }
             },
+            "required": [
+              "wan_vni",
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            },
-            "required": [
-              "name"
-            ]
+            }
           },
           "title": "VRFs"
         },
@@ -24930,6 +24929,12 @@
               "maximum": 63,
               "description": "Set DSCP for matched traffic.",
               "title": "DSCP"
+            },
+            "lowest_hop_count": {
+              "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+              "type": "boolean",
+              "default": false,
+              "title": "Lowest Hop Count"
             },
             "constraints": {
               "type": "object",
@@ -25002,7 +25007,7 @@
         },
         "policies": {
           "type": "array",
-          "description": "List of virtual toplogies policies.\n\nFor AutoVPN, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item\n        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane rule is injected\n    in the policy with index `1` referring to a control-plane load-balance policy as defined under\n    `control_plane_virtual_topology`.\n\n\nFor CV Pathfinder, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item ordered as in the model.\n      * one last match entry for the `default` application-profile using `default_virtual_topology` information.\n  * one profile per `application_virtual_topologies` item.\n  * one profile for the `default_virtual_topology`..\n  * one load-balance policy per `application_virtual_topologies`.\n  * one load_balance policy for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane profile is configured\n    and injected first in the policy assigned to the `default` VRF. This profile points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`.",
+          "description": "List of virtual toplogies policies.\n\nFor AutoVPN, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item\n        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane rule is injected\n    in the policy with index `1` referring to a control-plane load-balance policy as defined under\n    `control_plane_virtual_topology`.\n\nFor CV Pathfinder, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item ordered as in the model.\n      * one last match entry for the `default` application-profile using `default_virtual_topology` information.\n  * one profile per `application_virtual_topologies` item.\n  * one profile for the `default_virtual_topology`..\n  * one load-balance policy per `application_virtual_topologies`.\n  * one load_balance policy for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane profile is configured\n    and injected first in the policy assigned to the `default` VRF. This profile points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`.",
           "items": {
             "type": "object",
             "properties": {
@@ -25047,6 +25052,12 @@
                       "maximum": 63,
                       "description": "Set DSCP for matched traffic.",
                       "title": "DSCP"
+                    },
+                    "lowest_hop_count": {
+                      "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+                      "type": "boolean",
+                      "default": false,
+                      "title": "Lowest Hop Count"
                     },
                     "constraints": {
                       "type": "object",
@@ -25149,6 +25160,12 @@
                     "maximum": 63,
                     "description": "Set DSCP for matched traffic.",
                     "title": "DSCP"
+                  },
+                  "lowest_hop_count": {
+                    "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Lowest Hop Count"
                   },
                   "constraints": {
                     "type": "object",

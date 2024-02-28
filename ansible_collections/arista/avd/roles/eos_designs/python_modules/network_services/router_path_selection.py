@@ -30,16 +30,17 @@ class RouterPathSelectionMixin(UtilsMixin):
             "load_balance_policies": self._wan_load_balance_policies,
         }
 
-        # When running CV Pathfinder, only load balance policies
-        if self.shared_utils.cv_pathfinder_role:
-            return strip_empties_from_dict(router_path_selection)
+        # When running CV Pathfinder, only load balance policies are configured
+        # for AutoVPN, need also vrfs and policies.
+        if self.shared_utils.wan_mode == "autovpn":
+            vrfs = [{"name": vrf["name"], "path_selection_policy": vrf["policy"]} for vrf in self._filtered_wan_vrfs]
 
-        router_path_selection.update(
-            {
-                "policies": self._autovpn_policies,
-                "vrfs": self._filtered_wan_vrfs,
-            }
-        )
+            router_path_selection.update(
+                {
+                    "policies": self._autovpn_policies,
+                    "vrfs": vrfs,
+                }
+            )
 
         return strip_empties_from_dict(router_path_selection)
 
@@ -48,9 +49,6 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         Return a list of AutoVPN Policies.
         """
-        if self.shared_utils.cv_pathfinder_role:
-            return []
-
         autovpn_policies = []
 
         for policy in self._filtered_wan_policies:
@@ -60,31 +58,37 @@ class RouterPathSelectionMixin(UtilsMixin):
             }
 
             if get(policy, "is_default", default=False):
-                # Update policy name
-                autovpn_policy["name"] = f"{autovpn_policy['name']}-WITH-CP"
                 autovpn_policy.setdefault("rules", []).append(
                     {
                         "id": 10,
                         "application_profile": self._wan_control_plane_application_profile,
-                        "load_balance": f"LB-{self._wan_control_plane_profile}",
+                        "load_balance": self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile),
                     }
                 )
                 rule_id_offset = 1
 
             for rule_id, application_virtual_topology in enumerate(get(policy, "application_virtual_topologies", []), start=1):
-                name = get(application_virtual_topology, "name", default=f"{policy['name']}-{application_virtual_topology['application_profile']}")
+                name = get(
+                    application_virtual_topology,
+                    "name",
+                    default=self._default_profile_name(policy["profile_prefix"], application_virtual_topology["application_profile"]),
+                )
                 application_profile = get(application_virtual_topology, "application_profile", required=True)
                 autovpn_policy.setdefault("rules", []).append(
                     {
                         "id": 10 * (rule_id + rule_id_offset),
                         "application_profile": application_profile,
-                        "load_balance": f"LB-{name}",
+                        "load_balance": self.shared_utils.generate_lb_policy_name(name),
                     }
                 )
             default_virtual_topology = get(policy, "default_virtual_topology", required=True)
             if not get(default_virtual_topology, "drop_unmatched", default=False):
-                name = get(default_virtual_topology, "name", default=f"{policy['name']}-DEFAULT")
-                autovpn_policy["default_match"] = {"load_balance": f"LB-{name}"}
+                name = get(
+                    default_virtual_topology,
+                    "name",
+                    default=self._default_profile_name(policy["profile_prefix"], "DEFAULT"),
+                )
+                autovpn_policy["default_match"] = {"load_balance": self.shared_utils.generate_lb_policy_name(name)}
 
             autovpn_policies.append(autovpn_policy)
 

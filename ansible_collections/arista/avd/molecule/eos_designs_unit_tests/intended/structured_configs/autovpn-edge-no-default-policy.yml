@@ -205,23 +205,30 @@ router_path_selection:
       - 10.7.7.7
     ipsec_profile: AUTOVPN
   load_balance_policies:
+  - name: LB-DEFAULT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
   - name: LB-CONTROL-PLANE-PROFILE
     path_groups:
     - name: INET
-  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
-    path_groups:
-    - name: INET
   policies:
-  - name: DEFAULT-AVT-POLICY-WITH-CP
+  - name: DEFAULT-POLICY
+    default_match:
+      load_balance: LB-DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-WITH-CP
     rules:
     - id: 10
       application_profile: CONTROL-PLANE-APPLICATION-PROFILE
       load_balance: LB-CONTROL-PLANE-PROFILE
     default_match:
-      load_balance: LB-DEFAULT-AVT-POLICY-DEFAULT
+      load_balance: LB-DEFAULT-POLICY-DEFAULT
   vrfs:
+  - name: PROD
+    path_selection_policy: DEFAULT-POLICY
+  - name: IT
+    path_selection_policy: DEFAULT-POLICY
   - name: default
-    path_selection_policy: DEFAULT-AVT-POLICY-WITH-CP
+    path_selection_policy: DEFAULT-POLICY-WITH-CP
 stun:
   client:
     server_profiles:

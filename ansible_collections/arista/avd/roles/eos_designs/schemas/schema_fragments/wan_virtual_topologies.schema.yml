@@ -31,7 +31,33 @@ keys:
               description: VRF name.
             policy:
               type: str
-              description: Name of the AVT policy to apply to this VRF.
+              description: |-
+                Name of the policy to apply to this VRF.
+                It is possible to overwrite the default policy for all VRFs using it
+                by redefining it in the `wan_virtual_topologies.policies` list using the
+                default name `DEFAULT-POLICY`.
+              default: DEFAULT-POLICY
+            wan_vni:
+              # The `wan_vni` is under here rather than `tenants.vrfs` as it as
+              # initially planned for 2 reasons:
+              # 1. This allow to keep a consistent WAN VNI ID in a more
+              #    effective way, as otherwise this wan_vni key would have had
+              #    to be aligned in every tenant where the VRF is defined.
+              # 2. This is used in the WAN metadata for pathfinder nodes to pick
+              #    up WAN VRFs and their VNI.
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 255
+              required: true
+              description: |-
+                Required for VRFs carried over AutoVPN or CV Pathfinder WAN.
+
+                A VRF can have different VNIs between the Datacenters and the WAN.
+                Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with
+                `wan_vni` set to `1`.
+                In addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains.
       control_plane_virtual_topology:
         type: dict
         description: |-
@@ -60,7 +86,6 @@ keys:
               in the policy with index `1` referring to a control-plane load-balance policy as defined under
               `control_plane_virtual_topology`.
 
-
           For CV Pathfinder, each item in the list creates:
             * one policy with:
                 * one `match` entry per `application_virtual_topologies` item ordered as in the model.
@@ -72,7 +97,6 @@ keys:
             * if the policy is associated with the default VRF, a special control-plane profile is configured
               and injected first in the policy assigned to the `default` VRF. This profile points to a
               control-plane load-balance policy as defined under `control_plane_virtual_topology`.
-
         primary_key: name
         items:
           type: dict

@@ -209,11 +209,11 @@ ip_security:
   sa_policies:
   - name: DP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
@@ -251,23 +251,37 @@ router_adaptive_virtual_topology:
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: LB-CONTROL-PLANE-PROFILE
-  - name: DEFAULT-AVT-POLICY-DEFAULT
-    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
   vrfs:
+  - name: PROD
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+  - name: IT
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
   - name: default
-    policy: DEFAULT-AVT-POLICY-WITH-CP
+    policy: DEFAULT-POLICY-WITH-CP
     profiles:
     - name: CONTROL-PLANE-PROFILE
       id: 254
-    - name: DEFAULT-AVT-POLICY-DEFAULT
+    - name: DEFAULT-POLICY-DEFAULT
       id: 1
   policies:
-  - name: DEFAULT-AVT-POLICY-WITH-CP
+  - name: DEFAULT-POLICY
+    matches:
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-WITH-CP
     matches:
     - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
       avt_profile: CONTROL-PLANE-PROFILE
     - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
+      avt_profile: DEFAULT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300
@@ -316,15 +330,15 @@ router_path_selection:
       enabled: true
     ipsec_profile: CP-PROFILE
   load_balance_policies:
-  - name: LB-CONTROL-PLANE-PROFILE
-    path_groups:
-    - name: INET
-    - name: MPLS
-  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+  - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: INET
     - name: MPLS
     - name: LTE
+  - name: LB-CONTROL-PLANE-PROFILE
+    path_groups:
+    - name: INET
+    - name: MPLS
 router_traffic_engineering:
   enabled: true
 stun:

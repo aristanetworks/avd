@@ -33,11 +33,11 @@ default_node_types:
   - node_type: wan_rr
     match_hostnames:
       - "autovpn-rr.*"
-  - node_type: wan_edge
+  - node_type: wan_router
     match_hostnames:
       - "autovpn-edge"
 
-wan_edge:
+wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.30.0/24
     vtep_loopback_ipv4_pool: 192.168.130.0/24
@@ -108,6 +108,7 @@ tenants:
             ip_address_virtual: 10.0.100.1/24
       - name: IT
         vrf_id: 100
+        address_families: []
     l2vlans:
       - id: 101
         name: VLAN101
@@ -115,17 +116,21 @@ tenants:
 wan_virtual_topologies:
   vrfs:
     - name: default
-      policy: DEFAULT-AVT-POLICY
+      policy: DEFAULT-AUTOVPN-POLICY
+      wan_vni: 1
     - name: PROD
-      policy: PROD-AVT-POLICY
+      policy: PROD-AUTOVPN-POLICY
+      wan_vni: 42
   policies:
-    - name: PROD-AVT-POLICY
+    - name: PROD-AUTOVPN-POLICY
       default_virtual_topology:
         path_groups:
           - names: [INET]
             preference: preferred
       application_virtual_topologies:
         - application_profile: VOICE
+          # Following should NOT be rendered for AUTOVPN
+          lowest_hop_count: true
           path_groups:
             - names: [INET]
               preference: preferred
@@ -133,7 +138,7 @@ wan_virtual_topologies:
           path_groups:
             - names: [INET]
               preference: preferred
-    - name: DEFAULT-AVT-POLICY
+    - name: DEFAULT-AUTOVPN-POLICY
       default_virtual_topology:
         drop_unmatched: true
       application_virtual_topologies:

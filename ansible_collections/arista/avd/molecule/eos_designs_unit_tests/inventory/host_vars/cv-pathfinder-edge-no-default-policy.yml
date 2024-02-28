@@ -42,11 +42,11 @@ wan_ipsec_profiles:
     shared_key: ABCDEF1234567890666
 
 default_node_types:
-  - node_type: wan_edge
+  - node_type: wan_router
     match_hostnames:
       - "cv-pathfinder-edge.*"
 
-wan_edge:
+wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 192.168.255.0/24
@@ -119,4 +119,9 @@ tenants:
       - name: IT
         vrf_id: 100
 
-wan_virtual_topologies: null
+wan_virtual_topologies:
+  vrfs:
+    - name: PROD
+      wan_vni: 42
+    - name: IT
+      wan_vni: 100

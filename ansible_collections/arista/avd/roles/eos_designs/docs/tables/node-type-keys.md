@@ -116,7 +116,7 @@
         underlay_router: <bool; default=True>
 
         # `uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router` is true.
-
+        #
         # For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF
         # in `network_services` present on both the uplink and the downlink switch.
         # The subinterface ID is the `vrf_id`.

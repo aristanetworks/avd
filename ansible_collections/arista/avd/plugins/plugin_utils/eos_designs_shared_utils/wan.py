@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
@@ -63,17 +63,14 @@ class WanMixin:
         )
 
     @cached_property
-    def cv_pathfinder_role(self: SharedUtils) -> str | None:
-        if self.underlay_router is False or self.wan_mode != "cv-pathfinder":
+    def cv_pathfinder_transit_mode(self: SharedUtils) -> Literal["region", "zone"] | None:
+        """
+        When wan_mode is CV Pathfinder, return the transit mode "region", "zone" or None.
+        """
+        if not self.is_cv_pathfinder_client:
             return None
 
-        default_cv_pathfinder_role = get(self.node_type_key_data, "default_cv_pathfinder_role", default=None)
-        cv_pathfinder_role = get(self.switch_data_combined, "cv_pathfinder_role", default=default_cv_pathfinder_role)
-        if cv_pathfinder_role == "pathfinder" and not self.is_wan_server:
-            raise AristaAvdError("'wan_role' must be 'server' when 'cv_pathfinder_role' is set to 'pathfinder'")
-        if cv_pathfinder_role in ["transit", "edge"] and not self.is_wan_client:
-            raise AristaAvdError("'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'")
-        return cv_pathfinder_role
+        return get(self.switch_data_combined, "cv_pathfinder_transit_mode")
 
     @cached_property
     def wan_interfaces(self: SharedUtils) -> list:
@@ -215,7 +212,7 @@ class WanMixin:
             self.switch_data_combined,
             "cv_pathfinder_site",
             required=True,
-            org_key="A node variable 'cv_pathfinder_site' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
+            org_key="A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
         )
         sites = get(self.wan_region, "sites", required=True, org_key=f"The CV Pathfinder region '{self.wan_region['name']}' is missing a list of sites")
         return get_item(
@@ -240,7 +237,7 @@ class WanMixin:
             self.switch_data_combined,
             "cv_pathfinder_region",
             required=True,
-            org_key="A node variable 'cv_pathfinder_region' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
+            org_key="A node variable 'cv_pathfinder_region' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
         )
         regions = get(
             self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
@@ -359,7 +356,7 @@ class WanMixin:
         )
 
     @cached_property
-    def wan_ha_flow_tracker_name(self: SharedUtils) -> str:
+    def wan_flow_tracker_name(self: SharedUtils) -> str:
         """
         Return the name of the WAN flow tracking object
         Used in both network services, underlay and overlay python modules.
@@ -370,8 +367,129 @@ class WanMixin:
         return "WAN-FLOW-TRACKER"
 
     @cached_property
-    def is_cv_pathfinder_edge_or_transit(self: SharedUtils) -> bool:
+    def is_cv_pathfinder_router(self: SharedUtils) -> bool:
+        """
+        Return True is the current wan_mode is cv-pathfinder and the device is a wan router.
+        """
+        return self.wan_mode == "cv-pathfinder" and self.is_wan_router
+
+    @cached_property
+    def is_cv_pathfinder_client(self: SharedUtils) -> bool:
         """
         Return True is the current wan_mode is cv-pathfinder and the device is either an edge or a transit device
         """
-        return self.wan_mode == "cv-pathfinder" and self.cv_pathfinder_role in ["edge", "transit region"]
+        return self.is_cv_pathfinder_router and self.is_wan_client
+
+    @cached_property
+    def is_cv_pathfinder_server(self: SharedUtils) -> bool:
+        """
+        Return True is the current wan_mode is cv-pathfinder and the device is a pathfinder device
+        """
+        return self.is_cv_pathfinder_router and self.is_wan_server
+
+    @cached_property
+    def cv_pathfinder_role(self: SharedUtils) -> str | None:
+        if not self.is_cv_pathfinder_router:
+            return None
+
+        if self.is_cv_pathfinder_server:
+            return "pathfinder"
+
+        # Transit
+        if (transit_mode := self.cv_pathfinder_transit_mode) is not None:
+            return f"transit {transit_mode}"
+
+        # Edge
+        return "edge"
+
+    @cached_property
+    def wan_ha(self: SharedUtils) -> bool:
+        """
+        Only trigger HA if 2 cv_pathfinder clients are in the same group and wan_ha.enabled is true
+        """
+        return self.is_cv_pathfinder_client and get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
+
+    @cached_property
+    def wan_ha_path_group_name(self: SharedUtils) -> str:
+        """
+        Return HA path group name for the WAN design.
+        Used in both network services and overlay python modules.
+
+        TODO make this configurable
+        """
+        return "LAN_HA"
+
+    @cached_property
+    def is_first_ha_peer(self: SharedUtils) -> bool:
+        """
+        Returns True if the device is the first device in the node_group,
+        false otherwise.
+
+        This should be called only from functions which have checked that HA is enabled.
+        """
+        return self.switch_data_node_group_nodes[0]["name"] == self.hostname
+
+    @cached_property
+    def wan_ha_peer(self: SharedUtils) -> str | None:
+        """
+        Return the name of the WAN HA peer.
+        """
+        if not self.wan_ha:
+            return None
+        if self.is_first_ha_peer:
+            return self.switch_data_node_group_nodes[1]["name"]
+        elif self.switch_data_node_group_nodes[1]["name"] == self.hostname:
+            return self.switch_data_node_group_nodes[0]["name"]
+        raise AristaAvdError("Unable to find WAN HA peer within same node group")
+
+    @cached_property
+    def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:
+        """
+        Read the IP addresses/prefix length from HA peer uplinks
+        Used also to generate the prefix list of the PEER HA prefixes
+        """
+        peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
+        # For now only picking up uplink interfaces in VRF default on the router.
+        vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
+
+        ip_addresses = []
+        for uplink in vrf_default_peer_uplinks:
+            ip_address = get(
+                uplink,
+                "ip_address",
+                required=True,
+                org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address",
+            )
+            # We can use [] notation here because if there is an ip_address, there should be a prefix_length
+            prefix_length = uplink["prefix_length"]
+            ip_addresses.append(f"{ip_address}/{prefix_length}")
+
+        return ip_addresses
+
+    @cached_property
+    def wan_ha_ip_addresses(self: SharedUtils) -> list:
+        """
+        Read the IP addresses/prefix length from this device uplinks used for HA.
+        Used to generate the prefix list.
+        """
+        vrf_default_uplinks = [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+
+        ip_addresses = []
+        for uplink in vrf_default_uplinks:
+            ip_address = get(
+                uplink,
+                "ip_address",
+                required=True,
+                org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA does not have an IP address",
+            )
+            # We can use [] notation here because if there is an ip_address, there should be a prefix_length
+            prefix_length = uplink["prefix_length"]
+            ip_addresses.append(f"{ip_address}/{prefix_length}")
+
+        return ip_addresses
+
+    def generate_lb_policy_name(self: SharedUtils, name: str) -> str:
+        """
+        Returns LB-{name}
+        """
+        return f"LB-{name}"

@@ -58,7 +58,7 @@
     ```yaml
     # You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
     # Streaming to multiple clusters both on-prem and cloud service is supported.
-
+    #
     # !!! note
     #     For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes
     #     which always contain the latest recommended versions and minimum required versions per EOS release.

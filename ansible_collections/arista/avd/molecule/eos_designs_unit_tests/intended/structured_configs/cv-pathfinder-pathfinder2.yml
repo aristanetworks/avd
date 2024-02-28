@@ -202,7 +202,7 @@ ip_security:
   sa_policies:
   - name: CP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
   - name: CP-PROFILE
@@ -220,20 +220,22 @@ router_adaptive_virtual_topology:
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: LB-CONTROL-PLANE-PROFILE
+  - name: DEFAULT-AVT-POLICY-VIDEO
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
+  - name: DEFAULT-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY-VOICE
     load_balance_policy: LB-PROD-AVT-POLICY-VOICE
   - name: PROD-AVT-POLICY-VIDEO
     load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
   - name: PROD-AVT-POLICY-DEFAULT
     load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
-  - name: DEFAULT-AVT-POLICY-VIDEO
-    load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
-  - name: DEFAULT-AVT-POLICY-DEFAULT
-    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
-  - name: TRANSIT-AVT-POLICY-VOICE
-    load_balance_policy: LB-TRANSIT-AVT-POLICY-VOICE
+  - name: CUSTOM-VOICE-PROFILE-NAME
+    load_balance_policy: LB-CUSTOM-VOICE-PROFILE-NAME
   - name: TRANSIT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-TRANSIT-AVT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
   vrfs:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
@@ -263,11 +265,24 @@ router_adaptive_virtual_topology:
   - name: TRANSIT
     policy: TRANSIT-AVT-POLICY
     profiles:
-    - name: TRANSIT-AVT-POLICY-VOICE
+    - name: CUSTOM-VOICE-PROFILE-NAME
       id: 42
     - name: TRANSIT-AVT-POLICY-DEFAULT
       id: 1
+  - name: ATTRACTED-VRF-FROM-UPLINK
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
   policies:
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    matches:
+    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-AVT-POLICY-VIDEO
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY
     matches:
     - application_profile: VOICE
@@ -285,17 +300,13 @@ router_adaptive_virtual_topology:
   - name: TRANSIT-AVT-POLICY
     matches:
     - application_profile: VOICE
-      avt_profile: TRANSIT-AVT-POLICY-VOICE
+      avt_profile: CUSTOM-VOICE-PROFILE-NAME
     - application_profile: default
       avt_profile: TRANSIT-AVT-POLICY-DEFAULT
-  - name: DEFAULT-AVT-POLICY-WITH-CP
+  - name: DEFAULT-POLICY
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
-    - application_profile: VIDEO
-      avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
+      avt_profile: DEFAULT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300
@@ -334,20 +345,39 @@ router_path_selection:
     id: 103
   - name: Satellite
     id: 104
+  - name: LAN_HA
+    id: 65535
+    flow_assignment: lan
   peer_dynamic_source: stun
   load_balance_policies:
   - name: LB-CONTROL-PLANE-PROFILE
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
+  - name: LB-DEFAULT-AVT-POLICY-VIDEO
+    path_groups:
+    - name: LAN_HA
+    - name: MPLS
+    - name: INET
+  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: LAN_HA
+    - name: INET
+    - name: Equinix
+    - name: MPLS
+      priority: 42
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
     jitter: 42
+    lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: LTE
     - name: INET
@@ -355,29 +385,27 @@ router_path_selection:
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
-  - name: LB-DEFAULT-AVT-POLICY-VIDEO
+  - name: LB-CUSTOM-VOICE-PROFILE-NAME
     path_groups:
-    - name: MPLS
-    - name: INET
-  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
-    path_groups:
-    - name: INET
-    - name: Equinix
-    - name: MPLS
-      priority: 42
-  - name: LB-TRANSIT-AVT-POLICY-VOICE
-    path_groups:
+    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
   - name: LB-TRANSIT-AVT-POLICY-DEFAULT
     path_groups:
+    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
+  - name: LB-DEFAULT-POLICY-DEFAULT
+    path_groups:
+    - name: LAN_HA
+    - name: INET
+    - name: MPLS
 router_traffic_engineering:
   enabled: true
 stun:
@@ -387,15 +415,15 @@ stun:
     - Ethernet2
 application_traffic_recognition:
   application_profiles:
-  - name: VOICE
-    applications:
-    - name: CUSTOM-VOICE-APPLICATION
   - name: VIDEO
     categories:
     - name: VIDEO1
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+  - name: VOICE
+    applications:
+    - name: CUSTOM-VOICE-APPLICATION
   - name: CONTROL-PLANE-APPLICATION-PROFILE
     applications:
     - name: CONTROL-PLANE-APPLICATION
@@ -541,6 +569,8 @@ metadata:
       - id: 254
         name: CONTROL-PLANE-PROFILE
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: MPLS
@@ -548,6 +578,8 @@ metadata:
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -555,6 +587,8 @@ metadata:
       - id: 1
         name: DEFAULT-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: Equinix
@@ -562,13 +596,15 @@ metadata:
         - name: MPLS
           preference: alternate
     - name: PROD
-      vni: 42
+      vni: 142
       avts:
       - constraints:
           jitter: 42
         id: 2
         name: PROD-AVT-POLICY-VOICE
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -576,6 +612,8 @@ metadata:
       - id: 4
         name: PROD-AVT-POLICY-VIDEO
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: LTE
@@ -585,16 +623,20 @@ metadata:
       - id: 1
         name: PROD-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: MPLS
           preference: alternate
     - name: IT
-      vni: 100
+      vni: 1000
       avts:
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -602,6 +644,8 @@ metadata:
       - id: 1
         name: DEFAULT-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: Equinix
@@ -612,8 +656,10 @@ metadata:
       vni: 66
       avts:
       - id: 42
-        name: TRANSIT-AVT-POLICY-VOICE
+        name: CUSTOM-VOICE-PROFILE-NAME
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
@@ -621,7 +667,21 @@ metadata:
       - id: 1
         name: TRANSIT-AVT-POLICY-DEFAULT
         pathgroups:
+        - name: LAN_HA
+          preference: preferred
         - name: INET
           preference: preferred
         - name: MPLS
           preference: alternate
+    - name: ATTRACTED-VRF-FROM-UPLINK
+      vni: 666
+      avts:
+      - id: 1
+        name: DEFAULT-POLICY-DEFAULT
+        pathgroups:
+        - name: LAN_HA
+          preference: preferred
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: preferred

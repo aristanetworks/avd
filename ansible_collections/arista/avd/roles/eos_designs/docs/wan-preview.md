@@ -38,6 +38,7 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
   - Policies are assigned to VRFs using the list `wan_virtual_topologies.vrfs`. A policy can be reused in multiple VRFs.
   - If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
   - For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `CONTROL-PLANE-APPLICATION-PROFILE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
+  - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default. It is possible to disable HA under node settings.
 
 #### LAN Designs
 
@@ -75,7 +76,36 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 ###### HA
 
-To Be Implemented.
+for eBGP LAN routing protocol the following is done to enable HA:
+
+- the uplink interfaces are used as HA interfaces.
+- the subnets of the HA interfaces are redistributed to BGP via the `RM-CONN-2-BGP` route-map
+BGP underlay peer group is configured with `allowas-in 1` to be able to learn the HA peer uplink interface subnet over the LAN as well as learning WAN routes from other sites (as backup in case all WAN links are lost).
+- the Underlay peer group is configured with two route-maps
+  - one inbound route-map `RM-UNDERLAY-PEERS-IN`
+    - Match HA peer's uplink subnets (not marked) to be able to form HA tunnel (not exported to EVPN).
+    - Match HA peer's originated prefixes, set longer AS path and mark with SoO to export to EVPN. These will be used as backup from other sites to destinations on HA Peer Router in case all WAN connections on Peer are down.
+    - Match all WAN routes using AS path and set no-advertise community. This will be used as backup routes to the WAN in case this router looses all WAN connections.
+    - Match anything else (LAN prefixes) and mark with the SoO `<bgp_as>:<wan_site_id>` to export to EVPN.
+  - one outbound route-map `RM-UNDERLAY-PEERS-OUT`
+    - allowing local routes marked with SoO (routes/interfaces defined via tenants + router-id)
+    - allowing subnets of uplink interfaces.
+    - allow all routes learned from iBGP (WAN)
+    - Implicitly denying other routes which could be learned from BGP towards a WAN provider or redistributed without marking with SoO.
+
+##### OSPF LAN HA
+
+- Configure `underlay_routing_protocol` to OSPF for both the WAN router and the uplink router.
+
+!!! warning
+
+    In the current implementation, OSPF on LAN is not supported as there is no redistribution of route from OSPF to BGP and vice-versa implemented.
+
+###### HA
+
+The HA tunnel will come up properly today but route redistribution will be missing so it is not usable.
+
+- the HA interface(s) is(are) the uplink interface(s) which are automatically included in  OSPF.
 
 ## Known limitations
 
@@ -97,17 +127,17 @@ To Be Implemented.
 
 - All Pathfinders must be able to create a full mesh
 - No IPv6 support
-- For WAN interfaces only physical interfaces are supported today under `node.l3_interfaces`
 - For WAN interfaces, NAT IP on the Pathfinder side can be supported using the `wan_route_servers.path_groups.interfaces` key.
 - Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
+- It is not yet supported to disable HA on a specific LAN interface on the device, nor is it supported to add HA configuration on a non-uplink interface.
 - The name of the AVT policies and AVT profiles are configurable in the input variables. The Load Balance policies are named `LB-<profile_name>` and are not configurable.
 - For LAN, the current supported funcitonality is to use `uplink_type: p2p-vrfs` on the WAN routers and to have the relevant VRFs present on the uplink switches via `network_services`. Other LAN scenarios will come with time.
+- HA for AutoVPN is not supported
 
 ## Future work
 
 - Auto generation of Path-group IDs and other IDs.
 - New LAN scenarios (L2, ..)
-- HA for eBGP
 - HA for AutoVPN
 - Proper OSPF-BGP redistribution in VRF default.
 - Support for OSPF subinterfaces.
@@ -126,8 +156,7 @@ To Be Implemented.
 
 ### New node types in L3LS eos_designs
 
-- `wan_edge`: Edge routers for AutoVPN or Pathfinder depending on the `wan_mode` value.
-- `wan_transit`: Transit routers in Pathfinder context, not supported for AutoVPN.
+- `wan_router`: Edge routers for AutoVPN or Edge and Transit routers for CV Pathfinder depending on the `wan_mode` value.
 - `wan_rr`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
 
 The following table indicates the settings:
@@ -135,8 +164,7 @@ The following table indicates the settings:
 | Node Type Key | Underlay Router | Uplink Type | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default CV Pathfinder Role |
 | ------------- | --------------- | ----------- | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | -------------------------- |
 | wan_rr        | ✅               | p2p         | server            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | server          | pathfinder                 |
-| wan_edge      | ✅               | p2p         | client            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | client          | edge                       |
-| wan_transit   | ✅               | p2p         | client            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | client          | transit region             |
+| wan_router    | ✅               | p2p         | client            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | client          | edge                       |
 
 All these node types are defined with `default_underlay_routing_protocol: none` and `default_overlay_routing_protocol: ibgp`.
 
@@ -210,23 +238,25 @@ roles/eos_designs/docs/tables/node-type-key-wan-configuration.md
 
 `arista.avd.eos_designs` will generate CloudVision Tags that assist CloudVision with visualizing the WAN.
 
+The tags will only be generated when `wan_mode` is set to `cv-pathfinder`.
+
 #### Device Tags
 
-| Tag Name        | Source of information                                                                 |
-| --------------- | ------------------------------------------------------------------------------------- |
-| `Region`        | `cv_pathfinder_region` if `cv_pathfinder_role` is set but not `pathfinder`            |
-| `Zone`          | `DEFAULT-ZONE` if `cv_pathfinder_role` is set but not `pathfinder`                    |
-| `Site`          | `cv_pathfinder_site` if `cv_pathfinder_role` is set but not `pathfinder`              |
-| `PathfinderSet` | name of `node_group` or default `PATHFINDERS` if `cv_pathfinder_role` is `pathfinder` |
-| `Role`          | `cv_pathfinder_role` if set                                                           |
+| Tag Name        | Source of information                                      |
+| --------------- | ---------------------------------------------------------- |
+| `Region`        | `cv_pathfinder_region` for `wan_router`                    |
+| `Zone`          | `DEFAULT-ZONE` for `wan_router`                            |
+| `Site`          | `cv_pathfinder_site` for `wan_router`                      |
+| `PathfinderSet` | name of `node_group` or default `PATHFINDERS` for `wan_rr` |
+| `Role`          | `pathfinder`, `edge`, `transit region` or `transit zone`   |
 
 #### Interface Tags
 
-| Hint Tag Name | Source of information                                                       |
-| ------------- | --------------------------------------------------------------------------- |
-| `Type`        | `lan` or `wan` if `cv_pathfinder_role` is set                               |
-| `Carrier`     | `wan_carrier` if `cv_pathfinder_role` is set and this is a WAN interface    |
-| `Circuit`     | `wan_circiot_id` if `cv_pathfinder_role` is set and this is a LAN interface |
+| Hint Tag Name | Source of information                       |
+| ------------- | ------------------------------------------- |
+| `Type`        | `lan` or `wan`                              |
+| `Carrier`     | `wan_carrier` if this is a WAN interface    |
+| `Circuit`     | `wan_circuit_id` if this is a WAN interface |
 
 ## Getting started with WAN
 
