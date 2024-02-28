@@ -218,6 +218,7 @@ management_security:
     trust_certificate:
       certificates:
       - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: pathfinder
   profiles:

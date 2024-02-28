@@ -190,6 +190,7 @@ management_security:
     trust_certificate:
       certificates:
       - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_bfd:
   multihop:
     interval: 300

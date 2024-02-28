@@ -33,6 +33,7 @@ class ManagementSecurityMixin(UtilsMixin):
                         "key": f"{profile_name}.key",
                     },
                     "trust_certificate": {"certificates": ["aristaDeviceCertProvisionerDefaultRootCA.crt"]},
+                    "tls_versions": "1.2",
                 }
             ]
         }
