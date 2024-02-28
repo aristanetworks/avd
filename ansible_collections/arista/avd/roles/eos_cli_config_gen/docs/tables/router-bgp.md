@@ -283,7 +283,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import_ethernet_segment_ip_mass_withdraw</samp>](## "router_bgp.address_family_evpn.route.import_ethernet_segment_ip_mass_withdraw") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;export_ethernet_segment_ip_mass_withdraw</samp>](## "router_bgp.address_family_evpn.route.export_ethernet_segment_ip_mass_withdraw") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop_unchanged</samp>](## "router_bgp.address_family_evpn.next_hop_unchanged") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_bgp.address_family_evpn.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the Router BGP, Address family EVPN in the final EOS configuration<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_bgp.address_family_evpn.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the Router BGP, Address family EVPN in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;address_family_rtc</samp>](## "router_bgp.address_family_rtc") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_rtc.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_rtc.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name |
@@ -1246,7 +1246,7 @@
           export_ethernet_segment_ip_mass_withdraw: <bool>
         next_hop_unchanged: <bool>
 
-        # Multiline EOS CLI rendered directly on the Router BGP, Address family EVPN in the final EOS configuration
+        # Multiline EOS CLI rendered directly on the Router BGP, Address family EVPN in the final EOS configuration.
         eos_cli: <str>
       address_family_rtc:
         peer_groups:

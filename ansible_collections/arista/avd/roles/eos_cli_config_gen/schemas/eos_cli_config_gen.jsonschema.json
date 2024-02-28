@@ -17133,7 +17133,7 @@
             },
             "eos_cli": {
               "type": "string",
-              "description": "Multiline EOS CLI rendered directly on the Router BGP, Address family EVPN in the final EOS configuration\n",
+              "description": "Multiline EOS CLI rendered directly on the Router BGP, Address family EVPN in the final EOS configuration.\n",
               "title": "EOS CLI"
             }
           },
