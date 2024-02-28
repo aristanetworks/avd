@@ -11,43 +11,42 @@ keys:
     keys:
       disabled:
         type: bool
-        description: Enable or disable the postcard telemetry feature
+        description: Enable or disable the postcard telemetry feature.
       ingress:
         type: dict
-        description: Configure ingress parameters
         keys:
           collection:
             type: dict
-            description: Collector configuration
+            description: Collector configuration.
             keys:
               source:
                 type: str
-                description: GRE source configuration
+                description: Configure source IP address of GRE tunnel.
               destination:
                 type: str
-                description: GRE destination configuration
+                description: Configure destination IP address of GRE tunnel.
               version:
                 type: int
                 description: Postcard version
                 valid_values: [ 1, 2 ]
           sample:
             type: dict
-            description: Configure sampling parameters
+            description: Configure sampling parameters.
             keys:
               rate:
                 type: int
-                description: Configure sampling rate
+                description: Configure sampling rate.
                 convert_types:
                 - str
                 valid_values: [ 16384, 32768, 65536 ]
               tcp_udp_checksum:
                 type: int
-                description: Configure TCP/UDP checksum or IP ID checksum
+                description: Configure TCP/UDP checksum or IP ID checksum.
                 convert_types:
                 - str
       profiles:
         type: list
-        description: Configure the postcard telemetry profile
+        description: Configure the postcard telemetry profile.
         primary_key: name
         items:
           type: dict
@@ -57,47 +56,49 @@ keys:
               description: Profile name
             ingress_sample_policy:
               type: str
-              description: Configure ingress parameters
+              description: Configure ingress sample policy for the profile.
       sample_policies:
         type: list
         primary_key: name
-        description: Configure sample policies
+        description: Configure sample policies.
         items:
           type: dict
           keys:
             name:
               type: str
-              description: Configure sample policy name
+              description: Configure sample policy name.
             match_rules:
               type: list
               primary_key: rule_name
-              description: Configure match rules
+              description: Configure rules for sample policy.
               items:
                 type: dict
                 keys:
                   rule_name:
                     type: str
-                    description: Match rule name
                   type:
                     type: str
-                    description: Select the IP version
+                    description: Select the IP address version.
                     valid_values: [ ipv4, ipv6 ]
                   destination_prefix:
                     type: str
-                    description: IPv4 Network/Mask or IPv6 Network/Mask
+                    description: IPv4 Network/Mask or IPv6 Network/Mask.
                   source_prefix:
                     type: str
-                    description: IPv4 Network/Mask or IPv6 Network/Mask
-                  protocol:
-                    type: dict
-                    keys:
-                      protocol_type:
-                        type: str
-                        description: Select TCP/UDP
-                        valid_values: [ tcp, udp ]
-                      destination_port:
-                        type: list
-                        description: |
-                          Enter the port name or range or  port numbers in a list.
-                          Example:
-                            ["12","14-20", "www"]
+                    description: IPv4 Network/Mask or IPv6 Network/Mask.
+                  protocol_type:
+                    type: str
+                    description: Select TCP/UDP.
+                    valid_values: [ tcp, udp ]
+                  destination_port:
+                    type: list
+                    description: |-
+                      Enter the port name or range or  port numbers in a list.
+                      Example:
+                        ["12","14-20", "www"]
+                  source_port:
+                    type: list
+                    description: |-
+                      Enter the port name or range or  port numbers in a list.
+                      Example:
+                        ["12","14-20", "www"]

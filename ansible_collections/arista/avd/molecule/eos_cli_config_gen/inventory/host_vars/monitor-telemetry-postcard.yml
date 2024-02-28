@@ -20,32 +20,29 @@ monitor_telemetry_postcard:
           type: ipv4
           destination_prefix: 10.3.3.0/24
           source_prefix: 3.4.5.0/24
-          protocol:
-            protocol_type: tcp
-            destination_port:
-              - '77'
-              - 78-80
-              - www
+          protocol_type: tcp
+          destination_port:
+            - '77'
+            - 78-80
+            - www
         - rule_name: rule2
           type: ipv6
           destination_prefix: 10.3.4.0/24
           source_prefix: 3.4.4.0/24
-          protocol:
-            protocol_type: udp
-            destination_port:
-              - '747'
-              - 748-800
-              - ssh
+          protocol_type: udp
+          destination_port:
+            - '747'
+            - 748-800
+            - ssh
     - name: samplepo2
       match_rules:
         - rule_name: rule1
           type: ipv4
           destination_prefix: 10.3.3.0/24
           source_prefix: 3.4.5.0/24
-          protocol:
-            protocol_type: udp
-            destination_port:
-              - '77'
-              - 78-80
-              - www
+          protocol_type: udp
+          source_port:
+            - '77'
+            - 78-80
+            - www
     - name: samplepo3

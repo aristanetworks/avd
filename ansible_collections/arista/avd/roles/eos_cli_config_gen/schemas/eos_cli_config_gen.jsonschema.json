@@ -11097,25 +11097,24 @@
       "properties": {
         "disabled": {
           "type": "boolean",
-          "description": "Enable or disable the postcard telemetry feature",
+          "description": "Enable or disable the postcard telemetry feature.",
           "title": "Disabled"
         },
         "ingress": {
           "type": "object",
-          "description": "Configure ingress parameters",
           "properties": {
             "collection": {
               "type": "object",
-              "description": "Collector configuration",
+              "description": "Collector configuration.",
               "properties": {
                 "source": {
                   "type": "string",
-                  "description": "GRE source configuration",
+                  "description": "Configure source IP address of GRE tunnel.",
                   "title": "Source"
                 },
                 "destination": {
                   "type": "string",
-                  "description": "GRE destination configuration",
+                  "description": "Configure destination IP address of GRE tunnel.",
                   "title": "Destination"
                 },
                 "version": {
@@ -11136,11 +11135,11 @@
             },
             "sample": {
               "type": "object",
-              "description": "Configure sampling parameters",
+              "description": "Configure sampling parameters.",
               "properties": {
                 "rate": {
                   "type": "integer",
-                  "description": "Configure sampling rate",
+                  "description": "Configure sampling rate.",
                   "enum": [
                     16384,
                     32768,
@@ -11150,7 +11149,7 @@
                 },
                 "tcp_udp_checksum": {
                   "type": "integer",
-                  "description": "Configure TCP/UDP checksum or IP ID checksum",
+                  "description": "Configure TCP/UDP checksum or IP ID checksum.",
                   "title": "TCP UDP Checksum"
                 }
               },
@@ -11169,7 +11168,7 @@
         },
         "profiles": {
           "type": "array",
-          "description": "Configure the postcard telemetry profile",
+          "description": "Configure the postcard telemetry profile.",
           "items": {
             "type": "object",
             "properties": {
@@ -11180,7 +11179,7 @@
               },
               "ingress_sample_policy": {
                 "type": "string",
-                "description": "Configure ingress parameters",
+                "description": "Configure ingress sample policy for the profile.",
                 "title": "Ingress Sample Policy"
               }
             },
@@ -11196,29 +11195,28 @@
         },
         "sample_policies": {
           "type": "array",
-          "description": "Configure sample policies",
+          "description": "Configure sample policies.",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Configure sample policy name",
+                "description": "Configure sample policy name.",
                 "title": "Name"
               },
               "match_rules": {
                 "type": "array",
-                "description": "Configure match rules",
+                "description": "Configure rules for sample policy.",
                 "items": {
                   "type": "object",
                   "properties": {
                     "rule_name": {
                       "type": "string",
-                      "description": "Match rule name",
                       "title": "Rule Name"
                     },
                     "type": {
                       "type": "string",
-                      "description": "Select the IP version",
+                      "description": "Select the IP address version.",
                       "enum": [
                         "ipv4",
                         "ipv6"
@@ -11227,37 +11225,32 @@
                     },
                     "destination_prefix": {
                       "type": "string",
-                      "description": "IPv4 Network/Mask or IPv6 Network/Mask",
+                      "description": "IPv4 Network/Mask or IPv6 Network/Mask.",
                       "title": "Destination Prefix"
                     },
                     "source_prefix": {
                       "type": "string",
-                      "description": "IPv4 Network/Mask or IPv6 Network/Mask",
+                      "description": "IPv4 Network/Mask or IPv6 Network/Mask.",
                       "title": "Source Prefix"
                     },
-                    "protocol": {
-                      "type": "object",
-                      "properties": {
-                        "protocol_type": {
-                          "type": "string",
-                          "description": "Select TCP/UDP",
-                          "enum": [
-                            "tcp",
-                            "udp"
-                          ],
-                          "title": "Protocol Type"
-                        },
-                        "destination_port": {
-                          "type": "array",
-                          "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]\n",
-                          "title": "Destination Port"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "title": "Protocol"
+                    "protocol_type": {
+                      "type": "string",
+                      "description": "Select TCP/UDP.",
+                      "enum": [
+                        "tcp",
+                        "udp"
+                      ],
+                      "title": "Protocol Type"
+                    },
+                    "destination_port": {
+                      "type": "array",
+                      "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                      "title": "Destination Port"
+                    },
+                    "source_port": {
+                      "type": "array",
+                      "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                      "title": "Source Port"
                     }
                   },
                   "additionalProperties": false,
