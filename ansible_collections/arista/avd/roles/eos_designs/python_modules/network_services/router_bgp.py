@@ -403,6 +403,10 @@ class RouterBgpMixin(UtilsMixin):
         return bgp_vlan
 
     @cached_property
+    def _evpn_vlan_bundles(self) -> list:
+        return get(self._hostvars, "evpn_vlan_bundles", default=[])
+
+    @cached_property
     def _evpn_vlan_aware_bundles(self) -> bool:
         return get(self._hostvars, "evpn_vlan_aware_bundles", default=False)
 
@@ -428,7 +432,7 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return an evpn_vlan_bundle dict if it exists, else raise an exception.
         """
-        if (evpn_vlan_bundle := get_item(self._hostvars["evpn_vlan_bundles"], "name", bundle_name)) is None:
+        if (evpn_vlan_bundle := get_item(self._evpn_vlan_bundles, "name", bundle_name)) is None:
             raise AristaAvdMissingVariableError(
                 "The 'evpn_vlan_bundle' of the svis/l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurence seen for svi/l2vlan"
                 f" {vlan['id']} in Tenant '{vlan['tenant']}' and evpn_vlan_bundle '{vlan['evpn_vlan_bundle']}'."
