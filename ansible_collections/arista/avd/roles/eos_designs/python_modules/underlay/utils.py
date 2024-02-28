@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
@@ -264,32 +263,7 @@ class UtilsMixin:
             # TODO in separate PR adding VRRP support for SVIs
             pass
 
-        svi_ip_helpers: list[dict] = convert_dicts(default(svi.get("ip_helpers"), vrf.get("ip_helpers"), []), "ip_helper")
-        if svi_ip_helpers:
-            subinterface["ip_helpers"] = [
-                {"ip_helper": svi_ip_helper["ip_helper"], "source_interface": svi_ip_helper.get("source_interface"), "vrf": svi_ip_helper.get("source_vrf")}
-                for svi_ip_helper in svi_ip_helpers
-            ]
-
-        if get(svi, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
-            subinterface.update(
-                {
-                    "ospf_area": svi["ospf"].get("area", "0"),
-                    "ospf_network_point_to_point": svi["ospf"].get("point_to_point", False),
-                    "ospf_cost": svi["ospf"].get("cost"),
-                }
-            )
-            ospf_authentication = svi["ospf"].get("authentication")
-            if ospf_authentication == "simple" and (ospf_simple_auth_key := svi["ospf"].get("simple_auth_key")) is not None:
-                subinterface.update({"ospf_authentication": ospf_authentication, "ospf_authentication_key": ospf_simple_auth_key})
-            elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := svi["ospf"].get("message_digest_keys")) is not None:
-                ospf_keys = []
-                for ospf_key in ospf_message_digest_keys:
-                    if not ("id" in ospf_key and "key" in ospf_key):
-                        continue
-
-                    ospf_keys.append({"id": ospf_key["id"], "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]})
-                if ospf_keys:
-                    subinterface.update({"ospf_authentication": ospf_authentication, "ospf_message_digest_keys": ospf_keys})
+        # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
+        self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
 
         return strip_empties_from_dict(subinterface)
