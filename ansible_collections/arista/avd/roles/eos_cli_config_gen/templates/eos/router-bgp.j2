@@ -648,10 +648,6 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_evpn.route.export_ethernet_segment_ip_mass_withdraw is arista.avd.defined(true) %}
       route export ethernet-segment ip mass-withdraw
 {%         endif %}
-{%         if router_bgp.address_family_evpn.eos_cli is arista.avd.defined %}
-      !
-      {{ router_bgp.address_family_evpn.eos_cli | indent(6, false) }}
-{%         endif %}
 {%     endif %}
 {# address family flow-spec ipv4 activation #}
 {%     if router_bgp.address_family_flow_spec_ipv4 is arista.avd.defined %}
@@ -1745,4 +1741,8 @@ router bgp {{ router_bgp.as }}
       recovery delay {{ session_tracker.recovery_delay }} seconds
 {%         endif %}
 {%     endfor %}
+{%     if router_bgp.eos_cli is arista.avd.defined %}
+   !
+   {{ router_bgp.eos_cli | indent(6, false) }}
+{%     endif %}
 {% endif %}

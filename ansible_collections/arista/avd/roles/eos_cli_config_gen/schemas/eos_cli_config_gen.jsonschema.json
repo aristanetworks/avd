@@ -20383,6 +20383,11 @@
             ]
           },
           "title": "Session Trackers"
+        },
+        "eos_cli": {
+          "type": "string",
+          "description": "Multiline EOS CLI rendered directly on the Router BGP in the final EOS configuration.",
+          "title": "EOS CLI"
         }
       },
       "additionalProperties": false,
