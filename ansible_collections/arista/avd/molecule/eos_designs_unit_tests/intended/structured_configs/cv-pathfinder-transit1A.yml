@@ -731,6 +731,32 @@ metadata:
       tags:
       - name: Type
         value: lan
+    - interface: Ethernet52.1000
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.142
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.666
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1.42
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Comcast
+    - interface: Ethernet2.42
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10666'
     - interface: Ethernet1
       tags:
       - name: Type

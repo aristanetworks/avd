@@ -75,7 +75,7 @@ class WanMixin:
     @cached_property
     def wan_interfaces(self: SharedUtils) -> list:
         """
-        As a first approach, only interfaces under l3edge.l3_interfaces can be considered
+        As a first approach, only interfaces under node config l3_interfaces can be considered
         as WAN interfaces.
         This may need to be made wider.
         This also may require a different format for the dictionaries inside the list.
