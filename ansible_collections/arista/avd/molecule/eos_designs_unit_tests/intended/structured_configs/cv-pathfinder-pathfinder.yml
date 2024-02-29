@@ -415,7 +415,7 @@ application_traffic_recognition:
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
     - name: APP-CONTROL-PLANE
-      src_prefix_set_name: APP-SRC-PFX-CONTROL-PLANE
+      src_prefix_set_name: PFX-LOCAL-VTEP-IP
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -432,7 +432,7 @@ application_traffic_recognition:
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: APP-SRC-PFX-CONTROL-PLANE
+    - name: PFX-LOCAL-VTEP-IP
       prefix_values:
       - 192.168.144.1/32
 dps_interfaces:

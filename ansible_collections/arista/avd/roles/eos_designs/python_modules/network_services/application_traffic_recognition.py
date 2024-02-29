@@ -38,11 +38,11 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
 
     @cached_property
     def _wan_cp_app_dst_prefix(self) -> str:
-        return "APP-DEST-PFX-CONTROL-PLANE"
+        return "PFX-PATHFINDERS"
 
     @cached_property
     def _wan_cp_app_src_prefix(self) -> str:
-        return "APP-SRC-PFX-CONTROL-PLANE"
+        return "PFX-LOCAL-VTEP-IP"
 
     def _generate_control_plane_application_profile(self, app_dict: dict) -> None:
         """
@@ -62,10 +62,10 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
               applications:
                 ipv4_applications:
                   - name: APP-CONTROL-PLANE
-                    dest_prefix_set_name: APP-DEST-PFX-CONTROL-PLANE
+                    dest_prefix_set_name: PFX-PATHFINDERS
               field_sets:
                 ipv4_prefixes:
-                  - name: APP-DEST-PFX-CONTROL-PLANE
+                  - name: PFX-PATHFINDERS
                     prefix_values: [Pathfinder to which the router is connected vtep_ips]
 
         Pathfinder:
@@ -78,10 +78,10 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
               applications:
                 ipv4_applications:
                   - name: APP-CONTROL-PLANE
-                    src_prefix_set_name: APP-SRC-PFX-CONTROL-PLANE
+                    src_prefix_set_name: PFX-LOCAL-VTEP-IP
               field_sets:
                 ipv4_prefixes:
-                  - name: APP-SRC-PFX-CONTROL-PLANE
+                  - name: PFX-LOCAL-VTEP-IP
                     prefix_values: [Pathfinder vtep_ip]
         """
         # Adding the application-profile

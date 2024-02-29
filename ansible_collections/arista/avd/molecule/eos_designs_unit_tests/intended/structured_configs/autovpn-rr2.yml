@@ -241,10 +241,10 @@ application_traffic_recognition:
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
-      src_prefix_set_name: APP-SRC-PFX-CONTROL-PLANE
+      src_prefix_set_name: PFX-LOCAL-VTEP-IP
   field_sets:
     ipv4_prefixes:
-    - name: APP-SRC-PFX-CONTROL-PLANE
+    - name: PFX-LOCAL-VTEP-IP
       prefix_values:
       - 192.168.131.2/32
 dps_interfaces:

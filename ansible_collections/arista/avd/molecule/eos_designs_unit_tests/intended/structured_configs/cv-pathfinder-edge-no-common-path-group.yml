@@ -479,7 +479,7 @@ application_traffic_recognition:
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
     - name: APP-CONTROL-PLANE
-      dest_prefix_set_name: APP-DEST-PFX-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -496,7 +496,7 @@ application_traffic_recognition:
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: APP-DEST-PFX-CONTROL-PLANE
+    - name: PFX-PATHFINDERS
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

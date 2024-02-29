@@ -230,10 +230,10 @@ application_traffic_recognition:
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
-      dest_prefix_set_name: APP-DEST-PFX-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     ipv4_prefixes:
-    - name: APP-DEST-PFX-CONTROL-PLANE
+    - name: PFX-PATHFINDERS
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
