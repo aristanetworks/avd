@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>router_bgp</samp>](## "router_bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;as</samp>](## "router_bgp.as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;as_notation</samp>](## "router_bgp.as_notation") | String |  |  | Valid Values:<br>- <code>asdot</code><br>- <code>asplain</code> | BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>". This flag indicates which mode is preferred - asplain is the default. |
     | [<samp>&nbsp;&nbsp;router_id</samp>](## "router_bgp.router_id") | String |  |  |  | In IP address format A.B.C.D |
     | [<samp>&nbsp;&nbsp;distance</samp>](## "router_bgp.distance") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;external_routes</samp>](## "router_bgp.distance.external_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
@@ -740,6 +741,9 @@
       # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
       # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
       as: <str>
+
+      # BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>". This flag indicates which mode is preferred - asplain is the default.
+      as_notation: <str; "asdot" | "asplain">
 
       # In IP address format A.B.C.D
       router_id: <str>

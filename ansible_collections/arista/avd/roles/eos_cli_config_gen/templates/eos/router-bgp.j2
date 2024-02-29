@@ -7,6 +7,9 @@
 {% if router_bgp.as is arista.avd.defined %}
 !
 router bgp {{ router_bgp.as }}
+{%     if router_bgp.as_notation is arista.avd.defined %}
+   bgp asn notation {{ router_bgp.as_notation }}
+{%     endif %}
 {%     if router_bgp.router_id is arista.avd.defined %}
    router-id {{ router_bgp.router_id }}
 {%     endif %}
