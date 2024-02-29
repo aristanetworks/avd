@@ -240,6 +240,16 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: edge
   region:
@@ -252,8 +262,8 @@ router_adaptive_virtual_topology:
     name: Site511
     id: 511
   profiles:
-  - name: CONTROL-PLANE-PROFILE
-    load_balance_policy: LB-CONTROL-PLANE-PROFILE
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   - name: DEFAULT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
   vrfs:
@@ -270,7 +280,7 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
-    - name: CONTROL-PLANE-PROFILE
+    - name: DEFAULT-POLICY-CONTROL-PLANE
       id: 254
     - name: DEFAULT-POLICY-DEFAULT
       id: 1
@@ -281,8 +291,8 @@ router_adaptive_virtual_topology:
       avt_profile: DEFAULT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-WITH-CP
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-POLICY-CONTROL-PLANE
     - application_profile: default
       avt_profile: DEFAULT-POLICY-DEFAULT
 router_bfd:
@@ -338,7 +348,7 @@ router_path_selection:
     - name: INET
     - name: MPLS
     - name: LTE
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
     - name: MPLS
@@ -349,22 +359,25 @@ stun:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
       ip_address: 10.7.7.7
+      ssl_profile: STUN-DTLS
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
+      ssl_profile: STUN-DTLS
     - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
       ip_address: 172.16.0.1
+      ssl_profile: STUN-DTLS
 application_traffic_recognition:
   application_profiles:
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   applications:
     ipv4_applications:
-    - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     ipv4_prefixes:
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: PFX-PATHFINDERS
       prefix_values:
       - 192.168.144.1/32
 dps_interfaces:

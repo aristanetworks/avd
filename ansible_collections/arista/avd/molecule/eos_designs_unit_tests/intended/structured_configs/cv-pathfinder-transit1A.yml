@@ -422,6 +422,16 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: profileA
+    certificate:
+      file: profileA.crt
+      key: profileA.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: transit region
   region:
@@ -434,8 +444,8 @@ router_adaptive_virtual_topology:
     name: Site422
     id: 422
   profiles:
-  - name: CONTROL-PLANE-PROFILE
-    load_balance_policy: LB-CONTROL-PLANE-PROFILE
+  - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
   - name: DEFAULT-AVT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: DEFAULT-AVT-POLICY-DEFAULT
@@ -456,7 +466,7 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
-    - name: CONTROL-PLANE-PROFILE
+    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
       id: 254
     - name: DEFAULT-AVT-POLICY-VIDEO
       id: 3
@@ -493,8 +503,8 @@ router_adaptive_virtual_topology:
   policies:
   - name: DEFAULT-AVT-POLICY-WITH-CP
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-AVT-POLICY-CONTROL-PLANE
     - application_profile: VIDEO
       avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
@@ -574,7 +584,7 @@ router_path_selection:
       ipv4_addresses:
       - 172.17.0.3
   load_balance_policies:
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
     - name: LAN_HA
     - name: INET
@@ -635,10 +645,13 @@ stun:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
       ip_address: 10.7.7.7
+      ssl_profile: profileA
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
+      ssl_profile: profileA
     - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
       ip_address: 172.16.0.1
+      ssl_profile: profileA
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
@@ -650,9 +663,9 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   categories:
   - name: VIDEO1
     applications:
@@ -670,8 +683,8 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
-    - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -688,7 +701,7 @@ application_traffic_recognition:
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: PFX-PATHFINDERS
       prefix_values:
       - 192.168.144.1/32
 dps_interfaces:
@@ -731,6 +744,32 @@ metadata:
       tags:
       - name: Type
         value: lan
+    - interface: Ethernet52.1000
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.142
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.666
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1.42
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Comcast
+    - interface: Ethernet2.42
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10666'
     - interface: Ethernet1
       tags:
       - name: Type

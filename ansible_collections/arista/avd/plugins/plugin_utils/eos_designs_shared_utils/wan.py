@@ -75,7 +75,7 @@ class WanMixin:
     @cached_property
     def wan_interfaces(self: SharedUtils) -> list:
         """
-        As a first approach, only interfaces under l3edge.l3_interfaces can be considered
+        As a first approach, only interfaces under node config l3_interfaces can be considered
         as WAN interfaces.
         This may need to be made wider.
         This also may require a different format for the dictionaries inside the list.
@@ -277,7 +277,7 @@ class WanMixin:
         """
         Return a dict keyed by Wan RR based on the the wan_mode type with only the path_groups the router should connect to.
 
-        It the RR is part of the inventory, the peer_facts are read..
+        If the RR is part of the inventory, the peer_facts are read..
         If any key is specified in the variables, it overwrites whatever is in the peer_facts.
 
         If no peer_fact is found the variables are required in the inventory.
@@ -293,10 +293,10 @@ class WanMixin:
             if wan_rs == self.hostname:
                 # Don't add yourself
                 continue
-
             if (peer_facts := self.get_peer_facts(wan_rs, required=False)) is not None:
                 # Found a matching server in inventory
                 bgp_as = peer_facts.get("bgp_as")
+
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.bgp_as:
                     raise AristaAvdError(f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs} is different from our own: {self.bgp_as}.")
@@ -493,3 +493,10 @@ class WanMixin:
         Returns LB-{name}
         """
         return f"LB-{name}"
+
+    @cached_property
+    def wan_stun_dtls_profile_name(self: SharedUtils) -> str | None:
+        if not self.is_wan_router or get(self.hostvars, "wan_stun_dtls_disable") is True:
+            return None
+
+        return get(self.hostvars, "wan_stun_dtls_profile_name", default="STUN-DTLS")

@@ -195,6 +195,16 @@ ip_security:
     mode: transport
   key_controller:
     profile: CP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_bfd:
   multihop:
     interval: 300
@@ -205,7 +215,7 @@ router_path_selection:
     ipv4_segment_size: auto
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-DEFAULT
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
   policies:
   - name: DEFAULT-POLICY
     default_match:
@@ -213,8 +223,8 @@ router_path_selection:
   - name: DEFAULT-POLICY-WITH-CP
     rules:
     - id: 10
-      application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      load_balance: LB-CONTROL-PLANE-PROFILE
+      application_profile: APP-PROFILE-CONTROL-PLANE
+      load_balance: LB-DEFAULT-POLICY-CONTROL-PLANE
     default_match:
       load_balance: LB-DEFAULT-POLICY-DEFAULT
   vrfs:
@@ -224,16 +234,16 @@ router_path_selection:
     path_selection_policy: DEFAULT-POLICY-WITH-CP
 application_traffic_recognition:
   application_profiles:
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   applications:
     ipv4_applications:
-    - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     ipv4_prefixes:
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: PFX-PATHFINDERS
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
