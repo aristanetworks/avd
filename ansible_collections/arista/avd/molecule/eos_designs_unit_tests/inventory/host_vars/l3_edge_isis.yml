@@ -1,5 +1,6 @@
 underlay_routing_protocol: isis
 isis_area_id: "49.0001"
+underlay_isis_bfd_enable: true
 
 type: spine
 spine:

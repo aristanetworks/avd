@@ -34,6 +34,9 @@ class RouterIsisMixin(UtilsMixin):
             "address_family_ipv4": {"enabled": True, "maximum_paths": get(self._hostvars, "isis_maximum_paths", default=4)},
         }
 
+        if get(self._hostvars, "underlay_isis_bfd_enable") is True:
+            router_isis["address_family_ipv4"]["bfd_all_interfaces"] = True
+
         if self.shared_utils.underlay_ldp is True:
             router_isis["mpls_ldp_sync_default"] = True
 

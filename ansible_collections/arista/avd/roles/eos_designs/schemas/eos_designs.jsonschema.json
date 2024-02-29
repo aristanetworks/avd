@@ -56307,6 +56307,11 @@
       "default": false,
       "title": "Underlay IPv6"
     },
+    "underlay_isis_bfd_enable": {
+      "type": "boolean",
+      "default": false,
+      "title": "Underlay ISIS BFD Enable"
+    },
     "underlay_isis_instance_name": {
       "description": "Default -> \"EVPN_UNDERLAY\" for l3ls, \"CORE\" for mpls.",
       "type": "string",
