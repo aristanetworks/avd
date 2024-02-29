@@ -124,11 +124,11 @@ class UtilsMixin:
         uplink_pool = self.shared_utils.uplink_ipv4_pool
         downlink_pool = self._get_downlink_ipv4_pool(uplink_switch_index)
         if uplink_pool is not None and downlink_pool is not None:
-            raise AristaAvdError("something with both pools")
+            raise AristaAvdError("Either 'unlink_ipv4_pool' is set on this switch or 'downlink_ipv4_pool' is set on all uplink switches, not both.")
 
         if uplink_pool is None and downlink_pool is None:
             raise AristaAvdMissingVariableError(
-                "To calculate uplink IP addresses 'uplink_ipv4_pool' must be set on this switch or 'downlink_ipv4_pool' on all the uplink switches."
+                "To calculate uplink IP addresses 'uplink_ipv4_pool' must be set on this switch or 'downlink_ipv4_pool' on all uplink switches."
             )
 
         return uplink_pool or downlink_pool
