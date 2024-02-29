@@ -494,6 +494,7 @@ metadata:
         value: '888'
   cv_pathfinder:
     role: pathfinder
+    ssl_profile: profileB
     vtep_ip: 192.168.144.2
     interfaces:
     - name: Ethernet1
