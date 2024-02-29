@@ -263,10 +263,10 @@ port_channel_interfaces:
     transport: ipv4
     enable: true
     role: master
+    mpass: true
   mode: access
   vlans: '11'
   mlag: 1
-  ptp_mpass: true
 ethernet_interfaces:
 - name: Ethernet9
   peer: ptp-tests-leaf1

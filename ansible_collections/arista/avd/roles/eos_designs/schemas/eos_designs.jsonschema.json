@@ -9929,6 +9929,7 @@
               "ptp_mpass": {
                 "type": "boolean",
                 "default": false,
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
                 "title": "PTP Mpass"
               },
               "short_esi": {
@@ -10914,10 +10915,6 @@
                     "type": "boolean",
                     "title": "VMTracer"
                   },
-                  "ptp_mpass": {
-                    "type": "boolean",
-                    "title": "PTP Mpass"
-                  },
                   "ptp": {
                     "type": "object",
                     "properties": {
@@ -10990,6 +10987,10 @@
                           "layer2"
                         ],
                         "title": "Transport"
+                      },
+                      "mpass": {
+                        "type": "boolean",
+                        "title": "Mpass"
                       }
                     },
                     "additionalProperties": false,
@@ -16229,6 +16230,7 @@
               "ptp_mpass": {
                 "type": "boolean",
                 "default": false,
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
                 "title": "PTP Mpass"
               },
               "short_esi": {
@@ -17214,10 +17216,6 @@
                     "type": "boolean",
                     "title": "VMTracer"
                   },
-                  "ptp_mpass": {
-                    "type": "boolean",
-                    "title": "PTP Mpass"
-                  },
                   "ptp": {
                     "type": "object",
                     "properties": {
@@ -17290,6 +17288,10 @@
                           "layer2"
                         ],
                         "title": "Transport"
+                      },
+                      "mpass": {
+                        "type": "boolean",
+                        "title": "Mpass"
                       }
                     },
                     "additionalProperties": false,

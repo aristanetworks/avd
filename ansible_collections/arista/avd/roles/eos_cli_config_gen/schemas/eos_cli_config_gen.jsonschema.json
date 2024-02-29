@@ -12968,10 +12968,6 @@
             "type": "boolean",
             "title": "VMTracer"
           },
-          "ptp_mpass": {
-            "type": "boolean",
-            "title": "PTP Mpass"
-          },
           "ptp": {
             "type": "object",
             "properties": {
@@ -13044,6 +13040,10 @@
                   "layer2"
                 ],
                 "title": "Transport"
+              },
+              "mpass": {
+                "type": "boolean",
+                "title": "Mpass"
               }
             },
             "additionalProperties": false,

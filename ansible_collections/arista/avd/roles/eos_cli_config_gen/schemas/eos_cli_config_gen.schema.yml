@@ -7763,8 +7763,6 @@ keys:
           - network
         vmtracer:
           type: bool
-        ptp_mpass:
-          type: bool
         ptp:
           type: dict
           keys:
@@ -7813,6 +7811,8 @@ keys:
               - ipv4
               - ipv6
               - layer2
+            mpass:
+              type: bool
         ip_address:
           type: str
           description: IPv4 address/mask
