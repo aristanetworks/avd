@@ -12363,7 +12363,7 @@
                               "description": "Specify lower rate.\nRange in kbps <8-200000000>.",
                               "title": "Lower Rate"
                             },
-                            "rate_unit": {
+                            "lower_rate_unit": {
                               "type": "string",
                               "enum": [
                                 "bps",
@@ -12372,14 +12372,14 @@
                                 "pps"
                               ],
                               "default": "bps",
-                              "title": "Rate Unit"
+                              "title": "Lower Rate Unit"
                             },
                             "lower_rate_burst_size": {
                               "type": "integer",
                               "description": "Range in bytes <256-128000000>.",
                               "title": "Lower Rate Burst Size"
                             },
-                            "burst_size_unit": {
+                            "lower_rate_burst_size_unit": {
                               "type": "string",
                               "enum": [
                                 "bytes",
@@ -12388,7 +12388,7 @@
                                 "packets"
                               ],
                               "default": "bytes",
-                              "title": "Burst Size Unit"
+                              "title": "Lower Rate Burst Size Unit"
                             },
                             "action": {
                               "description": "Set action for policed traffic.",
@@ -12408,10 +12408,32 @@
                               "description": "Specify higher rate.\nRange in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>.",
                               "title": "Higher Rate"
                             },
+                            "higher_rate_unit": {
+                              "type": "string",
+                              "enum": [
+                                "bps",
+                                "kbps",
+                                "mbps",
+                                "pps"
+                              ],
+                              "default": "bps",
+                              "title": "Higher Rate Unit"
+                            },
                             "higher_rate_burst_size": {
                               "type": "integer",
                               "description": "Range in bytes <256-128000000>.",
                               "title": "Higher Rate Burst Size"
+                            },
+                            "higher_rate_burst_size_unit": {
+                              "type": "string",
+                              "enum": [
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "packets"
+                              ],
+                              "default": "bytes",
+                              "title": "Higher Rate Burst Size Unit"
                             }
                           },
                           "additionalProperties": false,

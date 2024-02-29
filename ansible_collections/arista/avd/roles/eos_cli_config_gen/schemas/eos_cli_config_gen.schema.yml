@@ -7325,7 +7325,7 @@ keys:
                             description: 'Specify lower rate.
 
                               Range in kbps <8-200000000>.'
-                          rate_unit:
+                          lower_rate_unit:
                             type: str
                             valid_values:
                             - bps
@@ -7338,7 +7338,7 @@ keys:
                             convert_types:
                             - str
                             description: Range in bytes <256-128000000>.
-                          burst_size_unit:
+                          lower_rate_burst_size_unit:
                             type: str
                             valid_values:
                             - bytes
@@ -7364,11 +7364,27 @@ keys:
 
                               Range in kbps <lower_rate in kbps + 8 - lower_rate in
                               kbps + 200000000>.'
+                          higher_rate_unit:
+                            type: str
+                            valid_values:
+                            - bps
+                            - kbps
+                            - mbps
+                            - pps
+                            default: bps
                           higher_rate_burst_size:
                             type: int
                             convert_types:
                             - str
                             description: Range in bytes <256-128000000>.
+                          higher_rate_burst_size_unit:
+                            type: str
+                            valid_values:
+                            - bytes
+                            - kbytes
+                            - mbytes
+                            - packets
+                            default: bytes
   port_channel_interfaces:
     type: list
     primary_key: name

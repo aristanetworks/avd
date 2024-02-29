@@ -30,13 +30,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;police</samp>](## "policy_maps.qos.[].classes.[].police") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate</samp>](## "policy_maps.qos.[].classes.[].police.rate") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lower_rate</samp>](## "policy_maps.qos.[].classes.[].police.rate.lower_rate") | Integer |  |  |  | Specify lower rate.<br>Range in kbps <8-200000000>. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_unit</samp>](## "policy_maps.qos.[].classes.[].police.rate.rate_unit") | String |  | `bps` | Valid Values:<br>- <code>bps</code><br>- <code>kbps</code><br>- <code>mbps</code><br>- <code>pps</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lower_rate_unit</samp>](## "policy_maps.qos.[].classes.[].police.rate.lower_rate_unit") | String |  | `bps` | Valid Values:<br>- <code>bps</code><br>- <code>kbps</code><br>- <code>mbps</code><br>- <code>pps</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lower_rate_burst_size</samp>](## "policy_maps.qos.[].classes.[].police.rate.lower_rate_burst_size") | Integer |  |  |  | Range in bytes <256-128000000>. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;burst_size_unit</samp>](## "policy_maps.qos.[].classes.[].police.rate.burst_size_unit") | String |  | `bytes` | Valid Values:<br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code><br>- <code>packets</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lower_rate_burst_size_unit</samp>](## "policy_maps.qos.[].classes.[].police.rate.lower_rate_burst_size_unit") | String |  | `bytes` | Valid Values:<br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code><br>- <code>packets</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "policy_maps.qos.[].classes.[].police.rate.action") | String |  |  | Valid Values:<br>- <code>dscp</code><br>- <code>drop-precedence</code> | Set action for policed traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_value</samp>](## "policy_maps.qos.[].classes.[].police.rate.dscp_value") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate</samp>](## "policy_maps.qos.[].classes.[].police.rate.higher_rate") | Integer |  |  |  | Specify higher rate.<br>Range in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate_unit</samp>](## "policy_maps.qos.[].classes.[].police.rate.higher_rate_unit") | String |  | `bps` | Valid Values:<br>- <code>bps</code><br>- <code>kbps</code><br>- <code>mbps</code><br>- <code>pps</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate_burst_size</samp>](## "policy_maps.qos.[].classes.[].police.rate.higher_rate_burst_size") | Integer |  |  |  | Range in bytes <256-128000000>. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate_burst_size_unit</samp>](## "policy_maps.qos.[].classes.[].police.rate.higher_rate_burst_size_unit") | String |  | `bytes` | Valid Values:<br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code><br>- <code>packets</code> |  |
 
 === "YAML"
 
@@ -86,11 +88,11 @@
                   # Specify lower rate.
                   # Range in kbps <8-200000000>.
                   lower_rate: <int>
-                  rate_unit: <str; "bps" | "kbps" | "mbps" | "pps"; default="bps">
+                  lower_rate_unit: <str; "bps" | "kbps" | "mbps" | "pps"; default="bps">
 
                   # Range in bytes <256-128000000>.
                   lower_rate_burst_size: <int>
-                  burst_size_unit: <str; "bytes" | "kbytes" | "mbytes" | "packets"; default="bytes">
+                  lower_rate_burst_size_unit: <str; "bytes" | "kbytes" | "mbytes" | "packets"; default="bytes">
 
                   # Set action for policed traffic.
                   action: <str; "dscp" | "drop-precedence">
@@ -99,7 +101,9 @@
                   # Specify higher rate.
                   # Range in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>.
                   higher_rate: <int>
+                  higher_rate_unit: <str; "bps" | "kbps" | "mbps" | "pps"; default="bps">
 
                   # Range in bytes <256-128000000>.
                   higher_rate_burst_size: <int>
+                  higher_rate_burst_size_unit: <str; "bytes" | "kbytes" | "mbytes" | "packets"; default="bytes">
     ```
