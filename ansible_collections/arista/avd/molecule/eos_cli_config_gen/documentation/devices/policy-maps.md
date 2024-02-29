@@ -84,7 +84,7 @@ policy-map type pbr PM_PBR_BREAKOUT
 | ----- | --- | ----- | ------ |
 | CM_REPLICATION_LD | dscp | af11 | - |
 | CM_REPLICATION_LD | cos | 4 | - |
-| CM_REPLICATION_LD | - | - | rate 30 kbps burst-size 280 bytes rate 40 kbps burst-size 270 bytes |
+| CM_REPLICATION_LD | - | - | rate 30 kbps burst-size 280 bytes rate 1 mbps burst-size 270 bytes |
 
 ##### PM_REPLICATION_LD3
 
@@ -92,7 +92,7 @@ policy-map type pbr PM_PBR_BREAKOUT
 | ----- | --- | ----- | ------ |
 | CM_REPLICATION_LD | dscp | af11 | - |
 | CM_REPLICATION_LD | cos | 6 | - |
-| CM_REPLICATION_LD | - | - | rate 10 kbps burst-size 260 kbytes |
+| CM_REPLICATION_LD | - | - | rate 10000 bps burst-size 260 kbytes |
 
 #### QOS Policy Maps Device Configuration
 
@@ -113,11 +113,11 @@ policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
       set dscp af11
       set cos 4
-      police rate 30 kbps burst-size 280 bytes rate 40 kbps burst-size 270 bytes
+      police rate 30 kbps burst-size 280 bytes rate 1 mbps burst-size 270 bytes
 !
 policy-map type quality-of-service PM_REPLICATION_LD3
    class CM_REPLICATION_LD
       set dscp af11
       set cos 6
-      police rate 10 kbps burst-size 260 kbytes
+      police rate 10000 bps burst-size 260 kbytes
 ```

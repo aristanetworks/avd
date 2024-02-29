@@ -10,11 +10,13 @@ policy_maps:
           police:
             rate:
               lower_rate: 10
-              rate_unit: kbps
+              lower_rate_unit: kbps
               lower_rate_burst_size: 260
-              burst_size_unit: kbytes
+              lower_rate_burst_size_unit: kbytes
               higher_rate: 30
+              higher_rate_unit: kbps
               higher_rate_burst_size: 270
+              higher_rate_burst_size_unit: kbytes
               action: drop-precedence
         - name: CM_REPLICATION_LD_2
           set:
@@ -29,9 +31,10 @@ policy_maps:
           police:
             rate:
               lower_rate: 30
-              rate_unit: kbps
+              lower_rate_unit: kbps
               lower_rate_burst_size: 280
-              higher_rate: 40
+              higher_rate: 1
+              higher_rate_unit: mbps
               higher_rate_burst_size: 270
     - name: PM_REPLICATION_LD3
       classes:
@@ -41,10 +44,9 @@ policy_maps:
             cos: 6
           police:
             rate:
-              lower_rate: 10
-              rate_unit: kbps
+              lower_rate: 10000
               lower_rate_burst_size: 260
-              burst_size_unit: kbytes
+              lower_rate_burst_size_unit: kbytes
   pbr:
     - name: PM_PBR_BREAKOUT
       classes:

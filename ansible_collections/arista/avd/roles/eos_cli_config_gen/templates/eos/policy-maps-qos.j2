@@ -21,14 +21,14 @@ policy-map type quality-of-service {{ policy_map.name }}
 {%         if class.police.rate is arista.avd.defined %}
 {%             set police_cli = "police rate " %}
 {%             if class.police.rate.lower_rate is arista.avd.defined and class.police.rate.lower_rate_burst_size is arista.avd.defined %}
-{%                 set police_cli = police_cli ~ class.police.rate.lower_rate ~ " " ~ class.police.rate.rate_unit | arista.avd.default('bps') ~ " burst-size " ~ class.police.rate.lower_rate_burst_size ~ " " ~ class.police.rate.burst_size_unit | arista.avd.default('bytes') %}
+{%                 set police_cli = police_cli ~ class.police.rate.lower_rate ~ " " ~ class.police.rate.lower_rate_unit | arista.avd.default('bps') ~ " burst-size " ~ class.police.rate.lower_rate_burst_size ~ " " ~ class.police.rate.lower_rate_burst_size_unit | arista.avd.default('bytes') %}
 {%                 if class.police.rate.higher_rate is arista.avd.defined and class.police.rate.higher_rate_burst_size is arista.avd.defined %}
 {%                     if class.police.rate.action is arista.avd.defined("dscp") and class.police.rate.dscp_value is arista.avd.defined %}
 {%                         set police_cli = police_cli ~ " action set dscp " ~ class.police.rate.dscp_value %}
 {%                     elif class.police.rate.action is arista.avd.defined("drop-precedence") %}
 {%                         set police_cli = police_cli ~ " action set drop-precedence"  %}
 {%                     endif %}
-{%                     set police_cli = police_cli ~ " rate " ~ class.police.rate.higher_rate ~ " " ~ class.police.rate.rate_unit | arista.avd.default('bps') ~ " burst-size " ~ class.police.rate.higher_rate_burst_size ~ " " ~ class.police.rate.burst_size_unit | arista.avd.default('bytes') %}
+{%                     set police_cli = police_cli ~ " rate " ~ class.police.rate.higher_rate ~ " " ~ class.police.rate.higher_rate_unit | arista.avd.default('bps') ~ " burst-size " ~ class.police.rate.higher_rate_burst_size ~ " " ~ class.police.rate.higher_rate_burst_size_unit | arista.avd.default('bytes') %}
 {%                 endif %}
 {%             endif %}
       {{ police_cli }}
