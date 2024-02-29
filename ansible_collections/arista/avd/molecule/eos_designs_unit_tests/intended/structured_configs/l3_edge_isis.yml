@@ -32,6 +32,7 @@ router_isis:
   address_family_ipv4:
     enabled: true
     maximum_paths: 4
+    bfd_all_interfaces: true
 ethernet_interfaces:
 - name: ethernet1
   peer: peer1
