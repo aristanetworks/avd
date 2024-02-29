@@ -173,12 +173,9 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
         # Set MLAG ID on port-channel if connection is multi-homed and this switch is running MLAG
         elif self.shared_utils.mlag and len(set(adapter["switches"])) > 1:
+            if get(port_channel_interface, "ptp.enable") is True and get(adapter, "port_channel.ptp_mpass") is True:
+                port_channel_interface['ptp']["mpass"] = True
             port_channel_interface["mlag"] = channel_group_id
-
-        # Set ptp mpass on port-channel if ptp is enabled and this switch is running MLAG
-        if get(port_channel_interface, "ptp.enable") is True and self.shared_utils.mlag:
-            if get(adapter, "port_channel.ptp_mpass") is True:
-                port_channel_interface["ptp_mpass"] = True
 
         # LACP Fallback
         if port_channel_mode in ["active", "passive"] and (lacp_fallback_mode := get(adapter, "port_channel.lacp_fallback.mode")) in ["static", "individual"]:
