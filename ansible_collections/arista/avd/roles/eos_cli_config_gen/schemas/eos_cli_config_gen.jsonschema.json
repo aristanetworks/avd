@@ -15390,6 +15390,15 @@
           "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
           "title": "As"
         },
+        "as_notation": {
+          "title": "ASN Notation",
+          "type": "string",
+          "description": "BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation \"<1-65535>.<0-65535>\". This flag indicates which mode is preferred - asplain is the default.",
+          "enum": [
+            "asdot",
+            "asplain"
+          ]
+        },
         "router_id": {
           "type": "string",
           "description": "In IP address format A.B.C.D",
