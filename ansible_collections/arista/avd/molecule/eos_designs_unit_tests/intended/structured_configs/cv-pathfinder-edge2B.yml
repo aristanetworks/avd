@@ -695,7 +695,31 @@ metadata:
       tags:
       - name: Type
         value: lan
+    - interface: Ethernet52.1000
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.142
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.666
+      tags:
+      - name: Type
+        value: lan
     - interface: Ethernet53
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet53.1000
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet53.142
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet53.666
       tags:
       - name: Type
         value: lan

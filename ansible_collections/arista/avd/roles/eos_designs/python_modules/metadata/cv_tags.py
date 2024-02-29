@@ -182,7 +182,8 @@ class CvTagsMixin:
                 if value:
                     tags.append(self._tag_dict(generate_tag["name"], value))
 
-            tags.extend(self._get_cv_pathfinder_interface_tags(ethernet_interface))
+            if self.shared_utils.is_cv_pathfinder_router:
+                tags.extend(self._get_cv_pathfinder_interface_tags(ethernet_interface))
 
             if tags:
                 interface_tags.append({"interface": ethernet_interface["name"], "tags": tags})
@@ -198,10 +199,6 @@ class CvTagsMixin:
             {"name": "Circuit", <value copied from wan_circuit_id if this is a wan interface>}
         ]
         """
-        # Skip if not cv_pathfinder_role or if this is a subinterface.
-        if not self.shared_utils.is_cv_pathfinder_router or "." in ethernet_interface["name"]:
-            return []
-
         if ethernet_interface["name"] in self._wan_interface_names:
             wan_interface = get_item(self.shared_utils.wan_interfaces, "name", ethernet_interface["name"], required=True)
             return strip_empties_from_list(
