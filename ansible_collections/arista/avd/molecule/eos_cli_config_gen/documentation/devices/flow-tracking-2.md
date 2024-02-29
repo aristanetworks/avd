@@ -56,6 +56,11 @@ interface Management1
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
 
+##### Records Summary
+
+| Record | Value |
+| ------ | ----- |
+
 #### Flow Tracking Device Configuration
 
 ```eos

@@ -86,6 +86,12 @@ interface Management1
 | T3 | T3-E3 | - | - | Management1 |
 | T3 | T3-E4 | - | - | No local interface |
 
+##### Records Summary
+
+| Record | Value |
+| ------ | ----- |
+| Record format ipfix standard timestamps counters | True |
+
 #### Flow Tracking Device Configuration
 
 ```eos
