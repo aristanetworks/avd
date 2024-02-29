@@ -88,6 +88,8 @@ class RouterIsisMixin(UtilsMixin):
 
         isis_area_id = get(self._hostvars, "isis_area_id", default="49.0001")
         return f"{isis_area_id}.{system_id}.00"
+        isis_area_id = get(self._hostvars, "isis_area_id", default="49.0001")
+        return f"{isis_area_id}.{system_id}.00"
 
     @cached_property
     def _is_type(self) -> str:
