@@ -73,27 +73,21 @@ class RouterIsisMixin(UtilsMixin):
 
     @cached_property
     def _isis_net(self) -> str | None:
-        isis_system_id_prefix = get(self.shared_utils.switch_data_combined, "isis_system_id_prefix")
+        if "node_id" == get(self._hostvars, "isis_system_id_format", default="node_id"):
+            isis_system_id_prefix = get(self.shared_utils.switch_data_combined, "isis_system_id_prefix")
+            if isis_system_id_prefix is None:
+                return None
 
-        if isis_system_id_prefix is not None:
-            isis_area_id = get(self._hostvars, "isis_area_id", default="49.0001")
-            isis_system_id_format = get(self._hostvars, "isis_system_id_format", default="node_id")
-            if isis_system_id_format in "node_id":
-                if self.shared_utils.id is None:
-                    raise AristaAvdMissingVariableError(
-                        f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using the node ID"
-                    )
-                net = f"{isis_area_id}.{isis_system_id_prefix}.{self.shared_utils.id:04d}.00"
-            else:
-                if self.shared_utils.router_id is None:
-                    raise AristaAvdMissingVariableError(
-                        f"'router_id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using the underlay loopback"
-                    )
-                system_id = self.ipv4_to_isis_system_id(self.shared_utils.router_id)
-                net = f"{isis_area_id}.{system_id}.00"
-            return net
+            if self.shared_utils.id is None:
+                raise AristaAvdMissingVariableError(
+                    f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using the node ID"
+                )
+            system_id = f"{isis_system_id_prefix}.{self.shared_utils.id:04d}"
+        else:
+            system_id = self.ipv4_to_isis_system_id(self.shared_utils.router_id)
 
-        return None
+        isis_area_id = get(self._hostvars, "isis_area_id", default="49.0001")
+        return f"{isis_area_id}.{system_id}.00"
 
     @cached_property
     def _is_type(self) -> str:
