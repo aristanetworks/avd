@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
     from .avdipaddressing import AvdIpAddressing
@@ -107,3 +108,27 @@ class UtilsMixin:
             odd_id = self._mlag_secondary_id
 
         return int((odd_id - 1) / 2)
+
+    def _get_parallel_uplink_index(self: "AvdIpAddressing", uplink_switch_index: int) -> int:
+        uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
+        uplink_switch_indexes = [index for index, value in enumerate(self.shared_utils.uplink_switches) if value == uplink_switch]
+        # Find index of uplink_interface going to the same uplink_switch (in case of parallel uplinks)
+        return uplink_switch_indexes.index(uplink_switch_index)
+
+    def _get_downlink_ipv4_pool(self: "AvdIpAddressing", uplink_switch_index: int) -> str | None:
+        uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
+        peer_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
+        return get(peer_facts, "downlink_ipv4_pool")
+
+    def _get_p2p_ipv4_pool(self: "AvdIpAddressing", uplink_switch_index: int) -> str:
+        uplink_pool = self.shared_utils.uplink_ipv4_pool
+        downlink_pool = self._get_downlink_ipv4_pool(uplink_switch_index)
+        if uplink_pool is not None and downlink_pool is not None:
+            raise AristaAvdError("something with both pools")
+
+        if uplink_pool is None and downlink_pool is None:
+            raise AristaAvdMissingVariableError(
+                "To calculate uplink IP addresses 'uplink_ipv4_pool' must be set on this switch or 'downlink_ipv4_pool' on all the uplink switches."
+            )
+
+        return uplink_pool or downlink_pool

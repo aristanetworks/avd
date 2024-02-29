@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 if TYPE_CHECKING:
@@ -107,6 +108,17 @@ class MiscMixin:
             get(self.switch_data_combined, "uplink_switches"),
             get(self.cv_topology_config, "uplink_switches"),
             [],
+        )
+
+    @cached_property
+    def uplink_interfaces(self: SharedUtils) -> list:
+        return range_expand(
+            default(
+                get(self.switch_data_combined, "uplink_interfaces"),
+                get(self.cv_topology_config, "uplink_interfaces"),
+                get(self.default_interfaces, "uplink_interfaces"),
+                [],
+            )
         )
 
     @cached_property

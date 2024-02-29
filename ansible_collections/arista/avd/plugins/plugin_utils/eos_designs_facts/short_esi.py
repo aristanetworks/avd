@@ -31,7 +31,7 @@ class ShortEsiMixin:
         if short_esi == "auto":
             esi_seed_1 = "".join(self.shared_utils.uplink_switches[:2])
             esi_seed_2 = "".join(self._uplink_switch_interfaces[:2])
-            esi_seed_3 = "".join(default(self._uplink_interfaces, [])[:2])
+            esi_seed_3 = "".join(default(self.shared_utils.uplink_interfaces, [])[:2])
             esi_seed_4 = default(self.shared_utils.group, "")
             esi_hash = sha256(f"{esi_seed_1}{esi_seed_2}{esi_seed_3}{esi_seed_4}".encode("UTF-8")).hexdigest()
             short_esi = re.sub(r"([0-9a-f]{4})", r"\1:", esi_hash)[:14]

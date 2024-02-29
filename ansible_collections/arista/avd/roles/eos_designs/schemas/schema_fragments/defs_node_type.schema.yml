@@ -328,6 +328,12 @@ $defs:
               Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             # Schema ref not implemented since we do not know which of the schemas to look at.
             # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
+          downlink_ipv4_pool:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: IPv4 subnet to use to connect to downlink switches. Set this on the parent switch. Cannot be combined with uplink_ipv4_pool for the same link.
+            type: str
+            format: ipv4_cidr
           mlag_port_channel_structured_config:
             $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items/"
             documentation_options:

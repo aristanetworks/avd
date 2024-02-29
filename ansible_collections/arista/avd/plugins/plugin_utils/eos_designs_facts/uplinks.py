@@ -38,17 +38,6 @@ class UplinksMixin:
         return self.shared_utils.max_uplink_switches
 
     @cached_property
-    def _uplink_interfaces(self: EosDesignsFacts) -> list:
-        return range_expand(
-            default(
-                get(self.shared_utils.switch_data_combined, "uplink_interfaces"),
-                get(self.shared_utils.cv_topology_config, "uplink_interfaces"),
-                get(self.shared_utils.default_interfaces, "uplink_interfaces"),
-                [],
-            )
-        )
-
-    @cached_property
     def _uplink_port_channel_id(self: EosDesignsFacts) -> int:
         """
         For MLAG secondary get the uplink_port_channel_id from the peer's facts.
@@ -77,7 +66,7 @@ class UplinksMixin:
         # MLAG Primary or not MLAG.
         if uplink_port_channel_id is None:
             # Overwriting uplink_port_channel_id
-            uplink_port_channel_id = int("".join(re.findall(r"\d", self._uplink_interfaces[0])))
+            uplink_port_channel_id = int("".join(re.findall(r"\d", self.shared_utils.uplink_interfaces[0])))
 
         # produce an error if the switch is MLAG and port-channel ID is above 2000
         if self.shared_utils.mlag:
@@ -194,7 +183,7 @@ class UplinksMixin:
         uplinks = []
         uplink_switches = self.shared_utils.uplink_switches
         uplink_switch_interfaces = self._uplink_switch_interfaces
-        for uplink_index, uplink_interface in enumerate(self._uplink_interfaces):
+        for uplink_index, uplink_interface in enumerate(self.shared_utils.uplink_interfaces):
             if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
                 # Invalid length of input variables. Skipping
                 continue
