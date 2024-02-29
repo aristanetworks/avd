@@ -24877,7 +24877,7 @@
     "wan_stun_dtls_profile_name": {
       "type": "string",
       "default": "STUN-DTLS",
-      "description": "PREVIEW: This key is currently not supported\n\nName of SSL profile used for DTLS on WAN STUN connections.",
+      "description": "PREVIEW: This key is currently not supported\n\nName of the SSL profile used for DTLS on WAN STUN connections.\n\nWhen using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers.",
       "title": "Wan STUN Dtls Profile Name"
     },
     "wan_virtual_topologies": {

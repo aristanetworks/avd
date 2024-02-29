@@ -3717,7 +3717,11 @@ keys:
     description: 'PREVIEW: This key is currently not supported
 
 
-      Name of SSL profile used for DTLS on WAN STUN connections.'
+      Name of the SSL profile used for DTLS on WAN STUN connections.
+
+
+      When using automatic ceritficate deployment via CloudVision this name must be
+      the same on all WAN routers.'
   wan_transit:
     documentation_options:
       table: wan-settings
