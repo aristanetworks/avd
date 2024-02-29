@@ -101,6 +101,12 @@ wan_router:
               wan_circuit_id: S511
               dhcp_accept_default_route: true
               ip_address: dhcp
+            - name: Ethernet2
+              wan_carrier: AWS-1
+              wan_circuit_id: 212
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+              connected_to_pathfinder: False
     # SITE_HA_ENABLED
     - group: Site423
       cv_pathfinder_region: AVD_Land_West
@@ -241,16 +247,21 @@ wan_rr:
 wan_path_groups:
   - name: MPLS
     ipsec: false
-    # TODO remove one once auto-id is implemented - for now required in schema
     id: 100
   - name: INET
     id: 101
   - name: LTE
     id: 102
+    # The expectation here is that LTE shouldn't be present in the default lb policy.
+    default_preference: excluded
   - name: Equinix
     id: 103
+    default_preference: alternate
   - name: Satellite
     id: 104
+    default_preference: alternate
+  - name: AWS
+    id: 105
 
 wan_carriers:
   - name: Comcast
@@ -273,6 +284,8 @@ wan_carriers:
     path_group: LTE
   - name: Inmrasat
     path_group: Satellite
+  - name: AWS-1
+    path_group: AWS
 
 tenants:
   - name: TenantA
@@ -373,11 +386,13 @@ wan_virtual_topologies:
           # No prefence to check the default.
           - names: [INET, Equinix]
           - names: [MPLS]
-            preference: 42
+            preference: 4223
       application_virtual_topologies:
         - application_profile: VIDEO
           path_groups:
-            - names: [MPLS, INET]
+            # The expectation here is that Equinix will be configured with priority 1/preferred,
+            # since we are overriding the default_preference value (2/alternate).
+            - names: [MPLS, INET, Equinix]
               preference: preferred
           id: 3
     - name: TRANSIT-AVT-POLICY

@@ -55,7 +55,7 @@ $defs:
               convert_types:
                 - int
               description: |-
-                Valid values are 1-255 | preferred | alternate.
+                Valid values are 1-65535 | preferred | alternate.
 
                 preferred is converted to priority 1.
                 alternate is converted to priority 2.

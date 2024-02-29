@@ -24757,7 +24757,7 @@
           },
           "import_path_groups": {
             "type": "array",
-            "description": "List of [ath-groups to import in this path-group.",
+            "description": "List of path-groups to import in this path-group.",
             "items": {
               "type": "object",
               "properties": {
@@ -24778,6 +24778,12 @@
               }
             },
             "title": "Import Path Groups"
+          },
+          "default_preference": {
+            "type": "string",
+            "description": "Preference to be used in auto-generated load balance policies and policies in which preference is not given for the path group.\n\nValid values are 1-65535 | \"preferred\" | \"alternate\" | \"excluded\".\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.\nexcluded means that the path-group is not considered for generating policies.",
+            "default": "preferred",
+            "title": "Default Preference"
           }
         },
         "required": [
@@ -24984,7 +24990,7 @@
                   },
                   "preference": {
                     "type": "string",
-                    "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
+                    "description": "Valid values are 1-65535 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
                     "default": "preferred",
                     "title": "Preference"
                   }
@@ -25107,7 +25113,7 @@
                           },
                           "preference": {
                             "type": "string",
-                            "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
+                            "description": "Valid values are 1-65535 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
                             "default": "preferred",
                             "title": "Preference"
                           }
@@ -25215,7 +25221,7 @@
                         },
                         "preference": {
                           "type": "string",
-                          "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
+                          "description": "Valid values are 1-65535 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
                           "default": "preferred",
                           "title": "Preference"
                         }

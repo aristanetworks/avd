@@ -88,6 +88,10 @@ class WanMixin:
             if get(interface, "wan_carrier") is not None:
                 wan_interfaces.append(interface)
 
+        if not wan_interfaces:
+            raise AristaAvdError(
+                "At least one WAN interface must be configured on a WAN router. Add WAN interfaces under `l3_interfaces` node setting with `wan_carrier` set."
+            )
         return wan_interfaces
 
     @cached_property
@@ -131,9 +135,44 @@ class WanMixin:
 
         return list(local_carriers_dict.values())
 
+    def path_group_preference_to_eos_priority(self, path_group_preference: int | str, context_path: str) -> int:
+        """
+        Convert "preferred" to 1 and "alternate" to 2. Everything else is returned as is.
+
+        Arguments:
+        ----------
+        path_group_preference (str|int): The value of the preference key to be converted. It must be either "preferred", "alternate" or an integer.
+        context_path (str): Input path context for the error message.
+        """
+        if path_group_preference == "preferred":
+            return 1
+        if path_group_preference == "alternate":
+            return 2
+
+        failedConversion = False
+        try:
+            priority = int(path_group_preference)
+        except ValueError:
+            failedConversion = True
+
+        if failedConversion or not (1 <= priority <= 65535):
+            raise AristaAvdError(
+                f"Invalid value '{path_group_preference}' for Path-Group preference - should be either 'preferred', "
+                f"'alternate' or an integer[1-65535] for {context_path}."
+            )
+
+        return priority
+
     @cached_property
     def wan_path_groups(self: SharedUtils) -> list:
-        return get(self.hostvars, "wan_path_groups", required=True)
+        path_groups = get(self.hostvars, "wan_path_groups", required=True)
+        for path_group in path_groups:
+            default_preference = get(path_group, "default_preference", default=1)
+            priority = 0
+            if default_preference != "excluded":
+                priority = self.path_group_preference_to_eos_priority(default_preference, f"wan_path_groups[{path_group['name']}]")
+            path_group["default_priority"] = priority
+        return path_groups
 
     @cached_property
     def wan_local_path_groups(self: SharedUtils) -> list:

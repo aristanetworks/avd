@@ -122,6 +122,12 @@ ethernet_interfaces:
   ipv6_enable: true
   eos_cli: comment yo
   _custom_key: custom_value
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 10.9.9.1/31
+  shutdown: false
+  type: routed
+  description: Comcast_999
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -212,9 +218,20 @@ router_bfd:
 router_path_selection:
   tcp_mss_ceiling:
     ipv4_segment_size: auto
+  path_groups:
+  - name: INET
+    id: 100
+    local_interfaces:
+    - name: Ethernet1
+    dynamic_peers:
+      enabled: true
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
+    path_groups:
+    - name: INET
   policies:
   - name: DEFAULT-POLICY
     default_match:

@@ -212,6 +212,15 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: dhcp
+  shutdown: false
+  type: routed
+  description: AWS-1_212
+  dhcp_client_accept_default_route: true
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -430,10 +439,18 @@ router_path_selection:
     dynamic_peers:
       enabled: true
     ipsec_profile: CP-PROFILE
+  - name: AWS
+    id: 105
+    local_interfaces:
+    - name: Ethernet2
+    dynamic_peers:
+      enabled: true
+    ipsec_profile: CP-PROFILE
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
     - name: Satellite
+      priority: 2
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: LB-PROD-AVT-POLICY-VOICE
@@ -445,6 +462,8 @@ router_path_selection:
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: Satellite
+      priority: 2
+    - name: AWS
 router_traffic_engineering:
   enabled: true
 application_traffic_recognition:
@@ -555,6 +574,14 @@ metadata:
         value: Inmrasat
       - name: Circuit
         value: S511
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: AWS-1
+      - name: Circuit
+        value: '212'
   cv_pathfinder:
     role: edge
     vtep_ip: 192.168.142.2
@@ -566,3 +593,7 @@ metadata:
       carrier: Inmrasat
       circuit_id: S511
       pathgroup: Satellite
+    - name: Ethernet2
+      carrier: AWS-1
+      circuit_id: '212'
+      pathgroup: AWS
