@@ -1801,9 +1801,10 @@ keys:
           - p2p
           - port-channel
           - p2p-vrfs
+          - lan
           default: p2p
-          description: '`uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router`
-            is true.
+          description: '`uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep`
+            or `underlay_router` is true.
 
 
             For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface
@@ -1822,7 +1823,16 @@ keys:
 
             Multicast is not supported.
 
-            Only BGP is supported for subinterfaces.'
+            Only BGP is supported for subinterfaces.
+
+
+            For `lan`, a single uplink interface is supported and will be configured
+            as an L3 Interface with
+
+            subinterfaces for each SVI defined under the VRFs in `network_services`
+            as long as the uplink switch also
+
+            has the VLAN permitted by tag/tenant filtering.'
         vtep:
           type: bool
           default: false
@@ -5386,6 +5396,15 @@ $defs:
                         convert_types:
                         - int
                         description: Tag value.
+                    evpn_vlan_bundle:
+                      type: str
+                      description: 'Name of a bundle defined under ''evpn_vlan_bundles''
+                        to inherit configuration.
+
+                        To use this option the common "evpn_vlan_aware_bundles" option
+                        must be set to true.
+
+                        '
                     nodes:
                       type: list
                       primary_key: node

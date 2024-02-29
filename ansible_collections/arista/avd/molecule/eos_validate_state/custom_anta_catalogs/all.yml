@@ -1,0 +1,109 @@
+---
+# These tests will be added to all the devices in the inventory
+anta.tests.aaa:
+  - VerifyTacacsSourceIntf:
+      intf: Management0
+      vrf: default
+  - VerifyTacacsServers:
+      servers:
+        - 1.1.1.1
+        - 2.2.2.2
+      vrf: default
+  - VerifyTacacsServerGroups:
+      groups:
+        - admin
+        - user
+  - VerifyAuthenMethods:
+      methods:
+        - local
+        - none
+        - logging
+      types:
+        - login
+        - enable
+        - dot1x
+  - VerifyAuthzMethods:
+      methods:
+        - local
+        - none
+        - logging
+      types:
+        - commands
+        - exec
+  - VerifyAcctDefaultMethods:
+      methods:
+        - local
+        - none
+        - logging
+      types:
+        - system
+        - exec
+        - commands
+        - dot1x
+  - VerifyAcctConsoleMethods:
+      methods:
+        - local
+        - none
+        - logging
+      types:
+        - system
+        - exec
+        - commands
+        - dot1x
+
+anta.tests.configuration:
+  - VerifyZeroTouch:
+  - VerifyRunningConfigDiffs:
+
+anta.tests.field_notices:
+  - VerifyFieldNotice44Resolution:
+  - VerifyFieldNotice72Resolution:
+
+# Some of these hardware tests will be duplicated in the catalog, but ANTA will only run them once
+anta.tests.hardware:
+  - VerifyTransceiversManufacturers:
+      manufacturers:
+        - Not Present
+        - Arista Networks
+        - Arastra, Inc.
+  - VerifyTemperature:
+  - VerifyTransceiversTemperature:
+  - VerifyEnvironmentSystemCooling:
+  - VerifyEnvironmentCooling:
+      states:
+        - ok
+  - VerifyEnvironmentPower:
+      states:
+        - ok
+  - VerifyAdverseDrops:
+
+anta.tests.snmp:
+  - VerifySnmpStatus:
+      vrf: default
+  - VerifySnmpIPv4Acl:
+      number: 3
+      vrf: default
+  - VerifySnmpIPv6Acl:
+      number: 3
+      vrf: default
+
+anta.tests.software:
+  - VerifyEOSVersion:
+      versions:
+        - 4.25.4M
+        - 4.26.1F
+  - VerifyTerminAttrVersion:
+      versions:
+        - v1.13.6
+        - v1.8.0
+
+anta.tests.system:
+  - VerifyUptime:
+      minimum: 86400
+  - VerifyReloadCause:
+  - VerifyCoredump:
+  - VerifyAgentLogs:
+  - VerifyCPUUtilization:
+  - VerifyMemoryUtilization:
+  - VerifyFileSystemUtilization:
+  - VerifyNTP:

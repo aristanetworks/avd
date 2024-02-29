@@ -1,11 +1,117 @@
 [
   {
     "name": "dc1-leaf2c",
+    "test": "VerifyTacacsServerGroups",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyAcctConsoleMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA accounting console method lists for different accounting types (system, exec, commands, dot1x)."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyAcctDefaultMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA accounting default method lists for different accounting types (system, exec, commands, dot1x)."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyAuthenMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA authentication method lists for different authentication types (login, enable, dot1x)."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyAuthzMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA authorization method lists for different authorization types (commands, exec)."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRunningConfigDiffs",
+    "categories": [
+      "configuration"
+    ],
+    "description": "Verifies there is no difference between the running-config and the startup-config"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyZeroTouch",
+    "categories": [
+      "configuration"
+    ],
+    "description": "Verifies ZeroTouch is disabled"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyFieldNotice72Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyFieldNotice44Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
+  },
+  {
+    "name": "dc1-leaf2c",
     "test": "VerifyTemperature",
     "categories": [
       "hardware"
     ],
     "description": "Verifies if the device temperature is within the acceptable range."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the device temperature is within the acceptable range."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the fans status are within the accepted states list."
   },
   {
     "name": "dc1-leaf2c",
@@ -25,11 +131,51 @@
   },
   {
     "name": "dc1-leaf2c",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the power supplies status are within the accepted states list."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyTransceiversTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies that all transceivers are operating within the acceptable temperature range."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyEnvironmentSystemCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the system cooling status."
+  },
+  {
+    "name": "dc1-leaf2c",
     "test": "VerifyTransceiversManufacturers",
     "categories": [
       "hardware"
     ],
     "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyAdverseDrops",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc1-leaf2c",
@@ -218,5 +364,109 @@
       "security"
     ],
     "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifySnmpIPv4Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv4 ACL(s) configured."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifySnmpIPv6Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv6 ACL(s) configured."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifySnmpStatus",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent is enabled."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyEOSVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed EOS version."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyTerminAttrVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed TerminAttr version."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if there are core dump files in the /var/core directory."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no agent crash reports are present on the device."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyCPUUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the CPU utilization is below 75%."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyMemoryUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the memory utilization is below 75%."
   }
 ]
