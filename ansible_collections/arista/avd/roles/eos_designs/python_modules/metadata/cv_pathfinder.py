@@ -32,7 +32,7 @@ class CvPathfinderMixin:
         if self.shared_utils.is_cv_pathfinder_server:
             return {
                 "role": self.shared_utils.cv_pathfinder_role,
-                "ssl_profile": None,  # TODO: Pick up ssl profile from self.shared_utils.this_wan_route_server.ssl_profile_name
+                "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
                 "vtep_ip": self.shared_utils.vtep_ip,
                 "interfaces": self._metadata_interfaces(),
                 "pathgroups": self._metadata_pathgroups(),

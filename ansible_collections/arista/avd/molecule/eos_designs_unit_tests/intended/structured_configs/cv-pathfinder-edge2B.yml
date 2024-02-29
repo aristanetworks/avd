@@ -444,6 +444,16 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: profileA
+    certificate:
+      file: profileA.crt
+      key: profileA.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: edge
   region:
@@ -605,6 +615,7 @@ stun:
     server_profiles:
     - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
       ip_address: 172.16.0.1
+      ssl_profile: profileA
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
