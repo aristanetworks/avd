@@ -34,15 +34,15 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
     #  self._wan_control_plane_application_profile is defined in utils.py
     @cached_property
     def _wan_control_plane_application(self) -> str:
-        return "CONTROL-PLANE-APPLICATION"
+        return "APP-CONTROL-PLANE"
 
     @cached_property
     def _wan_cp_app_dst_prefix(self) -> str:
-        return "CONTROL-PLANE-APP-DEST-PREFIXES"
+        return "PFX-PATHFINDERS"
 
     @cached_property
     def _wan_cp_app_src_prefix(self) -> str:
-        return "CONTROL-PLANE-APP-SRC-PREFIXES"
+        return "PFX-LOCAL-VTEP-IP"
 
     def _generate_control_plane_application_profile(self, app_dict: dict) -> None:
         """
@@ -56,32 +56,32 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
 
             application_traffic_recognition:
               application_profiles:
-                - name: CONTROL-PLANE-APPLICATION-PROFILE
+                - name: APP-PROFILE-CONTROL-PLANE
                   applications:
-                    - name: CONTROL-PLANE-APPLICATION
+                    - name: APP-CONTROL-PLANE
               applications:
                 ipv4_applications:
-                  - name: CONTROL-PLANE-APPLICATION
-                    dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+                  - name: APP-CONTROL-PLANE
+                    dest_prefix_set_name: PFX-PATHFINDERS
               field_sets:
                 ipv4_prefixes:
-                  - name: CONTROL-PLANE-APP-DEST-PREFIXES
+                  - name: PFX-PATHFINDERS
                     prefix_values: [Pathfinder to which the router is connected vtep_ips]
 
         Pathfinder:
 
             application_traffic_recognition:
               application_profiles:
-                - name: CONTROL-PLANE-APPLICATION-PROFILE
+                - name: APP-PROFILE-CONTROL-PLANE
                   applications:
-                    - name: CONTROL-PLANE-APPLICATION
+                    - name: APP-CONTROL-PLANE
               applications:
                 ipv4_applications:
-                  - name: CONTROL-PLANE-APPLICATION
-                    src_prefix_set_name: CONTROL-PLANE-APP-SRC-PREFIXES
+                  - name: APP-CONTROL-PLANE
+                    src_prefix_set_name: PFX-LOCAL-VTEP-IP
               field_sets:
                 ipv4_prefixes:
-                  - name: CONTROL-PLANE-APP-SRC-PREFIXES
+                  - name: PFX-LOCAL-VTEP-IP
                     prefix_values: [Pathfinder vtep_ip]
         """
         # Adding the application-profile

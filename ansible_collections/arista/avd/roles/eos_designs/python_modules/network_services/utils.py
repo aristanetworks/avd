@@ -194,7 +194,8 @@ class UtilsMixin:
         Control plane profile name
         """
         control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
-        return get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE")
+        vrf_default_policy_name = get(get_item(self._filtered_wan_vrfs, "name", "default"), "original_policy")
+        return get(control_plane_virtual_topology, "name", default=f"{vrf_default_policy_name}-CONTROL-PLANE")
 
     @cached_property
     def _wan_control_plane_application_profile(self) -> str:
@@ -203,7 +204,7 @@ class UtilsMixin:
 
         TODO: make this configurable
         """
-        return "CONTROL-PLANE-APPLICATION-PROFILE"
+        return "APP-PROFILE-CONTROL-PLANE"
 
     def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, context_path: str) -> dict:
         """

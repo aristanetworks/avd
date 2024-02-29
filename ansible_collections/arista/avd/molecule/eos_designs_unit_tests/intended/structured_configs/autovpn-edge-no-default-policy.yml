@@ -209,7 +209,7 @@ router_path_selection:
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: INET
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
   policies:
@@ -219,8 +219,8 @@ router_path_selection:
   - name: DEFAULT-POLICY-WITH-CP
     rules:
     - id: 10
-      application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      load_balance: LB-CONTROL-PLANE-PROFILE
+      application_profile: APP-PROFILE-CONTROL-PLANE
+      load_balance: LB-DEFAULT-POLICY-CONTROL-PLANE
     default_match:
       load_balance: LB-DEFAULT-POLICY-DEFAULT
   vrfs:
@@ -237,16 +237,16 @@ stun:
       ip_address: 10.7.7.7
 application_traffic_recognition:
   application_profiles:
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   applications:
     ipv4_applications:
-    - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     ipv4_prefixes:
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: PFX-PATHFINDERS
       prefix_values:
       - 2.2.2.2/32
 dps_interfaces:
