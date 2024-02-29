@@ -65,3 +65,6 @@ keys:
       hardware:
         type: dict
         $ref: "eos_cli_config_gen#/$defs/flow_tracking"
+        keys:
+          record_format_ipfix_standard_timestamps_counters:
+            type: bool

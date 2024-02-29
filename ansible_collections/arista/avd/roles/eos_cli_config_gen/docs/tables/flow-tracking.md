@@ -35,6 +35,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template_interval</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].template_interval") | Integer |  |  | Min: 5000<br>Max: 3600000 | Template interval in milliseconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.sampled.shutdown") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;hardware</samp>](## "flow_tracking.hardware") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;record_format_ipfix_standard_timestamps_counters</samp>](## "flow_tracking.hardware.record_format_ipfix_standard_timestamps_counters") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trackers</samp>](## "flow_tracking.hardware.trackers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking.hardware.trackers.[].name") | String | Required, Unique |  |  | Tracker Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;record_export</samp>](## "flow_tracking.hardware.trackers.[].record_export") | Dictionary |  |  |  |  |
@@ -128,6 +129,7 @@
                 template_interval: <int; 5000-3600000>
         shutdown: <bool; default=False>
       hardware:
+        record_format_ipfix_standard_timestamps_counters: <bool>
         trackers:
 
             # Tracker Name

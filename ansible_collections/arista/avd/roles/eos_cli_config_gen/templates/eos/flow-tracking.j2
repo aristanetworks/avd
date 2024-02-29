@@ -116,6 +116,9 @@ flow tracking hardware
       flow table size {{ tracker.table_size }} entries
 {%         endif %}
 {%     endfor %}
+{%     if flow_tracking.hardware.record_format_ipfix_standard_timestamps_counters is arista.avd.defined %}
+   record format ipfix standard timestamps counters
+{%     endif %}
 {%     if flow_tracking.hardware.shutdown is arista.avd.defined(false) %}
    no shutdown
 {%     endif %}

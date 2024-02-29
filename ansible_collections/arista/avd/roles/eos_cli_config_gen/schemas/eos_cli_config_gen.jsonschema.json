@@ -5333,6 +5333,10 @@
         "hardware": {
           "type": "object",
           "properties": {
+            "record_format_ipfix_standard_timestamps_counters": {
+              "type": "boolean",
+              "title": "Record Format Ipfix Standard Timestamps Counters"
+            },
             "trackers": {
               "type": "array",
               "items": {

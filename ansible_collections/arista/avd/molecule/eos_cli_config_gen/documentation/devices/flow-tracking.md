@@ -135,6 +135,7 @@ flow tracking hardware
          template interval 424242
       exporter T3-E4
          collector dead:beef::cafe
+   record format ipfix standard timestamps counters
    no shutdown
 ```
 
