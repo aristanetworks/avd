@@ -67,6 +67,7 @@ management_api_http:
   enable_https: true
 ptp:
   mode: boundary
+  mode_one_step: true
   priority1: 20
   priority2: 3
   domain: 127
@@ -82,7 +83,6 @@ ptp:
         delay_resp: 3
         follow_up: 3
         sync: 3
-  mode_one_step: true
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

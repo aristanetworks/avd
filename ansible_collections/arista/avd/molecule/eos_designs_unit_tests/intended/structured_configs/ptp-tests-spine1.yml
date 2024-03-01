@@ -98,6 +98,7 @@ management_api_http:
   enable_https: true
 ptp:
   mode: boundary
+  mode_one_step: true
   clock_identity: 00:00:00:00:00:00
   priority1: 20
   priority2: 1
@@ -114,7 +115,6 @@ ptp:
         delay_resp: 3
         follow_up: 3
         sync: 3
-  mode_one_step: true
 ethernet_interfaces:
 - name: Ethernet1
   peer: ptp-tests-leaf1
