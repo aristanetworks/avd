@@ -74,7 +74,6 @@ EXAMPLES = r"""
 
 - "{{ 'eth{7,9,11-13}/1,21/1,26/1' | range_expand }}"
 # -> ["eth7/1", "eth9/1", "eth11/1", "eth12/1", "eth13/1", "eth21/1", "eth26/1"]
-
 """
 
 RETURN = r"""
