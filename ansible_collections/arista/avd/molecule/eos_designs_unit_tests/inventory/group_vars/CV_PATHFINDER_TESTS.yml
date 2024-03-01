@@ -27,6 +27,8 @@ bgp_peer_groups:
       - 192.168.142.0/24
       - 192.168.143.0/24
 
+wan_stun_dtls_profile_name: profileA
+
 wan_route_servers:
   # Not testing the overloading
   - hostname: cv-pathfinder-pathfinder

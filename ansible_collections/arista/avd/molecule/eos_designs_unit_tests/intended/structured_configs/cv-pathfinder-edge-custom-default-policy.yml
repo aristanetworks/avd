@@ -223,13 +223,23 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: edge
   region:
     name: AVD_Land_West
     id: 42
   zone:
-    name: DEFAULT-ZONE
+    name: AVD_Land_West-ZONE
     id: 1
   site:
     name: Site1
@@ -341,10 +351,13 @@ stun:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
       ip_address: 10.7.7.7
+      ssl_profile: STUN-DTLS
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
+      ssl_profile: STUN-DTLS
     - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
       ip_address: 172.16.0.1
+      ssl_profile: STUN-DTLS
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
@@ -389,7 +402,7 @@ metadata:
     - name: Region
       value: AVD_Land_West
     - name: Zone
-      value: DEFAULT-ZONE
+      value: AVD_Land_West-ZONE
     - name: Site
       value: Site1
     interface_tags:
@@ -421,7 +434,7 @@ metadata:
     role: edge
     vtep_ip: 192.168.255.1
     region: AVD_Land_West
-    zone: DEFAULT-ZONE
+    zone: AVD_Land_West-ZONE
     site: Site1
     interfaces:
     - name: Ethernet1

@@ -305,17 +305,17 @@ class WanMixin:
         """
         WAN zone for Pathfinder
 
-        Currently, only default zone DEFAULT-ZONE with ID 1 is supported.
+        Currently, only one default zone with ID 1 is supported.
         """
-        # Injecting zone DEFAULT-ZONE with id 1.
-        return {"name": "DEFAULT-ZONE", "id": 1}
+        # Injecting default zone with id 1.
+        return {"name": f"{self.wan_region['name']}-ZONE", "id": 1}
 
     @cached_property
     def filtered_wan_route_servers(self: SharedUtils) -> dict:
         """
         Return a dict keyed by Wan RR based on the the wan_mode type with only the path_groups the router should connect to.
 
-        It the RR is part of the inventory, the peer_facts are read..
+        If the RR is part of the inventory, the peer_facts are read..
         If any key is specified in the variables, it overwrites whatever is in the peer_facts.
 
         If no peer_fact is found the variables are required in the inventory.
@@ -331,10 +331,10 @@ class WanMixin:
             if wan_rs == self.hostname:
                 # Don't add yourself
                 continue
-
             if (peer_facts := self.get_peer_facts(wan_rs, required=False)) is not None:
                 # Found a matching server in inventory
                 bgp_as = peer_facts.get("bgp_as")
+
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.bgp_as:
                     raise AristaAvdError(f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs} is different from our own: {self.bgp_as}.")
@@ -531,3 +531,10 @@ class WanMixin:
         Returns LB-{name}
         """
         return f"LB-{name}"
+
+    @cached_property
+    def wan_stun_dtls_profile_name(self: SharedUtils) -> str | None:
+        if not self.is_wan_router or get(self.hostvars, "wan_stun_dtls_disable") is True:
+            return None
+
+        return get(self.hostvars, "wan_stun_dtls_profile_name", default="STUN-DTLS")

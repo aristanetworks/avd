@@ -422,13 +422,23 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: profileA
+    certificate:
+      file: profileA.crt
+      key: profileA.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: transit region
   region:
     name: AVD_Land_West
     id: 42
   zone:
-    name: DEFAULT-ZONE
+    name: AVD_Land_West-ZONE
     id: 1
   site:
     name: Site422
@@ -635,10 +645,13 @@ stun:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
       ip_address: 10.7.7.7
+      ssl_profile: profileA
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
+      ssl_profile: profileA
     - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
       ip_address: 172.16.0.1
+      ssl_profile: profileA
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
@@ -723,7 +736,7 @@ metadata:
     - name: Region
       value: AVD_Land_West
     - name: Zone
-      value: DEFAULT-ZONE
+      value: AVD_Land_West-ZONE
     - name: Site
       value: Site422
     interface_tags:
@@ -769,7 +782,7 @@ metadata:
     role: transit region
     vtep_ip: 192.168.143.1
     region: AVD_Land_West
-    zone: DEFAULT-ZONE
+    zone: AVD_Land_West-ZONE
     site: Site422
     interfaces:
     - name: Ethernet1.42

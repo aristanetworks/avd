@@ -12,6 +12,8 @@ bgp_peer_groups:
     listen_range_prefixes:
       - 192.168.130.0/24
 
+wan_stun_dtls_disable: true
+
 wan_route_servers:
   # Testing having the interface configured with DHCP
   - hostname: autovpn-rr1

@@ -197,6 +197,16 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+management_security:
+  ssl_profiles:
+  - name: profileA
+    certificate:
+      file: profileA.crt
+      key: profileA.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: pathfinder
   profiles:
@@ -397,6 +407,7 @@ stun:
     - Ethernet1
     - Ethernet2
     - Ethernet3
+    ssl_profile: profileA
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
@@ -499,6 +510,7 @@ metadata:
         value: '999'
   cv_pathfinder:
     role: pathfinder
+    ssl_profile: profileA
     vtep_ip: 192.168.144.1
     interfaces:
     - name: Ethernet1
@@ -543,7 +555,7 @@ metadata:
     - name: AVD_Land_West
       id: 42
       zones:
-      - name: DEFAULT-ZONE
+      - name: AVD_Land_West-ZONE
         id: 1
         sites:
         - name: Site422
@@ -557,7 +569,7 @@ metadata:
     - name: AVD_Land_East
       id: 43
       zones:
-      - name: DEFAULT-ZONE
+      - name: AVD_Land_East-ZONE
         id: 1
         sites:
         - name: Site511

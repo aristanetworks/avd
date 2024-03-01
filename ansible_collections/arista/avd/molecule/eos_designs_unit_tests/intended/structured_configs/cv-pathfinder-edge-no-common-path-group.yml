@@ -339,13 +339,23 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: profileA
+    certificate:
+      file: profileA.crt
+      key: profileA.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: edge
   region:
     name: AVD_Land_East
     id: 43
   zone:
-    name: DEFAULT-ZONE
+    name: AVD_Land_East-ZONE
     id: 1
   site:
     name: Site511
@@ -546,7 +556,7 @@ metadata:
     - name: Region
       value: AVD_Land_East
     - name: Zone
-      value: DEFAULT-ZONE
+      value: AVD_Land_East-ZONE
     - name: Site
       value: Site511
     interface_tags:
@@ -586,7 +596,7 @@ metadata:
     role: edge
     vtep_ip: 192.168.142.2
     region: AVD_Land_East
-    zone: DEFAULT-ZONE
+    zone: AVD_Land_East-ZONE
     site: Site511
     interfaces:
     - name: Ethernet1
