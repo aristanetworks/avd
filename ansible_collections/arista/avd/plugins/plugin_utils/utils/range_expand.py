@@ -45,7 +45,7 @@ class StringToken(DynamicToken):
 
     @classmethod
     def is_token(cls, value: str) -> bool:
-        # We accept "-"" if it is in a string to accept things like
+        # We accept "-"" if it is in a string to accept things like "Port-Channel1-2"
         return value and not value[0].isdigit() and value[0] not in [",", "{", "}"]
 
 
