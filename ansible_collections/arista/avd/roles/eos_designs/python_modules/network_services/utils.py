@@ -289,7 +289,7 @@ class UtilsMixin:
         control_plane_virtual_topology = get(
             self._hostvars,
             "wan_virtual_topologies.control_plane_virtual_topology",
-            default={"path_groups": [{"names": [path_group['name'] for path_group in self.shared_utils.wan_path_groups]}]},
+            default={"path_groups": [{"names": [path_group["name"] for path_group in self.shared_utils.wan_path_groups]}]},
         )
 
         wan_load_balance_policies = []
@@ -446,7 +446,10 @@ class UtilsMixin:
 
         # Returning policy containing all path groups, _generate_wan_load_balance_policy will take
         # care of filtering it based on only local path groups
-        return {"name": "DEFAULT-POLICY", "default_virtual_topology": {"path_groups": [{"names": [path_group['name'] for path_group in self.shared_utils.wan_path_groups]}]}}
+        return {
+            "name": "DEFAULT-POLICY",
+            "default_virtual_topology": {"path_groups": [{"names": [path_group["name"] for path_group in self.shared_utils.wan_path_groups]}]},
+        }
 
     def _default_profile_name(self, profile_name: str, application_profile: str) -> str:
         """
