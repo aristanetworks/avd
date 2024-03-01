@@ -12,7 +12,7 @@ keys:
     description: |-
       Configures source for the system-id within the ISIS net id.
       By default the `id` and `isis_system_id_prefix` fields configured under the node attributes are used to generate the system-id.
-      
+
       If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings will be ignored and the loopback address will be used to generate the system-id.
     documentation_options:
       table: isis-settings
