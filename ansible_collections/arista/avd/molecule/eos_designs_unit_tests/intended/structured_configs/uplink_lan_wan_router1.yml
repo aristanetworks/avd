@@ -249,7 +249,7 @@ router_adaptive_virtual_topology:
     name: region1
     id: 1
   zone:
-    name: DEFAULT-ZONE
+    name: region1-ZONE
     id: 1
   site:
     name: site1
@@ -334,7 +334,7 @@ metadata:
     - name: Region
       value: region1
     - name: Zone
-      value: DEFAULT-ZONE
+      value: region1-ZONE
     - name: Site
       value: site1
     interface_tags:
@@ -350,5 +350,5 @@ metadata:
     role: edge
     vtep_ip: 192.168.2.1
     region: region1
-    zone: DEFAULT-ZONE
+    zone: region1-ZONE
     site: site1
