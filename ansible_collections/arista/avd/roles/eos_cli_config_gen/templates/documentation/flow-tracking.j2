@@ -148,14 +148,14 @@
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-{%     if flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters is arista.avd.defined(true) %}
+{%     if flow_tracking.hardware.record is arista.avd.defined %}
 
 ##### Records Summary
 
 | Record | Value |
 | ------ | ----- |
 {%         if flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters is arista.avd.defined(true) %}
-| Record format ipfix standard timestamps counters | {{ flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters }} |
+| Format ipfix standard timestamps counters | {{ flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters }} |
 {%         endif %}
 {%     endif %}
 

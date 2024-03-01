@@ -117,9 +117,7 @@ flow tracking hardware
 {%         endif %}
 {%     endfor %}
 {%     if flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters is arista.avd.defined(true) %}
-{%         if flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters is arista.avd.defined(true) %}
    record format ipfix standard timestamps counters
-{%         endif %}
 {%     endif %}
 {%     if flow_tracking.hardware.shutdown is arista.avd.defined(false) %}
    no shutdown

@@ -90,7 +90,7 @@ interface Management1
 
 | Record | Value |
 | ------ | ----- |
-| Record format ipfix standard timestamps counters | True |
+| Format ipfix standard timestamps counters | True |
 
 #### Flow Tracking Device Configuration
 
