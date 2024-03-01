@@ -538,7 +538,7 @@ metadata:
     - name: AVD_Land_West
       id: 42
       zones:
-      - name: DEFAULT-ZONE
+      - name: AVD_Land_West-ZONE
         id: 1
         sites:
         - name: Site422
@@ -552,7 +552,7 @@ metadata:
     - name: AVD_Land_East
       id: 43
       zones:
-      - name: DEFAULT-ZONE
+      - name: AVD_Land_East-ZONE
         id: 1
         sites:
         - name: Site511
