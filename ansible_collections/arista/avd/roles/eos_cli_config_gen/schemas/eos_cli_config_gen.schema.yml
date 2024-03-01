@@ -7999,7 +7999,11 @@ keys:
         type: str
         valid_values:
         - boundary
-        - transparent
+        - disabled
+        - e2etransparent
+        - gptp
+        - ordinarymaster
+        - p2ptransparent
       mode_one_step:
         type: bool
       forward_unicast:

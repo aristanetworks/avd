@@ -13588,7 +13588,11 @@
           "type": "string",
           "enum": [
             "boundary",
-            "transparent"
+            "disabled",
+            "e2etransparent",
+            "gptp",
+            "ordinarymaster",
+            "p2ptransparent"
           ],
           "title": "Mode"
         },
