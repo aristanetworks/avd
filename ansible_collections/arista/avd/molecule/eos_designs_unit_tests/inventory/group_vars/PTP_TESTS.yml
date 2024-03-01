@@ -89,7 +89,7 @@ servers:
   - name: Endpoint-with-mpass
     adapters:
       - endpoint_ports: [ PCI1, PCI2 ]
-        switch_ports: [ Port-Channel1, Port-Channel2 ]
+        switch_ports: [ Ethernet6, Ethernet6 ]
         switches: [ ptp-tests-leaf1, ptp-tests-leaf2 ]
         vlans: 11
         mode: access
