@@ -245,14 +245,21 @@ wan_path_groups:
     ipsec: false
     # TODO remove one once auto-id is implemented - for now required in schema
     id: 100
+    dps_keepalive:
+      interval: 300
   - name: INET
     id: 101
   - name: LTE
     id: 102
+    dps_keepalive:
+      interval: 100
+      failure_threshold: 12
   - name: Equinix
     id: 103
   - name: Satellite
     id: 104
+    dps_keepalive:
+      interval: auto
 
 wan_carriers:
   - name: Comcast

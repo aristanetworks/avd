@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ptp</samp>](## "ptp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;mode</samp>](## "ptp.mode") | String |  |  | Valid Values:<br>- <code>boundary</code><br>- <code>transparent</code> |  |
+    | [<samp>&nbsp;&nbsp;mode</samp>](## "ptp.mode") | String |  |  | Valid Values:<br>- <code>boundary</code><br>- <code>disabled</code><br>- <code>e2etransparent</code><br>- <code>gptp</code><br>- <code>ordinarymaster</code><br>- <code>p2ptransparent</code> |  |
     | [<samp>&nbsp;&nbsp;mode_one_step</samp>](## "ptp.mode_one_step") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;forward_unicast</samp>](## "ptp.forward_unicast") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;clock_identity</samp>](## "ptp.clock_identity") | String |  |  |  | The clock-id in xx:xx:xx:xx:xx:xx format |
@@ -47,7 +47,7 @@
 
     ```yaml
     ptp:
-      mode: <str; "boundary" | "transparent">
+      mode: <str; "boundary" | "disabled" | "e2etransparent" | "gptp" | "ordinarymaster" | "p2ptransparent">
       mode_one_step: <bool>
       forward_unicast: <bool>
 

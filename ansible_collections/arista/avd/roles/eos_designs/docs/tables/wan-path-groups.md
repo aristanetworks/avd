@@ -15,6 +15,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;import_path_groups</samp>](## "wan_path_groups.[].import_path_groups") | List, items: Dictionary |  |  |  | List of [ath-groups to import in this path-group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;remote</samp>](## "wan_path_groups.[].import_path_groups.[].remote") | String |  |  |  | Remote path-group to import. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local</samp>](## "wan_path_groups.[].import_path_groups.[].local") | String |  |  |  | Optional, if not set, the path-group `name` is used as local. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dps_keepalive</samp>](## "wan_path_groups.[].dps_keepalive") | Dictionary |  |  |  | Period between the transmission of consecutive keepalive messages, and failure threshold. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "wan_path_groups.[].dps_keepalive.interval") | String |  |  |  | Interval in milliseconds. Valid values are 50-60000 | "auto"<br><br>When auto, the interval and failure_threshold are automatically determined based on<br>path state. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;failure_threshold</samp>](## "wan_path_groups.[].dps_keepalive.failure_threshold") | Integer |  | `5` | Min: 2<br>Max: 100 | Failure threshold in number of lost keep-alive messages. |
 
 === "YAML"
 
@@ -47,4 +50,16 @@
 
             # Optional, if not set, the path-group `name` is used as local.
             local: <str>
+
+        # Period between the transmission of consecutive keepalive messages, and failure threshold.
+        dps_keepalive:
+
+          # Interval in milliseconds. Valid values are 50-60000 | "auto"
+          #
+          # When auto, the interval and failure_threshold are automatically determined based on
+          # path state.
+          interval: <str>
+
+          # Failure threshold in number of lost keep-alive messages.
+          failure_threshold: <int; 2-100; default=5>
     ```

@@ -192,6 +192,11 @@ port_channel_interfaces:
       ipv4:
         dr_priority: 200
         sparse_mode: true
+        bfd: true
+        bidirectional: true
+        hello:
+          count: 4.5
+          interval: 15
 
   - name: Port-Channel101
     description: PVLAN Promiscuous Access - only one secondary
