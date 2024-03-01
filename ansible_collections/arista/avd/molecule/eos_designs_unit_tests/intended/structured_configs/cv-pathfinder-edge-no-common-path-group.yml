@@ -346,7 +346,7 @@ router_adaptive_virtual_topology:
     name: AVD_Land_East
     id: 43
   zone:
-    name: DEFAULT-ZONE
+    name: AVD_Land_East-ZONE
     id: 1
   site:
     name: Site511
@@ -440,6 +440,8 @@ router_path_selection:
     dynamic_peers:
       enabled: true
     ipsec_profile: CP-PROFILE
+    keepalive:
+      auto: true
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
@@ -537,7 +539,7 @@ metadata:
     - name: Region
       value: AVD_Land_East
     - name: Zone
-      value: DEFAULT-ZONE
+      value: AVD_Land_East-ZONE
     - name: Site
       value: Site511
     interface_tags:
@@ -569,7 +571,7 @@ metadata:
     role: edge
     vtep_ip: 192.168.142.2
     region: AVD_Land_East
-    zone: DEFAULT-ZONE
+    zone: AVD_Land_East-ZONE
     site: Site511
     interfaces:
     - name: Ethernet1
