@@ -208,14 +208,17 @@ class UtilsMixin:
 
     def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, context_path: str, filtered_path_groups: list | None = None) -> dict:
         """
-        Generate and return a router path-selection load-balance policy. If HA is enabled, inject the HA path-group with priority 1.
+        Generate and return a router path-selection load-balance policy.
+        This function verifies that the Load Balance policy has at least one preferred (priority 1) path-group (even if filtered).
+        If HA is enabled, inject the HA path-group with priority 1.
 
         Attrs:
         ------
         name (str): The name of the load balance policy
         input_dict (dict): The dictionary containing the list of path-groups and their preference.
         context_path (str): Key used for context for error messages.
-        filtered_path_groups (list|None): The list containing path groups which are allowed to be used for the policy.When `None` wan_local_path_groups is used.
+        filtered_path_groups (list|None): The list containing path groups which are allowed to be used for the policy.
+                                          When 'None', the 'wan_local_path_groups' are used.
         """
         if not filtered_path_groups:
             filtered_path_groups = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
@@ -239,19 +242,21 @@ class UtilsMixin:
         for policy_entry in policy_entries:
             # TODO check if it cannot be optimized further in shared_utils or validated in a global fashion - maybe
             # schema? check that the LB policy has at least one prio 1 / preferred EVEN if the path group is not configured.
-            policy_priority = 0
+            policy_entry_priority = None
             if preference := get(policy_entry, "preference"):
-                policy_priority = self.shared_utils.path_group_preference_to_eos_priority(preference, f"{context_path}[{policy_entry.get('names')}]")
+                policy_entry_priority = self.shared_utils.path_group_preference_to_eos_priority(preference, f"{context_path}[{policy_entry.get('names')}]")
+
             for path_group_name in policy_entry.get("names"):
-                priority = policy_priority or get_item(self.shared_utils.wan_path_groups, "name", path_group_name)["default_priority"]
-                if priority == 0:
+                priority = policy_entry_priority or get_item(self.shared_utils.wan_path_groups, "name", path_group_name)["default_priority"]
+                if priority is None:
+                    # It means the path-group should be excluded
                     continue
 
                 if priority == 1:
                     at_least_one_priority_1_found = True
 
                 # Skip path-group on this device if not present on the router except for pathfinders
-                if path_group_name not in filtered_path_groups and not self.shared_utils.is_wan_server:
+                if self.shared_utils.is_wan_client and path_group_name not in filtered_path_groups:
                     continue
 
                 path_group = {

@@ -135,9 +135,9 @@ class WanMixin:
 
         return list(local_carriers_dict.values())
 
-    def path_group_preference_to_eos_priority(self, path_group_preference: int | str, context_path: str) -> int:
+    def path_group_preference_to_eos_priority(self, path_group_preference: int | str, context_path: str) -> int | None:
         """
-        Convert "preferred" to 1 and "alternate" to 2. Everything else is returned as is.
+        Convert "preferred" to 1 and "alternate" to 2 and "excluded" to None. Everything else is returned as is.
 
         Arguments:
         ----------
@@ -148,6 +148,8 @@ class WanMixin:
             return 1
         if path_group_preference == "alternate":
             return 2
+        if path_group_preference == "excluded":
+            return None
 
         failedConversion = False
         try:
@@ -168,10 +170,7 @@ class WanMixin:
         path_groups = get(self.hostvars, "wan_path_groups", required=True)
         for path_group in path_groups:
             default_preference = get(path_group, "default_preference", default=1)
-            priority = 0
-            if default_preference != "excluded":
-                priority = self.path_group_preference_to_eos_priority(default_preference, f"wan_path_groups[{path_group['name']}]")
-            path_group["default_priority"] = priority
+            path_group["default_priority"] = self.path_group_preference_to_eos_priority(default_preference, f"wan_path_groups[{path_group['name']}]")
         return path_groups
 
     @cached_property

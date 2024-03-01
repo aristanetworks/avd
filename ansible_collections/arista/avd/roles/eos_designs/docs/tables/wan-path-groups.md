@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;import_path_groups</samp>](## "wan_path_groups.[].import_path_groups") | List, items: Dictionary |  |  |  | List of path-groups to import in this path-group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;remote</samp>](## "wan_path_groups.[].import_path_groups.[].remote") | String |  |  |  | Remote path-group to import. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local</samp>](## "wan_path_groups.[].import_path_groups.[].local") | String |  |  |  | Optional, if not set, the path-group `name` is used as local. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_preference</samp>](## "wan_path_groups.[].default_preference") | String |  | `preferred` |  | Preference to be used in auto-generated load balance policies and policies in which preference is not given for the path group.<br><br>Valid values are 1-65535 | "preferred" | "alternate" | "excluded".<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2.<br>excluded means that the path-group is not considered for generating policies. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_preference</samp>](## "wan_path_groups.[].default_preference") | String |  | `preferred` |  | Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when<br>the path-group is used in an auto generated policy.<br><br>Valid values are 1-65535 | "preferred" | "alternate" | "excluded".<br><br>`preferred` is converted to priority 1.<br>`alternate` is converted to priority 2.<br>`excluded` is used to ignore the path-group when generating policies. |
 
 === "YAML"
 
@@ -49,12 +49,13 @@
             # Optional, if not set, the path-group `name` is used as local.
             local: <str>
 
-        # Preference to be used in auto-generated load balance policies and policies in which preference is not given for the path group.
+        # Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when
+        # the path-group is used in an auto generated policy.
         #
         # Valid values are 1-65535 | "preferred" | "alternate" | "excluded".
         #
-        # preferred is converted to priority 1.
-        # alternate is converted to priority 2.
-        # excluded means that the path-group is not considered for generating policies.
+        # `preferred` is converted to priority 1.
+        # `alternate` is converted to priority 2.
+        # `excluded` is used to ignore the path-group when generating policies.
         default_preference: <str; default="preferred">
     ```
