@@ -14911,6 +14911,22 @@
         },
         {
           "platforms": [
+            "7358X4"
+          ],
+          "management_interface": "Management1/1",
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          },
+          "feature_support": {
+            "queue_monitor_length_notify": false,
+            "interface_storm_control": true,
+            "bgp_update_wait_for_convergence": true,
+            "bgp_update_wait_install": false
+          }
+        },
+        {
+          "platforms": [
             "7368X4"
           ],
           "management_interface": "Management0",
