@@ -97,8 +97,8 @@ class CvPathfinderMixin:
                 "zones": [
                     {
                         # TODO: Once we give configurable zones this should be updated
-                        "name": self.shared_utils.wan_zone["name"],
-                        "id": self.shared_utils.wan_zone["id"],
+                        "name": f"{region['name']}-ZONE",
+                        "id": 1,
                         "sites": [
                             {
                                 "name": site["name"],
