@@ -249,7 +249,7 @@ port_channel_interfaces:
   mode: trunk
   vlans: '11'
   mlag: 14
-- name: Port-Channel1
+- name: Port-Channel6
   description: Endpoint-with-mpass
   type: switched
   shutdown: false
@@ -266,7 +266,7 @@ port_channel_interfaces:
     mpass: true
   mode: access
   vlans: '11'
-  mlag: 1
+  mlag: 6
 ethernet_interfaces:
 - name: Ethernet9
   peer: ptp-tests-leaf1
@@ -374,7 +374,7 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
-- name: Port-Channel2
+- name: Ethernet6
   peer: Endpoint-with-mpass
   peer_interface: PCI2
   peer_type: server
@@ -382,7 +382,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 1
+    id: 6
     mode: active
 mlag_configuration:
   domain_id: ptp-test-leaf
