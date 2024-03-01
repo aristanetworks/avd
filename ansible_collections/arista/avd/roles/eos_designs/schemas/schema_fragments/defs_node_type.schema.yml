@@ -1071,6 +1071,14 @@ $defs:
                 description: |
                   By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
                   This can be set manually if required, for example, to a value of "10.1.2.3".
+              mode:
+                type: str
+                valid_values:
+                  - boundary
+                default: boundary
+              mode_one_step:
+                type: bool
+                default: false
               ttl:
                 type: int
                 convert_types:
