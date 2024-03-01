@@ -7867,6 +7867,15 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        dhcp_ip_address:
+          type: str
+          description: 'When the `ip_address` is `dhcp`, this optional field allows
+            to indicate the expected
+
+            IPv4 address/Mask to be allocated on the interface if known.
+
+            This is not rendered in the configuration but can be used in ACLs in certain
+            scenarios.'
         encapsulation_dot1q_vlan:
           description: For subinterfaces the dot1q vlan is derived from the interface
             name by default, but can also be specified.
