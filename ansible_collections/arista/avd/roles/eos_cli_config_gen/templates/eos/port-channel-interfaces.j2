@@ -307,11 +307,23 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
    pim ipv4 sparse-mode
 {%     endif %}
+{%     if port_channel_interface.pim.ipv4.bidirectional is arista.avd.defined(true) %}
+   pim ipv4 bidirectional
+{%     endif %}
 {%     if port_channel_interface.pim.ipv4.border_router is arista.avd.defined(true) %}
    pim ipv4 border-router
 {%     endif %}
+{%     if port_channel_interface.pim.ipv4.hello.interval is arista.avd.defined %}
+   pim ipv4 hello interval {{ port_channel_interface.pim.ipv4.hello.interval }}
+{%     endif %}
+{%     if port_channel_interface.pim.ipv4.hello.count is arista.avd.defined %}
+   pim ipv4 hello count {{ port_channel_interface.pim.ipv4.hello.count }}
+{%     endif %}
 {%     if port_channel_interface.pim.ipv4.dr_priority is arista.avd.defined %}
    pim ipv4 dr-priority {{ port_channel_interface.pim.ipv4.dr_priority }}
+{%     endif %}
+{%     if port_channel_interface.pim.ipv4.bfd is arista.avd.defined(true) %}
+   pim ipv4 bfd
 {%     endif %}
 {%     if port_channel_interface.vmtracer is arista.avd.defined(true) %}
    vmtracer vmware-esx

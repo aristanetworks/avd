@@ -271,10 +271,10 @@ class WanMixin:
         """
         WAN zone for Pathfinder
 
-        Currently, only default zone DEFAULT-ZONE with ID 1 is supported.
+        Currently, only one default zone with ID 1 is supported.
         """
-        # Injecting zone DEFAULT-ZONE with id 1.
-        return {"name": "DEFAULT-ZONE", "id": 1}
+        # Injecting default zone with id 1.
+        return {"name": f"{self.wan_region['name']}-ZONE", "id": 1}
 
     @cached_property
     def filtered_wan_route_servers(self: SharedUtils) -> dict:

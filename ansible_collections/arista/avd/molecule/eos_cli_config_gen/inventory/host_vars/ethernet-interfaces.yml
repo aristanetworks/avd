@@ -144,6 +144,11 @@ ethernet_interfaces:
         dr_priority: 200
         sparse_mode: true
         border_router: true
+        bfd: true
+        bidirectional: true
+        hello:
+          count: 2.5
+          interval: 10
     isis_enable: ISIS_TEST
     isis_passive: false
     isis_metric: 99

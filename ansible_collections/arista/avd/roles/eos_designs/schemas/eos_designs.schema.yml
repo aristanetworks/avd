@@ -621,7 +621,7 @@ keys:
           description: The region ID must be unique for the whole WAN deployment.
         sites:
           type: list
-          description: All sites are placed in a default zone called DEFAULT-ZONE
+          description: All sites are placed in a default zone "<region_name>-ZONE"
             with ID 1.
           primary_key: name
           items:
@@ -632,10 +632,10 @@ keys:
                 type: str
               id:
                 type: int
-                description: 'The site ID must be unique within a zone.
+                description: 'The Site ID must be unique within a zone.
 
-                  Given that all the sites are placed in the DEFAULT-ZONE, the site
-                  ID must be unique within a region.'
+                  Given that all the Sites are placed in a Zone named after the Region,
+                  the Site ID must be unique within a Region.'
               location:
                 type: str
                 description: Will be interpreted
