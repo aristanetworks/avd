@@ -10,13 +10,13 @@ l3leaf:
     vtep_loopback_ipv4_pool: 10.11.0.0/24
     vtep_loopback: Loopback1
     # Possibility to prevent configuration of Tenant VRFs and SVIs. This allows support for centralized routing.
-    evpn_services_l2_only: true
+    evpn_services_l2_only: false
   nodes:
     - name: evpn_vlan_bundle
       id: 3
       bgp_as: 65101
       filter:
-        tags: [fabric, ipmi, storageProd]
+        tags: [fabric, ipmi, storageProd, sit]
 
 tenants:
   - name: StorageProd
@@ -49,6 +49,66 @@ tenants:
         name: vstorage
         tags: ['fabric']
         evpn_vlan_bundle: bundle2
+  - name: SIT
+    vlan_aware_bundle_number_base: 300
+    mac_vrf_vni_base: 20000
+    l2vlans:
+      - id: 90
+        name: vlan90
+        tags: ['ipmi']
+        evpn_vlan_bundle: bundle3
+      - id: 100
+        name: vlan100
+        tags: ['fabric']
+        evpn_vlan_bundle: bundle3
+    vrfs:
+      - name: SIT_VRF
+        vrf_vni: 789654
+        svis:
+          - id: 1008
+            name: SVI_1
+            enabled: true
+            evpn_vlan_bundle: bundle3
+            tags: ['sit']
+          - id: 1009
+            name: SVI_2
+            enabled: true
+            evpn_vlan_bundle: bundle3
+            tags: ['sit']
+          - id: 1010
+            name: SVI_3
+            enabled: true
+            tags: ['sit']
+      - name: SIT2
+        vrf_vni: 654789
+        svis:
+          - id: 1011
+            name: SVI_4
+            enabled: true
+            evpn_vlan_bundle: bundle3
+            tags: ['sit']
+          - id: 1012
+            name: SVI_5
+            enabled: true
+            evpn_vlan_bundle: bundle3
+            tags: ['sit']
+          - id: 1013
+            name: SVI_6
+            enabled: true
+            tags: ['sit']
+      - name: SIT3
+        vrf_vni: 654555
+        svis:
+          - id: 1014
+            name: SVI_7
+            enabled: true
+            evpn_vlan_bundle: bundle4
+            tags: ['sit']
+          - id: 1015
+            name: SVI_8
+            enabled: true
+            evpn_vlan_bundle: bundle4
+            tags: ['sit']
 
 evpn_vlan_bundles:
   - name: bundle1
@@ -60,3 +120,11 @@ evpn_vlan_bundles:
     id: 2
     rt_override: 111
     rd_override: 1.1.1.1:222
+  - name: bundle3
+    id: 3
+    rt_override: 333
+    rd_override: 1.1.1.1:333
+  - name: bundle4
+    id: 4
+    rt_override: 444
+    rd_override: 1.1.1.1:444

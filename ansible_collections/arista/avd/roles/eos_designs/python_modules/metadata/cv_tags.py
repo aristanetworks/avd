@@ -93,7 +93,7 @@ class CvTagsMixin:
         Return list of device_tags for cv_pathfinder solution
         Example: [
             {"name": "Region", "value": <value copied from cv_pathfinder_region for pathfinder clients>},
-            {"name": "Zone", "value": <always "DEFAULT-ZONE" for pathfinder clients>},
+            {"name": "Zone", "value": <"<region-name>-ZONE" for pathfinder clients>},
             {"name": "Site", "value": <value copied from cv_pathfinder_site for pathfinder clients>},
             {"name": "PathfinderSet", "value": <value copied from node group or default "PATHFINDERS" for pathfinder servers>},
             {"name": "Role", "value": <'pathfinder', 'edge', 'transit region' or 'transit zone'>}
@@ -111,7 +111,7 @@ class CvTagsMixin:
             device_tags.extend(
                 [
                     self._tag_dict("Region", self.shared_utils.wan_region["name"]),
-                    self._tag_dict("Zone", "DEFAULT-ZONE"),
+                    self._tag_dict("Zone", self.shared_utils.wan_zone["name"]),
                     self._tag_dict("Site", self.shared_utils.wan_site["name"]),
                 ]
             )
@@ -182,7 +182,8 @@ class CvTagsMixin:
                 if value:
                     tags.append(self._tag_dict(generate_tag["name"], value))
 
-            tags.extend(self._get_cv_pathfinder_interface_tags(ethernet_interface))
+            if self.shared_utils.is_cv_pathfinder_router:
+                tags.extend(self._get_cv_pathfinder_interface_tags(ethernet_interface))
 
             if tags:
                 interface_tags.append({"interface": ethernet_interface["name"], "tags": tags})
@@ -198,10 +199,6 @@ class CvTagsMixin:
             {"name": "Circuit", <value copied from wan_circuit_id if this is a wan interface>}
         ]
         """
-        # Skip if not cv_pathfinder_role or if this is a subinterface.
-        if not self.shared_utils.is_cv_pathfinder_router or "." in ethernet_interface["name"]:
-            return []
-
         if ethernet_interface["name"] in self._wan_interface_names:
             wan_interface = get_item(self.shared_utils.wan_interfaces, "name", ethernet_interface["name"], required=True)
             return strip_empties_from_list(

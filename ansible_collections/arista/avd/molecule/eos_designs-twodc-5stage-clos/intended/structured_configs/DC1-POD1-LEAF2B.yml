@@ -466,12 +466,12 @@ vlan_interfaces:
 - name: Vlan4085
   description: L2LEAF_INBAND_MGMT
   shutdown: false
-  ip_address: 172.21.110.3/24
-  ip_virtual_router_addresses:
-  - 172.21.110.1
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ip_address: 172.21.110.3/24
+  ip_virtual_router_addresses:
+  - 172.21.110.1
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_DC1.POD1.LEAF2A_Po5
