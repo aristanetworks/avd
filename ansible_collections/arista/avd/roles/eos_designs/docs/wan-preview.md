@@ -20,7 +20,7 @@ title: Ansible Collection Role eos_designs - WAN preview
 
 ## Overview
 
-The intention is to support both a single [AutoVPN design](https://www.arista.com/en/cg-veos-router/veos-router-auto-vpn) and [CV Pathfinder](https://www.arista.com/en/solutions/enterprise-wan/pathfinder).
+The intention is to support both a single AutoVPN design and [CV Pathfinder](https://www.arista.com/en/solutions/enterprise-wan/pathfinder).
 
 ### Design points
 
@@ -37,7 +37,7 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
   - The `default_virtual_topology` is used as the default match in the policy.  To prevent configuring it, the `drop_unmatched` boolean must be set to `true` otherwise, at least one `path-group` must be configured or AVD will raise an error.
   - Policies are assigned to VRFs using the list `wan_virtual_topologies.vrfs`. A policy can be reused in multiple VRFs.
   - If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
-  - For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `CONTROL-PLANE-APPLICATION-PROFILE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
+  - For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
   - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default. It is possible to disable HA under node settings.
 
 #### LAN Designs
@@ -109,7 +109,7 @@ The HA tunnel will come up properly today but route redistribution will be missi
 
 ## Known limitations
 
-- Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `DEFAULT-ZONE` with ID `1`.
+- Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`.
 - Because of the previous point, in `eos_designs`, the `transit` node type is always configured as `transit region`.
 - For `cv-pathfinder` mode, the following flow-tracking configuration is applied
     without any customization possible:
@@ -245,7 +245,7 @@ The tags will only be generated when `wan_mode` is set to `cv-pathfinder`.
 | Tag Name        | Source of information                                      |
 | --------------- | ---------------------------------------------------------- |
 | `Region`        | `cv_pathfinder_region` for `wan_router`                    |
-| `Zone`          | `DEFAULT-ZONE` for `wan_router`                            |
+| `Zone`          | `<region_name>-ZONE` for `wan_router`                            |
 | `Site`          | `cv_pathfinder_site` for `wan_router`                      |
 | `PathfinderSet` | name of `node_group` or default `PATHFINDERS` for `wan_rr` |
 | `Role`          | `pathfinder`, `edge`, `transit region` or `transit zone`   |

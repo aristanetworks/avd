@@ -14,6 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].name") | String | Required, Unique |  | Pattern: Ethernet[\d/]+(.[\d]+)? | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'<br>For a subinterface, the parent physical interface is automatically created. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip_address</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].dhcp_ip_address") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address/Mask to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used in ACLs in certain scenarios. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].dhcp_accept_default_route") | Boolean |  | `False` |  | Accept a default route from DHCP if `ip_address` is set to `dhcp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
@@ -38,6 +39,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: Ethernet[\d/]+(.[\d]+)? | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'<br>For a subinterface, the parent physical interface is automatically created. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].dhcp_ip_address") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address/Mask to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used in ACLs in certain scenarios. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].dhcp_accept_default_route") | Boolean |  | `False` |  | Accept a default route from DHCP if `ip_address` is set to `dhcp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
@@ -58,6 +60,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: Ethernet[\d/]+(.[\d]+)? | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'<br>For a subinterface, the parent physical interface is automatically created. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip_address</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].dhcp_ip_address") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address/Mask to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used in ACLs in certain scenarios. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].dhcp_accept_default_route") | Boolean |  | `False` |  | Accept a default route from DHCP if `ip_address` is set to `dhcp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
@@ -80,6 +83,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: Ethernet[\d/]+(.[\d]+)? | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'<br>For a subinterface, the parent physical interface is automatically created. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip_address</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].dhcp_ip_address") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address/Mask to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used in ACLs in certain scenarios. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].dhcp_accept_default_route") | Boolean |  | `False` |  | Accept a default route from DHCP if `ip_address` is set to `dhcp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
@@ -100,6 +104,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_interface_profiles.[].name") | String |  |  | Pattern: Ethernet[\d/]+(.[\d]+)? | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'<br>For a subinterface, the parent physical interface is automatically created. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_interface_profiles.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "l3_interface_profiles.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip_address</samp>](## "l3_interface_profiles.[].dhcp_ip_address") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address/Mask to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used in ACLs in certain scenarios. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "l3_interface_profiles.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "l3_interface_profiles.[].dhcp_accept_default_route") | Boolean |  | `False` |  | Accept a default route from DHCP if `ip_address` is set to `dhcp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_interface_profiles.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
@@ -142,6 +147,11 @@
 
             # Node IPv4 address/Mask or 'dhcp'.
             ip_address: <str>
+
+            # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+            # IPv4 address/Mask to be allocated on the interface if known.
+            # This is not rendered in the configuration but can be used in ACLs in certain scenarios.
+            dhcp_ip_address: <str>
 
             # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
             encapsulation_dot1q_vlan: <int; 1-4094>
@@ -222,6 +232,11 @@
                   # Node IPv4 address/Mask or 'dhcp'.
                   ip_address: <str>
 
+                  # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+                  # IPv4 address/Mask to be allocated on the interface if known.
+                  # This is not rendered in the configuration but can be used in ACLs in certain scenarios.
+                  dhcp_ip_address: <str>
+
                   # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                   encapsulation_dot1q_vlan: <int; 1-4094>
 
@@ -287,6 +302,11 @@
 
               # Node IPv4 address/Mask or 'dhcp'.
               ip_address: <str>
+
+              # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+              # IPv4 address/Mask to be allocated on the interface if known.
+              # This is not rendered in the configuration but can be used in ACLs in certain scenarios.
+              dhcp_ip_address: <str>
 
               # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
               encapsulation_dot1q_vlan: <int; 1-4094>
@@ -360,6 +380,11 @@
               # Node IPv4 address/Mask or 'dhcp'.
               ip_address: <str>
 
+              # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+              # IPv4 address/Mask to be allocated on the interface if known.
+              # This is not rendered in the configuration but can be used in ACLs in certain scenarios.
+              dhcp_ip_address: <str>
+
               # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
               encapsulation_dot1q_vlan: <int; 1-4094>
 
@@ -426,6 +451,11 @@
 
         # Node IPv4 address/Mask or 'dhcp'.
         ip_address: <str>
+
+        # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+        # IPv4 address/Mask to be allocated on the interface if known.
+        # This is not rendered in the configuration but can be used in ACLs in certain scenarios.
+        dhcp_ip_address: <str>
 
         # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
         encapsulation_dot1q_vlan: <int; 1-4094>

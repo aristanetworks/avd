@@ -39,11 +39,13 @@ interface Management1
 
 ### Router BGP
 
+ASN Notation: asdot
+
 #### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101 | 192.168.255.3 |
+| 65101.0001 | 192.168.255.3 |
 
 #### Router BGP Peer Groups
 
@@ -51,13 +53,13 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote AS | 65001 |
+| Remote AS | 65001.0002 |
 
 ##### PG-2
 
 | Settings | Value |
 | -------- | ----- |
-| Remote AS | 65001 |
+| Remote AS | 65001.0003 |
 
 #### BGP Neighbors
 
@@ -92,12 +94,13 @@ interface Management1
 
 ```eos
 !
-router bgp 65101
+router bgp 65101.0001
+   bgp asn notation asdot
    router-id 192.168.255.3
    neighbor PG-1 peer group
-   neighbor PG-1 remote-as 65001
+   neighbor PG-1 remote-as 65001.0002
    neighbor PG-2 peer group
-   neighbor PG-2 remote-as 65001
+   neighbor PG-2 remote-as 65001.0003
    !
    address-family link-state
       bgp missing-policy direction in action permit

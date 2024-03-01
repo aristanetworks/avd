@@ -4400,7 +4400,7 @@
           },
           "sites": {
             "type": "array",
-            "description": "All sites are placed in a default zone called DEFAULT-ZONE with ID 1.",
+            "description": "All sites are placed in a default zone \"<region_name>-ZONE\" with ID 1.",
             "items": {
               "type": "object",
               "properties": {
@@ -4410,7 +4410,7 @@
                 },
                 "id": {
                   "type": "integer",
-                  "description": "The site ID must be unique within a zone.\nGiven that all the sites are placed in the DEFAULT-ZONE, the site ID must be unique within a region.",
+                  "description": "The Site ID must be unique within a zone.\nGiven that all the Sites are placed in a Zone named after the Region, the Site ID must be unique within a Region.",
                   "minimum": 1,
                   "maximum": 10000,
                   "title": "ID"
@@ -5940,6 +5940,11 @@
             "description": "Node IPv4 address/Mask or 'dhcp'.",
             "title": "IP Address"
           },
+          "dhcp_ip_address": {
+            "type": "string",
+            "description": "When the `ip_address` is `dhcp`, this optional field allows to indicate the expected\nIPv4 address/Mask to be allocated on the interface if known.\nThis is not rendered in the configuration but can be used in ACLs in certain scenarios.",
+            "title": "DHCP IP Address"
+          },
           "encapsulation_dot1q_vlan": {
             "description": "For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.",
             "type": "integer",
@@ -7100,6 +7105,37 @@
                       "sparse_mode": {
                         "type": "boolean",
                         "title": "Sparse Mode"
+                      },
+                      "bfd": {
+                        "type": "boolean",
+                        "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                        "title": "BFD"
+                      },
+                      "bidirectional": {
+                        "type": "boolean",
+                        "title": "Bidirectional"
+                      },
+                      "hello": {
+                        "type": "object",
+                        "properties": {
+                          "count": {
+                            "type": "string",
+                            "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                            "title": "Count"
+                          },
+                          "interval": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 65535,
+                            "description": "PIM hello interval in seconds.",
+                            "title": "Interval"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Hello"
                       }
                     },
                     "additionalProperties": false,
@@ -11134,6 +11170,37 @@
                           "sparse_mode": {
                             "type": "boolean",
                             "title": "Sparse Mode"
+                          },
+                          "bfd": {
+                            "type": "boolean",
+                            "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                            "title": "BFD"
+                          },
+                          "bidirectional": {
+                            "type": "boolean",
+                            "title": "Bidirectional"
+                          },
+                          "hello": {
+                            "type": "object",
+                            "properties": {
+                              "count": {
+                                "type": "string",
+                                "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                                "title": "Count"
+                              },
+                              "interval": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 65535,
+                                "description": "PIM hello interval in seconds.",
+                                "title": "Interval"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Hello"
                           }
                         },
                         "additionalProperties": false,
@@ -12404,6 +12471,37 @@
                       "sparse_mode": {
                         "type": "boolean",
                         "title": "Sparse Mode"
+                      },
+                      "bfd": {
+                        "type": "boolean",
+                        "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                        "title": "BFD"
+                      },
+                      "bidirectional": {
+                        "type": "boolean",
+                        "title": "Bidirectional"
+                      },
+                      "hello": {
+                        "type": "object",
+                        "properties": {
+                          "count": {
+                            "type": "string",
+                            "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                            "title": "Count"
+                          },
+                          "interval": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 65535,
+                            "description": "PIM hello interval in seconds.",
+                            "title": "Interval"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Hello"
                       }
                     },
                     "additionalProperties": false,
@@ -14124,10 +14222,11 @@
             "enum": [
               "p2p",
               "port-channel",
-              "p2p-vrfs"
+              "p2p-vrfs",
+              "lan"
             ],
             "default": "p2p",
-            "description": "`uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router` is true.\n\nFor `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF\nin `network_services` present on both the uplink and the downlink switch.\nThe subinterface ID is the `vrf_id`.\n'underlay_router' and 'network_services.l3' must be set to true.\nVRF `default` is always configured on the physical interface using the underlay routing protocol.\nAll subinterfaces use the same IP address as the physical interface.\nMulticast is not supported.\nOnly BGP is supported for subinterfaces.",
+            "description": "`uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep` or `underlay_router` is true.\n\nFor `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF\nin `network_services` present on both the uplink and the downlink switch.\nThe subinterface ID is the `vrf_id`.\n'underlay_router' and 'network_services.l3' must be set to true.\nVRF `default` is always configured on the physical interface using the underlay routing protocol.\nAll subinterfaces use the same IP address as the physical interface.\nMulticast is not supported.\nOnly BGP is supported for subinterfaces.\n\nFor `lan`, a single uplink interface is supported and will be configured as an L3 Interface with\nsubinterfaces for each SVI defined under the VRFs in `network_services` as long as the uplink switch also\nhas the VLAN permitted by tag/tenant filtering.",
             "title": "Uplink Type"
           },
           "vtep": {
@@ -17242,6 +17341,37 @@
                           "sparse_mode": {
                             "type": "boolean",
                             "title": "Sparse Mode"
+                          },
+                          "bfd": {
+                            "type": "boolean",
+                            "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                            "title": "BFD"
+                          },
+                          "bidirectional": {
+                            "type": "boolean",
+                            "title": "Bidirectional"
+                          },
+                          "hello": {
+                            "type": "object",
+                            "properties": {
+                              "count": {
+                                "type": "string",
+                                "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                                "title": "Count"
+                              },
+                              "interval": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 65535,
+                                "description": "PIM hello interval in seconds.",
+                                "title": "Interval"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Hello"
                           }
                         },
                         "additionalProperties": false,
@@ -18512,6 +18642,37 @@
                       "sparse_mode": {
                         "type": "boolean",
                         "title": "Sparse Mode"
+                      },
+                      "bfd": {
+                        "type": "boolean",
+                        "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                        "title": "BFD"
+                      },
+                      "bidirectional": {
+                        "type": "boolean",
+                        "title": "Bidirectional"
+                      },
+                      "hello": {
+                        "type": "object",
+                        "properties": {
+                          "count": {
+                            "type": "string",
+                            "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                            "title": "Count"
+                          },
+                          "interval": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 65535,
+                            "description": "PIM hello interval in seconds.",
+                            "title": "Interval"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Hello"
                       }
                     },
                     "additionalProperties": false,
@@ -22196,6 +22357,37 @@
                             "local_interface": {
                               "type": "string",
                               "title": "Local Interface"
+                            },
+                            "bfd": {
+                              "type": "boolean",
+                              "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                              "title": "BFD"
+                            },
+                            "bidirectional": {
+                              "type": "boolean",
+                              "title": "Bidirectional"
+                            },
+                            "hello": {
+                              "type": "object",
+                              "properties": {
+                                "count": {
+                                  "type": "string",
+                                  "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                                  "title": "Count"
+                                },
+                                "interval": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 65535,
+                                  "description": "PIM hello interval in seconds.",
+                                  "title": "Interval"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Hello"
                             }
                           },
                           "additionalProperties": false,
@@ -23901,6 +24093,37 @@
                       "local_interface": {
                         "type": "string",
                         "title": "Local Interface"
+                      },
+                      "bfd": {
+                        "type": "boolean",
+                        "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                        "title": "BFD"
+                      },
+                      "bidirectional": {
+                        "type": "boolean",
+                        "title": "Bidirectional"
+                      },
+                      "hello": {
+                        "type": "object",
+                        "properties": {
+                          "count": {
+                            "type": "string",
+                            "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                            "title": "Count"
+                          },
+                          "interval": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 65535,
+                            "description": "PIM hello interval in seconds.",
+                            "title": "Interval"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Hello"
                       }
                     },
                     "additionalProperties": false,
@@ -24787,6 +25010,30 @@
               }
             },
             "title": "Import Path Groups"
+          },
+          "dps_keepalive": {
+            "type": "object",
+            "description": "Period between the transmission of consecutive keepalive messages, and failure threshold.",
+            "properties": {
+              "interval": {
+                "type": "string",
+                "description": "Interval in milliseconds. Valid values are 50-60000 | \"auto\"\n\nWhen auto, the interval and failure_threshold are automatically determined based on\npath state.",
+                "title": "Interval"
+              },
+              "failure_threshold": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 100,
+                "default": 5,
+                "description": "Failure threshold in number of lost keep-alive messages.",
+                "title": "Failure Threshold"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "DPS Keepalive"
           }
         },
         "required": [
@@ -24877,6 +25124,18 @@
       },
       "title": "Wan Route Servers"
     },
+    "wan_stun_dtls_disable": {
+      "type": "boolean",
+      "default": false,
+      "description": "PREVIEW: This key is currently not supported\n\nWAN STUN connections will be authenticated and secured with DTLS by default.\nFor CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.\nIn case of AutoVPN the certificates must be deployed manually to all devices.\n\nFor LAB environments this can be disabled, if there are no certificates available.\nThis should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication.",
+      "title": "Wan STUN Dtls Disable"
+    },
+    "wan_stun_dtls_profile_name": {
+      "type": "string",
+      "default": "STUN-DTLS",
+      "description": "PREVIEW: This key is currently not supported\n\nName of the SSL profile used for DTLS on WAN STUN connections.\n\nWhen using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers.",
+      "title": "Wan STUN Dtls Profile Name"
+    },
     "wan_virtual_topologies": {
       "type": "object",
       "description": "PREVIEW: WAN Preview\n\nConfigure Virtual Topologies for CV Pathfinder and AutoVPN.\n\nAuto create a control plane profile/policy/application and enforce it being first in the default VRF.",
@@ -24939,6 +25198,12 @@
               "maximum": 63,
               "description": "Set DSCP for matched traffic.",
               "title": "DSCP"
+            },
+            "lowest_hop_count": {
+              "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+              "type": "boolean",
+              "default": false,
+              "title": "Lowest Hop Count"
             },
             "constraints": {
               "type": "object",
@@ -25057,6 +25322,12 @@
                       "description": "Set DSCP for matched traffic.",
                       "title": "DSCP"
                     },
+                    "lowest_hop_count": {
+                      "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+                      "type": "boolean",
+                      "default": false,
+                      "title": "Lowest Hop Count"
+                    },
                     "constraints": {
                       "type": "object",
                       "properties": {
@@ -25158,6 +25429,12 @@
                     "maximum": 63,
                     "description": "Set DSCP for matched traffic.",
                     "title": "DSCP"
+                  },
+                  "lowest_hop_count": {
+                    "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Lowest Hop Count"
                   },
                   "constraints": {
                     "type": "object",

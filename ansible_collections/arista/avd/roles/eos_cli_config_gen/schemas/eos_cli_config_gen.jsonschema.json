@@ -3499,6 +3499,37 @@
                   "sparse_mode": {
                     "type": "boolean",
                     "title": "Sparse Mode"
+                  },
+                  "bfd": {
+                    "type": "boolean",
+                    "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                    "title": "BFD"
+                  },
+                  "bidirectional": {
+                    "type": "boolean",
+                    "title": "Bidirectional"
+                  },
+                  "hello": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "string",
+                        "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                        "title": "Count"
+                      },
+                      "interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "PIM hello interval in seconds.",
+                        "title": "Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Hello"
                   }
                 },
                 "additionalProperties": false,
@@ -13286,6 +13317,37 @@
                   "sparse_mode": {
                     "type": "boolean",
                     "title": "Sparse Mode"
+                  },
+                  "bfd": {
+                    "type": "boolean",
+                    "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                    "title": "BFD"
+                  },
+                  "bidirectional": {
+                    "type": "boolean",
+                    "title": "Bidirectional"
+                  },
+                  "hello": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "string",
+                        "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                        "title": "Count"
+                      },
+                      "interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "PIM hello interval in seconds.",
+                        "title": "Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Hello"
                   }
                 },
                 "additionalProperties": false,
@@ -13588,9 +13650,17 @@
           "type": "string",
           "enum": [
             "boundary",
-            "transparent"
+            "disabled",
+            "e2etransparent",
+            "gptp",
+            "ordinarymaster",
+            "p2ptransparent"
           ],
           "title": "Mode"
+        },
+        "mode_one_step": {
+          "type": "boolean",
+          "title": "Mode One Step"
         },
         "forward_unicast": {
           "type": "boolean",
@@ -15385,6 +15455,15 @@
           "type": "string",
           "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
           "title": "As"
+        },
+        "as_notation": {
+          "title": "ASN Notation",
+          "type": "string",
+          "description": "BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation \"<1-65535>.<0-65535>\". This flag indicates which mode is preferred - asplain is the default.",
+          "enum": [
+            "asdot",
+            "asplain"
+          ]
         },
         "router_id": {
           "type": "string",
@@ -26413,6 +26492,37 @@
                   "local_interface": {
                     "type": "string",
                     "title": "Local Interface"
+                  },
+                  "bfd": {
+                    "type": "boolean",
+                    "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                    "title": "BFD"
+                  },
+                  "bidirectional": {
+                    "type": "boolean",
+                    "title": "Bidirectional"
+                  },
+                  "hello": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "string",
+                        "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                        "title": "Count"
+                      },
+                      "interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "PIM hello interval in seconds.",
+                        "title": "Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Hello"
                   }
                 },
                 "additionalProperties": false,

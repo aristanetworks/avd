@@ -194,7 +194,8 @@ class UtilsMixin:
         Control plane profile name
         """
         control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
-        return get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE")
+        vrf_default_policy_name = get(get_item(self._filtered_wan_vrfs, "name", "default"), "original_policy")
+        return get(control_plane_virtual_topology, "name", default=f"{vrf_default_policy_name}-CONTROL-PLANE")
 
     @cached_property
     def _wan_control_plane_application_profile(self) -> str:
@@ -203,7 +204,7 @@ class UtilsMixin:
 
         TODO: make this configurable
         """
-        return "CONTROL-PLANE-APPLICATION-PROFILE"
+        return "APP-PROFILE-CONTROL-PLANE"
 
     def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, context_path: str) -> dict:
         """
@@ -216,7 +217,13 @@ class UtilsMixin:
         context_path (str): Key used for context for error messages.
         """
         wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
-        wan_load_balance_policy = {"name": name, "path_groups": [], **get(input_dict, "constraints", default={})}
+        wan_load_balance_policy = {
+            "name": name,
+            "path_groups": [],
+            **get(input_dict, "constraints", default={}),
+        }
+        if self.shared_utils.wan_mode == "cv-pathfinder":
+            wan_load_balance_policy["lowest_hop_count"] = get(input_dict, "lowest_hop_count")
 
         if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
             # Adding HA path-group with priority 1 - it does not count as an entry with priority 1

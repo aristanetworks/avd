@@ -2203,6 +2203,29 @@ keys:
                   max: 429467295
                 sparse_mode:
                   type: bool
+                bfd:
+                  type: bool
+                  description: Set the default for whether Bidirectional Forwarding
+                    Detection is enabled for PIM.
+                bidirectional:
+                  type: bool
+                hello:
+                  type: dict
+                  keys:
+                    count:
+                      type: str
+                      convert_types:
+                      - int
+                      - float
+                      description: Number of missed hellos after which the neighbor
+                        expires. Range <1.5-65535>.
+                    interval:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 65535
+                      description: PIM hello interval in seconds.
         mac_security:
           type: dict
           keys:
@@ -7797,6 +7820,29 @@ keys:
                   max: 429467295
                 sparse_mode:
                   type: bool
+                bfd:
+                  type: bool
+                  description: Set the default for whether Bidirectional Forwarding
+                    Detection is enabled for PIM.
+                bidirectional:
+                  type: bool
+                hello:
+                  type: dict
+                  keys:
+                    count:
+                      type: str
+                      convert_types:
+                      - int
+                      - float
+                      description: Number of missed hellos after which the neighbor
+                        expires. Range <1.5-65535>.
+                    interval:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 65535
+                      description: PIM hello interval in seconds.
         service_profile:
           type: str
           description: QOS profile
@@ -7999,7 +8045,13 @@ keys:
         type: str
         valid_values:
         - boundary
-        - transparent
+        - disabled
+        - e2etransparent
+        - gptp
+        - ordinarymaster
+        - p2ptransparent
+      mode_one_step:
+        type: bool
       forward_unicast:
         type: bool
       clock_identity:
@@ -9169,6 +9221,15 @@ keys:
           it from being interpreted as a float number.'
         convert_types:
         - int
+      as_notation:
+        display_name: ASN Notation
+        type: str
+        description: BGP AS can be deplayed in the asplain <1-4294967295> or asdot
+          notation "<1-65535>.<0-65535>". This flag indicates which mode is preferred
+          - asplain is the default.
+        valid_values:
+        - asdot
+        - asplain
       router_id:
         type: str
         description: In IP address format A.B.C.D
@@ -15168,6 +15229,29 @@ keys:
                   type: bool
                 local_interface:
                   type: str
+                bfd:
+                  type: bool
+                  description: Set the default for whether Bidirectional Forwarding
+                    Detection is enabled for PIM.
+                bidirectional:
+                  type: bool
+                hello:
+                  type: dict
+                  keys:
+                    count:
+                      type: str
+                      convert_types:
+                      - int
+                      - float
+                      description: Number of missed hellos after which the neighbor
+                        expires. Range <1.5-65535>.
+                    interval:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 65535
+                      description: PIM hello interval in seconds.
         isis_enable:
           type: str
           description: ISIS instance name

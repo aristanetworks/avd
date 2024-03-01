@@ -24,6 +24,7 @@
     - "{{ output_dir }}"
     - "{{ test_catalogs_dir }}"
     - "{{ test_results_dir }}"
+    - "{{ custom_anta_catalogs_dir }}"
   delegate_to: localhost
   run_once: true
   check_mode: false
