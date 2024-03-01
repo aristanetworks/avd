@@ -20,7 +20,7 @@ title: Ansible Collection Role eos_designs - WAN preview
 
 ## Overview
 
-The intention is to support both a single [AutoVPN design](https://www.arista.com/en/cg-veos-router/veos-router-auto-vpn) and [CV Pathfinder](https://www.arista.com/en/solutions/enterprise-wan/pathfinder).
+The intention is to support both a single AutoVPN design and [CV Pathfinder](https://www.arista.com/en/solutions/enterprise-wan/pathfinder).
 
 ### Design points
 
