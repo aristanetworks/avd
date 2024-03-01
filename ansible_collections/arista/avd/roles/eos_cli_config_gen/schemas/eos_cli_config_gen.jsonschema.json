@@ -11233,14 +11233,14 @@
                       "description": "IPv4 Network/Mask or IPv6 Network/Mask.",
                       "title": "Source Prefix"
                     },
-                    "protocol_type": {
+                    "protocol": {
                       "type": "string",
                       "description": "Select TCP/UDP.",
                       "enum": [
                         "tcp",
                         "udp"
                       ],
-                      "title": "Protocol Type"
+                      "title": "Protocol"
                     },
                     "destination_port": {
                       "type": "array",

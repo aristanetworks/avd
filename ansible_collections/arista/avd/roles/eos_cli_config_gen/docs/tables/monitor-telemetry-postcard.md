@@ -27,7 +27,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "monitor_telemetry_postcard.sample_policies.[].match_rules.[].type") | String |  |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Select the IP address version. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_prefix</samp>](## "monitor_telemetry_postcard.sample_policies.[].match_rules.[].destination_prefix") | String |  |  |  | IPv4 Network/Mask or IPv6 Network/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_prefix</samp>](## "monitor_telemetry_postcard.sample_policies.[].match_rules.[].source_prefix") | String |  |  |  | IPv4 Network/Mask or IPv6 Network/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_type</samp>](## "monitor_telemetry_postcard.sample_policies.[].match_rules.[].protocol_type") | String |  |  | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code> | Select TCP/UDP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "monitor_telemetry_postcard.sample_policies.[].match_rules.[].protocol") | String |  |  | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code> | Select TCP/UDP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_port</samp>](## "monitor_telemetry_postcard.sample_policies.[].match_rules.[].destination_port") | List |  |  |  | Enter the port name or range or  port numbers in a list.<br>Example:<br>  ["12","14-20", "www"] |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_port</samp>](## "monitor_telemetry_postcard.sample_policies.[].match_rules.[].source_port") | List |  |  |  | Enter the port name or range or  port numbers in a list.<br>Example:<br>  ["12","14-20", "www"] |
 
@@ -90,7 +90,7 @@
               source_prefix: <str>
 
               # Select TCP/UDP.
-              protocol_type: <str; "tcp" | "udp">
+              protocol: <str; "tcp" | "udp">
 
               # Enter the port name or range or  port numbers in a list.
               # Example:

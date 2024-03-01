@@ -86,7 +86,7 @@ keys:
                   source_prefix:
                     type: str
                     description: IPv4 Network/Mask or IPv6 Network/Mask.
-                  protocol_type:
+                  protocol:
                     type: str
                     description: Select TCP/UDP.
                     valid_values: [ tcp, udp ]

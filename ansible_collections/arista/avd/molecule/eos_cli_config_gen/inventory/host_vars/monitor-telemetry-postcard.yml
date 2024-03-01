@@ -20,7 +20,7 @@ monitor_telemetry_postcard:
           type: ipv4
           destination_prefix: 10.3.3.0/24
           source_prefix: 3.4.5.0/24
-          protocol_type: tcp
+          protocol: tcp
           destination_port:
             - '77'
             - 78-80
@@ -29,7 +29,7 @@ monitor_telemetry_postcard:
           type: ipv6
           destination_prefix: 10.3.4.0/24
           source_prefix: 3.4.4.0/24
-          protocol_type: udp
+          protocol: udp
           destination_port:
             - '747'
             - 748-800
@@ -40,7 +40,7 @@ monitor_telemetry_postcard:
           type: ipv4
           destination_prefix: 10.3.3.0/24
           source_prefix: 3.4.5.0/24
-          protocol_type: udp
+          protocol: udp
           source_port:
             - '77'
             - 78-80

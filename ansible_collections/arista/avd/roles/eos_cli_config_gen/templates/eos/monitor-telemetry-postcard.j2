@@ -51,14 +51,14 @@ monitor telemetry postcard policy
 {%                     if rule.source_prefix is arista.avd.defined %}
          source prefix {{ rule.source_prefix }}
 {%                     endif %}
-{%                     if rule.protocol_type is arista.avd.defined and rule.destination_port is arista.avd.defined %}
-{%                         for protocol in rule.destination_port | sort(reverse = True) %}
-         protocol {{ rule.protocol_type }} destination port {{ protocol }}
+{%                     if rule.protocol is arista.avd.defined and rule.destination_port is arista.avd.defined %}
+{%                         for port in rule.destination_port | sort(reverse = True) %}
+         protocol {{ rule.protocol }} destination port {{ port }}
 {%                         endfor %}
 {%                     endif %}
-{%                     if rule.protocol_type is arista.avd.defined and rule.source_port is arista.avd.defined %}
-{%                         for protocol in rule.source_port | sort(reverse = True) %}
-         protocol {{ rule.protocol_type }} source port {{ protocol }}
+{%                     if rule.protocol is arista.avd.defined and rule.source_port is arista.avd.defined %}
+{%                         for port in rule.source_port | sort(reverse = True) %}
+         protocol {{ rule.protocol }} source port {{ port }}
 {%                         endfor %}
 {%                     endif %}
 {%                 endfor %}
