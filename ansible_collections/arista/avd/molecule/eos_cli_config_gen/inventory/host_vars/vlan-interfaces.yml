@@ -107,6 +107,11 @@ vlan_interfaces:
       ipv4:
         dr_priority: 200
         sparse_mode: true
+        bfd: true
+        bidirectional: true
+        hello:
+          count: 3.5
+          interval: 10
 
 # Helpers on SVI
 

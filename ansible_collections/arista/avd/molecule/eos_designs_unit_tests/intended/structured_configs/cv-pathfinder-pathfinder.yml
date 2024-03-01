@@ -317,6 +317,9 @@ router_path_selection:
     id: 100
     local_interfaces:
     - name: Ethernet2
+    keepalive:
+      interval: 300
+      failure_threshold: 5
   - name: INET
     id: 101
     local_interfaces:
@@ -543,7 +546,7 @@ metadata:
     - name: AVD_Land_West
       id: 42
       zones:
-      - name: DEFAULT-ZONE
+      - name: AVD_Land_West-ZONE
         id: 1
         sites:
         - name: Site422
@@ -557,7 +560,7 @@ metadata:
     - name: AVD_Land_East
       id: 43
       zones:
-      - name: DEFAULT-ZONE
+      - name: AVD_Land_East-ZONE
         id: 1
         sites:
         - name: Site511

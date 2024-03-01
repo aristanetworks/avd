@@ -466,7 +466,7 @@ router_adaptive_virtual_topology:
     name: AVD_Land_West
     id: 42
   zone:
-    name: DEFAULT-ZONE
+    name: AVD_Land_West-ZONE
     id: 1
   site:
     name: Site423
@@ -710,7 +710,7 @@ metadata:
     - name: Region
       value: AVD_Land_West
     - name: Zone
-      value: DEFAULT-ZONE
+      value: AVD_Land_West-ZONE
     - name: Site
       value: Site423
     interface_tags:
@@ -758,7 +758,7 @@ metadata:
     role: edge
     vtep_ip: 192.168.142.2
     region: AVD_Land_West
-    zone: DEFAULT-ZONE
+    zone: AVD_Land_West-ZONE
     site: Site423
     interfaces:
     - name: Ethernet1
