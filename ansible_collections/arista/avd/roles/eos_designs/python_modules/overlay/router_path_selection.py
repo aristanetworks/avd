@@ -91,7 +91,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                         if not (interval.isdigit() and 50 <= int(interval) <= 60000):
                             raise AristaAvdError(
                                 f"Invalid value '{interval}' for dps_keepalive.interval - "
-                                f"should be either 'auto', or an integer[1-65535] for wan_path_groups[{pg_name}]"
+                                f"should be either 'auto', or an integer[50-60000] for wan_path_groups[{pg_name}]"
                             )
                         path_group_data["keepalive"] = {
                             "interval": int(interval),
