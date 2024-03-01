@@ -5333,9 +5333,19 @@
         "hardware": {
           "type": "object",
           "properties": {
-            "record_format_ipfix_standard_timestamps_counters": {
-              "type": "boolean",
-              "title": "Record Format Ipfix Standard Timestamps Counters"
+            "record": {
+              "type": "object",
+              "properties": {
+                "format_ipfix_standard_timestamps_counters": {
+                  "type": "boolean",
+                  "title": "Format Ipfix Standard Timestamps Counters"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Record"
             },
             "trackers": {
               "type": "array",
