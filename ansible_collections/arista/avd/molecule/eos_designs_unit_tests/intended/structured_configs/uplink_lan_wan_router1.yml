@@ -171,6 +171,11 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
