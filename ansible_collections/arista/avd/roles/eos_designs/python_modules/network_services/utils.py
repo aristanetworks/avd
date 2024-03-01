@@ -222,7 +222,7 @@ class UtilsMixin:
             "path_groups": [],
             **get(input_dict, "constraints", default={}),
         }
-        if self.shared_utils.wan_mode == "cv-pathfinder":
+        if self.shared_utils.is_cv_pathfinder_router:
             wan_load_balance_policy["lowest_hop_count"] = get(input_dict, "lowest_hop_count")
 
         if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
