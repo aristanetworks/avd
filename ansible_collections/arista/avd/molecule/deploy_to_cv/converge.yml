@@ -7,20 +7,15 @@
     cv_server: www.cv-staging.corp.arista.io
     # token: "{{ lookup('file', playbook_dir ~ '/token-aawg-ci.tok')}}"
     token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
-    ws_url: https://{{ cv_server }}/api/v3/services/arista.configlet.v1.ConfigletService/GetOne
+    configlet_url: https://{{ cv_server }}/api/v3/services/arista.configlet.v1.ConfigletService/GetOne
     cc_url: https://{{ cv_server }}/api/v3/services/arista.changecontrol.v1.ChangeControlService/GetOne
     tag_url: https://{{ cv_server }}/api/v3/services/arista.tag.v2.TagAssignmentService/GetOne
-    configuration_dir: "{{ playbook_dir }}/intended/configs/test_configs"
-    structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
-    strict_configuration_dir: "{{ playbook_dir }}/intended/configs/strict_tags"
-    strict_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/strict_tags"
-    value_configuration_dir: "{{ playbook_dir }}/intended/configs/change_tags"
-    value_structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/change_tags"
+    configuration_dir: "{{ playbook_dir }}/intended/configs"
+    structured_config_dir: "{{ playbook_dir }}/intended/structured_configs"
     intended_tag_device: ci-s1-leaf1
-    intended_tags: "{{ lookup('file', structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
-    # intended_strict_tag_device: ci-s1-leaf1-strict_tags
-    intended_strict_tags: "{{ lookup('file', strict_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
-    intended_value_tags: "{{ lookup('file', value_structured_config_dir ~ '/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
+    intended_tags: "{{ lookup('file', structured_config_dir ~ '/test_configs/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
+    intended_strict_tags: "{{ lookup('file', structured_config_dir ~ '/strict_tags/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
+    intended_value_tags: "{{ lookup('file', structured_config_dir ~ '/change_tags/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
 
 
   tasks:
@@ -44,8 +39,8 @@
       run_once: true
       delegate_to: localhost
       arista.avd.deploy_to_cv:
-        configuration_dir: "{{ configuration_dir }}"
-        structured_config_dir: "{{ structured_config_dir }}"
+        configuration_dir: "{{ configuration_dir ~ '/test_configs' }}"
+        structured_config_dir: "{{ structured_config_dir ~ '/test_configs' }}"
         # structured_config_suffix: "yml"
         # device_list: "{{ ansible_play_hosts }}"
         device_list: ["ci-s1-leaf1", "ci-s1-leaf2", "ci-s1-leaf3", "ci-s1-leaf4", "ci-s1-spine1", "ci-s1-spine2"]
@@ -108,7 +103,7 @@
       delegate_to: localhost
       run_once: true
       ansible.builtin.uri:
-        url: '{{ ws_url }}'
+        url: '{{ configlet_url }}'
         return_content: true
         validate_certs: false
         headers:
@@ -149,10 +144,10 @@
     - name: Set configlets facts
       run_once: true
       vars:
-        configs: ['{{ configuration_dir }}/ci-s1-leaf1.cfg',
-                  '{{ configuration_dir }}/ci-s1-leaf2.cfg',
-                  '{{ configuration_dir }}/ci-s1-leaf3.cfg',
-                  '{{ configuration_dir }}/ci-s1-leaf4.cfg'
+        configs: ["{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf1.cfg",
+                  "{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf2.cfg",
+                  "{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf3.cfg",
+                  "{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf4.cfg"
         ]
       ansible.builtin.set_fact:
         response_configlet: "{{ response_configlet | default({}) | combine({item.0.json[0].value.body | trim: item.1}) }}"
@@ -220,8 +215,8 @@
         cc_requested_state_strict: running
         cc_desctiption_strict: sample description
       arista.avd.deploy_to_cv:
-        configuration_dir: "{{ strict_configuration_dir }}"
-        structured_config_dir: "{{ strict_structured_config_dir }}"
+        configuration_dir: "{{ configuration_dir ~ '/strict_tags' }}"
+        structured_config_dir: "{{ structured_config_dir  ~ '/strict_tags' }}"
         device_list: ["ci-s1-leaf1"]
         strict_tags: true
         cv_servers: [ '{{ cv_server }}' ]
@@ -271,8 +266,8 @@
         cc_requested_state_value: running
         cc_desctiption_value: sample description
       arista.avd.deploy_to_cv:
-        configuration_dir: "{{ value_configuration_dir }}"
-        structured_config_dir: "{{ value_structured_config_dir }}"
+        configuration_dir: "{{ configuration_dir ~ '/change_tags' }}"
+        structured_config_dir: "{{ structured_config_dir ~ '/change_tags' }}"
         device_list: ["ci-s1-leaf1"]
         strict_tags: true
         cv_servers: [ '{{ cv_server }}' ]
@@ -311,3 +306,179 @@
             deviceId: "{{ intended_tag_device }}"
       loop:
         "{{ intended_value_tags.metadata.cv_tags.device_tags }}"
+
+    ###########################
+    ##### dotted hostname #####
+    ###########################
+    - name: Set Dotted hostname
+      run_once: true
+      delegate_to: localhost
+      vars:
+        ws_name_dotted: avd-static-studio-set-dotted-{{ r }}
+        ws_description_dotted: sample description
+        ws_req_state_dotted: submitted
+        ws_force_dotted: true
+        cc_name_dotted: cc_avd_studio-set-dotted-{{ r }}
+        cc_requested_state_dotted: running
+        cc_desctiption_dotted: sample description
+      arista.avd.deploy_to_cv:
+        configuration_dir: "{{ configuration_dir ~ '/dotted_hostname/set_dotted_hostname' }}"
+        structured_config_dir: "{{ structured_config_dir ~ '/dotted_hostname/set_dotted_hostname' }}"
+        device_list: ["ci-s1-leaf1"]
+        strict_tags: true
+        cv_servers: [ '{{ cv_server }}' ]
+        cv_token: '{{ token }}'
+        workspace:
+          name: '{{ ws_name_dotted }}'
+          description: '{{ ws_description_dotted }}'
+          id: '{{ ws_name_dotted }}'
+          requested_state: '{{ ws_req_state_dotted }}'
+          force: '{{ ws_force_dotted }}'
+        change_control:
+          name: '{{ cc_name_dotted }}'
+          description: '{{ cc_desctiption_dotted }}'
+          requested_state: '{{ cc_requested_state_dotted }}'
+        return_details: true
+      register: set_dotted_results
+
+    # CC information
+    - name: Validate CC state to completed
+      delegate_to: localhost
+      run_once: true
+      vars:
+        ws_name_dotted: avd-static-studio-set-dotted-{{ r }}
+      ansible.builtin.uri:
+        url: '{{ cc_url }}'
+        return_content: true
+        validate_certs: false
+        headers:
+          Cookie: "access_token={{ token }}"
+        method: POST
+        body_format: json
+        body:
+          key:
+            id: Workspace-{{ ws_name_dotted }}
+      register: cc_info_dotted_hostname
+      until: cc_info_dotted_hostname.json[0].value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
+      retries: 5
+      delay: 30
+
+    - name: Test Dotted hostname
+      run_once: true
+      delegate_to: localhost
+      vars:
+        ws_name_dotted: avd-static-studio-test-dotted-{{ r }}
+        ws_description_dotted: sample description
+        ws_req_state_dotted: submitted
+        ws_force_dotted: true
+        cc_name_dotted: cc_avd_studio-test-dotted-{{ r }}
+        cc_requested_state_dotted: running
+        cc_desctiption_dotted: sample description
+      arista.avd.deploy_to_cv:
+        configuration_dir: "{{ configuration_dir ~ '/dotted_hostname/test_dotted_hostname' }}"
+        structured_config_dir: "{{ structured_config_dir ~ '/dotted_hostname/test_dotted_hostname' }}"
+        device_list: ["ci-s1-leaf.1"]
+        strict_tags: true
+        cv_servers: [ '{{ cv_server }}' ]
+        cv_token: '{{ token }}'
+        workspace:
+          name: '{{ ws_name_dotted }}'
+          description: '{{ ws_description_dotted }}'
+          id: '{{ ws_name_dotted }}'
+          requested_state: '{{ ws_req_state_dotted }}'
+          force: '{{ ws_force_dotted }}'
+        change_control:
+          name: '{{ cc_name_dotted }}'
+          description: '{{ cc_desctiption_dotted }}'
+          requested_state: '{{ cc_requested_state_dotted }}'
+        return_details: true
+      register: test_dotted_results
+
+    # WS asserts
+    - name: Get workspace information
+      delegate_to: localhost
+      run_once: true
+      vars:
+        ws_name_dotted: avd-static-studio-test-dotted-{{ r }}
+      ansible.builtin.uri:
+        url: '{{ configlet_url }}'
+        return_content: true
+        validate_certs: false
+        headers:
+          Cookie: "access_token={{ token }}"
+        method: POST
+        body_format: json
+        body:
+          key:
+            workspace_id: '{{ ws_name_dotted }}'
+            configlet_id: '{{ item }}'
+      loop:
+        - "avd-ci-s1-leaf1"
+      register: dotted_result
+
+    - name: Set configlets facts
+      run_once: true
+      vars:
+        configs: ["{{ configuration_dir ~ '/dotted_hostname/test_dotted_hostname' }}/ci-s1-leaf.1.cfg"]
+      ansible.builtin.set_fact:
+        dotted_response_configlet: "{{ response_configlet | default({}) | combine({item.0.json[0].value.body | trim: item.1}) }}"
+      loop: "{{ dotted_result.results | zip(configs) | list }}"
+
+    - name: Check configlets
+      ansible.builtin.assert:
+        that:
+          - item.key  == lookup('file', item.value)
+      loop: "{{ dotted_response_configlet | dict2items }}"
+
+    - name: Reset Dotted hostname
+      run_once: true
+      delegate_to: localhost
+      vars:
+        ws_name_dotted: avd-static-studio-reset-dotted-{{ r }}
+        ws_description_dotted: sample description
+        ws_req_state_dotted: submitted
+        ws_force_dotted: true
+        cc_name_dotted: cc_avd_studio-reset-dotted-{{ r }}
+        cc_requested_state_dotted: running
+        cc_desctiption_dotted: sample description
+      arista.avd.deploy_to_cv:
+        configuration_dir: "{{ configuration_dir ~ '/dotted_hostname/reset_dotted_hostname' }}"
+        structured_config_dir: "{{ structured_config_dir ~ '/dotted_hostname/reset_dotted_hostname' }}"
+        device_list: ["ci-s1-leaf.1"]
+        strict_tags: true
+        cv_servers: [ '{{ cv_server }}' ]
+        cv_token: '{{ token }}'
+        workspace:
+          name: '{{ ws_name_dotted }}'
+          description: '{{ ws_description_dotted }}'
+          id: '{{ ws_name_dotted }}'
+          requested_state: '{{ ws_req_state_dotted }}'
+          force: '{{ ws_force_dotted }}'
+        change_control:
+          name: '{{ cc_name_dotted }}'
+          description: '{{ cc_desctiption_dotted }}'
+          requested_state: '{{ cc_requested_state_dotted }}'
+        return_details: true
+      register: reset_dotted_results
+
+    # CC information
+    - name: Wait for CC state to completed
+      delegate_to: localhost
+      run_once: true
+      vars:
+        ws_name_dotted: avd-static-studio-reset-dotted-{{ r }}
+      ansible.builtin.uri:
+        url: '{{ cc_url }}'
+        return_content: true
+        validate_certs: false
+        headers:
+          Cookie: "access_token={{ token }}"
+        method: POST
+        body_format: json
+        body:
+          key:
+            id: Workspace-{{ ws_name_dotted }}
+      register: cc_info_dotted_hostname_reset
+      until: cc_info_dotted_hostname_reset.json[0].value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
+      retries: 5
+      delay: 30
