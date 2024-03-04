@@ -6572,14 +6572,26 @@ $defs:
               since it can be either ethernet_interfaces or port_channel_interfaces.
 
               '
-          downlink_ipv4_pool:
+          downlink_pools:
             documentation_options:
               table: node-type-uplink-configuration
-            description: IPv4 subnet to use to connect to downlink switches. Set this
-              on the parent switch. Cannot be combined with uplink_ipv4_pool for the
-              same link.
-            type: str
-            format: ipv4_cidr
+            description: IPv4 subnets to use to connect to downlink switches. Set
+              this on the parent switch. Cannot be combined with uplink_ipv4_pool
+              for the same link.
+            type: list
+            items:
+              type: dict
+              keys:
+                downlink_ipv4_pool:
+                  type: str
+                  format: ipv4_cidr
+                  description: IPv4 subnet to use to connect to downlink switches
+                downlink_interfaces:
+                  type: list
+                  description: List of downlink interfaces of the corresponding 'downlink_ipv4_pool'
+                  items:
+                    type: str
+                    pattern: Ethernet[\d/]+
           mlag_port_channel_structured_config:
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items/
             documentation_options:
