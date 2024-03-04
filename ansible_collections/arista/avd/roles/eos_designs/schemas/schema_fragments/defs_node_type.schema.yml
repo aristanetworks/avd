@@ -335,7 +335,7 @@ $defs:
             type: list
             items:
               type: dict
-              keys: 
+              keys:
                 downlink_ipv4_pool:
                   type: str
                   format: ipv4_cidr
@@ -346,7 +346,7 @@ $defs:
                   items:
                     type: str
                     pattern: Ethernet[\d/]+
-            
+
           mlag_port_channel_structured_config:
             $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items/"
             documentation_options:
