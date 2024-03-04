@@ -122,6 +122,16 @@ class MiscMixin:
         )
 
     @cached_property
+    def downlink_interfaces(self: SharedUtils) -> list:
+        return range_expand(
+            default(
+                get(self.switch_data_combined, "downlink_interfaces"),
+                get(self.default_interfaces, "downlink_interfaces"),
+                [],
+            )
+        )
+
+    @cached_property
     def virtual_router_mac_address(self: SharedUtils) -> str | None:
         return get(self.switch_data_combined, "virtual_router_mac_address")
 

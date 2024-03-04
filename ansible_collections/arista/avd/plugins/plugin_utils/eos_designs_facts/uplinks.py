@@ -149,12 +149,14 @@ class UplinksMixin:
             # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
             # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
             downlink_index = (self.id - 1) * self.shared_utils.max_parallel_uplinks + index_of_parallel_uplinks
-            if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
+            if len(uplink_switch_facts.shared_utils.downlink_interfaces) > downlink_index:
+                uplink_switch_interfaces.append(uplink_switch_facts.shared_utils.downlink_interfaces[downlink_index])
+            elif len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
                 uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
             else:
                 raise AristaAvdError(
                     f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
-                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
+                    f"does not have 'downlink_interfaces[{downlink_index}]' set in the 'uplink_switch' or under 'default_interfaces'"
                 )
 
         return uplink_switch_interfaces
