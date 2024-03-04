@@ -128,11 +128,11 @@ class UtilsMixin:
         for downlink_pool_and_interfaces in downlink_pools:
             downlink_interfaces = range_expand(get(downlink_pool_and_interfaces, "downlink_interfaces"))
 
-            if uplink_switch_interface in downlink_interfaces:
+            if uplink_switch_interface in range_expand(downlink_interfaces):
                 # Return IPv4 if uplink_switch_interface is present in downlink_interfaces
                 return get(downlink_pool_and_interfaces, "downlink_ipv4_pool")
 
-            ## Do some checking if a defined pool was not matched, dangling interfaces, currently this does nothing
+            # Do some checking if a defined pool was not matched, dangling interfaces, currently this does nothing
 
     def _get_p2p_ipv4_pool(self: "AvdIpAddressing", uplink_switch_index: int) -> str:
         uplink_pool = self.shared_utils.uplink_ipv4_pool
