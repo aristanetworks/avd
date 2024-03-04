@@ -27,7 +27,7 @@
     # - Fabric Documentation (Optional, falls back to dc_name and then to fabric_name)
     # - SNMP Location: `snmp_settings.location` (Optional)
     # - VRF Loopbacks: `vtep_diagnostic.loopback_ip_pools.pod` (Required)
-
+    #
     # Recommended to be common between Spines and Leafs within a POD (One l3ls topology).
     pod_name: <str>
     ```

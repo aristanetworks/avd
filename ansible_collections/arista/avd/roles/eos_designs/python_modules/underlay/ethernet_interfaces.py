@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
@@ -110,12 +109,23 @@ class EthernetInterfacesMixin(UtilsMixin):
                 if link.get("underlay_multicast") is True:
                     ethernet_interface["pim"] = {"ipv4": {"sparse_mode": True}}
 
+                # Configuring flow tracking on LAN interfaces
+                if self.shared_utils.is_cv_pathfinder_client:
+                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
                 # Structured Config
                 ethernet_interface["struct_cfg"] = link.get("structured_config")
 
             # L2 interface
             elif link["type"] == "underlay_l2":
-                if (channel_group_id := link.get("channel_group_id")) is not None:
+                if self.shared_utils.network_services_l2_as_subint:
+                    # Render L3 subinterfaces for each SVI.
+                    # The peer will just render a regular trunk.
+                    main_interface, ethernet_subinterfaces = self._get_l3_uplink_with_l2_as_subint(link)
+                    ethernet_interface.update(main_interface)
+
+                elif (channel_group_id := link.get("channel_group_id")) is not None:
+                    # Render port-channel member
                     ethernet_interface.update(
                         {
                             "type": "port-channel-member",
@@ -125,15 +135,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                             },
                         }
                     )
+
                 else:
-                    vlans = get(link, "vlans", default=[])
+                    # Render trunk interface
                     ethernet_interface.update(
                         {
                             "type": "switched",
-                            "vlans": list_compress(vlans),
+                            "vlans": link["vlans"],
+                            "mode": "trunk",
                             "native_vlan": link.get("native_vlan"),
                             "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                             "link_tracking_groups": link.get("link_tracking_groups"),
+                            "spanning_tree_portfast": link.get("spanning_tree_portfast"),
                         }
                     )
 
@@ -179,7 +192,22 @@ class EthernetInterfacesMixin(UtilsMixin):
                     if subinterface.get("ip_address") is not None:
                         ethernet_subinterface.update({"ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}"}),
 
+                    # Configuring flow tracking on LAN interfaces
+                    if self.shared_utils.is_cv_pathfinder_client:
+                        ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
                     ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
+                    append_if_not_duplicate(
+                        list_of_dicts=ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=ethernet_subinterface,
+                        context="Ethernet sub-interfaces defined for underlay",
+                        context_keys=["name", "peer", "peer_interface"],
+                    )
+
+            # Adding subinterfaces for each SVI after the main interface.
+            if link["type"] == "underlay_l2" and self.shared_utils.network_services_l2_as_subint:
+                for ethernet_subinterface in ethernet_subinterfaces:
                     append_if_not_duplicate(
                         list_of_dicts=ethernet_interfaces,
                         primary_key="name",
@@ -216,6 +244,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "peer_type": "l3_interface",
                     "shutdown": False,
                 }
+
+                # Configuring flow tracking on LAN interfaces
+                if self.shared_utils.is_cv_pathfinder_client:
+                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
                 append_if_not_duplicate(
                     list_of_dicts=ethernet_interfaces,
                     primary_key="name",

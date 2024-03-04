@@ -39,6 +39,8 @@ interface Management1
 
 ### Router BGP
 
+ASN Notation: asplain
+
 #### Router BGP Summary
 
 | BGP AS | Router ID |
@@ -131,4 +133,5 @@ router bgp 65101
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       next-hop mpls resolution ribs tunnel-rib-colored system-colored-tunnel-rib tunnel-rib test-rib system-connected
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor 192.168.255.3 activate
 ```

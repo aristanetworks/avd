@@ -92,11 +92,16 @@ class RouteMapsMixin(UtilsMixin):
         if not self._vrf_default_evpn:
             return None
 
-        if not any([self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.wan_role]):
+        if not any([self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.is_wan_router]):
             return None
 
         route_maps = strip_empties_from_list(
-            [self._evpn_export_vrf_default_route_map(), self._bgp_underlay_peers_route_map(), self._redistribute_connected_to_bgp_route_map()]
+            [
+                self._evpn_export_vrf_default_route_map(),
+                self._bgp_underlay_peers_route_map(),
+                self._redistribute_connected_to_bgp_route_map(),
+                self._redistribute_static_to_bgp_route_map(),
+            ]
         )
 
         return route_maps or None
@@ -145,35 +150,37 @@ class RouteMapsMixin(UtilsMixin):
         Match the following prefixes to be exported in EVPN for VRF default:
         * SVI subnets in VRF default
         * Static routes subnets in VRF default
-        * for WAN routers, the loopbacks in VRF default.
+
+        * for WAN routers, all the routes matching the SOO (which includes the two above)
         """
         sequence_numbers = []
-        if self._vrf_default_ipv4_subnets:
+        if self.shared_utils.is_wan_router:
             sequence_numbers.append(
                 {
                     "sequence": 10,
                     "type": "permit",
-                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+                    "match": ["extcommunity ECL-EVPN-SOO"],
                 }
             )
+        else:
+            # TODO refactor existing behavior to SoO?
+            if self._vrf_default_ipv4_subnets:
+                sequence_numbers.append(
+                    {
+                        "sequence": 10,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+                    }
+                )
 
-        if self._vrf_default_ipv4_static_routes["static_routes"]:
-            sequence_numbers.append(
-                {
-                    "sequence": 20,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-                }
-            )
-
-        if self.shared_utils.wan_role:
-            sequence_numbers.append(
-                {
-                    "sequence": 30,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
-                }
-            )
+            if self._vrf_default_ipv4_static_routes["static_routes"]:
+                sequence_numbers.append(
+                    {
+                        "sequence": 20,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
+                    }
+                )
 
         if not sequence_numbers:
             return None
@@ -189,7 +196,7 @@ class RouteMapsMixin(UtilsMixin):
         """
         sequence_numbers = []
 
-        if self.shared_utils.wan_role:
+        if self.shared_utils.is_wan_router:
             return None
 
         if self._vrf_default_ipv4_subnets:
@@ -235,15 +242,36 @@ class RouteMapsMixin(UtilsMixin):
 
         if self._vrf_default_ipv4_subnets:
             # Add subnets to redistribution in default VRF
-            sequence_numbers.append(
-                {
-                    "sequence": 30,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                },
-            )
+            sequence_30 = {
+                "sequence": 30,
+                "type": "permit",
+                "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+            }
+            if self.shared_utils.wan_role:
+                sequence_30["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
+
+            sequence_numbers.append(sequence_30)
 
         if not sequence_numbers:
             return None
 
         return {"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers}
+
+    def _redistribute_static_to_bgp_route_map(self) -> dict | None:
+        """
+        Append network services relevant entries to the route-map used to redistribute static routes to BGP
+        """
+        if not (self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]):
+            return None
+
+        return {
+            "name": "RM-STATIC-2-BGP",
+            "sequence_numbers": [
+                {
+                    "sequence": 10,
+                    "type": "permit",
+                    "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
+                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                }
+            ],
+        }

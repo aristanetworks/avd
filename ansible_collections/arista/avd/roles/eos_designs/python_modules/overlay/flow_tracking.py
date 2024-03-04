@@ -21,14 +21,14 @@ class FlowTrackingMixin(UtilsMixin):
 
         TODO: Make this configurable.
         """
-        if not self.shared_utils.cv_pathfinder_role:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return None
 
         return {
             "hardware": {
                 "trackers": [
                     {
-                        "name": "WAN-FLOW-TRACKER",
+                        "name": self.shared_utils.wan_flow_tracker_name,
                         "record_export": {"on_inactive_timeout": 70000, "on_interval": 5000},
                         "exporters": [{"name": "DPI-EXPORTER", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 5000}],
                     }

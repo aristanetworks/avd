@@ -8,6 +8,7 @@ from .flow_tracking import FlowTrackingMixin
 from .ip_extcommunity_lists import IpExtCommunityListsMixin
 from .ip_security import IpSecurityMixin
 from .management_cvx import ManagementCvxMixin
+from .management_security import ManagementSecurityMixin
 from .route_maps import RouteMapsMixin
 from .router_adaptive_virtual_topology import RouterAdaptiveVirtualTopologyMixin
 from .router_bfd import RouterBfdMixin
@@ -24,6 +25,7 @@ class AvdStructuredConfigOverlay(
     IpExtCommunityListsMixin,
     IpSecurityMixin,
     ManagementCvxMixin,
+    ManagementSecurityMixin,
     RouterAdaptiveVirtualTopologyMixin,
     RouterBfdMixin,
     RouterBgpMixin,
@@ -59,7 +61,7 @@ class AvdStructuredConfigOverlay(
                 self.shared_utils.overlay_evpn,
                 self.shared_utils.overlay_vpn_ipv4,
                 self.shared_utils.overlay_vpn_ipv6,
-                self.shared_utils.wan_role,
+                self.shared_utils.is_wan_router,
             ]
         ):
             return super().render()

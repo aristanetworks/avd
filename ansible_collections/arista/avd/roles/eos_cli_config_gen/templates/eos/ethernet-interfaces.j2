@@ -511,11 +511,23 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
    pim ipv4 sparse-mode
 {%     endif %}
+{%     if ethernet_interface.pim.ipv4.bidirectional is arista.avd.defined(true) %}
+   pim ipv4 bidirectional
+{%     endif %}
 {%     if ethernet_interface.pim.ipv4.border_router is arista.avd.defined(true) %}
    pim ipv4 border-router
 {%     endif %}
+{%     if ethernet_interface.pim.ipv4.hello.interval is arista.avd.defined %}
+   pim ipv4 hello interval {{ ethernet_interface.pim.ipv4.hello.interval }}
+{%     endif %}
+{%     if ethernet_interface.pim.ipv4.hello.count is arista.avd.defined %}
+   pim ipv4 hello count {{ ethernet_interface.pim.ipv4.hello.count }}
+{%     endif %}
 {%     if ethernet_interface.pim.ipv4.dr_priority is arista.avd.defined %}
    pim ipv4 dr-priority {{ ethernet_interface.pim.ipv4.dr_priority }}
+{%     endif %}
+{%     if ethernet_interface.pim.ipv4.bfd is arista.avd.defined(true) %}
+   pim ipv4 bfd
 {%     endif %}
 {%     if ethernet_interface.poe.priority is arista.avd.defined %}
    poe priority {{ ethernet_interface.poe.priority }}

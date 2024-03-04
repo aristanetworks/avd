@@ -239,7 +239,6 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
                 device_metadata.device.serial_number,
                 device_role,
             )
-            edges.append(device_metadata)
             pathfinders.append(device_metadata)
         else:
             LOGGER.info(

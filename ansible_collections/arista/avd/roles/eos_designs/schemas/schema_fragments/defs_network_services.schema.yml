@@ -564,6 +564,11 @@ $defs:
                         convert_types:
                           - int
                         description: Tag value.
+                    evpn_vlan_bundle:
+                      type: str
+                      description: |
+                        Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+                        To use this option the common "evpn_vlan_aware_bundles" option must be set to true.
                     nodes:
                       type: list
                       primary_key: node
@@ -886,6 +891,8 @@ $defs:
                       min: 0
                       max: 4294967294
                       description: Maximum number of routes (0 means unlimited).
+                    maximum_routes_warning_only:
+                      type: bool
                     default_originate:
                       type: dict
                       keys:

@@ -16,6 +16,14 @@ keys:
           For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
         convert_types:
           - int
+      as_notation:
+        display_name: ASN Notation
+        type: str
+        description: 'BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>".
+          This flag indicates which mode is preferred - asplain is the default.'
+        valid_values:
+          - asdot
+          - asplain
       router_id:
         type: str
         description: In IP address format A.B.C.D
@@ -922,6 +930,16 @@ keys:
                 rib_name:
                   type: str
                   description: "The name of the tunnel-rib to use when using 'tunnel-rib' type."
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
           peer_groups:
             type: list
             primary_key: name
@@ -1014,6 +1032,10 @@ keys:
                 type: str
                 valid_values:
                   - "discard"
+              import_ethernet_segment_ip_mass_withdraw:
+                type: bool
+              export_ethernet_segment_ip_mass_withdraw:
+                type: bool
           next_hop_unchanged:
             type: bool
       address_family_rtc:

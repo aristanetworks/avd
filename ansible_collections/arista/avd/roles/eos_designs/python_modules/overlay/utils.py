@@ -260,7 +260,7 @@ class UtilsMixin:
 
     @cached_property
     def _is_wan_server_with_peers(self) -> bool:
-        return self.shared_utils.wan_role == "server" and len(self.shared_utils.filtered_wan_route_servers) > 0
+        return self.shared_utils.is_wan_server and len(self.shared_utils.filtered_wan_route_servers) > 0
 
     def _stun_server_profile_name(self, wan_route_server_name: str, path_group_name: str, interface_name: str) -> str:
         """
@@ -280,6 +280,7 @@ class UtilsMixin:
                     {
                         "name": self._stun_server_profile_name(wan_route_server, path_group["name"], get(interface_dict, "name", required=True)),
                         "ip_address": get(interface_dict, "ip_address", required=True).split("/")[0],
+                        "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
                     }
                     for interface_dict in get(path_group, "interfaces", required=True)
                 )

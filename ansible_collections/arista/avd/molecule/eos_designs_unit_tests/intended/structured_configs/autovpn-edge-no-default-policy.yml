@@ -22,10 +22,17 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
+    ttl_maximum_hops: 1
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -87,11 +94,7 @@ router_bgp:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
+transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 vrfs:
@@ -113,6 +116,7 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: routed
+  description: Comcast_666
   dhcp_client_accept_default_route: true
 loopback_interfaces:
 - name: Loopback0
@@ -131,12 +135,38 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.30.1:0 additive
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 192.168.30.1:0 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
-  - sequence: 30
+  - sequence: 10
     type: permit
     match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.30.1:0
 ip_security:
   ike_policies:
   - name: AUTOVPN-IKE
@@ -156,6 +186,16 @@ ip_security:
     mode: transport
   key_controller:
     profile: AUTOVPN
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_bfd:
   multihop:
     interval: 300
@@ -181,45 +221,54 @@ router_path_selection:
       - 10.7.7.7
     ipsec_profile: AUTOVPN
   load_balance_policies:
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: INET
-  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
   policies:
-  - name: DEFAULT-AVT-POLICY-WITH-CP
+  - name: DEFAULT-POLICY
+    default_match:
+      load_balance: LB-DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-WITH-CP
     rules:
     - id: 10
-      application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      load_balance: LB-CONTROL-PLANE-PROFILE
+      application_profile: APP-PROFILE-CONTROL-PLANE
+      load_balance: LB-DEFAULT-POLICY-CONTROL-PLANE
     default_match:
-      load_balance: LB-DEFAULT-AVT-POLICY-DEFAULT
+      load_balance: LB-DEFAULT-POLICY-DEFAULT
   vrfs:
+  - name: PROD
+    path_selection_policy: DEFAULT-POLICY
+  - name: IT
+    path_selection_policy: DEFAULT-POLICY
   - name: default
-    path_selection_policy: DEFAULT-AVT-POLICY-WITH-CP
+    path_selection_policy: DEFAULT-POLICY-WITH-CP
 stun:
   client:
     server_profiles:
     - name: INET-autovpn-rr3-Ethernet1
       ip_address: 10.7.7.7
+      ssl_profile: STUN-DTLS
 application_traffic_recognition:
   application_profiles:
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   applications:
     ipv4_applications:
-    - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     ipv4_prefixes:
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: PFX-PATHFINDERS
       prefix_values:
       - 2.2.2.2/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
+  mtu: 9214
   ip_address: 192.168.255.1/32
 vxlan_interface:
   Vxlan1:

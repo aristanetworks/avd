@@ -1,93 +1,101 @@
 [
   {
     "name": "dc1-spine2",
-    "test": "VerifyRoutingProtocolModel",
+    "test": "VerifyTacacsServerGroups",
     "categories": [
-      "BGP"
+      "aaa"
     ],
-    "description": "Verifies the configured routing protocol model.",
-    "custom_field": "Routing protocol model: multi-agent"
+    "description": "Verifies if the provided TACACS server group(s) are configured."
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyBGPSpecificPeers",
+    "test": "VerifyTacacsServers",
     "categories": [
-      "BGP"
+      "aaa"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: 10.255.0.3"
+    "description": "Verifies TACACS servers are configured for a specified VRF."
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyBGPSpecificPeers",
+    "test": "VerifyTacacsSourceIntf",
     "categories": [
-      "BGP"
+      "aaa"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: 10.255.0.4"
+    "description": "Verifies TACACS source-interface for a specified VRF."
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyBGPSpecificPeers",
+    "test": "VerifyAcctConsoleMethods",
     "categories": [
-      "BGP"
+      "aaa"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: 10.255.0.5"
+    "description": "Verifies the AAA accounting console method lists for different accounting types (system, exec, commands, dot1x)."
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyBGPSpecificPeers",
+    "test": "VerifyAcctDefaultMethods",
     "categories": [
-      "BGP"
+      "aaa"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: 142.112.41.2"
+    "description": "Verifies the AAA accounting default method lists for different accounting types (system, exec, commands, dot1x)."
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyBGPSpecificPeers",
+    "test": "VerifyAuthenMethods",
     "categories": [
-      "BGP"
+      "aaa"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.11"
+    "description": "Verifies the AAA authentication method lists for different authentication types (login, enable, dot1x)."
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyBGPSpecificPeers",
+    "test": "VerifyAuthzMethods",
     "categories": [
-      "BGP"
+      "aaa"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.3"
+    "description": "Verifies the AAA authorization method lists for different authorization types (commands, exec)."
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyBGPSpecificPeers",
+    "test": "VerifyRunningConfigDiffs",
     "categories": [
-      "BGP"
+      "configuration"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.7"
+    "description": "Verifies there is no difference between the running-config and the startup-config"
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyBGPSpecificPeers",
+    "test": "VerifyZeroTouch",
     "categories": [
-      "BGP"
+      "configuration"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 142.112.39.2"
+    "description": "Verifies ZeroTouch is disabled"
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyBGPSpecificPeers",
+    "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "BGP"
+      "field notices",
+      "software"
     ],
-    "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv6 Unicast Peer: 2001:db8:1::2"
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyFieldNotice44Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the device temperature is within the acceptable range."
   },
   {
     "name": "dc1-spine2",
@@ -107,6 +115,14 @@
   },
   {
     "name": "dc1-spine2",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the fans status are within the accepted states list."
+  },
+  {
+    "name": "dc1-spine2",
     "test": "VerifyEnvironmentPower",
     "categories": [
       "hardware"
@@ -115,11 +131,51 @@
   },
   {
     "name": "dc1-spine2",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the power supplies status are within the accepted states list."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyTransceiversTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies that all transceivers are operating within the acceptable temperature range."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyEnvironmentSystemCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the system cooling status."
+  },
+  {
+    "name": "dc1-spine2",
     "test": "VerifyTransceiversManufacturers",
     "categories": [
       "hardware"
     ],
     "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyAdverseDrops",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc1-spine2",
@@ -165,6 +221,110 @@
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
     "custom_field": "Loopback0 - EVPN_Overlay_Peering"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyIPProxyARP",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies if Proxy-ARP is enabled for the provided list of interface(s)."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies if the provided list of interfaces are all in the expected state."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyInterfaceDiscards",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies interfaces packet discard counters are equal to zero."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyInterfaceUtilization",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies interfaces utilization is below 75%."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyInterfaceErrors",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies that interfaces error counters are equal to zero."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyStormControlDrops",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the device did not drop packets due its to storm-control configuration."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyL2MTU",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the global layer 2 Maximum Transfer Unit (MTU) for all layer 2 interfaces."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyL3MTU",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the global layer 3 Maximum Transfer Unit (MTU) for all layer 3 interfaces."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyLoopbackCount",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the number of loopback interfaces on the device is the one we expect and if none of the loopback is down."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyIllegalLACP",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies there is no illegal LACP packets received."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyPortChannels",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies there is no inactive port in port channels."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyInterfaceErrDisabled",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies there is no interface in error disable state."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifySVI",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies there is no interface vlan down."
   },
   {
     "name": "dc1-spine2",
@@ -231,10 +391,195 @@
   },
   {
     "name": "dc1-spine2",
+    "test": "VerifyOSPFNeighborState",
+    "categories": [
+      "routing",
+      "ospf"
+    ],
+    "description": "Verifies all OSPF neighbors are in FULL state."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing",
+      "generic"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyRoutingProtocolModel",
+    "categories": [
+      "routing",
+      "generic"
+    ],
+    "description": "Verifies the configured routing protocol model is the expected one and if there is no mismatch between the configured and operating routing protocol model."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyBGPPeerCount",
+    "categories": [
+      "routing",
+      "bgp"
+    ],
+    "description": "Verifies the count of BGP peers."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyBGPPeersHealth",
+    "categories": [
+      "routing",
+      "bgp"
+    ],
+    "description": "Verifies the health of BGP peers"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "routing",
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s)."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyOSPFNeighborCount",
+    "categories": [
+      "routing",
+      "ospf"
+    ],
+    "description": "Verifies the number of OSPF neighbors in FULL state is the one we expect."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyRoutingTableSize",
+    "categories": [
+      "routing",
+      "generic"
+    ],
+    "description": "Verifies the size of the IP routing table (default VRF). Should be between the two provided thresholds."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyBFD",
+    "categories": [
+      "routing",
+      "generic"
+    ],
+    "description": "Verifies there is no BFD peer in down state (all VRF, IPv4 neighbors)."
+  },
+  {
+    "name": "dc1-spine2",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
       "security"
     ],
     "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifySnmpIPv4Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv4 ACL(s) configured."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifySnmpIPv6Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv6 ACL(s) configured."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifySnmpStatus",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent is enabled."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyEOSVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed EOS version."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyTerminAttrVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed TerminAttr version."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if there are core dump files in the /var/core directory."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no agent crash reports are present on the device."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyCPUUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the CPU utilization is below 75%."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyMemoryUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the memory utilization is below 75%."
   }
 ]
