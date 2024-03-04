@@ -22,6 +22,7 @@ if TYPE_CHECKING:
     from yaml import Dumper
 
     from .avdtestbase import AvdTestBase
+    from .config_manager import ConfigManager
 
 try:
     from anta.catalog import AntaCatalog
@@ -40,7 +41,7 @@ LOGGER = logging.getLogger(__name__)
 
 def get_anta_results(
     anta_device: AntaDevice,
-    hostvars: Mapping,
+    config_manager: ConfigManager,
     logging_level: str,
     skipped_tests: list[dict],
     ansible_tags: dict | None = None,
@@ -94,7 +95,7 @@ def get_anta_results(
     custom_catalog = load_custom_catalogs(custom_anta_catalogs) if custom_anta_catalogs else None
 
     # Create the ANTA Catalog object with the appropriate skipped tests if any
-    tests = generate_tests(device_name, hostvars, skipped_tests, custom_catalog)
+    tests = generate_tests(config_manager, skipped_tests, custom_catalog)
     anta_catalog = AntaCatalog.from_dict(data=tests) if tests else AntaCatalog()
 
     if save_catalog_name is not None:
@@ -197,7 +198,7 @@ def get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]
     return result
 
 
-def generate_tests(device_name: str, hostvars: Mapping, skipped_tests: list[dict], custom_catalog: dict | None = None) -> RawCatalogInput:
+def generate_tests(config_manager: ConfigManager, skipped_tests: list[dict], custom_catalog: dict | None = None) -> RawCatalogInput:
     """Create the test catalog in a dictionnary format generated from the AVD test classes.
 
     Test definitions are generated from the AVD structured_config for each AVD test classes and are merged together
@@ -229,7 +230,7 @@ def generate_tests(device_name: str, hostvars: Mapping, skipped_tests: list[dict
             continue
 
         # Initialize the test class
-        eos_validate_state_module: AvdTestBase = avd_test_class(device_name=device_name, hostvars=hostvars)
+        eos_validate_state_module: AvdTestBase = avd_test_class(config_manager)
         generated_tests = eos_validate_state_module.render()
 
         # Remove the individual tests that are to be skipped

@@ -23,7 +23,7 @@ class AvdTestMLAG(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-        if self.logged_get(key="mlag_configuration") is None:
+        if self.config_manager.logged_get(key="mlag_configuration") is None:
             return None
 
         anta_tests = [

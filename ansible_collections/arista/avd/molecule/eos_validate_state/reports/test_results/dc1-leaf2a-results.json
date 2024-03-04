@@ -458,33 +458,6 @@
   },
   {
     "name": "dc1-leaf2a",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-leaf2a_Ethernet1 - Destination: dc1-spine1_Ethernet3"
-  },
-  {
-    "name": "dc1-leaf2a",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-leaf2a_Ethernet2 - Destination: dc1-spine2_Ethernet3"
-  },
-  {
-    "name": "dc1-leaf2a",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-leaf2a_Ethernet6 - Destination: dc2-leaf2a_Ethernet6"
-  },
-  {
-    "name": "dc1-leaf2a",
     "test": "VerifyLLDPNeighbors",
     "categories": [
       "LLDP Topology"

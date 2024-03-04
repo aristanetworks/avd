@@ -74,7 +74,7 @@ class AvdTestInterfacesState(AvdTestBase):
             interfaces = get(self.structured_config, interface_key, [])
 
             for idx, interface in enumerate(interfaces):
-                self.update_interface_shutdown(interface=interface)
+                self.device_utils.update_interface_shutdown(interface=interface)
                 if not self.validate_data(data=interface, data_path=f"{interface_key}.[{idx}]", required_keys=required_keys):
                     continue
                 if interface.get("validate_state", True) is False:
@@ -86,7 +86,7 @@ class AvdTestInterfacesState(AvdTestBase):
 
                 add_test(str(interface["name"]), state, proto, description, custom_field)
 
-        if get(self.hostvars[self.device_name], "vxlan_interface.Vxlan1") is not None:
+        if get(self.structured_config, "vxlan_interface.Vxlan1") is not None:
             add_test("Vxlan1", "up", "up", "Vxlan Interface Status & Line Protocol == 'up'", "Vxlan1")
 
         return {self.anta_module: anta_tests} if anta_tests else None

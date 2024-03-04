@@ -29,21 +29,21 @@ class AvdTestP2PIPReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
+        if (ethernet_interfaces := self.config_manager.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
             return None
 
         required_keys = ["name", "peer", "peer_interface", "ip_address"]
 
         for idx, interface in enumerate(ethernet_interfaces):
-            self.update_interface_shutdown(interface=interface)
+            self.device_utils.update_interface_shutdown(interface=interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, type="routed", shutdown=False):
                 continue
 
-            if not self.is_peer_available(peer := interface["peer"]):
+            if not self.device_utils.is_peer_available(peer := interface["peer"]):
                 continue
 
             if (
-                peer_interface_ip := self.get_interface_ip(interface_model="ethernet_interfaces", interface_name=interface["peer_interface"], host=peer)
+                peer_interface_ip := self.device_utils.get_interface_ip(interface_model="ethernet_interfaces", interface_name=interface["peer_interface"], host=peer)
             ) is None:
                 continue
 
@@ -81,18 +81,18 @@ class AvdTestInbandReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (vlan_interfaces := self.logged_get(key="vlan_interfaces")) is None:
+        if (vlan_interfaces := self.config_manager.logged_get(key="vlan_interfaces")) is None:
             return None
 
         for idx, interface in enumerate(vlan_interfaces):
-            self.update_interface_shutdown(interface=interface)
+            self.device_utils.update_interface_shutdown(interface=interface)
             if not self.validate_data(data=interface, data_path=f"vlan_interfaces.[{idx}]", required_keys="name", type="inband_mgmt", shutdown=False):
                 continue
 
             vrf = interface.get("vrf", "default")
 
             for dst_node, dst_ip in self.loopback0_mapping:
-                if not self.is_peer_available(dst_node):
+                if not self.device_utils.is_peer_available(dst_node):
                     continue
 
                 custom_field = f"Source: {self.device_name} - {interface['name']} Destination: {dst_ip}"
@@ -131,11 +131,11 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         if not self.validate_data(type="l3leaf"):
             return None
 
-        if (src_ip := self.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")) is None:
+        if (src_ip := self.device_utils.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")) is None:
             return None
 
         for dst_node, dst_ip in self.loopback0_mapping:
-            if not self.is_peer_available(dst_node):
+            if not self.device_utils.is_peer_available(dst_node):
                 continue
 
             custom_field = f"Source: {self.device_name} - {src_ip} Destination: {dst_ip}"
@@ -160,11 +160,6 @@ class AvdTestLLDPTopology(AvdTestBase):
     categories = ["LLDP Topology"]
     description = "LLDP topology - validate peer and interface"
 
-    def is_subinterface(self, interface: dict) -> bool:
-        """
-        TODO - check if this cannot be moved to the AvdTestBase
-        """
-        return "." in interface.get("name", "")
 
     @cached_property
     def test_definition(self) -> dict | None:
@@ -177,21 +172,20 @@ class AvdTestLLDPTopology(AvdTestBase):
         """
         anta_tests = []
 
-        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
+        if (ethernet_interfaces := self.config_manager.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
             return None
 
         required_keys = ["name", "peer", "peer_interface"]
 
         for idx, interface in enumerate(ethernet_interfaces):
-            # ignore subinterfaces for LLDP - TODO makes this better
-            if self.is_subinterface(interface):
-                continue
-
-            self.update_interface_shutdown(interface=interface)
+            self.device_utils.update_interface_shutdown(interface=interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, shutdown=False):
                 continue
+            
+            if self.device_utils.is_subinterface(interface):
+                continue
 
-            if not self.is_peer_available(peer := interface["peer"]):
+            if not self.device_utils.is_peer_available(peer := interface["peer"]):
                 continue
 
             custom_field = f"local: {interface['name']} - remote: {peer}_{interface['peer_interface']}"

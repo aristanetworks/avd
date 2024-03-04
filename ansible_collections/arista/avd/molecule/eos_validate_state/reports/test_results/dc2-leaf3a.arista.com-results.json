@@ -413,24 +413,6 @@
   },
   {
     "name": "dc2-leaf3a.arista.com",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc2-leaf3a.arista.com_Ethernet1 - Destination: dc2-spine1_Ethernet5"
-  },
-  {
-    "name": "dc2-leaf3a.arista.com",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc2-leaf3a.arista.com_Ethernet2 - Destination: dc2-spine2_Ethernet5"
-  },
-  {
-    "name": "dc2-leaf3a.arista.com",
     "test": "VerifyLLDPNeighbors",
     "categories": [
       "LLDP Topology"
