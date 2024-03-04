@@ -334,18 +334,6 @@ $defs:
             description: IPv4 subnet to use to connect to downlink switches. Set this on the parent switch. Cannot be combined with uplink_ipv4_pool for the same link.
             type: str
             format: ipv4_cidr
-          downlink_interfaces:
-            documentation_options:
-              table: node-type-uplink-configuration
-            description: |
-              Local downlink interfaces
-              Each list item supports range syntax that can be expanded into a list of interfaces.
-              If downlink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
-              Please note that default_interfaces are not defined by default, you should define these yourself.
-            type: list
-            items:
-              type: str
-              pattern: "Ethernet[\\d/]+"
           mlag_port_channel_structured_config:
             $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items/"
             documentation_options:

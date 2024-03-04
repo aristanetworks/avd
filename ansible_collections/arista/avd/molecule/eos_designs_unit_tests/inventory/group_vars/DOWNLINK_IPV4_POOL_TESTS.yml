@@ -13,11 +13,9 @@ spine:
   nodes:
     - name: downlink-ipv4-pool-spine1
       downlink_ipv4_pool: 10.0.1.0/24
-      downlink_interfaces: [Ethernet3, Ethernet4]
       id: 1
     - name: downlink-ipv4-pool-spine2
       downlink_ipv4_pool: 10.0.2.0/24
-      downlink_interfaces: [Ethernet3, Ethernet4]
       id: 2
 
 l3leaf:
@@ -30,5 +28,7 @@ l3leaf:
   nodes:
     - name: downlink-ipv4-pool-l3leaf1
       id: 1
+      uplink_switch_interfaces: [Ethernet3, Ethernet3]
     - name: downlink-ipv4-pool-l3leaf2
       id: 2
+      uplink_switch_interfaces: [Ethernet4, Ethernet4]
