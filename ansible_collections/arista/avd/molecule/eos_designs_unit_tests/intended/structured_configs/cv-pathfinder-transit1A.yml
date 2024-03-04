@@ -438,7 +438,7 @@ router_adaptive_virtual_topology:
     name: AVD_Land_West
     id: 42
   zone:
-    name: DEFAULT-ZONE
+    name: AVD_Land_West-ZONE
     id: 1
   site:
     name: Site422
@@ -573,6 +573,9 @@ router_path_selection:
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
       - 172.16.0.1
+    keepalive:
+      interval: 300
+      failure_threshold: 5
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
@@ -736,7 +739,7 @@ metadata:
     - name: Region
       value: AVD_Land_West
     - name: Zone
-      value: DEFAULT-ZONE
+      value: AVD_Land_West-ZONE
     - name: Site
       value: Site422
     interface_tags:
@@ -782,7 +785,7 @@ metadata:
     role: transit region
     vtep_ip: 192.168.143.1
     region: AVD_Land_West
-    zone: DEFAULT-ZONE
+    zone: AVD_Land_West-ZONE
     site: Site422
     interfaces:
     - name: Ethernet1.42

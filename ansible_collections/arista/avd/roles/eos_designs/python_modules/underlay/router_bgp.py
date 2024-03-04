@@ -43,7 +43,7 @@ class RouterBgpMixin(UtilsMixin):
             "struct_cfg": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["structured_config"],
         }
 
-        if self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.wan_mode == "cv-pathfinder" and self.shared_utils.wan_role is not None:
+        if self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.is_cv_pathfinder_router:
             peer_group["route_map_in"] = "RM-BGP-UNDERLAY-PEERS-IN"
             peer_group["route_map_out"] = "RM-BGP-UNDERLAY-PEERS-OUT"
             if self.shared_utils.wan_ha:

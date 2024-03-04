@@ -93,7 +93,7 @@ class CvTagsMixin:
         Return list of device_tags for cv_pathfinder solution
         Example: [
             {"name": "Region", "value": <value copied from cv_pathfinder_region for pathfinder clients>},
-            {"name": "Zone", "value": <always "DEFAULT-ZONE" for pathfinder clients>},
+            {"name": "Zone", "value": <"<region-name>-ZONE" for pathfinder clients>},
             {"name": "Site", "value": <value copied from cv_pathfinder_site for pathfinder clients>},
             {"name": "PathfinderSet", "value": <value copied from node group or default "PATHFINDERS" for pathfinder servers>},
             {"name": "Role", "value": <'pathfinder', 'edge', 'transit region' or 'transit zone'>}
@@ -111,7 +111,7 @@ class CvTagsMixin:
             device_tags.extend(
                 [
                     self._tag_dict("Region", self.shared_utils.wan_region["name"]),
-                    self._tag_dict("Zone", "DEFAULT-ZONE"),
+                    self._tag_dict("Zone", self.shared_utils.wan_zone["name"]),
                     self._tag_dict("Site", self.shared_utils.wan_site["name"]),
                 ]
             )

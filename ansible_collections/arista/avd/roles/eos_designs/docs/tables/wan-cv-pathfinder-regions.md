@@ -10,9 +10,9 @@
     | [<samp>cv_pathfinder_regions</samp>](## "cv_pathfinder_regions") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Define the SDWAN hierarchy for the device. |
     | [<samp>&nbsp;&nbsp;-&nbsp;description</samp>](## "cv_pathfinder_regions.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "cv_pathfinder_regions.[].id") | Integer | Required |  | Min: 1<br>Max: 255 | The region ID must be unique for the whole WAN deployment. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sites</samp>](## "cv_pathfinder_regions.[].sites") | List, items: Dictionary |  |  |  | All sites are placed in a default zone called DEFAULT-ZONE with ID 1. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sites</samp>](## "cv_pathfinder_regions.[].sites") | List, items: Dictionary |  |  |  | All sites are placed in a default zone "<region_name>-ZONE" with ID 1. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;description</samp>](## "cv_pathfinder_regions.[].sites.[].description") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "cv_pathfinder_regions.[].sites.[].id") | Integer | Required |  | Min: 1<br>Max: 10000 | The site ID must be unique within a zone.<br>Given that all the sites are placed in the DEFAULT-ZONE, the site ID must be unique within a region. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "cv_pathfinder_regions.[].sites.[].id") | Integer | Required |  | Min: 1<br>Max: 10000 | The Site ID must be unique within a zone.<br>Given that all the Sites are placed in a Zone named after the Region, the Site ID must be unique within a Region. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location</samp>](## "cv_pathfinder_regions.[].sites.[].location") | String |  |  |  | Will be interpreted |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;site_contact</samp>](## "cv_pathfinder_regions.[].sites.[].site_contact") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;site_after_hours_contact</samp>](## "cv_pathfinder_regions.[].sites.[].site_after_hours_contact") | String |  |  |  |  |
@@ -30,12 +30,12 @@
         # The region ID must be unique for the whole WAN deployment.
         id: <int; 1-255; required>
 
-        # All sites are placed in a default zone called DEFAULT-ZONE with ID 1.
+        # All sites are placed in a default zone "<region_name>-ZONE" with ID 1.
         sites:
           - description: <str>
 
-            # The site ID must be unique within a zone.
-            # Given that all the sites are placed in the DEFAULT-ZONE, the site ID must be unique within a region.
+            # The Site ID must be unique within a zone.
+            # Given that all the Sites are placed in a Zone named after the Region, the Site ID must be unique within a Region.
             id: <int; 1-10000; required>
 
             # Will be interpreted
