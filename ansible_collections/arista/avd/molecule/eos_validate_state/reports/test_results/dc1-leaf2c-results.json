@@ -183,6 +183,15 @@
     "categories": [
       "Interface State"
     ],
+    "description": "DPS Interface Status & Line Protocol == 'up'",
+    "custom_field": "Dps1 - Test DPS Interface"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
     "description": "Ethernet Interface & Line Protocol == 'adminDown'",
     "custom_field": "Ethernet2 - DC1-LEAF2B_Ethernet8"
   },

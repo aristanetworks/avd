@@ -237,6 +237,15 @@
     "categories": [
       "Interface State"
     ],
+    "description": "DPS Interface Status & Line Protocol == 'up'",
+    "custom_field": "Dps1 - DPS Interface"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
     "custom_field": "Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet1"
   },

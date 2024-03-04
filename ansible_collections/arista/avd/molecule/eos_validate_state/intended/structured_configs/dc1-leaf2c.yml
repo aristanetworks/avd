@@ -108,3 +108,6 @@ vlan_interfaces:
 metadata:
   platform: vEOS-lab
 dns_domain: dc1.local
+dps_interfaces:
+- name: Dps1
+  description: Test DPS Interface

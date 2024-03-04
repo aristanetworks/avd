@@ -21,6 +21,7 @@ class AvdTestInterfacesState(AvdTestBase):
         ("port_channel_interfaces", "Port-Channel Interface & Line Protocol == '{state}'"),
         ("vlan_interfaces", "Vlan Interface & Line Protocol == '{state}'"),
         ("loopback_interfaces", "Loopback Interface Status & Line Protocol == '{state}'"),
+        ("dps_interfaces", "DPS Interface Status & Line Protocol == '{state}'"),
     ]
 
     @cached_property
@@ -71,6 +72,8 @@ class AvdTestInterfacesState(AvdTestBase):
         required_keys = ["name", "shutdown"]
 
         for interface_key, description_template in self.interface_types:
+            # if interface_key == "dps_interfaces":
+            #     print(f"struct conf of device {self.structured_config['dps_interfaces']}")
             interfaces = get(self.structured_config, interface_key, [])
 
             for idx, interface in enumerate(interfaces):

@@ -560,3 +560,6 @@ virtual_source_nat_vrfs:
 metadata:
   platform: vEOS-lab
 dns_domain: dc1.local
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface

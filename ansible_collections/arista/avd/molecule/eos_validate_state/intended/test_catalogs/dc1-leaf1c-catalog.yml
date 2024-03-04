@@ -297,6 +297,16 @@ anta.tests.interfaces:
       - Interface State
       custom_field: Vlan4085 - L2LEAF_INBAND_MGMT
       description: Vlan Interface & Line Protocol == 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Dps1
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Dps1 - Test DPS Interface
+      description: DPS Interface Status & Line Protocol == 'up'
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
