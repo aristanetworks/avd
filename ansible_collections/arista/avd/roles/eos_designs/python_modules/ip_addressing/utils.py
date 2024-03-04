@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 
 if TYPE_CHECKING:
     from .avdipaddressing import AvdIpAddressing
@@ -138,9 +138,7 @@ class UtilsMixin:
         uplink_pool = self.shared_utils.uplink_ipv4_pool
         downlink_pool = self._get_downlink_ipv4_pool(uplink_switch_index)
         if uplink_pool is not None and downlink_pool is not None:
-            raise AristaAvdError(
-                "Either 'uplink_ipv4_pool' is set on this switch or 'downlink_pools' is set on all uplink switches, not both."
-            )
+            raise AristaAvdError("Either 'uplink_ipv4_pool' is set on this switch or 'downlink_pools' is set on all uplink switches, not both.")
 
         if uplink_pool is None and downlink_pool is None:
             raise AristaAvdMissingVariableError(
