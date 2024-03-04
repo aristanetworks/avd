@@ -25,7 +25,6 @@ l3leaf:
       only_vlans_in_use: true
   nodes:
     - name: inband-mgmt-parent
-      inband_ztp_parent: true
       id: 1
     - name: inband-mgmt-parent-vrf
       inband_mgmt_vrf: INBANDMGMT
@@ -33,6 +32,7 @@ l3leaf:
 
 l2leaf:
   defaults:
+    inband_ztp: true
     uplink_switches: [inband-mgmt-parent, inband-mgmt-parent-vrf]
     filter:
       # Ensuring that the inband management vlan is correctly configured even when only_vlans_in_use is set
@@ -54,6 +54,7 @@ l2leaf:
       inband_mgmt_description: My description
       # This vlan name overrides the vlan name from tenants.
       inband_mgmt_vlan_name: MYVLANNAME
+      inband_ztp: false
       id: 3
 
 tenants:

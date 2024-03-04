@@ -7245,13 +7245,14 @@ $defs:
               it must be set on each applicable node/node-group/node-type as needed.'
             type: int
             default: 1500
-          inband_ztp_parent:
+          inband_ztp:
             documentation_options:
               table: node-type-inband-management-configuration
-            description: 'Enable to allow downstream devices to ZTP inband
+            description: 'Enable to configure upstream device with proper configuration
+              to allow downstream devices to ZTP inband.
 
               This setting also requires that the inband_mgmt_vlan is set for the
-              downstream device.'
+              node.'
             type: bool
             default: false
           inband_management_subnet:

@@ -88,7 +88,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 port_channel_interface["ptp"] = ptp_config
 
             # Inband ZTP Port-Channel LACP Fallback
-            if self.shared_utils.inband_ztp_parent and get(link, "child_mgmt_vlan"):
+            if get(link, "inband_ztp_vlan"):
                 port_channel_interface["lacp_fallback_mode"] = "individual"
 
             # Structured Config

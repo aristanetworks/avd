@@ -80,8 +80,6 @@ ethernet_interfaces:
   channel_group:
     id: 21
     mode: active
-  mode: access
-  vlans: 101
 - name: Ethernet22
   peer: inband-mgmt-subnet-vrf
   peer_interface: Ethernet1
@@ -92,8 +90,6 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
-  mode: access
-  vlans: 102
 - name: Ethernet23
   peer: inband-mgmt-ip
   peer_interface: Ethernet1
@@ -111,14 +107,12 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: '101'
-  lacp_fallback_mode: individual
 - name: Port-Channel22
   description: INBAND-MGMT-SUBNET-VRF_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: '102'
-  lacp_fallback_mode: individual
 - name: Port-Channel23
   description: INBAND-MGMT-IP_Po1
   type: switched

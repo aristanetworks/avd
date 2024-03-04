@@ -118,5 +118,8 @@ class InbandManagementMixin:
         return None
 
     @cached_property
-    def inband_ztp_parent(self: SharedUtils) -> bool:
-        return default(get(self.switch_data_combined, "inband_ztp_parent"), False)
+    def inband_ztp(self: SharedUtils) -> bool:
+        inband_ztp = default(get(self.switch_data_combined, "inband_ztp"), False)
+        if inband_ztp and not self.inband_mgmt_vlan:
+            raise AristaAvdMissingVariableError(f"'inband_mgmt_vlan' is not set on '{self.hostname}' and is required to set inband_ztp")
+        return inband_ztp
