@@ -55,11 +55,15 @@ keys:
             - int
           description: |-
             Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when
-            the path-group is used in an auto generated policy.
+            the path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.
 
-            Valid values are 1-65535 | "preferred" | "alternate" | "excluded".
+            Valid values are 1-65535 | "preferred" | "alternate".
 
             `preferred` is converted to priority 1.
             `alternate` is converted to priority 2.
-            `excluded` is used to ignore the path-group when generating policies.
           default: "preferred"
+        excluded_from_default_policy:
+          type: bool
+          default: false
+          description: |-
+            When set to `true`, the path-group is excluded from AVD auto generated policies.

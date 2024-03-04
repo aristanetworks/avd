@@ -189,7 +189,7 @@ router_path_selection:
     path_groups:
     - name: MPLS
     - name: INET
-    - name: LTE
+      priority: 42
   - name: LB-DEFAULT-AUTOVPN-POLICY-IT
     path_groups:
     - name: MPLS

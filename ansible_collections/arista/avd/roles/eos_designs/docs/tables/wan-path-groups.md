@@ -15,7 +15,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;import_path_groups</samp>](## "wan_path_groups.[].import_path_groups") | List, items: Dictionary |  |  |  | List of path-groups to import in this path-group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;remote</samp>](## "wan_path_groups.[].import_path_groups.[].remote") | String |  |  |  | Remote path-group to import. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local</samp>](## "wan_path_groups.[].import_path_groups.[].local") | String |  |  |  | Optional, if not set, the path-group `name` is used as local. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_preference</samp>](## "wan_path_groups.[].default_preference") | String |  | `preferred` |  | Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when<br>the path-group is used in an auto generated policy.<br><br>Valid values are 1-65535 | "preferred" | "alternate" | "excluded".<br><br>`preferred` is converted to priority 1.<br>`alternate` is converted to priority 2.<br>`excluded` is used to ignore the path-group when generating policies. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_preference</samp>](## "wan_path_groups.[].default_preference") | String |  | `preferred` |  | Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when<br>the path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.<br><br>Valid values are 1-65535 | "preferred" | "alternate".<br><br>`preferred` is converted to priority 1.<br>`alternate` is converted to priority 2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;excluded_from_default_policy</samp>](## "wan_path_groups.[].excluded_from_default_policy") | Boolean |  | `False` |  | When set to `true`, the path-group is excluded from AVD auto generated policies. |
 
 === "YAML"
 
@@ -50,12 +51,14 @@
             local: <str>
 
         # Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when
-        # the path-group is used in an auto generated policy.
+        # the path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.
         #
-        # Valid values are 1-65535 | "preferred" | "alternate" | "excluded".
+        # Valid values are 1-65535 | "preferred" | "alternate".
         #
         # `preferred` is converted to priority 1.
         # `alternate` is converted to priority 2.
-        # `excluded` is used to ignore the path-group when generating policies.
         default_preference: <str; default="preferred">
+
+        # When set to `true`, the path-group is excluded from AVD auto generated policies.
+        excluded_from_default_policy: <bool; default=False>
     ```

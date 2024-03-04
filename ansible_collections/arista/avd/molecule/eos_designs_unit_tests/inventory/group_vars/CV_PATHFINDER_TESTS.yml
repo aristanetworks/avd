@@ -93,7 +93,7 @@ wan_router:
               wan_carrier: Comcast-5G
               wan_circuit_id: AF830
               ip_address: 172.20.20.20/31
-              connected_to_pathfinder: False
+              connected_to_pathfinder: false
         - name: cv-pathfinder-edge-no-common-path-group
           id: 2
           uplink_switch_interfaces: [Ethernet2]
@@ -108,7 +108,7 @@ wan_router:
               wan_circuit_id: 212
               dhcp_accept_default_route: true
               ip_address: dhcp
-              connected_to_pathfinder: False
+              connected_to_pathfinder: false
     # SITE_HA_ENABLED
     - group: Site423
       cv_pathfinder_region: AVD_Land_West
@@ -255,7 +255,7 @@ wan_path_groups:
   - name: LTE
     id: 102
     # The expectation here is that LTE shouldn't be present in the default lb policy.
-    default_preference: excluded
+    excluded_from_default_policy: true
   - name: Equinix
     id: 103
     default_preference: alternate
