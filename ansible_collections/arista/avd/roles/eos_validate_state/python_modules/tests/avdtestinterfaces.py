@@ -72,8 +72,6 @@ class AvdTestInterfacesState(AvdTestBase):
         required_keys = ["name", "shutdown"]
 
         for interface_key, description_template in self.interface_types:
-            # if interface_key == "dps_interfaces":
-            #     print(f"struct conf of device {self.structured_config['dps_interfaces']}")
             interfaces = get(self.structured_config, interface_key, [])
 
             for idx, interface in enumerate(interfaces):
