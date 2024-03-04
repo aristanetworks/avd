@@ -132,9 +132,7 @@ class UtilsMixin:
                 # Return IPv4 if uplink_switch_interface is present in downlink_interfaces
                 return get(downlink_pool_and_interfaces, "downlink_ipv4_pool")
 
-            ## Do some checking if interfaces partially match up and throw warning if a defined pool was not matched
-
-
+            ## Do some checking if a defined pool was not matched, dangling interfaces, currently this does nothing
 
     def _get_p2p_ipv4_pool(self: "AvdIpAddressing", uplink_switch_index: int) -> str:
         uplink_pool = self.shared_utils.uplink_ipv4_pool

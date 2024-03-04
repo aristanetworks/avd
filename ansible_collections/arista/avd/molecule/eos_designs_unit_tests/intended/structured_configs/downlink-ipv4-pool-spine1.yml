@@ -44,6 +44,16 @@ router_bgp:
     remote_as: '65001'
     peer: downlink-ipv4-pool-l3leaf2
     description: downlink-ipv4-pool-l3leaf2_Ethernet1
+  - ip_address: 10.0.3.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65002'
+    peer: downlink-ipv4-pool-l3leaf3
+    description: downlink-ipv4-pool-l3leaf3_Ethernet1
+  - ip_address: 10.0.3.7
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65003'
+    peer: downlink-ipv4-pool-l3leaf4
+    description: downlink-ipv4-pool-l3leaf4_Ethernet1
   - ip_address: 192.168.1.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: downlink-ipv4-pool-l3leaf1
@@ -54,6 +64,16 @@ router_bgp:
     peer: downlink-ipv4-pool-l3leaf2
     description: downlink-ipv4-pool-l3leaf2
     remote_as: '65001'
+  - ip_address: 192.168.1.3
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: downlink-ipv4-pool-l3leaf3
+    description: downlink-ipv4-pool-l3leaf3
+    remote_as: '65002'
+  - ip_address: 192.168.1.4
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: downlink-ipv4-pool-l3leaf4
+    description: downlink-ipv4-pool-l3leaf4
+    remote_as: '65003'
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -93,6 +113,24 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 10.0.1.2/31
+- name: Ethernet5
+  peer: downlink-ipv4-pool-l3leaf3
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DOWNLINK-IPV4-POOL-L3LEAF3_Ethernet1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.0.3.4/31
+- name: Ethernet6
+  peer: downlink-ipv4-pool-l3leaf4
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DOWNLINK-IPV4-POOL-L3LEAF4_Ethernet1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.0.3.6/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
