@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 
 if TYPE_CHECKING:
     from .avdipaddressing import AvdIpAddressing
@@ -116,19 +117,36 @@ class UtilsMixin:
         return uplink_switch_indexes.index(uplink_switch_index)
 
     def _get_downlink_ipv4_pool(self: "AvdIpAddressing", uplink_switch_index: int) -> str | None:
+        uplink_switch_interface = self.shared_utils.uplink_switch_interfaces[uplink_switch_index]
         uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
         peer_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
-        return get(peer_facts, "downlink_ipv4_pool")
+        downlink_pools = get(peer_facts, "downlink_pools")
+
+        if not downlink_pools:
+            return None
+
+        for downlink_pool_and_interfaces in downlink_pools:
+            downlink_interfaces = range_expand(get(downlink_pool_and_interfaces, "downlink_interfaces"))
+
+            if uplink_switch_interface in downlink_interfaces:
+                # Return IPv4 if uplink_switch_interface is present in downlink_interfaces
+                return get(downlink_pool_and_interfaces, "downlink_ipv4_pool")
+
+            ## Do some checking if interfaces partially match up and throw warning if a defined pool was not matched
+
+
 
     def _get_p2p_ipv4_pool(self: "AvdIpAddressing", uplink_switch_index: int) -> str:
         uplink_pool = self.shared_utils.uplink_ipv4_pool
         downlink_pool = self._get_downlink_ipv4_pool(uplink_switch_index)
         if uplink_pool is not None and downlink_pool is not None:
-            raise AristaAvdError("Either 'unlink_ipv4_pool' is set on this switch or 'downlink_ipv4_pool' is set on all uplink switches, not both.")
+            raise AristaAvdError(
+                "Either 'uplink_ipv4_pool' is set on this switch or 'downlink_pools' is set on all uplink switches, not both."
+            )
 
         if uplink_pool is None and downlink_pool is None:
             raise AristaAvdMissingVariableError(
-                "To calculate uplink IP addresses 'uplink_ipv4_pool' must be set on this switch or 'downlink_ipv4_pool' on all uplink switches."
+                "To calculate uplink IP addresses 'uplink_ipv4_pool' must be set on this switch or 'downlink_ipv4_pool' on all the uplink switches."
             )
 
         return uplink_pool or downlink_pool

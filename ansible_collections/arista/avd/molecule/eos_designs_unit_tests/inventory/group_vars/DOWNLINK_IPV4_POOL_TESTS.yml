@@ -12,10 +12,14 @@ spine:
     bgp_as: 65000
   nodes:
     - name: downlink-ipv4-pool-spine1
-      downlink_ipv4_pool: 10.0.1.0/24
+      downlink_pools:
+        - downlink_ipv4_pool: 10.0.1.0/24
+          downlink_interfaces: [Ethernet3, Ethernet4]
       id: 1
     - name: downlink-ipv4-pool-spine2
-      downlink_ipv4_pool: 10.0.2.0/24
+      downlink_pools:
+        - downlink_ipv4_pool: 10.0.2.0/24
+          downlink_interfaces: [Ethernet3, Ethernet4]
       id: 2
 
 l3leaf:

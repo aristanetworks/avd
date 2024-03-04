@@ -10,6 +10,8 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts.eos_designs_facts import EosDesignsFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
@@ -120,6 +122,44 @@ class MiscMixin:
                 [],
             )
         )
+
+    @cached_property
+    def uplink_switch_interfaces(self: SharedUtils) -> list:
+        _uplink_switch_interfaces = default(
+            get(self.switch_data_combined, "uplink_switch_interfaces"),
+            get(self.cv_topology_config, "uplink_switch_interfaces"),
+        )
+        if _uplink_switch_interfaces is not None:
+            return _uplink_switch_interfaces
+
+        if not self.uplink_switches:
+            return []
+
+        if self.id is None:
+            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}'")
+
+        _uplink_switch_interfaces = []
+        uplink_switch_counter = {}
+        for uplink_switch in self.uplink_switches:
+            uplink_switch_facts: EosDesignsFacts = self.get_peer_facts(uplink_switch, required=True)
+
+            # Count the number of instances the current switch was processed
+            uplink_switch_counter[uplink_switch] = uplink_switch_counter.get(uplink_switch, 0) + 1
+            index_of_parallel_uplinks = uplink_switch_counter[uplink_switch] - 1
+
+            # Add uplink_switch_interface based on this switch's ID (-1 for 0-based) * max_parallel_uplinks + index_of_parallel_uplinks.
+            # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
+            # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
+            downlink_index = (self.id - 1) * self.max_parallel_uplinks + index_of_parallel_uplinks
+            if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
+                _uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
+            else:
+                raise AristaAvdError(
+                    f"'uplink_switch_interfaces' is not set on '{self.hostname}' and 'uplink_switch' '{uplink_switch}' "
+                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
+                )
+
+        return _uplink_switch_interfaces
 
     @cached_property
     def virtual_router_mac_address(self: SharedUtils) -> str | None:

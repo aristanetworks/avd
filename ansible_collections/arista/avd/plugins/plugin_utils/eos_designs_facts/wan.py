@@ -50,7 +50,7 @@ class WanMixin:
         # which in turn is used to build 'uplinks', we cannot reuse 'uplinks' (recursion)
 
         # Since uplinks logic silently skips extra entries in uplink vars, we only need to parse shortest list.
-        min_length = min(len(self._uplink_switch_interfaces), len(self.shared_utils.uplink_interfaces), len(self.shared_utils.uplink_switches))
+        min_length = min(len(self.shared_utils.uplink_switch_interfaces), len(self.shared_utils.uplink_interfaces), len(self.shared_utils.uplink_switches))
         # Using set to only get unique uplink switches
         unique_uplink_switches = set(self.shared_utils.uplink_switches[:min_length])
 

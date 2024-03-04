@@ -107,7 +107,7 @@ class UplinksMixin:
         # MLAG Primary or not MLAG.
         if uplink_switch_port_channel_id is None:
             # Overwriting uplink_switch_port_channel_id
-            uplink_switch_port_channel_id = int("".join(re.findall(r"\d", self._uplink_switch_interfaces[0])))
+            uplink_switch_port_channel_id = int("".join(re.findall(r"\d", self.shared_utils.uplink_switch_interfaces[0])))
 
         # produce an error if the uplink switch is MLAG and port-channel ID is above 2000
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(self.shared_utils.uplink_switches[0], required=True)
@@ -120,44 +120,6 @@ class UplinksMixin:
                 )
 
         return uplink_switch_port_channel_id
-
-    @cached_property
-    def _uplink_switch_interfaces(self: EosDesignsFacts) -> list:
-        uplink_switch_interfaces = default(
-            get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces"),
-            get(self.shared_utils.cv_topology_config, "uplink_switch_interfaces"),
-        )
-        if uplink_switch_interfaces is not None:
-            return uplink_switch_interfaces
-
-        if not self.shared_utils.uplink_switches:
-            return []
-
-        if self.shared_utils.id is None:
-            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.shared_utils.hostname}'")
-
-        uplink_switch_interfaces = []
-        uplink_switch_counter = {}
-        for uplink_switch in self.shared_utils.uplink_switches:
-            uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
-
-            # Count the number of instances the current switch was processed
-            uplink_switch_counter[uplink_switch] = uplink_switch_counter.get(uplink_switch, 0) + 1
-            index_of_parallel_uplinks = uplink_switch_counter[uplink_switch] - 1
-
-            # Add uplink_switch_interface based on this switch's ID (-1 for 0-based) * max_parallel_uplinks + index_of_parallel_uplinks.
-            # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
-            # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
-            downlink_index = (self.id - 1) * self.shared_utils.max_parallel_uplinks + index_of_parallel_uplinks
-            if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
-                uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
-            else:
-                raise AristaAvdError(
-                    f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
-                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
-                )
-
-        return uplink_switch_interfaces
 
     @cached_property
     def uplinks(self: EosDesignsFacts) -> list:
@@ -182,7 +144,7 @@ class UplinksMixin:
 
         uplinks = []
         uplink_switches = self.shared_utils.uplink_switches
-        uplink_switch_interfaces = self._uplink_switch_interfaces
+        uplink_switch_interfaces = self.shared_utils.uplink_switch_interfaces
         for uplink_index, uplink_interface in enumerate(self.shared_utils.uplink_interfaces):
             if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
                 # Invalid length of input variables. Skipping
