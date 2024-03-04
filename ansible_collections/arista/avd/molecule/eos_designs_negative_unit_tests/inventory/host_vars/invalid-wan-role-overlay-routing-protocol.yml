@@ -1,13 +1,15 @@
 ---
 wan_mode: autovpn
-type: wan_edge
+type: wan_router
+fabric_name: fabric_wan_role_overlay_routing_protocol
 
 # Not ibgp
 overlay_routing_protocol: none
 
-wan_edge:
+wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.0.0/24
+    vtep_loopback_ipv4_pool: 192.168.1.0/24
   nodes:
     - name: invalid-wan-role-overlay-routing-protocol
       id: 1

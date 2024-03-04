@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
@@ -46,6 +46,7 @@
     schema_id: "{{ role_name }}"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
+    #cprofile_file: "config-{{inventory_hostname}}.prof"
   delegate_to: localhost
   register: eosconfig
 
@@ -60,5 +61,6 @@
     validation_mode: "{{ avd_data_validation_mode }}"
     add_md_toc: true
     md_toc_skip_lines: 3
+    #cprofile_file: "docs-{{inventory_hostname}}.prof"
   delegate_to: localhost
   when: generate_device_documentation | arista.avd.default(true)

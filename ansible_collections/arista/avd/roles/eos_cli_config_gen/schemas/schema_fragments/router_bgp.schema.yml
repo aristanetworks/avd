@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -11,9 +11,19 @@ keys:
     keys:
       as:
         type: str
-        description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+        description: |-
+          BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+          For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
         convert_types:
           - int
+      as_notation:
+        display_name: ASN Notation
+        type: str
+        description: 'BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>".
+          This flag indicates which mode is preferred - asplain is the default.'
+        valid_values:
+          - asdot
+          - asplain
       router_id:
         type: str
         description: In IP address format A.B.C.D
@@ -166,7 +176,9 @@ keys:
               type: str
               convert_types:
                 - int
-              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+              description: |-
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
       peer_groups:
         type: list
         primary_key: name
@@ -183,12 +195,16 @@ keys:
               description: Key only used for documentation or validation purposes
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+              description: |-
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
               convert_types:
                 - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+              description: |-
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
               convert_types:
                 - int
             description:
@@ -241,6 +257,35 @@ keys:
               type: bool
             bfd:
               type: bool
+              description: Enable BFD.
+            bfd_timers:
+              type: dict
+              description: |-
+                Override default BFD timers. BFD must be enabled with `bfd: true`.
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  required: true
+                  convert_types:
+                    - str
             ebgp_multihop:
               type: int
               min: 1
@@ -337,6 +382,13 @@ keys:
                 new_key: listen_ranges
             session_tracker:
               type: str
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbors:
         type: list
         primary_key: ip_address
@@ -351,12 +403,16 @@ keys:
               type: str
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+              description: |-
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
               convert_types:
                 - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+              description: |-
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
               convert_types:
                 - int
             as_path:
@@ -387,6 +443,35 @@ keys:
               description: Source Interface
             bfd:
               type: bool
+              description: Enable BFD.
+            bfd_timers:
+              type: dict
+              description: |-
+                Override default BFD timers. BFD must be enabled with `bfd: true`.
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  required: true
+                  convert_types:
+                    - str
             weight:
               type: int
               min: 0
@@ -485,6 +570,13 @@ keys:
                   type: bool
             session_tracker:
               type: str
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbor_interfaces:
         type: list
         primary_key: name
@@ -500,6 +592,9 @@ keys:
               type: str
               convert_types:
                 - int
+              description: |-
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
             peer:
               type: str
               description: Key only used for documentation or validation purposes
@@ -526,6 +621,12 @@ keys:
               type: bool
             as_set:
               type: bool
+            advertise_map:
+              type: str
+              description: Route-map name
+            supress_map:
+              type: str
+              description: Route-map name
             summary_only:
               type: bool
             attribute_map:
@@ -810,6 +911,35 @@ keys:
                     type: bool
                   inter_domain:
                     type: bool
+          next_hop_mpls_resolution_ribs:
+            type: list
+            min_length: 1
+            max_length: 3
+            description: "Specify the RIBs used to resolve MPLS next-hops. The order of this list determines the order of RIB lookups."
+            items:
+              type: dict
+              keys:
+                rib_type:
+                  type: str
+                  required: true
+                  valid_values:
+                    - "system-connected"
+                    - "tunnel-rib-colored"
+                    - "tunnel-rib"
+                  description: "Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use."
+                rib_name:
+                  type: str
+                  description: "The name of the tunnel-rib to use when using 'tunnel-rib' type."
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
           peer_groups:
             type: list
             primary_key: name
@@ -902,6 +1032,10 @@ keys:
                 type: str
                 valid_values:
                   - "discard"
+              import_ethernet_segment_ip_mass_withdraw:
+                type: bool
+              export_ethernet_segment_ip_mass_withdraw:
+                type: bool
           next_hop_unchanged:
             type: bool
       address_family_rtc:
@@ -1825,7 +1959,9 @@ keys:
                       If both are defined, peer_filter takes precedence
                   remote_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+                    description: |-
+                      BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                      For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     convert_types:
                       - int
             neighbors:
@@ -1843,7 +1979,9 @@ keys:
                     description: Peer-group name
                   remote_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+                    description: |-
+                      BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                      For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     convert_types:
                       - int
                   password:
@@ -1875,7 +2013,9 @@ keys:
                       - str
                   local_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+                    description: |-
+                      BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                      For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     convert_types:
                       - int
                   as_path:
@@ -1903,6 +2043,35 @@ keys:
                     type: bool
                   bfd:
                     type: bool
+                    description: Enable BFD.
+                  bfd_timers:
+                    type: dict
+                    description: |-
+                      Override default BFD timers. BFD must be enabled with `bfd: true`.
+                    keys:
+                      interval:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 50
+                        max: 60000
+                        required: true
+                        description: Interval in milliseconds.
+                      min_rx:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 50
+                        max: 60000
+                        required: true
+                        description: Rate in milliseconds.
+                      multiplier:
+                        type: int
+                        min: 3
+                        max: 50
+                        convert_types:
+                          - str
+                        required: true
                   timers:
                     type: str
                     description: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
@@ -1985,7 +2154,9 @@ keys:
                     description: Interface name
                   remote_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+                    description: |-
+                      BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                      For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     convert_types:
                       - int
                   peer_group:
@@ -2026,6 +2197,12 @@ keys:
                     type: bool
                   as_set:
                     type: bool
+                  advertise_map:
+                    type: str
+                    description: Route-map name
+                  supress_map:
+                    type: str
+                    description: Route-map name
                   summary_only:
                     type: bool
                   attribute_map:

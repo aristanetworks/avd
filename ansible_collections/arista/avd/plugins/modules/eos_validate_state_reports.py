@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -13,17 +13,19 @@ module: eos_validate_state_reports
 version_added: "4.5.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Generates validation reports for the eos_validate_state role
-description:
-  - The C(arista.avd.eos_validate_state_reports) module is an Ansible Action Plugin designed to generate
-    validation reports from the test results produced by the ANTA test framework.
-  - This plugin requires a JSON file for each host in the Ansible play, containing all test results. The JSON file
-    is created automatically by the C(eos_validate_state_runner) plugin and is saved in the test results directory
-    with the following naming convention C(<inventory_hostname>-results.json).
-  - |-
-    The plugin offers the following functionalities:
-      - It aggregates all test results from every host in the Ansible play and generates a CSV report.
-      - It produces a detailed Markdown report with various sections presenting key statistics derived from the results.
-      - The design allows for easy extension to support additional report formats in the future.
+description: |-
+  The `arista.avd.eos_validate_state_reports` module is an Ansible Action Plugin designed to generate
+  validation reports from the test results produced by the ANTA test framework.
+
+  This plugin requires a JSON file for each host in the Ansible play, containing all test results. The JSON file
+  is created automatically by the `eos_validate_state_runner` plugin and is saved in the test results directory
+  with the following naming convention `<inventory_hostname>-results.json`.
+
+  The plugin offers the following functionalities:
+
+  - It aggregates all test results from every host in the Ansible play and generates a CSV report.
+  - It produces a detailed Markdown report with various sections presenting key statistics derived from the results.
+  - The design allows for easy extension to support additional report formats in the future.
 options:
   validation_report_csv:
     description: Indicates whether a CSV report should be generated.
@@ -40,12 +42,12 @@ options:
   csv_report_path:
     description:
       - The absolute path where the CSV report will be saved.
-      - Required if C(validation_report_csv) is set to C(True).
+      - Required if `validation_report_csv` is set to `True`.
     type: str
   md_report_path:
     description:
       - The absolute path where the Markdown report will be saved.
-      - Required if C(validation_report_md) is set to C(True).
+      - Required if `validation_report_md` is set to `True`.
     type: str
   test_results_dir:
     description:
@@ -60,7 +62,7 @@ seealso:
     link: https://anta.ninja
 notes:
   - Enabling the cProfile feature for performance profiling may impact the plugin's performance, especially in production environments.
-  - Hosts with C(is_deployed) is False are automatically skipped, and no test results are processed for these hosts.
+  - Hosts with `is_deployed` is False are automatically skipped, and no test results are processed for these hosts.
 """
 
 EXAMPLES = r"""

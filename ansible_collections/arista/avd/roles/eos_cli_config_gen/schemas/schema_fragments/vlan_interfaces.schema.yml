@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -19,6 +19,14 @@ keys:
           description: VLAN interface name like "Vlan123"
         description:
           type: str
+        logging:
+          type: dict
+          keys:
+            event:
+              type: dict
+              keys:
+                link_status:
+                  type: bool
         shutdown:
           type: bool
         vrf:
@@ -68,6 +76,11 @@ keys:
           items:
             type: str
             description: IPv4_address/Mask
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+            - any
+            - rx
         ip_igmp:
           type: bool
         ip_igmp_version:
@@ -312,6 +325,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                border_router:
+                  type: bool
+                  description: Configure PIM border router. EOS default is false.
                 dr_priority:
                   type: int
                   convert_types:
@@ -322,6 +338,27 @@ keys:
                   type: bool
                 local_interface:
                   type: str
+                bfd:
+                  type: bool
+                  description: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
+                bidirectional:
+                  type: bool
+                hello:
+                  type: dict
+                  keys:
+                    count:
+                      type: str
+                      convert_types:
+                        - int
+                        - float
+                      description: Number of missed hellos after which the neighbor expires. Range <1.5-65535>.
+                    interval:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 1
+                      max: 65535
+                      description: PIM hello interval in seconds.
         isis_enable:
           type: str
           description: ISIS instance name
@@ -486,6 +523,26 @@ keys:
                 - str
               min: 1
               max: 255
+        ipv6_attached_host_route_export:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              required: true
+            distance:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 255
+              description: Administrative distance for generated routes.
+            prefix_length:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 128
+              description: Prefix length for generated routes.
         bfd:
           type: dict
           keys:

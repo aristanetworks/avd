@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
@@ -11,8 +11,8 @@ name: generate_lacp_id
 collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "1.1"
-short_description: Transforms short_esi C(0303:0202:0101) to LACP ID format C(0303.0202.0101)
-description: Replaces C(:) with C(.)
+short_description: Transforms short_esi `0303:0202:0101` to LACP ID format `0303.0202.0101`
+description: Replaces `:` with `.`
 positional: _input
 options:
   _input:

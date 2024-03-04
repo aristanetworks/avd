@@ -4,6 +4,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Queue Monitor](#queue-monitor)
+  - [Queue Monitor Length](#queue-monitor-length)
+  - [Queue Monitor Configuration](#queue-monitor-configuration)
 
 ## Management
 
@@ -31,4 +34,28 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+## Queue Monitor
+
+### Queue Monitor Length
+
+| Setting | Value |
+| ------- | ----- |
+| Enabled | True
+| Logging Interval | - |
+| Default Thresholds High | 100 |
+| Default Thresholds Low | - |
+| Notifying | disabled |
+| TX Latency | disabled |
+| CPU Thresholds High | - |
+| CPU Thresholds Low | - |
+
+### Queue Monitor Configuration
+
+```eos
+!
+queue-monitor length
+queue-monitor length default threshold 100
+no queue-monitor length notifying
 ```

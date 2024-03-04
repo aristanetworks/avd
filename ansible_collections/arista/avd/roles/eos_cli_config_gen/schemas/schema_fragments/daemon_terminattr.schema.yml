@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -93,7 +93,8 @@ keys:
             cvsourceintf:
               type: str
               description: |
-                Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0
+                Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0.
+                The interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.
             cvvrf:
               type: str
               description: |
@@ -146,7 +147,8 @@ keys:
       cvsourceintf:
         type: str
         description: |
-          Set source interface in case of in-band managament
+          Set source interface in case of in-band managament.
+          The interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.
       cvvrf:
         type: str
         description: |

@@ -1,3 +1,56 @@
+anta.tests.aaa:
+- VerifyTacacsSourceIntf:
+    intf: Management0
+    vrf: default
+- VerifyTacacsServers:
+    servers:
+    - 1.1.1.1
+    - 2.2.2.2
+    vrf: default
+- VerifyTacacsServerGroups:
+    groups:
+    - admin
+    - user
+- VerifyAuthenMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - login
+    - enable
+    - dot1x
+- VerifyAuthzMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - commands
+    - exec
+- VerifyAcctDefaultMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - system
+    - exec
+    - commands
+    - dot1x
+- VerifyAcctConsoleMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - system
+    - exec
+    - commands
+    - dot1x
+anta.tests.configuration:
+- VerifyZeroTouch: null
+- VerifyRunningConfigDiffs: null
 anta.tests.connectivity:
 - VerifyLLDPNeighbors:
     neighbors:
@@ -62,6 +115,9 @@ anta.tests.connectivity:
       - IP Reachability
       custom_field: 'Source: dc1-spine1_Ethernet3 - Destination: dc1-leaf2a_Ethernet1'
       description: ip reachability test p2p links
+anta.tests.field_notices:
+- VerifyFieldNotice44Resolution: null
+- VerifyFieldNotice72Resolution: null
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     states:
@@ -69,12 +125,27 @@ anta.tests.hardware:
 - VerifyEnvironmentCooling:
     states:
     - ok
-- VerifyTemperature: {}
+- VerifyTemperature: null
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
+- VerifyTransceiversManufacturers:
+    manufacturers:
+    - Not Present
+    - Arista Networks
+    - Arastra, Inc.
+- VerifyTemperature: null
+- VerifyTransceiversTemperature: null
+- VerifyEnvironmentSystemCooling: null
+- VerifyEnvironmentCooling:
+    states:
+    - ok
+- VerifyEnvironmentPower:
+    states:
+    - ok
+- VerifyAdverseDrops: null
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
@@ -126,7 +197,127 @@ anta.tests.interfaces:
       - Interface State
       custom_field: Loopback0 - EVPN_Overlay_Peering
       description: Loopback Interface Status & Line Protocol == 'up'
+- VerifyInterfaceUtilization: null
+- VerifyInterfaceErrors: null
+- VerifyInterfaceDiscards: null
+- VerifyInterfaceErrDisabled: null
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet1
+      state: up
+    - interface: Ethernet2
+      protocol_status: up
+      state: up
+    - interface: Vlan10
+      protocol_status: down
+      state: adminDown
+- VerifyStormControlDrops: null
+- VerifyPortChannels: null
+- VerifyIllegalLACP: null
+- VerifyLoopbackCount:
+    number: 3
+- VerifySVI: null
+- VerifyL3MTU:
+    ignored_interfaces:
+    - Vxlan1
+    mtu: 1500
+    specific_mtu:
+    - Ethernet1: 2500
+- VerifyIPProxyARP:
+    interfaces:
+    - Ethernet1
+    - Ethernet2
+- VerifyL2MTU:
+    ignored_interfaces:
+    - Management1
+    - Vxlan1
+    mtu: 1500
+    specific_mtu:
+    - Ethernet1/1: 1500
+anta.tests.routing:
+  bgp:
+  - VerifyBGPPeerCount:
+      address_families:
+      - afi: evpn
+        num_peers: 2
+      - afi: ipv4
+        num_peers: 2
+        safi: unicast
+        vrf: PROD
+      - afi: ipv4
+        num_peers: 3
+        safi: unicast
+        vrf: default
+      - afi: ipv4
+        num_peers: 3
+        safi: multicast
+        vrf: DEV
+  - VerifyBGPPeersHealth:
+      address_families:
+      - afi: evpn
+      - afi: ipv4
+        safi: unicast
+        vrf: default
+      - afi: ipv6
+        safi: unicast
+        vrf: DEV
+  - VerifyBGPSpecificPeers:
+      address_families:
+      - afi: evpn
+        peers:
+        - 10.1.0.1
+        - 10.1.0.2
+      - afi: ipv4
+        peers:
+        - 10.1.254.1
+        - 10.1.255.0
+        - 10.1.255.2
+        - 10.1.255.4
+        safi: unicast
+  generic:
+  - VerifyRoutingProtocolModel:
+      model: multi-agent
+  - VerifyRoutingTableSize:
+      maximum: 20
+      minimum: 2
+  - VerifyBFD: null
+  - VerifyRoutingTableEntry:
+      routes:
+      - 10.1.0.1
+      - 10.1.0.2
+      vrf: default
+  ospf:
+  - VerifyOSPFNeighborState: null
+  - VerifyOSPFNeighborCount:
+      number: 3
 anta.tests.routing.bgp:
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.3
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP EVPN Peer: 10.255.0.3'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.4
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP EVPN Peer: 10.255.0.4'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.5
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP EVPN Peer: 10.255.0.5'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -136,8 +327,7 @@ anta.tests.routing.bgp:
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.255.1'
-      description: ip bgp peer state established (ipv4)
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.1'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -147,8 +337,7 @@ anta.tests.routing.bgp:
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.255.5'
-      description: ip bgp peer state established (ipv4)
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.5'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -158,49 +347,76 @@ anta.tests.routing.bgp:
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.255.9'
-      description: ip bgp peer state established (ipv4)
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.9'
 - VerifyBGPSpecificPeers:
     address_families:
-    - afi: evpn
+    - afi: ipv4
       peers:
-      - 10.255.0.3
+      - 123.1.1.10
+      safi: unicast
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.0.3'
-      description: bgp evpn peer state established (evpn)
+      custom_field: 'BGP IPv4 Unicast Peer: 123.1.1.10'
 - VerifyBGPSpecificPeers:
     address_families:
-    - afi: evpn
+    - afi: ipv4
       peers:
-      - 10.255.0.4
+      - 123.1.1.11
+      safi: unicast
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.0.4'
-      description: bgp evpn peer state established (evpn)
+      custom_field: 'BGP IPv4 Unicast Peer: 123.1.1.11'
 - VerifyBGPSpecificPeers:
     address_families:
-    - afi: evpn
+    - afi: ipv6
       peers:
-      - 10.255.0.5
+      - fd5a:fe45:8831:06c5::a
+      safi: unicast
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.0.5'
-      description: bgp evpn peer state established (evpn)
+      custom_field: 'BGP IPv6 Unicast Peer: fd5a:fe45:8831:06c5::a'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv6
+      peers:
+      - fd5a:fe45:8831:06c5::b
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP IPv6 Unicast Peer: fd5a:fe45:8831:06c5::b'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
     result_overwrite:
       categories:
       - BGP
-      custom_field: ArBGP
-      description: ArBGP is configured and operating
+      custom_field: 'Routing protocol model: multi-agent'
+      description: Verifies the configured routing protocol model.
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
+anta.tests.snmp:
+- VerifySnmpStatus:
+    vrf: default
+- VerifySnmpIPv4Acl:
+    number: 3
+    vrf: default
+- VerifySnmpIPv6Acl:
+    number: 3
+    vrf: default
+anta.tests.software:
+- VerifyEOSVersion:
+    versions:
+    - 4.25.4M
+    - 4.26.1F
+- VerifyTerminAttrVersion:
+    versions:
+    - v1.13.6
+    - v1.8.0
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:
@@ -208,3 +424,12 @@ anta.tests.system:
       - NTP
       custom_field: NTP
       description: Synchronised with NTP server
+- VerifyUptime:
+    minimum: 86400
+- VerifyReloadCause: null
+- VerifyCoredump: null
+- VerifyAgentLogs: null
+- VerifyCPUUtilization: null
+- VerifyMemoryUtilization: null
+- VerifyFileSystemUtilization: null
+- VerifyNTP: null

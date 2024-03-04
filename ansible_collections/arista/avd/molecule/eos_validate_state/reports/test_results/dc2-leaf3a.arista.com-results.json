@@ -1,15 +1,68 @@
 [
   {
     "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTacacsServerGroups",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAcctConsoleMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA accounting console method lists for different accounting types (system, exec, commands, dot1x)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAcctDefaultMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA accounting default method lists for different accounting types (system, exec, commands, dot1x)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAuthenMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA authentication method lists for different authentication types (login, enable, dot1x)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAuthzMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA authorization method lists for different authorization types (commands, exec)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
     "test": "VerifyRoutingProtocolModel",
     "categories": [
       "BGP"
     ],
-    "description": "ArBGP is configured and operating",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "ArBGP"
+    "description": "Verifies the configured routing protocol model.",
+    "custom_field": "Routing protocol model: multi-agent"
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -17,11 +70,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.128.11"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.11"
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -29,11 +79,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.128.12"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.12"
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -41,11 +88,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.129.125"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.129.125"
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -53,11 +97,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.255.120"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.120"
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -65,11 +106,42 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.255.122"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.122"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyRunningConfigDiffs",
+    "categories": [
+      "configuration"
+    ],
+    "description": "Verifies there is no difference between the running-config and the startup-config"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyZeroTouch",
+    "categories": [
+      "configuration"
+    ],
+    "description": "Verifies ZeroTouch is disabled"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyFieldNotice72Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyFieldNotice44Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -77,11 +149,15 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the device temperature is within the acceptable range."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the device temperature is within the acceptable range."
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -89,11 +165,15 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the fans status are within the accepted states list.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the fans status are within the accepted states list."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the fans status are within the accepted states list."
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -101,11 +181,31 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the power supplies status are within the accepted states list."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the power supplies status are within the accepted states list."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTransceiversTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies that all transceivers are operating within the acceptable temperature range."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyEnvironmentSystemCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the system cooling status."
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -113,11 +213,23 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAdverseDrops",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -126,9 +238,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet5"
   },
   {
@@ -138,9 +247,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet11 - dc2-leaf3-fw1_e1"
   },
   {
@@ -150,9 +256,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet5"
   },
   {
@@ -162,9 +265,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet3 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet3"
   },
   {
@@ -174,9 +274,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet4 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet4"
   },
   {
@@ -186,9 +283,6 @@
       "Interface State"
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Loopback0 - EVPN_Overlay_Peering"
   },
   {
@@ -198,9 +292,6 @@
       "Interface State"
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Loopback1 - VTEP_VXLAN_Tunnel_Source"
   },
   {
@@ -210,9 +301,6 @@
       "Interface State"
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Loopback10 - VRF10_VTEP_DIAGNOSTICS"
   },
   {
@@ -222,9 +310,6 @@
       "Interface State"
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Loopback11 - VRF11_VTEP_DIAGNOSTICS"
   },
   {
@@ -234,9 +319,6 @@
       "Interface State"
     ],
     "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Port-Channel11 - dc2-leaf3-fw1_PortChannel"
   },
   {
@@ -246,9 +328,6 @@
       "Interface State"
     ],
     "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Port-Channel3 - MLAG_PEER_dc2-leaf3b.arista.com_Po3"
   },
   {
@@ -258,9 +337,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan11 - VRF10_VLAN11"
   },
   {
@@ -270,9 +346,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan12 - VRF10_VLAN12"
   },
   {
@@ -282,9 +355,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan21 - VRF11_VLAN21"
   },
   {
@@ -294,9 +364,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan22 - VRF11_VLAN22"
   },
   {
@@ -306,9 +373,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10"
   },
   {
@@ -318,9 +382,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11"
   },
   {
@@ -330,9 +391,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan4093 - MLAG_PEER_L3_PEERING"
   },
   {
@@ -342,9 +400,6 @@
       "Interface State"
     ],
     "description": "Vlan Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vlan4094 - MLAG_PEER"
   },
   {
@@ -354,9 +409,6 @@
       "Interface State"
     ],
     "description": "Vxlan Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Vxlan1"
   },
   {
@@ -366,9 +418,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com_Ethernet1 - Destination: dc2-spine1_Ethernet5"
   },
   {
@@ -378,9 +427,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com_Ethernet2 - Destination: dc2-spine2_Ethernet5"
   },
   {
@@ -390,9 +436,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet1 - remote: dc2-spine1_Ethernet5"
   },
   {
@@ -402,9 +445,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet2 - remote: dc2-spine2_Ethernet5"
   },
   {
@@ -414,9 +454,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet3 - remote: dc2-leaf3b.arista.com_Ethernet3"
   },
   {
@@ -426,10 +463,71 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet4 - remote: dc2-leaf3b.arista.com_Ethernet4"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingWarning",
+    "categories": [
+      "logging"
+    ],
+    "description": "This test verifies there are no syslog messages with a severity of ERRORS or higher."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingAccounting",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if AAA accounting logs are generated."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingPersistent",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logging persistent is enabled and logs are saved in flash."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingTimestamp",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated with the appropriate timestamp."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingHostname",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated with the device FQDN."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingLogsGeneration",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingHosts",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies logging hosts (syslog servers) for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingSourceInt",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies logging source-interface for a specified VRF."
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -438,9 +536,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.0.1"
   },
   {
@@ -450,9 +545,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.0.2"
   },
   {
@@ -462,9 +554,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.0.3"
   },
   {
@@ -474,9 +563,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.0.4"
   },
   {
@@ -486,9 +572,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.0.5"
   },
   {
@@ -498,9 +581,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.128.11"
   },
   {
@@ -510,9 +590,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.128.12"
   },
   {
@@ -522,9 +599,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.128.13"
   },
   {
@@ -534,9 +608,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.128.14"
   },
   {
@@ -546,9 +617,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.128.15"
   },
   {
@@ -558,9 +626,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.128.16"
   },
   {
@@ -570,9 +635,6 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.128.17"
   },
   {
@@ -582,10 +644,15 @@
       "Loopback0 Reachability"
     ],
     "description": "Loopback0 Reachability",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.128.18"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMlagDualPrimary",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies the dual-primary detection and its parameters of the MLAG configuration."
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -593,11 +660,57 @@
     "categories": [
       "mlag"
     ],
-    "description": "This test verifies the health status of the MLAG configuration.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "This test verifies the health status of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMlagStatus",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies the health status of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMlagReloadDelay",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies the reload-delay parameters of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMlagInterfaces",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies there are no inactive or active-partial MLAG ports."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMlagConfigSanity",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies there are no MLAG config-sanity inconsistencies."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyIGMPSnoopingVlans",
+    "categories": [
+      "multicast",
+      "igmp"
+    ],
+    "description": "Verifies the IGMP snooping configuration for some VLANs."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyIGMPSnoopingGlobal",
+    "categories": [
+      "multicast",
+      "igmp"
+    ],
+    "description": "Verifies the IGMP snooping global configuration."
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -606,9 +719,6 @@
       "NTP"
     ],
     "description": "Synchronised with NTP server",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "NTP"
   },
   {
@@ -618,9 +728,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.0.1"
   },
   {
@@ -630,9 +737,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.0.2"
   },
   {
@@ -642,9 +746,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.0.3"
   },
   {
@@ -654,9 +755,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.0.4"
   },
   {
@@ -666,9 +764,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.0.5"
   },
   {
@@ -678,9 +773,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.11"
   },
   {
@@ -690,9 +782,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.12"
   },
   {
@@ -702,9 +791,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.13"
   },
   {
@@ -714,9 +800,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.14"
   },
   {
@@ -726,9 +809,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.15"
   },
   {
@@ -738,9 +818,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.16"
   },
   {
@@ -750,9 +827,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.17"
   },
   {
@@ -762,9 +836,6 @@
       "Routing Table"
     ],
     "description": "Remote Lo0 address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.128.18"
   },
   {
@@ -774,9 +845,6 @@
       "Routing Table"
     ],
     "description": "Remote VTEP address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.1.3"
   },
   {
@@ -786,9 +854,6 @@
       "Routing Table"
     ],
     "description": "Remote VTEP address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.1.5"
   },
   {
@@ -798,9 +863,6 @@
       "Routing Table"
     ],
     "description": "Remote VTEP address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.129.13"
   },
   {
@@ -810,9 +872,6 @@
       "Routing Table"
     ],
     "description": "Remote VTEP address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.129.15"
   },
   {
@@ -822,9 +881,6 @@
       "Routing Table"
     ],
     "description": "Remote VTEP address",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "10.255.129.17"
   },
   {
@@ -833,10 +889,150 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySnmpIPv4Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv4 ACL(s) configured."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySnmpIPv6Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv6 ACL(s) configured."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySnmpStatus",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent is enabled."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyEOSVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed EOS version."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTerminAttrVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed TerminAttr version."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySTPForwardingPorts",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies that all interfaces are forwarding for a provided list of VLAN(s)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySTPMode",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies the configured STP mode for a provided list of VLAN(s)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySTPRootPriority",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies the STP root priority for a provided list of VLAN or MST instance ID(s)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySTPCounters",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies there is no errors in STP BPDU packets."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySTPBlockedPorts",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies there is no STP blocked ports."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if there are core dump files in the /var/core directory."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no agent crash reports are present on the device."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyCPUUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the CPU utilization is below 75%."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMemoryUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the memory utilization is below 75%."
   }
 ]

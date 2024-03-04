@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>sflow</samp>](## "sflow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;sample</samp>](## "sflow.sample") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;sample_input_subinterface</samp>](## "sflow.sample_input_subinterface") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;sample_output_subinterface</samp>](## "sflow.sample_output_subinterface") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dangerous</samp>](## "sflow.dangerous") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;polling_interval</samp>](## "sflow.polling_interval") | Integer |  |  |  | Polling interval in seconds |
@@ -46,6 +47,7 @@
     ```yaml
     sflow:
       sample: <int>
+      sample_input_subinterface: <bool>
       sample_output_subinterface: <bool>
       dangerous: <bool>
 

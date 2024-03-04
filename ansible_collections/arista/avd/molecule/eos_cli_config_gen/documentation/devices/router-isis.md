@@ -20,13 +20,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.254.11/24 | 10.73.254.253 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -321,6 +321,8 @@ router isis EVPN_UNDERLAY
    mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
    advertise passive-only
+   authentication mode sha key-id 4
+   authentication key 0 password
    !
    address-family ipv4 unicast
       maximum-paths 2

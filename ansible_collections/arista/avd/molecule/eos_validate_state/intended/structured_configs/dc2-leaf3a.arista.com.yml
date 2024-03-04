@@ -1,6 +1,4 @@
 hostname: dc2-leaf3a.arista.com
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65203'
@@ -447,3 +445,5 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.10.17
 - name: VRF11
   ip_address: 10.255.11.17
+metadata:
+  platform: vEOS-lab

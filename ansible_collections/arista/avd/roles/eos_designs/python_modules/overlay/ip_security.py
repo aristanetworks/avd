@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -27,7 +27,7 @@ class IpSecurityMixin(UtilsMixin):
         """
         # TODO - in future, the default algo/dh groups value must be clarified
 
-        if not self.shared_utils.wan_role:
+        if not self.shared_utils.is_wan_router:
             return None
 
         wan_ipsec_profiles = get(self._hostvars, "wan_ipsec_profiles", required=True)
@@ -35,7 +35,7 @@ class IpSecurityMixin(UtilsMixin):
         # Structure initialization
         ip_security = {"ike_policies": [], "sa_policies": [], "profiles": []}
 
-        if (data_plane := get(wan_ipsec_profiles, "data_plane")) is not None:
+        if self.shared_utils.is_wan_client and (data_plane := get(wan_ipsec_profiles, "data_plane")) is not None:
             self._append_data_plane(ip_security, data_plane)
         control_plane = get(wan_ipsec_profiles, "control_plane", required=True)
         self._append_control_plane(ip_security, control_plane)
@@ -46,12 +46,17 @@ class IpSecurityMixin(UtilsMixin):
         """
         In place update of ip_security
         """
-        ike_policy_name = get(data_plane_config, "ike_policy_name", default="DP-IKE-POLICY")
+        if self.shared_utils.wan_ha:
+            ike_policy_name = get(data_plane_config, "ike_policy_name", default="DP-IKE-POLICY")
+        else:
+            ike_policy_name = None
         sa_policy_name = get(data_plane_config, "sa_policy_name", default="DP-SA-POLICY")
         profile_name = get(data_plane_config, "profile_name", default="DP-PROFILE")
         key = get(data_plane_config, "shared_key", required=True)
 
-        ip_security["ike_policies"].append(self._ike_policy(ike_policy_name))
+        # IKE policy for data-plane is not required for dynamic tunnels except for HA cases
+        if self.shared_utils.wan_ha:
+            ip_security["ike_policies"].append(self._ike_policy(ike_policy_name))
         ip_security["sa_policies"].append(self._sa_policy(sa_policy_name))
         ip_security["profiles"].append(self._profile(profile_name, ike_policy_name, sa_policy_name, key))
 
@@ -83,24 +88,35 @@ class IpSecurityMixin(UtilsMixin):
         """
         return {
             "name": name,
-            "local_id": self.shared_utils.router_id,
+            "local_id": self.shared_utils.vtep_ip,
         }
 
     def _sa_policy(self, name: str) -> dict | None:
         """
         Return an SA policy
+
+        By default using aes256gcm128 as GCM variants give higher performance.
         """
         sa_policy = {"name": name}
-        if self.shared_utils.cv_pathfinder_role:
+        if self.shared_utils.is_cv_pathfinder_router:
             # TODO, provide options to change this cv_pathfinder_wide
-            sa_policy["esp"] = {"encryption": "aes128"}
+            sa_policy["esp"] = {"encryption": "aes256gcm128"}
             sa_policy["pfs_dh_group"] = 14
         return sa_policy
 
-    def _profile(self, profile_name: str, ike_policy_name: str, sa_policy_name: str, key: str) -> dict | None:
+    def _profile(self, profile_name: str, ike_policy_name: str | None, sa_policy_name: str, key: str) -> dict | None:
         """
         Return one IPsec Profile
+
+        The expectation is that potential None values are stripped later.
+
+        Using connection start on all routers as using connection add on Pathfinders
+        as suggested would prevent Pathfinders to establish IPsec tunnels between themselves
+        which is undesirable.
         """
+        if self.shared_utils.wan_role is None:
+            return None
+
         return {
             "name": profile_name,
             "ike_policy": ike_policy_name,
@@ -115,7 +131,7 @@ class IpSecurityMixin(UtilsMixin):
         """
         Return a key_controller structure if the device is not a RR or pathfinder
         """
-        if self.shared_utils.wan_role != "client":
+        if self.shared_utils.is_wan_server:
             return None
 
         return {"profile": profile_name}

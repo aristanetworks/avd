@@ -182,7 +182,7 @@ jobs:
           UID: ${{ inputs.user_id }}
           GID: ${{ inputs.group_id }}
         with:
-          subFolder: avd-containers/${{ inputs.container_name }}
+          subFolder: containers/${{ inputs.container_name }}
           imageName: ghcr.io/${{ github.repository }}/${{ inputs.container_name }}
           imageTag: ${{ steps.build-tags.outputs.image_tags }}
           platform: ${{ inputs.platform }}

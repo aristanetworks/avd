@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -32,7 +32,7 @@ class IpIgmpSnoopingMixin(UtilsMixin):
             return ip_igmp_snooping
 
         vlans = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if vlan := self._ip_igmp_snooping_vlan(svi, tenant):
@@ -83,7 +83,7 @@ class IpIgmpSnoopingMixin(UtilsMixin):
 
         else:
             igmp_snooping_enabled = vlan.get("igmp_snooping_enabled")
-            if self.shared_utils.network_services_l3 and self.shared_utils.uplink_type == "p2p":
+            if self.shared_utils.network_services_l3 and self.shared_utils.uplink_type in ["p2p", "p2p-vrfs"]:
                 igmp_snooping_querier_enabled = default(
                     igmp_snooping_querier.get("enabled"),
                     tenant_igmp_snooping_querier.get("enabled"),

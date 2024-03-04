@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -29,7 +29,7 @@ class EosCliMixin(UtilsMixin):
         if (eos_cli := get(self._hostvars, "eos_cli")) is not None:
             eos_clis.append(eos_cli)
 
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if (eos_cli := vrf.get("raw_eos_cli")) is not None:
                     eos_clis.append(eos_cli)

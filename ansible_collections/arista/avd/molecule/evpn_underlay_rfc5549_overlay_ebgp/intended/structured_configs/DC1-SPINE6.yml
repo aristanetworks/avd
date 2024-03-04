@@ -1,6 +1,4 @@
 hostname: DC1-SPINE6
-metadata:
-  platform: 7050X3
 is_deployed: true
 router_bgp:
   as: '65001'
@@ -185,3 +183,5 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
+metadata:
+  platform: 7050X3

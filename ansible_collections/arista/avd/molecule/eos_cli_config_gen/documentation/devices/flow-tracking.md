@@ -18,13 +18,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -44,9 +44,9 @@ interface Management1
 
 #### Flow Tracking Sampled
 
-| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 |
-| ----------- | ------------------- | ------------------------- | ------------------------- |
-| 666 | 2 | enabled | disabled |
+| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 | Encapsulations |
+| ----------- | ------------------- | ------------------------- | ------------------------- | -------------- |
+| 666 | 2 | enabled | disabled | ipv4, ipv6, mpls |
 
 ##### Trackers Summary
 
@@ -91,6 +91,7 @@ interface Management1
 ```eos
 !
 flow tracking sampled
+   encapsulation ipv4 ipv6 mpls
    sample 666
    hardware offload ipv4
    hardware offload threshold minimum 2 samples

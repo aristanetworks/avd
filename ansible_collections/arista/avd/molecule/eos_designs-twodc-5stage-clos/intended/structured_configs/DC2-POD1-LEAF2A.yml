@@ -1,6 +1,4 @@
 hostname: DC2-POD1-LEAF2A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65212'
@@ -193,10 +191,12 @@ vlan_interfaces:
 - name: Vlan4092
   description: Inband Management
   shutdown: false
-  ip_address: 172.21.210.2/24
-  ip_virtual_router_addresses:
-  - 172.21.210.1
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ip_address: 172.21.210.2/24
+  ip_virtual_router_addresses:
+  - 172.21.210.1
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+metadata:
+  platform: vEOS-LAB

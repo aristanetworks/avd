@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -45,7 +45,16 @@ DEFAULT_PLATFORM_SETTINGS = [
         "feature_support": {"queue_monitor_length_notify": False, "poe": True},
     },
     {
-        "platforms": ["750", "755", "758", "720DP", "722XP", "710P"],
+        "platforms": ["750", "755", "758"],
+        "management_interface": "Management0",
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {"queue_monitor_length_notify": False, "poe": True},
+    },
+    {
+        "platforms": ["720DP", "722XP", "710P"],
         "reload_delay": {
             "mlag": 300,
             "non_mlag": 330,
@@ -84,6 +93,20 @@ DEFAULT_PLATFORM_SETTINGS = [
         "reload_delay": {
             "mlag": 900,
             "non_mlag": 1020,
+        },
+    },
+    {
+        "platforms": ["7358X4"],
+        "management_interface": "Management1/1",
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {
+            "queue_monitor_length_notify": False,
+            "interface_storm_control": True,
+            "bgp_update_wait_for_convergence": True,
+            "bgp_update_wait_install": False,
         },
     },
     {

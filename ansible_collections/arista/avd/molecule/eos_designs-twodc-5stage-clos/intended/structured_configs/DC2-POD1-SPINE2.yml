@@ -1,6 +1,4 @@
 hostname: DC2-POD1-SPINE2
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65210'
@@ -164,3 +162,5 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+metadata:
+  platform: vEOS-LAB

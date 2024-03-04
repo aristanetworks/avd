@@ -1,6 +1,4 @@
 hostname: DC1-POD1-LEAF1A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65111.100'
@@ -250,9 +248,11 @@ vlan_interfaces:
 - name: Vlan4085
   description: L2LEAF_INBAND_MGMT
   shutdown: false
-  ip_address: 172.21.110.2/24
-  ip_virtual_router_addresses:
-  - 172.21.110.1
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ip_address: 172.21.110.2/24
+  ip_virtual_router_addresses:
+  - 172.21.110.1
+metadata:
+  platform: vEOS-LAB

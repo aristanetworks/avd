@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -47,7 +47,7 @@ class RoutingMixin:
         """
         return (
             self.underlay_router
-            and self.uplink_type == "p2p"
+            and self.uplink_type in ["p2p", "p2p-vrfs", "lan"]
             and (
                 self.underlay_routing_protocol == "ebgp"
                 or (

@@ -1,6 +1,4 @@
 hostname: RD-RT-ADMIN-SUBFIELD-L3LEAF5
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65005'
@@ -211,3 +209,5 @@ vxlan_interface:
       vrfs:
       - name: TEST1
         vni: 22
+metadata:
+  platform: vEOS-LAB

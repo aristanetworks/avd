@@ -1,6 +1,4 @@
 hostname: ptp-tests-leaf1
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65101'
@@ -130,6 +128,7 @@ management_api_http:
   enable_https: true
 ptp:
   mode: boundary
+  mode_one_step: true
   clock_identity: '11:11:11:11:11:11'
   priority1: 30
   priority2: 1
@@ -441,3 +440,5 @@ vxlan_interface:
       vrfs:
       - name: VRF1
         vni: 1
+metadata:
+  platform: vEOS-lab

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -47,6 +47,14 @@ class NodeTypeMixin:
                     return default_node_type["node_type"]
 
         return None
+
+    @cached_property
+    def cvp_tag_topology_hint_type(self: SharedUtils) -> str:
+        """
+        topology_tag_type set based on
+        node_type_keys.<node_type_key>.cvp_tags.topology_hint_type
+        """
+        return get(self.node_type_key_data, "cvp_tags.topology_hint_type", default="endpoint")
 
     @cached_property
     def connected_endpoints(self: SharedUtils) -> bool:
@@ -102,6 +110,16 @@ class NodeTypeMixin:
             if get(self.switch_data_combined, "evpn_services_l2_only") is True:
                 return False
         return get(self.node_type_key_data, "network_services.l3", default=False)
+
+    @cached_property
+    def network_services_l2_as_subint(self: SharedUtils) -> bool:
+        """
+        network_services_l2_as_subint set based on
+        node_type_keys.<node_type_key>.network_services.l3 for uplink_type "lan" or "lan-port-channel"
+
+        This is used when deploying SVIs as subinterfaces.
+        """
+        return self.network_services_l3 and self.uplink_type in ["lan", "lan-port-channel"]
 
     @cached_property
     def any_network_services(self: SharedUtils) -> bool:

@@ -3,7 +3,7 @@
 title: arista.avd.status_render
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -17,18 +17,18 @@ Convert Text to EMOJI code.
 
 ## Synopsis
 
-Returns the input value unless <em>rendering</em> is set to \"github\".
+Returns the input value unless `rendering` is set to &#34;github&#34;.
 
-Returns <code>\:x\:</code> if input status string is <code>FAIL</code> and <em>rendering</em> is set to \"github\".
+Returns `:x:` if input status string is `FAIL` and `rendering` is set to &#34;github&#34;.
 
-Returns <code>\:white\_check\_mark\:</code> if input status string is <code>PASS</code> and <em>rendering</em> is set to \"github\".
+Returns `:white_check_mark:` if input status string is `PASS` and `rendering` is set to &#34;github&#34;.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None |  | Text to convert to EMOJI. |
-| rendering | string | True | None |  | Markdown Flavor to use for Emoji rendering. Only \"github\" is supported. |
+| <samp>_input</samp> | string | True | None |  | Text to convert to EMOJI. |
+| <samp>rendering</samp> | string | True | None |  | Markdown Flavor to use for Emoji rendering. Only &#34;github&#34; is supported. |
 
 ## Return Values
 

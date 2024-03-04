@@ -3,7 +3,7 @@
 title: arista.avd.list_compress
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -23,7 +23,7 @@ Provides the capability to generate a string representing ranges of VLANs or VNI
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | list | True | None |  | List of integers to compress into a range. |
+| <samp>_input</samp> | list | True | None |  | List of integers to compress into a range. |
 
 ## Examples
 
@@ -37,7 +37,7 @@ list2: "{{ [1,2,3,7,8] | arista.avd.list_compress }}" # -> "1-3,7-8"
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | string | Range string like \"1\-3,7\-8\" |
+| _value | string | Range string like &#34;1-3,7-8&#34; |
 
 ## Authors
 

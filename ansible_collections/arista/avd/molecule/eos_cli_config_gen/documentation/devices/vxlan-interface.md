@@ -15,13 +15,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -56,6 +56,7 @@ interface Management1
 | Remote VTEPs EVPN BFD expected minimum incoming rate (min-rx) | 300ms |
 | Remote VTEPs EVPN BFD multiplier | 3 |
 | Remote VTEPs EVPN BFD prefix-list | PL-TEST |
+| Multicast headend-replication | Enabled |
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -104,6 +105,7 @@ interface Vxlan1
    vxlan vlan 110 multicast group 239.9.1.4
    vxlan vlan 112 multicast group 239.9.1.6
    vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
+   vxlan multicast headend-replication
    vxlan encapsulation ipv4
 
 ```

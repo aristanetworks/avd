@@ -1,0 +1,37 @@
+hostname: SL-MLEAF1
+is_deployed: true
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet16
+  peer: SL-LEAF1A
+  peer_interface: Ethernet28
+  peer_type: leaf
+  description: SL-LEAF1A_Ethernet28
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 16
+    mode: active
+port_channel_interfaces:
+- name: Port-Channel16
+  description: SL-LEAF1_Po28
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: none
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  platform: vEOS-LAB

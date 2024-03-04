@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -59,6 +59,11 @@
 {%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.prefix_list is arista.avd.defined %}
 | Remote VTEPs EVPN BFD prefix-list | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.prefix_list }} |
 {%         endif %}
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.multicast.headend_replication is arista.avd.defined(true) %}
+| Multicast headend-replication | Enabled |
+{%     elif vxlan_interface.Vxlan1.vxlan.multicast.headend_replication is arista.avd.defined(false) %}
+| Multicast headend-replication | Disabled |
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.vlans is arista.avd.defined %}
 

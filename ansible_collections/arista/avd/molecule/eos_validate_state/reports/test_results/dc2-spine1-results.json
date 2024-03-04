@@ -1,15 +1,68 @@
 [
   {
     "name": "dc2-spine1",
+    "test": "VerifyTacacsServerGroups",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyAcctConsoleMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA accounting console method lists for different accounting types (system, exec, commands, dot1x)."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyAcctDefaultMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA accounting default method lists for different accounting types (system, exec, commands, dot1x)."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyAuthenMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA authentication method lists for different authentication types (login, enable, dot1x)."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyAuthzMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA authorization method lists for different authorization types (commands, exec)."
+  },
+  {
+    "name": "dc2-spine1",
     "test": "VerifyRoutingProtocolModel",
     "categories": [
       "BGP"
     ],
-    "description": "ArBGP is configured and operating",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "ArBGP"
+    "description": "Verifies the configured routing protocol model.",
+    "custom_field": "Routing protocol model: multi-agent"
   },
   {
     "name": "dc2-spine1",
@@ -17,11 +70,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.128.13"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.13"
   },
   {
     "name": "dc2-spine1",
@@ -29,11 +79,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.128.14"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.14"
   },
   {
     "name": "dc2-spine1",
@@ -41,11 +88,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.128.15"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.15"
   },
   {
     "name": "dc2-spine1",
@@ -53,11 +97,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.128.16"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.16"
   },
   {
     "name": "dc2-spine1",
@@ -65,11 +106,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.128.17"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.17"
   },
   {
     "name": "dc2-spine1",
@@ -77,11 +115,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "bgp evpn peer state established (evpn)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.128.18"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.255.128.18"
   },
   {
     "name": "dc2-spine1",
@@ -89,11 +124,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.255.105"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.105"
   },
   {
     "name": "dc2-spine1",
@@ -101,11 +133,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.255.109"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.109"
   },
   {
     "name": "dc2-spine1",
@@ -113,11 +142,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.255.113"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.113"
   },
   {
     "name": "dc2-spine1",
@@ -125,11 +151,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.255.117"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.117"
   },
   {
     "name": "dc2-spine1",
@@ -137,11 +160,8 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.255.121"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.121"
   },
   {
     "name": "dc2-spine1",
@@ -149,11 +169,42 @@
     "categories": [
       "BGP"
     ],
-    "description": "ip bgp peer state established (ipv4)",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "bgp_neighbor: 10.255.255.125"
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.125"
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyRunningConfigDiffs",
+    "categories": [
+      "configuration"
+    ],
+    "description": "Verifies there is no difference between the running-config and the startup-config"
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyZeroTouch",
+    "categories": [
+      "configuration"
+    ],
+    "description": "Verifies ZeroTouch is disabled"
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyFieldNotice72Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyFieldNotice44Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
   },
   {
     "name": "dc2-spine1",
@@ -161,11 +212,15 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the device temperature is within the acceptable range."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the device temperature is within the acceptable range."
   },
   {
     "name": "dc2-spine1",
@@ -173,11 +228,15 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the fans status are within the accepted states list.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the fans status are within the accepted states list."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the fans status are within the accepted states list."
   },
   {
     "name": "dc2-spine1",
@@ -185,11 +244,31 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if the power supplies status are within the accepted states list."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the power supplies status are within the accepted states list."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyTransceiversTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies that all transceivers are operating within the acceptable temperature range."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyEnvironmentSystemCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the system cooling status."
   },
   {
     "name": "dc2-spine1",
@@ -197,11 +276,23 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyAdverseDrops",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc2-spine1",
@@ -210,9 +301,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet1 - P2P_LINK_TO_DC2-LEAF1A_Ethernet1"
   },
   {
@@ -222,9 +310,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet2 - P2P_LINK_TO_DC2-LEAF1B_Ethernet1"
   },
   {
@@ -234,9 +319,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet3 - P2P_LINK_TO_DC2-LEAF2A_Ethernet1"
   },
   {
@@ -246,9 +328,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet4 - P2P_LINK_TO_DC2-LEAF2B_Ethernet1"
   },
   {
@@ -258,9 +337,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet5 - P2P_LINK_TO_DC2-LEAF3A.ARISTA.COM_Ethernet1"
   },
   {
@@ -270,9 +346,6 @@
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Ethernet6 - P2P_LINK_TO_DC2-LEAF3B.ARISTA.COM_Ethernet1"
   },
   {
@@ -282,9 +355,6 @@
       "Interface State"
     ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Loopback0 - EVPN_Overlay_Peering"
   },
   {
@@ -294,9 +364,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet1 - Destination: dc2-leaf1a_Ethernet1"
   },
   {
@@ -306,9 +373,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet2 - Destination: dc2-leaf1b_Ethernet1"
   },
   {
@@ -318,9 +382,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet3 - Destination: dc2-leaf2a_Ethernet1"
   },
   {
@@ -330,9 +391,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet4 - Destination: dc2-leaf2b_Ethernet1"
   },
   {
@@ -342,9 +400,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet5 - Destination: dc2-leaf3a.arista.com_Ethernet1"
   },
   {
@@ -354,9 +409,6 @@
       "IP Reachability"
     ],
     "description": "ip reachability test p2p links",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "Source: dc2-spine1_Ethernet6 - Destination: dc2-leaf3b.arista.com_Ethernet1"
   },
   {
@@ -366,9 +418,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet1 - remote: dc2-leaf1a_Ethernet1"
   },
   {
@@ -378,9 +427,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet2 - remote: dc2-leaf1b_Ethernet1"
   },
   {
@@ -390,9 +436,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet3 - remote: dc2-leaf2a_Ethernet1"
   },
   {
@@ -402,9 +445,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet4 - remote: dc2-leaf2b_Ethernet1"
   },
   {
@@ -414,9 +454,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet5 - remote: dc2-leaf3a.arista.com_Ethernet1"
   },
   {
@@ -426,9 +463,6 @@
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "local: Ethernet6 - remote: dc2-leaf3b.arista.com_Ethernet1"
   },
   {
@@ -438,9 +472,6 @@
       "NTP"
     ],
     "description": "Synchronised with NTP server",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
     "custom_field": "NTP"
   },
   {
@@ -449,10 +480,110 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid.",
-    "result": "unset",
-    "messages": [],
-    "error": "None",
-    "custom_field": "None"
+    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifySnmpIPv4Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv4 ACL(s) configured."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifySnmpIPv6Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv6 ACL(s) configured."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifySnmpStatus",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent is enabled."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyEOSVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed EOS version."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyTerminAttrVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed TerminAttr version."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies if there are core dump files in the /var/core directory."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no agent crash reports are present on the device."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyCPUUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the CPU utilization is below 75%."
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyMemoryUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "This test verifies whether the memory utilization is below 75%."
   }
 ]

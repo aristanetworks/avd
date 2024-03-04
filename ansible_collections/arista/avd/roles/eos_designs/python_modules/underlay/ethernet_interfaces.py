@@ -1,11 +1,11 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from ..interface_descriptions import InterfaceDescriptionData
@@ -27,25 +27,27 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         for link in self._underlay_links:
             # common values
+            description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=link["interface"],
+                    link_type=link["type"],
+                    peer=link["peer"],
+                    peer_interface=link["peer_interface"],
+                )
+            )
             ethernet_interface = {
                 "name": link["interface"],
                 "peer": link["peer"],
                 "peer_interface": link["peer_interface"],
                 "peer_type": link["peer_type"],
-                "description": self.shared_utils.interface_descriptions.underlay_ethernet_interface(
-                    InterfaceDescriptionData(
-                        shared_utils=self.shared_utils,
-                        interface=link["interface"],
-                        link_type=link["type"],
-                        peer=link["peer"],
-                        peer_interface=link["peer_interface"],
-                    )
-                ),
+                "description": description,
                 "speed": link.get("speed"),
                 "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
             }
 
             # L3 interface
+            # Used for p2p uplinks as well as main interface for p2p-vrfs.
             if link["type"] == "underlay_p2p":
                 ethernet_interface.update(
                     {
@@ -107,12 +109,23 @@ class EthernetInterfacesMixin(UtilsMixin):
                 if link.get("underlay_multicast") is True:
                     ethernet_interface["pim"] = {"ipv4": {"sparse_mode": True}}
 
+                # Configuring flow tracking on LAN interfaces
+                if self.shared_utils.is_cv_pathfinder_client:
+                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
                 # Structured Config
                 ethernet_interface["struct_cfg"] = link.get("structured_config")
 
             # L2 interface
             elif link["type"] == "underlay_l2":
-                if (channel_group_id := link.get("channel_group_id")) is not None:
+                if self.shared_utils.network_services_l2_as_subint:
+                    # Render L3 subinterfaces for each SVI.
+                    # The peer will just render a regular trunk.
+                    main_interface, ethernet_subinterfaces = self._get_l3_uplink_with_l2_as_subint(link)
+                    ethernet_interface.update(main_interface)
+
+                elif (channel_group_id := link.get("channel_group_id")) is not None:
+                    # Render port-channel member
                     ethernet_interface.update(
                         {
                             "type": "port-channel-member",
@@ -122,15 +135,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                             },
                         }
                     )
+
                 else:
-                    vlans = get(link, "vlans", default=[])
+                    # Render trunk interface
                     ethernet_interface.update(
                         {
                             "type": "switched",
-                            "vlans": list_compress(vlans),
+                            "vlans": link["vlans"],
+                            "mode": "trunk",
                             "native_vlan": link.get("native_vlan"),
                             "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                             "link_tracking_groups": link.get("link_tracking_groups"),
+                            "spanning_tree_portfast": link.get("spanning_tree_portfast"),
                         }
                     )
 
@@ -143,6 +159,103 @@ class EthernetInterfacesMixin(UtilsMixin):
                 context="Ethernet Interfaces defined for underlay",
                 context_keys=["name", "peer", "peer_interface"],
             )
+
+            # Adding subinterfaces for each VRF after the main interface.
+            if link["type"] == "underlay_p2p" and "subinterfaces" in link:
+                for subinterface in get(link, "subinterfaces", default=[]):
+                    description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                        InterfaceDescriptionData(
+                            shared_utils=self.shared_utils,
+                            interface=subinterface["interface"],
+                            link_type=link["type"],
+                            peer=link["peer"],
+                            peer_interface=subinterface["peer_interface"],
+                            vrf=subinterface["vrf"],
+                        )
+                    )
+                    ethernet_subinterface = {
+                        "name": subinterface["interface"],
+                        "peer": link["peer"],
+                        "peer_interface": subinterface["peer_interface"],
+                        "peer_type": link["peer_type"],
+                        "vrf": subinterface["vrf"],
+                        # TODO - for now reusing the encapsulation as it is hardcoded to the VRF ID which is used as
+                        # subinterface name
+                        "description": description,
+                        "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
+                        "type": "l3dot1q",
+                        "encapsulation_dot1q_vlan": subinterface["encapsulation_dot1q_vlan"],
+                        "ipv6_enable": subinterface.get("ipv6_enable"),
+                        "sflow": link.get("sflow"),
+                        "mtu": self.shared_utils.p2p_uplinks_mtu,
+                    }
+                    if subinterface.get("ip_address") is not None:
+                        ethernet_subinterface.update({"ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}"}),
+
+                    # Configuring flow tracking on LAN interfaces
+                    if self.shared_utils.is_cv_pathfinder_client:
+                        ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
+                    ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
+                    append_if_not_duplicate(
+                        list_of_dicts=ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=ethernet_subinterface,
+                        context="Ethernet sub-interfaces defined for underlay",
+                        context_keys=["name", "peer", "peer_interface"],
+                    )
+
+            # Adding subinterfaces for each SVI after the main interface.
+            if link["type"] == "underlay_l2" and self.shared_utils.network_services_l2_as_subint:
+                for ethernet_subinterface in ethernet_subinterfaces:
+                    append_if_not_duplicate(
+                        list_of_dicts=ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=ethernet_subinterface,
+                        context="Ethernet sub-interfaces defined for underlay",
+                        context_keys=["name", "peer", "peer_interface"],
+                    )
+
+        # Support l3_interface as sub interfaces
+        subif_parent_interface_names = set()
+        for l3_interface in self.shared_utils.l3_interfaces:
+            interface_name = l3_interface["name"]
+            if "." in interface_name:
+                # This is a subinterface so we need to ensure that the parent is created
+                parent_interface_name, subif_id = interface_name.split(".", maxsplit=1)
+                subif_parent_interface_names.add(parent_interface_name)
+
+            ethernet_interface = self._get_l3_interface_cfg(l3_interface)
+
+            append_if_not_duplicate(
+                list_of_dicts=ethernet_interfaces,
+                primary_key="name",
+                new_dict=ethernet_interface,
+                context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} l3_interfaces",
+                context_keys=["name", "peer", "peer_interface"],
+            )
+
+        subif_parent_interface_names = subif_parent_interface_names.difference(eth_int["name"] for eth_int in ethernet_interfaces)
+        if subif_parent_interface_names:
+            for interface_name in natural_sort(subif_parent_interface_names):
+                parent_interface = {
+                    "name": interface_name,
+                    "type": "routed",
+                    "peer_type": "l3_interface",
+                    "shutdown": False,
+                }
+
+                # Configuring flow tracking on LAN interfaces
+                if self.shared_utils.is_cv_pathfinder_client:
+                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
+                append_if_not_duplicate(
+                    list_of_dicts=ethernet_interfaces,
+                    primary_key="name",
+                    new_dict=parent_interface,
+                    context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} l3_interfaces",
+                    context_keys=["name", "peer", "peer_interface"],
+                )
 
         if ethernet_interfaces:
             return ethernet_interfaces

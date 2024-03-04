@@ -1,6 +1,4 @@
 hostname: ptp-tests-spine3
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65200'
@@ -69,6 +67,7 @@ management_api_http:
   enable_https: true
 ptp:
   mode: boundary
+  mode_one_step: true
   priority1: 20
   priority2: 3
   domain: 127
@@ -106,3 +105,5 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
+metadata:
+  platform: vEOS-LAB

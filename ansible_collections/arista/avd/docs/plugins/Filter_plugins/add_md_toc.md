@@ -3,7 +3,7 @@
 title: arista.avd.add_md_toc
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -13,28 +13,28 @@ title: arista.avd.add_md_toc
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.add_md_toc` when using this plugin.
 
-Parse the input Markdown and add a Table of Contents between the toc\_markers.
+Parse the input Markdown and add a Table of Contents between the toc_markers.
 
 ## Synopsis
 
-The filter is used in arista.avd.eos\_designs to create a table of contents for Fabric Documentation.
+The filter is used in `arista.avd.eos_designs` to create a table of contents for Fabric Documentation.
 
-The filter is also used in arista.avd.eos\_cli\_config\_gen to create a table of contents for Device Documentation.
+The filter is also used in `arista.avd.eos_cli_config_gen` to create a table of contents for Device Documentation.
 
 ## Requirements
 
 The below requirements are needed on the host that executes this module.
 
-- md\_toc
+- md_toc
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None |  | Markdown to process. |
-| skip_lines | integer | optional | 0 |  | Skip the first x lines when parsing the input Markdown. |
-| toc_levels | integer | optional | 3 |  | How many levels of headings will be included in the TOC. |
-| toc_marker | string | optional | <!-- toc --> |  | TOC will be inserted or updated between two of markers in the input Markdown. |
+| <samp>_input</samp> | string | True | None |  | Markdown to process. |
+| <samp>skip_lines</samp> | integer | optional | 0 |  | Skip the first x lines when parsing the input Markdown. |
+| <samp>toc_levels</samp> | integer | optional | 3 |  | How many levels of headings will be included in the TOC. |
+| <samp>toc_marker</samp> | string | optional | <!-- toc --> |  | TOC will be inserted or updated between two of markers in the input Markdown. |
 
 ## Examples
 
@@ -56,7 +56,7 @@ tasks:
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | string | Markdown with TOC inserted between the toc\_markers. |
+| _value | string | Markdown with TOC inserted between the toc_markers. |
 
 ## Authors
 

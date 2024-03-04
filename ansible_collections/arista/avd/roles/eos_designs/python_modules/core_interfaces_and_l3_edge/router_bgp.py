@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -42,7 +42,7 @@ class RouterBgpMixin(UtilsMixin):
             }
 
             # RFC5549
-            if self.shared_utils.underlay_rfc5549:
+            if self.shared_utils.underlay_rfc5549 and p2p_link.get("routing_protocol") != "ebgp":
                 neighbor_interfaces.append({"name": p2p_link["data"]["interface"], **neighbor})
                 continue
 

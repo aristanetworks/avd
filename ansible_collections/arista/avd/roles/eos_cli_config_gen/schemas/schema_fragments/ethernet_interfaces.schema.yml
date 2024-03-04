@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -276,6 +276,11 @@ keys:
           type: list
           items:
             type: str
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+            - any
+            - rx
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP
@@ -455,6 +460,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                border_router:
+                  type: bool
+                  description: Configure PIM border router. EOS default is false.
                 dr_priority:
                   type: int
                   convert_types:
@@ -463,6 +471,27 @@ keys:
                   max: 429467295
                 sparse_mode:
                   type: bool
+                bfd:
+                  type: bool
+                  description: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
+                bidirectional:
+                  type: bool
+                hello:
+                  type: dict
+                  keys:
+                    count:
+                      type: str
+                      convert_types:
+                        - int
+                        - float
+                      description: Number of missed hellos after which the neighbor expires. Range <1.5-65535>.
+                    interval:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 1
+                      max: 65535
+                      description: PIM hello interval in seconds.
         mac_security:
           type: dict
           keys:
@@ -683,6 +712,8 @@ keys:
                   type: bool
                 storm_control_discards:
                   type: bool
+                  description: |
+                    Discards due to storm-control.
         lldp:
           type: dict
           keys:
@@ -1237,6 +1268,9 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address
+        validate_state:
+          type: bool
+          description: Set to false to disable interface validation by the `eos_validate_state` role
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration

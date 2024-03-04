@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -17,6 +17,8 @@ keys:
           type: list
           items:
             type: str
+            convert_types:
+              - int
         trident_forwarding_table_partition:
           type: str
           description: Only applied when evpn_multicast is true.
@@ -117,6 +119,14 @@ keys:
           - '750'
           - '755'
           - '758'
+        management_interface: Management0
+        feature_support:
+          poe: true
+          queue_monitor_length_notify: false
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+      - platforms:
           - 720DP
           - 722XP
           - 710P
@@ -126,7 +136,6 @@ keys:
         reload_delay:
           mlag: 300
           non_mlag: 330
-
       - platforms:
           - 7280R
           - 7280R2
@@ -157,6 +166,17 @@ keys:
         reload_delay:
           mlag: 900
           non_mlag: 1020
+      - platforms:
+          - 7358X4
+        management_interface: Management1/1
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+        feature_support:
+          queue_monitor_length_notify: false
+          interface_storm_control: true
+          bgp_update_wait_for_convergence: true
+          bgp_update_wait_install: false
       - platforms:
           - 7368X4
         management_interface: Management0

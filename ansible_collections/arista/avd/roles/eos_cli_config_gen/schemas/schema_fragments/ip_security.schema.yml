@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -72,7 +72,7 @@ keys:
                     - aes128gcm128
                     - aes128gcm64
                     - aes256
-                    - aes256gcm256
+                    - aes256gcm128
                     - "null"  # TODO: AVD 5.0.0
             pfs_dh_group:
               type: int
@@ -144,9 +144,20 @@ keys:
               valid_values:
                 - transport
                 - tunnel
+            flow_parallelization_encapsulation_udp:
+              type: bool
+              description: |-
+                Enable flow parallelization.
+                When enabled, multiple cores are used to parallelize the IPsec encryption and decryption processing.
       key_controller:
         type: dict
         keys:
           profile:
             type: str
             description: IPsec profile name to use.
+      hardware_encryption_disabled:
+        type: bool
+        default: False
+        description: |-
+          Disable hardware encryption.
+          An SFE restart is needed for this change to take effect.

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -74,7 +74,7 @@ class ResultsManager:
         ]
 
         # Mapping the ANTA results
-        anta_result = result.get("result", "")
+        anta_result = result.get("result", "unset")
         new_result = RESULTS_MAPPING.get(anta_result, "")
 
         # Create the parsed result dictionary
@@ -84,7 +84,7 @@ class ResultsManager:
             "test_categories": test_categories,
             "test_description": result.get("description", ""),
             # Since AVD tests can have the same description and category, ANTA's custom_field is used to differentiate tests
-            "test": result.get("custom_field", "") if result.get("custom_field") != "None" else result.get("test", ""),
+            "test": result.get("custom_field") or result.get("test", ""),
             "result": new_result,
             "messages": result.get("messages", []),
         }
@@ -144,3 +144,13 @@ class ResultsManager:
             int: The total number of tests.
         """
         return self.total_tests_passed + self.total_tests_failed + self.total_tests_skipped + self.total_tests_not_run
+
+    @property
+    def sorted_category_stats(self) -> dict:
+        """A property that returns the category_stats dictionary sorted by key name.
+
+        Returns
+        -------
+            dict: The sorted category_stats dictionary.
+        """
+        return dict(sorted(self.category_stats.items()))

@@ -1,6 +1,4 @@
 hostname: DC1-LEAF2A
-metadata:
-  platform: 7280R
 is_deployed: true
 router_bgp:
   as: '65102'
@@ -388,6 +386,8 @@ local_users:
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+    cvpadmin@hostmachine.local
+  secondary_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz=
     cvpadmin@hostmachine.local
 vrfs:
 - name: MGMT
@@ -817,6 +817,17 @@ loopback_interfaces:
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.1.10/32
+- name: Loopback101
+  description: Tenant_A_OSPF_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: Tenant_A_OSPF
+  ip_address: 10.255.11.10/32
+- name: Loopback123
+  ip_address: 10.1.53.0/32
+  shutdown: false
+  description: Test-Loopback
+  vrf: Tenant_A_OSPF
+  ospf_area: '1'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -1216,3 +1227,7 @@ vxlan_interface:
 virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
   ip_address: 10.255.1.10
+- name: Tenant_A_OSPF
+  ip_address: 10.255.11.10
+metadata:
+  platform: 7280R

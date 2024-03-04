@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -8,6 +8,16 @@
 {% if flow_tracking.sampled is arista.avd.defined %}
 !
 flow tracking sampled
+{%     if flow_tracking.sampled.encapsulation is arista.avd.defined %}
+{%         set encapsulation = "encapsulation" %}
+{%         if flow_tracking.sampled.encapsulation.ipv4_ipv6 is arista.avd.defined(true) %}
+{%             set  encapsulation =  encapsulation ~ ' ipv4 ipv6' %}
+{%             if flow_tracking.sampled.encapsulation.mpls is arista.avd.defined(true) %}
+{%                 set  encapsulation =  encapsulation ~ ' mpls' %}
+{%             endif %}
+{%         endif %}
+   {{ encapsulation }}
+{%     endif %}
 {%     if flow_tracking.sampled.sample is arista.avd.defined %}
    sample {{ flow_tracking.sampled.sample }}
 {%     endif %}

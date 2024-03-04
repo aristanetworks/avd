@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -76,6 +76,9 @@ interface Vxlan1
 {%     for vrf in vxlan_interface.Vxlan1.vxlan.vrfs | arista.avd.natural_sort('name') if vrf.multicast_group is arista.avd.defined %}
    vxlan vrf {{ vrf.name }} multicast group {{ vrf.multicast_group }}
 {%     endfor %}
+{%     if vxlan_interface.Vxlan1.vxlan.multicast.headend_replication is arista.avd.defined(true) %}
+   vxlan multicast headend-replication
+{%     endif %}
 {%     if  vxlan_interface.Vxlan1.eos_cli is arista.avd.defined %}
    {{ vxlan_interface.Vxlan1.eos_cli | indent(3, false) }}
 {%     endif %}

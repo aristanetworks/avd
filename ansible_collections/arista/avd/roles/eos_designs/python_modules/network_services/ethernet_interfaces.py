@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -35,9 +35,9 @@ class EthernetInterfacesMixin(UtilsMixin):
         subif_parent_interface_names = set()
 
         if self.shared_utils.network_services_l3:
-            for tenant in self._filtered_tenants:
+            for tenant in self.shared_utils.filtered_tenants:
                 for vrf in tenant["vrfs"]:
-                    # The l3_interfaces has already been filtered in _filtered_tenants
+                    # The l3_interfaces has already been filtered in filtered_tenants
                     # to only contain entries with our hostname
                     for l3_interface in vrf["l3_interfaces"]:
                         nodes_length = len(l3_interface["nodes"])
@@ -146,7 +146,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             )
 
         if self.shared_utils.network_services_l1:
-            for tenant in self._filtered_tenants:
+            for tenant in self.shared_utils.filtered_tenants:
                 if "point_to_point_services" not in tenant:
                     continue
 

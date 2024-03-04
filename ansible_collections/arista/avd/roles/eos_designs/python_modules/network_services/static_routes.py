@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -29,9 +29,9 @@ class StaticRoutesMixin(UtilsMixin):
             return None
 
         static_routes = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
-                # Static routes are already filtered inside _filtered_tenants
+                # Static routes are already filtered inside filtered_tenants
                 for static_route in vrf["static_routes"]:
                     static_route["vrf"] = vrf["name"]
                     static_route.pop("nodes", None)

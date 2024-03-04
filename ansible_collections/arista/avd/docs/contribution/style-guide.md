@@ -1,12 +1,12 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
 
 # AVD Coding Style
 
-This page lists guidelines for developing Python code or Jinja2 templates in the AVD context. These rules apply to creating or updating any Python or Jinja2 file available in a `aristanetworks/ansible-avd` repository.
+This page lists guidelines for developing Python code or Jinja2 templates in the AVD context. These rules apply to creating or updating any Python or Jinja2 file available in a `aristanetworks/avd` repository.
 
 ## Python code style
 
@@ -15,17 +15,17 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 Furthermore, the CI Pipeline (& pre-commit) for AVD enforces the following:
 
 - Maximum line length of 160
-- [Black](https://black.readthedocs.io/en/stable/index.html) version 22.8.0
-- [isort](https://pycqa.github.io/isort/) version 5.12.0
+- [Black](https://black.readthedocs.io/en/stable/index.html) version 23.12.1
+- [isort](https://pycqa.github.io/isort/) version 5.13.2
 - [Flake-8](https://flake8.pycqa.org/en/4.0.1/index.html) version 4.0.1
 - [pylint](https://pylint.pycqa.org/en/2.6/) version 2.6.0
 
 Configurations for the above tools can be found in:
 
-- [pyproject.toml](https://github.com/aristanetworks/ansible-avd/blob/devel/pyproject.toml)
-- [.pre-commit-config.yaml](https://github.com/aristanetworks/ansible-avd/blob/devel/.pre-commit-config.yaml)
-- [.flake8](https://github.com/aristanetworks/ansible-avd/blob/devel/.flake8)
-- [pylintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc)
+- [pyproject.toml](https://github.com/aristanetworks/avd/blob/devel/pyproject.toml)
+- [.pre-commit-config.yaml](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml)
+- [.flake8](https://github.com/aristanetworks/avd/blob/devel/.flake8)
+- [pylintrc](https://github.com/aristanetworks/avd/blob/devel/pylintrc)
 
 ## Jinja2 Syntax guidelines
 

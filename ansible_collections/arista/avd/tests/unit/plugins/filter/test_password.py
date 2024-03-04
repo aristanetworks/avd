@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
@@ -15,6 +15,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import (
     bgp_decrypt,
     bgp_encrypt,
+    isis_decrypt,
+    isis_encrypt,
     ospf_message_digest_decrypt,
     ospf_message_digest_encrypt,
     ospf_simple_decrypt,
@@ -179,6 +181,62 @@ def test_ospf_message_digest_decrypt_failure(key, password, hash_algorithm, key_
     """
     with pytest.raises(AristaAvdError):
         ospf_message_digest_decrypt(password, key=key, hash_algorithm=hash_algorithm, key_id=key_id)
+
+
+##########
+# ISIS
+##########
+ISIS_INPUT_EXPECTED = [
+    # password used is "arista"
+    # (key (ISIS Instance name), mode, password, encrypted_password)
+    ("test", "none", "arista", "hY+wzlrNzMvQ9wSWDgN4LQ=="),
+    ("", "none", "arista", "7h4BlaA7By3z4DS4JcikPQ=="),
+    ("", "text", "arista", "VC8nPxnXqNN2KI3k+m0uTw=="),
+    ("test", "text", "arista", "MMoVrmED9QBzNX4VWjknKQ=="),
+    ("", "sha", "arista", "32qevp9HovmOQ7PGBI/Eiw=="),
+    ("test", "sha", "arista", "eEepxKOs2HDJdRVO8JXufg=="),
+    ("", "md5", "arista", "Xe8ywYMTkcpNrvJCQ+qXOg=="),
+    ("test", "md5", "arista", "IL5p7lzM3hEaLFRduo6Ypg=="),
+    ("", "sha-1", "arista", "I8FDDBTK3uNtsb7nFAJa5Q=="),
+    ("test", "sha-1", "arista", "R1kVx0uewexSn4faCIDoRg=="),
+    ("", "sha-224", "arista", "T2GR2UVUI/OBlBbcTYLU3A=="),
+    ("test", "sha-224", "arista", "F0L0RDFPOwjY3V8+ipXygQ=="),
+    ("", "sha-256", "arista", "YMugwMTs91tlqsLV0GmCoQ=="),
+    ("test", "sha-256", "arista", "10tBVHGUNO3i1sD5SvHoPA=="),
+    ("", "sha-384", "arista", "m1SXF59lXikxlPwJZUYO1w=="),
+    ("test", "sha-384", "arista", "RvmoSqQYrlsLJb7/eV3tYQ=="),
+    ("", "sha-512", "arista", "vC1eGC70oNIHly729wfi2g=="),
+    ("test", "sha-512", "arista", "dGP9ycyN4QCHv9wfPVkzbg=="),
+]
+
+ISIS_INVALID_INPUT_DECRYPT = [
+    pytest.param("test", "none", "3QGcqpU2YTwKh2jVQ4Vj/A==", id="Wrong password"),
+]
+
+
+@pytest.mark.parametrize("key, mode, password, encrypted_password", ISIS_INPUT_EXPECTED)
+def test_isis_encrypt(key, mode, password, encrypted_password):
+    """
+    Test isis_encrypt
+    """
+    assert isis_encrypt(password, key=key, mode=mode) == encrypted_password
+
+
+@pytest.mark.parametrize("key, mode, password, encrypted_password", ISIS_INPUT_EXPECTED)
+def test_isis_decrypt_success(key, mode, password, encrypted_password):
+    """
+    Test isis_decrypt successful cases
+    """
+    assert isis_decrypt(encrypted_password, key=key, mode=mode) == password
+
+
+@pytest.mark.parametrize("key, mode, password", ISIS_INVALID_INPUT_DECRYPT)
+def test_isis_decrypt_failure(key, mode, password):
+    """
+    Test isis_decrypt failure cases
+    """
+    with pytest.raises(AristaAvdError):
+        isis_decrypt(password, key=key, mode=mode)
 
 
 ##########

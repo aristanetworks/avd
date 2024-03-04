@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -24,7 +24,11 @@ class OverlayMixin:
 
     @cached_property
     def vtep_loopback(self: SharedUtils) -> str:
-        return get(self.switch_data_combined, "vtep_loopback", default="Loopback1")
+        """
+        The default is Loopback1 except for WAN devices where the default is Dps1.
+        """
+        default_vtep_loopback = "Dps1" if self.is_wan_router else "Loopback1"
+        return get(self.switch_data_combined, "vtep_loopback", default=default_vtep_loopback)
 
     @cached_property
     def evpn_role(self: SharedUtils) -> str | None:
@@ -131,6 +135,33 @@ class OverlayMixin:
         return get(self.hostvars, "fabric_evpn_encapsulation", default=get(self.node_type_key_data, "default_evpn_encapsulation", default="vxlan"))
 
     @cached_property
+    def evpn_soo(self: SharedUtils) -> str:
+        """
+        Site-Of-Origin used as BGP extended community.
+        - For regular VTEPs this is <vtep_ip>:1
+        - For WAN routers this is <router_id_of_primary_HA_router>:<site_id or 0>
+        - Otherwise this is <router_id>:1
+
+        TODO: Reconsider if suffix should just be :1 for all WAN routers.
+        """
+        if self.is_wan_router:
+            # for Pathfinder, no HA, no Site ID
+            if not self.is_cv_pathfinder_client:
+                return f"{self.router_id}:0"
+            if not self.wan_ha:
+                return f"{self.router_id}:{self.wan_site['id']}"
+            if self.is_first_ha_peer:
+                return f"{self.router_id}:{self.wan_site['id']}"
+            else:
+                peer_fact = self.get_peer_facts(self.wan_ha_peer, required=True)
+                return f"{peer_fact['router_id']}:{self.wan_site['id']}"
+
+        if self.overlay_vtep:
+            return f"{self.vtep_ip}:1"
+
+        return f"{self.router_id}:1"
+
+    @cached_property
     def overlay_evpn(self: SharedUtils) -> bool:
         # Set overlay_evpn to enable EVPN on the node
         return (
@@ -163,7 +194,7 @@ class OverlayMixin:
             self.overlay_routing_protocol in ["ebgp", "ibgp", "her", "cvx"]
             and (self.network_services_l2 or self.network_services_l3)
             and self.underlay_router
-            and self.uplink_type == "p2p"
+            and self.uplink_type in ["p2p", "p2p-vrfs", "lan"]
             and self.vtep
         )
 

@@ -6,6 +6,15 @@ router_isis:
   is_type: level-2
   log_adjacency_changes: true
   mpls_ldp_sync_default: true
+  spf_interval:
+    interval: 250
+    wait_interval: 10
+  graceful_restart:
+    enabled: true
+    restart_hold_time: 10
+    t2:
+      level_1_wait_time: 10
+      level_2_wait_time: 20
   timers:
     local_convergence:
       protected_prefixes: true
@@ -29,6 +38,7 @@ router_isis:
       route_map: RM-OSPF-NSSA_EXT-TO-ISIS
   address_family_ipv4:
     maximum_paths: 4
+    bfd_all_interfaces: true
     fast_reroute_ti_lfa:
       mode: link-protection
       level: level-2
@@ -40,6 +50,7 @@ router_isis:
       rcf: lu_2_sr_pfx()
   address_family_ipv6:
     maximum_paths: 4
+    bfd_all_interfaces: true
     fast_reroute_ti_lfa:
       mode: node-protection
       srlg:
@@ -51,6 +62,52 @@ router_isis:
         index: 211
       - prefix: 2001:cafe:155::/64
         index: 6211
+  set_overload_bit:
+    on_startup:
+      wait_for_bgp:
+        enabled: true
+        timeout: 10
+  authentication:
+    both:
+      key_ids:
+        - id: 2
+          algorithm: sha-512
+          key_type: 0
+          key: password
+          rfc_5310: false
+    level_1:
+      key_type: 0
+      key: password
+      mode: md5
+      rx_disabled: true
+      key_ids:
+        - id: 1
+          algorithm: sha-1
+          key_type: 0
+          key: password
+          rfc_5310: true
+        - id: 2
+          algorithm: sha-1
+          key_type: 0
+          key: password
+          rfc_5310: true
+    level_2:
+      key_type: 0
+      key: password
+      mode: sha
+      sha:
+        key_id: 2
+      key_ids:
+        - id: 1
+          algorithm: sha-1
+          key_type: 0
+          key: password
+          rfc_5310: true
+        - id: 2
+          algorithm: sha-1
+          key_type: 0
+          key: password
+          rfc_5310: true
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:

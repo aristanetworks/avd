@@ -424,7 +424,7 @@
                   },
                   "default": {
                     "type": "string",
-                    "description": "Command authorization method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group tacacs+ group MYGROUP local\"",
+                    "description": "Command authorization method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group tacacs+ group MYGROUP local\"\n",
                     "title": "Default"
                   }
                 },
@@ -550,7 +550,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"deny ip any any\"",
+                  "description": "Action as string\nExample: \"deny ip any any\"\n",
                   "title": "Action"
                 }
               },
@@ -706,7 +706,7 @@
     },
     "aliases": {
       "type": "string",
-      "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
+      "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```\n",
       "title": "Aliases"
     },
     "application_traffic_recognition": {
@@ -1186,7 +1186,7 @@
         "quiet"
       ],
       "default": "debug",
-      "description": "Conversion Mode for AVD input data conversion.\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages",
+      "description": "Conversion Mode for AVD input data conversion.\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages\n",
       "title": "AVD Data Conversion Mode"
     },
     "avd_data_validation_mode": {
@@ -1199,7 +1199,7 @@
         "debug"
       ],
       "default": "warning",
-      "description": "Validation Mode for AVD input data validation.\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
+      "description": "Validation Mode for AVD input data validation.\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n",
       "title": "AVD Data Validation Mode"
     },
     "banners": {
@@ -1431,7 +1431,7 @@
           },
           "action": {
             "type": "string",
-            "description": "Action as string\nExample: \"permit GSHUT 65123:123\"",
+            "description": "Action as string\nExample: \"permit GSHUT 65123:123\"\n",
             "title": "Action"
           }
         },
@@ -1644,7 +1644,7 @@
               },
               "cvsourceintf": {
                 "type": "string",
-                "description": "Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0\n",
+                "description": "Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0.\nThe interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.\n",
                 "title": "Cvsourceintf"
               },
               "cvvrf": {
@@ -1725,7 +1725,7 @@
         },
         "cvsourceintf": {
           "type": "string",
-          "description": "Set source interface in case of in-band managament\n",
+          "description": "Set source interface in case of in-band managament.\nThe interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.\n",
           "title": "Cvsourceintf"
         },
         "cvvrf": {
@@ -1800,7 +1800,7 @@
         },
         "cvcompression": {
           "type": "string",
-          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\nThis key is deprecated. Support will be removed in AVD version v5.0.0.",
+          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\n\nThis key is deprecated. Support will be removed in AVD version v5.0.0.",
           "deprecated": true,
           "title": "Cvcompression"
         }
@@ -1870,6 +1870,192 @@
       },
       "title": "DHCP Relay"
     },
+    "dhcp_servers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "type": "boolean",
+            "title": "Disabled"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF in which to configure the DHCP server, use `default` to indicate default VRF.",
+            "title": "VRF"
+          },
+          "dns_domain_name_ipv4": {
+            "type": "string",
+            "title": "DNS Domain Name IPv4"
+          },
+          "dns_domain_name_ipv6": {
+            "type": "string",
+            "title": "DNS Domain Name IPv6"
+          },
+          "ipv4_vendor_options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "vendor_id": {
+                  "type": "string",
+                  "title": "Vendor ID"
+                },
+                "sub_options": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 254,
+                        "title": "Code"
+                      },
+                      "string": {
+                        "type": "string",
+                        "description": "String value for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
+                        "title": "String"
+                      },
+                      "ipv4_address": {
+                        "type": "string",
+                        "description": "IPv4 address value for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
+                        "title": "IPv4 Address"
+                      },
+                      "array_ipv4_address": {
+                        "type": "array",
+                        "description": "Array of IPv4 addresses for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Array IPv4 Address"
+                      }
+                    },
+                    "required": [
+                      "code"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Sub Options"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "vendor_id"
+              ]
+            },
+            "title": "IPv4 Vendor Options"
+          },
+          "subnets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "subnet": {
+                  "type": "string",
+                  "title": "Subnet"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "default_gateway": {
+                  "type": "string",
+                  "title": "Default Gateway"
+                },
+                "dns_servers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "DNS Servers"
+                },
+                "ranges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string",
+                        "title": "Start"
+                      },
+                      "end": {
+                        "type": "string",
+                        "title": "End"
+                      }
+                    },
+                    "required": [
+                      "start",
+                      "end"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Ranges"
+                },
+                "lease_time": {
+                  "type": "object",
+                  "properties": {
+                    "days": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 2000,
+                      "title": "Days"
+                    },
+                    "hours": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 23,
+                      "title": "Hours"
+                    },
+                    "minutes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 59,
+                      "title": "Minutes"
+                    }
+                  },
+                  "required": [
+                    "days",
+                    "hours",
+                    "minutes"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Lease Time"
+                }
+              },
+              "required": [
+                "subnet"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Subnets"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "vrf"
+        ]
+      },
+      "title": "DHCP Servers"
+    },
     "dns_domain": {
       "type": "string",
       "description": "Domain Name",
@@ -1895,6 +2081,10 @@
         "protocol_lldp_bypass": {
           "type": "boolean",
           "title": "Protocol LLDP Bypass"
+        },
+        "protocol_bpdu_bypass": {
+          "type": "boolean",
+          "title": "Protocol Bpdu Bypass"
         },
         "dynamic_authorization": {
           "type": "boolean",
@@ -2108,7 +2298,7 @@
         },
         "key": {
           "type": "string",
-          "description": "Must be the hash of the password using the specified algorithm.\nBy default EOS salts the password, so the simplest is to generate the hash on an EOS device.",
+          "description": "Must be the hash of the password using the specified algorithm.\nBy default EOS salts the password, so the simplest is to generate the hash on an EOS device.\n",
           "title": "Key"
         }
       },
@@ -2695,6 +2885,14 @@
               "type": "string"
             },
             "title": "IP Address Secondaries"
+          },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
           },
           "dhcp_client_accept_default_route": {
             "type": "boolean",
@@ -3287,6 +3485,11 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
+                  "border_router": {
+                    "type": "boolean",
+                    "description": "Configure PIM border router. EOS default is false.",
+                    "title": "Border Router"
+                  },
                   "dr_priority": {
                     "type": "integer",
                     "minimum": 0,
@@ -3296,6 +3499,37 @@
                   "sparse_mode": {
                     "type": "boolean",
                     "title": "Sparse Mode"
+                  },
+                  "bfd": {
+                    "type": "boolean",
+                    "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                    "title": "BFD"
+                  },
+                  "bidirectional": {
+                    "type": "boolean",
+                    "title": "Bidirectional"
+                  },
+                  "hello": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "string",
+                        "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                        "title": "Count"
+                      },
+                      "interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "PIM hello interval in seconds.",
+                        "title": "Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Hello"
                   }
                 },
                 "additionalProperties": false,
@@ -3736,6 +3970,7 @@
                   },
                   "storm_control_discards": {
                     "type": "boolean",
+                    "description": "Discards due to storm-control.\n",
                     "title": "Storm Control Discards"
                   }
                 },
@@ -4803,6 +5038,11 @@
             },
             "title": "VRRP IDs"
           },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Set to false to disable interface validation by the `eos_validate_state` role",
+            "title": "Validate State"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -4867,7 +5107,7 @@
           "asynchronous": {
             "type": "boolean",
             "default": false,
-            "description": "Set the action to be non-blocking.",
+            "description": "Set the action to be non-blocking.\n",
             "title": "Asynchronous"
           }
         },
@@ -4901,6 +5141,24 @@
         "sampled": {
           "type": "object",
           "properties": {
+            "encapsulation": {
+              "type": "object",
+              "properties": {
+                "ipv4_ipv6": {
+                  "type": "boolean",
+                  "title": "IPv4 IPv6"
+                },
+                "mpls": {
+                  "type": "boolean",
+                  "title": "MPLS"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Encapsulation"
+            },
             "sample": {
               "type": "integer",
               "minimum": 1,
@@ -5372,7 +5630,7 @@
     "generate_default_config": {
       "type": "boolean",
       "default": true,
-      "description": "The `generate_default_config` knob allows to omit default EOS configuration.\nThis can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.\n\nThe following commands will be omitted when `generate_default_config` is set to `false`:\n\n- RANCID Content Type\n- Hostname\n- Default configuration for `aaa`\n- Default configuration for `enable password`\n- Transceiver qsfp default mode\n- End of configuration delimiter",
+      "description": "The `generate_default_config` knob allows to omit default EOS configuration.\nThis can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.\n\nThe following commands will be omitted when `generate_default_config` is set to `false`:\n\n- RANCID Content Type\n- Hostname\n- Default configuration for `aaa`\n- Default configuration for `enable password`\n- Transceiver qsfp default mode\n- End of configuration delimiter\n",
       "title": "Generate Default Config"
     },
     "generate_device_documentation": {
@@ -5623,7 +5881,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "description": "EOS CLI interface command\nExample: \"switchport mode access\""
+              "description": "EOS CLI interface command\nExample: \"switchport mode access\"\n"
             },
             "title": "Commands"
           }
@@ -5867,7 +6125,7 @@
                 },
                 "regexp": {
                   "type": "string",
-                  "description": "Regular Expression\nIf defined, a regex community-list will be configured",
+                  "description": "Regular Expression\nIf defined, a regex community-list will be configured\n",
                   "title": "RegExp"
                 }
               },
@@ -6020,7 +6278,7 @@
                 },
                 "extcommunities": {
                   "type": "string",
-                  "description": "Communities as string\nExample: \"65000:65000\"",
+                  "description": "Communities as string\nExample: \"65000:65000\"\n",
                   "title": "Extcommunities"
                 }
               },
@@ -6319,7 +6577,7 @@
               },
               "proxy": {
                 "type": "boolean",
-                "description": "Global proxy settings should be enabled before enabling per-vlan",
+                "description": "Global proxy settings should be enabled before enabling per-vlan\n",
                 "title": "Proxy"
               }
             },
@@ -7070,7 +7328,7 @@
                       "aes128gcm128",
                       "aes128gcm64",
                       "aes256",
-                      "aes256gcm256",
+                      "aes256gcm128",
                       "null"
                     ],
                     "title": "Encryption"
@@ -7193,6 +7451,11 @@
                   "tunnel"
                 ],
                 "title": "Mode"
+              },
+              "flow_parallelization_encapsulation_udp": {
+                "type": "boolean",
+                "description": "Enable flow parallelization.\nWhen enabled, multiple cores are used to parallelize the IPsec encryption and decryption processing.",
+                "title": "Flow Parallelization Encapsulation UDP"
               }
             },
             "additionalProperties": false,
@@ -7219,6 +7482,12 @@
             "^_.+$": {}
           },
           "title": "Key Controller"
+        },
+        "hardware_encryption_disabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable hardware encryption.\nAn SFE restart is needed for this change to take effect.",
+          "title": "Hardware Encryption Disabled"
         }
       },
       "additionalProperties": false,
@@ -7304,7 +7573,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"deny ipv6 any any\"",
+                  "description": "Action as string\nExample: \"deny ipv6 any any\"\n",
                   "title": "Action"
                 }
               },
@@ -7401,7 +7670,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"permit 1b11:3a00:22b0:0082::/64 eq 128\"",
+                  "description": "Action as string\nExample: \"permit 1b11:3a00:22b0:0082::/64 eq 128\"\n",
                   "title": "Action"
                 }
               },
@@ -7454,7 +7723,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"deny ipv6 any any\"",
+                  "description": "Action as string\nExample: \"deny ipv6 any any\"\n",
                   "title": "Action"
                 }
               },
@@ -7849,6 +8118,10 @@
           "ssh_key": {
             "type": "string",
             "title": "SSH Key"
+          },
+          "secondary_ssh_key": {
+            "type": "string",
+            "title": "Secondary SSH Key"
           },
           "shell": {
             "type": "string",
@@ -8810,7 +9083,7 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "description": "Name of Interface Group"
+                      "description": "Name of Interface Group\n"
                     },
                     "title": "Interface Groups"
                   }
@@ -9073,7 +9346,7 @@
         },
         "octa": {
           "type": "object",
-          "description": "These should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>provider</samp> instead.",
+          "description": "These should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>provider</samp> instead.",
           "deprecated": true,
           "title": "Octa"
         }
@@ -10013,11 +10286,397 @@
     },
     "metadata": {
       "type": "object",
-      "description": "Key only used for documentation or validation purposes",
+      "description": "The data under `metadata` is used for documentation, validation or integration purposes.\nIt will not affect the generated EOS configuration.",
       "properties": {
         "platform": {
           "type": "string",
           "title": "Platform"
+        },
+        "system_mac_address": {
+          "type": "string",
+          "title": "System MAC Address"
+        },
+        "cv_tags": {
+          "type": "object",
+          "properties": {
+            "device_tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "value": {
+                    "type": "string",
+                    "title": "Value"
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Device Tags"
+            },
+            "interface_tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "interface": {
+                    "type": "string",
+                    "title": "Interface"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "value": {
+                          "type": "string",
+                          "title": "Value"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Tags"
+                  }
+                },
+                "required": [
+                  "interface"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Interface Tags"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Cv Tags"
+        },
+        "cv_pathfinder": {
+          "type": "object",
+          "description": "Metadata used for CV Pathfinder visualization on CloudVision",
+          "properties": {
+            "role": {
+              "type": "string",
+              "title": "Role"
+            },
+            "region": {
+              "type": "string",
+              "title": "Region"
+            },
+            "zone": {
+              "type": "string",
+              "title": "Zone"
+            },
+            "site": {
+              "type": "string",
+              "title": "Site"
+            },
+            "vtep_ip": {
+              "type": "string",
+              "title": "Vtep IP"
+            },
+            "ssl_profile": {
+              "type": "string",
+              "title": "SSL Profile"
+            },
+            "pathfinders": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "vtep_ip": {
+                    "type": "string",
+                    "title": "Vtep IP"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Pathfinders"
+            },
+            "interfaces": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "carrier": {
+                    "type": "string",
+                    "title": "Carrier"
+                  },
+                  "circuit_id": {
+                    "type": "string",
+                    "title": "Circuit ID"
+                  },
+                  "pathgroup": {
+                    "type": "string",
+                    "title": "Pathgroup"
+                  },
+                  "public_ip": {
+                    "type": "string",
+                    "title": "Public IP"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Interfaces"
+            },
+            "pathgroups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "carriers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Carriers"
+                  },
+                  "imported_carriers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Imported Carriers"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Pathgroups"
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "title": "ID"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "zones": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "title": "ID"
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "sites": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "title": "ID"
+                              },
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "location": {
+                                "type": "object",
+                                "properties": {
+                                  "address": {
+                                    "type": "string",
+                                    "title": "Address"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Location"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Sites"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Zones"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Regions"
+            },
+            "vrfs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "vni": {
+                    "type": "integer",
+                    "title": "Vni"
+                  },
+                  "avts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "constraints": {
+                          "type": "object",
+                          "properties": {
+                            "jitter": {
+                              "type": "integer",
+                              "title": "Jitter"
+                            },
+                            "latency": {
+                              "type": "integer",
+                              "title": "Latency"
+                            },
+                            "lossrate": {
+                              "type": "string",
+                              "title": "Lossrate"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Constraints"
+                        },
+                        "description": {
+                          "type": "string",
+                          "title": "Description"
+                        },
+                        "id": {
+                          "type": "integer",
+                          "title": "ID"
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "pathgroups": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "preference": {
+                                "type": "string",
+                                "title": "Preference"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Pathgroups"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Avts"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "VRFs"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Cv Pathfinder"
         }
       },
       "additionalProperties": false,
@@ -10272,6 +10931,51 @@
         "^_.+$": {}
       },
       "title": "Monitor Connectivity"
+    },
+    "monitor_layer1": {
+      "type": "object",
+      "description": "Enable SYSLOG messages on transceiver SMBus communication failures.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable monitor layer1",
+          "title": "Enabled"
+        },
+        "logging_mac_fault": {
+          "type": "boolean",
+          "description": "Enable MAC fault logging.",
+          "title": "Logging MAC Fault"
+        },
+        "logging_transceiver": {
+          "type": "object",
+          "description": "Configure transceiver monitoring logging.",
+          "properties": {
+            "dom": {
+              "type": "boolean",
+              "description": "Enable transceiver Digital Optical Monitoring (DOM) logging.",
+              "title": "Dom"
+            },
+            "communication": {
+              "type": "boolean",
+              "description": "Enable transceiver SMBus fail and reset logging.",
+              "title": "Communication"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Logging Transceiver"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Monitor Layer1"
     },
     "monitor_sessions": {
       "type": "array",
@@ -10744,7 +11448,7 @@
                 },
                 "match": {
                   "type": "string",
-                  "description": "Match as string\nExample: \"as-range 1-100 result accept\"",
+                  "description": "Match as string\nExample: \"as-range 1-100 result accept\"\n",
                   "title": "Match"
                 }
               },
@@ -11308,6 +12012,11 @@
                   "link_status": {
                     "type": "boolean",
                     "title": "Link Status"
+                  },
+                  "storm_control_discards": {
+                    "type": "boolean",
+                    "description": "Discards due to storm-control.\n",
+                    "title": "Storm Control Discards"
                   }
                 },
                 "additionalProperties": false,
@@ -11647,6 +12356,29 @@
                 "minimum": 3,
                 "maximum": 50,
                 "title": "Multiplier"
+              },
+              "neighbor": {
+                "type": "string",
+                "description": "IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch.",
+                "title": "Neighbor"
+              },
+              "per_link": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "rfc_7130": {
+                    "type": "boolean",
+                    "title": "Rfc 7130"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Per Link"
               }
             },
             "additionalProperties": false,
@@ -12202,6 +12934,14 @@
             "description": "IPv4 address/mask",
             "title": "IP Address"
           },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
+          },
           "ip_nat": {
             "type": "object",
             "properties": {
@@ -12563,6 +13303,11 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
+                  "border_router": {
+                    "type": "boolean",
+                    "description": "Configure PIM border router. EOS default is false.",
+                    "title": "Border Router"
+                  },
                   "dr_priority": {
                     "type": "integer",
                     "minimum": 0,
@@ -12572,6 +13317,37 @@
                   "sparse_mode": {
                     "type": "boolean",
                     "title": "Sparse Mode"
+                  },
+                  "bfd": {
+                    "type": "boolean",
+                    "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                    "title": "BFD"
+                  },
+                  "bidirectional": {
+                    "type": "boolean",
+                    "title": "Bidirectional"
+                  },
+                  "hello": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "string",
+                        "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                        "title": "Count"
+                      },
+                      "interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "PIM hello interval in seconds.",
+                        "title": "Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Hello"
                   }
                 },
                 "additionalProperties": false,
@@ -12736,6 +13512,11 @@
             },
             "title": "Sflow"
           },
+          "validate_state": {
+            "type": "boolean",
+            "description": "Set to false to disable interface validation by the `eos_validate_state` role",
+            "title": "Validate State"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
@@ -12774,7 +13555,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"permit 10.255.0.0/27 eq 32\"",
+                  "description": "Action as string\nExample: \"permit 10.255.0.0/27 eq 32\"\n",
                   "title": "Action"
                 }
               },
@@ -12841,7 +13622,7 @@
             },
             "override_action_drop": {
               "type": "boolean",
-              "description": "Override configured action on stuck queue to drop.",
+              "description": "Override configured action on stuck queue to drop.\n",
               "title": "Override Action Drop"
             }
           },
@@ -12869,9 +13650,17 @@
           "type": "string",
           "enum": [
             "boundary",
-            "transparent"
+            "disabled",
+            "e2etransparent",
+            "gptp",
+            "ordinarymaster",
+            "p2ptransparent"
           ],
           "title": "Mode"
+        },
+        "mode_one_step": {
+          "type": "boolean",
+          "title": "Mode One Step"
         },
         "forward_unicast": {
           "type": "boolean",
@@ -13832,7 +14621,7 @@
                     },
                     "no_drop": {
                       "type": "boolean",
-                      "description": "Enable Priority Flow Control frames on this queue",
+                      "description": "Enable Priority Flow Control frames on this queue\n",
                       "title": "No Drop"
                     }
                   },
@@ -13935,6 +14724,11 @@
             "^_.+$": {}
           },
           "title": "CPU"
+        },
+        "tx_latency": {
+          "type": "boolean",
+          "description": "Enable tx-latency mode",
+          "title": "TX Latency"
         }
       },
       "required": [
@@ -14388,7 +15182,7 @@
         },
         "policies": {
           "type": "array",
-          "description": "A sequence of application profiles mapped to some virtual topologies.",
+          "description": "A sequence of application profiles mapped to some virtual topologies.\n\nWhen `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index> in the list.",
           "items": {
             "type": "object",
             "properties": {
@@ -14515,6 +15309,11 @@
           "description": "Rate in milliseconds",
           "title": "Interval"
         },
+        "local_address": {
+          "type": "string",
+          "description": "Configure BFD local IP/IPv6 address",
+          "title": "Local Address"
+        },
         "min_rx": {
           "type": "integer",
           "description": "Rate in milliseconds",
@@ -14551,6 +15350,17 @@
             "^_.+$": {}
           },
           "title": "Multihop"
+        },
+        "session_snapshot_interval": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600,
+          "description": "Interval in seconds.\nIntervals below 10 are considered \"dangerous\" on EOS and must have `session_snapshot_interval_dangerous` set to `true`.",
+          "title": "Session Snapshot Interval"
+        },
+        "session_snapshot_interval_dangerous": {
+          "type": "boolean",
+          "title": "Session Snapshot Interval Dangerous"
         },
         "sbfd": {
           "type": "object",
@@ -14643,8 +15453,17 @@
       "properties": {
         "as": {
           "type": "string",
-          "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+          "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
           "title": "As"
+        },
+        "as_notation": {
+          "title": "ASN Notation",
+          "type": "string",
+          "description": "BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation \"<1-65535>.<0-65535>\". This flag indicates which mode is preferred - asplain is the default.",
+          "enum": [
+            "asdot",
+            "asplain"
+          ]
         },
         "router_id": {
           "type": "string",
@@ -14886,7 +15705,7 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               }
             },
@@ -14914,12 +15733,12 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               },
               "local_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Local As"
               },
               "description": {
@@ -15013,7 +15832,44 @@
               },
               "bfd": {
                 "type": "boolean",
+                "description": "Enable BFD.",
                 "title": "BFD"
+              },
+              "bfd_timers": {
+                "type": "object",
+                "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Interval in milliseconds.",
+                    "title": "Interval"
+                  },
+                  "min_rx": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Rate in milliseconds.",
+                    "title": "Min RX"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "minimum": 3,
+                    "maximum": 50,
+                    "title": "Multiplier"
+                  }
+                },
+                "required": [
+                  "interval",
+                  "min_rx",
+                  "multiplier"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BFD Timers"
               },
               "ebgp_multihop": {
                 "type": "integer",
@@ -15166,6 +16022,13 @@
               "session_tracker": {
                 "type": "string",
                 "title": "Session Tracker"
+              },
+              "ttl_maximum_hops": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 254,
+                "description": "Maximum number of hops.",
+                "title": "TTL Maximum Hops"
               }
             },
             "additionalProperties": false,
@@ -15193,12 +16056,12 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               },
               "local_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Local As"
               },
               "as_path": {
@@ -15254,7 +16117,44 @@
               },
               "bfd": {
                 "type": "boolean",
+                "description": "Enable BFD.",
                 "title": "BFD"
+              },
+              "bfd_timers": {
+                "type": "object",
+                "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Interval in milliseconds.",
+                    "title": "Interval"
+                  },
+                  "min_rx": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Rate in milliseconds.",
+                    "title": "Min RX"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "minimum": 3,
+                    "maximum": 50,
+                    "title": "Multiplier"
+                  }
+                },
+                "required": [
+                  "interval",
+                  "min_rx",
+                  "multiplier"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BFD Timers"
               },
               "weight": {
                 "type": "integer",
@@ -15433,6 +16333,13 @@
               "session_tracker": {
                 "type": "string",
                 "title": "Session Tracker"
+              },
+              "ttl_maximum_hops": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 254,
+                "description": "Maximum number of hops.",
+                "title": "TTL Maximum Hops"
               }
             },
             "additionalProperties": false,
@@ -15457,6 +16364,7 @@
               },
               "remote_as": {
                 "type": "string",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                 "title": "Remote As"
               },
               "peer": {
@@ -15506,6 +16414,16 @@
               "as_set": {
                 "type": "boolean",
                 "title": "As Set"
+              },
+              "advertise_map": {
+                "type": "string",
+                "description": "Route-map name",
+                "title": "Advertise Map"
+              },
+              "supress_map": {
+                "type": "string",
+                "description": "Route-map name",
+                "title": "Supress Map"
               },
               "summary_only": {
                 "type": "boolean",
@@ -16059,6 +16977,64 @@
               },
               "title": "Neighbor Default"
             },
+            "next_hop_mpls_resolution_ribs": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 3,
+              "description": "Specify the RIBs used to resolve MPLS next-hops. The order of this list determines the order of RIB lookups.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "rib_type": {
+                    "type": "string",
+                    "enum": [
+                      "system-connected",
+                      "tunnel-rib-colored",
+                      "tunnel-rib"
+                    ],
+                    "description": "Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use.",
+                    "title": "Rib Type"
+                  },
+                  "rib_name": {
+                    "type": "string",
+                    "description": "The name of the tunnel-rib to use when using 'tunnel-rib' type.",
+                    "title": "Rib Name"
+                  }
+                },
+                "required": [
+                  "rib_type"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Next Hop MPLS Resolution Ribs"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
             "peer_groups": {
               "type": "array",
               "items": {
@@ -16214,6 +17190,14 @@
                     "discard"
                   ],
                   "title": "Import Match Failure Action"
+                },
+                "import_ethernet_segment_ip_mass_withdraw": {
+                  "type": "boolean",
+                  "title": "Import Ethernet Segment IP Mass Withdraw"
+                },
+                "export_ethernet_segment_ip_mass_withdraw": {
+                  "type": "boolean",
+                  "title": "Export Ethernet Segment IP Mass Withdraw"
                 }
               },
               "additionalProperties": false,
@@ -18085,7 +19069,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Remote As"
                     }
                   },
@@ -18112,7 +19096,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Remote As"
                     },
                     "password": {
@@ -18172,7 +19156,7 @@
                     },
                     "local_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Local As"
                     },
                     "as_path": {
@@ -18221,7 +19205,44 @@
                     },
                     "bfd": {
                       "type": "boolean",
+                      "description": "Enable BFD.",
                       "title": "BFD"
+                    },
+                    "bfd_timers": {
+                      "type": "object",
+                      "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                      "properties": {
+                        "interval": {
+                          "type": "integer",
+                          "minimum": 50,
+                          "maximum": 60000,
+                          "description": "Interval in milliseconds.",
+                          "title": "Interval"
+                        },
+                        "min_rx": {
+                          "type": "integer",
+                          "minimum": 50,
+                          "maximum": 60000,
+                          "description": "Rate in milliseconds.",
+                          "title": "Min RX"
+                        },
+                        "multiplier": {
+                          "type": "integer",
+                          "minimum": 3,
+                          "maximum": 50,
+                          "title": "Multiplier"
+                        }
+                      },
+                      "required": [
+                        "interval",
+                        "min_rx",
+                        "multiplier"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "BFD Timers"
                     },
                     "timers": {
                       "type": "string",
@@ -18356,7 +19377,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
                       "title": "Remote As"
                     },
                     "peer_group": {
@@ -18429,6 +19450,16 @@
                     "as_set": {
                       "type": "boolean",
                       "title": "As Set"
+                    },
+                    "advertise_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Advertise Map"
+                    },
+                    "supress_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Supress Map"
                     },
                     "summary_only": {
                       "type": "boolean",
@@ -19544,9 +20575,49 @@
       "type": "object",
       "title": "Router IGMP Configuration",
       "properties": {
+        "host_proxy_match_mroute": {
+          "type": "string",
+          "description": "Specify conditions for sending IGMP joins for host-proxy\n'iif' will enable igmp host-proxy to work in iif aware\n'all' will enable igmp host-proxy to work in iif unaware mode (EOS default)\n",
+          "enum": [
+            "all",
+            "iif"
+          ],
+          "title": "Host Proxy Match Mroute"
+        },
         "ssm_aware": {
           "type": "boolean",
           "title": "Ssm Aware"
+        },
+        "vrfs": {
+          "type": "array",
+          "description": "Configure IGMP in a VRF.\nVRF 'default' is not supported in EOS, please see keys directly under 'router_igmp'.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name",
+                "title": "Name"
+              },
+              "host_proxy_match_mroute": {
+                "type": "string",
+                "description": "Specify conditions for sending IGMP joins for host-proxy\n'iif' will enable igmp host-proxy to work in iif aware\n'all' will enable igmp host-proxy to work in iif unaware mode (EOS default)\n",
+                "enum": [
+                  "all",
+                  "iif"
+                ],
+                "title": "Host Proxy Match Mroute"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
         }
       },
       "additionalProperties": false,
@@ -19618,6 +20689,511 @@
             "^_.+$": {}
           },
           "title": "Timers"
+        },
+        "set_overload_bit": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "on_startup": {
+              "type": "object",
+              "properties": {
+                "delay": {
+                  "type": "integer",
+                  "description": "Number of seconds.",
+                  "title": "Delay"
+                },
+                "wait_for_bgp": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "timeout": {
+                      "type": "integer",
+                      "description": "Number of seconds.",
+                      "title": "Timeout"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Wait For BGP"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "On Startup"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Set Overload Bit"
+        },
+        "authentication": {
+          "type": "object",
+          "properties": {
+            "both": {
+              "type": "object",
+              "description": "Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.",
+              "properties": {
+                "key_type": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "7",
+                    "8a"
+                  ],
+                  "description": "Configure authentication key type. Default key_id is 0.",
+                  "title": "Key Type"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Password string.",
+                  "title": "Key"
+                },
+                "key_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "Configure authentication key-id.",
+                        "title": "ID"
+                      },
+                      "algorithm": {
+                        "type": "string",
+                        "enum": [
+                          "sha-1",
+                          "sha-224",
+                          "sha-256",
+                          "sha-384",
+                          "sha-512"
+                        ],
+                        "title": "Algorithm"
+                      },
+                      "key_type": {
+                        "type": "string",
+                        "enum": [
+                          "0",
+                          "7",
+                          "8a"
+                        ],
+                        "description": "Configure authentication key type.",
+                        "title": "Key Type"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "Password string.",
+                        "title": "Key"
+                      },
+                      "rfc_5310": {
+                        "description": "SHA digest computation according to rfc5310.",
+                        "type": "boolean",
+                        "title": "Rfc 5310"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "algorithm",
+                      "key_type",
+                      "key"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Key IDs"
+                },
+                "mode": {
+                  "type": "string",
+                  "description": "Authentication mode.",
+                  "enum": [
+                    "md5",
+                    "sha",
+                    "text",
+                    "shared_secret"
+                  ],
+                  "title": "Mode"
+                },
+                "sha": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'sha'.",
+                  "properties": {
+                    "key_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Key ID"
+                    }
+                  },
+                  "required": [
+                    "key_id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Sha"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'shared_secret'.",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "title": "Profile"
+                    },
+                    "algorithm": {
+                      "type": "string",
+                      "enum": [
+                        "md5",
+                        "sha-1",
+                        "sha-224",
+                        "sha-256",
+                        "sha-384",
+                        "sha-512"
+                      ],
+                      "title": "Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
+                "rx_disabled": {
+                  "type": "boolean",
+                  "title": "RX Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Both"
+            },
+            "level_1": {
+              "type": "object",
+              "description": "Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.",
+              "properties": {
+                "key_type": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "7",
+                    "8a"
+                  ],
+                  "description": "Configure authentication key type. Default key_id is 0.",
+                  "title": "Key Type"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Password string.",
+                  "title": "Key"
+                },
+                "key_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "Configure authentication key-id.",
+                        "title": "ID"
+                      },
+                      "algorithm": {
+                        "type": "string",
+                        "enum": [
+                          "sha-1",
+                          "sha-224",
+                          "sha-256",
+                          "sha-384",
+                          "sha-512"
+                        ],
+                        "title": "Algorithm"
+                      },
+                      "key_type": {
+                        "type": "string",
+                        "enum": [
+                          "0",
+                          "7",
+                          "8a"
+                        ],
+                        "description": "Configure authentication key type.",
+                        "title": "Key Type"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "Password string.",
+                        "title": "Key"
+                      },
+                      "rfc_5310": {
+                        "description": "SHA digest computation according to rfc5310.",
+                        "type": "boolean",
+                        "title": "Rfc 5310"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "algorithm",
+                      "key_type",
+                      "key"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Key IDs"
+                },
+                "mode": {
+                  "type": "string",
+                  "description": "Authentication mode.",
+                  "enum": [
+                    "md5",
+                    "sha",
+                    "text",
+                    "shared_secret"
+                  ],
+                  "title": "Mode"
+                },
+                "sha": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'sha'.",
+                  "properties": {
+                    "key_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Key ID"
+                    }
+                  },
+                  "required": [
+                    "key_id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Sha"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'shared_secret'.",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "title": "Profile"
+                    },
+                    "algorithm": {
+                      "type": "string",
+                      "enum": [
+                        "md5",
+                        "sha-1",
+                        "sha-224",
+                        "sha-256",
+                        "sha-384",
+                        "sha-512"
+                      ],
+                      "title": "Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
+                "rx_disabled": {
+                  "type": "boolean",
+                  "title": "RX Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Level 1"
+            },
+            "level_2": {
+              "type": "object",
+              "description": "Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.",
+              "properties": {
+                "key_type": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "7",
+                    "8a"
+                  ],
+                  "description": "Configure authentication key type. Default key_id is 0.",
+                  "title": "Key Type"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Password string.",
+                  "title": "Key"
+                },
+                "key_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "Configure authentication key-id.",
+                        "title": "ID"
+                      },
+                      "algorithm": {
+                        "type": "string",
+                        "enum": [
+                          "sha-1",
+                          "sha-224",
+                          "sha-256",
+                          "sha-384",
+                          "sha-512"
+                        ],
+                        "title": "Algorithm"
+                      },
+                      "key_type": {
+                        "type": "string",
+                        "enum": [
+                          "0",
+                          "7",
+                          "8a"
+                        ],
+                        "description": "Configure authentication key type.",
+                        "title": "Key Type"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "Password string.",
+                        "title": "Key"
+                      },
+                      "rfc_5310": {
+                        "description": "SHA digest computation according to rfc5310.",
+                        "type": "boolean",
+                        "title": "Rfc 5310"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "algorithm",
+                      "key_type",
+                      "key"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Key IDs"
+                },
+                "mode": {
+                  "type": "string",
+                  "description": "Authentication mode.",
+                  "enum": [
+                    "md5",
+                    "sha",
+                    "text",
+                    "shared_secret"
+                  ],
+                  "title": "Mode"
+                },
+                "sha": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'sha'.",
+                  "properties": {
+                    "key_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Key ID"
+                    }
+                  },
+                  "required": [
+                    "key_id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Sha"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "description": "Required settings for authentication mode 'shared_secret'.",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "title": "Profile"
+                    },
+                    "algorithm": {
+                      "type": "string",
+                      "enum": [
+                        "md5",
+                        "sha-1",
+                        "sha-224",
+                        "sha-256",
+                        "sha-384",
+                        "sha-512"
+                      ],
+                      "title": "Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
+                "rx_disabled": {
+                  "type": "boolean",
+                  "title": "RX Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Level 2"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Authentication"
         },
         "advertise": {
           "type": "object",
@@ -19717,6 +21293,11 @@
               "maximum": 128,
               "title": "Maximum Paths"
             },
+            "bfd_all_interfaces": {
+              "type": "boolean",
+              "description": "Enable BFD on all interfaces.",
+              "title": "BFD All Interfaces"
+            },
             "fast_reroute_ti_lfa": {
               "type": "object",
               "properties": {
@@ -19801,6 +21382,11 @@
               "maximum": 128,
               "title": "Maximum Paths"
             },
+            "bfd_all_interfaces": {
+              "type": "boolean",
+              "description": "Enable BFD on all interfaces.",
+              "title": "BFD All Interfaces"
+            },
             "fast_reroute_ti_lfa": {
               "type": "object",
               "properties": {
@@ -19818,7 +21404,7 @@
                     "level-1",
                     "level-2"
                   ],
-                  "description": "Optional, default is to protect all levels",
+                  "description": "Optional, default is to protect all levels.",
                   "title": "Level"
                 },
                 "srlg": {
@@ -19892,6 +21478,75 @@
             "^_.+$": {}
           },
           "title": "Segment Routing MPLS"
+        },
+        "spf_interval": {
+          "type": "object",
+          "properties": {
+            "interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300,
+              "description": "Maximum interval between two SPFs in seconds.",
+              "title": "Interval"
+            },
+            "wait_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300000,
+              "description": "Initial wait interval for SPF in milliseconds.",
+              "title": "Wait Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "SPF Interval"
+        },
+        "graceful_restart": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "restart_hold_time": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 300,
+              "description": "Number of seconds.",
+              "title": "Restart Hold Time"
+            },
+            "t2": {
+              "type": "object",
+              "properties": {
+                "level_1_wait_time": {
+                  "type": "integer",
+                  "minimum": 5,
+                  "maximum": 300,
+                  "description": "Level-1 LSP database sync wait time in seconds.",
+                  "title": "Level 1 Wait Time"
+                },
+                "level_2_wait_time": {
+                  "type": "integer",
+                  "minimum": 5,
+                  "maximum": 300,
+                  "description": "Level-2 LSP database sync wait time in seconds.",
+                  "title": "Level 2 Wait Time"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "T2"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Graceful Restart"
         }
       },
       "required": [
@@ -21226,6 +22881,36 @@
                   ]
                 },
                 "title": "Static Peers"
+              },
+              "keepalive": {
+                "type": "object",
+                "properties": {
+                  "auto": {
+                    "type": "boolean",
+                    "description": "Enable adaptive keepalive and feedback interval.",
+                    "default": false,
+                    "title": "Auto"
+                  },
+                  "interval": {
+                    "type": "integer",
+                    "description": "Interval in milliseconds.",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "title": "Interval"
+                  },
+                  "failure_threshold": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "maximum": 100,
+                    "description": "Failure threshold in number of intervals. Required when `interval` is set.",
+                    "title": "Failure Threshold"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Keepalive"
               }
             },
             "additionalProperties": false,
@@ -21269,7 +22954,7 @@
               },
               "loss_rate": {
                 "type": "string",
-                "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00 %",
+                "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00.",
                 "pattern": "^\\d+(\\.\\d{1,2})?$",
                 "title": "Loss Rate"
               },
@@ -21407,6 +23092,30 @@
             ]
           },
           "title": "VRFs"
+        },
+        "tcp_mss_ceiling": {
+          "type": "object",
+          "properties": {
+            "ipv4_segment_size": {
+              "type": "string",
+              "description": "Segment Size for IPv4.\nCan be an integer in the range 64-65515 or \"auto\".\n\"auto\" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths\nand multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).",
+              "title": "IPv4 Segment Size"
+            },
+            "direction": {
+              "type": "string",
+              "enum": [
+                "ingress"
+              ],
+              "default": "ingress",
+              "description": "Enforce on packets through DPS tunnel for a specific direction.\nOnly 'ingress' direction is supported.",
+              "title": "Direction"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "TCP Mss Ceiling"
         }
       },
       "additionalProperties": false,
@@ -21844,6 +23553,10 @@
         "sample": {
           "type": "integer",
           "title": "Sample"
+        },
+        "sample_input_subinterface": {
+          "type": "boolean",
+          "title": "Sample Input Subinterface"
         },
         "sample_output_subinterface": {
           "type": "boolean",
@@ -22749,7 +24462,7 @@
                 },
                 "action": {
                   "type": "string",
-                  "description": "Action as string\nExample: \"deny ip any any\"",
+                  "description": "Action as string\nExample: \"deny ip any any\"\n",
                   "title": "Action"
                 }
               },
@@ -23346,7 +25059,7 @@
               },
               "source": {
                 "type": "string",
-                "description": "TCAM profile local source path. Used to read the TCAM profile from a local path existing on the device.",
+                "description": "TCAM profile local source path. Used to read the TCAM profile from a local path existing on the device.\n",
                 "title": "Source"
               }
             },
@@ -23829,6 +25542,12 @@
       },
       "title": "Traffic Policies"
     },
+    "transceiver_qsfp_default_mode_4x10": {
+      "type": "boolean",
+      "default": true,
+      "description": "On all front panel ports which support this feature, the following global configuration command changes the QSFP mode from 40G to 4x10G (default). When set to false the command reverts the default QSFP mode back to 40G.\n",
+      "title": "Transceiver Qsfp Default Mode 4X10"
+    },
     "tunnel_interfaces": {
       "type": "array",
       "items": {
@@ -23942,7 +25661,7 @@
           },
           "eos_cli": {
             "type": "string",
-            "description": "Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.",
+            "description": "Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.\n",
             "title": "EOS CLI"
           }
         },
@@ -23995,6 +25714,30 @@
           "description": {
             "type": "string",
             "title": "Description"
+          },
+          "logging": {
+            "type": "object",
+            "properties": {
+              "event": {
+                "type": "object",
+                "properties": {
+                  "link_status": {
+                    "type": "boolean",
+                    "title": "Link Status"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Event"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Logging"
           },
           "shutdown": {
             "type": "boolean",
@@ -24067,6 +25810,14 @@
               "description": "IPv4_address/Mask"
             },
             "title": "IP Address Virtual Secondaries"
+          },
+          "ip_verify_unicast_source_reachable_via": {
+            "type": "string",
+            "enum": [
+              "any",
+              "rx"
+            ],
+            "title": "IP Verify Unicast Source Reachable Via"
           },
           "ip_igmp": {
             "type": "boolean",
@@ -24727,6 +26478,11 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
+                  "border_router": {
+                    "type": "boolean",
+                    "description": "Configure PIM border router. EOS default is false.",
+                    "title": "Border Router"
+                  },
                   "dr_priority": {
                     "type": "integer",
                     "minimum": 0,
@@ -24740,6 +26496,37 @@
                   "local_interface": {
                     "type": "string",
                     "title": "Local Interface"
+                  },
+                  "bfd": {
+                    "type": "boolean",
+                    "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                    "title": "BFD"
+                  },
+                  "bidirectional": {
+                    "type": "boolean",
+                    "title": "Bidirectional"
+                  },
+                  "hello": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "string",
+                        "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                        "title": "Count"
+                      },
+                      "interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "PIM hello interval in seconds.",
+                        "title": "Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Hello"
                   }
                 },
                 "additionalProperties": false,
@@ -25032,6 +26819,37 @@
               "^_.+$": {}
             },
             "title": "IP Attached Host Route Export"
+          },
+          "ipv6_attached_host_route_export": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "distance": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 255,
+                "description": "Administrative distance for generated routes.",
+                "title": "Distance"
+              },
+              "prefix_length": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 128,
+                "description": "Prefix length for generated routes.",
+                "title": "Prefix Length"
+              }
+            },
+            "required": [
+              "enabled"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IPv6 Attached Host Route Export"
           },
           "bfd": {
             "type": "object",
@@ -25350,6 +27168,20 @@
                   "description": "Source Interface Name",
                   "title": "Source Interface"
                 },
+                "multicast": {
+                  "type": "object",
+                  "properties": {
+                    "headend_replication": {
+                      "type": "boolean",
+                      "title": "Headend Replication"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Multicast"
+                },
                 "controller_client": {
                   "type": "object",
                   "description": "Client to CVX Controllers",
@@ -25519,7 +27351,7 @@
             },
             "eos_cli": {
               "type": "string",
-              "description": "Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.",
+              "description": "Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.\n",
               "title": "EOS CLI"
             }
           },

@@ -51,3 +51,10 @@ my_mac_address_table:
     logging: "{{ switch.id == 6 }}"
 
 override_mac_address_table: "{{ my_mac_address_table }}"
+
+# Test that we can enable CloudVision Tag generation
+# for a single device in a Fabric. The structured config for this node
+# should have CloudVision tags generated for it. All other nodes in
+# eos_designs_unit_tests should not have any CloudVision tags generated for them
+generate_cv_tags:
+  topology_hints: true

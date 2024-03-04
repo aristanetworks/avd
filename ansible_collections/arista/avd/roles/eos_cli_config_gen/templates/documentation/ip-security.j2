@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -7,6 +7,10 @@
 {% if ip_security is arista.avd.defined %}
 
 ## IP Security
+{%     if ip_security.hardware_encryption_disabled is arista.avd.defined(true) %}
+
+- Hardware encryption is disabled
+{%     endif %}
 {%     if ip_security.ike_policies is arista.avd.defined %}
 
 ### IKE policies
@@ -31,8 +35,8 @@
 
 ### IPSec profiles
 
-| Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode |
-| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- |
+| Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
+| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
 {%         for profile in ip_security.profiles | arista.avd.default([]) %}
 {%             set ike_policy = profile.ike_policy | arista.avd.default("-") %}
 {%             set sa_policy = profile.sa_policy | arista.avd.default("-") %}
@@ -41,7 +45,8 @@
 {%             set dpd_time = profile.dpd_time | arista.avd.default("-") %}
 {%             set dpd_action = profile.dpd_action | arista.avd.default("-") %}
 {%             set mode = profile.mode | arista.avd.default("-") %}
-| {{ profile.name }} | {{ ike_policy }} | {{ sa_policy }} | {{ connection }} | {{ dpd_interval }} | {{ dpd_time }} | {{ dpd_action }} | {{ mode }} |
+{%             set flow_parallelization = profile.flow_parallelization_encapsulation_udp | arista.avd.default('-') %}
+| {{ profile.name }} | {{ ike_policy }} | {{ sa_policy }} | {{ connection }} | {{ dpd_interval }} | {{ dpd_time }} | {{ dpd_action }} | {{ mode }} | {{ flow_parallelization }} |
 {%         endfor %}
 {%     endif %}
 {%     if ip_security.key_controller is arista.avd.defined %}

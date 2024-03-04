@@ -28,6 +28,7 @@ ethernet_interfaces:
       multiplier: 5
     bgp:
       session_tracker: ST1
+    ip_verify_unicast_source_reachable_via: rx
     eos_cli: |
       comment
       Comment created from eos_cli under ethernet_interfaces.Ethernet1
@@ -142,6 +143,12 @@ ethernet_interfaces:
       ipv4:
         dr_priority: 200
         sparse_mode: true
+        border_router: true
+        bfd: true
+        bidirectional: true
+        hello:
+          count: 2.5
+          interval: 10
     isis_enable: ISIS_TEST
     isis_passive: false
     isis_metric: 99

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -48,7 +48,7 @@ router msdp
       sa-filter in list {{ peer.sa_filter.in_list }}
 {%             endif %}
 {%             if peer.sa_filter.out_list is arista.avd.defined %}
-      sa-filter out list {{ peer.sa_filter.in_list }}
+      sa-filter out list {{ peer.sa_filter.out_list }}
 {%             endif %}
 {%             if peer.description is arista.avd.defined %}
       description {{ peer.description }}

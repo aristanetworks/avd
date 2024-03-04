@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -13,6 +13,13 @@ keys:
         type: dict
         $ref: "eos_cli_config_gen#/$defs/flow_tracking"
         keys:
+          encapsulation:
+            type: dict
+            keys:
+              ipv4_ipv6:
+                type: bool
+              mpls:
+                type: bool
           sample:
             type: int
             convert_types:

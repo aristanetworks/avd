@@ -26,13 +26,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -364,6 +364,7 @@ interface Port-Channel5
    l2 mtu 8000
    l2 mru 8000
    mlag 5
+   ip verify unicast source reachable-via rx
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1
@@ -388,6 +389,8 @@ interface Port-Channel9
    ip address 10.9.2.3/31
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
+   bfd neighbor 10.1.2.4
+   bfd per-link rfc-7130
 !
 interface Port-Channel10
    description SRV01_bond0
@@ -479,7 +482,11 @@ interface Port-Channel99
    no switchport
    ip address 192.0.2.10/31
    pim ipv4 sparse-mode
+   pim ipv4 bidirectional
+   pim ipv4 hello interval 15
+   pim ipv4 hello count 4.5
    pim ipv4 dr-priority 200
+   pim ipv4 bfd
 !
 interface Port-Channel100
    logging event link-status
@@ -495,6 +502,7 @@ interface Port-Channel100.101
 interface Port-Channel100.102
    description IFL for TENANT02
    no logging event link-status
+   logging event storm-control discards
    mtu 1500
    encapsulation dot1q vlan 102
    vrf C2
@@ -711,9 +719,9 @@ interface Port-Channel131
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Port-Channel99 | - | IPv4 | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Port-Channel99 | - | IPv4 | - | 200 | - |
 
 ## Quality Of Service
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -141,6 +141,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
             "ptp": self._get_adapter_ptp(adapter),
             "sflow": self._get_adapter_sflow(adapter),
+            "validate_state": None if adapter.get("validate_state", True) else False,
             "eos_cli": get(adapter, "port_channel.raw_eos_cli"),
             "struct_cfg": get(adapter, "port_channel.structured_config"),
         }
@@ -175,7 +176,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             port_channel_interface["mlag"] = channel_group_id
 
         # LACP Fallback
-        if port_channel_mode in ["active", "passive"] and (lacp_fallback_mode := get(adapter, "port_channel.lacp_fallback.mode")) == "static":
+        if port_channel_mode in ["active", "passive"] and (lacp_fallback_mode := get(adapter, "port_channel.lacp_fallback.mode")) in ["static", "individual"]:
             port_channel_interface.update(
                 {
                     "lacp_fallback_mode": lacp_fallback_mode,

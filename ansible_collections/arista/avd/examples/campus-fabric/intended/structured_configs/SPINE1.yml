@@ -1,6 +1,4 @@
 hostname: SPINE1
-metadata:
-  platform: cEOSLab
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -194,12 +192,12 @@ vlan_interfaces:
   description: Inband Management
   shutdown: false
   mtu: 1500
-  ip_address: 10.10.10.2/24
-  ip_virtual_router_addresses:
-  - 10.10.10.1
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ip_address: 10.10.10.2/24
+  ip_virtual_router_addresses:
+  - 10.10.10.1
 port_channel_interfaces:
 - name: Port-Channel551
   description: MLAG_PEER_SPINE2_Po551
@@ -330,3 +328,5 @@ router_ospf:
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+metadata:
+  platform: cEOSLab

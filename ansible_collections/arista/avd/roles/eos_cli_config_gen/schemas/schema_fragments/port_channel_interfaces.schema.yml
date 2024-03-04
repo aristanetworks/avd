@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -26,6 +26,10 @@ keys:
               keys:
                 link_status:
                   type: bool
+                storm_control_discards:
+                  type: bool
+                  description: |
+                    Discards due to storm-control.
         shutdown:
           type: bool
         l2_mtu:
@@ -255,6 +259,16 @@ keys:
                 - str
               min: 3
               max: 50
+            neighbor:
+              type: str
+              description: IPv4 or IPv6 address. When the Port-channel is a L2 interface, a local L3 BFD address (router_bfd.local_address) has to be defined globally on the switch.
+            per_link:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                rfc_7130:
+                  type: bool
         service_policy:
           type: dict
           keys:
@@ -580,6 +594,11 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask
+        ip_verify_unicast_source_reachable_via:
+          type: str
+          valid_values:
+            - any
+            - rx
         ip_nat:
           type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
@@ -641,6 +660,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                border_router:
+                  type: bool
+                  description: Configure PIM border router. EOS default is false.
                 dr_priority:
                   type: int
                   convert_types:
@@ -649,6 +671,27 @@ keys:
                   max: 429467295
                 sparse_mode:
                   type: bool
+                bfd:
+                  type: bool
+                  description: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
+                bidirectional:
+                  type: bool
+                hello:
+                  type: dict
+                  keys:
+                    count:
+                      type: str
+                      convert_types:
+                        - int
+                        - float
+                      description: Number of missed hellos after which the neighbor expires. Range <1.5-65535>.
+                    interval:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 1
+                      max: 65535
+                      description: PIM hello interval in seconds.
         service_profile:
           type: str
           description: QOS profile
@@ -730,6 +773,9 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        validate_state:
+          type: bool
+          description: Set to false to disable interface validation by the `eos_validate_state` role
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration

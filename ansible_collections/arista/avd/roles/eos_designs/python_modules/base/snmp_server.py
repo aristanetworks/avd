@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -89,14 +89,14 @@ class SnmpServerMixin(UtilsMixin):
         Return location if "snmp_settings.location" is True.
         Otherwise return None
         """
-        if not snmp_settings.get("location") is True:
+        if snmp_settings.get("location") is not True:
             return None
 
         location_elements = [
-            get(self._hostvars, "fabric_name"),
+            self.shared_utils.fabric_name,
             self.shared_utils.dc_name,
             self.shared_utils.pod_name,
-            get(self.shared_utils.switch_data_combined, "rack"),
+            self.shared_utils.rack,
             self.shared_utils.hostname,
         ]
         location_elements = [location for location in location_elements if location not in [None, ""]]

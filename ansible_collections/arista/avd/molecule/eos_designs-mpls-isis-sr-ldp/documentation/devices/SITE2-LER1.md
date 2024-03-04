@@ -51,13 +51,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 192.168.200.107/24 | 192.168.200.5 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -190,6 +190,8 @@ vlan 2020
 | Ethernet6.101 | TENANT_B_SITE_5 | l3dot1q | - | 192.168.48.2/31 | TENANT_B_WAN | - | False | - | - |
 | Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Ethernet12 | *routed | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
 | Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | *routed | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
+| Ethernet13 | P2P_LINK_TO_SITE2-LSR2_Ethernet14 | *routed | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
+| Ethernet14 | P2P_LINK_TO_SITE2-LSR2_Ethernet15 | *routed | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
 *Inherited from Port-Channel Interface
 
 ##### IPv6
@@ -199,6 +201,8 @@ vlan 2020
 | Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | routed | - | - | default | 9178 | False | - | - | - | - |
 | Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Ethernet12 | *routed | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
 | Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | *routed | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet13 | P2P_LINK_TO_SITE2-LSR2_Ethernet14 | *routed | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet14 | P2P_LINK_TO_SITE2-LSR2_Ethernet15 | *routed | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
  *Inherited from Port-Channel Interface
 
 ##### ISIS
@@ -208,6 +212,8 @@ vlan 2020
 | Ethernet1 | - | CORE | 60 | point-to-point | level-2 | False | md5 |
 | Ethernet11 | 11 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
 | Ethernet12 | 11 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet13 | 220 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet14 | 220 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
  *Inherited from Port-Channel Interface
 
 #### Ethernet Interfaces Device Configuration
@@ -299,6 +305,18 @@ interface Ethernet12
    no shutdown
    speed forced 40gfull
    channel-group 11 mode active
+!
+interface Ethernet13
+   description P2P_LINK_TO_SITE2-LSR2_Ethernet14
+   no shutdown
+   speed forced 40gfull
+   channel-group 220 mode active
+!
+interface Ethernet14
+   description P2P_LINK_TO_SITE2-LSR2_Ethernet15
+   no shutdown
+   speed forced 40gfull
+   channel-group 220 mode active
 ```
 
 ### Port-Channel Interfaces
@@ -325,12 +343,14 @@ interface Ethernet12
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Port-Channel11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | routed | - | 100.64.49.2/30 | default | 9178 | False | - | - |
+| Port-Channel220 | P2P_LINK_TO_SITE2-LSR2_Port-Channel110 | routed | - | 100.64.49.6/30 | default | 9178 | False | - | - |
 
 ##### ISIS
 
 | Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 | Port-Channel11 | CORE | 60 | point-to-point | level-2 | False | md5 |
+| Port-Channel220 | CORE | 60 | point-to-point | level-2 | False | md5 |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -371,6 +391,26 @@ interface Port-Channel11
    mtu 9178
    no switchport
    ip address 100.64.49.2/30
+   ipv6 enable
+   mpls ip
+   mpls ldp interface
+   mpls ldp igp sync
+   isis enable CORE
+   isis circuit-type level-2
+   isis metric 60
+   isis network point-to-point
+   no isis hello padding
+   isis authentication mode md5
+   isis authentication key 7 <removed>
+   link-debounce time 1600
+
+!
+interface Port-Channel220
+   description P2P_LINK_TO_SITE2-LSR2_Port-Channel110
+   no shutdown
+   mtu 9178
+   no switchport
+   ip address 100.64.49.6/30
    ipv6 enable
    mpls ip
    mpls ldp interface
@@ -632,6 +672,8 @@ router isis CORE
 
 ### Router BGP
 
+ASN Notation: asplain
+
 #### Router BGP Summary
 
 | BGP AS | Router ID |
@@ -660,10 +702,10 @@ router isis CORE
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - |
-| 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
+| 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 192.168.48.3 | 65202 | TENANT_B_WAN | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
@@ -878,6 +920,7 @@ mpls ldp
 | Ethernet1 | True | True | True |
 | Loopback0 | - | True | - |
 | Port-Channel11 | True | True | True |
+| Port-Channel220 | True | True | True |
 
 ## Patch Panel
 

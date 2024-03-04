@@ -1,6 +1,4 @@
 hostname: AUTO_NODE_TYPE_UNGROUPED_LEAF02
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65102'
@@ -147,3 +145,5 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
+metadata:
+  platform: vEOS-LAB

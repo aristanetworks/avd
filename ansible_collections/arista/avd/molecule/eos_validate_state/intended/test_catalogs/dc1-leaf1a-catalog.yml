@@ -1,3 +1,56 @@
+anta.tests.aaa:
+- VerifyTacacsSourceIntf:
+    intf: Management0
+    vrf: default
+- VerifyTacacsServers:
+    servers:
+    - 1.1.1.1
+    - 2.2.2.2
+    vrf: default
+- VerifyTacacsServerGroups:
+    groups:
+    - admin
+    - user
+- VerifyAuthenMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - login
+    - enable
+    - dot1x
+- VerifyAuthzMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - commands
+    - exec
+- VerifyAcctDefaultMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - system
+    - exec
+    - commands
+    - dot1x
+- VerifyAcctConsoleMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - system
+    - exec
+    - commands
+    - dot1x
+anta.tests.configuration:
+- VerifyZeroTouch: null
+- VerifyRunningConfigDiffs: null
 anta.tests.connectivity:
 - VerifyLLDPNeighbors:
     neighbors:
@@ -214,6 +267,9 @@ anta.tests.connectivity:
       - Loopback0 Reachability
       custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.18'
       description: Loopback0 Reachability
+anta.tests.field_notices:
+- VerifyFieldNotice44Resolution: null
+- VerifyFieldNotice72Resolution: null
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     states:
@@ -221,12 +277,27 @@ anta.tests.hardware:
 - VerifyEnvironmentCooling:
     states:
     - ok
-- VerifyTemperature: {}
+- VerifyTemperature: null
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
+- VerifyTransceiversManufacturers:
+    manufacturers:
+    - Not Present
+    - Arista Networks
+    - Arastra, Inc.
+- VerifyTemperature: null
+- VerifyTransceiversTemperature: null
+- VerifyEnvironmentSystemCooling: null
+- VerifyEnvironmentCooling:
+    states:
+    - ok
+- VerifyEnvironmentPower:
+    states:
+    - ok
+- VerifyAdverseDrops: null
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
@@ -400,6 +471,16 @@ anta.tests.interfaces:
       description: Vlan Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
+    - interface: Vlan4085
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Vlan4085 - Inband Management
+      description: Vlan Interface & Line Protocol == 'up'
+- VerifyInterfacesStatus:
+    interfaces:
     - interface: Loopback0
       protocol_status: up
       state: up
@@ -449,8 +530,31 @@ anta.tests.interfaces:
       custom_field: Vxlan1
       description: Vxlan Interface Status & Line Protocol == 'up'
 anta.tests.mlag:
-- VerifyMlagStatus: {}
+- VerifyMlagStatus: null
+anta.tests.profiles:
+- VerifyUnifiedForwardingTableMode:
+    mode: 3
+- VerifyTcamProfile:
+    profile: vxlan-routing
 anta.tests.routing.bgp:
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.1
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP EVPN Peer: 10.255.0.1'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.2
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP EVPN Peer: 10.255.0.2'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -460,8 +564,7 @@ anta.tests.routing.bgp:
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.1.97'
-      description: ip bgp peer state established (ipv4)
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.1.97'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -471,8 +574,7 @@ anta.tests.routing.bgp:
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.255.0'
-      description: ip bgp peer state established (ipv4)
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.0'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -482,36 +584,15 @@ anta.tests.routing.bgp:
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.255.2'
-      description: ip bgp peer state established (ipv4)
-- VerifyBGPSpecificPeers:
-    address_families:
-    - afi: evpn
-      peers:
-      - 10.255.0.1
-    result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'bgp_neighbor: 10.255.0.1'
-      description: bgp evpn peer state established (evpn)
-- VerifyBGPSpecificPeers:
-    address_families:
-    - afi: evpn
-      peers:
-      - 10.255.0.2
-    result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'bgp_neighbor: 10.255.0.2'
-      description: bgp evpn peer state established (evpn)
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.2'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
     result_overwrite:
       categories:
       - BGP
-      custom_field: ArBGP
-      description: ArBGP is configured and operating
+      custom_field: 'Routing protocol model: multi-agent'
+      description: Verifies the configured routing protocol model.
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:
@@ -659,6 +740,25 @@ anta.tests.routing.generic:
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
+anta.tests.snmp:
+- VerifySnmpStatus:
+    vrf: default
+- VerifySnmpIPv4Acl:
+    number: 3
+    vrf: default
+- VerifySnmpIPv6Acl:
+    number: 3
+    vrf: default
+anta.tests.software:
+- VerifyEOSVersion:
+    versions:
+    - 4.25.4M
+    - 4.26.1F
+- VerifyTerminAttrVersion:
+    versions:
+    - v1.13.6
+    - v1.8.0
+- VerifyEOSExtensions: null
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:
@@ -666,3 +766,23 @@ anta.tests.system:
       - NTP
       custom_field: NTP
       description: Synchronised with NTP server
+- VerifyUptime:
+    minimum: 86400
+- VerifyReloadCause: null
+- VerifyCoredump: null
+- VerifyAgentLogs: null
+- VerifyCPUUtilization: null
+- VerifyMemoryUtilization: null
+- VerifyFileSystemUtilization: null
+- VerifyNTP: null
+anta.tests.vxlan:
+- VerifyVxlan1Interface: null
+- VerifyVxlanConfigSanity: null
+- VerifyVxlanVniBinding:
+    bindings:
+      10010: 10
+      10020: 20
+- VerifyVxlanVtep:
+    vteps:
+    - 10.1.1.5
+    - 10.1.1.6

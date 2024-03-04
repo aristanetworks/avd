@@ -51,6 +51,7 @@ router_bgp:
       link_bandwidth:
         enabled: true
         default: 100G
+      ttl_maximum_hops: 1
     - name: test-link-bandwidth2
       link_bandwidth:
         enabled: true
@@ -58,12 +59,16 @@ router_bgp:
       passive: true
     - name: test-session-tracker
       session_tracker: ST2
+    - name: TEST
+      ttl_maximum_hops: 42
   aggregate_addresses:
     - prefix: 1.1.1.0/24
       advertise_only: true
     - prefix: 2.2.1.0/24
     - prefix: 1.12.1.0/24
       as_set: true
+      advertise_map: ADV-MAP
+      supress_map: SUP-MAP
       summary_only: true
       attribute_map: RM-ATTRIBUTE
       match_map: RM-MATCH
@@ -133,6 +138,10 @@ router_bgp:
       session_tracker: ST1
       # Testing bfd true OUTSIDE a peer group that should render
       bfd: true
+      bfd_timers:
+        interval: 2000
+        min_rx: 2000
+        multiplier: 3
     - ip_address: 192.0.3.2
       remote_as: 65433
       send_community: extended
@@ -163,6 +172,7 @@ router_bgp:
         enabled: false
       rib_in_pre_policy_retain:
         enabled: false
+      ttl_maximum_hops: 1
     - ip_address: 192.0.3.5
       remote_as: 65436
       description: test_ebgp_multihop

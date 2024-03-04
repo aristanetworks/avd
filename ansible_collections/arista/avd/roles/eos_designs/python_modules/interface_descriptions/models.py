@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -39,6 +39,12 @@ class InterfaceDescriptionData:
     """Port channel ID of peer"""
     port_channel_description: str | None
     """Set description for port-channel"""
+    vrf: str | None
+    """Interface VRF"""
+    wan_carrier: str | None
+    """The WAN Carrier this interface is connected to"""
+    wan_circuit_id: str | None
+    """The WAN Circuit ID for this interface."""
 
     def __init__(
         self,
@@ -50,6 +56,9 @@ class InterfaceDescriptionData:
         peer_interface: str | None = None,
         peer_channel_group_id: int | None = None,
         port_channel_description: str | None = None,
+        vrf: str | None = None,
+        wan_carrier: str | None = None,
+        wan_circuit_id: str | None = None,
     ):
         self._shared_utils = shared_utils
         self.description = description
@@ -59,6 +68,9 @@ class InterfaceDescriptionData:
         self.peer_interface = peer_interface
         self.peer_channel_group_id = peer_channel_group_id
         self.port_channel_description = port_channel_description
+        self.vrf = vrf
+        self.wan_carrier = wan_carrier
+        self.wan_circuit_id = wan_circuit_id
 
     @cached_property
     def mpls_overlay_role(self) -> str:

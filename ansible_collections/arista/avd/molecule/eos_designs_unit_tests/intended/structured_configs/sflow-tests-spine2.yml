@@ -1,6 +1,4 @@
 hostname: sflow-tests-spine2
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65200'
@@ -150,3 +148,5 @@ ethernet_interfaces:
   mtu: 9214
   sflow:
     enable: true
+metadata:
+  platform: vEOS-LAB

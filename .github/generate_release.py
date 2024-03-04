@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """
@@ -15,6 +15,7 @@ SCOPES = [
     "build_output_folders",
     "cvp_configlet_upload",
     "dhcp_provisioner",
+    "deploy_to_cv",
     "eos_cli_config_gen",
     "eos_config_deploy_cvp",
     "eos_config_deploy_eapi",

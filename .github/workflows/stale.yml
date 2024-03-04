@@ -6,7 +6,7 @@ on:
 jobs:
   stale:
     runs-on: ubuntu-latest
-    if: github.repository == 'aristanetworks/ansible-avd'
+    if: github.repository == 'aristanetworks/avd'
     steps:
       # Issue stale management
     - uses: actions/stale@v6

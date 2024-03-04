@@ -3,7 +3,7 @@
 title: arista.avd.batch_template
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -25,9 +25,9 @@ Destination file mode is hardcoded to 0o664.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| template | str | True | None |  | Path to Jinja2 Template file |
-| dest_format_string | str | True | None |  | Format string used to specify target file for each item. \'item\' is the current item from \'items\'. Like \"mypath/\{item\}.md\" |
-| items | list | True | None |  | List of strings. Each list item is passed to \'dest\_format\_string\' as \'item\' and passed to templater as \'item\' |
+| <samp>template</samp> | str | True | None |  | Path to Jinja2 Template file |
+| <samp>dest_format_string</samp> | str | True | None |  | Format string used to specify target file for each item. &#39;item&#39; is the current item from &#39;items&#39;. Like &#34;mypath/{item}.md&#34; |
+| <samp>items</samp> | list | True | None |  | List of strings. Each list item is passed to &#39;dest_format_string&#39; as &#39;item&#39; and passed to templater as &#39;item&#39; |
 
 ## Examples
 
@@ -39,9 +39,7 @@ Destination file mode is hardcoded to 0o664.
   arista.avd.batch_template:
     template: avd_schema_documentation.j2
     dest_format_str: "{{ role_documentation_dir }}/{item}.md"
-    items: "{{ documentation_schema | list }}"
-  vars:
-    documentation_schema: "{{ role_name | arista.avd.convert_schema(type='documentation') }}"
+    items: "{{ data_in_list_form }}"
 ```
 
 ## Authors

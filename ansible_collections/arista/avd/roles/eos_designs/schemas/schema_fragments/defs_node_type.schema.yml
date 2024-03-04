@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -27,6 +27,8 @@ $defs:
               table: node-type-common-configuration
             description: Arista platform family.
             type: str
+            convert_types:
+              - int
           mac_address:
             documentation_options:
               table: node-type-common-configuration
@@ -453,7 +455,10 @@ $defs:
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration
-            description: Required with eBGP.
+            description: |-
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+                Required with eBGP.
             type: str
             convert_types:
               - int
@@ -502,14 +507,40 @@ $defs:
             keys:
               tenants:
                 type: list
+                description: |-
+                  Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all Tenants (default).
+                  This list also limits Tenants included by `always_include_vrfs_in_tenants`.
                 items:
                   type: str
                 default:
                   - all
               tags:
                 type: list
+                description: Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default).
                 items:
                   type: str
+                default:
+                  - all
+              allow_vrfs:
+                type: list
+                description: |-
+                  Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).
+                  This list also limits VRFs included by `always_include_vrfs_in_tenants`.
+                items:
+                  type: str
+                  convert_types:
+                    - int
+                default:
+                  - all
+              deny_vrfs:
+                type: list
+                description: |-
+                  Prevent configuration of Network Services defined under these VRFs.
+                  This list prevents the given VRFs to be included by any other filtering mechanism.
+                items:
+                  type: str
+                  convert_types:
+                    - int
                 default:
                   - all
               always_include_vrfs_in_tenants:
@@ -559,7 +590,9 @@ $defs:
                       type: str
                       format: ipv4
                     bgp_as:
-                      description: BGP ASN of remote Route Server.
+                      description: |-
+                        Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                       type: str
                       convert_types:
                         - int
@@ -611,7 +644,10 @@ $defs:
                   - str
                 default: 0
               local_as:
-                description: Apply local-as to peering with IPVPN remote peers.
+                description: |-
+                  Local BGP AS applied to peering with IPVPN remote peers.
+                  BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                  For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                 type: str
                 convert_types:
                   - int
@@ -637,7 +673,9 @@ $defs:
                       format: ipv4
                       required: true
                     bgp_as:
-                      description: BGP ASN of remote IPVPN Peer.
+                      description: |-
+                        Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                       type: str
                       required: true
                       convert_types:
@@ -830,6 +868,50 @@ $defs:
               This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
             type: str
             format: ipv4
+          inband_mgmt_ipv6_address:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |
+              IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+              This overrides 'inband_mgmt_ipv6_subnet', hence the configuration of 'inband_mgmt_ipv6_subnet' is ignored.
+
+              If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+              The VLAN and SVI on the parent switches must be created using network services data models.
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv6
+          inband_mgmt_ipv6_subnet:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |
+              Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+              Parent l3leafs will have SVI with "ipv6 virtual-router" and host-route injection based on ARP.
+              This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+              SVI IP address will be assigned as follows:
+              virtual-router: <subnet> + 1
+              l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+              l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+              l2leafs       : <subnet> + 3 + <l2leaf id>
+              GW on l2leafs : <subnet> + 1
+              Assign range larger than total l2leafs + 5
+
+              Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv6_cidr
+          inband_mgmt_ipv6_gateway:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |
+              Default gateway configured in the 'inband_mgmt_vrf'.
+              Used when `inband_mgmt_ipv6_address` is set.
+              Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv6
           inband_mgmt_description:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -989,6 +1071,14 @@ $defs:
                 description: |
                   By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
                   This can be set manually if required, for example, to a value of "10.1.2.3".
+              mode:
+                type: str
+                valid_values:
+                  - boundary
+                default: boundary
+              mode_one_step:
+                type: bool
+                default: false
               ttl:
                 type: int
                 convert_types:
@@ -1119,20 +1209,19 @@ $defs:
               `server` indicates that the router is a route-reflector.
 
               Only supported if `overlay_routing_protocol` is set to `ibgp`.
-          cv_pathfinder_role:
+          cv_pathfinder_transit_mode:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            $ref: "eos_designs#/keys/node_type_keys/items/keys/default_cv_pathfinder_role"
+            valid_values:
+              - region
+              - zone
             description: |-
               PREVIEW: This key is currently not supported
-              Override the default CV Pathfinder role.
+              Configure the transit mode for a WAN client for CV Pathfinder designs
+              only when the `wan_mode` root key is set to `cv_pathfinder`.
 
-              This key is used for Pathfinder designs only when the `wan_mode` root
-              key is set to `cv_pathfinder`.
-
-              `pathfinder` is only a valid if `wan_role` is `server`.
-              `edge` and `transit region` are only valid if `wan_role` is `client`.
+              'zone' is currently not supported.
           cv_pathfinder_region:
             documentation_options:
               table: node-type-wan-configuration
@@ -1149,16 +1238,61 @@ $defs:
               PREVIEW: This key is currently not supported
 
               The CV Pathfinder site name.
-          dps_mss_ipv4:
+          wan_ha:
             documentation_options:
               table: node-type-wan-configuration
-            type: int
-            $ref: "eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4"
+            type: dict
             description: |-
               PREVIEW: This key is currently not supported
 
-              MSS value for IPv4 the DPS interface.
-              If not set, and the device is WAN device, a default value of 1000 is used.
+              The key is supported only if `wan_mode` == `cv-pathfinder`.
+              AutoVPN support is still to be determined.
+
+              Maximum 2 devices supported by group for HA.
+
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group.
+              ipsec:
+                type: bool
+                default: true
+                description: Enable / Disable IPsec over HA path-group when HA is enabled.
+          dps_mss_ipv4:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            $ref: "eos_cli_config_gen#/keys/router_path_selection/keys/tcp_mss_ceiling/keys/ipv4_segment_size"
+            description: |-
+              PREVIEW: This key is currently not supported
+
+              IPv4 MSS value configured under "router path-selection" on WAN Devices.
+            default: "auto"
+          l3_interfaces:
+            type: list
+            $ref: "eos_designs#/$defs/node_type_l3_interfaces"
+            documentation_options:
+              table: wan-interfaces-settings
+            description: |-
+              PREVIEW: This key is currently not supported
+
+              L3 Interfaces currently only use for WAN interfaces.
+            items:
+              type: dict
+              keys:
+                profile:
+                  type: str
+                  description: |
+                    L3 interface profile name. Profile defined under `l3_interface_profiles`.
+          data_plane_cpu_allocation_max:
+            documentation_options:
+              table: system-settings
+            type: int
+            $ref: "eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max"
+            description: |-
+              Set the maximum number of CPU used for the data plane.
+              This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

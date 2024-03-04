@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
@@ -11,8 +11,8 @@ name: generate_esi
 collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "1.1"
-short_description: Transforms short_esi C(0303:0202:0101) to EVPN ESI format C(0000:0000:0303:0202:0101)
-description: Concatenates the given I(esi_prefix) and I(short_esi).
+short_description: Transforms short_esi `0303:0202:0101` to EVPN ESI format `0000:0000:0303:0202:0101`
+description: Concatenates the given `esi_prefix` and `short_esi`.
 positional: _input
 options:
   _input:
@@ -20,7 +20,7 @@ options:
     type: string
     required: true
   esi_prefix:
-    description: ESI prefix value. Will be concatenated with the I(short_esi).
+    description: ESI prefix value. Will be concatenated with the `short_esi`.
     type: string
     default: "0000:0000:"
 """
@@ -33,7 +33,7 @@ esi: "{{ short_esi | arista.avd.generate_esi('deaf:beed:') }}"
 RETURN = r"""
 ---
 _value:
-  description: Concatenated string of I(esi_prefix) and I(short_esi) like C(0000:0000:0303:0202:0101)
+  description: Concatenated string of `esi_prefix` and `short_esi` like `0000:0000:0303:0202:0101`
   type: string
 """
 

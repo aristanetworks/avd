@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -62,6 +62,9 @@ ip security
 {%         if profile.dpd.interval is arista.avd.defined and profile.dpd.time is arista.avd.defined and profile.dpd.action is arista.avd.defined %}
       dpd {{ profile.dpd.interval }} {{ profile.dpd.time }} {{ profile.dpd.action }}
 {%         endif %}
+{%         if profile.flow_parallelization_encapsulation_udp is arista.avd.defined(true) %}
+      flow parallelization encapsulation udp
+{%         endif %}
 {%         if profile.mode is arista.avd.defined %}
       mode {{ profile.mode }}
 {%         endif %}
@@ -72,5 +75,8 @@ ip security
 {%         if ip_security.key_controller.profile is arista.avd.defined %}
       profile {{ ip_security.key_controller.profile }}
 {%         endif %}
+{%     endif %}
+{%     if ip_security.hardware_encryption_disabled is arista.avd.defined(true) %}
+   hardware encryption disabled
 {%     endif %}
 {% endif %}

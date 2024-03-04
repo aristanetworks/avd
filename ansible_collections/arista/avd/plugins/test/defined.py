@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -35,13 +35,13 @@ name: defined
 collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "2.0"
-short_description: Test if the value is not C(Undefined) or C(None).
+short_description: Test if the value is not `Undefined` or `None`.
 description:
-  - The M(arista.avd.defined) test returns C(False) if the passed value is C(Undefined) or C(None). Else it will return C(True).
-  - The M(arista.avd.defined) test also accepts an optional I(test_value) argument to test if the value equals this.
-  - The optional I(var_type) argument can also be used to test if the variable is of the expected type.
+  - The `arista.avd.defined` test returns `False` if the passed value is `Undefined` or `None`. Else it will return `True`.
+  - The `arista.avd.defined` test also accepts an optional `test_value` argument to test if the value equals this.
+  - The optional `var_type` argument can also be used to test if the variable is of the expected type.
   - Optionally, the test can emit warnings or errors if the test fails.
-  - Compared to the built-in C(is defined) test, this test will also test for C(None) and can even test for a specific value or class.
+  - Compared to the built-in `is defined` test, this test will also test for `None` and can even test for a specific value or class.
 positional: _input
 options:
   _input:
@@ -79,7 +79,7 @@ RETURN = r"""
 ---
 _value:
   description:
-    - Returns V(False) if the passed value is V(Undefined) or V(None) or if any of the optional checks fail. Otherwise V(True).
+    - Returns `False` if the passed value is `Undefined` or `None` or if any of the optional checks fail. Otherwise `True`.
   type: boolean
 """
 

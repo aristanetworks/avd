@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 Arista Networks, Inc.
+# Copyright (c) 2021-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -75,6 +75,12 @@ options:
     default: "warning"
     type: str
     choices: [ "error", "warning", "info", "debug", "disabled" ]
+  cprofile_file:
+    description:
+      - Filename for storing cprofile data used to debug performance issues.
+      - Running cprofile will slow down performance in itself, so only set this while troubleshooting.
+    required: false
+    type: str
 """
 
 EXAMPLES = r"""

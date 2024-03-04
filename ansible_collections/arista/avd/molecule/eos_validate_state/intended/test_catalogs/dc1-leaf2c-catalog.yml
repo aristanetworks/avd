@@ -1,3 +1,56 @@
+anta.tests.aaa:
+- VerifyTacacsSourceIntf:
+    intf: Management0
+    vrf: default
+- VerifyTacacsServers:
+    servers:
+    - 1.1.1.1
+    - 2.2.2.2
+    vrf: default
+- VerifyTacacsServerGroups:
+    groups:
+    - admin
+    - user
+- VerifyAuthenMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - login
+    - enable
+    - dot1x
+- VerifyAuthzMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - commands
+    - exec
+- VerifyAcctDefaultMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - system
+    - exec
+    - commands
+    - dot1x
+- VerifyAcctConsoleMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - system
+    - exec
+    - commands
+    - dot1x
+anta.tests.configuration:
+- VerifyZeroTouch: null
+- VerifyRunningConfigDiffs: null
 anta.tests.connectivity:
 - VerifyLLDPNeighbors:
     neighbors:
@@ -9,6 +62,152 @@ anta.tests.connectivity:
       - LLDP Topology
       custom_field: 'local: Ethernet1 - remote: dc1-leaf2a_Ethernet8'
       description: LLDP topology - validate peer and interface
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.1
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.1'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.2
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.2'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.3
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.3'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.4
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.4'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.5
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.5'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.11
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.11'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.12
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.12'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.13
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.13'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.14
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.14'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.15
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.15'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.16
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.16'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.17
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.17'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.18
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.18'
+      description: Inband Mgmt Reachability
+anta.tests.field_notices:
+- VerifyFieldNotice44Resolution: null
+- VerifyFieldNotice72Resolution: null
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     states:
@@ -16,12 +215,27 @@ anta.tests.hardware:
 - VerifyEnvironmentCooling:
     states:
     - ok
-- VerifyTemperature: {}
+- VerifyTemperature: null
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
+- VerifyTransceiversManufacturers:
+    manufacturers:
+    - Not Present
+    - Arista Networks
+    - Arastra, Inc.
+- VerifyTemperature: null
+- VerifyTransceiversTemperature: null
+- VerifyEnvironmentSystemCooling: null
+- VerifyEnvironmentCooling:
+    states:
+    - ok
+- VerifyEnvironmentPower:
+    states:
+    - ok
+- VerifyAdverseDrops: null
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
@@ -63,9 +277,37 @@ anta.tests.interfaces:
       - Interface State
       custom_field: Port-Channel1 - DC1_L3_LEAF2_Po8
       description: Port-Channel Interface & Line Protocol == 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Vlan4085
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Vlan4085 - L2LEAF_INBAND_MGMT
+      description: Vlan Interface & Line Protocol == 'up'
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
+anta.tests.snmp:
+- VerifySnmpStatus:
+    vrf: default
+- VerifySnmpIPv4Acl:
+    number: 3
+    vrf: default
+- VerifySnmpIPv6Acl:
+    number: 3
+    vrf: default
+anta.tests.software:
+- VerifyEOSVersion:
+    versions:
+    - 4.25.4M
+    - 4.26.1F
+- VerifyTerminAttrVersion:
+    versions:
+    - v1.13.6
+    - v1.8.0
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:
@@ -73,3 +315,12 @@ anta.tests.system:
       - NTP
       custom_field: NTP
       description: Synchronised with NTP server
+- VerifyUptime:
+    minimum: 86400
+- VerifyReloadCause: null
+- VerifyCoredump: null
+- VerifyAgentLogs: null
+- VerifyCPUUtilization: null
+- VerifyMemoryUtilization: null
+- VerifyFileSystemUtilization: null
+- VerifyNTP: null

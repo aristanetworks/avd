@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -210,7 +210,7 @@ class SummaryTotalsPerCategory(MDReportBase):
 
     def generate_rows(self) -> Generator[str, None, None]:
         """Generate the rows of the summary totals per category table."""
-        for category, stat in self.results.category_stats.items():
+        for category, stat in self.results.sorted_category_stats.items():
             total_tests = stat["tests_passed"] + stat["tests_failed"] + stat["tests_skipped"] + stat["tests_not_run"]
             yield f"| {category} | {total_tests} | {stat['tests_passed']} | {stat['tests_failed']} | {stat['tests_skipped']} |\n"
 

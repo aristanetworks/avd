@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from collections import ChainMap
@@ -42,8 +42,21 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
             - mpls_lsr
             - overlay_routing_protocol
             - type
+            - vrf
+            - wan_carrier
+            - wan_circuit_id
         """
-        return self.underlay_ethernet_interfaces(link_type=data.link_type, link_peer=data.peer, link_peer_interface=data.peer_interface)
+        desc = self.underlay_ethernet_interfaces(
+            link_type=data.link_type,
+            link_peer=data.peer,
+            link_peer_interface=data.peer_interface,
+        )
+
+        if not desc:
+            elems = [data.wan_carrier, data.wan_circuit_id, data.peer, data.peer_interface]
+            desc = "_".join([elem for elem in elems if elem])
+
+        return f"{desc}_vrf_{data.vrf}" if data.vrf is not None else desc
 
     def underlay_ethernet_interfaces(self, link_type: str, link_peer: str, link_peer_interface: str) -> str:
         """TODO: AVD5.0.0 move this to the new function."""
@@ -57,7 +70,8 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
                 },
             )
 
-        link_peer = str(link_peer).upper()
+        if link_peer:
+            link_peer = str(link_peer).upper()
         if link_type == "underlay_p2p":
             return f"P2P_LINK_TO_{link_peer}_{link_peer_interface}"
 
@@ -226,7 +240,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
         if self._mpls_lsr is True:
             return "LSR_Router_ID"
 
-        if self.shared_utils.wan_role is not None:
+        if self.shared_utils.is_wan_router:
             return "Router_ID"
 
         # Covers L2LS

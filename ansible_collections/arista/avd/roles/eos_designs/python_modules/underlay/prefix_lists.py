@@ -1,8 +1,9 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import ipaddress
 from functools import cached_property
 
 from .utils import UtilsMixin
@@ -19,7 +20,7 @@ class PrefixListsMixin(UtilsMixin):
         """
         Return structured config for prefix_lists
         """
-        if self.shared_utils.underlay_bgp is not True:
+        if self.shared_utils.underlay_bgp is not True and not self.shared_utils.is_wan_router:
             return None
 
         if self.shared_utils.overlay_routing_protocol == "none":
@@ -31,10 +32,10 @@ class PrefixListsMixin(UtilsMixin):
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
         sequence_numbers = [{"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv4_pool} eq 32"}]
 
-        if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0":
+        if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0" and not self.shared_utils.is_wan_router:
             sequence_numbers.append({"sequence": 20, "action": f"permit {self.shared_utils.vtep_loopback_ipv4_pool} eq 32"})
 
-        if self.shared_utils.vtep_vvtep_ip is not None and self.shared_utils.network_services_l3 is True:
+        if self.shared_utils.vtep_vvtep_ip is not None and self.shared_utils.network_services_l3 is True and not self.shared_utils.is_wan_router:
             sequence_numbers.append({"sequence": 30, "action": f"permit {self.shared_utils.vtep_vvtep_ip}"})
 
         prefix_lists = [{"name": "PL-LOOPBACKS-EVPN-OVERLAY", "sequence_numbers": sequence_numbers}]
@@ -45,6 +46,20 @@ class PrefixListsMixin(UtilsMixin):
                 for index, interface in enumerate(self.shared_utils.underlay_multicast_rp_interfaces)
             ]
             prefix_lists.append({"name": "PL-LOOPBACKS-PIM-RP", "sequence_numbers": sequence_numbers})
+
+        # TODO - may be needed in other situations
+        if self.shared_utils.wan_ha and self.shared_utils.underlay_routing_protocol == "ebgp":
+            sequence_numbers = [
+                {"sequence": 10 * (index + 1), "action": f"permit {ipaddress.ip_network(ip_address, strict=False)}"}
+                for index, ip_address in enumerate(self.shared_utils.wan_ha_ip_addresses)
+            ]
+            prefix_lists.append({"name": "PL-WAN-HA-PREFIXES", "sequence_numbers": sequence_numbers})
+
+            sequence_numbers = [
+                {"sequence": 10 * (index + 1), "action": f"permit {ipaddress.ip_network(ip_address, strict=False)}"}
+                for index, ip_address in enumerate(self.shared_utils.wan_ha_peer_ip_addresses)
+            ]
+            prefix_lists.append({"name": "PL-WAN-HA-PEER-PREFIXES", "sequence_numbers": sequence_numbers})
 
         return prefix_lists
 
@@ -59,7 +74,7 @@ class PrefixListsMixin(UtilsMixin):
         if self.shared_utils.underlay_ipv6 is not True:
             return None
 
-        if self.shared_utils.overlay_routing_protocol == "none":
+        if self.shared_utils.overlay_routing_protocol == "none" and not self.shared_utils.is_wan_router:
             return None
 
         if not self.shared_utils.underlay_filter_redistribute_connected:

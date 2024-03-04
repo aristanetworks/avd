@@ -1,6 +1,4 @@
 hostname: DC1.POD1.LEAF2A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65112.100'
@@ -133,6 +131,13 @@ router_bgp:
   vrfs:
   - name: Common_VRF
     router_id: 172.16.110.4
+    eos_cli: 'comment
+
+      Comment created from raw_eos_cli under BGP for VRF Common_VRF
+
+      EOF
+
+      '
     rd: 172.16.110.4:1025
     route_targets:
       import:
@@ -145,13 +150,6 @@ router_bgp:
         - 1025:1025
     redistribute_routes:
     - source_protocol: connected
-    eos_cli: 'comment
-
-      Comment created from raw_eos_cli under BGP for VRF Common_VRF
-
-      EOF
-
-      '
   - name: vrf_with_loopbacks_dc1_pod1_only
     router_id: 172.16.110.4
     rd: 172.16.110.4:1102
@@ -428,12 +426,12 @@ vlan_interfaces:
 - name: Vlan4085
   description: L2LEAF_INBAND_MGMT
   shutdown: false
-  ip_address: 172.21.110.2/24
-  ip_virtual_router_addresses:
-  - 172.21.110.1
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ip_address: 172.21.110.2/24
+  ip_virtual_router_addresses:
+  - 172.21.110.1
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_DC1-POD1-LEAF2B_Po5
@@ -780,6 +778,8 @@ virtual_source_nat_vrfs:
   ip_address: 10.100.0.4
 - name: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.101.4
+metadata:
+  platform: vEOS-LAB
 domain_list:
 - structured-config.set.on.node
 - structured-config.set.under.vrf.common-vrf

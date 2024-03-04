@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -13,7 +13,13 @@ keys:
         type: str
         valid_values:
         - boundary
-        - transparent
+        - disabled
+        - e2etransparent
+        - gptp
+        - ordinarymaster
+        - p2ptransparent
+      mode_one_step:
+        type: bool
       forward_unicast:
         type: bool
       clock_identity:

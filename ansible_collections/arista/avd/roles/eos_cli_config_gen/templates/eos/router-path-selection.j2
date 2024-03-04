@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,6 +9,13 @@
 router path-selection
 {%     if router_path_selection.peer_dynamic_source is arista.avd.defined %}
    peer dynamic source {{ router_path_selection.peer_dynamic_source }}
+{%     endif %}
+{%     if router_path_selection.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
+{%         set tcp_mss_ceiling_cli = "tcp mss ceiling ipv4" %}
+{%         if router_path_selection.tcp_mss_ceiling.ipv4_segment_size != "auto" %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " " ~ router_path_selection.tcp_mss_ceiling.ipv4_segment_size %}
+{%         endif %}
+   {{ tcp_mss_ceiling_cli }} {{ router_path_selection.tcp_mss_ceiling.direction | arista.avd.default("ingress") }}
 {%     endif %}
 {#  path group #}
 {%     for path_group in router_path_selection.path_groups | arista.avd.natural_sort('name') %}
@@ -20,6 +27,12 @@ router path-selection
    {{ path_group_def }}
 {%         if path_group.ipsec_profile is arista.avd.defined %}
       ipsec profile {{ path_group.ipsec_profile }}
+{%         endif %}
+{%         if path_group.keepalive.auto is arista.avd.defined(true) %}
+      keepalive interval auto
+{%         elif path_group.keepalive.interval is arista.avd.defined and
+                path_group.keepalive.failure_threshold is arista.avd.defined %}
+      keepalive interval {{ path_group.keepalive.interval }} milliseconds failure-threshold {{ path_group.keepalive.failure_threshold }} intervals
 {%         endif %}
 {%         if path_group.flow_assignment is arista.avd.defined %}
       flow assignment {{ path_group.flow_assignment }}

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -27,7 +27,7 @@ keys:
         sites:
           type: list
           description: |-
-            All sites are placed in a default zone called DEFAULT-ZONE with ID 1.
+            All sites are placed in a default zone "<region_name>-ZONE" with ID 1.
           primary_key: name
           items:
             type: dict
@@ -38,8 +38,8 @@ keys:
               id:
                 type: int
                 description: |-
-                  The site ID must be unique within a zone.
-                  Given that all the sites are placed in the DEFAULT-ZONE, the site ID must be unique within a region.
+                  The Site ID must be unique within a zone.
+                  Given that all the Sites are placed in a Zone named after the Region, the Site ID must be unique within a Region.
               location:
                 type: str
                 description: Will be interpreted

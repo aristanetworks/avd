@@ -1,6 +1,4 @@
 hostname: dc1-leaf1b
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65101'
@@ -70,6 +68,7 @@ router_bgp:
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
+  - source_protocol: attached-host
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -245,6 +244,9 @@ vlans:
 - id: 3402
   name: L2_VLAN3402
   tenant: TENANT1
+- id: 4085
+  tenant: system
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
@@ -297,6 +299,16 @@ vlan_interfaces:
   vrf: VRF11
   mtu: 1500
   ip_address: 10.255.1.97/31
+- name: Vlan4085
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_attached_host_route_export:
+    enabled: true
+    distance: 19
+  ip_address: 172.21.110.3/24
+  ip_virtual_router_addresses:
+  - 172.21.110.1
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_dc1-leaf1a_Po3
@@ -311,7 +323,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 11-12,21-22,3401-3402
+  vlans: 11-12,21-22,3401-3402,4085
   mlag: 8
 - name: Port-Channel5
   description: dc1-leaf1-server1_PortChannel dc1-leaf1-server1
@@ -371,6 +383,96 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
+- name: Ethernet41
+  peer: Cameras
+  peer_type: network_port
+  description: Cameras
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '50'
+  spanning_tree_portfast: edge
+- name: Ethernet42
+  peer: Cameras
+  peer_type: network_port
+  description: Cameras
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '50'
+  spanning_tree_portfast: edge
+- name: Ethernet43
+  peer: Cameras
+  peer_type: network_port
+  description: Cameras
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '50'
+  spanning_tree_portfast: edge
+- name: Ethernet44
+  peer: Cameras
+  peer_type: network_port
+  description: Cameras
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '50'
+  spanning_tree_portfast: edge
+- name: Ethernet45
+  peer: Cameras
+  peer_type: network_port
+  description: Cameras
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '50'
+  spanning_tree_portfast: edge
+- name: Ethernet46
+  peer: Cameras
+  peer_type: network_port
+  description: Cameras
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '50'
+  spanning_tree_portfast: edge
+- name: Ethernet47
+  peer: Cameras
+  peer_type: network_port
+  description: Cameras
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '50'
+  spanning_tree_portfast: edge
+- name: Ethernet48
+  peer: Cameras
+  peer_type: network_port
+  description: Cameras
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '50'
+  spanning_tree_portfast: edge
+- name: Ethernet49
+  peer: Cameras
+  peer_type: network_port
+  description: Cameras
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '50'
+  spanning_tree_portfast: edge
 - name: Ethernet5
   peer: dc1-leaf1-server1
   peer_interface: PCI2
@@ -402,6 +504,10 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 20
+    type: permit
+    match:
+    - ip address prefix-list PL-L2LEAF-INBAND-MGMT
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -428,6 +534,10 @@ prefix_lists:
     action: permit 10.255.0.0/27 eq 32
   - sequence: 20
     action: permit 10.255.1.0/27 eq 32
+- name: PL-L2LEAF-INBAND-MGMT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.21.110.0/24
 router_bfd:
   multihop:
     interval: 300
@@ -466,4 +576,6 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.10.4
 - name: VRF11
   ip_address: 10.255.11.4
+metadata:
+  platform: vEOS-lab
 dns_domain: dc1.local
