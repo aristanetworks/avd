@@ -189,8 +189,10 @@ class AvdStructuredConfigMlag(AvdFacts):
         """
         Return dict with Ethernet Interfaces used for MLAG Peer Link
         """
+
         if not (mlag_interfaces := self.shared_utils.mlag_interfaces):
             return None
+
         peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.mlag_peer, required=True)
         ethernet_interfaces = []
         for mlag_interface in mlag_interfaces:
