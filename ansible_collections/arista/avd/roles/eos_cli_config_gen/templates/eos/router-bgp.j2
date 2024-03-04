@@ -1743,6 +1743,6 @@ router bgp {{ router_bgp.as }}
 {%     endfor %}
 {%     if router_bgp.eos_cli is arista.avd.defined %}
    !
-   {{ router_bgp.eos_cli | indent(6, false) }}
+   {{ router_bgp.eos_cli | indent(3, false) }}
 {%     endif %}
 {% endif %}

@@ -17130,11 +17130,6 @@
             "next_hop_unchanged": {
               "type": "boolean",
               "title": "Next Hop Unchanged"
-            },
-            "eos_cli": {
-              "type": "string",
-              "description": "Multiline EOS CLI rendered directly on the Router BGP, Address family EVPN in the final EOS configuration.",
-              "title": "EOS CLI"
             }
           },
           "additionalProperties": false,
