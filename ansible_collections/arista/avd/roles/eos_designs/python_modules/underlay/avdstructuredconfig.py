@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
+from .agents import AgentsMixin
 from .as_path import AsPathMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
@@ -37,6 +38,7 @@ class AvdStructuredConfigUnderlay(
     StandardAccessListsMixin,
     StaticRoutesMixin,
     MplsMixin,
+    AgentsMixin,
 ):
     """
     The AvdStructuredConfig Class is imported used "get_structured_config" to render parts of the structured config.

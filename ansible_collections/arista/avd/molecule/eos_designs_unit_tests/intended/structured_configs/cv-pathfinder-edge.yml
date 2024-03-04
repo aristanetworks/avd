@@ -322,6 +322,11 @@ static_routes:
 - destination_address_prefix: 66.66.66.0/24
   gateway: 172.17.0.0
   vrf: default
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
