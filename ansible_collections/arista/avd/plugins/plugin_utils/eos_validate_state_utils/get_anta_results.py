@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import logging
 from asyncio import run
-from typing import TYPE_CHECKING, Mapping
+from typing import TYPE_CHECKING
 
 from yaml import CSafeLoader, YAMLError, dump, load
 
