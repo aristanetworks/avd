@@ -532,8 +532,8 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: INET
     - name: MPLS
+    - name: INET
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
     - name: MPLS
@@ -542,7 +542,7 @@ router_path_selection:
     path_groups:
     - name: INET
     - name: MPLS
-      priority: 42
+      priority: 4223
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
     - name: MPLS
@@ -564,9 +564,8 @@ router_path_selection:
       priority: 2
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: INET
     - name: MPLS
-    - name: LTE
+    - name: INET
 router_traffic_engineering:
   enabled: true
 stun:

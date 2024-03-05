@@ -221,8 +221,9 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     path_groups:
-    - name: INET
     - name: MPLS
+    - name: INET
+      priority: 42
   - name: LB-DEFAULT-AUTOVPN-POLICY-IT
     path_groups:
     - name: MPLS

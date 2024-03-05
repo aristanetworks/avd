@@ -25034,6 +25034,18 @@
             },
             "title": "Import Path Groups"
           },
+          "default_preference": {
+            "type": "string",
+            "description": "Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when\nthe path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.\n\nValid values are 1-65535 | \"preferred\" | \"alternate\".\n\n`preferred` is converted to priority 1.\n`alternate` is converted to priority 2.",
+            "default": "preferred",
+            "title": "Default Preference"
+          },
+          "excluded_from_default_policy": {
+            "type": "boolean",
+            "default": false,
+            "description": "When set to `true`, the path-group is excluded from AVD auto generated policies.",
+            "title": "Excluded From Default Policy"
+          },
           "dps_keepalive": {
             "type": "object",
             "description": "Period between the transmission of consecutive keepalive messages, and failure threshold.",
@@ -25275,8 +25287,7 @@
                   },
                   "preference": {
                     "type": "string",
-                    "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
-                    "default": "preferred",
+                    "description": "Valid values are 1-65535 | \"preferred\" | \"alternate\".\n\n\"preferred\" is converted to priority 1.\n\"alternate\" is converted to priority 2.\n\nIf not set, each path-group in `names` will be attributed its `default_preference`.",
                     "title": "Preference"
                   }
                 },
@@ -25398,8 +25409,7 @@
                           },
                           "preference": {
                             "type": "string",
-                            "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
-                            "default": "preferred",
+                            "description": "Valid values are 1-65535 | \"preferred\" | \"alternate\".\n\n\"preferred\" is converted to priority 1.\n\"alternate\" is converted to priority 2.\n\nIf not set, each path-group in `names` will be attributed its `default_preference`.",
                             "title": "Preference"
                           }
                         },
@@ -25506,8 +25516,7 @@
                         },
                         "preference": {
                           "type": "string",
-                          "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
-                          "default": "preferred",
+                          "description": "Valid values are 1-65535 | \"preferred\" | \"alternate\".\n\n\"preferred\" is converted to priority 1.\n\"alternate\" is converted to priority 2.\n\nIf not set, each path-group in `names` will be attributed its `default_preference`.",
                           "title": "Preference"
                         }
                       },
