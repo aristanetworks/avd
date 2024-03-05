@@ -209,6 +209,7 @@ router_path_selection:
   - name: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
+      priority: 42
   - name: LB-DEFAULT-AUTOVPN-POLICY-IT
     path_groups:
     - name: INET

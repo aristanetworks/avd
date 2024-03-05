@@ -87,8 +87,11 @@ wan_path_groups:
     id: 100
   - name: INET
     id: 101
+    default_preference: 42
   - name: LTE
     id: 102
+    # Testing this knob for AutoVPN
+    excluded_from_default_policy: true
 
 wan_carriers:
   - name: Comcast
