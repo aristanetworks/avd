@@ -461,7 +461,11 @@ interface Vlan4094
    ip address 169.254.252.0/31
    ipv6 address fe80::a/64 link-local
    pim ipv4 sparse-mode
+   pim ipv4 bidirectional
+   pim ipv4 hello interval 10
+   pim ipv4 hello count 3.5
    pim ipv4 dr-priority 200
+   pim ipv4 bfd
 ```
 
 ## BFD

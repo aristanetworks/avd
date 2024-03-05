@@ -20,6 +20,7 @@ spine:
           peer: peer2
           name: Ethernet2/2
           ip_address: dhcp
+          dhcp_ip_address: 14.18.39.45/24
           dhcp_accept_default_route: true
         - # custom description
           peer: peer3

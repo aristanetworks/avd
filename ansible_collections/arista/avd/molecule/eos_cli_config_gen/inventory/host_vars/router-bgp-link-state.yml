@@ -1,11 +1,12 @@
 router_bgp:
-  as: 65101
+  as: "65101.0001"
+  as_notation: asdot
   router_id: 192.168.255.3
   peer_groups:
     - name: PG-1
-      remote_as: 65001
+      remote_as: "65001.0002"
     - name: PG-2
-      remote_as: 65001
+      remote_as: "65001.0003"
   neighbors:
     - ip_address: 192.168.255.1
     - ip_address: 192.168.255.2

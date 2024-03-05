@@ -144,3 +144,13 @@ class ResultsManager:
             int: The total number of tests.
         """
         return self.total_tests_passed + self.total_tests_failed + self.total_tests_skipped + self.total_tests_not_run
+
+    @property
+    def sorted_category_stats(self) -> dict:
+        """A property that returns the category_stats dictionary sorted by key name.
+
+        Returns
+        -------
+            dict: The sorted category_stats dictionary.
+        """
+        return dict(sorted(self.category_stats.items()))

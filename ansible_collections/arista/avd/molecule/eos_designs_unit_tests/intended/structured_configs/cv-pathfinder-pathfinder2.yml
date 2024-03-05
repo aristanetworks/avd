@@ -142,6 +142,7 @@ ethernet_interfaces:
   ip_address: 10.9.9.9/31
   shutdown: false
   type: routed
+  description: SFR_999
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet2
@@ -149,6 +150,7 @@ ethernet_interfaces:
   ip_address: 172.19.9.9/31
   shutdown: false
   type: routed
+  description: ATT-MPLS_10999
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
@@ -176,6 +178,11 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
@@ -215,11 +222,21 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+management_security:
+  ssl_profiles:
+  - name: profileB
+    certificate:
+      file: profileB.crt
+      key: profileB.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: pathfinder
   profiles:
-  - name: CONTROL-PLANE-PROFILE
-    load_balance_policy: LB-CONTROL-PLANE-PROFILE
+  - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
   - name: DEFAULT-AVT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: DEFAULT-AVT-POLICY-DEFAULT
@@ -240,7 +257,7 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
-    - name: CONTROL-PLANE-PROFILE
+    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
       id: 254
     - name: DEFAULT-AVT-POLICY-VIDEO
       id: 3
@@ -277,8 +294,8 @@ router_adaptive_virtual_topology:
   policies:
   - name: DEFAULT-AVT-POLICY-WITH-CP
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-AVT-POLICY-CONTROL-PLANE
     - application_profile: VIDEO
       avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
@@ -325,6 +342,9 @@ router_path_selection:
       name: cv-pathfinder-pathfinder3
       ipv4_addresses:
       - 172.17.17.17
+    keepalive:
+      interval: 300
+      failure_threshold: 5
   - name: INET
     id: 101
     local_interfaces:
@@ -350,7 +370,7 @@ router_path_selection:
     flow_assignment: lan
   peer_dynamic_source: stun
   load_balance_policies:
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
     - name: LAN_HA
     - name: INET
@@ -413,6 +433,7 @@ stun:
     local_interfaces:
     - Ethernet1
     - Ethernet2
+    ssl_profile: profileB
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
@@ -424,9 +445,9 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   categories:
   - name: VIDEO1
     applications:
@@ -444,8 +465,8 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
-    - name: CONTROL-PLANE-APPLICATION
-      src_prefix_set_name: CONTROL-PLANE-APP-SRC-PREFIXES
+    - name: APP-CONTROL-PLANE
+      src_prefix_set_name: PFX-LOCAL-VTEP-IP
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -462,7 +483,7 @@ application_traffic_recognition:
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: CONTROL-PLANE-APP-SRC-PREFIXES
+    - name: PFX-LOCAL-VTEP-IP
       prefix_values:
       - 192.168.144.3/32
 dps_interfaces:
@@ -507,6 +528,7 @@ metadata:
         value: '10999'
   cv_pathfinder:
     role: pathfinder
+    ssl_profile: profileB
     vtep_ip: 192.168.144.3
     interfaces:
     - name: Ethernet1
@@ -543,7 +565,7 @@ metadata:
     - name: AVD_Land_West
       id: 42
       zones:
-      - name: DEFAULT-ZONE
+      - name: AVD_Land_West-ZONE
         id: 1
         sites:
         - name: Site422
@@ -557,7 +579,7 @@ metadata:
     - name: AVD_Land_East
       id: 43
       zones:
-      - name: DEFAULT-ZONE
+      - name: AVD_Land_East-ZONE
         id: 1
         sites:
         - name: Site511
@@ -567,7 +589,7 @@ metadata:
       vni: 1
       avts:
       - id: 254
-        name: CONTROL-PLANE-PROFILE
+        name: DEFAULT-AVT-POLICY-CONTROL-PLANE
         pathgroups:
         - name: LAN_HA
           preference: preferred
