@@ -243,7 +243,7 @@ wan_rr:
           # public IP here will be overriden by
           # wan_route_servers.path_groups.interfaces.ip_address
           # in CV_PATHFINDER_MULTI_RR_TESTS groups vars.
-          public_ip: 10.9.9.7/31
+          public_ip: 10.37.37.7/31
 
 wan_path_groups:
   - name: MPLS
