@@ -15,9 +15,22 @@ LOGGER = logging.getLogger(__name__)
 
 
 class ConfigManager:
-    """"""
-    def __init__(self, device_name: str, hostvars: Mapping):
-        """"""
+    """Configuration manager class for the eos_validate_state tests.
+
+    This class is used to manage the structured configuration of the devices and to generate variables for the eos_validate_state tests.
+
+    It should be initialized per device and the instance should be passed to the AvdTestBase subclasses.
+    """
+
+    def __init__(self, device_name: str, hostvars: Mapping) -> None:
+        """Initialize the ConfigManager class.
+
+        Args:
+        ----
+            device_name (str): The current device name for which the plugin is being run.
+            hostvars (Mapping): A mapping that contains a key for each device with a value of the structured_config.
+                                      When using Ansible, this is the `task_vars['hostvars']` object.
+        """
         self.device_name = device_name
         self.hostvars = hostvars
         self.structured_config = self.get_host_structured_config(host=device_name)
@@ -40,32 +53,32 @@ class ConfigManager:
             AristaAvdError: If host is not in hostvars or if its structured_config is not a mapping object.
         """
         if host not in self.hostvars:
-            raise AristaAvdError(f"Host '{host}' is missing from the hostvars.")
+            raise AristaAvdError(message=f"Host '{host}' is missing from the hostvars.")
         struct_cfg = self.hostvars[host]
 
         # Check if struct_cfg is a mapping object (e.g. Ansible 'hostvars' object or regular dict)
         if not isinstance(struct_cfg, Mapping):
-            raise AristaAvdError(f"Host '{host}' structured_config is not a dictionary or dictionary-like object.")
+            raise AristaAvdError(message=f"Host '{host}' structured_config is not a dictionary or dictionary-like object.")
 
         return struct_cfg
 
     def get_loopback0_mapping(self) -> list[tuple[str, str]]:
+        """Get the loopback0_mapping list."""
         return self._get_loopback_mappings["loopback0_mapping"]
 
     def get_vtep_mapping(self) -> list[tuple[str, str]]:
+        """Get the vtep_mapping list."""
         return self._get_loopback_mappings["vtep_mapping"]
 
     @cached_property
     def _get_loopback_mappings(self) -> dict:
-        """Generate variables for the eos_validate_state tests, which are used in AvdTestBase subclasses.
-
-        These variables include mappings for loopback and VTEP interfaces.
+        """Generate the loopback mappings for the eos_validate_state tests, which are used in AvdTestBase subclasses.
 
         Returns
         -------
             dict: A dictionary containing:
-            - "loopback0_mapping": a list of tuples where each tuple contains a hostname and its Loopback0 IP address.
-            - "vtep_mapping": a list of tuples where each tuple contains a hostname and its VTEP IP address if `Vxlan1` is the source_interface.
+            - "loopback0_mapping": A list of tuples where each tuple contains a hostname and its Loopback0 IP address.
+            - "vtep_mapping": A list of tuples where each tuple contains a hostname and its VTEP IP address if `Vxlan1` is the source_interface.
 
         """
         results = {"loopback0_mapping": [], "vtep_mapping": []}

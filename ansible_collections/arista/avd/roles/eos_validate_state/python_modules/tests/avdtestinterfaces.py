@@ -11,6 +11,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.get import get
 
 LOGGER = logging.getLogger(__name__)
 
+
 class AvdTestInterfacesState(AvdTestBase):
     """
     AvdTestInterfacesState class for interfaces state tests.
@@ -55,7 +56,7 @@ class AvdTestInterfacesState(AvdTestBase):
                 }
             )
 
-        def generate_test_details(interface: dict, description_template: str) -> tuple(str, str, str):
+        def generate_test_details(interface: dict, description_template: str) -> tuple[str, str, str]:
             """
             Generates the state, protocol status, and description for a given interface.
 
@@ -80,7 +81,8 @@ class AvdTestInterfacesState(AvdTestBase):
                 if not self.validate_data(data=interface, data_path=f"{interface_key}.[{idx}]", required_keys=required_keys):
                     continue
                 if interface.get("validate_state", True) is False:
-                    LOGGER.info("Interface '%s' validate_state is set to False.", interface["name"])
+                    log_msg = f"Interface '{interface['name']}' variable 'validate_state' is set to False. {self.__class__.__name__} is skipped."
+                    LOGGER.info(log_msg)
                     continue
                 state, proto, description = generate_test_details(interface, description_template)
                 intf_description = interface.get("description")

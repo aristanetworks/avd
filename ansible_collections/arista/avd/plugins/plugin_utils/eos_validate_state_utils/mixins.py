@@ -10,93 +10,101 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, g
 
 LOGGER = logging.getLogger(__name__)
 
+
 class DeviceUtilsMixin:
-  """"""
+    """Mixin class for the eos_validate_state tests.
 
-  def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:
-      """Update the interface shutdown key, considering EOS default.
+    This class provides utility methods for handling and manipulating device-related data.
 
-      For Ethernet interfaces:
-      - If the interface shutdown key is not set, the host interface_defaults.ethernet.shutdown key is used
-      - If the host interface_defaults.ethernet.shutdown key is not set, the interface shutdown key is set to False.
+    It should be used as a mixin class in the AvdTestBase classes.
+    """
 
-      For other interfaces, the shutdown key is updated using the interface shutdown key if available or set to False.
+    def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:
+        """Update the interface shutdown key, considering EOS default.
 
-      Args:
-      ----
-          interface (dict): The interface to verify.
-          host (str): Host to verify. Defaults to the host running the test.
-      """
-      host_struct_cfg = self.config_manager.get_host_structured_config(host=host) if host else self.structured_config
-      if "Ethernet" in get(interface, "name", ""):
-          interface["shutdown"] = default(get(interface, "shutdown"), get(host_struct_cfg, "interface_defaults.ethernet.shutdown"), False)
-      else:
-          interface["shutdown"] = get(interface, "shutdown", default=False)
+        For Ethernet interfaces:
+        - If the interface `shutdown` key is not set, the host `interface_defaults.ethernet.shutdown` key is used.
+        - If the host `interface_defaults.ethernet.shutdown` key is not set, the interface `shutdown` key is set to False.
 
+        For other interfaces, the `shutdown` key is updated using the interface `shutdown` key if available or set to False.
 
-  def is_peer_available(self, peer: str) -> bool:
-      """Check if a peer is deployed by looking at his `is_deployed` key.
+        Args:
+        ----
+            interface (dict): The interface to verify.
+            host (str): Host to verify. Defaults to the host running the test.
+        """
+        host_struct_cfg = self.config_manager.get_host_structured_config(host=host) if host else self.structured_config
+        if "Ethernet" in get(interface, "name", ""):
+            interface["shutdown"] = default(get(interface, "shutdown"), get(host_struct_cfg, "interface_defaults.ethernet.shutdown"), False)
+        else:
+            interface["shutdown"] = get(interface, "shutdown", default=False)
 
-      Args:
-      ----
-          peer (str): The peer to verify.
+    def is_peer_available(self, peer: str) -> bool:
+        """Check if a peer is deployed by looking at his `is_deployed` key.
 
-      Returns:
-      -------
-          bool: True if the peer is deployed, False otherwise.
-      """
-      if peer not in self.hostvars:
-          log_msg = f"Peer '{peer}' is not configured by AVD. {self.__class__.__name__} is skipped."
-          LOGGER.info(log_msg)
-          return False
-      if not get(self.hostvars[peer], "is_deployed", True):
-          log_msg = f"Peer '{peer}' is marked as not deployed. {self.__class__.__name__} is skipped."
-          LOGGER.info(log_msg)
-          return False
-      return True
+        Args:
+        ----
+            peer (str): The peer to verify.
 
-  def get_interface_ip(self, interface_model: str, interface_name: str, host: str | None = None) -> str | None:
-      """Retrieve the IP address of a specified host interface.
+        Returns:
+        -------
+            bool: True if the peer is deployed, False otherwise.
+        """
+        if peer not in self.hostvars:
+            log_msg = f"Peer '{peer}' is not configured by AVD. {self.__class__.__name__} is skipped."
+            LOGGER.info(log_msg)
+            return False
+        if not get(self.hostvars[peer], "is_deployed", True):
+            log_msg = f"Peer '{peer}' is marked as not deployed. {self.__class__.__name__} is skipped."
+            LOGGER.info(log_msg)
+            return False
+        return True
 
-      Args:
-      ----
-          interface_model (str): Interface model in the structured config (e.g., ethernet_interfaces).
-          interface_name (str): Interface name to retrive the IP.
-          host (str): Host to verify. Defaults to the host running the test.
+    def get_interface_ip(self, interface_model: str, interface_name: str, host: str | None = None) -> str | None:
+        """Retrieve the IP address of a specified host interface.
 
-      Returns:
-      -------
-          str | None: IP address of the host interface or None if unavailable.
-      """
-      host_struct_cfg = self.config_manager.get_host_structured_config(host=host) if host else self.structured_config
-      try:
-          interfaces = get(host_struct_cfg, interface_model, required=True)
-          interface = get_item(interfaces, "name", interface_name, required=True)
-          return get(interface, "ip_address", required=True)
-      except AristaAvdMissingVariableError:
-          log_msg = f"Host '{host or self.device_name}' interface '{interface_name}' IP address is unavailable. {self.__class__.__name__} is skipped."
-          LOGGER.warning(log_msg)
-          return None
+        Args:
+        ----
+            interface_model (str): Interface model in the structured config (e.g., ethernet_interfaces).
+            interface_name (str): Interface name to retrive the IP.
+            host (str): Host to verify. Defaults to the host running the test.
 
-  def is_subinterface(self, interface: dict) -> bool:
-      """Check if the interface is a subinterface.
+        Returns:
+        -------
+            str | None: IP address of the host interface or None if unavailable.
+        """
+        host_struct_cfg = self.config_manager.get_host_structured_config(host=host) if host else self.structured_config
+        try:
+            interfaces = get(host_struct_cfg, interface_model, required=True)
+            interface = get_item(interfaces, "name", interface_name, required=True)
+            return get(interface, "ip_address", required=True)
+        except AristaAvdMissingVariableError:
+            log_msg = f"Host '{host or self.device_name}' interface '{interface_name}' IP address is unavailable. {self.__class__.__name__} is skipped."
+            LOGGER.warning(log_msg)
+            return None
 
-      Args:
-      ----
-          interface (dict): The interface to verify.
+    def is_subinterface(self, interface: dict) -> bool:
+        """Check if the interface is a subinterface.
 
-      Returns:
-      -------
-          bool: True if the interface is a subinterface, False otherwise.
-      """
-      if "." not in interface.get("name", ""):
-          log_msg = f"Interface '{interface.get('name')}' is not a subinterface. {self.__class__.__name__} is skipped."
-          LOGGER.info(log_msg)
-          return False
-      return True
+        Args:
+        ----
+            interface (dict): The interface to verify.
+
+        Returns:
+        -------
+            bool: True if the interface is a subinterface, False otherwise.
+        """
+        return "." in interface.get("name", "")
+
 
 class ValidationMixin:
-    """"""
+    """Mixin class for the eos_validate_state tests.
+
+    This class provides validation methods for the structured configuration data.
+
+    It should be used as a mixin class in the AvdTestBase classes.
+    """
+
     def validate_data(
         self,
         data: dict | None = None,
@@ -104,12 +112,12 @@ class ValidationMixin:
         host: str | None = None,
         required_keys: str | list[str] | None = None,
         logging_level: str = "INFO",
-        **kwargs,
+        **kwargs: dict,
     ) -> bool:
-        """
-        Validates data based on given requirements such as expected key-value pairs and required keys.
+        """Validate data based on given requirements such as expected key-value pairs and required keys.
 
         Args:
+        ----
             data (dict | None): A data dictionary to be validated. Defaults to the structured_config of the device running the test.
             data_path (str | None): The data path in dot notation. Used for logging purposes. Index or primary key can be used for lists.
             host (str | None): The host from which data should be retrieved. Defaults to the device running the test.
@@ -118,23 +126,24 @@ class ValidationMixin:
             **kwargs: Expected key-value pairs in the data.
 
         Returns:
+        -------
             bool: True if the data meets all validation requirements, otherwise False.
 
         Example:
+        -------
             >>> validate_data(data={"a": 1, "b": 2}, data_path="some.path", required_keys=["a", "b"], c=3)
 
             In this case, the function will log a warning message because the key 'c' with value '3' is not found,
             and it will return False as the data doesn't meet all validation requirements.
         """
-        message = f"{self.__class__.__name__} is skipped."
-        
+        message = f"{self.__class__.__name__} is skipped"
+
         data = data or (self.config_manager.get_host_structured_config(host=host) if host else self.structured_config)
         valid = True
 
         # Check the expected key/value pairs first
         for key, value in kwargs.items():
             actual_value = get(data, key)
-            # TODO: Simplify this
             if actual_value is None:
                 log_message(key=key, key_path=data_path, message=message, log_level=logging_level, key_missing=True)
                 valid = False

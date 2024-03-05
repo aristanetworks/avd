@@ -38,7 +38,7 @@ __all__ = [
     "get_templar",
     "groupby",
     "load_python_class",
-    "log_message"
+    "log_message",
     "replace_or_append_item",
     "template",
     "template_var",
