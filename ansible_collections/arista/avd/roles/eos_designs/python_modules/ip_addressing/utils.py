@@ -149,5 +149,5 @@ class UtilsMixin:
 
         if downlink_pool is None:
             return (uplink_pool, uplink_offset)
-        
+
         return (downlink_pool, downlink_offset)
