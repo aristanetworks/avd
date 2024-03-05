@@ -55,6 +55,10 @@ wan_router:
           wan_circuit_id: 666
           ip_address: dhcp
           dhcp_accept_default_route: true
+        - name: Ethernet2
+          wan_carrier: MPLS-SP-1
+          wan_circuit_id: Cat6
+          ip_address: 10.14.14.14/31
 
 wan_rr:
   defaults:
@@ -97,6 +101,8 @@ wan_carriers:
     path_group: INET
   - name: ATT
     path_group: INET
+  - name: MPLS-SP-1
+    path_group: MPLS
 
 # SVI and L2VLAN is inserted to ensure these are *not* rendered.
 tenants:
