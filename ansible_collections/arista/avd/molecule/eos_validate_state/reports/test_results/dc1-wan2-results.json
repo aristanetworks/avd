@@ -1,6 +1,6 @@
 [
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyTacacsServerGroups",
     "categories": [
       "aaa"
@@ -8,7 +8,7 @@
     "description": "Verifies if the provided TACACS server group(s) are configured."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyTacacsServers",
     "categories": [
       "aaa"
@@ -16,7 +16,7 @@
     "description": "Verifies TACACS servers are configured for a specified VRF."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyTacacsSourceIntf",
     "categories": [
       "aaa"
@@ -24,7 +24,7 @@
     "description": "Verifies TACACS source-interface for a specified VRF."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyAcctConsoleMethods",
     "categories": [
       "aaa"
@@ -32,7 +32,7 @@
     "description": "Verifies the AAA accounting console method lists for different accounting types (system, exec, commands, dot1x)."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyAcctDefaultMethods",
     "categories": [
       "aaa"
@@ -40,7 +40,7 @@
     "description": "Verifies the AAA accounting default method lists for different accounting types (system, exec, commands, dot1x)."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyAuthenMethods",
     "categories": [
       "aaa"
@@ -48,7 +48,7 @@
     "description": "Verifies the AAA authentication method lists for different authentication types (login, enable, dot1x)."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyAuthzMethods",
     "categories": [
       "aaa"
@@ -56,7 +56,34 @@
     "description": "Verifies the AAA authorization method lists for different authorization types (commands, exec)."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
+    "test": "VerifyRoutingProtocolModel",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the configured routing protocol model.",
+    "custom_field": "Routing protocol model: multi-agent"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.4"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.6"
+  },
+  {
+    "name": "dc1-wan2",
     "test": "VerifyRunningConfigDiffs",
     "categories": [
       "configuration"
@@ -64,7 +91,7 @@
     "description": "Verifies there is no difference between the running-config and the startup-config"
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyZeroTouch",
     "categories": [
       "configuration"
@@ -72,7 +99,7 @@
     "description": "Verifies ZeroTouch is disabled"
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyFieldNotice72Resolution",
     "categories": [
       "field notices",
@@ -81,7 +108,7 @@
     "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyFieldNotice44Resolution",
     "categories": [
       "field notices",
@@ -90,7 +117,7 @@
     "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyTemperature",
     "categories": [
       "hardware"
@@ -98,7 +125,7 @@
     "description": "Verifies if the device temperature is within the acceptable range."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyTemperature",
     "categories": [
       "hardware"
@@ -106,7 +133,7 @@
     "description": "Verifies if the device temperature is within the acceptable range."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyEnvironmentCooling",
     "categories": [
       "hardware"
@@ -114,7 +141,7 @@
     "description": "Verifies if the fans status are within the accepted states list."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyEnvironmentCooling",
     "categories": [
       "hardware"
@@ -122,7 +149,7 @@
     "description": "Verifies if the fans status are within the accepted states list."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyEnvironmentPower",
     "categories": [
       "hardware"
@@ -130,7 +157,7 @@
     "description": "Verifies if the power supplies status are within the accepted states list."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyEnvironmentPower",
     "categories": [
       "hardware"
@@ -138,7 +165,7 @@
     "description": "Verifies if the power supplies status are within the accepted states list."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyTransceiversTemperature",
     "categories": [
       "hardware"
@@ -146,7 +173,7 @@
     "description": "Verifies that all transceivers are operating within the acceptable temperature range."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyEnvironmentSystemCooling",
     "categories": [
       "hardware"
@@ -154,7 +181,7 @@
     "description": "Verifies the system cooling status."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyTransceiversManufacturers",
     "categories": [
       "hardware"
@@ -162,7 +189,7 @@
     "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyTransceiversManufacturers",
     "categories": [
       "hardware"
@@ -170,7 +197,7 @@
     "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyAdverseDrops",
     "categories": [
       "hardware"
@@ -178,196 +205,88 @@
     "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyInterfacesStatus",
     "categories": [
       "Interface State"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'adminDown'",
-    "custom_field": "Ethernet2 - DC1-LEAF2B_Ethernet8"
+    "description": "DPS Interface Status & Line Protocol == 'up'",
+    "custom_field": "Dps1 - DPS Interface"
   },
   {
-    "name": "dc1-leaf2c",
-    "test": "VerifyInterfacesStatus",
-    "categories": [
-      "Interface State"
-    ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet1 - DC1-LEAF2A_Ethernet8"
-  },
-  {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyInterfacesStatus",
     "categories": [
       "Interface State"
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet5 - dc1-leaf2-server1_iLO"
+    "custom_field": "Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet7"
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyInterfacesStatus",
     "categories": [
       "Interface State"
     ],
-    "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "custom_field": "Port-Channel1 - DC1_L3_LEAF2_Po8"
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "custom_field": "Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet7"
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyInterfacesStatus",
     "categories": [
       "Interface State"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan4085 - L2LEAF_INBAND_MGMT"
+    "description": "Loopback Interface Status & Line Protocol == 'up'",
+    "custom_field": "Loopback0 - Router_ID"
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vxlan Interface Status & Line Protocol == 'up'",
+    "custom_field": "Vxlan1"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "custom_field": "Source: dc1-wan2_Ethernet1 - Destination: dc1-leaf1a_Ethernet7"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "custom_field": "Source: dc1-wan2_Ethernet2 - Destination: dc1-leaf1b_Ethernet7"
+  },
+  {
+    "name": "dc1-wan2",
     "test": "VerifyLLDPNeighbors",
     "categories": [
       "LLDP Topology"
     ],
     "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet1 - remote: dc1-leaf2a_Ethernet8"
+    "custom_field": "local: Ethernet1 - remote: dc1-leaf1a_Ethernet7"
   },
   {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
+    "name": "dc1-wan2",
+    "test": "VerifyLLDPNeighbors",
     "categories": [
-      "Loopback0 Reachability"
+      "LLDP Topology"
     ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.1"
+    "description": "LLDP topology - validate peer and interface",
+    "custom_field": "local: Ethernet2 - remote: dc1-leaf1b_Ethernet7"
   },
   {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.2"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.3"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.4"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.5"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.11"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.12"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.13"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.14"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.15"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.16"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.17"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.18"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.2.1"
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.2.2"
-  },
-  {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyNTP",
     "categories": [
       "NTP"
@@ -376,7 +295,7 @@
     "custom_field": "NTP"
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
       "security"
@@ -384,7 +303,7 @@
     "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifySnmpIPv4Acl",
     "categories": [
       "snmp"
@@ -392,7 +311,7 @@
     "description": "Verifies if the SNMP agent has IPv4 ACL(s) configured."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifySnmpIPv6Acl",
     "categories": [
       "snmp"
@@ -400,7 +319,7 @@
     "description": "Verifies if the SNMP agent has IPv6 ACL(s) configured."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifySnmpStatus",
     "categories": [
       "snmp"
@@ -408,7 +327,7 @@
     "description": "Verifies if the SNMP agent is enabled."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyEOSVersion",
     "categories": [
       "software"
@@ -416,7 +335,7 @@
     "description": "Verifies the device is running one of the allowed EOS version."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyTerminAttrVersion",
     "categories": [
       "software"
@@ -424,7 +343,7 @@
     "description": "Verifies the device is running one of the allowed TerminAttr version."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyNTP",
     "categories": [
       "system"
@@ -432,7 +351,7 @@
     "description": "This test verifies if NTP is synchronised."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyUptime",
     "categories": [
       "system"
@@ -440,7 +359,7 @@
     "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyCoredump",
     "categories": [
       "system"
@@ -448,7 +367,7 @@
     "description": "This test verifies if there are core dump files in the /var/core directory."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyAgentLogs",
     "categories": [
       "system"
@@ -456,7 +375,7 @@
     "description": "This test verifies that no agent crash reports are present on the device."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyFileSystemUtilization",
     "categories": [
       "system"
@@ -464,7 +383,7 @@
     "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyReloadCause",
     "categories": [
       "system"
@@ -472,7 +391,7 @@
     "description": "This test verifies the last reload cause of the device."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyCPUUtilization",
     "categories": [
       "system"
@@ -480,7 +399,7 @@
     "description": "This test verifies whether the CPU utilization is below 75%."
   },
   {
-    "name": "dc1-leaf2c",
+    "name": "dc1-wan2",
     "test": "VerifyMemoryUtilization",
     "categories": [
       "system"

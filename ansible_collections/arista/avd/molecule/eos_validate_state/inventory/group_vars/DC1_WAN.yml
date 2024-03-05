@@ -1,0 +1,26 @@
+type: wan_router
+
+overlay_routing_protocol: ibgp
+
+wan_router: # dynamic_key: node_type
+  defaults:
+    cv_pathfinder_region: Global
+    cv_pathfinder_site: DC1
+    loopback_ipv4_pool: 10.255.2.0/27
+    vtep_loopback_ipv4_pool: 10.255.1.0/27
+    uplink_ipv4_pool: 10.255.255.0/26
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: [dc1-leaf1a, dc1-leaf1b]
+    uplink_type: p2p-vrfs
+  node_groups:
+    - group: DC1-WAN
+      bgp_as: 65000
+      nodes:
+        - name: dc1-wan1
+          id: 1
+          mgmt_ip: 172.16.1.15/24
+          uplink_switch_interfaces: [Ethernet6, Ethernet6]
+        - name: dc1-wan2
+          id: 2
+          mgmt_ip: 172.16.1.16/24
+          uplink_switch_interfaces: [Ethernet7, Ethernet7]

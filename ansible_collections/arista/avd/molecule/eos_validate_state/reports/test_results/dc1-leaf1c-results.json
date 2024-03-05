@@ -183,15 +183,6 @@
     "categories": [
       "Interface State"
     ],
-    "description": "DPS Interface Status & Line Protocol == 'up'",
-    "custom_field": "Dps1 - Test DPS Interface"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyInterfacesStatus",
-    "categories": [
-      "Interface State"
-    ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
     "custom_field": "Ethernet1 - DC1-LEAF1A_Ethernet8"
   },
@@ -365,6 +356,24 @@
     ],
     "description": "Inband Mgmt Reachability",
     "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.18"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.2.1"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.2.2"
   },
   {
     "name": "dc1-leaf1c",

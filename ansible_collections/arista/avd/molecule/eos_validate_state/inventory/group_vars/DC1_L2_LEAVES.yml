@@ -2,8 +2,3 @@
 ### group_vars/DC1_L2_LEAVES.yml
 
 type: l2leaf
-
-# Add DPS1 Interface
-custom_structured_configuration_dps_interfaces:
-  - name: Dps1
-    description: Test DPS Interface

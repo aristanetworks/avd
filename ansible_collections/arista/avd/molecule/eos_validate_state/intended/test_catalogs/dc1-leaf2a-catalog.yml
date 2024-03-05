@@ -182,6 +182,28 @@ anta.tests.connectivity:
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
+    - destination: 10.255.2.1
+      repeat: 1
+      source: 10.255.0.5
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.2.1'
+      description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.2.2
+      repeat: 1
+      source: 10.255.0.5
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.2.2'
+      description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
     - destination: 10.255.128.11
       repeat: 1
       source: 10.255.0.5
@@ -532,16 +554,6 @@ anta.tests.interfaces:
       description: Loopback Interface Status & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Dps1
-      protocol_status: up
-      state: up
-    result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Dps1 - DPS Interface
-      description: DPS Interface Status & Line Protocol == 'up'
-- VerifyInterfacesStatus:
-    interfaces:
     - interface: Vxlan1
       protocol_status: up
       state: up
@@ -663,6 +675,22 @@ anta.tests.routing.generic:
       description: Remote Lo0 address
     routes:
     - 10.255.0.5
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.2.1
+      description: Remote Lo0 address
+    routes:
+    - 10.255.2.1
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.2.2
+      description: Remote Lo0 address
+    routes:
+    - 10.255.2.2
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:

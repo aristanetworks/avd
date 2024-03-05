@@ -55,6 +55,16 @@ router_bgp:
     remote_as: '65100'
     peer: dc1-spine2
     description: dc1-spine2_Ethernet1
+  - ip_address: 10.255.255.1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: dc1-wan1
+    description: dc1-wan1_Ethernet1
+  - ip_address: 10.255.255.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: dc1-wan2
+    description: dc1-wan2_Ethernet1
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc1-spine1
@@ -373,6 +383,24 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.3/31
+- name: Ethernet6
+  peer: dc1-wan1
+  peer_interface: Ethernet1
+  peer_type: wan_router
+  description: P2P_LINK_TO_DC1-WAN1_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.255.0/31
+- name: Ethernet7
+  peer: dc1-wan2
+  peer_interface: Ethernet1
+  peer_type: wan_router
+  description: P2P_LINK_TO_DC1-WAN2_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.255.4/31
 - name: Ethernet8
   peer: dc1-leaf1c
   peer_interface: Ethernet1
@@ -513,6 +541,3 @@ virtual_source_nat_vrfs:
 metadata:
   platform: vEOS-lab
 dns_domain: dc1.local
-dps_interfaces:
-- name: Dps1
-  description: DPS Interface

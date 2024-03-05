@@ -246,15 +246,6 @@
     "categories": [
       "Interface State"
     ],
-    "description": "DPS Interface Status & Line Protocol == 'up'",
-    "custom_field": "Dps1 - DPS Interface"
-  },
-  {
-    "name": "dc1-leaf2a",
-    "test": "VerifyInterfacesStatus",
-    "categories": [
-      "Interface State"
-    ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
     "custom_field": "Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet3"
   },
@@ -647,6 +638,24 @@
   },
   {
     "name": "dc1-leaf2a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.2.1"
+  },
+  {
+    "name": "dc1-leaf2a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "custom_field": "Source: dc1-leaf2a - 10.255.0.5/32 Destination: 10.255.2.2"
+  },
+  {
+    "name": "dc1-leaf2a",
     "test": "VerifyMlagStatus",
     "categories": [
       "mlag"
@@ -794,6 +803,24 @@
     ],
     "description": "Remote Lo0 address",
     "custom_field": "10.255.128.18"
+  },
+  {
+    "name": "dc1-leaf2a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "custom_field": "10.255.2.1"
+  },
+  {
+    "name": "dc1-leaf2a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "custom_field": "10.255.2.2"
   },
   {
     "name": "dc1-leaf2a",

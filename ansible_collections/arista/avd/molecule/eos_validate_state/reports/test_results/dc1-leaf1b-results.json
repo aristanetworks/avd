@@ -98,6 +98,15 @@
       "BGP"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.3"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.4"
   },
   {
@@ -108,6 +117,15 @@
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.6"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.7"
   },
   {
     "name": "dc1-leaf1b",
@@ -237,15 +255,6 @@
     "categories": [
       "Interface State"
     ],
-    "description": "DPS Interface Status & Line Protocol == 'up'",
-    "custom_field": "Dps1 - DPS Interface"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyInterfacesStatus",
-    "categories": [
-      "Interface State"
-    ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
     "custom_field": "Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet2"
   },
@@ -284,6 +293,24 @@
     ],
     "description": "Ethernet Interface & Line Protocol == 'up'",
     "custom_field": "Ethernet5 - dc1-leaf1-server1_PCI2"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "custom_field": "Ethernet6 - P2P_LINK_TO_DC1-WAN1_Ethernet2"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "custom_field": "Ethernet7 - P2P_LINK_TO_DC1-WAN2_Ethernet2"
   },
   {
     "name": "dc1-leaf1b",
@@ -467,6 +494,24 @@
   },
   {
     "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "custom_field": "Source: dc1-leaf1b_Ethernet6 - Destination: dc1-wan1_Ethernet2"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "custom_field": "Source: dc1-leaf1b_Ethernet7 - Destination: dc1-wan2_Ethernet2"
+  },
+  {
+    "name": "dc1-leaf1b",
     "test": "VerifyLLDPNeighbors",
     "categories": [
       "LLDP Topology"
@@ -500,6 +545,24 @@
     ],
     "description": "LLDP topology - validate peer and interface",
     "custom_field": "local: Ethernet4 - remote: dc1-leaf1a_Ethernet4"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "custom_field": "local: Ethernet6 - remote: dc1-wan1_Ethernet2"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "custom_field": "local: Ethernet7 - remote: dc1-wan2_Ethernet2"
   },
   {
     "name": "dc1-leaf1b",
@@ -626,6 +689,24 @@
     ],
     "description": "Loopback0 Reachability",
     "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.18"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.2.1"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.2.2"
   },
   {
     "name": "dc1-leaf1b",
@@ -760,6 +841,24 @@
     ],
     "description": "Remote Lo0 address",
     "custom_field": "10.255.128.18"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "custom_field": "10.255.2.1"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "custom_field": "10.255.2.2"
   },
   {
     "name": "dc1-leaf1b",
