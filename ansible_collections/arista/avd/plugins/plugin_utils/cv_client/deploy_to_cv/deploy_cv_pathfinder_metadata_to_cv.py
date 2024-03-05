@@ -12,7 +12,7 @@ from .models import CVDevice, CVPathfinderMetadata, DeployToCvResult
 
 LOGGER = getLogger(__name__)
 
-CV_PATHFINDER_METADATA_STUDIO_ID = "studio-caravan"
+CV_PATHFINDER_METADATA_STUDIO_ID = "studio-avd-pathfinder-metadata"
 CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {"pathfinders": [], "pathgroups": [], "regions": [], "routers": [], "vrfs": [], "version": "3"}
 
 
@@ -90,6 +90,7 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
     edge_metadata = {
         "inputs": {
             "router": {
+                "sslProfileName": metadata.get("ssl_profile", ""),
                 "pathfinders": [{"vtepIp": pathfinder["vtep_ip"]} for pathfinder in metadata.get("pathfinders", [])],
                 "region": metadata.get("region", ""),
                 "role": role,
@@ -144,6 +145,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     region: EMEA
     role: "transit region"
     site: Paris
+    ssl_profile: VERYSAFE
     vtep_ip: 10.10.10.10
     interfaces:
       - name: Ethernet1
@@ -209,6 +211,15 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     existing_studio_inputs = await cv_client.get_studio_inputs(
         studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS
     )
+
+    # Ensure the metadata studio schema match our supported version
+    if (studio_version := existing_studio_inputs.get("version")) != "3":
+        LOGGER.warning(
+            "deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '%s'. This plugin only accepts version '3'. Skipping upload of metadata.",
+            studio_version,
+        )
+        return
+
     studio_inputs = deepcopy(existing_studio_inputs)
 
     # Walk through given metadata, skip missing devices or invalid roles.
