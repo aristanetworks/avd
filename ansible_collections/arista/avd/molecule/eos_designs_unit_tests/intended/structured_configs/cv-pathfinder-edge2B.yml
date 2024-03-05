@@ -387,6 +387,11 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
@@ -561,6 +566,9 @@ router_path_selection:
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
       - 172.16.0.1
+    keepalive:
+      interval: 300
+      failure_threshold: 5
   - name: LAN_HA
     id: 65535
     flow_assignment: lan

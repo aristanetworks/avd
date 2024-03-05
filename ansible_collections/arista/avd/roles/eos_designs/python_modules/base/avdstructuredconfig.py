@@ -674,6 +674,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
         ptp = {
             "mode": get(self.shared_utils.switch_data_combined, "ptp.mode", default="boundary"),
+            "mode_one_step": get(self.shared_utils.switch_data_combined, "ptp.mode_one_step"),
             "forward_unicast": get(self.shared_utils.switch_data_combined, "ptp.forward_unicast"),
             "clock_identity": get(self.shared_utils.switch_data_combined, "ptp.clock_identity", default=default_clock_identity),
             "source": {"ip": get(self.shared_utils.switch_data_combined, "ptp.source_ip")},

@@ -276,6 +276,11 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
@@ -440,6 +445,8 @@ router_path_selection:
     dynamic_peers:
       enabled: true
     ipsec_profile: CP-PROFILE
+    keepalive:
+      auto: true
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:

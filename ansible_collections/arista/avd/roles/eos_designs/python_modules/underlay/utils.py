@@ -274,4 +274,8 @@ class UtilsMixin:
         # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
         self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
 
+        # Configuring flow tracking on LAN interfaces of WAN routers
+        if self.shared_utils.is_cv_pathfinder_client:
+            subinterface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
         return strip_empties_from_dict(subinterface)
