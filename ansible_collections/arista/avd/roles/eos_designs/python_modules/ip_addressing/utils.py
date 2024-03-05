@@ -116,27 +116,29 @@ class UtilsMixin:
         # Find index of uplink_interface going to the same uplink_switch (in case of parallel uplinks)
         return uplink_switch_indexes.index(uplink_switch_index)
 
-    def _get_downlink_ipv4_pool(self: "AvdIpAddressing", uplink_switch_index: int) -> str | None:
+    def _get_downlink_ipv4_pool_and_offset(self: "AvdIpAddressing", uplink_switch_index: int) -> tuple[str, int]:
         uplink_switch_interface = self.shared_utils.uplink_switch_interfaces[uplink_switch_index]
         uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
         peer_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
         downlink_pools = get(peer_facts, "downlink_pools")
 
         if not downlink_pools:
-            return None
+            return (None, None)
 
         for downlink_pool_and_interfaces in downlink_pools:
             downlink_interfaces = range_expand(get(downlink_pool_and_interfaces, "downlink_interfaces"))
 
-            if uplink_switch_interface in downlink_interfaces:
-                # Return IPv4 if uplink_switch_interface is present in downlink_interfaces
-                return get(downlink_pool_and_interfaces, "downlink_ipv4_pool")
+            for interface_index, downlink_interface in enumerate(downlink_interfaces):
+                if uplink_switch_interface == downlink_interface:
+                    return (get(downlink_pool_and_interfaces, "downlink_ipv4_pool"), interface_index)
 
-            # Do some checking if a defined pool was not matched, dangling interfaces, currently this does nothing
-
-    def _get_p2p_ipv4_pool(self: "AvdIpAddressing", uplink_switch_index: int) -> str:
+    def _get_p2p_ipv4_pool_and_offset(self: "AvdIpAddressing", uplink_switch_index: int) -> tuple[str, int]:
         uplink_pool = self.shared_utils.uplink_ipv4_pool
-        downlink_pool = self._get_downlink_ipv4_pool(uplink_switch_index)
+        if self.shared_utils.uplink_ipv4_pool:
+            uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
+
+        downlink_pool, downlink_offset = self._get_downlink_ipv4_pool_and_offset(uplink_switch_index)
+
         if uplink_pool is not None and downlink_pool is not None:
             raise AristaAvdError("Either 'uplink_ipv4_pool' is set on this switch or 'downlink_pools' is set on all uplink switches, not both.")
 
@@ -145,4 +147,7 @@ class UtilsMixin:
                 "To calculate uplink IP addresses 'uplink_ipv4_pool' must be set on this switch or 'downlink_ipv4_pool' on all the uplink switches."
             )
 
-        return uplink_pool or downlink_pool
+        if downlink_pool is None:
+            return (uplink_pool, uplink_offset)
+        
+        return (downlink_pool, downlink_offset)

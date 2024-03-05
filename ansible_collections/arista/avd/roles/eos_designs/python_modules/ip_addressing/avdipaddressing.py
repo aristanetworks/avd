@@ -158,13 +158,8 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         prefixlen = self._fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
-        p2p_ipv4_pool = self._get_p2p_ipv4_pool(uplink_switch_index)
+        p2p_ipv4_pool, offset = self._get_p2p_ipv4_pool_and_offset(uplink_switch_index)
 
-        if self.shared_utils.uplink_ipv4_pool is None:
-            # Using downlink_ipv4_pool from uplink_switch
-            offset = ((self._id - 1) * self._max_parallel_uplinks) + self._get_parallel_uplink_index(uplink_switch_index)
-        else:
-            offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
         return get_ip_from_pool(p2p_ipv4_pool, prefixlen, offset, 1)
 
     def p2p_uplinks_peer_ip(self, uplink_switch_index: int) -> str:
@@ -182,13 +177,8 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         prefixlen = self._fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
-        p2p_ipv4_pool = self._get_p2p_ipv4_pool(uplink_switch_index)
+        p2p_ipv4_pool, offset = self._get_p2p_ipv4_pool_and_offset(uplink_switch_index)
 
-        if self.shared_utils.uplink_ipv4_pool is None:
-            # Using downlink_ipv4_pool from uplink_switch
-            offset = ((self._id - 1) * self._max_parallel_uplinks) + self._get_parallel_uplink_index(uplink_switch_index)
-        else:
-            offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
         return get_ip_from_pool(p2p_ipv4_pool, prefixlen, offset, 0)
 
     def router_id(self) -> str:
