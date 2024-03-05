@@ -31,15 +31,21 @@ keys:
           type: str
           description: Additional information about the path-group for documentation purposes.
         ipsec:
-          type: bool
+          type: dict
           description: |-
-            Flag to configure IPsec at the path-group level.
-
-            When set to `true`, IPsec is enabled for both the static and dynamic peers.
-          default: true
+            Configuration of IPSec at the path-group level.
+          keys:
+            dynamic_peers:
+              type: bool
+              description: Enable IPSec for dynamic peers.
+              default: true
+            static_peers:
+              type: bool
+              description: Enable IPSec for static peers.
+              default: true
         import_path_groups:
           type: list
-          description: List of [ath-groups to import in this path-group.
+          description: List of path-groups to import in this path-group.
           items:
             type: dict
             keys:

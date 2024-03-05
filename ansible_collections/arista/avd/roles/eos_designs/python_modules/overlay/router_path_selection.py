@@ -68,18 +68,21 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         for path_group in path_groups_to_configure:
             pg_name = path_group.get("name")
+            ipsec = path_group.get("ipsec", {})
+            is_local_pg = pg_name in local_path_groups_names
+            disable_dynamic_peer_ipsec = is_local_pg and not ipsec.get("dynamic_peers", True)
 
             path_group_data = {
                 "name": pg_name,
                 "id": self._get_path_group_id(pg_name, path_group.get("id")),
                 "local_interfaces": self._get_local_interfaces_for_path_group(pg_name),
-                "dynamic_peers": self._get_dynamic_peers(),
+                "dynamic_peers": self._get_dynamic_peers(disable_dynamic_peer_ipsec),
                 "static_peers": self._get_static_peers_for_path_group(pg_name),
             }
 
-            if pg_name in local_path_groups_names:
+            if is_local_pg:
                 # On pathfinder IPsec profile is not required for non local path_groups
-                if path_group.get("ipsec", True):
+                if ipsec.get("static_peers", True):
                     path_group_data["ipsec_profile"] = self._cp_ipsec_profile_name
 
                 # KeepAlive config is not required for non local path_groups
@@ -178,13 +181,17 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         return local_interfaces
 
-    def _get_dynamic_peers(self) -> dict | None:
+    def _get_dynamic_peers(self, disable_ipsec: bool) -> dict | None:
         """
-        TODO support ip_local and ipsec ?
+        TODO support ip_local ?
         """
         if not self.shared_utils.is_wan_client:
             return None
-        return {"enabled": True}
+
+        dynamic_peers = {"enabled": True}
+        if disable_ipsec:
+            dynamic_peers["ipsec"] = False
+        return dynamic_peers
 
     def _get_static_peers_for_path_group(self, path_group_name: str) -> list | None:
         """

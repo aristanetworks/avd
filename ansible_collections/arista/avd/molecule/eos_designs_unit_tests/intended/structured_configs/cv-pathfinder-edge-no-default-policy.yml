@@ -335,11 +335,13 @@ router_path_selection:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2
     dynamic_peers:
       enabled: true
+      ipsec: false
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
       - 172.16.0.1
+    ipsec_profile: CP-PROFILE
   - name: LTE
     id: 102
     local_interfaces:
