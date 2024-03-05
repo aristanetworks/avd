@@ -13,7 +13,14 @@ from .models import CVDevice, CVPathfinderMetadata, DeployToCvResult
 LOGGER = getLogger(__name__)
 
 CV_PATHFINDER_METADATA_STUDIO_ID = "studio-avd-pathfinder-metadata"
-CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {"pathfinders": [], "pathgroups": [], "regions": [], "routers": [], "vrfs": [], "version": "3"}
+CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {
+    "pathfinders": [],
+    "pathgroups": [],
+    "regions": [],
+    "routers": [],
+    "vrfs": [],
+    "version": "3.1",
+}
 
 
 def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
@@ -213,9 +220,12 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     )
 
     # Ensure the metadata studio schema match our supported version
-    if (studio_version := existing_studio_inputs.get("version")) != "3":
+    if (studio_version := existing_studio_inputs.get("version")) != "3.1":
         LOGGER.warning(
-            "deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '%s'. This plugin only accepts version '3'. Skipping upload of metadata.",
+            (
+                "deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '%s'. "
+                "This plugin only accepts version '3.1'. Skipping upload of metadata."
+            ),
             studio_version,
         )
         return
