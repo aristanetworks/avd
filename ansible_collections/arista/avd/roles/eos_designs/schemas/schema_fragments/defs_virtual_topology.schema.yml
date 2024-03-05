@@ -61,4 +61,3 @@ $defs:
                 "alternate" is converted to priority 2.
 
                 If not set, each path-group in `names` will be attributed its `default_preference`.
-                In that casem the `default_preference` cannot be "excluded".
