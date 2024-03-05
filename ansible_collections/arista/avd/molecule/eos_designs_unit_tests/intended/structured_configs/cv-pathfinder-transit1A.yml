@@ -789,6 +789,7 @@ metadata:
         value: lan
   cv_pathfinder:
     role: transit region
+    ssl_profile: profileA
     vtep_ip: 192.168.143.1
     region: AVD_Land_West
     zone: AVD_Land_West-ZONE
