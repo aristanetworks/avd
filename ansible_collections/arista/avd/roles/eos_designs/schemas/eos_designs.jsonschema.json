@@ -14911,6 +14911,22 @@
         },
         {
           "platforms": [
+            "7358X4"
+          ],
+          "management_interface": "Management1/1",
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          },
+          "feature_support": {
+            "queue_monitor_length_notify": false,
+            "interface_storm_control": true,
+            "bgp_update_wait_for_convergence": true,
+            "bgp_update_wait_install": false
+          }
+        },
+        {
+          "platforms": [
             "7368X4"
           ],
           "management_interface": "Management0",
@@ -25012,6 +25028,30 @@
             "default": false,
             "description": "When set to `true`, the path-group is excluded from AVD auto generated policies.",
             "title": "Excluded From Default Policy"
+          },
+          "dps_keepalive": {
+            "type": "object",
+            "description": "Period between the transmission of consecutive keepalive messages, and failure threshold.",
+            "properties": {
+              "interval": {
+                "type": "string",
+                "description": "Interval in milliseconds. Valid values are 50-60000 | \"auto\"\n\nWhen auto, the interval and failure_threshold are automatically determined based on\npath state.",
+                "title": "Interval"
+              },
+              "failure_threshold": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 100,
+                "default": 5,
+                "description": "Failure threshold in number of lost keep-alive messages.",
+                "title": "Failure Threshold"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "DPS Keepalive"
           }
         },
         "required": [

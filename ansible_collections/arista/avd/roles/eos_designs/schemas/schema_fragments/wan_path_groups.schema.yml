@@ -67,3 +67,25 @@ keys:
           default: false
           description: |-
             When set to `true`, the path-group is excluded from AVD auto generated policies.
+        dps_keepalive:
+          type: dict
+          description: |-
+            Period between the transmission of consecutive keepalive messages, and failure threshold.
+          keys:
+            interval:
+              type: str
+              convert_types:
+                - int
+              description: |-
+                Interval in milliseconds. Valid values are 50-60000 | "auto"
+
+                When auto, the interval and failure_threshold are automatically determined based on
+                path state.
+            failure_threshold:
+              type: int
+              min: 2
+              max: 100
+              default: 5
+              description: Failure threshold in number of lost keep-alive messages.
+              convert_types:
+                - str

@@ -158,6 +158,11 @@ route_maps:
 static_routes:
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.7.7.6
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
@@ -312,6 +317,9 @@ router_path_selection:
     id: 100
     local_interfaces:
     - name: Ethernet2
+    keepalive:
+      interval: 300
+      failure_threshold: 5
   - name: INET
     id: 101
     local_interfaces:

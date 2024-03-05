@@ -36,6 +36,17 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: false
+  address_family_ipv4_sr_te:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  address_family_link_state:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    path_selection:
+      roles:
+        producer: true
   address_family_path_selection:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -99,6 +110,8 @@ ethernet_interfaces:
   vrf: VRF1
   ip_address: 10.0.10.1/24
   mtu: 9214
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet2.100
   peer: uplink_lan_l2leaf
   peer_interface: Ethernet1 VLAN 100
@@ -112,6 +125,8 @@ ethernet_interfaces:
   ipv6_address: cafe::cafe/64
   ipv6_enable: true
   eos_cli: comment yo
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
   _custom_key: custom_value
 - name: Ethernet1
   peer_type: l3_interface
@@ -119,11 +134,19 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Comcast_999
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
   shutdown: false
   ip_address: 192.168.1.1/32
+as_path:
+  access_lists:
+  - name: ASPATH-WAN
+    entries:
+    - type: permit
+      match: '65100'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -137,14 +160,14 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.1.1:0 additive
+    - extcommunity soo 192.168.1.1:1 additive
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
   - sequence: 40
     type: permit
     description: Mark prefixes originated from the LAN
     set:
-    - extcommunity soo 192.168.1.1:0 additive
+    - extcommunity soo 192.168.1.1:1 additive
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 10
@@ -170,24 +193,46 @@ route_maps:
   - sequence: 10
     type: permit
     set:
-    - extcommunity soo 192.168.1.1:0 additive
+    - extcommunity soo 192.168.1.1:1 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
+flow_tracking:
+  hardware:
+    trackers:
+    - name: WAN-FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 5000
+      exporters:
+      - name: DPI-EXPORTER
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 5000
+    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.1.1:0
+    extcommunities: soo 192.168.1.1:1
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
     local_id: 192.168.2.1
   sa_policies:
   - name: CP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
   profiles:
   - name: CP-PROFILE
     ike_policy: CP-IKE-POLICY
@@ -211,6 +256,46 @@ management_security:
       certificates:
       - aristaDeviceCertProvisionerDefaultRootCA.crt
     tls_versions: '1.2'
+router_adaptive_virtual_topology:
+  topology_role: edge
+  region:
+    name: region1
+    id: 1
+  zone:
+    name: region1-ZONE
+    id: 1
+  site:
+    name: site1
+    id: 1
+  profiles:
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  vrfs:
+  - name: VRF1
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+  - name: default
+    policy: DEFAULT-POLICY-WITH-CP
+    profiles:
+    - name: DEFAULT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+  policies:
+  - name: DEFAULT-POLICY
+    matches:
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-WITH-CP
+    matches:
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-POLICY-CONTROL-PLANE
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300
@@ -233,22 +318,8 @@ router_path_selection:
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
-  policies:
-  - name: DEFAULT-POLICY
-    default_match:
-      load_balance: LB-DEFAULT-POLICY-DEFAULT
-  - name: DEFAULT-POLICY-WITH-CP
-    rules:
-    - id: 10
-      application_profile: APP-PROFILE-CONTROL-PLANE
-      load_balance: LB-DEFAULT-POLICY-CONTROL-PLANE
-    default_match:
-      load_balance: LB-DEFAULT-POLICY-DEFAULT
-  vrfs:
-  - name: VRF1
-    path_selection_policy: DEFAULT-POLICY
-  - name: default
-    path_selection_policy: DEFAULT-POLICY-WITH-CP
+router_traffic_engineering:
+  enabled: true
 application_traffic_recognition:
   application_profiles:
   - name: APP-PROFILE-CONTROL-PLANE
@@ -266,6 +337,8 @@ dps_interfaces:
   description: DPS Interface
   mtu: 9214
   ip_address: 192.168.2.1/32
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: uplink_lan_wan_router1_VTEP
@@ -277,3 +350,42 @@ vxlan_interface:
         vni: 123
       - name: default
         vni: 1
+metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: edge
+    - name: Region
+      value: region1
+    - name: Zone
+      value: region1-ZONE
+    - name: Site
+      value: site1
+    interface_tags:
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet2.100
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Comcast
+      - name: Circuit
+        value: '999'
+  cv_pathfinder:
+    role: edge
+    vtep_ip: 192.168.2.1
+    region: region1
+    zone: region1-ZONE
+    site: site1
+    interfaces:
+    - name: Ethernet1
+      carrier: Comcast
+      circuit_id: '999'
+      pathgroup: INET
