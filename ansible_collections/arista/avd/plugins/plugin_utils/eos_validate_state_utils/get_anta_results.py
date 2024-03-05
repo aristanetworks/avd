@@ -208,9 +208,7 @@ def generate_tests(config_manager: ConfigManager, skipped_tests: list[dict], cus
 
     Args:
     ----
-        device_name (str): The device name to use for the catalog.
-        hostvars (Mapping): A mapping that contains a key for each device with a value of the structured_config.
-                            When using Ansible, this is the `task_vars['hostvars']` object.
+        config_manager (ConfigManager): The device ConfigManager object containing data to be used by the tests.
         skipped_tests (list[dict]): A list of dictionary containing the categories and/or tests to skip.
         custom_catalog (dict): An optional custom catalog to merge with the generated catalog.
 
