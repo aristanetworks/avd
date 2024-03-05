@@ -595,7 +595,7 @@ router_path_selection:
     path_groups:
     - name: LAN_HA
     - name: MPLS
-      priority: 42
+      priority: 4223
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
     - name: LAN_HA
