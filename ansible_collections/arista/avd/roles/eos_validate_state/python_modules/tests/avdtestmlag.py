@@ -10,6 +10,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_util
 
 LOGGER = logging.getLogger(__name__)
 
+
 class AvdTestMLAG(AvdTestBase):
     """
     AvdTestMLAG class for MLAG tests.

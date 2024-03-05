@@ -12,6 +12,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 LOGGER = logging.getLogger(__name__)
 
+
 class AvdTestP2PIPReachability(AvdTestBase):
     """
     AvdTestP2PIPReachability class for P2P IP reachability tests.
@@ -45,7 +46,9 @@ class AvdTestP2PIPReachability(AvdTestBase):
             if not self.is_peer_available(peer := interface["peer"]):
                 continue
 
-            if (peer_interface_ip := self.get_interface_ip(interface_model="ethernet_interfaces", interface_name=interface["peer_interface"], host=peer)) is None:
+            if (
+                peer_interface_ip := self.get_interface_ip(interface_model="ethernet_interfaces", interface_name=interface["peer_interface"], host=peer)
+            ) is None:
                 continue
 
             src_ip = str(ip_interface(interface["ip_address"]).ip)
@@ -161,7 +164,6 @@ class AvdTestLLDPTopology(AvdTestBase):
     anta_module = "anta.tests.connectivity"
     categories = ["LLDP Topology"]
     description = "LLDP topology - validate peer and interface"
-
 
     @cached_property
     def test_definition(self) -> dict | None:

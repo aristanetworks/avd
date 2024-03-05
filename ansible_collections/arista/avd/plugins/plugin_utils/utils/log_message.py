@@ -13,14 +13,14 @@ LOGGING_LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
 
 def log_message(
-          key: str,
-          value: Any = None,
-          key_path: str | None = None,
-          message: str | None = None,
-          log_level: str = "INFO",
-          *,
-          key_missing: bool = True,
-          prepend_message: bool = False,
+    key: str,
+    value: Any = None,
+    key_path: str | None = None,
+    message: str | None = None,
+    log_level: str = "INFO",
+    *,
+    key_missing: bool = True,
+    prepend_message: bool = False,
 ) -> None:
     """Log the test being skipped appended to a formatted message based on the provided parameters.
 
@@ -35,7 +35,7 @@ def log_message(
     """
     # Validate logging level
     if log_level.upper() not in LOGGING_LEVELS:
-            raise AristaAvdError("Invalid logging level. Please choose from DEBUG, INFO, WARNING, ERROR, CRITICAL.")
+        raise AristaAvdError("Invalid logging level. Please choose from DEBUG, INFO, WARNING, ERROR, CRITICAL.")
 
     # Check if value is provided when logging an invalid value
     if value is None and key_missing is False:
@@ -47,7 +47,7 @@ def log_message(
 
     # Append or prepend the optional message
     if message:
-         log_msg = f"{message}. {log_msg}" if prepend_message else f"{log_msg} {message}."
+        log_msg = f"{message}. {log_msg}" if prepend_message else f"{log_msg} {message}."
 
     # Logging the message
     log_level = logging.getLevelName(log_level.upper())

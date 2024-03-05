@@ -13,7 +13,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import AnsibleEOSDevice, get_anta_results, ConfigManager
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import AnsibleEOSDevice, ConfigManager, get_anta_results
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
