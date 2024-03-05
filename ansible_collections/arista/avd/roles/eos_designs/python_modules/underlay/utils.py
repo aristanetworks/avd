@@ -52,7 +52,7 @@ class UtilsMixin:
         Returns the list of underlay links for this device
         """
         underlay_links = []
-        underlay_links.extend(self._uplinks)
+        underlay_links.extend(self.shared_utils.uplinks)
         if self.shared_utils.fabric_sflow_uplinks is not None:
             for uplink in underlay_links:
                 uplink.update({"sflow": {"enable": self.shared_utils.fabric_sflow_uplinks}})
@@ -133,10 +133,6 @@ class UtilsMixin:
             return trunk_groups
 
         return []
-
-    @cached_property
-    def _uplinks(self) -> list:
-        return get(self._hostvars, "switch.uplinks")
 
     def _get_l3_interface_cfg(self, l3_interface: dict) -> dict | None:
         """
