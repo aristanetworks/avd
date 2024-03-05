@@ -210,7 +210,7 @@ wan_rr:
           static_routes:
             - prefix: 0.0.0.0/0
           ip_address: 10.7.7.7/31
-          public_ip: 9.8.8.8/24
+          public_ip: 172.7.7.7/24
           peer_ip: 10.7.7.6
         - name: Ethernet2
           wan_carrier: Colt

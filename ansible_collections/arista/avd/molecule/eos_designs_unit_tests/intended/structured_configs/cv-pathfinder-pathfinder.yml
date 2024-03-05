@@ -511,7 +511,7 @@ metadata:
       carrier: Bouygues_Telecom
       circuit_id: '777'
       pathgroup: INET
-      public_ip: 9.8.8.8
+      public_ip: 172.7.7.7
     - name: Ethernet2
       carrier: Colt
       circuit_id: '10000'
