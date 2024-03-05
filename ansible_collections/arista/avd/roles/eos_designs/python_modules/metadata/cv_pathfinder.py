@@ -141,7 +141,11 @@ class CvPathfinderMixin:
         if self.shared_utils.is_wan_server:
             # On pathfinders, verify that the Load Balance policies have at least one priority one except for the HA path-group
             for lb_policy in load_balance_policies:
-                if not any(path_group.get("priority", 1) == 1 for path_group in lb_policy["path_groups"] if path_group["name"] != self.shared_utils.wan_ha_path_group_name):
+                if not any(
+                    path_group.get("priority", 1) == 1
+                    for path_group in lb_policy["path_groups"]
+                    if path_group["name"] != self.shared_utils.wan_ha_path_group_name
+                ):
                     raise AristaAvdError(
                         "At least one path-group must be configured with preference '1' or 'preferred' for "
                         f"load-balance policy {lb_policy['name']}' to use CloudVision integration. "
