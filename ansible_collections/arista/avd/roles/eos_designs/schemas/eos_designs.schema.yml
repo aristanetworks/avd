@@ -7878,24 +7878,14 @@ $defs:
             scenarios.'
         public_ip:
           type: str
-          description: 'Node IPv4 address/Mask.
-
-            This will be used to get the public IP in case device is behind NAT.
-
-            This IP can be used in the case of defining ACLs or for some specific
-            use cases
-
-            where we need the public ip of the interface.
-
-            In case of wan_routers(edge/transit), to get public IP for an interface,
-            we prioritise the `public_ip` over the `ip_address`
-
-            if both are mentioned.
-
-            In case of wan_rr(pathfinders), `wan_route_servers.path_groups.interfaces.ip_address`
-            is preferrered
-
-            over the the `public_ip` and then the interface IP.'
+          description: "Node IPv4 address/Mask.\n\nThis is used to get the public
+            IP (if known) when the device is behind a NAT.\n\nAs of now this is used
+            only for information purposes.\nThis IP can then be used for ACLs or other
+            use cases where the interface public IP is required.\n\nAVD uses the following
+            priority order to derive the public IP of an interface:\n  * For `wan_router`
+            (edge/transit): `public_ip` -> `ip_address`\n  * For `wan_rr` (pathfinders):
+            `wan_route_servers.path_groups.interfaces.ip_address` -> `public_ip` ->
+            `ip_address`."
         encapsulation_dot1q_vlan:
           description: For subinterfaces the dot1q vlan is derived from the interface
             name by default, but can also be specified.
