@@ -91,8 +91,8 @@ wan_mode: cv-pathfinder
 wan_route_servers: []
 wan_path_groups:
   - name: INET
-    ipsec: false
-    # TODO remove one once auto-id is implemented - for now required in schema
+    ipsec:
+      static_peers: false
     id: 100
 wan_carriers:
   - name: Comcast

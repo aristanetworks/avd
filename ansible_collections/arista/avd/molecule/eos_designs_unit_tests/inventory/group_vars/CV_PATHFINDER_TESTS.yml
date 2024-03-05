@@ -253,7 +253,10 @@ wan_rr:
 
 wan_path_groups:
   - name: MPLS
-    ipsec: false
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
+    # TODO remove one once auto-id is implemented - for now required in schema
     id: 100
     dps_keepalive:
       interval: 300

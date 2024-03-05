@@ -24993,9 +24993,26 @@
             "title": "Description"
           },
           "ipsec": {
-            "type": "boolean",
-            "description": "Flag to configure IPsec at the path-group level.\n\nWhen set to `true`, IPsec is enabled for both the static and dynamic peers.",
-            "default": true,
+            "type": "object",
+            "description": "Configuration of IPSec at the path-group level.",
+            "properties": {
+              "dynamic_peers": {
+                "type": "boolean",
+                "description": "Enable IPSec for dynamic peers.",
+                "default": true,
+                "title": "Dynamic Peers"
+              },
+              "static_peers": {
+                "type": "boolean",
+                "description": "Enable IPSec for static peers.",
+                "default": true,
+                "title": "Static Peers"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
             "title": "Ipsec"
           },
           "import_path_groups": {
