@@ -5937,7 +5937,7 @@
           },
           "public_ip": {
             "type": "string",
-            "description": "Node IPv4 address/Mask.\n\nThis is used to get the public IP (if known) when the device is behind a NAT.\nThis is used only for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP\nwith the following preference:\n  `wan_route_servers.path_groups.interfaces.ip_address`\n      -> `l3_interfaces.public_ip`\n          -> `l3_interfaces.ip_address`",
+            "description": "Node IPv4 address/Mask.\n\nThis is used to get the public IP (if known) when the device is behind NAT.\nThis is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP\nwith the following preference:\n  `wan_route_servers.path_groups.interfaces.ip_address`\n      -> `l3_interfaces.public_ip`\n          -> `l3_interfaces.ip_address`\n\nThe determined Public IP is used by WAN routers when peering with this interface.",
             "title": "Public IP"
           },
           "encapsulation_dot1q_vlan": {
