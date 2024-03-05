@@ -158,7 +158,6 @@ class RouterPathSelectionMixin(UtilsMixin):
             for path_group_name in policy_entry.get("names"):
                 if (priority := policy_entry_priority) is None:
                     # No preference defined at the policy level, need to retrieve the default preference
-                    # TODO error message
                     wan_path_group = get_item(
                         self.shared_utils.wan_path_groups,
                         "name",
