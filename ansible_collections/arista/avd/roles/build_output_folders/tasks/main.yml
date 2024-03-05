@@ -92,6 +92,14 @@
   delegate_to: localhost
   run_once: True
 
+- name: "Create folder {{ custom_anta_catalogs_dir_name }} for input custom ANTA catalogs"
+  ansible.builtin.file:
+    path: "{{ custom_anta_catalogs_dir }}"
+    state: directory
+    mode: 0775
+  delegate_to: localhost
+  run_once: True
+
 - name: Create output directory for each EOS device
   ansible.builtin.file:
     path: "{{ snapshots_backup_dir }}"

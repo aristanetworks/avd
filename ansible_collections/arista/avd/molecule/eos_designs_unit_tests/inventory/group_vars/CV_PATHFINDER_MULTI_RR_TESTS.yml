@@ -1,6 +1,8 @@
 ---
 # Inherit most of the variables from CV_PATHFINDERS_TESTS
 
+wan_stun_dtls_profile_name: profileB
+
 wan_route_servers:
   # Not testing the overloading
   - hostname: cv-pathfinder-pathfinder1

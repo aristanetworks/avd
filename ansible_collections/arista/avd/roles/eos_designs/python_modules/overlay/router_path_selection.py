@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
@@ -76,9 +77,26 @@ class RouterPathSelectionMixin(UtilsMixin):
                 "static_peers": self._get_static_peers_for_path_group(pg_name),
             }
 
-            # On pathfinder IPsec profile is not required for non local path_groups
-            if pg_name in local_path_groups_names and path_group.get("ipsec", True):
-                path_group_data["ipsec_profile"] = self._cp_ipsec_profile_name
+            if pg_name in local_path_groups_names:
+                # On pathfinder IPsec profile is not required for non local path_groups
+                if path_group.get("ipsec", True):
+                    path_group_data["ipsec_profile"] = self._cp_ipsec_profile_name
+
+                # KeepAlive config is not required for non local path_groups
+                keepalive = path_group.get("dps_keepalive", {})
+                if (interval := keepalive.get("interval")) is not None:
+                    if interval == "auto":
+                        path_group_data["keepalive"] = {"auto": True}
+                    else:
+                        if not (interval.isdigit() and 50 <= int(interval) <= 60000):
+                            raise AristaAvdError(
+                                f"Invalid value '{interval}' for dps_keepalive.interval - "
+                                f"should be either 'auto', or an integer[50-60000] for wan_path_groups[{pg_name}]"
+                            )
+                        path_group_data["keepalive"] = {
+                            "interval": int(interval),
+                            "failure_threshold": get(keepalive, "failure_threshold", default=5),
+                        }
 
             path_groups.append(path_group_data)
 
