@@ -3,11 +3,13 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import logging
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.get import get
 
+LOGGER = logging.getLogger(__name__)
 
 class AvdTestInterfacesState(AvdTestBase):
     """
@@ -71,14 +73,14 @@ class AvdTestInterfacesState(AvdTestBase):
         required_keys = ["name", "shutdown"]
 
         for interface_key, description_template in self.interface_types:
-            interfaces = get(self.structured_config, interface_key, [])
+            interfaces = self.structured_config.get(interface_key, [])
 
             for idx, interface in enumerate(interfaces):
-                self.device_utils.update_interface_shutdown(interface=interface)
+                self.update_interface_shutdown(interface)
                 if not self.validate_data(data=interface, data_path=f"{interface_key}.[{idx}]", required_keys=required_keys):
                     continue
                 if interface.get("validate_state", True) is False:
-                    self.log_skip_message(f"Interface {interface['name']} validate_state is set to False.")
+                    LOGGER.info("Interface '%s' validate_state is set to False.", interface["name"])
                     continue
                 state, proto, description = generate_test_details(interface, description_template)
                 intf_description = interface.get("description")

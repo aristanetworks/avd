@@ -4,64 +4,153 @@
 from __future__ import annotations
 
 import logging
-from functools import cached_property
-from ipaddress import ip_interface
-from typing import Mapping
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item, log_message
+
+LOGGER = logging.getLogger(__name__)
+
+class DeviceUtilsMixin:
+  """"""
+
+  def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:
+      """Update the interface shutdown key, considering EOS default.
+
+      For Ethernet interfaces:
+      - If the interface shutdown key is not set, the host interface_defaults.ethernet.shutdown key is used
+      - If the host interface_defaults.ethernet.shutdown key is not set, the interface shutdown key is set to False.
+
+      For other interfaces, the shutdown key is updated using the interface shutdown key if available or set to False.
+
+      Args:
+      ----
+          interface (dict): The interface to verify.
+          host (str): Host to verify. Defaults to the host running the test.
+      """
+      host_struct_cfg = self.config_manager.get_host_structured_config(host=host) if host else self.structured_config
+      if "Ethernet" in get(interface, "name", ""):
+          interface["shutdown"] = default(get(interface, "shutdown"), get(host_struct_cfg, "interface_defaults.ethernet.shutdown"), False)
+      else:
+          interface["shutdown"] = get(interface, "shutdown", default=False)
 
 
+  def is_peer_available(self, peer: str) -> bool:
+      """Check if a peer is deployed by looking at his `is_deployed` key.
 
-class LoggingMixin:
-    
-    LOGGING_LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+      Args:
+      ----
+          peer (str): The peer to verify.
 
-    def __init__(self):
-        self.logger = self.get_logger()
+      Returns:
+      -------
+          bool: True if the peer is deployed, False otherwise.
+      """
+      if peer not in self.hostvars:
+          log_msg = f"Peer '{peer}' is not configured by AVD. {self.__class__.__name__} is skipped."
+          LOGGER.info(log_msg)
+          return False
+      if not get(self.hostvars[peer], "is_deployed", True):
+          log_msg = f"Peer '{peer}' is marked as not deployed. {self.__class__.__name__} is skipped."
+          LOGGER.info(log_msg)
+          return False
+      return True
 
-    def get_logger(self):
-        return logging.getLogger(__name__)
-    
-    def get_logging_level(self, level: str) -> int:
-        return logging.getLevelName(level.upper())
-    
-    def check_logging_level(self, level: str):
-        if level.upper() not in self.LOGGING_LEVELS:
-            raise AristaAvdError("Invalid logging level. Please choose from DEBUG, INFO, WARNING, ERROR, CRITICAL.")
-    
-    def log_skip_message(
-        self, message=None, key: str | None = None, value=None, key_path: str | None = None, is_missing: bool = True, logging_level: str = "INFO"
-    ) -> None:
+  def get_interface_ip(self, interface_model: str, interface_name: str, host: str | None = None) -> str | None:
+      """Retrieve the IP address of a specified host interface.
+
+      Args:
+      ----
+          interface_model (str): Interface model in the structured config (e.g., ethernet_interfaces).
+          interface_name (str): Interface name to retrive the IP.
+          host (str): Host to verify. Defaults to the host running the test.
+
+      Returns:
+      -------
+          str | None: IP address of the host interface or None if unavailable.
+      """
+      host_struct_cfg = self.config_manager.get_host_structured_config(host=host) if host else self.structured_config
+      try:
+          interfaces = get(host_struct_cfg, interface_model, required=True)
+          interface = get_item(interfaces, "name", interface_name, required=True)
+          return get(interface, "ip_address", required=True)
+      except AristaAvdMissingVariableError:
+          log_msg = f"Host '{host or self.device_name}' interface '{interface_name}' IP address is unavailable. {self.__class__.__name__} is skipped."
+          LOGGER.warning(log_msg)
+          return None
+
+  def is_subinterface(self, interface: dict) -> bool:
+      """Check if the interface is a subinterface.
+
+      Args:
+      ----
+          interface (dict): The interface to verify.
+
+      Returns:
+      -------
+          bool: True if the interface is a subinterface, False otherwise.
+      """
+      if "." not in interface.get("name", ""):
+          log_msg = f"Interface '{interface.get('name')}' is not a subinterface. {self.__class__.__name__} is skipped."
+          LOGGER.info(log_msg)
+          return False
+      return True
+
+class ValidationMixin:
+    """"""
+    def validate_data(
+        self,
+        data: dict | None = None,
+        data_path: str | None = None,
+        host: str | None = None,
+        required_keys: str | list[str] | None = None,
+        logging_level: str = "INFO",
+        **kwargs,
+    ) -> bool:
         """
-        Logging function that logs the test being skipped appended to a formatted message based on the provided parameters.
+        Validates data based on given requirements such as expected key-value pairs and required keys.
 
         Args:
-            message (Any | None): The message to be logged. If provided, it will be logged as is, ignoring other parameters.
-            key (str | None): The key to be logged.
-            value (Any | None): The expected value of the key. Must be provided when logging an invalid value.
-            key_path (str | None): The key path in dot notation.
-            is_missing (bool): Indicates whether the key is missing.
-            logging_level (str): The logging level to use for the log message.
+            data (dict | None): A data dictionary to be validated. Defaults to the structured_config of the device running the test.
+            data_path (str | None): The data path in dot notation. Used for logging purposes. Index or primary key can be used for lists.
+            host (str | None): The host from which data should be retrieved. Defaults to the device running the test.
+            required_keys (str | list[str] | None): The keys that are expected to be in the data.
+            logging_level (str): The logging level to use for the log message. Defaults to "INFO".
+            **kwargs: Expected key-value pairs in the data.
+
+        Returns:
+            bool: True if the data meets all validation requirements, otherwise False.
+
+        Example:
+            >>> validate_data(data={"a": 1, "b": 2}, data_path="some.path", required_keys=["a", "b"], c=3)
+
+            In this case, the function will log a warning message because the key 'c' with value '3' is not found,
+            and it will return False as the data doesn't meet all validation requirements.
         """
-        # Validate logging level
-        self.check_logging_level(logging_level)
+        message = f"{self.__class__.__name__} is skipped."
+        
+        data = data or (self.config_manager.get_host_structured_config(host=host) if host else self.structured_config)
+        valid = True
 
-        # If message is provided, it will be logged as is, ignoring other parameters
-        if message:
-            log_msg = str(message)
-        else:
-            if key is None:
-                raise AristaAvdError("Error creating the log message: Key argument is missing.")
-            if value is None and is_missing is False:
-                raise AristaAvdError("Error creating the log message: The key's value must be provided when logging an invalid value.")
-            dot_notation = f"{key_path}.{key}" if key_path else f"{key}"
-            msg_type = "is missing" if is_missing else f"!= '{value}'"
-            log_msg = f"Key '{dot_notation}' {msg_type}."
+        # Check the expected key/value pairs first
+        for key, value in kwargs.items():
+            actual_value = get(data, key)
+            # TODO: Simplify this
+            if actual_value is None:
+                log_message(key=key, key_path=data_path, message=message, log_level=logging_level, key_missing=True)
+                valid = False
+            elif actual_value != value:
+                log_message(key=key, value=value, key_path=data_path, message=message, log_level=logging_level, key_missing=False)
+                valid = False
 
-        # Appending the skipped test
-        log_msg += f" {self.__class__.__name__} is skipped."
+        # Return False if any of the expected values are missing or not matching
+        if not valid:
+            return False
 
-        # Logging the message
-        log_level = self.get_logging_level(logging_level)
-        self.logger.log(log_level, log_msg)
+        # Check the required keys
+        if required_keys:
+            required_keys = [required_keys] if isinstance(required_keys, str) else required_keys
+            for key in required_keys:
+                if get(data, key) is None:
+                    log_message(key=key, key_path=data_path, message=message, log_level=logging_level, key_missing=True)
+                    valid = False
+        return valid

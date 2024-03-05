@@ -4,10 +4,11 @@
 from __future__ import annotations
 
 from functools import cached_property
-
+import logging
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+LOGGER = logging.getLogger(__name__)
 
 class AvdTestRoutingTable(AvdTestBase):
     """
@@ -37,7 +38,7 @@ class AvdTestRoutingTable(AvdTestBase):
             processed_ips = set()
 
             for peer, ip in mapping:
-                if not self.device_utils.is_peer_available(peer):
+                if not self.is_peer_available(peer):
                     continue
 
                 if ip not in processed_ips:
@@ -113,7 +114,7 @@ class AvdTestBGP(AvdTestBase):
         # Add tests for all neighbors
         for ip, peer in all_neighbors:
             # Check peer availability if the 'peer' key exists. Otherwise, still include the test for potential BGP external peers.
-            if peer is not None and not self.device_utils.is_peer_available(peer):
+            if peer is not None and not self.is_peer_available(peer):
                 continue
             self.add_test(afi=afi, safi=safi, bgp_neighbor_ip=str(ip))
 
@@ -127,7 +128,11 @@ class AvdTestBGP(AvdTestBase):
 
         """
         # Check if BGP configuration is present with multi-agent model
-        if self.config_manager.logged_get(key="router_bgp") is None or not self.validate_data(service_routing_protocols_model="multi-agent", logging_level="WARNING"):
+        if self.structured_config.get("router_bgp") is None:
+            LOGGER.info("No router bgp configuration found. %s is skipped.", self.__class__.__name__)
+            return None
+
+        if not self.validate_data(service_routing_protocols_model="multi-agent", logging_level="WARNING"):
             return None
 
         self.anta_tests.setdefault(f"{self.anta_module}.generic", []).append(

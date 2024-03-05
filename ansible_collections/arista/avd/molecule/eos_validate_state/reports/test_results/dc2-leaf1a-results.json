@@ -431,6 +431,24 @@
   },
   {
     "name": "dc2-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "custom_field": "Source: dc2-leaf1a_Ethernet1 - Destination: dc2-spine1_Ethernet1"
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "custom_field": "Source: dc2-leaf1a_Ethernet2 - Destination: dc2-spine2_Ethernet1"
+  },
+  {
+    "name": "dc2-leaf1a",
     "test": "VerifyLLDPNeighbors",
     "categories": [
       "LLDP Topology"

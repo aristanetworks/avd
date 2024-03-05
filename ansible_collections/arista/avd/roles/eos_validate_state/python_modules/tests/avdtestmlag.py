@@ -3,10 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import logging
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 
+LOGGER = logging.getLogger(__name__)
 
 class AvdTestMLAG(AvdTestBase):
     """
@@ -23,7 +25,8 @@ class AvdTestMLAG(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-        if self.config_manager.logged_get(key="mlag_configuration") is None:
+        if self.structured_config.get("mlag_configuration") is None:
+            LOGGER.info("No mlag configuration found. %s is skipped.", self.__class__.__name__)
             return None
 
         anta_tests = [

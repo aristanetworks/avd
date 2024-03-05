@@ -104,6 +104,28 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyReachability:
     hosts:
+    - destination: 10.255.255.0
+      repeat: 1
+      source: 10.255.255.1
+      vrf: default
+    result_overwrite:
+      categories:
+      - IP Reachability
+      custom_field: 'Source: dc1-leaf1a_Ethernet1 - Destination: dc1-spine1_Ethernet1'
+      description: ip reachability test p2p links
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.2
+      repeat: 1
+      source: 10.255.255.3
+      vrf: default
+    result_overwrite:
+      categories:
+      - IP Reachability
+      custom_field: 'Source: dc1-leaf1a_Ethernet2 - Destination: dc1-spine2_Ethernet1'
+      description: ip reachability test p2p links
+- VerifyReachability:
+    hosts:
     - destination: 10.255.0.1
       repeat: 1
       source: 10.255.0.3

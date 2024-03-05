@@ -3,12 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import logging
 from functools import cached_property
 from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+LOGGER = logging.getLogger(__name__)
 
 class AvdTestP2PIPReachability(AvdTestBase):
     """
@@ -29,22 +31,21 @@ class AvdTestP2PIPReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (ethernet_interfaces := self.config_manager.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
+        if (ethernet_interfaces := self.structured_config.get("ethernet_interfaces")) is None:
+            LOGGER.warning("No ethernet interfaces found. %s is skipped.", self.__class__.__name__)
             return None
 
         required_keys = ["name", "peer", "peer_interface", "ip_address"]
 
         for idx, interface in enumerate(ethernet_interfaces):
-            self.device_utils.update_interface_shutdown(interface=interface)
+            self.update_interface_shutdown(interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, type="routed", shutdown=False):
                 continue
 
-            if not self.device_utils.is_peer_available(peer := interface["peer"]):
+            if not self.is_peer_available(peer := interface["peer"]):
                 continue
 
-            if (
-                peer_interface_ip := self.device_utils.get_interface_ip(interface_model="ethernet_interfaces", interface_name=interface["peer_interface"], host=peer)
-            ) is None:
+            if (peer_interface_ip := self.get_interface_ip(interface_model="ethernet_interfaces", interface_name=interface["peer_interface"], host=peer)) is None:
                 continue
 
             src_ip = str(ip_interface(interface["ip_address"]).ip)
@@ -81,18 +82,19 @@ class AvdTestInbandReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (vlan_interfaces := self.config_manager.logged_get(key="vlan_interfaces")) is None:
+        if (vlan_interfaces := self.structured_config.get("vlan_interfaces")) is None:
+            LOGGER.info("No vlan interfaces found. %s is skipped.", self.__class__.__name__)
             return None
 
         for idx, interface in enumerate(vlan_interfaces):
-            self.device_utils.update_interface_shutdown(interface=interface)
+            self.update_interface_shutdown(interface)
             if not self.validate_data(data=interface, data_path=f"vlan_interfaces.[{idx}]", required_keys="name", type="inband_mgmt", shutdown=False):
                 continue
 
             vrf = interface.get("vrf", "default")
 
             for dst_node, dst_ip in self.loopback0_mapping:
-                if not self.device_utils.is_peer_available(dst_node):
+                if not self.is_peer_available(dst_node):
                     continue
 
                 custom_field = f"Source: {self.device_name} - {interface['name']} Destination: {dst_ip}"
@@ -131,11 +133,11 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         if not self.validate_data(type="l3leaf"):
             return None
 
-        if (src_ip := self.device_utils.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")) is None:
+        if (src_ip := self.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")) is None:
             return None
 
         for dst_node, dst_ip in self.loopback0_mapping:
-            if not self.device_utils.is_peer_available(dst_node):
+            if not self.is_peer_available(dst_node):
                 continue
 
             custom_field = f"Source: {self.device_name} - {src_ip} Destination: {dst_ip}"
@@ -172,20 +174,21 @@ class AvdTestLLDPTopology(AvdTestBase):
         """
         anta_tests = []
 
-        if (ethernet_interfaces := self.config_manager.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
+        if (ethernet_interfaces := self.structured_config.get("ethernet_interfaces")) is None:
+            LOGGER.warning("No ethernet interfaces found. %s is skipped.", self.__class__.__name__)
             return None
 
         required_keys = ["name", "peer", "peer_interface"]
 
         for idx, interface in enumerate(ethernet_interfaces):
-            self.device_utils.update_interface_shutdown(interface=interface)
+            self.update_interface_shutdown(interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, shutdown=False):
                 continue
-            
-            if self.device_utils.is_subinterface(interface):
+
+            if self.is_subinterface(interface):
                 continue
 
-            if not self.device_utils.is_peer_available(peer := interface["peer"]):
+            if not self.is_peer_available(peer := interface["peer"]):
                 continue
 
             custom_field = f"local: {interface['name']} - remote: {peer}_{interface['peer_interface']}"
