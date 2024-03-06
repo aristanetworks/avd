@@ -105,6 +105,7 @@ class ValidationMixin:
     It should be used as a mixin class in the AvdTestBase classes.
     """
 
+    # TODO @carl-baillargeon: Split the validate_data method into two methods: one for expected key-value pairs and one for required keys.
     def validate_data(
         self,
         data: dict | None = None,
@@ -115,6 +116,8 @@ class ValidationMixin:
         **kwargs: dict,
     ) -> bool:
         """Validate data based on given requirements such as expected key-value pairs and required keys.
+
+        In the context of the eos_validate_state tests, if the data is not valid, the test is skipped.
 
         Args:
         ----
@@ -145,10 +148,10 @@ class ValidationMixin:
         for key, value in kwargs.items():
             actual_value = get(data, key)
             if actual_value is None:
-                log_message(key=key, key_path=data_path, message=message, log_level=logging_level, key_missing=True)
+                log_message(key=key, key_path=data_path, message=message, log_level=logging_level)
                 valid = False
             elif actual_value != value:
-                log_message(key=key, value=value, key_path=data_path, message=message, log_level=logging_level, key_missing=False)
+                log_message(key=key, value=value, key_path=data_path, message=message, log_level=logging_level)
                 valid = False
 
         # Return False if any of the expected values are missing or not matching
@@ -160,6 +163,6 @@ class ValidationMixin:
             required_keys = [required_keys] if isinstance(required_keys, str) else required_keys
             for key in required_keys:
                 if get(data, key) is None:
-                    log_message(key=key, key_path=data_path, message=message, log_level=logging_level, key_missing=True)
+                    log_message(key=key, key_path=data_path, message=message, log_level=logging_level)
                     valid = False
         return valid

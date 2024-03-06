@@ -19,30 +19,27 @@ def log_message(
     message: str | None = None,
     log_level: str = "INFO",
     *,
-    key_missing: bool = True,
     prepend_message: bool = False,
 ) -> None:
-    """Log the test being skipped appended to a formatted message based on the provided parameters.
+    """Log a message when a key from a data model is missing or has an invalid value.
+
+    The function can take optional parameters to customize the log message.
 
     Args:
     ----
-        message (Any | None): The message to be logged. If provided, it will be logged as is, ignoring other parameters.
-        key (str | None): The key to be logged.
-        value (Any | None): The expected value of the key. Must be provided when logging an invalid value.
-        key_path (str | None): The key path in dot notation.
-        is_missing (bool): Indicates whether the key is missing.
-        logging_level (str): The logging level to use for the log message.
+    key (str): The key to be logged.
+    value (Any | None): Optional expected value of the key. When not provided, the message will indicate that the key is missing.
+    key_path (str | None): Optional key path in dot notation.
+    message (str | None): Optional custom message to be appended or prepended. By default, the message is appended unless `prepend_message=True`.
+    log_level (str): The logging level to be used. Default is `INFO`.
+    prepend_message (bool): Indicates whether the message should be prepended to the log message. Default is `False`.
     """
     # Validate logging level
     if log_level.upper() not in LOGGING_LEVELS:
         raise AristaAvdError("Invalid logging level. Please choose from DEBUG, INFO, WARNING, ERROR, CRITICAL.")
 
-    # Check if value is provided when logging an invalid value
-    if value is None and key_missing is False:
-        raise AristaAvdError("Error creating the log message: The key's value must be provided when logging an invalid value.")
-
     dot_notation = f"{key_path}.{key}" if key_path else f"{key}"
-    msg_type = "is missing" if key_missing else f"!= '{value}'"
+    msg_type = "is missing" if not value else f"!= '{value}'"
     log_msg = f"Key '{dot_notation}' {msg_type}."
 
     # Append or prepend the optional message
