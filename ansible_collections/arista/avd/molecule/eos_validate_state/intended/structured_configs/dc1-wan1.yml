@@ -97,6 +97,10 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 172.16.1.1
+- destination_address_prefix: 172.18.0.0/16
+  gateway: 172.18.3.1
+- destination_address_prefix: 100.64.0.0/16
+  gateway: 100.64.3.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 transceiver_qsfp_default_mode_4x10: false
@@ -148,6 +152,22 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.3/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet3
+  peer_type: l3_interface
+  ip_address: 172.18.3.2/24
+  shutdown: false
+  type: routed
+  description: mpls-sp-1_DC1-MPLS-3
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet4
+  peer_type: l3_interface
+  ip_address: 100.64.3.2/24
+  shutdown: false
+  type: routed
+  description: isp-1_DC1-INET-3
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
@@ -254,6 +274,11 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
@@ -361,6 +386,20 @@ router_path_selection:
   tcp_mss_ceiling:
     ipv4_segment_size: auto
   path_groups:
+  - name: mpls
+    id: 101
+    local_interfaces:
+    - name: Ethernet3
+    dynamic_peers:
+      enabled: true
+    ipsec_profile: CP-PROFILE
+  - name: internet
+    id: 102
+    local_interfaces:
+    - name: Ethernet4
+    dynamic_peers:
+      enabled: true
+    ipsec_profile: CP-PROFILE
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
@@ -378,9 +417,13 @@ router_path_selection:
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
     - name: LAN_HA
+    - name: mpls
+    - name: internet
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: LAN_HA
+    - name: mpls
+    - name: internet
 router_traffic_engineering:
   enabled: true
 application_traffic_recognition:
@@ -431,10 +474,35 @@ metadata:
       tags:
       - name: Type
         value: lan
+    - interface: Ethernet3
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: mpls-sp-1
+      - name: Circuit
+        value: DC1-MPLS-3
+    - interface: Ethernet4
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: isp-1
+      - name: Circuit
+        value: DC1-INET-3
   cv_pathfinder:
     role: edge
     vtep_ip: 10.255.1.1
     region: Global
     zone: Global-ZONE
     site: DC1
+    interfaces:
+    - name: Ethernet3
+      carrier: mpls-sp-1
+      circuit_id: DC1-MPLS-3
+      pathgroup: mpls
+    - name: Ethernet4
+      carrier: isp-1
+      circuit_id: DC1-INET-3
+      pathgroup: internet
 dns_domain: dc1.local

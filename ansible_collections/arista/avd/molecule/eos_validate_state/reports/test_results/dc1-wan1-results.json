@@ -237,6 +237,24 @@
     "categories": [
       "Interface State"
     ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "custom_field": "Ethernet3 - mpls-sp-1_DC1-MPLS-3"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "custom_field": "Ethernet4 - isp-1_DC1-INET-3"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
     "description": "Loopback Interface Status & Line Protocol == 'up'",
     "custom_field": "Loopback0 - Router_ID"
   },

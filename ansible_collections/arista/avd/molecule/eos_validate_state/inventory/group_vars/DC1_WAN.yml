@@ -20,7 +20,37 @@ wan_router: # dynamic_key: node_type
           id: 1
           mgmt_ip: 172.16.1.15/24
           uplink_switch_interfaces: [Ethernet6, Ethernet6]
+          l3_interfaces:
+            - name: Ethernet3
+              ip_address: 172.18.3.2/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: DC1-MPLS-3
+              peer_ip: 172.18.3.1
+              static_routes:
+                - prefix: 172.18.0.0/16
+            - name: Ethernet4
+              ip_address: 100.64.3.2/24
+              wan_carrier: isp-1
+              wan_circuit_id: DC1-INET-3
+              peer_ip: 100.64.3.1
+              static_routes:
+                - prefix: 100.64.0.0/16
         - name: dc1-wan2
           id: 2
           mgmt_ip: 172.16.1.16/24
           uplink_switch_interfaces: [Ethernet7, Ethernet7]
+          l3_interfaces:
+            - name: Ethernet3
+              ip_address: 172.18.4.2/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: DC1-MPLS-4
+              peer_ip: 172.18.4.1
+              static_routes:
+                - prefix: 172.18.0.0/16
+            - name: Ethernet4
+              ip_address: 100.64.4.2/24
+              wan_carrier: isp-1
+              wan_circuit_id: DC1-INET-4
+              peer_ip: 100.64.4.1
+              static_routes:
+                - prefix: 100.64.0.0/16
