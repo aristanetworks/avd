@@ -1,0 +1,50 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - influxdb #}
+{% if influxdb is arista.avd.defined or flow_trackings is arista.avd.defined %}
+
+## Influxdb Streaming
+
+### Influxdb Summary
+
+{% if influxdb.destinations is arista.avd.defined %}
+| Destination | Database | URL | Vrf | Username |
+| ----------- | -------- | --- | --- | -------- |
+{% for destination in influxdb.destinations %}
+| {{ destination.name }} | {{ destination.database }} | {{ destination.url }} | {{ destination.vrf }} | {{ destination.username }} |
+{% endfor %}
+{% endif %}
+
+{% if influxdb.source_standard_enabled is arista.avd.defined(false) %}
+Standard Group Source Enabled : {{ influxdb.source_standard_enabled }}
+{% endif %}
+
+{% if influxdb.source_sockets is arista.avd.defined %}
+| Source Name | URL | Connection Limit |
+| ----------- | --- | ---------------- |
+{% for source in influxdb.source_sockets %}
+| {{ source.name }} | {{ source.url }} | {{ source.connection_limit }} |
+{% endfor %}
+{% else %}
+No Socket Sources Defined
+{% endif %}
+
+{% if influxdb.tags is arista.avd.defined %}
+| Tag | Value |
+| --- | ----- |
+{% for tag in influxdb.tags %}
+| {{ tag.name }} | {{ tag.value }} |
+{% endfor %}
+{% else %}
+No Global Tags Defined
+{% endif %}
+
+### Influxdb Device Configuration
+
+```eos
+{%  include 'eos/influxdb.j2' %}
+```
+{% endif %}
