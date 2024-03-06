@@ -1,0 +1,86 @@
+# influxdb
+
+## Table of Contents
+
+- [Management](#management)
+  - [Management Interfaces](#management-interfaces)
+- [Influxdb Streaming](#influxdb-streaming)
+  - [Influxdb Summary](#influxdb-summary)
+  - [Influxdb Device Configuration](#influxdb-device-configuration)
+
+## Management
+
+### Management Interfaces
+
+#### Management Interfaces Summary
+
+##### IPv4
+
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+
+##### IPv6
+
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | - | - |
+
+#### Management Interfaces Device Configuration
+
+```eos
+!
+interface Management1
+   description oob_management
+   vrf MGMT
+   ip address 10.73.255.122/24
+```
+
+## Influxdb Streaming
+
+### Influxdb Summary
+
+| Destination | Database | URL | Vrf | Username |
+| ----------- | -------- | --- | --- | -------- |
+| test | test | https://influx_test.localhost | test | test |
+| test1 | test1 | https://influx_test1.localhost | test1 | test1 |
+
+Standard Group Source Enabled : False
+
+| Source Name | URL | Connection Limit |
+| ----------- | --- | ---------------- |
+| socket1 | unix:///var/run/example2.sock | 100 |
+| socket2 | unix:///var/run/example3.sock | 22222 |
+
+| Tag | Value |
+| --- | ----- |
+| tag1 | value1 |
+| tag2 | value2 |
+
+### Influxdb Device Configuration
+
+```eos
+!
+monitor telemetry influx
+   destination influxdb test
+      url https://influx_test.localhost
+      database name test
+      retention policy test
+      vrf test
+      username test password 0 test
+   destination influxdb test1
+      url https://influx_test1.localhost
+      database name test1
+      retention policy test1
+      vrf test1
+      username test1 password 7 test1
+   source group standard disabled
+   source socket socket1
+      url unix:///var/run/example2.sock
+      connection limit 100
+   source socket socket2
+      url unix:///var/run/example3.sock
+      connection limit 22222
+   tag global tag1 value1
+   tag global tag2 value2
+```

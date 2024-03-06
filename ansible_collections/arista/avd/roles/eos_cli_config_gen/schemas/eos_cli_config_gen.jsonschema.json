@@ -6318,6 +6318,122 @@
       "type": "string",
       "title": "Hostname"
     },
+    "influxdb": {
+      "type": "object",
+      "properties": {
+        "destinations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              },
+              "database": {
+                "type": "string",
+                "title": "Database"
+              },
+              "policy": {
+                "type": "string",
+                "title": "Policy"
+              },
+              "url": {
+                "type": "string",
+                "title": "URL"
+              },
+              "username": {
+                "type": "string",
+                "title": "Username"
+              },
+              "password": {
+                "type": "string",
+                "title": "Password"
+              },
+              "encryption": {
+                "type": "integer",
+                "title": "Encryption"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Destinations"
+        },
+        "source_standard_enabled": {
+          "type": "boolean",
+          "title": "Source Standard Enabled"
+        },
+        "source_sockets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "connection_limit": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4294967295,
+                "title": "Connection Limit"
+              },
+              "url": {
+                "type": "string",
+                "title": "URL"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Source Sockets"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "value": {
+                "type": "string",
+                "title": "Value"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Tags"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Influxdb"
+    },
     "interface_defaults": {
       "type": "object",
       "properties": {

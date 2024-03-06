@@ -3724,6 +3724,59 @@ keys:
               type: bool
   hostname:
     type: str
+  influxdb:
+    type: dict
+    keys:
+      destinations:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            vrf:
+              type: str
+            database:
+              type: str
+            policy:
+              type: str
+            url:
+              type: str
+            username:
+              type: str
+            password:
+              type: str
+            encryption:
+              type: int
+      source_standard_enabled:
+        type: bool
+      source_sockets:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            connection_limit:
+              type: int
+              min: 0
+              max: 4294967295
+              convert_types:
+              - str
+            url:
+              type: str
+      tags:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            value:
+              type: str
   interface_defaults:
     type: dict
     keys:
