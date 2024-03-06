@@ -8,6 +8,13 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | `False` |  | Enable Trunk Group support across eos_designs.<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
+    | [<samp>fabric_sflow</samp>](## "fabric_sflow") | Dictionary |  |  |  | Fabric-wide sFlow settings. |
+    | [<samp>&nbsp;&nbsp;uplinks</samp>](## "fabric_sflow.uplinks") | Boolean |  |  |  | Enable sFlow on all fabric uplinks. |
+    | [<samp>&nbsp;&nbsp;downlinks</samp>](## "fabric_sflow.downlinks") | Boolean |  |  |  | Enable sFlow on all fabric downlinks. |
+    | [<samp>&nbsp;&nbsp;endpoints</samp>](## "fabric_sflow.endpoints") | Boolean |  |  |  | Enable sFlow on all endpoints ports. |
+    | [<samp>&nbsp;&nbsp;l3_edge</samp>](## "fabric_sflow.l3_edge") | Boolean |  |  |  | Enable sFlow on all p2p_links defined under l3_edge. |
+    | [<samp>&nbsp;&nbsp;core_interfaces</samp>](## "fabric_sflow.core_interfaces") | Boolean |  |  |  | Enable sFlow on all p2p_links defined under core_interfaces. |
+    | [<samp>&nbsp;&nbsp;mlag_interfaces</samp>](## "fabric_sflow.mlag_interfaces") | Boolean |  |  |  | Enable sFlow on all MLAG peer interfaces. |
     | [<samp>mlag_on_orphan_port_channel_downlink</samp>](## "mlag_on_orphan_port_channel_downlink") | Boolean |  | `True` |  | If `true` (default) an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.<br>If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches.<br>Note the default value will change to `false` in AVD version 5.0 |
     | [<samp>only_local_vlan_trunk_groups</samp>](## "only_local_vlan_trunk_groups") | Boolean |  | `False` |  | A vlan can have many trunk_groups assigned.<br>To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,<br>this feature will only configure the vlan trunk groups matched with local connected_endpoints.<br>See "Details on only_local_vlan_trunk_groups" below.<br>Requires "enable_trunk_groups: true".<br> |
     | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | `9214` | Min: 68<br>Max: 65535 | Point to Point Links MTU. |
@@ -49,6 +56,27 @@
     # If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.
     # See "Details on enable_trunk_groups" below before enabling this feature.
     enable_trunk_groups: <bool; default=False>
+
+    # Fabric-wide sFlow settings.
+    fabric_sflow:
+
+      # Enable sFlow on all fabric uplinks.
+      uplinks: <bool>
+
+      # Enable sFlow on all fabric downlinks.
+      downlinks: <bool>
+
+      # Enable sFlow on all endpoints ports.
+      endpoints: <bool>
+
+      # Enable sFlow on all p2p_links defined under l3_edge.
+      l3_edge: <bool>
+
+      # Enable sFlow on all p2p_links defined under core_interfaces.
+      core_interfaces: <bool>
+
+      # Enable sFlow on all MLAG peer interfaces.
+      mlag_interfaces: <bool>
 
     # If `true` (default) an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.
     # If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches.
