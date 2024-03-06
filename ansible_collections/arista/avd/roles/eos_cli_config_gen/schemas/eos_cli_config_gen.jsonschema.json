@@ -6356,6 +6356,32 @@
         }
       }
     },
+    "ip_ftp_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Ftp Client Source Interfaces"
+    },
     "ip_hardware": {
       "type": "object",
       "properties": {
@@ -7540,6 +7566,58 @@
           "^_.+$": {}
         }
       }
+    },
+    "ip_telnet_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Telnet Client Source Interfaces"
+    },
+    "ip_tftp_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Tftp Client Source Interfaces"
     },
     "ip_virtual_router_mac_address": {
       "type": "string",

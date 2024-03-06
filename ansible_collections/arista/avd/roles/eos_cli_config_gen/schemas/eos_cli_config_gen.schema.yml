@@ -3912,6 +3912,18 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression
+  ip_ftp_client_source_interfaces:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Interface Name
+        vrf:
+          type: str
+          description: VRF Name
   ip_hardware:
     type: dict
     keys:
@@ -4501,6 +4513,30 @@ keys:
           display_name: VRF
           convert_types:
           - int
+  ip_telnet_client_source_interfaces:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Interface Name
+        vrf:
+          type: str
+          description: VRF Name
+  ip_tftp_client_source_interfaces:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Interface Name
+        vrf:
+          type: str
+          description: VRF Name
   ip_virtual_router_mac_address:
     type: str
     description: MAC address (hh:hh:hh:hh:hh:hh)
