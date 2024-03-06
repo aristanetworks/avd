@@ -73,7 +73,7 @@ class RouterIsisMixin(UtilsMixin):
 
     @cached_property
     def _isis_net(self) -> str | None:
-        if "node_id" == get(self._hostvars, "isis_system_id_format", default="node_id"):
+        if get(self._hostvars, "isis_system_id_format", default="node_id") == "node_id":
             isis_system_id_prefix = get(self.shared_utils.switch_data_combined, "isis_system_id_prefix")
             if isis_system_id_prefix is None:
                 # TODO: Raise for this situation if underlay is ISIS.
