@@ -76,6 +76,7 @@ class RouterIsisMixin(UtilsMixin):
         if "node_id" == get(self._hostvars, "isis_system_id_format", default="node_id"):
             isis_system_id_prefix = get(self.shared_utils.switch_data_combined, "isis_system_id_prefix")
             if isis_system_id_prefix is None:
+                # TODO: Raise for this situation if underlay is ISIS.
                 return None
 
             if self.shared_utils.id is None:
