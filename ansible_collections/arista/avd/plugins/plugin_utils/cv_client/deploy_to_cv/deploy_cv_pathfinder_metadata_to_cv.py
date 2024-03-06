@@ -24,13 +24,13 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
         {
             "pathgroups": [
                 {
-                    "carriers": get(pathgroup, "carriers", required=True),
+                    "carriers": get(pathgroup, "carriers", default=[]),
                     "importedCarriers": get(pathgroup, "imported_carriers", default=[]),
                     "name": get(pathgroup, "name", required=True),
                 }
-                for pathgroup in get(metadata, "pathgroups", required=True)
+                for pathgroup in get(metadata, "pathgroups", default=[])
             ],
-            "regions": get(metadata, "regions", required=True),
+            "regions": get(metadata, "regions", default=[]),
             "vrfs": get(metadata, "vrfs", default=[]),
         }
     )
