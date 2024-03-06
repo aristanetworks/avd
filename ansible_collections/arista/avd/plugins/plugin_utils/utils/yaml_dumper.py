@@ -6,7 +6,7 @@ from __future__ import annotations
 try:
     from yaml import CSafeDumper as YamlDumper
 except ImportError:
-    from yaml import YamlDumper
+    from yaml import SafeDumper as YamlDumper
 
 
 # https://ttl255.com/yaml-anchors-and-aliases-and-how-to-disable-them/
