@@ -322,6 +322,11 @@ static_routes:
 - destination_address_prefix: 66.66.66.0/24
   gateway: 172.17.0.0
   vrf: default
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
@@ -505,6 +510,7 @@ router_path_selection:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2
     dynamic_peers:
       enabled: true
+      ipsec: false
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
@@ -526,8 +532,8 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: INET
     - name: MPLS
+    - name: INET
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
     - name: MPLS
@@ -536,7 +542,7 @@ router_path_selection:
     path_groups:
     - name: INET
     - name: MPLS
-      priority: 42
+      priority: 4223
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
     - name: MPLS
@@ -558,9 +564,8 @@ router_path_selection:
       priority: 2
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: INET
     - name: MPLS
-    - name: LTE
+    - name: INET
 router_traffic_engineering:
   enabled: true
 stun:

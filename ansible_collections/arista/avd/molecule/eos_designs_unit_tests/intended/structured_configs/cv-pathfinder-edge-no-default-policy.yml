@@ -186,6 +186,11 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
@@ -330,11 +335,13 @@ router_path_selection:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2
     dynamic_peers:
       enabled: true
+      ipsec: false
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
       - 172.16.0.1
+    ipsec_profile: CP-PROFILE
   - name: LTE
     id: 102
     local_interfaces:
@@ -345,13 +352,13 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: INET
     - name: MPLS
+    - name: INET
     - name: LTE
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: INET
     - name: MPLS
+    - name: INET
 router_traffic_engineering:
   enabled: true
 stun:
