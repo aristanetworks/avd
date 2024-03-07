@@ -23,6 +23,9 @@
 | MLAG Source Interface | {{ vxlan_interface.Vxlan1.vxlan.mlag_source_interface }} |
 {%     endif %}
 | UDP port | {{ vxlan_interface.Vxlan1.vxlan.udp_port | arista.avd.default('4789') }} |
+{%     if vxlan_interface.Vxlan1.vxlan.vtep_to_vtep_bridging is arista.avd.defined %}
+| Vtep-to-Vtep Bridging | {{ vxlan_interface.Vxlan1.vxlan.vtep_to_vtep_bridging }} |
+{%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address is arista.avd.defined %}
 | EVPN MLAG Shared Router MAC | {{ vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address }} |
 {%     endif %}

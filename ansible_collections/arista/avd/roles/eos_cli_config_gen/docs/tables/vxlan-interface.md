@@ -18,6 +18,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "vxlan_interface.Vxlan1.vxlan.controller_client.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_source_interface</samp>](## "vxlan_interface.Vxlan1.vxlan.mlag_source_interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "vxlan_interface.Vxlan1.vxlan.udp_port") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_to_vtep_bridging</samp>](## "vxlan_interface.Vxlan1.vxlan.vtep_to_vtep_bridging") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_encapsulation_mac_address</samp>](## "vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address") | String |  |  |  | "mlag-system-id" or ethernet_address (H.H.H)<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_vtep_evpn</samp>](## "vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.interval") | Integer |  |  |  |  |
@@ -61,6 +62,7 @@
             enabled: <bool>
           mlag_source_interface: <str>
           udp_port: <int>
+          vtep_to_vtep_bridging: <bool>
 
           # "mlag-system-id" or ethernet_address (H.H.H)
           virtual_router_encapsulation_mac_address: <str>
