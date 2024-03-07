@@ -23,6 +23,7 @@ loopback_interfaces:
   ip_address: 1.2.3.1/32
   isis_enable: EVPN_UNDERLAY
   isis_passive: true
+  isis_bfd: true
 router_isis:
   instance: EVPN_UNDERLAY
   log_adjacency_changes: true
@@ -32,7 +33,6 @@ router_isis:
   address_family_ipv4:
     enabled: true
     maximum_paths: 4
-    bfd_all_interfaces: true
 ethernet_interfaces:
 - name: ethernet1
   peer: peer1
