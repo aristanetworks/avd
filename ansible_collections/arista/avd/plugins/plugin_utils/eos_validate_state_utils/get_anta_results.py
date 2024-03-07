@@ -57,8 +57,7 @@ def get_anta_results(
     ----
       anta_device (AntaDevice): An instantiated AntaDevice.
                                 When running in Ansible, the action plugin will pass an AnsibleEOSDevice instance.
-      hostvars (Mapping): A mapping that contains a key for each device with a value of the structured_config.
-                          When using Ansible, this is the `task_vars['hostvars']` object.
+      config_manager (ConfigManager): The device ConfigManager object containing data to be used by the tests.
       logging_level (str): The level at which ANTA should be logging.
       skipped_tests (list[dict]): A list of dictionary containing the categories and/or tests to skip.
       ansible_tags (dict): An optional dictionary containing the tags to maintain legacy filtering behavior for

@@ -16,7 +16,7 @@ class DeviceUtilsMixin:
 
     This class provides utility methods for handling and manipulating device-related data.
 
-    It should be used as a mixin class in the AvdTestBase classes.
+    It should only be used as a mixin class in the AvdTestBase classes.
     """
 
     def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:

@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import logging
-from functools import cached_property
 from typing import TYPE_CHECKING, Mapping
 
 from .mixins import DeviceUtilsMixin, ValidationMixin
@@ -27,27 +26,27 @@ class AvdTestBase(DeviceUtilsMixin, ValidationMixin):
         """
         self.config_manager = config_manager
 
-    @cached_property
+    @property
     def device_name(self) -> str:
         """Return the device name from the ConfigManager instance."""
         return self.config_manager.device_name
 
-    @cached_property
+    @property
     def hostvars(self) -> Mapping:
         """Return the hostvars from the ConfigManager instance."""
         return self.config_manager.hostvars
 
-    @cached_property
+    @property
     def structured_config(self) -> Mapping:
         """Return the structured_config from the ConfigManager instance."""
         return self.config_manager.structured_config
 
-    @cached_property
+    @property
     def loopback0_mapping(self) -> list[tuple[str, str]]:
         """Return the loopback0_mapping from the ConfigManager instance."""
         return self.config_manager.loopback0_mapping
 
-    @cached_property
+    @property
     def vtep_mapping(self) -> list[tuple[str, str]]:
         """Return the vtep_mapping from the ConfigManager instance."""
         return self.config_manager.vtep_mapping

@@ -86,21 +86,19 @@ class ConfigManager:
         for host in self.hostvars:
             host_struct_cfg = self.get_host_structured_config(host)
             loopback_interfaces = host_struct_cfg.get("loopback_interfaces", [])
-            for loopback_interface in loopback_interfaces:
-                if loopback_interface.get("name") == "Loopback0":
-                    if (loopback_ip := loopback_interface.get("ip_address")) is None:
-                        LOGGER.warning("Variable 'ip_address' of interface 'Loopback0' is missing.")
-                        continue
+            if (loopback0 := get_item(loopback_interfaces, "name", "Loopback0")) is not None:
+                if (loopback_ip := loopback0.get("ip_address")) is None:
+                    LOGGER.warning("Host '%s' variable 'ip_address' of interface 'Loopback0' is missing.", host)
+                else:
                     results["loopback0_mapping"].append((host, str(ip_interface(loopback_ip).ip)))
 
             # If the host is a VTEP, add the VTEP IP to the mapping
             vtep_interface = get(host_struct_cfg, "vxlan_interface.Vxlan1.vxlan.source_interface")
             if vtep_interface is not None:
                 if (loopback_interface := get_item(loopback_interfaces, "name", vtep_interface)) is None:
-                    LOGGER.warning("Interface %s is missing.", vtep_interface)
-                    continue
-                if (loopback_ip := loopback_interface.get("ip_address")) is None:
-                    LOGGER.warning("Variable 'ip_address' of interface '%s' is missing.", vtep_interface)
-                    continue
-                results["vtep_mapping"].append((host, str(ip_interface(loopback_ip).ip)))
+                    LOGGER.warning("Host '%s' interface '%s' is missing.", host, vtep_interface)
+                elif (loopback_ip := loopback_interface.get("ip_address")) is None:
+                    LOGGER.warning("Host '%s' variable 'ip_address' of interface '%s' is missing.", host, vtep_interface)
+                else:
+                    results["vtep_mapping"].append((host, str(ip_interface(loopback_ip).ip)))
         return results

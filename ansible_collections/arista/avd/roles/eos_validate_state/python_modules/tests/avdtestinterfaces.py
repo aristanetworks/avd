@@ -74,7 +74,7 @@ class AvdTestInterfacesState(AvdTestBase):
         required_keys = ["name", "shutdown"]
 
         for interface_key, description_template in self.interface_types:
-            interfaces = self.structured_config.get(interface_key, [])
+            interfaces = self.structured_config.get(interface_key, default=[])
 
             for idx, interface in enumerate(interfaces):
                 self.update_interface_shutdown(interface)

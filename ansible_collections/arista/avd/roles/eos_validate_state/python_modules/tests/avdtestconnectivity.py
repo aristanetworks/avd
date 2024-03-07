@@ -183,11 +183,12 @@ class AvdTestLLDPTopology(AvdTestBase):
         required_keys = ["name", "peer", "peer_interface"]
 
         for idx, interface in enumerate(ethernet_interfaces):
-            self.update_interface_shutdown(interface)
-            if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, shutdown=False):
+            if self.is_subinterface(interface):
+                LOGGER.info("Interface '%s' is a subinterface. %s is skipped.", interface["name"], self.__class__.__name__)
                 continue
 
-            if self.is_subinterface(interface):
+            self.update_interface_shutdown(interface)
+            if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, shutdown=False):
                 continue
 
             if not self.is_peer_available(peer := interface["peer"]):
