@@ -483,9 +483,9 @@ router_path_selection:
   - name: LB-PROD-AVT-POLICY-DEFAULT
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
+    - name: AWS
     - name: Satellite
       priority: 2
-    - name: AWS
 router_traffic_engineering:
   enabled: true
 application_traffic_recognition:

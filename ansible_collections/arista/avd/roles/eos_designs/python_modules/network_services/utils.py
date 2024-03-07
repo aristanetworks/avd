@@ -324,7 +324,7 @@ class UtilsMixin:
                 "is eligible to be included. Make sure that at least one path-group for the device is not configured with "
                 "`excluded_from_default_policy: true` under `wan_path_groups`."
             )
-        return path_group_names
+        return natural_sort(path_group_names)
 
     @cached_property
     def _default_control_plane_virtual_topology(self) -> dict:

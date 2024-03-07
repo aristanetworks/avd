@@ -602,8 +602,8 @@ router_path_selection:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
     - name: LAN_HA
-    - name: MPLS
     - name: INET
+    - name: MPLS
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
     - name: LAN_HA
@@ -651,8 +651,8 @@ router_path_selection:
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: LAN_HA
-    - name: MPLS
     - name: INET
+    - name: MPLS
 router_traffic_engineering:
   enabled: true
 stun:

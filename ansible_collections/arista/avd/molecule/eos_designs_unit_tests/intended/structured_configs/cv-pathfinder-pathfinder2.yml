@@ -375,13 +375,13 @@ router_path_selection:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
     - name: LAN_HA
-    - name: MPLS
-    - name: INET
+    - name: AWS
     - name: Equinix
       priority: 2
+    - name: INET
+    - name: MPLS
     - name: Satellite
       priority: 2
-    - name: AWS
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
     - name: LAN_HA
@@ -433,13 +433,13 @@ router_path_selection:
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: LAN_HA
-    - name: MPLS
-    - name: INET
+    - name: AWS
     - name: Equinix
       priority: 2
+    - name: INET
+    - name: MPLS
     - name: Satellite
       priority: 2
-    - name: AWS
 router_traffic_engineering:
   enabled: true
 stun:
@@ -610,16 +610,16 @@ metadata:
         pathgroups:
         - name: LAN_HA
           preference: preferred
-        - name: MPLS
-          preference: preferred
-        - name: INET
+        - name: AWS
           preference: preferred
         - name: Equinix
           preference: alternate
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: preferred
         - name: Satellite
           preference: alternate
-        - name: AWS
-          preference: preferred
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
@@ -730,13 +730,13 @@ metadata:
         pathgroups:
         - name: LAN_HA
           preference: preferred
-        - name: MPLS
-          preference: preferred
-        - name: INET
+        - name: AWS
           preference: preferred
         - name: Equinix
           preference: alternate
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: preferred
         - name: Satellite
           preference: alternate
-        - name: AWS
-          preference: preferred
