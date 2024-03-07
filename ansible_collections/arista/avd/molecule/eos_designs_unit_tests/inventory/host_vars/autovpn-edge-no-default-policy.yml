@@ -53,7 +53,9 @@ wan_router:
 
 wan_path_groups:
   - name: MPLS
-    ipsec: False
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
     id: 100
   - name: INET
     id: 101

@@ -6,6 +6,6 @@ from __future__ import annotations
 try:
     from yaml import CLoader as YamlLoader
 except ImportError:
-    from yaml import YamlLoader
+    from yaml import Loader as YamlLoader
 
 __all__ = ["YamlLoader"]

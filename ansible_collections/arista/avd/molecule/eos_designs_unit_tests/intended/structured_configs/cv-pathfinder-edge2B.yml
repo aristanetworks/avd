@@ -561,6 +561,7 @@ router_path_selection:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2
     dynamic_peers:
       enabled: true
+      ipsec: false
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
@@ -595,7 +596,7 @@ router_path_selection:
     path_groups:
     - name: LAN_HA
     - name: MPLS
-      priority: 42
+      priority: 4223
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
     - name: LAN_HA

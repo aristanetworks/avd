@@ -573,6 +573,7 @@ router_path_selection:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2
     dynamic_peers:
       enabled: true
+      ipsec: false
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
@@ -595,8 +596,8 @@ router_path_selection:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
     - name: LAN_HA
-    - name: INET
     - name: MPLS
+    - name: INET
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
     - name: LAN_HA
@@ -607,7 +608,7 @@ router_path_selection:
     - name: LAN_HA
     - name: INET
     - name: MPLS
-      priority: 42
+      priority: 4223
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
     - name: LAN_HA
@@ -644,8 +645,8 @@ router_path_selection:
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: LAN_HA
-    - name: INET
     - name: MPLS
+    - name: INET
 router_traffic_engineering:
   enabled: true
 stun:

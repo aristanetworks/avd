@@ -13,6 +13,18 @@ wan_router:
   nodes:
     - name: invalid-wan-role-overlay-routing-protocol
       id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: TEST
+          ip_address: dhcp
+
+wan_carriers:
+  - name: TEST
+    path_group: TEST
+
+wan_path_groups:
+  - name: TEST
+    id: 42
 
 expected_error_message: >-
   Only 'ibgp' is supported as 'overlay_routing_protocol' for WAN nodes.
