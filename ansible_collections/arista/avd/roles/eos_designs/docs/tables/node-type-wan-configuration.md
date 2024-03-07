@@ -16,6 +16,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_ha</samp>](## "<node_type_keys.key>.defaults.wan_ha") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>The key is supported only if `wan_mode` == `cv-pathfinder`.<br>AutoVPN support is still to be determined.<br><br>Maximum 2 devices supported by group for HA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "<node_type_keys.key>.defaults.wan_ha.ipsec") | Boolean |  | `True` |  | Enable / Disable IPsec over HA path-group when HA is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.defaults.wan_ha.mode") | String |  | `uplinks` | Valid Values:<br>- <code>uplinks</code><br>- <code>custom</code> | Indicates the WAN HA interfaces selection mode.<br>By default uplink interfaces in VRF default are used. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_ha_interfaces</samp>](## "<node_type_keys.key>.defaults.wan_ha_interfaces") | List, items: String |  |  |  | PREVIEW: This key is currently not supported<br><br>Local WAN HA interfaces<br>Each list item supports range syntax that can be expanded into a list of interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.wan_ha_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_ha_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.wan_ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | PREVIEW: This key is currently not supported<br><br>IP address pool used for WAN HA connectivity. IP is derived from the node id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.defaults.dps_mss_ipv4") | String |  | `auto` |  | PREVIEW: This key is currently not supported<br><br>IPv4 MSS value configured under "router path-selection" on WAN Devices. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
@@ -28,6 +32,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>The key is supported only if `wan_mode` == `cv-pathfinder`.<br>AutoVPN support is still to be determined.<br><br>Maximum 2 devices supported by group for HA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.ipsec") | Boolean |  | `True` |  | Enable / Disable IPsec over HA path-group when HA is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.mode") | String |  | `uplinks` | Valid Values:<br>- <code>uplinks</code><br>- <code>custom</code> | Indicates the WAN HA interfaces selection mode.<br>By default uplink interfaces in VRF default are used. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha_interfaces") | List, items: String |  |  |  | PREVIEW: This key is currently not supported<br><br>Local WAN HA interfaces<br>Each list item supports range syntax that can be expanded into a list of interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | PREVIEW: This key is currently not supported<br><br>IP address pool used for WAN HA connectivity. IP is derived from the node id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].dps_mss_ipv4") | String |  | `auto` |  | PREVIEW: This key is currently not supported<br><br>IPv4 MSS value configured under "router path-selection" on WAN Devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_role</samp>](## "<node_type_keys.key>.node_groups.[].wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | PREVIEW: This key is currently not supported<br>Override the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector.<br><br>Only supported if `overlay_routing_protocol` is set to `ibgp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_transit_mode</samp>](## "<node_type_keys.key>.node_groups.[].cv_pathfinder_transit_mode") | String |  |  | Valid Values:<br>- <code>region</code><br>- <code>zone</code> | PREVIEW: This key is currently not supported<br>Configure the transit mode for a WAN client for CV Pathfinder designs<br>only when the `wan_mode` root key is set to `cv_pathfinder`.<br><br>'zone' is currently not supported. |
@@ -36,6 +44,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>The key is supported only if `wan_mode` == `cv-pathfinder`.<br>AutoVPN support is still to be determined.<br><br>Maximum 2 devices supported by group for HA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.ipsec") | Boolean |  | `True` |  | Enable / Disable IPsec over HA path-group when HA is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.mode") | String |  | `uplinks` | Valid Values:<br>- <code>uplinks</code><br>- <code>custom</code> | Indicates the WAN HA interfaces selection mode.<br>By default uplink interfaces in VRF default are used. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha_interfaces") | List, items: String |  |  |  | PREVIEW: This key is currently not supported<br><br>Local WAN HA interfaces<br>Each list item supports range syntax that can be expanded into a list of interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | PREVIEW: This key is currently not supported<br><br>IP address pool used for WAN HA connectivity. IP is derived from the node id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.node_groups.[].dps_mss_ipv4") | String |  | `auto` |  | PREVIEW: This key is currently not supported<br><br>IPv4 MSS value configured under "router path-selection" on WAN Devices. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
@@ -46,6 +58,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha</samp>](## "<node_type_keys.key>.nodes.[].wan_ha") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>The key is supported only if `wan_mode` == `cv-pathfinder`.<br>AutoVPN support is still to be determined.<br><br>Maximum 2 devices supported by group for HA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.enabled") | Boolean |  | `True` |  | Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.ipsec") | Boolean |  | `True` |  | Enable / Disable IPsec over HA path-group when HA is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.mode") | String |  | `uplinks` | Valid Values:<br>- <code>uplinks</code><br>- <code>custom</code> | Indicates the WAN HA interfaces selection mode.<br>By default uplink interfaces in VRF default are used. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha_interfaces</samp>](## "<node_type_keys.key>.nodes.[].wan_ha_interfaces") | List, items: String |  |  |  | PREVIEW: This key is currently not supported<br><br>Local WAN HA interfaces<br>Each list item supports range syntax that can be expanded into a list of interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].wan_ha_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_ha_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].wan_ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | PREVIEW: This key is currently not supported<br><br>IP address pool used for WAN HA connectivity. IP is derived from the node id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.nodes.[].dps_mss_ipv4") | String |  | `auto` |  | PREVIEW: This key is currently not supported<br><br>IPv4 MSS value configured under "router path-selection" on WAN Devices. |
 
 === "YAML"
@@ -96,6 +112,22 @@
 
           # Enable / Disable IPsec over HA path-group when HA is enabled.
           ipsec: <bool; default=True>
+
+          # Indicates the WAN HA interfaces selection mode.
+          # By default uplink interfaces in VRF default are used.
+          mode: <str; "uplinks" | "custom"; default="uplinks">
+
+        # PREVIEW: This key is currently not supported
+        #
+        # Local WAN HA interfaces
+        # Each list item supports range syntax that can be expanded into a list of interfaces.
+        wan_ha_interfaces:
+          - <str>
+
+        # PREVIEW: This key is currently not supported
+        #
+        # IP address pool used for WAN HA connectivity. IP is derived from the node id.
+        wan_ha_ipv4_pool: <str>
 
         # PREVIEW: This key is currently not supported
         #
@@ -156,6 +188,22 @@
                 # Enable / Disable IPsec over HA path-group when HA is enabled.
                 ipsec: <bool; default=True>
 
+                # Indicates the WAN HA interfaces selection mode.
+                # By default uplink interfaces in VRF default are used.
+                mode: <str; "uplinks" | "custom"; default="uplinks">
+
+              # PREVIEW: This key is currently not supported
+              #
+              # Local WAN HA interfaces
+              # Each list item supports range syntax that can be expanded into a list of interfaces.
+              wan_ha_interfaces:
+                - <str>
+
+              # PREVIEW: This key is currently not supported
+              #
+              # IP address pool used for WAN HA connectivity. IP is derived from the node id.
+              wan_ha_ipv4_pool: <str>
+
               # PREVIEW: This key is currently not supported
               #
               # IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -201,6 +249,22 @@
 
             # Enable / Disable IPsec over HA path-group when HA is enabled.
             ipsec: <bool; default=True>
+
+            # Indicates the WAN HA interfaces selection mode.
+            # By default uplink interfaces in VRF default are used.
+            mode: <str; "uplinks" | "custom"; default="uplinks">
+
+          # PREVIEW: This key is currently not supported
+          #
+          # Local WAN HA interfaces
+          # Each list item supports range syntax that can be expanded into a list of interfaces.
+          wan_ha_interfaces:
+            - <str>
+
+          # PREVIEW: This key is currently not supported
+          #
+          # IP address pool used for WAN HA connectivity. IP is derived from the node id.
+          wan_ha_ipv4_pool: <str>
 
           # PREVIEW: This key is currently not supported
           #
@@ -253,6 +317,22 @@
 
             # Enable / Disable IPsec over HA path-group when HA is enabled.
             ipsec: <bool; default=True>
+
+            # Indicates the WAN HA interfaces selection mode.
+            # By default uplink interfaces in VRF default are used.
+            mode: <str; "uplinks" | "custom"; default="uplinks">
+
+          # PREVIEW: This key is currently not supported
+          #
+          # Local WAN HA interfaces
+          # Each list item supports range syntax that can be expanded into a list of interfaces.
+          wan_ha_interfaces:
+            - <str>
+
+          # PREVIEW: This key is currently not supported
+          #
+          # IP address pool used for WAN HA connectivity. IP is derived from the node id.
+          wan_ha_ipv4_pool: <str>
 
           # PREVIEW: This key is currently not supported
           #

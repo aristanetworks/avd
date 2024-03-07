@@ -7,6 +7,9 @@ cv_pathfinder_regions:
     id: 42
     description: AVD Region
     sites:
+      - name: Site404
+        id: 404
+        location: Not Found
       - name: Site422
         id: 422
         location: Somewhere
@@ -185,6 +188,31 @@ wan_router:
               wan_carrier: Colt
               wan_circuit_id: 10666
               ip_address: 172.16.6.6/31
+
+    # SITE_HA_ENABLED_DIRECT_HA
+    - group: Site404
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site404
+      wan_ha:
+        mode: custom
+      wan_ha_interfaces: [Ethernet52]
+      wan_ha_ipv4_pool: 10.10.10.0/24
+      nodes:
+        - name: cv-pathfinder-edge3A
+          id: 6
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: ATT
+              wan_circuit_id: 404-01
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+        - name: cv-pathfinder-edge3B
+          id: 7
+          l3_interfaces:
+            - name: Ethernet2
+              wan_carrier: Colt
+              wan_circuit_id: 10423
+              ip_address: 172.15.6.6/31
 
 # Fake DC1
 l3leaf:

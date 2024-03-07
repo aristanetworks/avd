@@ -257,6 +257,31 @@ class EthernetInterfacesMixin(UtilsMixin):
                     context_keys=["name", "peer", "peer_interface"],
                 )
 
+        # TODO make this nicer
+        if get(self.shared_utils.switch_data_combined, "wan_ha.mode", default="uplinks") == "custom":
+            for index, interface in enumerate(get(self.shared_utils.switch_data_combined, "wan_ha_interfaces", required=True)):
+                ha_interface = {
+                    "name": interface,
+                    "type": "routed",
+                    "peer_type": "l3_interface",
+                    "peer": "TODO-MY-HA-PEER",
+                    "shutdown": False,
+                    "description": "LAN HA OMG",
+                    "ip_address": self.shared_utils.wan_ha_ip_addresses[index],
+                }
+
+                # Configuring flow tracking on LAN interfaces
+                if self.shared_utils.is_cv_pathfinder_client:
+                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
+                append_if_not_duplicate(
+                    list_of_dicts=ethernet_interfaces,
+                    primary_key="name",
+                    new_dict=ha_interface,
+                    context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} wan_ha_interfaces",
+                    context_keys=["name", "peer", "peer_interface"],
+                )
+
         if ethernet_interfaces:
             return ethernet_interfaces
 

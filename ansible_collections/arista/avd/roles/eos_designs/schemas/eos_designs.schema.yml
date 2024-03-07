@@ -7928,6 +7928,39 @@ $defs:
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is
                   enabled.
+              mode:
+                type: str
+                valid_values:
+                - uplinks
+                - custom
+                default: uplinks
+                description: 'Indicates the WAN HA interfaces selection mode.
+
+                  By default uplink interfaces in VRF default are used.'
+          wan_ha_interfaces:
+            documentation_options:
+              table: node-type-wan-configuration
+            description: 'PREVIEW: This key is currently not supported
+
+
+              Local WAN HA interfaces
+
+              Each list item supports range syntax that can be expanded into a list
+              of interfaces.'
+            type: list
+            items:
+              type: str
+              pattern: Ethernet[\d/]+
+          wan_ha_ipv4_pool:
+            documentation_options:
+              table: node-type-wan-configuration
+            description: 'PREVIEW: This key is currently not supported
+
+
+              IP address pool used for WAN HA connectivity. IP is derived from the
+              node id.'
+            type: str
+            format: ipv4_cidr
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration
