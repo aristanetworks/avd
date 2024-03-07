@@ -74,7 +74,6 @@ monitor telemetry influx
       retention policy test1
       vrf test1
       username test1 password 7 test1
-   source group standard disabled
    source socket socket1
       url unix:///var/run/example2.sock
       connection limit 100
@@ -83,4 +82,5 @@ monitor telemetry influx
       connection limit 22222
    tag global tag1 value1
    tag global tag2 value2
+   source group standard disabled
 ```

@@ -16,7 +16,7 @@ monitor telemetry influx
       url {{ destination.url }}
 {%             endif %}
 {%             if destination.database is arista.avd.defined %}
-      database name {{ destination.database}}
+      database name {{ destination.database }}
 {%             endif %}
 {%             if destination.policy is arista.avd.defined %}
       retention policy {{ destination.policy }}
@@ -24,13 +24,12 @@ monitor telemetry influx
 {%             if destination.vrf is arista.avd.defined %}
       vrf {{ destination.vrf }}
 {%             endif %}
-{%             if destination.username is arista.avd.defined %}
+{%             if destination.username is arista.avd.defined and destination.encryption is arista.avd.defined %}
       username {{ destination.username }} password {{ destination.encryption }} {{ destination.password }}
+{%             elif destination.username is arista.avd.defined %}
+      username {{ destination.username }} password {{ destination.password }}
 {%             endif %}
 {%         endfor %}
-{%     endif %}
-{%     if influxdb.source_standard_enabled is arista.avd.defined(false) %}
-   source group standard disabled
 {%     endif %}
 {%     if influxdb.source_sockets is arista.avd.defined %}
 {%         for socket in influxdb.source_sockets %}
@@ -51,5 +50,8 @@ monitor telemetry influx
    tag global {{ tag.name }} {{ tag.value }}
 {%             endif %}
 {%         endfor %}
+{%     endif %}
+{%     if influxdb.source_standard_enabled is arista.avd.defined(false) %}
+   source group standard disabled
 {%     endif %}
 {% endif %}

@@ -10,41 +10,41 @@
 
 ### Influxdb Summary
 
-{% if influxdb.destinations is arista.avd.defined %}
+{%     if influxdb.destinations is arista.avd.defined %}
 | Destination | Database | URL | Vrf | Username |
 | ----------- | -------- | --- | --- | -------- |
-{% for destination in influxdb.destinations %}
+{%         for destination in influxdb.destinations %}
 | {{ destination.name }} | {{ destination.database }} | {{ destination.url }} | {{ destination.vrf }} | {{ destination.username }} |
-{% endfor %}
-{% endif %}
+{%         endfor %}
+{%     endif %}
 
-{% if influxdb.source_standard_enabled is arista.avd.defined(false) %}
+{%     if influxdb.source_standard_enabled is arista.avd.defined(false) %}
 Standard Group Source Enabled : {{ influxdb.source_standard_enabled }}
-{% endif %}
+{%     endif %}
 
-{% if influxdb.source_sockets is arista.avd.defined %}
+{%     if influxdb.source_sockets is arista.avd.defined %}
 | Source Name | URL | Connection Limit |
 | ----------- | --- | ---------------- |
-{% for source in influxdb.source_sockets %}
+{%         for source in influxdb.source_sockets %}
 | {{ source.name }} | {{ source.url }} | {{ source.connection_limit }} |
-{% endfor %}
-{% else %}
+{%         endfor %}
+{%     else %}
 No Socket Sources Defined
-{% endif %}
+{%     endif %}
 
-{% if influxdb.tags is arista.avd.defined %}
+{%     if influxdb.tags is arista.avd.defined %}
 | Tag | Value |
 | --- | ----- |
-{% for tag in influxdb.tags %}
+{%         for tag in influxdb.tags %}
 | {{ tag.name }} | {{ tag.value }} |
-{% endfor %}
-{% else %}
+{%         endfor %}
+{%     else %}
 No Global Tags Defined
-{% endif %}
+{%     endif %}
 
 ### Influxdb Device Configuration
 
 ```eos
-{%  include 'eos/influxdb.j2' %}
+{%     include 'eos/influxdb.j2' %}
 ```
 {% endif %}
