@@ -327,6 +327,19 @@ class UtilsMixin:
                 continue
 
             application_profile = get(application_virtual_topology, "application_profile", required=True)
+            if self.shared_utils.is_cv_pathfinder_router:
+                profile_id = get(
+                    application_virtual_topology,
+                    "id",
+                    required=True,
+                    org_key=(
+                        f"Missing mandatory `id` in "
+                        f"`wan_virtual_topologies.policies[{policy['name']}].application_virtual_topologies[{application_profile}]` "
+                        "when `wan_mode` is 'cv-pathfinder"
+                    ),
+                )
+            else:
+                profile_id = get(application_virtual_topology, "id")
 
             matches.append(
                 {
@@ -336,7 +349,7 @@ class UtilsMixin:
                     "dscp": get(application_virtual_topology, "dscp"),
                     # Storing id as _id to avoid schema validation and be able to pick up in VRFs
                     "load_balance_policy": load_balance_policy,
-                    "_id": get(application_virtual_topology, "id"),
+                    "_id": profile_id,
                 }
             )
 
