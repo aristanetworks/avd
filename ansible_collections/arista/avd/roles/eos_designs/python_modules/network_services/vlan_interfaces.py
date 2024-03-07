@@ -140,6 +140,12 @@ class VlanInterfacesMixin(UtilsMixin):
                 # If any anycast IPs are set, we also enable link-local IPv6 per best practice, unless specifically disabled with 'ipv6_enable: false'
                 vlan_interface_config["ipv6_enable"] = default(vlan_interface_config["ipv6_enable"], True)
 
+        if access_group_in := svi.get("access_group_in"):
+            vlan_interface_config["access_group_in"] = access_group_in
+
+        if access_group_out := svi.get("access_group_out"):
+            vlan_interface_config["access_group_out"] = access_group_out
+
         if vrf["name"] != "default":
             vlan_interface_config["vrf"] = vrf["name"]
 

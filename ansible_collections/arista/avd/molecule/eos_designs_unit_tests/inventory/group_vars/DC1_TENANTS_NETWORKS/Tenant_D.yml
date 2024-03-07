@@ -22,6 +22,8 @@ tenant_d:
             enabled: True
             ip_virtual_router_addresses: [ 10.3.11.1/24 ]
             ipv6_virtual_router_addresses: [ "2001:db8:311::1" ]
+            access_group_in: ACL_IN
+            access_group_out: ACL_OUT
             nodes:
               - node: DC1-LEAF2A
                 ip_address: 10.3.11.2/24
