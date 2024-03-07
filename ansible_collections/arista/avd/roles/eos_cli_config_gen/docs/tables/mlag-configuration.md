@@ -12,8 +12,12 @@
     | [<samp>&nbsp;&nbsp;heartbeat_interval</samp>](## "mlag_configuration.heartbeat_interval") | Integer |  |  |  | Heartbeat interval in milliseconds |
     | [<samp>&nbsp;&nbsp;local_interface</samp>](## "mlag_configuration.local_interface") | String |  |  |  | Local Interface Name |
     | [<samp>&nbsp;&nbsp;peer_address</samp>](## "mlag_configuration.peer_address") | String |  |  |  | IPv4 Address |
+    | [<samp>&nbsp;&nbsp;ipv4_peer_address</samp>](## "mlag_configuration.ipv4_peer_address") | String |  |  |  | IPv4 Address |
+    | [<samp>&nbsp;&nbsp;ipv6_peer_address</samp>](## "mlag_configuration.ipv6_peer_address") | String |  |  |  | IPv6 Address |
     | [<samp>&nbsp;&nbsp;peer_address_heartbeat</samp>](## "mlag_configuration.peer_address_heartbeat") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "mlag_configuration.peer_address_heartbeat.peer_ip") | String |  |  |  | IPv4 Address |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_peer_ip</samp>](## "mlag_configuration.peer_address_heartbeat.ipv4_peer_ip") | String |  |  |  | IPv4 Address |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_peer_ip</samp>](## "mlag_configuration.peer_address_heartbeat.ipv6_peer_ip") | String |  |  |  | IPv6 Address |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "mlag_configuration.peer_address_heartbeat.vrf") | String |  |  |  | VRF Name |
     | [<samp>&nbsp;&nbsp;dual_primary_detection_delay</samp>](## "mlag_configuration.dual_primary_detection_delay") | Integer |  |  | Min: 0<br>Max: 86400 | Delay in seconds |
     | [<samp>&nbsp;&nbsp;dual_primary_recovery_delay_mlag</samp>](## "mlag_configuration.dual_primary_recovery_delay_mlag") | Integer |  |  | Min: 0<br>Max: 86400 | Delay in seconds |
@@ -36,10 +40,22 @@
 
       # IPv4 Address
       peer_address: <str>
+
+      # IPv4 Address
+      ipv4_peer_address: <str>
+
+      # IPv6 Address
+      ipv6_peer_address: <str>
       peer_address_heartbeat:
 
         # IPv4 Address
         peer_ip: <str>
+
+        # IPv4 Address
+        ipv4_peer_ip: <str>
+
+        # IPv6 Address
+        ipv6_peer_ip: <str>
 
         # VRF Name
         vrf: <str>

@@ -19,12 +19,34 @@ mlag configuration
 {%     if mlag_configuration.peer_address is arista.avd.defined %}
    peer-address {{ mlag_configuration.peer_address }}
 {%     endif %}
+{%     if mlag_configuration.ipv4_peer_address is arista.avd.defined %}
+   peer-address {{ mlag_configuration.ipv4_peer_address }}
+{%     endif %}
+{%     if mlag_configuration.ipv6_peer_address is arista.avd.defined %}
+   peer-address {{ mlag_configuration.ipv6_peer_address }}
+{%     endif %}
 {%     if mlag_configuration.peer_address_heartbeat.peer_ip is arista.avd.defined %}
 {%         if mlag_configuration.peer_address_heartbeat.vrf is arista.avd.defined and mlag_configuration.peer_address_heartbeat.vrf != 'default' %}
    peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }} vrf {{ mlag_configuration.peer_address_heartbeat.vrf }}
 {# using the default VRF #}
 {%         else %}
    peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }}
+{%         endif %}
+{%     endif %}
+{%     if mlag_configuration.peer_address_heartbeat.ipv4_peer_ip is arista.avd.defined %}
+{%         if mlag_configuration.peer_address_heartbeat.vrf is arista.avd.defined and mlag_configuration.peer_address_heartbeat.vrf != 'default' %}
+   peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.ipv4_peer_ip }} vrf {{ mlag_configuration.peer_address_heartbeat.vrf }}
+{# using the default VRF #}
+{%         else %}
+   peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.ipv4_peer_ip }}
+{%         endif %}
+{%     endif %}
+{%     if mlag_configuration.peer_address_heartbeat.ipv6_peer_ip is arista.avd.defined %}
+{%         if mlag_configuration.peer_address_heartbeat.vrf is arista.avd.defined and mlag_configuration.peer_address_heartbeat.vrf != 'default' %}
+   peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.ipv6_peer_ip }} vrf {{ mlag_configuration.peer_address_heartbeat.vrf }}
+{# using the default VRF #}
+{%         else %}
+   peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.ipv6_peer_ip }}
 {%         endif %}
 {%     endif %}
 {%     if mlag_configuration.peer_link is arista.avd.defined %}

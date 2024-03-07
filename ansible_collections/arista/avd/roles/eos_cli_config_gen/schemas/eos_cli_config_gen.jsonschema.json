@@ -10708,6 +10708,16 @@
           "description": "IPv4 Address",
           "title": "Peer Address"
         },
+        "ipv4_peer_address": {
+          "type": "string",
+          "description": "IPv4 Address",
+          "title": "IPv4 Peer Address"
+        },
+        "ipv6_peer_address": {
+          "type": "string",
+          "description": "IPv6 Address",
+          "title": "IPv6 Peer Address"
+        },
         "peer_address_heartbeat": {
           "type": "object",
           "properties": {
@@ -10715,6 +10725,16 @@
               "type": "string",
               "description": "IPv4 Address",
               "title": "Peer IP"
+            },
+            "ipv4_peer_ip": {
+              "type": "string",
+              "description": "IPv4 Address",
+              "title": "IPv4 Peer IP"
+            },
+            "ipv6_peer_ip": {
+              "type": "string",
+              "description": "IPv6 Address",
+              "title": "IPv6 Peer IP"
             },
             "vrf": {
               "description": "VRF Name",

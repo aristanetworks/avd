@@ -6321,12 +6321,24 @@ keys:
       peer_address:
         type: str
         description: IPv4 Address
+      ipv4_peer_address:
+        type: str
+        description: IPv4 Address
+      ipv6_peer_address:
+        type: str
+        description: IPv6 Address
       peer_address_heartbeat:
         type: dict
         keys:
           peer_ip:
             type: str
             description: IPv4 Address
+          ipv4_peer_ip:
+            type: str
+            description: IPv4 Address
+          ipv6_peer_ip:
+            type: str
+            description: IPv6 Address
           vrf:
             description: VRF Name
             type: str
