@@ -12,7 +12,7 @@
 {%     if mlag_configuration.peer_address is arista.avd.defined %}
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| {{ mlag_configuration.domain_id }} | {{ mlag_configuration.local_interface }} | {{ mlag_configuration.peer_address }} | {{ mlag_configuration.peer_link }} fart-test |
+| {{ mlag_configuration.domain_id }} | {{ mlag_configuration.local_interface }} | {{ mlag_configuration.peer_address }} | {{ mlag_configuration.peer_link }} |
 {%     endif %}
 {%     if mlag_configuration.ipv4_peer_address is arista.avd.defined %}
 | Domain-id | Local-interface | Peer-address | Peer-link |
