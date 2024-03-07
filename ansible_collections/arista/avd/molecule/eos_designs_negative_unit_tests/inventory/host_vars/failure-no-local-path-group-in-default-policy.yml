@@ -83,16 +83,9 @@ wan_virtual_topologies:
   vrfs:
     - name: PROD
       wan_vni: 42
-  policies:
-    - name: DEFAULT-POLICY
-      default_virtual_topology:
-        drop_unmatched: true
-      application_virtual_topologies:
-        - application_profile: TEST
-          # no id
 
 application_classification:
   application_profiles:
     - name: TEST
 
-expected_error_message: "None of this device local path-groups ['INET'] is eligible to be included in the AVD default-policy. Make sure that at least one path-group for the device is not configured with `excluded_from_default_policy` set tot `true` under `wan_path_groups`."
+expected_error_message: "Unable to generate the default WAN policy as none of the device local path-groups {'INET'} is eligible to be included. Make sure that at least one path-group for the device is not configured with `excluded_from_default_policy: true` under `wan_path_groups`."
