@@ -85,6 +85,9 @@
   - [QOS Class Maps](#qos-class-maps)
   - [QOS Policy Maps](#qos-policy-maps)
   - [QOS Profiles](#qos-profiles)
+- [Influxdb Streaming](#influxdb-streaming)
+  - [Influxdb Summary](#influxdb-summary)
+  - [Influxdb Device Configuration](#influxdb-device-configuration)
 - [STUN](#stun)
   - [STUN Server](#stun-server)
   - [STUN Device Configuration](#stun-device-configuration)
@@ -1852,6 +1855,21 @@ qos profile test
    mc-tx-queue 3
       bandwidth percent 50
       no priority
+```
+
+## Influxdb Streaming
+
+### Influxdb Summary
+
+
+
+No Socket Sources Defined
+
+No Global Tags Defined
+
+### Influxdb Device Configuration
+
+```eos
 ```
 
 ## STUN
