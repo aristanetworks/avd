@@ -25339,7 +25339,7 @@
                       "type": "integer",
                       "minimum": 2,
                       "maximum": 253,
-                      "description": "ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.\nID 1 is reserved for the default_virtual_toplogy.\nID 254 is reserved for the control_plane_virtual_topology.",
+                      "description": "ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.\nID 1 is reserved for the default_virtual_toplogy.\nID 254 is reserved for the control_plane_virtual_topology.\n\n`id` is required when `wan_mode` is 'cv-pathfinder'.",
                       "title": "ID"
                     },
                     "traffic_class": {
