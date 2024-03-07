@@ -239,6 +239,7 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.2/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -250,6 +251,7 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.10/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -261,6 +263,7 @@ interface Ethernet3
    no switchport
    ip address 172.31.255.18/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -272,6 +275,7 @@ interface Ethernet4
    no switchport
    ip address 172.31.255.26/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -283,6 +287,7 @@ interface Ethernet5
    no switchport
    ip address 172.31.255.34/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -294,6 +299,7 @@ interface Ethernet6
    no switchport
    ip address 172.31.255.42/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -305,6 +311,7 @@ interface Ethernet7
    no switchport
    ip address 172.31.255.50/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -341,6 +348,7 @@ interface Loopback0
    no shutdown
    ip address 192.168.255.2/32
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis passive
 ```
 

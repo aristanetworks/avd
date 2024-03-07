@@ -76,6 +76,13 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 }
                 port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
 
+            if self.shared_utils.underlay_isis is True:
+                port_channel_interface.update(
+                    {
+                        "isis_bfd": get(self._hostvars, "underlay_isis_bfd_enable")
+                    }
+                )
+
             # PTP
             if get(link, "ptp.enable") is True:
                 ptp_config = {}
