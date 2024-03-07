@@ -23,7 +23,7 @@ interface Vxlan1
 {%     if vxlan_interface.Vxlan1.vxlan.udp_port is arista.avd.defined %}
    vxlan udp-port {{ vxlan_interface.Vxlan1.vxlan.udp_port }}
 {%     endif %}
-{%     if vxlan_interface.Vxlan1.vxlan.vtep_to_vtep_bridging is arista.avd.defined %}
+{%     if vxlan_interface.Vxlan1.vxlan.vtep_to_vtep_bridging is arista.avd.defined(true) %}
    vxlan bridging vtep-to-vtep
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.flood_vtep_learned_data_plane is arista.avd.defined(true) %}
