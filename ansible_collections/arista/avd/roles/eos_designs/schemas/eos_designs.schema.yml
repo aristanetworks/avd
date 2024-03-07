@@ -3629,12 +3629,17 @@ keys:
           description: Additional information about the path-group for documentation
             purposes.
         ipsec:
-          type: bool
-          description: 'Flag to configure IPsec at the path-group level.
-
-
-            When set to `true`, IPsec is enabled for both the static and dynamic peers.'
-          default: true
+          type: dict
+          description: Configuration of IPSec at the path-group level.
+          keys:
+            dynamic_peers:
+              type: bool
+              description: Enable IPSec for dynamic peers.
+              default: true
+            static_peers:
+              type: bool
+              description: Enable IPSec for static peers.
+              default: true
         import_path_groups:
           type: list
           description: List of path-groups to import in this path-group.
@@ -3924,7 +3929,10 @@ keys:
 
                       ID 1 is reserved for the default_virtual_toplogy.
 
-                      ID 254 is reserved for the control_plane_virtual_topology.'
+                      ID 254 is reserved for the control_plane_virtual_topology.
+
+
+                      `id` is required when `wan_mode` is ''cv-pathfinder''.'
             default_virtual_topology:
               type: dict
               description: 'Default match for the policy.
