@@ -109,6 +109,12 @@ wan_router:
               dhcp_accept_default_route: true
               ip_address: dhcp
               connected_to_pathfinder: false
+            - name: Ethernet3
+              wan_carrier: ATT
+              wan_circuit_id: 404
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+              description: TEMPORARY FOR PR SAKE
     # SITE_HA_ENABLED
     - group: Site423
       cv_pathfinder_region: AVD_Land_West
