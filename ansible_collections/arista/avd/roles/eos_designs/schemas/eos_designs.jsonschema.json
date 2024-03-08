@@ -5944,7 +5944,7 @@
           },
           "dhcp_accept_default_route": {
             "type": "boolean",
-            "default": false,
+            "default": true,
             "description": "Accept a default route from DHCP if `ip_address` is set to `dhcp`.",
             "title": "DHCP Accept Default Route"
           },
