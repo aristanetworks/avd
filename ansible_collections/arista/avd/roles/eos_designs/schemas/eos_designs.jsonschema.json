@@ -5033,6 +5033,73 @@
       "type": "string",
       "title": "Fabric Name"
     },
+    "flow_tracking_settings": {
+      "description": "Define the flow tracking parameters for this topology.",
+      "type": "object",
+      "properties": {
+        "flow_tracker_name": {
+          "type": "string",
+          "default": "FLOW-TRACKER",
+          "description": "Flow Tracker Name",
+          "title": "Flow Tracker Name"
+        },
+        "record_export": {
+          "type": "object",
+          "properties": {
+            "on_inactive_timeout": {
+              "description": "Flow record inactive export timeout in milliseconds",
+              "type": "integer",
+              "minimum": 3000,
+              "maximum": 900000,
+              "default": 70000,
+              "title": "On Inactive Timeout"
+            },
+            "on_interval": {
+              "type": "integer",
+              "minimum": 1000,
+              "maximum": 36000000,
+              "default": 300000,
+              "description": "Flow record export interval in milliseconds",
+              "title": "On Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Record Export"
+        },
+        "exporter": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "DPI-EXPORTER",
+              "description": "Exporter Name",
+              "title": "Name"
+            },
+            "template_interval": {
+              "description": "Template interval in milliseconds",
+              "type": "integer",
+              "minimum": 5000,
+              "maximum": 3600000,
+              "default": 3000000,
+              "title": "Template Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Exporter"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Flow Tracking Settings"
+    },
     "generate_cv_tags": {
       "type": "object",
       "description": "PREVIEW: This key is currently not supported\nGenerate CloudVision Tags based on AVD data.",

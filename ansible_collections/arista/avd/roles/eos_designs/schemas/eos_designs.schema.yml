@@ -1198,6 +1198,48 @@ keys:
       in the Fabric, **must** be an inventory group name.
     type: str
     required: true
+  flow_tracking_settings:
+    description: Define the flow tracking parameters for this topology.
+    type: dict
+    keys:
+      flow_tracker_name:
+        type: str
+        default: FLOW-TRACKER
+        description: Flow Tracker Name
+      record_export:
+        type: dict
+        keys:
+          on_inactive_timeout:
+            description: Flow record inactive export timeout in milliseconds
+            type: int
+            convert_types:
+            - str
+            min: 3000
+            max: 900000
+            default: 70000
+          on_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1000
+            max: 36000000
+            default: 300000
+            description: Flow record export interval in milliseconds
+      exporter:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: DPI-EXPORTER
+            description: Exporter Name
+          template_interval:
+            description: Template interval in milliseconds
+            type: int
+            convert_types:
+            - str
+            min: 5000
+            max: 3600000
+            default: 3000000
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags

@@ -264,6 +264,12 @@ The tags will only be generated when `wan_mode` is set to `cv-pathfinder`.
 
 TODO - cover here WAN hierarchy, wan mode, route-servers, path-groups and carriers and how they are linked together.
 
+#### Flow Tracking Settings
+
+--8<--
+roles/eos_designs/docs/tables/flow-tracking-settings.md
+--8<--
+
 ### WAN interfaces
 
 TODO
