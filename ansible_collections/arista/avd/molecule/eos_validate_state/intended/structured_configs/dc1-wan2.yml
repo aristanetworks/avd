@@ -492,6 +492,7 @@ metadata:
         value: DC1-INET-4
   cv_pathfinder:
     role: edge
+    ssl_profile: STUN-DTLS
     vtep_ip: 10.255.1.2
     region: Global
     zone: Global-ZONE
