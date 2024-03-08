@@ -397,6 +397,12 @@ wan_virtual_topologies:
           constraints:
             loss_rate: 42.0
           id: 4
+        # This will not be rendered on devices without MPLS
+        - application_profile: MPLS-ONLY
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+          id: 5
     - name: DEFAULT-AVT-POLICY
       default_virtual_topology:
         path_groups:
@@ -441,6 +447,7 @@ application_classification:
         # Builtin application that should not raise
         - name: skype
     - name: IT
+    - name: MPLS-ONLY
     - name: VOICE
       applications:
         # Testing applications in application-profiles filtering

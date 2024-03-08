@@ -39,6 +39,7 @@ The intention is to support both a single AutoVPN design and [CV Pathfinder](htt
   - If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
   - For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
   - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default. It is possible to disable HA under node settings.
+  - For a given application profile match in a WAN policy, if the path-groups in the input data have an empty intersection with the path-groups on the device (no common path-group), the match statement / AVT profile is **NOT** configured on the device. This implies that the traffic could be matched in another following match statetment, in the default match statement or if absent, dropped.
 
 #### LAN Designs
 
