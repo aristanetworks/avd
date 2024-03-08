@@ -7961,7 +7961,7 @@ $defs:
           max: 4094
         dhcp_accept_default_route:
           type: bool
-          default: false
+          default: true
           description: Accept a default route from DHCP if `ip_address` is set to
             `dhcp`.
         enabled:
