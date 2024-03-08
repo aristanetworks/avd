@@ -94,7 +94,7 @@ wan_router:
               wan_circuit_id: AF830
               ip_address: 172.20.20.20/31
               connected_to_pathfinder: false
-        - name: cv-pathfinder-edge-no-common-path-group
+        - name: cv-pathfinder-edge1
           id: 2
           uplink_switch_interfaces: [Ethernet2]
           l3_interfaces:
@@ -114,7 +114,6 @@ wan_router:
               wan_circuit_id: 404
               dhcp_accept_default_route: true
               ip_address: dhcp
-              description: TEMPORARY FOR PR SAKE
     # SITE_HA_ENABLED
     - group: Site423
       cv_pathfinder_region: AVD_Land_West

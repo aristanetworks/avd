@@ -86,11 +86,11 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         """
         # Adding the application-profile
         application_profiles = get(app_dict, "application_profiles", [])
-        if get_item(application_profiles, "name", self._wan_control_plane_application_profile) is not None:
+        if get_item(application_profiles, "name", self._wan_control_plane_application_profile_name) is not None:
             return
         app_dict.setdefault("application_profiles", []).append(
             {
-                "name": self._wan_control_plane_application_profile,
+                "name": self._wan_control_plane_application_profile_name,
                 "applications": [
                     {
                         "name": self._wan_control_plane_application,

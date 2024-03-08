@@ -225,7 +225,7 @@ class UtilsMixin:
         return wan_vrfs
 
     @cached_property
-    def _wan_policies(self) -> list:
+    def _wan_virtual_topologies_policies(self) -> list:
         """
         This function parses the input data and append the default-policy if not already present
         """
@@ -241,7 +241,11 @@ class UtilsMixin:
         """
         Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of policies to configure on this device.
 
-        This returns a structure where every policy
+        This returns a structure where every policy contains a list of match statement and a default_match statement if any is required by inputs.
+        Inside each match and default_match statetement, the fully resolved load_balancing policy is present (it guarantees that the load-balance policy
+        is not empty).
+
+        The default VRF is marked as non default.
         """
         # to track the names already injected
         filtered_policy_names = []
@@ -251,7 +255,7 @@ class UtilsMixin:
             # Need to handle VRF default differently and lookup for the original policy
             lookup_name = get(vrf, "original_policy", default=vrf["policy"])
             vrf_policy = get_item(
-                self._wan_policies,
+                self._wan_virtual_topologies_policies,
                 "name",
                 lookup_name,
                 required=True,
@@ -261,12 +265,11 @@ class UtilsMixin:
                 ),
             ).copy()
 
+            vrf_policy["profile_prefix"] = lookup_name
+
             if vrf["name"] == "default":
                 vrf_policy["is_default"] = True
-                vrf_policy["profile_prefix"] = lookup_name
                 vrf_policy["name"] = f"{vrf_policy['name']}-WITH-CP"
-            else:
-                vrf_policy["profile_prefix"] = vrf_policy["name"]
 
             if vrf_policy["name"] in filtered_policy_names:
                 continue
@@ -280,16 +283,16 @@ class UtilsMixin:
 
     def _update_policy_match_statements(self, policy: dict) -> None:
         """
-        Go through a policy and returns a list of match statements and a default_match
-        Update the policy dict with two keys
+        Update the policy dict with two keys: `matches` and `default_match`
+        For each match (or default_match), the load_balancing policy is resolved and if it is empty
+        the match statement is not included.
         """
         matches = []
 
         if get(policy, "is_default", default=False):
-            control_plane_virtual_topology = get(
-                self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default=self._default_control_plane_virtual_topology
-            )
-            load_balance_policy_name = self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile)
+            control_plane_virtual_topology = self._wan_control_plane_virtual_topology
+            load_balance_policy_name = self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile_name)
+
             if (
                 load_balance_policy := self._generate_wan_load_balance_policy(
                     load_balance_policy_name,
@@ -297,15 +300,15 @@ class UtilsMixin:
                     policy["name"],
                 )
             ) is None:
-                raise AristaAvdError("TODO ERROR")
+                raise AristaAvdError("The WAN control-plane load-balance policy is empty. Make sure at least one path-group can be used in the policy")
             matches.append(
                 {
-                    "application_profile": self._wan_control_plane_application_profile,
-                    "avt_profile": self._wan_control_plane_profile,
+                    "application_profile": self._wan_control_plane_application_profile_name,
+                    "avt_profile": self._wan_control_plane_profile_name,
                     "traffic_class": get(control_plane_virtual_topology, "traffic_class"),
                     "dscp": get(control_plane_virtual_topology, "dscp"),
                     "load_balance_policy": load_balance_policy,
-                    "_id": 254,
+                    "id": 254,
                 }
             )
 
@@ -324,22 +327,21 @@ class UtilsMixin:
             load_balance_policy = self._generate_wan_load_balance_policy(load_balance_policy_name, application_virtual_topology, context_path)
             if not load_balance_policy:
                 # Empty load balance policy so skipping
+                # TODO: Add "nodes" or similar under the profile and raise here
+                # if the node is set and there are no matching path groups.
                 continue
 
             application_profile = get(application_virtual_topology, "application_profile", required=True)
-            if self.shared_utils.is_cv_pathfinder_router:
-                profile_id = get(
-                    application_virtual_topology,
-                    "id",
-                    required=True,
-                    org_key=(
-                        f"Missing mandatory `id` in "
-                        f"`wan_virtual_topologies.policies[{policy['name']}].application_virtual_topologies[{application_profile}]` "
-                        "when `wan_mode` is 'cv-pathfinder"
-                    ),
-                )
-            else:
-                profile_id = get(application_virtual_topology, "id")
+            profile_id = get(
+                application_virtual_topology,
+                "id",
+                required=self.shared_utils.is_cv_pathfinder_router,
+                org_key=(
+                    f"Missing mandatory `id` in "
+                    f"`wan_virtual_topologies.policies[{policy['name']}].application_virtual_topologies[{application_profile}]` "
+                    "when `wan_mode` is 'cv-pathfinder"
+                ),
+            )
 
             matches.append(
                 {
@@ -347,9 +349,8 @@ class UtilsMixin:
                     "avt_profile": name,
                     "traffic_class": get(application_virtual_topology, "traffic_class"),
                     "dscp": get(application_virtual_topology, "dscp"),
-                    # Storing id as _id to avoid schema validation and be able to pick up in VRFs
                     "load_balance_policy": load_balance_policy,
-                    "_id": profile_id,
+                    "id": profile_id,
                 }
             )
 
@@ -375,8 +376,11 @@ class UtilsMixin:
             load_balance_policy_name = self.shared_utils.generate_lb_policy_name(name)
             load_balance_policy = self._generate_wan_load_balance_policy(load_balance_policy_name, default_virtual_topology, context_path)
             if not load_balance_policy:
-                # TODO raise
-                raise AristaAvdError("TODO error message that states that the load_balance_policy is empty for required default_match sad")
+                raise AristaAvdError(
+                    f"The `default_virtual_topology` path-groups configuration for `wan_virtual_toplogies.policies[{policy['name']}]` produces "
+                    "an empty load-balancing policy. Make sure at least one path-group present on the device is allowed in the "
+                    "`default_virtual_topology` path-groups."
+                )
             application_profile = get(default_virtual_topology, "application_profile", default="default")
 
             default_match = {
@@ -384,14 +388,16 @@ class UtilsMixin:
                 "avt_profile": name,
                 "traffic_class": get(default_virtual_topology, "traffic_class"),
                 "dscp": get(default_virtual_topology, "dscp"),
-                # Storing id as _id to avoid schema validation and be able to pick up in VRFs
                 "load_balance_policy": load_balance_policy,
-                "_id": 1,
+                "id": 1,
             }
 
         if not matches and not default_match:
             # The policy is empty but should be assigned to a VRF
-            raise AristaAvdError("TODO message that says the policy should not be empty")
+            raise AristaAvdError(
+                f"The policy `wan_virtual_toplogies.policies[{policy['name']}]` cannot match any traffic but is assigned to a VRF. "
+                "Make sure at least one path-group present on the device is used in the policy."
+            )
 
         policy["matches"] = matches
         policy["default_match"] = default_match
@@ -524,16 +530,32 @@ class UtilsMixin:
         return f"{profile_name}-{application_profile}"
 
     @cached_property
-    def _wan_control_plane_profile(self) -> str:
+    def _wan_control_plane_virtual_topology(self) -> dict:
+        """
+        Return the Control plane virtual topology or the default one.
+
+        The default control_plane_virtual_topology, excluding path_groups with excluded_from_default_policy
+        """
+        if (control_plane_virtual_topology := get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology")) is None:
+            path_groups = [
+                path_group["name"] for path_group in self.shared_utils.wan_path_groups if not get(path_group, "excluded_from_default_policy", default=False)
+            ]
+            if self.shared_utils.is_wan_client:
+                # Filter only the path-groups connected to pathfinder
+                path_groups = [path_group for path_group in path_groups if path_group in self._local_path_groups_connected_to_pathfinder]
+            control_plane_virtual_topology = {"path_groups": [{"names": path_groups}]}
+        return control_plane_virtual_topology
+
+    @cached_property
+    def _wan_control_plane_profile_name(self) -> str:
         """
         Control plane profile name
         """
-        control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
         vrf_default_policy_name = get(get_item(self._filtered_wan_vrfs, "name", "default"), "original_policy")
-        return get(control_plane_virtual_topology, "name", default=f"{vrf_default_policy_name}-CONTROL-PLANE")
+        return get(self._wan_control_plane_virtual_topology, "name", default=f"{vrf_default_policy_name}-CONTROL-PLANE")
 
     @cached_property
-    def _wan_control_plane_application_profile(self) -> str:
+    def _wan_control_plane_application_profile_name(self) -> str:
         """
         Control plane application profile name
 
@@ -551,16 +573,3 @@ class UtilsMixin:
             for path_group in self.shared_utils.wan_local_path_groups
             if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
         ]
-
-    @cached_property
-    def _default_control_plane_virtual_topology(self) -> dict:
-        """
-        Build the default control_plane_virtual_topology, excluding path_groups with excluded_from_default_policy
-        """
-        path_groups = [
-            path_group["name"] for path_group in self.shared_utils.wan_path_groups if not get(path_group, "excluded_from_default_policy", default=False)
-        ]
-        if self.shared_utils.is_wan_client:
-            # Filter only the path-groups connected to pathfinder
-            path_groups = [path_group for path_group in path_groups if path_group in self._local_path_groups_connected_to_pathfinder]
-        return {"path_groups": [{"names": path_groups}]}

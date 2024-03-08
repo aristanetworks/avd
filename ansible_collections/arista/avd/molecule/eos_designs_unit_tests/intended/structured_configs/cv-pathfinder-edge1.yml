@@ -1,4 +1,4 @@
-hostname: cv-pathfinder-edge-no-common-path-group
+hostname: cv-pathfinder-edge1
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -20,12 +20,16 @@ router_bgp:
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
-    bfd: false
+    bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
     ttl_maximum_hops: 1
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -230,7 +234,7 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: routed
-  description: TEMPORARY FOR PR SAKE
+  description: ATT_404
   dhcp_client_accept_default_route: true
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
@@ -597,7 +601,7 @@ dps_interfaces:
     hardware: WAN-FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
-    description: cv-pathfinder-edge-no-common-path-group_VTEP
+    description: cv-pathfinder-edge1_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1
