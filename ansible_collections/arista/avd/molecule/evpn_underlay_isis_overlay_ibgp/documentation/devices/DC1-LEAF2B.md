@@ -299,6 +299,8 @@ vlan 4094
 | Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
 | Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
 | Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
+| Ethernet7 | 7 | *EVPN_UNDERLAY | *- | *- | *- | *- | *- |
+ *Inherited from Port-Channel Interface
 
 #### Ethernet Interfaces Device Configuration
 
@@ -379,6 +381,12 @@ interface Ethernet7
 | Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel7 | DC1-L2LEAF1A_Po1 | switched | trunk | none | - | - | - | - | 7 | - |
 
+##### ISIS
+
+| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Port-Channel7 | EVPN_UNDERLAY | - | - | - | - | - |
+
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
@@ -398,6 +406,7 @@ interface Port-Channel7
    switchport trunk allowed vlan none
    switchport mode trunk
    mlag 7
+   isis enable EVPN_UNDERLAY
    isis bfd
 ```
 
