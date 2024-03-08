@@ -15,7 +15,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
 !!! warning
-    ANTA version has been bumped to **0.12.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode).
+    ANTA version has been bumped to **0.13.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode).
 
 # Overview
 
@@ -115,7 +115,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
   - VerifyNTP: Validate NTP status.
 
 - AvdTestInterfacesState (Ansible tags: `interfaces_state`)
-  - VerifyInterfacesStatus: Validate interfaces admin and operational status.
+  - VerifyInterfacesStatus: Validate interfaces status.
     - Ethernet interfaces
     - Port-channel interfaces
     - Vlan interfaces

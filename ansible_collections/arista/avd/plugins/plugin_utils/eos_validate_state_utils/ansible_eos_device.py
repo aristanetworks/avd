@@ -17,7 +17,13 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 
 logger = getLogger(__name__)
 
+REQUIRED_ANTA_VERSION = "v0.13.0"
+
 try:
+    from anta import __version__ as anta_version
+
+    if anta_version != REQUIRED_ANTA_VERSION:
+        raise AristaAvdError(message=f"AVD requires 'anta' Python library version v0.13.0, found {anta_version}")
     from anta import __DEBUG__
     from anta.device import AntaDevice
     from anta.logger import anta_log_exception
