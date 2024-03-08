@@ -27,7 +27,7 @@ event-handler {{ handler.name }}
 {%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " unit " ~ handler.trigger_on_maintenance.unit %}
 {%                 endif %}
 {%                 if handler.trigger_on_maintenance.stage is arista.avd.defined("after") or handler.trigger_on_maintenance.stage is arista.avd.defined("before") %}
-{%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " " ~ handler.trigger_on_maintenance.stage ~ " " ~ handler.trigger_on_maintenance.after_before_stage %}
+{%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " " ~ handler.trigger_on_maintenance.stage ~ " stage " ~ handler.trigger_on_maintenance.after_before_stage %}
 {%                 elif handler.trigger_on_maintenance.stage is arista.avd.defined("all") %}
 {%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " all" %}
 {%                 elif handler.trigger_on_maintenance.stage is arista.avd.defined("begin") %}
