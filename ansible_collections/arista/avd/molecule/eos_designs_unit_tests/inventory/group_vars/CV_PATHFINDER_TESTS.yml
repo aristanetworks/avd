@@ -194,9 +194,8 @@ wan_router:
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site404
       wan_ha:
-        mode: custom
-      wan_ha_interfaces: [Ethernet52]
-      wan_ha_ipv4_pool: 10.10.10.0/24
+        ha_interfaces: [Ethernet52]
+        ha_ipv4_pool: 10.10.10.0/24
       nodes:
         - name: cv-pathfinder-edge3A
           id: 6

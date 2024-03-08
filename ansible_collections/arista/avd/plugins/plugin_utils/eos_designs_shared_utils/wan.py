@@ -464,37 +464,53 @@ class WanMixin:
         raise AristaAvdError("Unable to find WAN HA peer within same node group")
 
     @cached_property
+    def use_uplinks_for_wan_ha(self: SharedUtils) -> bool:
+        """
+        Return true or false
+
+        TODO handle when peer interfaces are uplinks and not here.. this is TRICKY
+        """
+        vrf_default_uplinks = [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+        uplink_interfaces = set(uplink["interface"] for uplink in vrf_default_uplinks)
+
+        interfaces = set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[]))
+        if interfaces.issubset(uplink_interfaces):
+            return True
+        elif not interfaces.intersection(uplink_interfaces):
+            if len(interfaces) > 1:
+                raise AristaAvdError("AVD does not support multiple HA interfaces when not using uplinks.")
+            return False
+        raise AristaAvdError("Either all `wan_ha.interfaces` must be uplinks intergaves or all of them must not be uplinks.")
+
+    @cached_property
     def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:
         """
         Read the IP addresses/prefix length from HA peer uplinks
         Used also to generate the prefix list of the PEER HA prefixes
+
+        FOR NOW ASSUME SAME AS LOCAL..
         """
-        mode = get(self.switch_data_combined, "wan_ha.mode", default="uplinks")
+        interfaces = set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[]))
         ip_addresses = []
-
-        if mode == "uplinks":
-            # TODO - need to fix this for wan_ha.mode custom
+        if self.use_uplinks_for_wan_ha:
             peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
-            # For now only picking up uplink interfaces in VRF default on the router.
             vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
-
-            ip_addresses = []
             for uplink in vrf_default_peer_uplinks:
-                ip_address = get(
-                    uplink,
-                    "ip_address",
-                    required=True,
-                    org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address",
-                )
-                # We can use [] notation here because if there is an ip_address, there should be a prefix_length
-                prefix_length = uplink["prefix_length"]
-                ip_addresses.append(f"{ip_address}/{prefix_length}")
-        elif mode == "custom":
-            for interface in get(self.switch_data_combined, "wan_ha_interfaces", required=True):
-                ip_addresses.append(self.get_wan_ha_peer_ip_address(interface))
+                # TODO this logic can be made nicer by having interfaces defaulting to uplinks if empty
+                if not interfaces or uplink["interface"] in interfaces:
+                    ip_address = get(
+                        uplink,
+                        "ip_address",
+                        required=True,
+                        org_key=(
+                            f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address",
+                        ),
+                    )
+                    # We can use [] notation here because if there is an ip_address, there should be a prefix_length
+                    prefix_length = uplink["prefix_length"]
+                    ip_addresses.append(f"{ip_address}/{prefix_length}")
         else:
-            raise AristaAvdError("Wrong `wan_ha` mode")
-
+            ip_addresses.extend(self.get_wan_ha_peer_ip_address(interface) for interface in interfaces)
         return ip_addresses
 
     @cached_property
@@ -503,28 +519,25 @@ class WanMixin:
         Read the IP addresses/prefix length from this device uplinks used for HA.
         Used to generate the prefix list.
         """
-        mode = get(self.switch_data_combined, "wan_ha.mode", default="uplinks")
+        interfaces = set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[]))
         ip_addresses = []
-        if mode == "uplinks":
+
+        if self.use_uplinks_for_wan_ha:
             vrf_default_uplinks = [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
-
+            # Configuring all or subset of the uplinks as HA interfaces
             for uplink in vrf_default_uplinks:
-                ip_address = get(
-                    uplink,
-                    "ip_address",
-                    required=True,
-                    org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA does not have an IP address",
-                )
-                # We can use [] notation here because if there is an ip_address, there should be a prefix_length
-                prefix_length = uplink["prefix_length"]
-                ip_addresses.append(f"{ip_address}/{prefix_length}")
-        elif mode == "custom":
-            # TODO DOES NOT WORK FOR MULTIPLE INTERFACES
-            for interface in get(self.switch_data_combined, "wan_ha_interfaces", required=True):
-                ip_addresses.append(self.get_wan_ha_ip_address(interface))
+                if not interfaces or uplink["interface"] in interfaces:
+                    ip_address = get(
+                        uplink,
+                        "ip_address",
+                        required=True,
+                        org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA does not have an IP address",
+                    )
+                    # We can use [] notation here because if there is an ip_address, there should be a prefix_length
+                    prefix_length = uplink["prefix_length"]
+                    ip_addresses.append(f"{ip_address}/{prefix_length}")
         else:
-            raise AristaAvdError("Wrong `wan_ha` mode")
-
+            ip_addresses.extend(self.get_wan_ha_ip_address(interface) for interface in interfaces)
         return ip_addresses
 
     def get_wan_ha_ip_address(self: SharedUtils, interface: str) -> str | None:
@@ -532,7 +545,12 @@ class WanMixin:
         TODO
         Render ipv4 address for mlag_ip using dynamically loaded python module.
         """
-        wan_ha_ipv4_pool = get(self.switch_data_combined, "wan_ha_ipv4_pool", required=True)
+        wan_ha_ipv4_pool = get(
+            self.switch_data_combined,
+            "wan_ha.ha_ipv4_pool",
+            required=True,
+            org_key="Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface",
+        )
         if self.is_first_ha_peer:
             # return self.ip_addressing.mlag_ip_primary()
             return get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 0)
@@ -545,7 +563,12 @@ class WanMixin:
         TODO
         Render ipv4 address for mlag_ip using dynamically loaded python module.
         """
-        wan_ha_ipv4_pool = get(self.switch_data_combined, "wan_ha_ipv4_pool", required=True)
+        wan_ha_ipv4_pool = get(
+            self.switch_data_combined,
+            "wan_ha.ha_ipv4_pool",
+            required=True,
+            org_key="Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface",
+        )
         if self.is_first_ha_peer:
             # return self.ip_addressing.mlag_ip_primary()
             return get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 1)

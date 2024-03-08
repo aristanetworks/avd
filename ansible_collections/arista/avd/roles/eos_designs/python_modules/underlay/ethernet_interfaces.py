@@ -258,8 +258,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                 )
 
         # TODO make this nicer
-        if get(self.shared_utils.switch_data_combined, "wan_ha.mode", default="uplinks") == "custom":
-            for index, interface in enumerate(get(self.shared_utils.switch_data_combined, "wan_ha_interfaces", required=True)):
+        if self.shared_utils.use_uplinks_for_wan_ha is False:
+            for index, interface in enumerate(get(self.shared_utils.switch_data_combined, "wan_ha.ha_interfaces", required=True)):
                 ha_interface = {
                     "name": interface,
                     "type": "routed",

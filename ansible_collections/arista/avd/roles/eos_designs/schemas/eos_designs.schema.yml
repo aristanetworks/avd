@@ -7928,39 +7928,34 @@ $defs:
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is
                   enabled.
-              mode:
+              ha_interfaces:
+                description: "Local WAN HA interfaces\nOverwrite the default behavior
+                  which is to pick all the interfaces.\nEach list item supports range
+                  syntax that can be expanded into a list of interfaces.\nCan be used
+                  to filter uplink interfaces when there are multiple uplinks.\nLimitations:\n
+                  \ Either all interfaces must be uplinks or all interfaces must not
+                  be uplinks.\n  Only one interface is supported for non uplinks."
+                type: list
+                items:
+                  type: str
+                  pattern: Ethernet[\d/]+
+              ha_ipv4_pool:
+                description: 'IP address pool used for WAN HA connectivity.
+
+                  IP is derived from the node id.
+
+                  Not used for uplink interfaces.'
                 type: str
-                valid_values:
-                - uplinks
-                - custom
-                default: uplinks
-                description: 'Indicates the WAN HA interfaces selection mode.
+                format: ipv4_cidr
+              max_ha_interfaces:
+                type: int
+                convert_types:
+                - str
+                description: 'Number of parallel links towards HA switches.
 
-                  By default uplink interfaces in VRF default are used.'
-          wan_ha_interfaces:
-            documentation_options:
-              table: node-type-wan-configuration
-            description: 'PREVIEW: This key is currently not supported
+                  Can be used to reserve interfaces for future parallel HA links.
 
-
-              Local WAN HA interfaces
-
-              Each list item supports range syntax that can be expanded into a list
-              of interfaces.'
-            type: list
-            items:
-              type: str
-              pattern: Ethernet[\d/]+
-          wan_ha_ipv4_pool:
-            documentation_options:
-              table: node-type-wan-configuration
-            description: 'PREVIEW: This key is currently not supported
-
-
-              IP address pool used for WAN HA connectivity. IP is derived from the
-              node id.'
-            type: str
-            format: ipv4_cidr
+                  '
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration
