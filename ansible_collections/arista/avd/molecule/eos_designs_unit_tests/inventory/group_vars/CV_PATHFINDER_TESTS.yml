@@ -101,7 +101,7 @@ wan_router:
             - name: Ethernet1
               wan_carrier: Inmrasat
               wan_circuit_id: S511
-              dhcp_accept_default_route: true
+              dhcp_accept_default_route: false
               ip_address: dhcp
             - name: Ethernet2
               wan_carrier: AWS-1
