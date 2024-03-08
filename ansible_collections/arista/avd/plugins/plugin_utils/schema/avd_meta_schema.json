@@ -214,6 +214,16 @@
                             "pattern": "^[a-z][a-z0-9_]*$",
                             "description": "Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."
                         },
+                        "unique_keys": {
+                            "type": "array",
+                            "description": "List of types to auto-convert from.\nFor 'list of dicts' auto-conversion is supported from 'dict' if 'primary_key' is set on the list schema\nFor other list item types conversion from dict will use the keys as list items.",
+                            "items": {
+                                "type": "string",
+                                "$comment": "The regex here matches valid key names",
+                                "pattern": "^[a-z][a-z0-9_\\.]*$",
+                                "description": "Name of a key in a list of dictionaries.\nThe configured key must have unique values between the list elements\nThis can also be a variable path using dot-notation like 'parent_key.child_key' in case of nested lists of dictionaries."
+                            }
+                        },
                         "display_name": { "$ref": "#/$defs/display_name" },
                         "description": { "$ref": "#/$defs/description" },
                         "required": { "$ref": "#/$defs/required" },
