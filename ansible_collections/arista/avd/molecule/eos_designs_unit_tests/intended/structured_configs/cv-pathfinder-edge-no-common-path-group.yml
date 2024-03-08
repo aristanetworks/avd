@@ -600,6 +600,7 @@ metadata:
         value: '212'
   cv_pathfinder:
     role: edge
+    ssl_profile: profileA
     vtep_ip: 192.168.142.2
     region: AVD_Land_East
     zone: AVD_Land_East-ZONE

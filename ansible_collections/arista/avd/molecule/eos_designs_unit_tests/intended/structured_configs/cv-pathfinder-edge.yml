@@ -708,6 +708,7 @@ metadata:
         value: AF830
   cv_pathfinder:
     role: edge
+    ssl_profile: profileA
     vtep_ip: 192.168.142.1
     region: AVD_Land_East
     zone: AVD_Land_East-ZONE

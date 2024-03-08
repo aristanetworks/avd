@@ -756,6 +756,7 @@ metadata:
         value: 423-01
   cv_pathfinder:
     role: edge
+    ssl_profile: profileA
     vtep_ip: 192.168.142.2
     region: AVD_Land_West
     zone: AVD_Land_West-ZONE

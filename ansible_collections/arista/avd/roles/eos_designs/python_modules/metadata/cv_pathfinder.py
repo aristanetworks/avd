@@ -43,6 +43,7 @@ class CvPathfinderMixin:
         # Edge or transit
         return {
             "role": self.shared_utils.cv_pathfinder_role,
+            "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
             "vtep_ip": self.shared_utils.vtep_ip,
             "region": self.shared_utils.wan_region["name"],
             "zone": self.shared_utils.wan_zone["name"],
