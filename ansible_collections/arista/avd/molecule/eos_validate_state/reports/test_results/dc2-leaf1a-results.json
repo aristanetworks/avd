@@ -675,6 +675,24 @@
   },
   {
     "name": "dc2-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "custom_field": "Source: dc2-leaf1a - 10.255.128.13/32 Destination: 10.255.2.1"
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "custom_field": "Source: dc2-leaf1a - 10.255.128.13/32 Destination: 10.255.2.2"
+  },
+  {
+    "name": "dc2-leaf1a",
     "test": "VerifyMlagDualPrimary",
     "categories": [
       "mlag"
@@ -864,6 +882,24 @@
     ],
     "description": "Remote Lo0 address",
     "custom_field": "10.255.128.18"
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "custom_field": "10.255.2.1"
+  },
+  {
+    "name": "dc2-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "custom_field": "10.255.2.2"
   },
   {
     "name": "dc2-leaf1a",

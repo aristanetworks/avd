@@ -24,6 +24,7 @@ class AvdTestInterfacesState(AvdTestBase):
         ("port_channel_interfaces", "Port-Channel Interface & Line Protocol == '{state}'"),
         ("vlan_interfaces", "Vlan Interface & Line Protocol == '{state}'"),
         ("loopback_interfaces", "Loopback Interface Status & Line Protocol == '{state}'"),
+        ("dps_interfaces", "DPS Interface Status & Line Protocol == '{state}'"),
     ]
 
     @cached_property
