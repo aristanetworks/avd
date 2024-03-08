@@ -94,6 +94,26 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
+    - neighbor_device: dc1-wan1.dc1.local
+      neighbor_port: Ethernet1
+      port: Ethernet6
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet6 - remote: dc1-wan1_Ethernet1'
+      description: LLDP topology - validate peer and interface
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-wan2.dc1.local
+      neighbor_port: Ethernet1
+      port: Ethernet7
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet7 - remote: dc1-wan2_Ethernet1'
+      description: LLDP topology - validate peer and interface
+- VerifyLLDPNeighbors:
+    neighbors:
     - neighbor_device: dc1-leaf1c.dc1.local
       neighbor_port: Ethernet1
       port: Ethernet8
@@ -123,6 +143,28 @@ anta.tests.connectivity:
       categories:
       - IP Reachability
       custom_field: 'Source: dc1-leaf1a_Ethernet2 - Destination: dc1-spine2_Ethernet1'
+      description: ip reachability test p2p links
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.1
+      repeat: 1
+      source: 10.255.255.0
+      vrf: default
+    result_overwrite:
+      categories:
+      - IP Reachability
+      custom_field: 'Source: dc1-leaf1a_Ethernet6 - Destination: dc1-wan1_Ethernet1'
+      description: ip reachability test p2p links
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.5
+      repeat: 1
+      source: 10.255.255.4
+      vrf: default
+    result_overwrite:
+      categories:
+      - IP Reachability
+      custom_field: 'Source: dc1-leaf1a_Ethernet7 - Destination: dc1-wan2_Ethernet1'
       description: ip reachability test p2p links
 - VerifyReachability:
     hosts:
@@ -178,6 +220,28 @@ anta.tests.connectivity:
       categories:
       - Loopback0 Reachability
       custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.5'
+      description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.2.1
+      repeat: 1
+      source: 10.255.0.3
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.2.1'
+      description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.2.2
+      repeat: 1
+      source: 10.255.0.3
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.2.2'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
@@ -338,6 +402,26 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet1
+      description: Ethernet Interface & Line Protocol == 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet6
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet6 - P2P_LINK_TO_DC1-WAN1_Ethernet1
+      description: Ethernet Interface & Line Protocol == 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet7
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet7 - P2P_LINK_TO_DC1-WAN2_Ethernet1
       description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
@@ -585,6 +669,26 @@ anta.tests.routing.bgp:
       categories:
       - BGP
       custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.2'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.255.1
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.1'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.255.5
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.5'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
@@ -633,6 +737,22 @@ anta.tests.routing.generic:
       description: Remote Lo0 address
     routes:
     - 10.255.0.5
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.2.1
+      description: Remote Lo0 address
+    routes:
+    - 10.255.2.1
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.2.2
+      description: Remote Lo0 address
+    routes:
+    - 10.255.2.2
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:

@@ -3929,7 +3929,10 @@ keys:
 
                       ID 1 is reserved for the default_virtual_toplogy.
 
-                      ID 254 is reserved for the control_plane_virtual_topology.'
+                      ID 254 is reserved for the control_plane_virtual_topology.
+
+
+                      `id` is required when `wan_mode` is ''cv-pathfinder''.'
             default_virtual_topology:
               type: dict
               description: 'Default match for the policy.
@@ -7958,7 +7961,7 @@ $defs:
           max: 4094
         dhcp_accept_default_route:
           type: bool
-          default: false
+          default: true
           description: Accept a default route from DHCP if `ip_address` is set to
             `dhcp`.
         enabled:

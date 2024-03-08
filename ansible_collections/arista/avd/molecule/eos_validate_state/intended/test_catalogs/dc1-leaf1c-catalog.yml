@@ -129,6 +129,28 @@ anta.tests.connectivity:
       description: Inband Mgmt Reachability
 - VerifyReachability:
     hosts:
+    - destination: 10.255.2.1
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf1c - Vlan4085 Destination: 10.255.2.1'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.2.2
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf1c - Vlan4085 Destination: 10.255.2.2'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
     - destination: 10.255.128.11
       repeat: 1
       source: Vlan4085

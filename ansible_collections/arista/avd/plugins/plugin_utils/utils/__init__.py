@@ -16,6 +16,7 @@ from .get_validated_path import get_validated_path
 from .get_validated_value import get_validated_value
 from .groupby import groupby
 from .load_python_class import load_python_class
+from .log_message import log_message
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 from .replace_or_append_item import replace_or_append_item
 from .template import template
@@ -37,6 +38,7 @@ __all__ = [
     "get_templar",
     "groupby",
     "load_python_class",
+    "log_message",
     "replace_or_append_item",
     "template",
     "template_var",
