@@ -89,13 +89,16 @@ UNIQUE_KEYS_VALID_DATA = [
         {"key": "a", "nested_list": [{"nested_list_key": 1}, {"nested_list_key": 2}]},
         {"key": "b", "nested_list": [{"nested_list_key": 3}, {"nested_list_key": 4}]},
     ],
+    [
+        {"key": "a", "nested_list": [{"nested_list_key": 1}, {}]},
+        {"nested_list": [{"nested_list_key": 3}, {"nested_list_key": 4}]},
+    ],
+    [],
+    [{}],
+    [{"nested_list": []}],
 ]
 
 UNIQUE_KEYS_INVALID_DATA = [
-    [
-        {"key": "a", "nested_list": [{"nested_list_key": 1}, {"nested_list_key": 2}]},
-        {"key": "b", "nested_list": [{"nested_list_key": 3}, {"nested_list_key": 4}]},
-    ],
     [
         {"key": "a", "nested_list": [{"nested_list_key": 1}, {"nested_list_key": 2}]},
         {"key": "b", "nested_list": [{"nested_list_key": 3}, {"nested_list_key": 3}]},
@@ -251,8 +254,12 @@ class TestAvdSchema:
     @pytest.mark.parametrize("INVALID_DATA", UNIQUE_KEYS_INVALID_DATA)
     def test_avd_schema_validate_unique_keys_invalid_data(self, TEST_SCHEMA, INVALID_DATA):
         try:
-            for validation_error in AvdSchema(TEST_SCHEMA).validate(INVALID_DATA):
+            validation_errors = tuple(AvdSchema(TEST_SCHEMA).validate(INVALID_DATA))
+            if not validation_errors:
+                assert False, "did NOT fail validation"
+            for validation_error in validation_errors:
                 assert isinstance(validation_error, AvdValidationError)
                 assert validation_error.path.endswith((".key", ".nested_list_key"))
+
         except Exception as e:
             assert False, f"AvdSchema(UNIQUE_KEYS_SCHEMAS).validate(UNIQUE_KEYS_INVALID_DATA) raised an exception: {e}"
