@@ -3,11 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import logging
 from functools import cached_property
 from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestP2PIPReachability(AvdTestBase):
@@ -29,13 +32,14 @@ class AvdTestP2PIPReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
+        if (ethernet_interfaces := self.structured_config.get("ethernet_interfaces")) is None:
+            LOGGER.warning("No ethernet interfaces found. %s is skipped.", self.__class__.__name__)
             return None
 
         required_keys = ["name", "peer", "peer_interface", "ip_address"]
 
         for idx, interface in enumerate(ethernet_interfaces):
-            self.update_interface_shutdown(interface=interface)
+            self.update_interface_shutdown(interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, type="routed", shutdown=False):
                 continue
 
@@ -81,11 +85,12 @@ class AvdTestInbandReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (vlan_interfaces := self.logged_get(key="vlan_interfaces")) is None:
+        if (vlan_interfaces := self.structured_config.get("vlan_interfaces")) is None:
+            LOGGER.info("No vlan interfaces found. %s is skipped.", self.__class__.__name__)
             return None
 
         for idx, interface in enumerate(vlan_interfaces):
-            self.update_interface_shutdown(interface=interface)
+            self.update_interface_shutdown(interface)
             if not self.validate_data(data=interface, data_path=f"vlan_interfaces.[{idx}]", required_keys="name", type="inband_mgmt", shutdown=False):
                 continue
 
@@ -160,12 +165,6 @@ class AvdTestLLDPTopology(AvdTestBase):
     categories = ["LLDP Topology"]
     description = "LLDP topology - validate peer and interface"
 
-    def is_subinterface(self, interface: dict) -> bool:
-        """
-        TODO - check if this cannot be moved to the AvdTestBase
-        """
-        return "." in interface.get("name", "")
-
     @cached_property
     def test_definition(self) -> dict | None:
         """
@@ -177,17 +176,18 @@ class AvdTestLLDPTopology(AvdTestBase):
         """
         anta_tests = []
 
-        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
+        if (ethernet_interfaces := self.structured_config.get("ethernet_interfaces")) is None:
+            LOGGER.warning("No ethernet interfaces found. %s is skipped.", self.__class__.__name__)
             return None
 
         required_keys = ["name", "peer", "peer_interface"]
 
         for idx, interface in enumerate(ethernet_interfaces):
-            # ignore subinterfaces for LLDP - TODO makes this better
             if self.is_subinterface(interface):
+                LOGGER.info("Interface '%s' is a subinterface. %s is skipped.", interface["name"], self.__class__.__name__)
                 continue
 
-            self.update_interface_shutdown(interface=interface)
+            self.update_interface_shutdown(interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, shutdown=False):
                 continue
 
