@@ -39,8 +39,8 @@ router_bgp:
           additional_paths:
             install_ecmp_primary: true
             receive: true
-            send:
-              ecmp_limit: 4
+            send: ecmp
+            ecmp_limit: 4
         neighbors:
           - ip_address: 1.2.3.4
             activate: true
@@ -57,8 +57,7 @@ router_bgp:
           additional_paths:
             install: true
             receive: true
-            send:
-              any: true
+            send: any
         neighbors:
           - ip_address: aa::1
             activate: true
@@ -112,17 +111,15 @@ router_bgp:
       address_family_ipv4:
         bgp:
           additional_paths:
-            send:
-              backup: true
+            send: backup
       address_family_ipv6:
         bgp:
           additional_paths:
-            send:
-              limit: 3
+            send: limit
+            limit: 3
 
     - name: VRF03
       address_family_ipv4:
         bgp:
           additional_paths:
-            send:
-              ecmp: true
+            send: ecmp
