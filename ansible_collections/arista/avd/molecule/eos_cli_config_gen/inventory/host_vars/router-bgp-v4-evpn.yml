@@ -173,8 +173,7 @@ router_bgp:
           additional_paths:
             install: true
             receive: true
-            send:
-              ecmp: true
+            send: ecmp
         neighbors:
           - ip_address: 10.2.3.4
             activate: true

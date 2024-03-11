@@ -105,34 +105,29 @@ router_bgp:
         activate: true
         additional_paths:
           receive: true
-          send:
-            any: true
+          send: any
       - name: ADDITIONAL-PATH-PG-2
         activate: true
         additional_paths:
-          send:
-            backup: true
+          send: backup
       - name: ADDITIONAL-PATH-PG-3
         activate: true
         additional_paths:
-          send:
-            ecmp: true
+          send: ecmp
       - name: ADDITIONAL-PATH-PG-4
         activate: true
         additional_paths:
-          send:
-            ecmp_limit: 42
+          send: ecmp
+          ecmp_limit: 42
       - name: ADDITIONAL-PATH-PG-5
         activate: true
         additional_paths:
-          send:
-            limit: 42
+          send: limit
+          limit: 42
       # Checking the `no neighbor <PG> additional-paths send any is rendered
       - name: ADDITIONAL-PATH-PG-6
         activate: true
         additional_paths:
-          send:
-            any: false
     evpn_hostflap_detection:
       enabled: true
       window: 10
