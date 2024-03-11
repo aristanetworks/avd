@@ -5074,7 +5074,7 @@
           "properties": {
             "name": {
               "type": "string",
-              "default": "DPI-EXPORTER",
+              "default": "CV-TELEMETRY",
               "description": "Exporter Name",
               "title": "Name"
             },
@@ -5083,7 +5083,7 @@
               "type": "integer",
               "minimum": 5000,
               "maximum": 3600000,
-              "default": 3000000,
+              "default": 3600000,
               "title": "Template Interval"
             }
           },

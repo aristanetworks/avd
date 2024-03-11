@@ -25,10 +25,11 @@ class FlowTrackingMixin(UtilsMixin):
             return None
 
         flow_tracking = get(self._hostvars, "flow_tracking_settings", default={})
-        exporter_name = get(flow_tracking, "exporter.name", default="DPI-EXPORTER")
-        template_interval = get(flow_tracking, "exporter.template_interval", default=3000000)
+        exporter_name = get(flow_tracking, "exporter.name", default="CV-TELEMETRY")
+        template_interval = get(flow_tracking, "exporter.template_interval", default=3600000)
         on_inactive_timeout = get(flow_tracking, "record_export.on_inactive_timeout", default=70000)
         on_interval = get(flow_tracking, "record_export.on_interval", default=300000)
+
         return {
             "hardware": {
                 "trackers": [

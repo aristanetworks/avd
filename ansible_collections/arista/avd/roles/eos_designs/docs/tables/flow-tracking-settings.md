@@ -13,8 +13,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;on_inactive_timeout</samp>](## "flow_tracking_settings.record_export.on_inactive_timeout") | Integer |  | `70000` | Min: 3000<br>Max: 900000 | Flow record inactive export timeout in milliseconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;on_interval</samp>](## "flow_tracking_settings.record_export.on_interval") | Integer |  | `300000` | Min: 1000<br>Max: 36000000 | Flow record export interval in milliseconds |
     | [<samp>&nbsp;&nbsp;exporter</samp>](## "flow_tracking_settings.exporter") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "flow_tracking_settings.exporter.name") | String |  | `DPI-EXPORTER` |  | Exporter Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;template_interval</samp>](## "flow_tracking_settings.exporter.template_interval") | Integer |  | `3000000` | Min: 5000<br>Max: 3600000 | Template interval in milliseconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "flow_tracking_settings.exporter.name") | String |  | `CV-TELEMETRY` |  | Exporter Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;template_interval</samp>](## "flow_tracking_settings.exporter.template_interval") | Integer |  | `3600000` | Min: 5000<br>Max: 3600000 | Template interval in milliseconds |
 
 === "YAML"
 
@@ -34,8 +34,8 @@
       exporter:
 
         # Exporter Name
-        name: <str; default="DPI-EXPORTER">
+        name: <str; default="CV-TELEMETRY">
 
         # Template interval in milliseconds
-        template_interval: <int; 5000-3600000; default=3000000>
+        template_interval: <int; 5000-3600000; default=3600000>
     ```

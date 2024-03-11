@@ -1230,7 +1230,7 @@ keys:
         keys:
           name:
             type: str
-            default: DPI-EXPORTER
+            default: CV-TELEMETRY
             description: Exporter Name
           template_interval:
             description: Template interval in milliseconds
@@ -1239,7 +1239,7 @@ keys:
             - str
             min: 5000
             max: 3600000
-            default: 3000000
+            default: 3600000
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags

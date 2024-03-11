@@ -199,11 +199,11 @@ flow_tracking:
         on_inactive_timeout: 70000
         on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 3000000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
