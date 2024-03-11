@@ -194,7 +194,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                     # Configuring flow tracking on LAN interfaces
                     if self.shared_utils.is_cv_pathfinder_client:
-                        ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+                        ethernet_subinterface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
                     ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
                     append_if_not_duplicate(
