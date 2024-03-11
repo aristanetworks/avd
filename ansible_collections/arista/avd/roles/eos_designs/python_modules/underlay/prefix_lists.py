@@ -29,8 +29,12 @@ class PrefixListsMixin(UtilsMixin):
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
+        prefix_lists = []
+
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
-        sequence_numbers = [{"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv4_pool} eq 32"}]
+        sequence_numbers = []
+        if not self.shared_utils.is_wan_server or self.shared_utils.wan_advertise_wan_servers_loopbacks_in_default_vrf:
+            sequence_numbers.append({"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv4_pool} eq 32"})
 
         if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0" and not self.shared_utils.is_wan_router:
             sequence_numbers.append({"sequence": 20, "action": f"permit {self.shared_utils.vtep_loopback_ipv4_pool} eq 32"})
@@ -38,8 +42,10 @@ class PrefixListsMixin(UtilsMixin):
         if self.shared_utils.vtep_vvtep_ip is not None and self.shared_utils.network_services_l3 is True and not self.shared_utils.is_wan_router:
             sequence_numbers.append({"sequence": 30, "action": f"permit {self.shared_utils.vtep_vvtep_ip}"})
 
-        prefix_lists = [{"name": "PL-LOOPBACKS-EVPN-OVERLAY", "sequence_numbers": sequence_numbers}]
+        if sequence_numbers:
+            prefix_lists = [{"name": "PL-LOOPBACKS-EVPN-OVERLAY", "sequence_numbers": sequence_numbers}]
 
+        # IPv4 - PL-LOOPBACKS-PIM-RP
         if self.shared_utils.underlay_multicast_rp_interfaces is not None:
             sequence_numbers = [
                 {"sequence": (index + 1) * 10, "action": f"permit {interface['ip_address']}"}
@@ -47,7 +53,7 @@ class PrefixListsMixin(UtilsMixin):
             ]
             prefix_lists.append({"name": "PL-LOOPBACKS-PIM-RP", "sequence_numbers": sequence_numbers})
 
-        # TODO - may be needed in other situations
+        # IPv4 - PL-WAN-HA-PREFIXES & PL-WAN-HA-PEER-PREFIXES
         if self.shared_utils.wan_ha and self.shared_utils.underlay_routing_protocol == "ebgp":
             sequence_numbers = [
                 {"sequence": 10 * (index + 1), "action": f"permit {ipaddress.ip_network(ip_address, strict=False)}"}
@@ -61,7 +67,7 @@ class PrefixListsMixin(UtilsMixin):
             ]
             prefix_lists.append({"name": "PL-WAN-HA-PEER-PREFIXES", "sequence_numbers": sequence_numbers})
 
-        return prefix_lists
+        return prefix_lists or None
 
     @cached_property
     def ipv6_prefix_lists(self) -> dict | None:
@@ -80,7 +86,15 @@ class PrefixListsMixin(UtilsMixin):
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
+        prefix_lists = []
+
         # IPv6 - PL-LOOPBACKS-EVPN-OVERLAY-V6
-        return [
-            {"name": "PL-LOOPBACKS-EVPN-OVERLAY-V6", "sequence_numbers": [{"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv6_pool} eq 128"}]}
-        ]
+        sequence_numbers = []
+
+        if not self.shared_utils.is_wan_server or self.shared_utils.wan_advertise_wan_servers_loopbacks_in_default_vrf:
+            sequence_numbers.append({"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv6_pool} eq 128"})
+
+        if sequence_numbers:
+            prefix_lists.append({"name": "PL-LOOPBACKS-EVPN-OVERLAY-V6", "sequence_numbers": sequence_numbers})
+
+        return prefix_lists or None

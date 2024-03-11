@@ -1,0 +1,3 @@
+---
+# Testing enabling next-hop resolution for this pathfinder
+wan_route_servers_next_hop_resolution: true

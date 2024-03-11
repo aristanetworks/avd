@@ -274,7 +274,7 @@ class RouterBgpMixin(UtilsMixin):
         if self.shared_utils.overlay_dpath is True:
             address_family_evpn["domain_identifier"] = get(self.shared_utils.switch_data_combined, "ipvpn_gateway.evpn_domain_id", default="65535:1")
 
-        if self.shared_utils.is_wan_server:
+        if self.shared_utils.is_wan_server and not get(self._hostvars, "wan_route_servers_next_hop_resolution", default=False):
             address_family_evpn["next_hop"] = {"resolution_disabled": True}
         return address_family_evpn
 

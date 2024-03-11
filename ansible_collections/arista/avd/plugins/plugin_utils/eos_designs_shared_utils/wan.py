@@ -511,3 +511,7 @@ class WanMixin:
             return None
 
         return get(self.hostvars, "wan_stun_dtls_profile_name", default="STUN-DTLS")
+
+    @cached_property
+    def wan_advertise_wan_servers_loopbacks_in_default_vrf(self: SharedUtils) -> bool:
+        return get(self.hostvars, "wan_advertise_wan_servers_loopbacks_in_default_vrf", default=False)

@@ -7,6 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>wan_advertise_wan_servers_loopbacks_in_default_vrf</samp>](## "wan_advertise_wan_servers_loopbacks_in_default_vrf") | Boolean |  | `False` |  | Advertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers when set to true.<br><br>By default, this is not done to speed up convergence. The consequence is that Loopback0 IPs from<br>WAN route servers are not reachable over the WAN from the WAN routers. |
     | [<samp>wan_edge</samp>](## "wan_edge") <span style="color:red">removed</span> | Dictionary |  |  |  | The `wan_edge` node type was introduced and removed while the AVD WAN feature was in PREVIEW MODE.<br>Migrate your existing edge nodes to using `wan_router` node_type.<span style="color:red">This key was removed. Support was removed in AVD version 4.6.0-dev1. Use <samp>wan_router</samp> instead.</span> |
     | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>Define IPsec profiles parameters for WAN configuration. |
     | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  | PREVIEW: This key is currently not supported |
@@ -35,6 +36,12 @@
 === "YAML"
 
     ```yaml
+    # Advertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers when set to true.
+    #
+    # By default, this is not done to speed up convergence. The consequence is that Loopback0 IPs from
+    # WAN route servers are not reachable over the WAN from the WAN routers.
+    wan_advertise_wan_servers_loopbacks_in_default_vrf: <bool; default=False>
+
     # PREVIEW: This key is currently not supported
     #
     # Define IPsec profiles parameters for WAN configuration.
