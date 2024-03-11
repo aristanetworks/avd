@@ -7,6 +7,7 @@ from logging import getLogger
 
 from ..api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
 from ..client import CVClient
+from ..client.exceptions import CVChangeControlFailed
 from .models import CVChangeControl
 
 LOGGER = getLogger(__name__)
@@ -57,6 +58,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
         # Update the local copy to get the exact "last updated" timestamp needed for approval.
         cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
         change_control.final_state = get_change_control_final_state(cv_change_control=cv_change_control)
+        LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     # If requested state is "pending approval" we are done
     if change_control.requested_state == "pending approval":
@@ -70,6 +72,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
             change_control_id=change_control.id, timestamp=cv_change_control.change.time, description="Automatic approval by AVD"
         )
         change_control.final_state = "approved"
+        LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     # If requested state is "approved" we are done.
     if change_control.requested_state == "approved":
@@ -77,7 +80,21 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
 
     await cv_client.start_change_control(change_control_id=change_control.id, description="Automatically started by AVD")
     change_control.final_state = "running"
+    LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     # If requested state is "running" we are done.
     if change_control.requested_state == "running":
+        return
+
+    cv_change_control = await cv_client.wait_for_change_control_complete(cc_id=change_control.id, state="COMPLETED")
+    if cv_change_control.error is not None:
+        change_control.final_state = "failed"
+        LOGGER.info("finalize_change_control_on_cv: %s", change_control)
+        raise CVChangeControlFailed(f"Change control failed during execution {change_control.id}: {cv_change_control.error}")
+
+    change_control.final_state = "completed"
+    LOGGER.info("finalize_change_control_on_cv: %s", change_control)
+
+    # If requested state is "Completed" we are done.
+    if change_control.requested_state == "completed":
         return
