@@ -209,6 +209,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.9/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.142
   peer: site-ha-enabled-leaf2A
   peer_interface: Ethernet2.142
@@ -220,6 +222,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 142
   mtu: 9214
   ip_address: 172.17.0.9/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.666
   peer: site-ha-enabled-leaf2A
   peer_interface: Ethernet2.666
@@ -231,6 +235,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.9/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet53
   peer: site-ha-enabled-leaf2B
   peer_interface: Ethernet2
@@ -253,6 +259,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.11/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet53.142
   peer: site-ha-enabled-leaf2B
   peer_interface: Ethernet2.142
@@ -264,6 +272,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 142
   mtu: 9214
   ip_address: 172.17.0.11/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet53.666
   peer: site-ha-enabled-leaf2B
   peer_interface: Ethernet2.666
@@ -275,6 +285,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.11/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.15.6.6/31
