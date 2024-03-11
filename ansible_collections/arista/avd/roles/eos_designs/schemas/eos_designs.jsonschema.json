@@ -24869,12 +24869,13 @@
       "title": "Wan Carriers"
     },
     "wan_ha": {
+      "description": "PREVIEW: This key is currently not supported",
       "type": "object",
       "properties": {
         "lan_ha_path_group_name": {
           "type": "string",
           "default": "LAN_HA",
-          "description": "PREVIEW: This key is currently not supported\n\nWhen WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.\nThis key allows to overwrite the default LAN HA path-group name.",
+          "description": "When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.\nThis key allows to overwrite the default LAN HA path-group name.",
           "title": "Lan Ha Path Group Name"
         }
       },

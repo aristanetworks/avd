@@ -582,7 +582,7 @@ router_path_selection:
     keepalive:
       interval: 300
       failure_threshold: 5
-  - name: arista-ha
+  - name: CUSTOM_LAN_HA
     id: 65535
     flow_assignment: lan
     local_interfaces:
@@ -598,36 +598,36 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: arista-ha
+    - name: CUSTOM_LAN_HA
     - name: MPLS
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
-    - name: arista-ha
+    - name: CUSTOM_LAN_HA
     - name: MPLS
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
-    - name: arista-ha
+    - name: CUSTOM_LAN_HA
     - name: MPLS
       priority: 4223
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
-    - name: arista-ha
+    - name: CUSTOM_LAN_HA
     - name: MPLS
     jitter: 42
     lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
-    - name: arista-ha
+    - name: CUSTOM_LAN_HA
     - name: MPLS
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
-    - name: arista-ha
+    - name: CUSTOM_LAN_HA
     - name: MPLS
       priority: 2
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: arista-ha
+    - name: CUSTOM_LAN_HA
     - name: MPLS
 router_traffic_engineering:
   enabled: true

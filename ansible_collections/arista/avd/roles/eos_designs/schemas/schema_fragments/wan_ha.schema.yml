@@ -9,13 +9,13 @@ keys:
   wan_ha:
     documentation_options:
       table: wan-settings
+    description: |-
+      PREVIEW: This key is currently not supported
     type: dict
     keys:
       lan_ha_path_group_name:
         type: str
         default: LAN_HA
         description: |-
-          PREVIEW: This key is currently not supported
-
           When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.
           This key allows to overwrite the default LAN HA path-group name.
