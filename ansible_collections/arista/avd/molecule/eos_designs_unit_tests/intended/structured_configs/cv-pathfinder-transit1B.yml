@@ -216,6 +216,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.3/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.142
   peer: site-ha-enabled-leaf1
   peer_interface: Ethernet2.142
@@ -227,6 +229,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 142
   mtu: 9214
   ip_address: 172.17.0.3/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.666
   peer: site-ha-enabled-leaf1
   peer_interface: Ethernet2.666
@@ -238,6 +242,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.3/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet1.42
   peer_type: l3_interface
   ip_address: dhcp
@@ -800,6 +806,7 @@ metadata:
         value: lan
   cv_pathfinder:
     role: transit region
+    ssl_profile: profileA
     vtep_ip: 192.168.143.2
     region: AVD_Land_West
     zone: AVD_Land_West-ZONE
