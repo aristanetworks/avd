@@ -216,6 +216,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.1/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.142
   peer: site-ha-enabled-leaf1
   peer_interface: Ethernet1.142
@@ -227,6 +229,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 142
   mtu: 9214
   ip_address: 172.17.0.1/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.666
   peer: site-ha-enabled-leaf1
   peer_interface: Ethernet1.666
@@ -238,6 +242,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.1/31
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet1.42
   peer_type: l3_interface
   ip_address: dhcp
