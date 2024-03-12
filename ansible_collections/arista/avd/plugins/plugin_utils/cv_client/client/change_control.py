@@ -185,7 +185,7 @@ class ChangeControlMixin:
     async def wait_for_change_control_state(
         self: CVClient,
         cc_id: str,
-        state: Literal["completed", "unspecified", "running", "scheduled"]
+        state: Literal["completed", "unspecified", "running", "scheduled"],
         timeout: float = 3600.0,
     ) -> ChangeControl:
         """
