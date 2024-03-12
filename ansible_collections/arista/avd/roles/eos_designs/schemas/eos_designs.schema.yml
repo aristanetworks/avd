@@ -7966,7 +7966,7 @@ $defs:
             scenarios.'
         public_ip:
           type: str
-          description: "Node IPv4 address/Mask.\n\nThis is used to get the public
+          description: "Node IPv4 address (no mask).\n\nThis is used to get the public
             IP (if known) when the device is behind NAT.\nThis is only used for `wan_rr`
             routers (AutoVPN RRs and Pathfinders) to determine the Public IP\nwith
             the following preference:\n  `wan_route_servers.path_groups.interfaces.ip_address`\n

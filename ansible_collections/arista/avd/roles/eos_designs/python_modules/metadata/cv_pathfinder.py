@@ -58,7 +58,7 @@ class CvPathfinderMixin:
                 "carrier": carrier["name"],
                 "circuit_id": interface.get("wan_circuit_id"),
                 "pathgroup": carrier["path_group"],
-                "public_ip": str(interface["ip_address"]).split("/", maxsplit=1)[0] if self.shared_utils.is_cv_pathfinder_server else None,
+                "public_ip": str(interface["ip_address"]) if self.shared_utils.is_cv_pathfinder_server else None,
             }
             for carrier in self.shared_utils.wan_local_carriers
             for interface in carrier["interfaces"]

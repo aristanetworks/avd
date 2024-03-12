@@ -35,7 +35,7 @@ $defs:
         public_ip:
           type: str
           description: |-
-            Node IPv4 address/Mask.
+            Node IPv4 address (no mask).
 
             This is used to get the public IP (if known) when the device is behind NAT.
             This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP

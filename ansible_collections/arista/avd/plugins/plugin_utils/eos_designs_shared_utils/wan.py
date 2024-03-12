@@ -191,21 +191,21 @@ class WanMixin:
         """
         Takes a dict which looks like `l3_interface` from node config
 
-        If not a WAN route-server this returns public IP and if not found then the interface IP.
+        If not a WAN route-server this returns public IP and if not found then the interface IP without a mask.
 
         For WAN route-servers we try to find the IP under wan_route_servers.path_groups.interfaces.
         If not found we look for the public_ip and then the ip_address under the interface.
         If there is no public_ip and if ip_address is "dhcp" we raise an error.
         """
         if not self.is_wan_server:
-            return default(interface.get("public_ip"), interface["ip_address"])
+            return default(interface.get("public_ip"), interface["ip_address"].split("/", maxsplit=1)[0])
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:
                 continue
 
             if found_interface.get("ip_address") is not None:
-                return found_interface["ip_address"]
+                return found_interface["ip_address"].split("/", maxsplit=1)[0]
 
         if interface.get("public_ip") is not None:
             return interface["public_ip"]
@@ -216,7 +216,7 @@ class WanMixin:
                 "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
             )
 
-        return interface["ip_address"]
+        return interface["ip_address"].split("/", maxsplit=1)[0]
 
     @cached_property
     def wan_site(self: SharedUtils) -> dict:
