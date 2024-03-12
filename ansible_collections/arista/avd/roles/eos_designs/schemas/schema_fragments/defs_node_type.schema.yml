@@ -342,7 +342,7 @@ $defs:
                   description: IPv4 pool from which subnets will be allocated for links to downlink switches.
                 downlink_interfaces:
                   type: list
-                  description: List of downlink interfaces of the corresponding 'downlink_ipv4_pool'
+                  description: List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.
                   items:
                     type: str
 
