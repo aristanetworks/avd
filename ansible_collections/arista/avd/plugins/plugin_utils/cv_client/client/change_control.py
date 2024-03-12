@@ -34,10 +34,10 @@ if TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 
 CHANGE_CONTROL_STATUS_MAP = {
-    "COMPLETED": ChangeControlStatus.COMPLETED,
-    "UNSPECIFIED": ChangeControlStatus.UNSPECIFIED,
-    "RUNNING": ChangeControlStatus.RUNNING,
-    "SCHEDULED": ChangeControlStatus.SCHEDULED,
+    "completed": ChangeControlStatus.COMPLETED,
+    "unspecified": ChangeControlStatus.UNSPECIFIED,
+    "running": ChangeControlStatus.RUNNING,
+    "scheduled": ChangeControlStatus.SCHEDULED,
 }
 
 
@@ -182,10 +182,10 @@ class ChangeControlMixin:
         except Exception as e:
             raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
 
-    async def wait_for_change_control_complete(
+    async def wait_for_change_control_state(
         self: CVClient,
         cc_id: str,
-        state="COMPLETED",
+        state: Literal["completed", "unspecified", "running", "scheduled"]
         timeout: float = 3600.0,
     ) -> ChangeControl:
         """

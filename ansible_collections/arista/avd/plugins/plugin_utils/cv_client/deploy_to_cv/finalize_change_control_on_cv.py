@@ -86,7 +86,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     if change_control.requested_state == "running":
         return
 
-    cv_change_control = await cv_client.wait_for_change_control_complete(cc_id=change_control.id, state="COMPLETED")
+    cv_change_control = await cv_client.wait_for_change_control_state(cc_id=change_control.id, state="completed")
     if cv_change_control.error is not None:
         change_control.final_state = "failed"
         LOGGER.info("finalize_change_control_on_cv: %s", change_control)
