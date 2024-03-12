@@ -432,10 +432,8 @@ class WanMixin:
         """
         Return HA path group name for the WAN design.
         Used in both network services and overlay python modules.
-
-        TODO make this configurable
         """
-        return "LAN_HA"
+        return get(self.hostvars, "wan_ha.lan_ha_path_group_name", default="LAN_HA")
 
     @cached_property
     def is_first_ha_peer(self: SharedUtils) -> bool:
