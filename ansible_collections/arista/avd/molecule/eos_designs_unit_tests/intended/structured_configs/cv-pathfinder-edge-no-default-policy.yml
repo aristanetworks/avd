@@ -445,6 +445,7 @@ metadata:
         value: AF830
   cv_pathfinder:
     role: edge
+    ssl_profile: STUN-DTLS
     vtep_ip: 192.168.255.1
     region: AVD_Land_East
     zone: AVD_Land_East-ZONE

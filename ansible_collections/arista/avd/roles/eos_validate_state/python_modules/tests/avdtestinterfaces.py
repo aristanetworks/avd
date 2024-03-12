@@ -3,10 +3,13 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import logging
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.get import get
+
+LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestInterfacesState(AvdTestBase):
@@ -21,6 +24,7 @@ class AvdTestInterfacesState(AvdTestBase):
         ("port_channel_interfaces", "Port-Channel Interface & Line Protocol == '{state}'"),
         ("vlan_interfaces", "Vlan Interface & Line Protocol == '{state}'"),
         ("loopback_interfaces", "Loopback Interface Status & Line Protocol == '{state}'"),
+        ("dps_interfaces", "DPS Interface Status & Line Protocol == '{state}'"),
     ]
 
     @cached_property
@@ -53,7 +57,7 @@ class AvdTestInterfacesState(AvdTestBase):
                 }
             )
 
-        def generate_test_details(interface: dict, description_template: str) -> tuple(str, str, str):
+        def generate_test_details(interface: dict, description_template: str) -> tuple[str, str, str]:
             """
             Generates the state, protocol status, and description for a given interface.
 
@@ -71,14 +75,15 @@ class AvdTestInterfacesState(AvdTestBase):
         required_keys = ["name", "shutdown"]
 
         for interface_key, description_template in self.interface_types:
-            interfaces = get(self.structured_config, interface_key, [])
+            interfaces = self.structured_config.get(interface_key, default=[])
 
             for idx, interface in enumerate(interfaces):
-                self.update_interface_shutdown(interface=interface)
+                self.update_interface_shutdown(interface)
                 if not self.validate_data(data=interface, data_path=f"{interface_key}.[{idx}]", required_keys=required_keys):
                     continue
                 if interface.get("validate_state", True) is False:
-                    self.log_skip_message(f"Interface {interface['name']} validate_state is set to False.")
+                    log_msg = f"Interface '{interface['name']}' variable 'validate_state' is set to False. {self.__class__.__name__} is skipped."
+                    LOGGER.info(log_msg)
                     continue
                 state, proto, description = generate_test_details(interface, description_template)
                 intf_description = interface.get("description")
@@ -86,7 +91,7 @@ class AvdTestInterfacesState(AvdTestBase):
 
                 add_test(str(interface["name"]), state, proto, description, custom_field)
 
-        if get(self.hostvars[self.device_name], "vxlan_interface.Vxlan1") is not None:
+        if get(self.structured_config, "vxlan_interface.Vxlan1") is not None:
             add_test("Vxlan1", "up", "up", "Vxlan Interface Status & Line Protocol == 'up'", "Vxlan1")
 
         return {self.anta_module: anta_tests} if anta_tests else None

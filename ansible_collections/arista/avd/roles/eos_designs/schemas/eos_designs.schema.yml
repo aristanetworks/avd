@@ -3546,6 +3546,19 @@ keys:
       new_key: wan_router
       removed: true
       remove_in_version: 4.6.0-dev1
+  wan_ha:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported'
+    type: dict
+    keys:
+      lan_ha_path_group_name:
+        type: str
+        default: LAN_HA
+        description: 'When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`,
+          a default path-group is injected to form DPS tunnels over LAN.
+
+          This key allows to overwrite the default LAN HA path-group name.'
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
@@ -3929,7 +3942,10 @@ keys:
 
                       ID 1 is reserved for the default_virtual_toplogy.
 
-                      ID 254 is reserved for the control_plane_virtual_topology.'
+                      ID 254 is reserved for the control_plane_virtual_topology.
+
+
+                      `id` is required when `wan_mode` is ''cv-pathfinder''.'
             default_virtual_topology:
               type: dict
               description: 'Default match for the policy.
@@ -7966,7 +7982,7 @@ $defs:
           max: 4094
         dhcp_accept_default_route:
           type: bool
-          default: false
+          default: true
           description: Accept a default route from DHCP if `ip_address` is set to
             `dhcp`.
         enabled:

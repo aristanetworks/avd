@@ -643,7 +643,7 @@ metadata:
         - name: MPLS
           preference: alternate
     - name: PROD
-      vni: 142
+      vni: 42
       avts:
       - constraints:
           jitter: 42
@@ -677,7 +677,7 @@ metadata:
         - name: MPLS
           preference: alternate
     - name: IT
-      vni: 1000
+      vni: 100
       avts:
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
@@ -723,7 +723,7 @@ metadata:
         - name: MPLS
           preference: alternate
     - name: ATTRACTED-VRF-FROM-UPLINK
-      vni: 666
+      vni: 166
       avts:
       - id: 1
         name: DEFAULT-POLICY-DEFAULT

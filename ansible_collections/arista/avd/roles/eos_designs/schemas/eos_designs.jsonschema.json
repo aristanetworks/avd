@@ -5949,7 +5949,7 @@
           },
           "dhcp_accept_default_route": {
             "type": "boolean",
-            "default": false,
+            "default": true,
             "description": "Accept a default route from DHCP if `ip_address` is set to `dhcp`.",
             "title": "DHCP Accept Default Route"
           },
@@ -24873,6 +24873,23 @@
       },
       "title": "Wan Carriers"
     },
+    "wan_ha": {
+      "description": "PREVIEW: This key is currently not supported",
+      "type": "object",
+      "properties": {
+        "lan_ha_path_group_name": {
+          "type": "string",
+          "default": "LAN_HA",
+          "description": "When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.\nThis key allows to overwrite the default LAN HA path-group name.",
+          "title": "Lan Ha Path Group Name"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Wan Ha"
+    },
     "wan_ipsec_profiles": {
       "description": "PREVIEW: This key is currently not supported\n\nDefine IPsec profiles parameters for WAN configuration.",
       "type": "object",
@@ -25344,7 +25361,7 @@
                       "type": "integer",
                       "minimum": 2,
                       "maximum": 253,
-                      "description": "ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.\nID 1 is reserved for the default_virtual_toplogy.\nID 254 is reserved for the control_plane_virtual_topology.",
+                      "description": "ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.\nID 1 is reserved for the default_virtual_toplogy.\nID 254 is reserved for the control_plane_virtual_topology.\n\n`id` is required when `wan_mode` is 'cv-pathfinder'.",
                       "title": "ID"
                     },
                     "traffic_class": {

@@ -106,7 +106,16 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                         "traffic_class": get(application_virtual_topology, "traffic_class"),
                         "dscp": get(application_virtual_topology, "dscp"),
                         # Storing id as _id to avoid schema validation and be able to pick up in VRFs
-                        "_id": get(application_virtual_topology, "id"),
+                        "_id": get(
+                            application_virtual_topology,
+                            "id",
+                            required=True,
+                            org_key=(
+                                f"Missing mandatory `id` in "
+                                f"`wan_virtual_topologies.policies[{avt_policy['name']}].application_virtual_topologies[{application_profile}]` "
+                                "when `wan_mode` is 'cv-pathfinder"
+                            ),
+                        ),
                     }
                 )
 
