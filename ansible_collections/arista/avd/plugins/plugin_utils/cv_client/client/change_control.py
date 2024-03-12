@@ -7,7 +7,7 @@ from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Literal
 
-from ..api.arista.changecontrol.v1 import (  # ChangeControlConfigResponse,; ChangeControlConfigStreamRequest,
+from ..api.arista.changecontrol.v1 import (
     ApproveConfig,
     ApproveConfigServiceStub,
     ApproveConfigSetRequest,
