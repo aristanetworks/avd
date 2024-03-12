@@ -1205,12 +1205,12 @@ keys:
       flow_tracker_name:
         type: str
         default: FLOW-TRACKER
-        description: Flow Tracker Name
+        description: Flow Tracker Name.
       record_export:
         type: dict
         keys:
           on_inactive_timeout:
-            description: Flow record inactive export timeout in milliseconds
+            description: Flow record inactive export timeout in milliseconds.
             type: int
             convert_types:
             - str
@@ -1224,16 +1224,16 @@ keys:
             min: 1000
             max: 36000000
             default: 300000
-            description: Flow record export interval in milliseconds
+            description: Flow record export interval in milliseconds.
       exporter:
         type: dict
         keys:
           name:
             type: str
             default: CV-TELEMETRY
-            description: Exporter Name
+            description: Exporter Name.
           template_interval:
-            description: Template interval in milliseconds
+            description: Template interval in milliseconds.
             type: int
             convert_types:
             - str

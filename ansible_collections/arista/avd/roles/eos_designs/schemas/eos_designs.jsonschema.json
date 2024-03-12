@@ -5040,14 +5040,14 @@
         "flow_tracker_name": {
           "type": "string",
           "default": "FLOW-TRACKER",
-          "description": "Flow Tracker Name",
+          "description": "Flow Tracker Name.",
           "title": "Flow Tracker Name"
         },
         "record_export": {
           "type": "object",
           "properties": {
             "on_inactive_timeout": {
-              "description": "Flow record inactive export timeout in milliseconds",
+              "description": "Flow record inactive export timeout in milliseconds.",
               "type": "integer",
               "minimum": 3000,
               "maximum": 900000,
@@ -5059,7 +5059,7 @@
               "minimum": 1000,
               "maximum": 36000000,
               "default": 300000,
-              "description": "Flow record export interval in milliseconds",
+              "description": "Flow record export interval in milliseconds.",
               "title": "On Interval"
             }
           },
@@ -5075,11 +5075,11 @@
             "name": {
               "type": "string",
               "default": "CV-TELEMETRY",
-              "description": "Exporter Name",
+              "description": "Exporter Name.",
               "title": "Name"
             },
             "template_interval": {
-              "description": "Template interval in milliseconds",
+              "description": "Template interval in milliseconds.",
               "type": "integer",
               "minimum": 5000,
               "maximum": 3600000,
