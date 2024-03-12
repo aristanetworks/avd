@@ -1,4 +1,4 @@
-hostname: cv-pathfinder-edge-no-common-path-group
+hostname: cv-pathfinder-edge1
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -20,12 +20,16 @@ router_bgp:
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
-    bfd: false
+    bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
     ttl_maximum_hops: 1
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -41,6 +45,10 @@ router_bgp:
     remote_as: '65199'
     peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet2
+  - ip_address: 192.168.144.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder
   vrfs:
   - name: IT
     router_id: 192.168.42.2
@@ -223,6 +231,15 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: AWS-1_212
+  dhcp_client_accept_default_route: true
+  flow_tracker:
+    hardware: FLOW-TRACKER
+- name: Ethernet3
+  peer_type: l3_interface
+  ip_address: dhcp
+  shutdown: false
+  type: routed
+  description: ATT_404
   dhcp_client_accept_default_route: true
   flow_tracker:
     hardware: FLOW-TRACKER
@@ -468,26 +485,66 @@ router_path_selection:
     dynamic_peers:
       enabled: true
     ipsec_profile: CP-PROFILE
+  - name: INET
+    id: 101
+    local_interfaces:
+    - name: Ethernet3
+      stun:
+        server_profiles:
+        - INET-cv-pathfinder-pathfinder-Ethernet1
+        - INET-cv-pathfinder-pathfinder-Ethernet3
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 192.168.144.1
+      name: cv-pathfinder-pathfinder
+      ipv4_addresses:
+      - 10.7.7.7
+      - 10.9.9.9
+    ipsec_profile: CP-PROFILE
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
+    - name: INET
     - name: Satellite
       priority: 2
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
+    path_groups:
+    - name: INET
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
   - name: LB-PROD-AVT-POLICY-VOICE
+    path_groups:
+    - name: INET
+      priority: 2
     jitter: 42
     lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
+    path_groups:
+    - name: INET
+      priority: 2
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
+    - name: INET
     - name: Satellite
       priority: 2
     - name: AWS
 router_traffic_engineering:
   enabled: true
+stun:
+  client:
+    server_profiles:
+    - name: INET-cv-pathfinder-pathfinder-Ethernet1
+      ip_address: 10.7.7.7
+      ssl_profile: profileA
+    - name: INET-cv-pathfinder-pathfinder-Ethernet3
+      ip_address: 10.9.9.9
+      ssl_profile: profileA
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
@@ -538,6 +595,8 @@ application_traffic_recognition:
       prefix_values:
       - 6.6.6.0/24
     - name: PFX-PATHFINDERS
+      prefix_values:
+      - 192.168.144.1/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -547,7 +606,7 @@ dps_interfaces:
     hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
-    description: cv-pathfinder-edge-no-common-path-group_VTEP
+    description: cv-pathfinder-edge1_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1
@@ -604,6 +663,14 @@ metadata:
         value: AWS-1
       - name: Circuit
         value: '212'
+    - interface: Ethernet3
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: ATT
+      - name: Circuit
+        value: '404'
   cv_pathfinder:
     role: edge
     ssl_profile: profileA
@@ -620,3 +687,9 @@ metadata:
       carrier: AWS-1
       circuit_id: '212'
       pathgroup: AWS
+    - name: Ethernet3
+      carrier: ATT
+      circuit_id: '404'
+      pathgroup: INET
+    pathfinders:
+    - vtep_ip: 192.168.144.1

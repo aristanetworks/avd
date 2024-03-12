@@ -268,10 +268,10 @@ router_adaptive_virtual_topology:
     name: site1
     id: 1
   profiles:
-  - name: DEFAULT-POLICY-CONTROL-PLANE
-    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   - name: DEFAULT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   vrfs:
   - name: VRF1
     policy: DEFAULT-POLICY

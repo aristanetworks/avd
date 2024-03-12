@@ -179,6 +179,13 @@ class WanMixin:
         return list(local_path_groups_dict.values())
 
     @cached_property
+    def wan_local_path_group_names(self) -> list:
+        """
+        Return a list of wan_local_path_group names to be used by HA peer and in various places
+        """
+        return [path_group["name"] for path_group in self.wan_local_path_groups]
+
+    @cached_property
     def this_wan_route_server(self: SharedUtils) -> dict:
         """
         Returns the instance for this wan_rs found under wan_route_servers.

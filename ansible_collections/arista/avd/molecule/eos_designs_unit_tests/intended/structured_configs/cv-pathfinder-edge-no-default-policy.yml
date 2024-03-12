@@ -267,10 +267,10 @@ router_adaptive_virtual_topology:
     name: Site511
     id: 511
   profiles:
-  - name: DEFAULT-POLICY-CONTROL-PLANE
-    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   - name: DEFAULT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   vrfs:
   - name: PROD
     policy: DEFAULT-POLICY

@@ -598,37 +598,37 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
-    - name: LAN_HA
     - name: INET
       priority: 2
+    - name: LAN_HA
     jitter: 42
     lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: INET
       priority: 2
+    - name: LAN_HA
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
 router_traffic_engineering:
   enabled: true
 stun:

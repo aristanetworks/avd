@@ -416,14 +416,14 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: LAN_HA
     - name: mpls
     - name: internet
+    - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: mpls
     - name: internet
+    - name: LAN_HA
 router_traffic_engineering:
   enabled: true
 application_traffic_recognition:
