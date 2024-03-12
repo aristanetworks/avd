@@ -397,8 +397,6 @@ ip_extcommunity_lists:
     extcommunities: soo 192.168.43.1:422
 ip_security:
   ike_policies:
-  - name: DP-IKE-POLICY
-    local_id: 192.168.143.1
   - name: CP-IKE-POLICY
     local_id: 192.168.143.1
   sa_policies:
@@ -412,7 +410,6 @@ ip_security:
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
-    ike_policy: DP-IKE-POLICY
     sa_policy: DP-SA-POLICY
     connection: start
     shared_key: ABCDEF1234567890666

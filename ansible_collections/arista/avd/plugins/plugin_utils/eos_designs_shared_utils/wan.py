@@ -421,6 +421,10 @@ class WanMixin:
         return self.is_cv_pathfinder_client and get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
 
     @cached_property
+    def wan_ha_ipsec(self: SharedUtils) -> bool:
+        return self.wan_ha and get(self.switch_data_combined, "wan_ha.ipsec", default=True)
+
+    @cached_property
     def wan_ha_path_group_name(self: SharedUtils) -> str:
         """
         Return HA path group name for the WAN design.
