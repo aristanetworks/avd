@@ -5797,6 +5797,10 @@
     "influxdb": {
       "type": "object",
       "properties": {
+        "vrf": {
+          "type": "string",
+          "title": "VRF"
+        },
         "destinations": {
           "type": "array",
           "description": "Configure telemetry output destinations.",
@@ -5807,10 +5811,6 @@
                 "type": "string",
                 "description": "InfluxDB connection name.",
                 "title": "Name"
-              },
-              "vrf": {
-                "type": "string",
-                "title": "VRF"
               },
               "database": {
                 "type": "string",

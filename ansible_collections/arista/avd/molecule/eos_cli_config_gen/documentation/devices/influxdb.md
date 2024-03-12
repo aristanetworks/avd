@@ -43,7 +43,7 @@ interface Management1
 | Destination | Database | URL | Vrf | Username |
 | ----------- | -------- | --- | --- | -------- |
 | test | test | https://influx_test.localhost | test | test |
-| test1 | test1 | https://influx_test1.localhost | test1 | test1 |
+| test1 | test1 | https://influx_test1.localhost | test | test1 |
 
 Standard Group Source Enabled : False
 
@@ -72,7 +72,7 @@ monitor telemetry influx
       url https://influx_test1.localhost
       database name test1
       retention policy test1
-      vrf test1
+      vrf test
       username test1 password 7 test1
    source socket socket1
       url unix:///var/run/example2.sock

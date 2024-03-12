@@ -14,7 +14,7 @@
 | Destination | Database | URL | Vrf | Username |
 | ----------- | -------- | --- | --- | -------- |
 {%         for destination in influxdb.destinations %}
-| {{ destination.name }} | {{ destination.database }} | {{ destination.url }} | {{ destination.vrf }} | {{ destination.username }} |
+| {{ destination.name }} | {{ destination.database }} | {{ destination.url }} | {{ influxdb.vrf }} | {{ destination.username }} |
 {%         endfor %}
 {%     endif %}
 

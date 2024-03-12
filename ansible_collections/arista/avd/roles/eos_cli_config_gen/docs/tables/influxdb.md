@@ -8,9 +8,9 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>influxdb</samp>](## "influxdb") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;vrf</samp>](## "influxdb.vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;destinations</samp>](## "influxdb.destinations") | List, items: Dictionary |  |  |  | Configure telemetry output destinations. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "influxdb.destinations.[].name") | String | Required, Unique |  |  | InfluxDB connection name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "influxdb.destinations.[].vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;database</samp>](## "influxdb.destinations.[].database") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "influxdb.destinations.[].policy") | String |  |  |  | Confiure data retention policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "influxdb.destinations.[].url") | String |  |  |  | Configure URL for the destination. |
@@ -30,13 +30,13 @@
 
     ```yaml
     influxdb:
+      vrf: <str>
 
       # Configure telemetry output destinations.
       destinations:
 
           # InfluxDB connection name.
         - name: <str; required; unique>
-          vrf: <str>
           database: <str>
 
           # Confiure data retention policy.
