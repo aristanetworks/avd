@@ -188,6 +188,15 @@ class UtilsMixin:
 
         return False
 
+    def _uplink_subnets_redistribute(self, vrf, tenant) -> bool:
+        """
+        Returns True if P2P VRF uplink subnets should be redistributed for the given vrf/tenant.
+        False by default
+
+        Does _not_ include checks if the uplink_type is `p2p vrfs` nor the protocol BGP, so that should be checked first.
+        """
+        return default(vrf.get("redistribute_uplink_subnets_vrfs"), tenant.get("redistribute_uplink_subnets_vrfs"), False) is True
+
     @cached_property
     def _wan_control_plane_profile(self) -> str:
         """
@@ -342,3 +351,17 @@ class UtilsMixin:
         Returns {profile_name}-{application_profile}
         """
         return f"{profile_name}-{application_profile}"
+
+    def _get_uplink_subnets_for_vrf(self, vrf: dict) -> list:
+        """
+        Return the list of prefixes that are configured on uplinks in a given VRF
+        """
+        # TODO can we avoid to read the subnets from uplinks?
+        # Maybe some new shorted fact?
+        subnets = set()
+        for uplink in self.shared_utils.uplinks:
+            for subinterface in uplink.get("subinterfaces", []):
+                if subinterface.get("vrf", None) == vrf.get("name"):
+                    subnets.add(subinterface.get("ip_address"))
+
+        return natural_sort(subnets)

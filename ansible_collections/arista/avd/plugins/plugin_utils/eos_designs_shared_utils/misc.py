@@ -307,3 +307,7 @@ class MiscMixin:
         else:
             default_value = False
         return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
+
+    @cached_property
+    def uplinks(self) -> list:
+        return get(self.hostvars, "switch.uplinks")

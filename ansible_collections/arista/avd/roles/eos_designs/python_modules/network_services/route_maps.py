@@ -72,7 +72,7 @@ class RouteMapsMixin(UtilsMixin):
         if self._configure_bgp_mlag_peer_group and self.shared_utils.mlag_ibgp_origin_incomplete:
             route_maps.append(self._bgp_mlag_peer_group_route_map())
 
-        if self._mlag_ibgp_peering_subnets_without_redistribution:
+        if self._mlag_ibgp_peering_subnets_without_redistribution or self._uplink_subnets_without_redistribution:
             route_maps.append(self._connected_to_bgp_vrfs_route_map())
 
         if route_maps:
@@ -128,22 +128,36 @@ class RouteMapsMixin(UtilsMixin):
     def _connected_to_bgp_vrfs_route_map(self) -> dict:
         """
         Return dict with one route-map
-        Filter MLAG peer subnets for redistribute connected for overlay VRFs
+        If MLAG is configured, filter MLAG peer subnets for redistribute connected for overlay VRFs
+        Filter Uplink subnets for redistribute connected for overlay VRFs
         """
-        return {
-            "name": "RM-CONN-2-BGP-VRFS",
-            "sequence_numbers": [
+        sequence_numbers = []
+        if self._mlag_ibgp_peering_subnets_without_redistribution:
+            sequence_numbers.append(
                 {
                     "sequence": 10,
                     "type": "deny",
                     "match": ["ip address prefix-list PL-MLAG-PEER-VRFS"],
-                },
+                }
+            )
+        # TODO Using 15 for now to not impact exsiting deployment with renumbering
+        if self._uplink_subnets_without_redistribution:
+            sequence_numbers.append(
+                {
+                    "sequence": 15,
+                    "type": "deny",
+                    "match": ["ip address prefix-list PL-UPLINK-SUBNETS-VRFS"],
+                }
+            )
+        if sequence_numbers:
+            sequence_numbers.append(
                 {
                     "sequence": 20,
                     "type": "permit",
                 },
-            ],
-        }
+            )
+
+        return {"name": "RM-CONN-2-BGP-VRFS", "sequence_numbers": sequence_numbers}
 
     def _evpn_export_vrf_default_route_map(self) -> dict | None:
         """
