@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Ansible Collection Role eos_valudate_state - Preview Integration with ANTA
+title: Ansible Collection Role eos_validate_state - Preview Integration with ANTA
 ---
 <!--
   ~ Copyright (c) 2023-2024 Arista Networks, Inc.
