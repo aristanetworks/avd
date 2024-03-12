@@ -140,7 +140,7 @@ class UtilsMixin:
         downlink_pool, downlink_offset = self._get_downlink_ipv4_pool_and_offset(uplink_switch_index)
 
         if uplink_pool is not None and downlink_pool is not None:
-            raise AristaAvdError("Either 'uplink_ipv4_pool' is set on this switch or 'downlink_pools' is set on all uplink switches, not both.")
+            raise AristaAvdError("Unable to assign uplink IP. 'uplink_ipv4_pool' on this switch cannot be combined with 'downlink_pools' on any uplink switch.")
 
         if uplink_pool is None and downlink_pool is None:
             raise AristaAvdMissingVariableError(
