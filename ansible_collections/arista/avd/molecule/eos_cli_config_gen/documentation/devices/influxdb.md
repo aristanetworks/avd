@@ -67,13 +67,13 @@ monitor telemetry influx
       database name test
       retention policy test
       vrf test
-      username test password 0 test
+      username test password test
    destination influxdb test1
       url https://influx_test1.localhost
       database name test1
       retention policy test1
       vrf test
-      username test1 password 7 test1
+      username test1 password 7 010703174F5A
    source socket socket1
       url unix:///var/run/example2.sock
       connection limit 100
