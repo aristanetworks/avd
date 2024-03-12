@@ -40,7 +40,7 @@ class IpAddressingMixin:
         return get(self.switch_data_combined, "uplink_ipv4_pool")
 
     @cached_property
-    def downlink_pools(self: SharedUtils) -> str | None:
+    def downlink_pools(self: SharedUtils) -> list | None:
         return get(self.switch_data_combined, "downlink_pools")
 
     @cached_property
