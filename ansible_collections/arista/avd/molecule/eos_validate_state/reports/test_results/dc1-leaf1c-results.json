@@ -359,6 +359,24 @@
   },
   {
     "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.2.1"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.2.2"
+  },
+  {
+    "name": "dc1-leaf1c",
     "test": "VerifyNTP",
     "categories": [
       "NTP"

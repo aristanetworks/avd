@@ -1235,6 +1235,48 @@ keys:
       mlag_interfaces:
         description: Enable sFlow on all MLAG peer interfaces.
         type: bool
+  flow_tracking_settings:
+    description: Define the flow tracking parameters for this topology.
+    type: dict
+    keys:
+      flow_tracker_name:
+        type: str
+        default: FLOW-TRACKER
+        description: Flow Tracker Name.
+      record_export:
+        type: dict
+        keys:
+          on_inactive_timeout:
+            description: Flow record inactive export timeout in milliseconds.
+            type: int
+            convert_types:
+            - str
+            min: 3000
+            max: 900000
+            default: 70000
+          on_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1000
+            max: 36000000
+            default: 300000
+            description: Flow record export interval in milliseconds.
+      exporter:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: CV-TELEMETRY
+            description: Exporter Name.
+          template_interval:
+            description: Template interval in milliseconds.
+            type: int
+            convert_types:
+            - str
+            min: 5000
+            max: 3600000
+            default: 3600000
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
@@ -3583,6 +3625,19 @@ keys:
       new_key: wan_router
       removed: true
       remove_in_version: 4.6.0-dev1
+  wan_ha:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported'
+    type: dict
+    keys:
+      lan_ha_path_group_name:
+        type: str
+        default: LAN_HA
+        description: 'When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`,
+          a default path-group is injected to form DPS tunnels over LAN.
+
+          This key allows to overwrite the default LAN HA path-group name.'
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
@@ -3966,7 +4021,10 @@ keys:
 
                       ID 1 is reserved for the default_virtual_toplogy.
 
-                      ID 254 is reserved for the control_plane_virtual_topology.'
+                      ID 254 is reserved for the control_plane_virtual_topology.
+
+
+                      `id` is required when `wan_mode` is ''cv-pathfinder''.'
             default_virtual_topology:
               type: dict
               description: 'Default match for the policy.
@@ -7995,7 +8053,7 @@ $defs:
           max: 4094
         dhcp_accept_default_route:
           type: bool
-          default: false
+          default: true
           description: Accept a default route from DHCP if `ip_address` is set to
             `dhcp`.
         enabled:

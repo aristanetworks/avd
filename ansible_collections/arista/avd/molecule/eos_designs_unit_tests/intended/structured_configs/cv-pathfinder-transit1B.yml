@@ -204,7 +204,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.17.0.3/31
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet52.1000
   peer: site-ha-enabled-leaf1
   peer_interface: Ethernet2.1000
@@ -216,6 +216,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.3/31
+  flow_tracker:
+    hardware: FLOW-TRACKER
 - name: Ethernet52.142
   peer: site-ha-enabled-leaf1
   peer_interface: Ethernet2.142
@@ -227,6 +229,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 142
   mtu: 9214
   ip_address: 172.17.0.3/31
+  flow_tracker:
+    hardware: FLOW-TRACKER
 - name: Ethernet52.666
   peer: site-ha-enabled-leaf1
   peer_interface: Ethernet2.666
@@ -238,6 +242,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.3/31
+  flow_tracker:
+    hardware: FLOW-TRACKER
 - name: Ethernet1.42
   peer_type: l3_interface
   ip_address: dhcp
@@ -247,7 +253,7 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 42
   dhcp_client_accept_default_route: true
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet2.42
   peer_type: l3_interface
   ip_address: 172.16.6.6/31
@@ -256,7 +262,7 @@ ethernet_interfaces:
   description: Colt_10666
   encapsulation_dot1q_vlan: 666
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet1
   type: routed
   peer_type: l3_interface
@@ -373,16 +379,16 @@ agents:
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -719,7 +725,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 192.168.143.2/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: cv-pathfinder-transit1B_VTEP
@@ -789,6 +795,7 @@ metadata:
         value: lan
   cv_pathfinder:
     role: transit region
+    ssl_profile: profileA
     vtep_ip: 192.168.143.2
     region: AVD_Land_West
     zone: AVD_Land_West-ZONE

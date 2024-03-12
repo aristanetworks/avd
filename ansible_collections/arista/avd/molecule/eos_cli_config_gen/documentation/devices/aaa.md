@@ -81,9 +81,9 @@ Global timeout: 10 seconds
 ```eos
 !
 tacacs-server host 10.10.10.157 single-connection vrf mgt key 7 <removed>
+tacacs-server host 10.10.10.249 timeout 23 key 7 <removed>
 tacacs-server host 10.10.10.158 key 7 <removed>
 tacacs-server host 10.10.10.159 key 8a <removed>
-tacacs-server host 10.10.10.249 timeout 23 key 7 <removed>
 tacacs-server timeout 10
 ```
 
