@@ -1,20 +1,18 @@
 influxdb:
+  vrf: test
   destinations:
     - name: test
-      vrf: test
       database: test
       policy: test
       url: https://influx_test.localhost
       username: test
       password: test
-      encryption: 0
     - name: test1
-      vrf: test1
       database: test1
       policy: test1
       url: https://influx_test1.localhost
       username: test1
-      password: test1
+      password: 010703174F5A
       encryption: 7
   source_standard_enabled: false
   source_sockets:

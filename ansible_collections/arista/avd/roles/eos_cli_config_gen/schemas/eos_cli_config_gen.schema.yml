@@ -3789,6 +3789,8 @@ keys:
   influxdb:
     type: dict
     keys:
+      vrf:
+        type: str
       destinations:
         type: list
         primary_key: name
@@ -3799,8 +3801,6 @@ keys:
             name:
               type: str
               description: InfluxDB connection name.
-            vrf:
-              type: str
             database:
               type: str
             policy:
