@@ -121,6 +121,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
     - Vlan interfaces
     - Loopback interfaces
     - Vxlan1 interface
+    - DPS interfaces
 
 - AvdTestP2PIPReachability (Ansible tags: `ip_reachability`)
   - VerifyReachability: Validate IP reachability for point-to-point l3 ethernet interfaces.

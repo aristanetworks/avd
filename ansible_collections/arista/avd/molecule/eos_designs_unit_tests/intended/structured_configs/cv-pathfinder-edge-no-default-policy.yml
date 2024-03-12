@@ -335,11 +335,13 @@ router_path_selection:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2
     dynamic_peers:
       enabled: true
+      ipsec: false
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
       - 172.16.0.1
+    ipsec_profile: CP-PROFILE
   - name: LTE
     id: 102
     local_interfaces:
@@ -350,13 +352,13 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: INET
     - name: MPLS
+    - name: INET
     - name: LTE
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: INET
     - name: MPLS
+    - name: INET
 router_traffic_engineering:
   enabled: true
 stun:
@@ -443,6 +445,7 @@ metadata:
         value: AF830
   cv_pathfinder:
     role: edge
+    ssl_profile: STUN-DTLS
     vtep_ip: 192.168.255.1
     region: AVD_Land_East
     zone: AVD_Land_East-ZONE

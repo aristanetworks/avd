@@ -3,10 +3,13 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import logging
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestRoutingTable(AvdTestBase):
@@ -127,7 +130,11 @@ class AvdTestBGP(AvdTestBase):
 
         """
         # Check if BGP configuration is present with multi-agent model
-        if self.logged_get(key="router_bgp") is None or not self.validate_data(service_routing_protocols_model="multi-agent", logging_level="WARNING"):
+        if self.structured_config.get("router_bgp") is None:
+            LOGGER.info("No router bgp configuration found. %s is skipped.", self.__class__.__name__)
+            return None
+
+        if not self.validate_data(service_routing_protocols_model="multi-agent", logging_level="WARNING"):
             return None
 
         self.anta_tests.setdefault(f"{self.anta_module}.generic", []).append(

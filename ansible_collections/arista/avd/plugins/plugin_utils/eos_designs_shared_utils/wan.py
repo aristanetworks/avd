@@ -88,6 +88,10 @@ class WanMixin:
             if get(interface, "wan_carrier") is not None:
                 wan_interfaces.append(interface)
 
+        if not wan_interfaces:
+            raise AristaAvdError(
+                "At least one WAN interface must be configured on a WAN router. Add WAN interfaces under `l3_interfaces` node setting with `wan_carrier` set."
+            )
         return wan_interfaces
 
     @cached_property
@@ -133,7 +137,14 @@ class WanMixin:
 
     @cached_property
     def wan_path_groups(self: SharedUtils) -> list:
-        return get(self.hostvars, "wan_path_groups", required=True)
+        """
+        List of path-groups defined in the top level key `wan_path_groups`
+        Updating default preference for each path-group to 'preferred' if not set.
+        """
+        path_groups = get(self.hostvars, "wan_path_groups", required=True)
+        for path_group in path_groups:
+            path_group["default_preference"] = get(path_group, "default_preference", default="preferred")
+        return path_groups
 
     @cached_property
     def wan_local_path_groups(self: SharedUtils) -> list:
@@ -414,10 +425,8 @@ class WanMixin:
         """
         Return HA path group name for the WAN design.
         Used in both network services and overlay python modules.
-
-        TODO make this configurable
         """
-        return "LAN_HA"
+        return get(self.hostvars, "wan_ha.lan_ha_path_group_name", default="LAN_HA")
 
     @cached_property
     def is_first_ha_peer(self: SharedUtils) -> bool:
