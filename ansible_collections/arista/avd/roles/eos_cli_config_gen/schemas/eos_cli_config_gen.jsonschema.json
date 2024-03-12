@@ -27203,6 +27203,7 @@
                 },
                 "vtep_to_vtep_bridging": {
                   "type": "boolean",
+                  "description": "Enable bridging between different VTEPs in vxlan overlay.",
                   "title": "Vtep To Vtep Bridging"
                 },
                 "virtual_router_encapsulation_mac_address": {
