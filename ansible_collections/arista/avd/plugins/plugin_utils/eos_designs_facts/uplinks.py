@@ -142,8 +142,8 @@ class UplinksMixin:
         elif self.shared_utils.uplink_type == "lan":
             if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
                 raise AristaAvdError("'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'lan' as 'uplink_type'.")
-            if len(self._uplink_interfaces) > 1:
-                raise AristaAvdError(f"'uplink_type: lan' only supports a single uplink interface. Got {self._uplink_interfaces}.")
+            if len(self.shared_utils.uplink_interfaces) > 1:
+                raise AristaAvdError(f"'uplink_type: lan' only supports a single uplink interface. Got {self.shared_utils.uplink_interfaces}.")
                 # TODO: Adjust error message when we add lan-port-channel support.
                 # raise AristaAvdError(
                 #     "'uplink_type: lan' only supports a single uplink interface. "

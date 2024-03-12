@@ -33,7 +33,7 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   neighbors:
-  - ip_address: 10.0.3.2
+  - ip_address: 10.0.1.6
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     peer: downlink-ipv4-pool-spine1
@@ -80,7 +80,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 10.0.3.3/31
+  ip_address: 10.0.1.7/31
 - name: Ethernet2
   peer: downlink-ipv4-pool-spine2
   peer_interface: Ethernet6
