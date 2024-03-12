@@ -144,7 +144,7 @@ class UtilsMixin:
 
         if uplink_pool is None and downlink_pool is None:
             raise AristaAvdMissingVariableError(
-                "To calculate uplink IP addresses 'uplink_ipv4_pool' must be set on this switch or 'downlink_ipv4_pool' on all the uplink switches."
+                "Unable to assign uplink IP. 'uplink_ipv4_pool' must be set on this switch or 'downlink_pools' on all the uplink switches."
             )
 
         if downlink_pool is None:
