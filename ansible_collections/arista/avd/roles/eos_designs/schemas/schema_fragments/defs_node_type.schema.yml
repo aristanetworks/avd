@@ -339,7 +339,7 @@ $defs:
                 downlink_ipv4_pool:
                   type: str
                   format: ipv4_cidr
-                  description: IPv4 subnet to use to connect to downlink switches
+                  description: IPv4 pool from which subnets will be allocated for links to downlink switches.
                 downlink_interfaces:
                   type: list
                   description: List of downlink interfaces of the corresponding 'downlink_ipv4_pool'
