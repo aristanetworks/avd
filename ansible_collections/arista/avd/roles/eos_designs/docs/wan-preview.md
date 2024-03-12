@@ -112,20 +112,6 @@ The HA tunnel will come up properly today but route redistribution will be missi
 
 - Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`.
 - Because of the previous point, in `eos_designs`, the `transit` node type is always configured as `transit region`.
-- For `cv-pathfinder` mode, the following flow-tracking configuration is applied
-    without any customization possible:
-
-    ```eos
-    flow tracking hardware
-       tracker WAN-FLOW-TRACKER
-        record export on inactive timeout 70000
-        record export on interval 5000
-        exporter DPI-EXPORTER
-         collector 127.0.0.1
-         local interface Loopback0
-         template interval 5000
-    ```
-
 - All Pathfinders must be able to create a full mesh
 - No IPv6 support
 - For WAN interfaces, NAT IP on the Pathfinder side can be supported using the `wan_route_servers.path_groups.interfaces` key.
@@ -216,6 +202,12 @@ roles/eos_designs/docs/tables/wan-virtual-topologies.md
 
 --8<--
 roles/eos_designs/docs/tables/application-classification.md
+--8<--
+
+#### Flow Tracking Settings
+
+--8<--
+roles/eos_designs/docs/tables/flow-tracking-settings.md
 --8<--
 
 #### New BGP peer-group

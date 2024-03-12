@@ -378,11 +378,8 @@ class WanMixin:
         """
         Return the name of the WAN flow tracking object
         Used in both network services, underlay and overlay python modules.
-
-        TODO make this configurable
-        TODO may need to return exporter name also later
         """
-        return "WAN-FLOW-TRACKER"
+        return get(self.hostvars, "flow_tracking_settings.flow_tracker_name", default="FLOW-TRACKER")
 
     @cached_property
     def is_cv_pathfinder_router(self: SharedUtils) -> bool:
@@ -426,6 +423,10 @@ class WanMixin:
         Only trigger HA if 2 cv_pathfinder clients are in the same group and wan_ha.enabled is true
         """
         return self.is_cv_pathfinder_client and get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
+
+    @cached_property
+    def wan_ha_ipsec(self: SharedUtils) -> bool:
+        return self.wan_ha and get(self.switch_data_combined, "wan_ha.ipsec", default=True)
 
     @cached_property
     def wan_ha_path_group_name(self: SharedUtils) -> str:
