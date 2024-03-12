@@ -12,11 +12,11 @@ wan_route_servers:
         interfaces:
           - name: Ethernet1
             # This is testing overwriting the `public_ip` defined in the l3_interfaces for cv-pathfinder-pathfinder2
-            ip_address: 10.9.9.6/31
+            ip_address: 10.9.9.6
       - name: MPLS
         interfaces:
           - name: Ethernet2
-            ip_address: 10.9.9.5/31
+            ip_address: 10.9.9.5
   # This one is not in the inventory pathfinder1 & 2
   - hostname: cv-pathfinder-pathfinder3
     vtep_ip: 6.6.6.6
@@ -24,11 +24,11 @@ wan_route_servers:
       - name: MPLS
         interfaces:
           - name: Ethernet1
-            ip_address: 172.17.17.17/31
+            ip_address: 172.17.17.17
       - name: INET
         interfaces:
           - name: Ethernet2
-            ip_address: 10.50.50.50/31
+            ip_address: 10.50.50.50
 
 # Overwriting TTL
 bgp_peer_groups:

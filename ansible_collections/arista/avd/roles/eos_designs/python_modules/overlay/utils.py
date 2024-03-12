@@ -279,7 +279,7 @@ class UtilsMixin:
                 stun_server_profiles.setdefault(path_group["name"], []).extend(
                     {
                         "name": self._stun_server_profile_name(wan_route_server, path_group["name"], get(interface_dict, "name", required=True)),
-                        "ip_address": get(interface_dict, "ip_address", required=True).split("/")[0],
+                        "ip_address": get(interface_dict, "ip_address", required=True),
                         "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
                     }
                     for interface_dict in get(path_group, "interfaces", required=True)
