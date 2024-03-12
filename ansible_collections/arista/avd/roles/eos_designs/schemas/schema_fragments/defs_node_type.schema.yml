@@ -331,7 +331,7 @@ $defs:
           downlink_pools:
             documentation_options:
               table: node-type-uplink-configuration
-            description: IPv4 subnets to use to connect to downlink switches. Set this on the parent switch. Cannot be combined with uplink_ipv4_pool for the same link.
+            description: IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch.
             type: list
             items:
               type: dict
