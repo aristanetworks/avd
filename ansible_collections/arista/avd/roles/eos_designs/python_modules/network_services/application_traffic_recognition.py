@@ -184,7 +184,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                         obj_name=application_profile,
                         list_of_dicts=application_profiles,
                         message=(
-                            f"The application profile {application_profile} used in policy {policy['name']}  "
+                            f"The application profile {application_profile} used in policy {policy['name']} "
                             "is not defined in 'application_classification.application_profiles'."
                         ),
                     )
