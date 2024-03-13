@@ -25304,6 +25304,12 @@
               "description": "Optional name, if not set `CONTROL-PLANE-PROFILE` is used.",
               "title": "Name"
             },
+            "application_profile": {
+              "type": "string",
+              "default": "APP-PROFILE-CONTROL-PLANE",
+              "description": "The application profile to use for control plane traffic.\n\nThe application profile should be defined under `application_classification.application_profiles`.\nIf not defined AVD will auto generate an application profile using the provided name or the default value.\n\nIf not overwritten elsewhere, the application profile is generated matching one application matching the control plane traffic either sourced from or destined to the WAN route servers.",
+              "title": "Application Profile"
+            },
             "traffic_class": {
               "type": "integer",
               "minimum": 0,
