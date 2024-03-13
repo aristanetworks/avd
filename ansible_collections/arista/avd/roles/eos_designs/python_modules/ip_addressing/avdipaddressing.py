@@ -146,9 +146,6 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
     def p2p_uplinks_ip(self, uplink_switch_index: int) -> str:
         """
         Return Child IP for P2P Uplinks
-
-        Default pool is "uplink_ipv4_pool"
-        Default offset from pool is `((id - 1) * 2 * max_uplink_switches * max_parallel_uplinks) + (uplink_switch_index * 2) + 1`
         """
         uplink_switch_index = int(uplink_switch_index)
         if template_path := self.shared_utils.ip_addressing_templates.get("p2p_uplinks_ip"):
@@ -165,9 +162,6 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
     def p2p_uplinks_peer_ip(self, uplink_switch_index: int) -> str:
         """
         Return Parent IP for P2P Uplinks
-
-        Default pool is "uplink_ipv4_pool"
-        Default offset from pool is `((id - 1) * 2 * max_uplink_switches * max_parallel_uplinks) + (uplink_switch_index * 2)`
         """
         uplink_switch_index = int(uplink_switch_index)
         if template_path := self.shared_utils.ip_addressing_templates.get("p2p_uplinks_peer_ip"):

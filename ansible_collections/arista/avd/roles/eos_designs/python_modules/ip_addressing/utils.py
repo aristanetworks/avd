@@ -110,13 +110,13 @@ class UtilsMixin:
 
         return int((odd_id - 1) / 2)
 
-    def _get_parallel_uplink_index(self: "AvdIpAddressing", uplink_switch_index: int) -> int:
-        uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
-        uplink_switch_indexes = [index for index, value in enumerate(self.shared_utils.uplink_switches) if value == uplink_switch]
-        # Find index of uplink_interface going to the same uplink_switch (in case of parallel uplinks)
-        return uplink_switch_indexes.index(uplink_switch_index)
-
     def _get_downlink_ipv4_pool_and_offset(self: "AvdIpAddressing", uplink_switch_index: int) -> tuple[str, int]:
+        """
+        Returns the downlink IP pool and offset as a tuple according to the uplink_switch_index
+        
+        Offset is the matching interface's index in the list of downlink_interfaces
+        (None, None) is returned if downlink_pools are not used
+        """
         uplink_switch_interface = self.shared_utils.uplink_switch_interfaces[uplink_switch_index]
         uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
         peer_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
@@ -133,6 +133,15 @@ class UtilsMixin:
                     return (get(downlink_pool_and_interfaces, "downlink_ipv4_pool"), interface_index)
 
     def _get_p2p_ipv4_pool_and_offset(self: "AvdIpAddressing", uplink_switch_index: int) -> tuple[str, int]:
+        """
+        Returns IP pool and offset as a tuple according to the uplink_switch_index
+        
+        Uplink pool or downlink pool is returned with its corresponding offset
+        A downlink pool's offset is the matching interface's index in the list of downlink_interfaces
+        A uplink pool's offset is `((id - 1) * 2 * max_uplink_switches * max_parallel_uplinks) + (uplink_switch_index * 2) + 1`
+        
+        One and only one of these pools are required to be set, otherwise an error will be thrown
+        """
         uplink_pool = self.shared_utils.uplink_ipv4_pool
         if self.shared_utils.uplink_ipv4_pool:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
