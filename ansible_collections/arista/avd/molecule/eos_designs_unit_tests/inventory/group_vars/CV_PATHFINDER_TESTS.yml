@@ -93,14 +93,25 @@ wan_router:
               wan_carrier: Comcast-5G
               wan_circuit_id: AF830
               ip_address: 172.20.20.20/31
-              connected_to_pathfinder: False
-        - name: cv-pathfinder-edge-no-common-path-group
+              connected_to_pathfinder: false
+        - name: cv-pathfinder-edge1
           id: 2
           uplink_switch_interfaces: [Ethernet2]
           l3_interfaces:
             - name: Ethernet1
               wan_carrier: Inmrasat
               wan_circuit_id: S511
+              dhcp_accept_default_route: false
+              ip_address: dhcp
+            - name: Ethernet2
+              wan_carrier: AWS-1
+              wan_circuit_id: 212
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+              connected_to_pathfinder: false
+            - name: Ethernet3
+              wan_carrier: ATT
+              wan_circuit_id: 404
               dhcp_accept_default_route: true
               ip_address: dhcp
     # SITE_HA_ENABLED
@@ -242,7 +253,9 @@ wan_rr:
 
 wan_path_groups:
   - name: MPLS
-    ipsec: false
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
     # TODO remove one once auto-id is implemented - for now required in schema
     id: 100
     dps_keepalive:
@@ -251,15 +264,21 @@ wan_path_groups:
     id: 101
   - name: LTE
     id: 102
+    # The expectation here is that LTE shouldn't be present in the default lb policy.
+    excluded_from_default_policy: true
     dps_keepalive:
       interval: 100
       failure_threshold: 12
   - name: Equinix
     id: 103
+    default_preference: alternate
   - name: Satellite
     id: 104
+    default_preference: alternate
     dps_keepalive:
       interval: auto
+  - name: AWS
+    id: 105
 
 wan_carriers:
   - name: Comcast
@@ -282,6 +301,8 @@ wan_carriers:
     path_group: LTE
   - name: Inmrasat
     path_group: Satellite
+  - name: AWS-1
+    path_group: AWS
 
 tenants:
   - name: TenantA
@@ -376,17 +397,25 @@ wan_virtual_topologies:
           constraints:
             loss_rate: 42.0
           id: 4
+        # This will not be rendered on devices without MPLS
+        - application_profile: MPLS-ONLY
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+          id: 5
     - name: DEFAULT-AVT-POLICY
       default_virtual_topology:
         path_groups:
           # No prefence to check the default.
           - names: [INET, Equinix]
           - names: [MPLS]
-            preference: 42
+            preference: 4223
       application_virtual_topologies:
         - application_profile: VIDEO
           path_groups:
-            - names: [MPLS, INET]
+            # The expectation here is that Equinix will be configured with priority 1/preferred,
+            # since we are overriding the default_preference value (2/alternate).
+            - names: [MPLS, INET, Equinix]
               preference: preferred
           id: 3
     - name: TRANSIT-AVT-POLICY
@@ -418,6 +447,7 @@ application_classification:
         # Builtin application that should not raise
         - name: skype
     - name: IT
+    - name: MPLS-ONLY
     - name: VOICE
       applications:
         # Testing applications in application-profiles filtering

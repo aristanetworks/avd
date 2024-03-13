@@ -6,7 +6,6 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
@@ -43,6 +42,7 @@ class CvPathfinderMixin:
         # Edge or transit
         return {
             "role": self.shared_utils.cv_pathfinder_role,
+            "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
             "vtep_ip": self.shared_utils.vtep_ip,
             "region": self.shared_utils.wan_region["name"],
             "zone": self.shared_utils.wan_zone["name"],
@@ -138,6 +138,21 @@ class CvPathfinderMixin:
         if (load_balance_policies := get(self._hostvars, "router_path_selection.load_balance_policies")) is None:
             return []
 
+        if self.shared_utils.is_wan_server:
+            # On pathfinders, verify that the Load Balance policies have at least one priority one except for the HA path-group
+            for lb_policy in load_balance_policies:
+                if not any(
+                    path_group.get("priority", 1) == 1
+                    for path_group in lb_policy["path_groups"]
+                    if path_group["name"] != self.shared_utils.wan_ha_path_group_name
+                ):
+                    raise AristaAvdError(
+                        "At least one path-group must be configured with preference '1' or 'preferred' for "
+                        f"load-balance policy {lb_policy['name']}' to use CloudVision integration. "
+                        "If this is an auto-generated policy, ensure that at least one default_preference "
+                        "for a non excluded path-group is set to 'preferred' (or unset as this is the default)."
+                    )
+
         return [
             {
                 "name": vrf["name"],
@@ -168,27 +183,18 @@ class CvPathfinderMixin:
         ]
 
     @cached_property
-    def _all_vrfs_from_all_tenants(self: AvdStructuredConfigMetadata) -> list[dict]:
+    def _wan_virtual_topologies_vrfs(self: AvdStructuredConfigMetadata) -> list[dict]:
         """
-        Unfiltered list of VRFs found under tenants.
+        Unfiltered list of VRFs found under wan_virtual_topologies.
         Used to find VNI for each VRF used in cv_pathfinder.
-
-        We cannot use filtered_tenants since pathfinders do not necessarily have all VRFs defined in the policies.
-
-        Potential issue with this is if some VRFs are defined multiple times with different information.
         """
-        all_vrfs = [
-            vrf
-            for network_services_key in self.shared_utils.network_services_keys
-            for tenant in convert_dicts(get(self._hostvars, network_services_key["name"]), "name")
-            for vrf in tenant["vrfs"]
-        ]
-        # Add the default WAN VRF at the end. Will only be reached if default VRF was not defined in inputs
-        all_vrfs.append({"name": "default", "vrf_id": 1})
-        return all_vrfs
+        return get(self._hostvars, "wan_virtual_topologies.vrfs", default=[])
 
     def _get_vni_for_vrf_name(self: AvdStructuredConfigMetadata, vrf_name: str):
-        if (vrf := get_item(self._all_vrfs_from_all_tenants, "name", vrf_name)) is None:
-            raise AristaAvdError(f"Unable to find VNI for VRF {vrf_name} during generation of cv_pathfinder metadata.")
+        if (vrf := get_item(self._wan_virtual_topologies_vrfs, "name", vrf_name)) is None or (wan_vni := vrf.get("wan_vni")) is None:
+            if vrf_name == "default":
+                return 1
 
-        return self.shared_utils.get_vrf_vni(vrf)
+            raise AristaAvdError(f"Unable to find the WAN VNI for VRF {vrf_name} during generation of cv_pathfinder metadata.")
+
+        return wan_vni

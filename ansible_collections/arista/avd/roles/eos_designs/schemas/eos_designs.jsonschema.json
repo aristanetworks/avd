@@ -5033,6 +5033,73 @@
       "type": "string",
       "title": "Fabric Name"
     },
+    "flow_tracking_settings": {
+      "description": "Define the flow tracking parameters for this topology.",
+      "type": "object",
+      "properties": {
+        "flow_tracker_name": {
+          "type": "string",
+          "default": "FLOW-TRACKER",
+          "description": "Flow Tracker Name.",
+          "title": "Flow Tracker Name"
+        },
+        "record_export": {
+          "type": "object",
+          "properties": {
+            "on_inactive_timeout": {
+              "description": "Flow record inactive export timeout in milliseconds.",
+              "type": "integer",
+              "minimum": 3000,
+              "maximum": 900000,
+              "default": 70000,
+              "title": "On Inactive Timeout"
+            },
+            "on_interval": {
+              "type": "integer",
+              "minimum": 1000,
+              "maximum": 36000000,
+              "default": 300000,
+              "description": "Flow record export interval in milliseconds.",
+              "title": "On Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Record Export"
+        },
+        "exporter": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "CV-TELEMETRY",
+              "description": "Exporter Name.",
+              "title": "Name"
+            },
+            "template_interval": {
+              "description": "Template interval in milliseconds.",
+              "type": "integer",
+              "minimum": 5000,
+              "maximum": 3600000,
+              "default": 3600000,
+              "title": "Template Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Exporter"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Flow Tracking Settings"
+    },
     "generate_cv_tags": {
       "type": "object",
       "description": "PREVIEW: This key is currently not supported\nGenerate CloudVision Tags based on AVD data.",
@@ -5944,7 +6011,7 @@
           },
           "dhcp_accept_default_route": {
             "type": "boolean",
-            "default": false,
+            "default": true,
             "description": "Accept a default route from DHCP if `ip_address` is set to `dhcp`.",
             "title": "DHCP Accept Default Route"
           },
@@ -24868,6 +24935,23 @@
       },
       "title": "Wan Carriers"
     },
+    "wan_ha": {
+      "description": "PREVIEW: This key is currently not supported",
+      "type": "object",
+      "properties": {
+        "lan_ha_path_group_name": {
+          "type": "string",
+          "default": "LAN_HA",
+          "description": "When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.\nThis key allows to overwrite the default LAN HA path-group name.",
+          "title": "Lan Ha Path Group Name"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Wan Ha"
+    },
     "wan_ipsec_profiles": {
       "description": "PREVIEW: This key is currently not supported\n\nDefine IPsec profiles parameters for WAN configuration.",
       "type": "object",
@@ -24988,14 +25072,31 @@
             "title": "Description"
           },
           "ipsec": {
-            "type": "boolean",
-            "description": "Flag to configure IPsec at the path-group level.\n\nWhen set to `true`, IPsec is enabled for both the static and dynamic peers.",
-            "default": true,
+            "type": "object",
+            "description": "Configuration of IPSec at the path-group level.",
+            "properties": {
+              "dynamic_peers": {
+                "type": "boolean",
+                "description": "Enable IPSec for dynamic peers.",
+                "default": true,
+                "title": "Dynamic Peers"
+              },
+              "static_peers": {
+                "type": "boolean",
+                "description": "Enable IPSec for static peers.",
+                "default": true,
+                "title": "Static Peers"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
             "title": "Ipsec"
           },
           "import_path_groups": {
             "type": "array",
-            "description": "List of [ath-groups to import in this path-group.",
+            "description": "List of path-groups to import in this path-group.",
             "items": {
               "type": "object",
               "properties": {
@@ -25016,6 +25117,18 @@
               }
             },
             "title": "Import Path Groups"
+          },
+          "default_preference": {
+            "type": "string",
+            "description": "Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when\nthe path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.\n\nValid values are 1-65535 | \"preferred\" | \"alternate\".\n\n`preferred` is converted to priority 1.\n`alternate` is converted to priority 2.",
+            "default": "preferred",
+            "title": "Default Preference"
+          },
+          "excluded_from_default_policy": {
+            "type": "boolean",
+            "default": false,
+            "description": "When set to `true`, the path-group is excluded from AVD auto generated policies.",
+            "title": "Excluded From Default Policy"
           },
           "dps_keepalive": {
             "type": "object",
@@ -25258,8 +25371,7 @@
                   },
                   "preference": {
                     "type": "string",
-                    "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
-                    "default": "preferred",
+                    "description": "Valid values are 1-65535 | \"preferred\" | \"alternate\".\n\n\"preferred\" is converted to priority 1.\n\"alternate\" is converted to priority 2.\n\nIf not set, each path-group in `names` will be attributed its `default_preference`.",
                     "title": "Preference"
                   }
                 },
@@ -25311,7 +25423,7 @@
                       "type": "integer",
                       "minimum": 2,
                       "maximum": 253,
-                      "description": "ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.\nID 1 is reserved for the default_virtual_toplogy.\nID 254 is reserved for the control_plane_virtual_topology.",
+                      "description": "ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.\nID 1 is reserved for the default_virtual_toplogy.\nID 254 is reserved for the control_plane_virtual_topology.\n\n`id` is required when `wan_mode` is 'cv-pathfinder'.",
                       "title": "ID"
                     },
                     "traffic_class": {
@@ -25381,8 +25493,7 @@
                           },
                           "preference": {
                             "type": "string",
-                            "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
-                            "default": "preferred",
+                            "description": "Valid values are 1-65535 | \"preferred\" | \"alternate\".\n\n\"preferred\" is converted to priority 1.\n\"alternate\" is converted to priority 2.\n\nIf not set, each path-group in `names` will be attributed its `default_preference`.",
                             "title": "Preference"
                           }
                         },
@@ -25489,8 +25600,7 @@
                         },
                         "preference": {
                           "type": "string",
-                          "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
-                          "default": "preferred",
+                          "description": "Valid values are 1-65535 | \"preferred\" | \"alternate\".\n\n\"preferred\" is converted to priority 1.\n\"alternate\" is converted to priority 2.\n\nIf not set, each path-group in `names` will be attributed its `default_preference`.",
                           "title": "Preference"
                         }
                       },

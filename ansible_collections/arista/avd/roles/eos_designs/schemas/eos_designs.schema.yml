@@ -1198,6 +1198,48 @@ keys:
       in the Fabric, **must** be an inventory group name.
     type: str
     required: true
+  flow_tracking_settings:
+    description: Define the flow tracking parameters for this topology.
+    type: dict
+    keys:
+      flow_tracker_name:
+        type: str
+        default: FLOW-TRACKER
+        description: Flow Tracker Name.
+      record_export:
+        type: dict
+        keys:
+          on_inactive_timeout:
+            description: Flow record inactive export timeout in milliseconds.
+            type: int
+            convert_types:
+            - str
+            min: 3000
+            max: 900000
+            default: 70000
+          on_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1000
+            max: 36000000
+            default: 300000
+            description: Flow record export interval in milliseconds.
+      exporter:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: CV-TELEMETRY
+            description: Exporter Name.
+          template_interval:
+            description: Template interval in milliseconds.
+            type: int
+            convert_types:
+            - str
+            min: 5000
+            max: 3600000
+            default: 3600000
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
@@ -3546,6 +3588,19 @@ keys:
       new_key: wan_router
       removed: true
       remove_in_version: 4.6.0-dev1
+  wan_ha:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported'
+    type: dict
+    keys:
+      lan_ha_path_group_name:
+        type: str
+        default: LAN_HA
+        description: 'When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`,
+          a default path-group is injected to form DPS tunnels over LAN.
+
+          This key allows to overwrite the default LAN HA path-group name.'
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
@@ -3629,15 +3684,20 @@ keys:
           description: Additional information about the path-group for documentation
             purposes.
         ipsec:
-          type: bool
-          description: 'Flag to configure IPsec at the path-group level.
-
-
-            When set to `true`, IPsec is enabled for both the static and dynamic peers.'
-          default: true
+          type: dict
+          description: Configuration of IPSec at the path-group level.
+          keys:
+            dynamic_peers:
+              type: bool
+              description: Enable IPSec for dynamic peers.
+              default: true
+            static_peers:
+              type: bool
+              description: Enable IPSec for static peers.
+              default: true
         import_path_groups:
           type: list
-          description: List of [ath-groups to import in this path-group.
+          description: List of path-groups to import in this path-group.
           items:
             type: dict
             keys:
@@ -3648,6 +3708,29 @@ keys:
                 type: str
                 description: Optional, if not set, the path-group `name` is used as
                   local.
+        default_preference:
+          type: str
+          convert_types:
+          - int
+          description: 'Preference value used when a preference is not given for a
+            path-group in the `wan_virtual_topologies.policies` input or when
+
+            the path-group is used in an auto generated policy except if `excluded_from_default_policy`
+            is set to `true.
+
+
+            Valid values are 1-65535 | "preferred" | "alternate".
+
+
+            `preferred` is converted to priority 1.
+
+            `alternate` is converted to priority 2.'
+          default: preferred
+        excluded_from_default_policy:
+          type: bool
+          default: false
+          description: When set to `true`, the path-group is excluded from AVD auto
+            generated policies.
         dps_keepalive:
           type: dict
           description: Period between the transmission of consecutive keepalive messages,
@@ -3901,7 +3984,10 @@ keys:
 
                       ID 1 is reserved for the default_virtual_toplogy.
 
-                      ID 254 is reserved for the control_plane_virtual_topology.'
+                      ID 254 is reserved for the control_plane_virtual_topology.
+
+
+                      `id` is required when `wan_mode` is ''cv-pathfinder''.'
             default_virtual_topology:
               type: dict
               description: 'Default match for the policy.
@@ -7930,7 +8016,7 @@ $defs:
           max: 4094
         dhcp_accept_default_route:
           type: bool
-          default: false
+          default: true
           description: Accept a default route from DHCP if `ip_address` is set to
             `dhcp`.
         enabled:
@@ -8577,10 +8663,12 @@ $defs:
               type: str
               convert_types:
               - int
-              description: 'Valid values are 1-255 | preferred | alternate.
+              description: 'Valid values are 1-65535 | "preferred" | "alternate".
 
 
-                preferred is converted to priority 1.
+                "preferred" is converted to priority 1.
 
-                alternate is converted to priority 2.'
-              default: preferred
+                "alternate" is converted to priority 2.
+
+
+                If not set, each path-group in `names` will be attributed its `default_preference`.'

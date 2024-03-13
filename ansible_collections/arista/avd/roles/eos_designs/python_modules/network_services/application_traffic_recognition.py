@@ -86,11 +86,11 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         """
         # Adding the application-profile
         application_profiles = get(app_dict, "application_profiles", [])
-        if get_item(application_profiles, "name", self._wan_control_plane_application_profile) is not None:
+        if get_item(application_profiles, "name", self._wan_control_plane_application_profile_name) is not None:
             return
         app_dict.setdefault("application_profiles", []).append(
             {
-                "name": self._wan_control_plane_application_profile,
+                "name": self._wan_control_plane_application_profile_name,
                 "applications": [
                     {
                         "name": self._wan_control_plane_application,
@@ -168,20 +168,28 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
             )
 
         for policy in self._filtered_wan_policies:
-            for application_virtual_topology in get(policy, "application_virtual_topologies", []):
-                application_profile = get(application_virtual_topology, "application_profile", required=True)
-                _append_object_to_list_of_dicts(
-                    path="application_profiles",
-                    obj_name=application_profile,
-                    list_of_dicts=application_profiles,
-                    message=(
-                        f"The application profile {application_profile} used in policy {policy['name']}  "
-                        "is not defined in 'application_classification.application_profiles'."
-                    ),
-                )
-            default_virtual_topology = get(policy, "default_virtual_topology", required=True)
-            if not get(default_virtual_topology, "drop_unmatched", default=False):
-                application_profile = get(default_virtual_topology, "application_profile", default="default")
+            for match in get(policy, "matches", []):
+                application_profile = get(match, "application_profile", required=True)
+                if application_profile == self._wan_control_plane_application_profile_name:
+                    # Special handling for control plane as it could be injected later.
+                    _append_object_to_list_of_dicts(
+                        path="application_profiles",
+                        obj_name=application_profile,
+                        list_of_dicts=application_profiles,
+                        required=False,
+                    )
+                else:
+                    _append_object_to_list_of_dicts(
+                        path="application_profiles",
+                        obj_name=application_profile,
+                        list_of_dicts=application_profiles,
+                        message=(
+                            f"The application profile {application_profile} used in policy {policy['name']} "
+                            "is not defined in 'application_classification.application_profiles'."
+                        ),
+                    )
+            if (default_match := policy.get("default_match")) is not None:
+                application_profile = get(default_match, "application_profile", default="default")
                 if application_profile != "default":
                     _append_object_to_list_of_dicts(
                         path="application_profiles",

@@ -28,11 +28,21 @@ wan_router: # dynamic_key: node_type
       uplink_native_vlan: 10
       cv_pathfinder_region: region1
       cv_pathfinder_site: site1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Comcast
+          wan_circuit_id: 999
+          ip_address: 10.9.9.9/31
     - name: uplink_lan_wan_router2
       uplink_switch_interfaces: [Ethernet2]
-      id: 2
       cv_pathfinder_region: region1
       cv_pathfinder_site: site2
+      id: 2
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Comcast
+          wan_circuit_id: 999
+          ip_address: 10.9.9.1/31
 
 tenants: # dynamic_key: network_services
   - name: TEST
@@ -79,8 +89,14 @@ wan_ipsec_profiles:
 wan_mode: cv-pathfinder
 
 wan_route_servers: []
-wan_path_groups: []
-wan_carriers: []
+wan_path_groups:
+  - name: INET
+    ipsec:
+      static_peers: false
+    id: 100
+wan_carriers:
+  - name: Comcast
+    path_group: INET
 bgp_peer_groups:
   wan_overlay_peers:
     listen_range_prefixes: [0.0.0.0/0]

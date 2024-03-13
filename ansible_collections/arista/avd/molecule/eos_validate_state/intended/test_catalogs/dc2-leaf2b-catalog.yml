@@ -181,6 +181,28 @@ anta.tests.connectivity:
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
+    - destination: 10.255.2.1
+      repeat: 1
+      source: 10.255.128.16
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc2-leaf2b - 10.255.128.16/32 Destination: 10.255.2.1'
+      description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.2.2
+      repeat: 1
+      source: 10.255.128.16
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc2-leaf2b - 10.255.128.16/32 Destination: 10.255.2.2'
+      description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
     - destination: 10.255.128.11
       repeat: 1
       source: 10.255.128.16
@@ -301,234 +323,143 @@ anta.tests.hardware:
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet3
-      protocol_status: up
-      state: up
+    - name: Ethernet3
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet3 - MLAG_PEER_dc2-leaf2a_Ethernet3
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet3 - MLAG_PEER_dc2-leaf2a_Ethernet3 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet4
-      protocol_status: up
-      state: up
+    - name: Ethernet4
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet4 - MLAG_PEER_dc2-leaf2a_Ethernet4
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet4 - MLAG_PEER_dc2-leaf2a_Ethernet4 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet1
-      protocol_status: up
-      state: up
+    - name: Ethernet1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet4
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet4 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet2
-      protocol_status: up
-      state: up
+    - name: Ethernet2
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet4
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet4 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet8
-      protocol_status: up
-      state: up
+    - name: Ethernet8
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet8 - DC2-LEAF2C_Ethernet2
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet8 - DC2-LEAF2C_Ethernet2 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet6
-      protocol_status: up
-      state: up
+    - name: Ethernet6
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet6 - P2P_LINK_TO_dc1-leaf2b_Ethernet6
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet6 - P2P_LINK_TO_dc1-leaf2b_Ethernet6 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet5
-      protocol_status: up
-      state: up
+    - name: Ethernet5
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet5 - dc2-leaf2-server1_PCI2
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet5 - dc2-leaf2-server1_PCI2 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Port-Channel3
-      protocol_status: up
-      state: up
+    - name: Port-Channel3
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Port-Channel3 - MLAG_PEER_dc2-leaf2a_Po3
-      description: Port-Channel Interface & Line Protocol == 'up'
+      custom_field: Interface Port-Channel3 - MLAG_PEER_dc2-leaf2a_Po3 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Port-Channel8
-      protocol_status: up
-      state: up
+    - name: Port-Channel8
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Port-Channel8 - DC2-LEAF2C_Po1
-      description: Port-Channel Interface & Line Protocol == 'up'
+      custom_field: Interface Port-Channel8 - DC2-LEAF2C_Po1 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Port-Channel5
-      protocol_status: up
-      state: up
+    - name: Port-Channel5
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Port-Channel5 - dc2-leaf2-server1_PortChannel dc2-leaf2-server1
-      description: Port-Channel Interface & Line Protocol == 'up'
+      custom_field: Interface Port-Channel5 - dc2-leaf2-server1_PortChannel dc2-leaf2-server1
+        = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan4093
-      protocol_status: up
-      state: up
+    - name: Vlan4093
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vlan4093 - MLAG_PEER_L3_PEERING
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan4094
-      protocol_status: up
-      state: up
+    - name: Vlan4094
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vlan4094 - MLAG_PEER
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: Interface Vlan4094 - MLAG_PEER = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan11
-      protocol_status: up
-      state: up
+    - name: Vlan11
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vlan11 - VRF10_VLAN11
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: Interface Vlan11 - VRF10_VLAN11 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan12
-      protocol_status: up
-      state: up
+    - name: Vlan12
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vlan12 - VRF10_VLAN12
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: Interface Vlan12 - VRF10_VLAN12 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan3009
-      protocol_status: up
-      state: up
+    - name: Vlan3009
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: 'Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10'
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: 'Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = ''up'''
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan21
-      protocol_status: up
-      state: up
+    - name: Vlan21
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vlan21 - VRF11_VLAN21
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: Interface Vlan21 - VRF11_VLAN21 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan22
-      protocol_status: up
-      state: up
+    - name: Vlan22
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vlan22 - VRF11_VLAN22
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: Interface Vlan22 - VRF11_VLAN22 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan3010
-      protocol_status: up
-      state: up
+    - name: Vlan3010
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: 'Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11'
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: 'Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = ''up'''
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Loopback0
-      protocol_status: up
-      state: up
+    - name: Loopback0
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Loopback0 - EVPN_Overlay_Peering
-      description: Loopback Interface Status & Line Protocol == 'up'
+      custom_field: Interface Loopback0 - EVPN_Overlay_Peering = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Loopback1
-      protocol_status: up
-      state: up
+    - name: Loopback1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Loopback1 - VTEP_VXLAN_Tunnel_Source
-      description: Loopback Interface Status & Line Protocol == 'up'
+      custom_field: Interface Loopback1 - VTEP_VXLAN_Tunnel_Source = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Loopback10
-      protocol_status: up
-      state: up
+    - name: Loopback10
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Loopback10 - VRF10_VTEP_DIAGNOSTICS
-      description: Loopback Interface Status & Line Protocol == 'up'
+      custom_field: Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Loopback11
-      protocol_status: up
-      state: up
+    - name: Loopback11
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Loopback11 - VRF11_VTEP_DIAGNOSTICS
-      description: Loopback Interface Status & Line Protocol == 'up'
+      custom_field: Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vxlan1
-      protocol_status: up
-      state: up
+    - name: Vxlan1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vxlan1
-      description: Vxlan Interface Status & Line Protocol == 'up'
+      custom_field: Interface Vxlan1 = 'up'
 anta.tests.logging:
 - VerifyLoggingPersistent: null
 - VerifyLoggingSourceIntf:
@@ -661,6 +592,22 @@ anta.tests.routing.generic:
       description: Remote Lo0 address
     routes:
     - 10.255.0.5
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.2.1
+      description: Remote Lo0 address
+    routes:
+    - 10.255.2.1
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.2.2
+      description: Remote Lo0 address
+    routes:
+    - 10.255.2.2
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:

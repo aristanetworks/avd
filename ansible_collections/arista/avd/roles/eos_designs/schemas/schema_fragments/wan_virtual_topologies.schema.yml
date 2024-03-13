@@ -128,6 +128,8 @@ keys:
                       ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.
                       ID 1 is reserved for the default_virtual_toplogy.
                       ID 254 is reserved for the control_plane_virtual_topology.
+
+                      `id` is required when `wan_mode` is 'cv-pathfinder'.
             default_virtual_topology:
               type: dict
               description: |-
