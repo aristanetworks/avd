@@ -1,8 +1,8 @@
 hostname: downlink-ipv4-pool-l3leaf4
 is_deployed: true
 router_bgp:
-  as: '65003'
-  router_id: 192.168.1.4
+  as: '65039'
+  router_id: 192.168.1.40
   bgp:
     default:
       ipv4_unicast: false
@@ -43,12 +43,12 @@ router_bgp:
     remote_as: '65000'
     peer: downlink-ipv4-pool-spine2
     description: downlink-ipv4-pool-spine2_Ethernet6
-  - ip_address: 192.168.0.1
+  - ip_address: 192.168.0.10
     peer_group: EVPN-OVERLAY-PEERS
     peer: downlink-ipv4-pool-spine1
     description: downlink-ipv4-pool-spine1
     remote_as: '65000'
-  - ip_address: 192.168.0.2
+  - ip_address: 192.168.0.20
     peer_group: EVPN-OVERLAY-PEERS
     peer: downlink-ipv4-pool-spine2
     description: downlink-ipv4-pool-spine2
@@ -94,11 +94,11 @@ loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
   shutdown: false
-  ip_address: 192.168.1.4/32
+  ip_address: 192.168.1.40/32
 - name: Loopback1
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
-  ip_address: 192.168.2.4/32
+  ip_address: 192.168.2.40/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
