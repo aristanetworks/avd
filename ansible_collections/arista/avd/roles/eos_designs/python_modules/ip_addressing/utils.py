@@ -117,6 +117,7 @@ class UtilsMixin:
         Offset is the matching interface's index in the list of downlink_interfaces
         (None, None) is returned if downlink_pools are not used
         """
+
         uplink_switch_interface = self.shared_utils.uplink_switch_interfaces[uplink_switch_index]
         uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
         peer_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
@@ -142,6 +143,7 @@ class UtilsMixin:
         
         One and only one of these pools are required to be set, otherwise an error will be thrown
         """
+
         uplink_pool = self.shared_utils.uplink_ipv4_pool
         if self.shared_utils.uplink_ipv4_pool:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index

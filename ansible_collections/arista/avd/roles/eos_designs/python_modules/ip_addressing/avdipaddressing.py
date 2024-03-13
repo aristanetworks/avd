@@ -147,6 +147,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
         Return Child IP for P2P Uplinks
         """
+
         uplink_switch_index = int(uplink_switch_index)
         if template_path := self.shared_utils.ip_addressing_templates.get("p2p_uplinks_ip"):
             return self._template(
@@ -163,6 +164,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
         Return Parent IP for P2P Uplinks
         """
+
         uplink_switch_index = int(uplink_switch_index)
         if template_path := self.shared_utils.ip_addressing_templates.get("p2p_uplinks_peer_ip"):
             return self._template(
