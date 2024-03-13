@@ -113,7 +113,7 @@ class UtilsMixin:
     def _get_downlink_ipv4_pool_and_offset(self: "AvdIpAddressing", uplink_switch_index: int) -> tuple[str, int]:
         """
         Returns the downlink IP pool and offset as a tuple according to the uplink_switch_index
-        
+
         Offset is the matching interface's index in the list of downlink_interfaces
         (None, None) is returned if downlink_pools are not used
         """
@@ -136,11 +136,11 @@ class UtilsMixin:
     def _get_p2p_ipv4_pool_and_offset(self: "AvdIpAddressing", uplink_switch_index: int) -> tuple[str, int]:
         """
         Returns IP pool and offset as a tuple according to the uplink_switch_index
-        
+
         Uplink pool or downlink pool is returned with its corresponding offset
         A downlink pool's offset is the matching interface's index in the list of downlink_interfaces
         A uplink pool's offset is `((id - 1) * 2 * max_uplink_switches * max_parallel_uplinks) + (uplink_switch_index * 2) + 1`
-        
+
         One and only one of these pools are required to be set, otherwise an error will be thrown
         """
 
