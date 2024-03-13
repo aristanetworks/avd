@@ -3929,6 +3929,21 @@ keys:
           name:
             type: str
             description: Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
+          application_profile:
+            type: str
+            default: APP-PROFILE-CONTROL-PLANE
+            description: 'The application profile to use for control plane traffic.
+
+
+              The application profile should be defined under `application_classification.application_profiles`.
+
+              If not defined AVD will auto generate an application profile using the
+              provided name or the default value.
+
+
+              If not overwritten elsewhere, the application profile is generated matching
+              one application matching the control plane traffic either sourced from
+              or destined to the WAN route servers.'
       policies:
         type: list
         description: "List of virtual toplogies policies.\n\nFor AutoVPN, each item

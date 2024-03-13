@@ -558,10 +558,8 @@ class UtilsMixin:
     def _wan_control_plane_application_profile_name(self) -> str:
         """
         Control plane application profile name
-
-        TODO: make this configurable
         """
-        return "APP-PROFILE-CONTROL-PLANE"
+        return get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology.application_profile", default="APP-PROFILE-CONTROL-PLANE")
 
     @cached_property
     def _local_path_groups_connected_to_pathfinder(self) -> list:

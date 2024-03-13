@@ -168,6 +168,14 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
             )
 
         for policy in self._filtered_wan_policies:
+            if policy.get("is_default"):
+                _append_object_to_list_of_dicts(
+                    path="application_profiles",
+                    obj_name=self._wan_control_plane_application_profile_name,
+                    list_of_dicts=application_profiles,
+                    required=False,
+                )
+
             for match in get(policy, "matches", []):
                 application_profile = get(match, "application_profile", required=True)
                 if application_profile == self._wan_control_plane_application_profile_name:
