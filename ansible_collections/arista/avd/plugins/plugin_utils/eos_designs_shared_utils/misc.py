@@ -125,12 +125,12 @@ class MiscMixin:
 
     @cached_property
     def uplink_switch_interfaces(self: SharedUtils) -> list:
-        _uplink_switch_interfaces = default(
+        uplink_switch_interfaces = default(
             get(self.switch_data_combined, "uplink_switch_interfaces"),
             get(self.cv_topology_config, "uplink_switch_interfaces"),
         )
-        if _uplink_switch_interfaces is not None:
-            return _uplink_switch_interfaces
+        if uplink_switch_interfaces is not None:
+            return uplink_switch_interfaces
 
         if not self.uplink_switches:
             return []
@@ -138,7 +138,7 @@ class MiscMixin:
         if self.id is None:
             raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}'")
 
-        _uplink_switch_interfaces = []
+        uplink_switch_interfaces = []
         uplink_switch_counter = {}
         for uplink_switch in self.uplink_switches:
             uplink_switch_facts: EosDesignsFacts = self.get_peer_facts(uplink_switch, required=True)
@@ -152,14 +152,14 @@ class MiscMixin:
             # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
             downlink_index = (self.id - 1) * self.max_parallel_uplinks + index_of_parallel_uplinks
             if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
-                _uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
+                uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
             else:
                 raise AristaAvdError(
                     f"'uplink_switch_interfaces' is not set on '{self.hostname}' and 'uplink_switch' '{uplink_switch}' "
                     f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
                 )
 
-        return _uplink_switch_interfaces
+        return uplink_switch_interfaces
 
     @cached_property
     def virtual_router_mac_address(self: SharedUtils) -> str | None:
