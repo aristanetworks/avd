@@ -178,8 +178,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             # Apply ptp config to port-channel
             port_channel_interface["ptp"] = ptp_config
 
-        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.mlag_peer, required=True)
-        if get(peer_facts, "inband_ztp"):
+        if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
             port_channel_interface["lacp_fallback_mode"] = "individual"
 
         return [strip_empties_from_dict(port_channel_interface)]
@@ -193,7 +192,6 @@ class AvdStructuredConfigMlag(AvdFacts):
         if not (mlag_interfaces := self.shared_utils.mlag_interfaces):
             return None
 
-        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.mlag_peer, required=True)
         ethernet_interfaces = []
         for mlag_interface in mlag_interfaces:
             ethernet_interface = {
@@ -212,8 +210,8 @@ class AvdStructuredConfigMlag(AvdFacts):
                 },
                 "speed": self.shared_utils.mlag_interfaces_speed,
             }
-            if get(peer_facts, "inband_ztp"):
-                ethernet_interface.update({"mode": "access", "vlans": peer_facts["inband_mgmt_vlan"]})
+            if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
+                ethernet_interface.update({"mode": "access", "vlans": self.shared_utils.get_mlag_peer_fact("inband_mgmt_vlan")})
             ethernet_interfaces.append(strip_empties_from_dict(ethernet_interface))
 
         return ethernet_interfaces

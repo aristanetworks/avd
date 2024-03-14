@@ -7,7 +7,7 @@ from functools import cached_property
 from ipaddress import ip_network
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 if TYPE_CHECKING:
@@ -118,8 +118,8 @@ class InbandManagementMixin:
         return None
 
     @cached_property
-    def inband_ztp(self: SharedUtils) -> bool:
-        inband_ztp = default(get(self.switch_data_combined, "inband_ztp"), False)
-        if inband_ztp and not self.inband_mgmt_vlan:
-            raise AristaAvdMissingVariableError(f"'inband_mgmt_vlan' is not set on '{self.hostname}' and is required to set inband_ztp")
+    def inband_ztp(self: SharedUtils) -> bool | None:
+        inband_ztp = get(self.switch_data_combined, "inband_ztp")
+        if inband_ztp and not self.uplink_type == "port-channel":
+            raise AristaAvdError("'inband_ztp' is currently only supported for L2 switches ('uplink_type: port-channel').")
         return inband_ztp
