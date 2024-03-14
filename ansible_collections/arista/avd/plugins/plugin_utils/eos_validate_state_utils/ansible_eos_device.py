@@ -17,7 +17,15 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 
 logger = getLogger(__name__)
 
+REQUIRED_ANTA_VERSION = "v0.13.0"
+"""This is temporary until the ANTA mode is out of preview and the `anta` Python library requirement is added to
+the AVD repository's `requirements.txt` file. This constant and the condition below must be removed once the requirement is added."""
+
 try:
+    from anta import __version__ as anta_version
+
+    if anta_version != REQUIRED_ANTA_VERSION:
+        raise AristaAvdError(message=f"AVD requires 'anta' Python library version {REQUIRED_ANTA_VERSION}, found {anta_version}")
     from anta import __DEBUG__
     from anta.device import AntaDevice
     from anta.logger import anta_log_exception

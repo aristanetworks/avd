@@ -6,7 +6,7 @@
 {# eos - tacacs servers #}
 {% if tacacs_servers is arista.avd.defined %}
 !
-{%     for host in tacacs_servers.hosts | arista.avd.natural_sort %}
+{%     for host in tacacs_servers.hosts %}
 {%         if host.host is arista.avd.defined %}
 {%             set host_cli = "tacacs-server host " ~ host.host %}
 {%         endif %}

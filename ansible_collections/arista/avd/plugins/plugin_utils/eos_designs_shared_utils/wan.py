@@ -88,6 +88,10 @@ class WanMixin:
             if get(interface, "wan_carrier") is not None:
                 wan_interfaces.append(interface)
 
+        if not wan_interfaces:
+            raise AristaAvdError(
+                "At least one WAN interface must be configured on a WAN router. Add WAN interfaces under `l3_interfaces` node setting with `wan_carrier` set."
+            )
         return wan_interfaces
 
     @cached_property
@@ -133,7 +137,14 @@ class WanMixin:
 
     @cached_property
     def wan_path_groups(self: SharedUtils) -> list:
-        return get(self.hostvars, "wan_path_groups", required=True)
+        """
+        List of path-groups defined in the top level key `wan_path_groups`
+        Updating default preference for each path-group to 'preferred' if not set.
+        """
+        path_groups = get(self.hostvars, "wan_path_groups", required=True)
+        for path_group in path_groups:
+            path_group["default_preference"] = get(path_group, "default_preference", default="preferred")
+        return path_groups
 
     @cached_property
     def wan_local_path_groups(self: SharedUtils) -> list:
@@ -166,6 +177,13 @@ class WanMixin:
             local_path_groups_dict[path_group_name]["interfaces"].extend(carrier["interfaces"])
 
         return list(local_path_groups_dict.values())
+
+    @cached_property
+    def wan_local_path_group_names(self) -> list:
+        """
+        Return a list of wan_local_path_group names to be used by HA peer and in various places
+        """
+        return [path_group["name"] for path_group in self.wan_local_path_groups]
 
     @cached_property
     def this_wan_route_server(self: SharedUtils) -> dict:
@@ -360,11 +378,8 @@ class WanMixin:
         """
         Return the name of the WAN flow tracking object
         Used in both network services, underlay and overlay python modules.
-
-        TODO make this configurable
-        TODO may need to return exporter name also later
         """
-        return "WAN-FLOW-TRACKER"
+        return get(self.hostvars, "flow_tracking_settings.flow_tracker_name", default="FLOW-TRACKER")
 
     @cached_property
     def is_cv_pathfinder_router(self: SharedUtils) -> bool:
@@ -410,14 +425,16 @@ class WanMixin:
         return self.is_cv_pathfinder_client and get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
 
     @cached_property
+    def wan_ha_ipsec(self: SharedUtils) -> bool:
+        return self.wan_ha and get(self.switch_data_combined, "wan_ha.ipsec", default=True)
+
+    @cached_property
     def wan_ha_path_group_name(self: SharedUtils) -> str:
         """
         Return HA path group name for the WAN design.
         Used in both network services and overlay python modules.
-
-        TODO make this configurable
         """
-        return "LAN_HA"
+        return get(self.hostvars, "wan_ha.lan_ha_path_group_name", default="LAN_HA")
 
     @cached_property
     def is_first_ha_peer(self: SharedUtils) -> bool:
