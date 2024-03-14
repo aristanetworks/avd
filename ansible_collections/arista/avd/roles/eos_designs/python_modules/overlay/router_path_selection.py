@@ -134,7 +134,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 ],
             }
         )
-        if get(self.shared_utils.switch_data_combined, "wan_ha.ipsec", default=True):
+        if self.shared_utils.wan_ha_ipsec:
             ha_path_group["ipsec_profile"] = self._dp_ipsec_profile_name
 
         return ha_path_group

@@ -46,7 +46,7 @@ class IpSecurityMixin(UtilsMixin):
         """
         In place update of ip_security
         """
-        if self.shared_utils.wan_ha:
+        if self.shared_utils.wan_ha_ipsec:
             ike_policy_name = get(data_plane_config, "ike_policy_name", default="DP-IKE-POLICY")
         else:
             ike_policy_name = None
@@ -55,7 +55,7 @@ class IpSecurityMixin(UtilsMixin):
         key = get(data_plane_config, "shared_key", required=True)
 
         # IKE policy for data-plane is not required for dynamic tunnels except for HA cases
-        if self.shared_utils.wan_ha:
+        if self.shared_utils.wan_ha_ipsec:
             ip_security["ike_policies"].append(self._ike_policy(ike_policy_name))
         ip_security["sa_policies"].append(self._sa_policy(sa_policy_name))
         ip_security["profiles"].append(self._profile(profile_name, ike_policy_name, sa_policy_name, key))
