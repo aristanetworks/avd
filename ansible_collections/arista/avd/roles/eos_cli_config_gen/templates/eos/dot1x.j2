@@ -37,4 +37,33 @@ dot1x
 {%             endif %}
 {%         endif %}
 {%     endif %}
+{%     if dot1x.aaa.unresponsive is arista.avd.defined %}
+{%         set aaa_config = "aaa unresponsive" %}
+{%         if dot1x.aaa.unresponsive.phone_action.traffic_allow is arista.avd.defined(true) %}
+{{ aaa_config }} phone action traffic allow
+{%         elif dot1x.aaa.unresponsive.phone_action.apply_cached_results is arista.avd.defined(true) %}
+{%             if dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration is arista.avd.defined and dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit is arista.avd.defined %}
+{{ aaa_config }} phone action apply cached-results timeout {{ dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration }} {{ dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit }}
+{%             else %}
+{{ aaa_config }} phone action apply cached-results
+{%             endif %}
+{%         endif %}
+{%         if dot1x.aaa.unresponsive.action.traffic_allow is arista.avd.defined(true) %}
+{{ aaa_config }} action traffic allow
+{%         elif dot1x.aaa.unresponsive.action.traffic_allow_vlan is arista.avd.defined %}
+{{ aaa_config }} action traffic allow vlan {{ dot1x.aaa.unresponsive.action.traffic_allow_vlan }}
+{%         elif dot1x.aaa.unresponsive.action.apply_cached_results is arista.avd.defined(true) %}
+{%             if dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration is arista.avd.defined and dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration_unit is arista.avd.defined %}
+{{ aaa_config }} action apply cached-results timeout {{ dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration }} {{ dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration_unit }}
+{%             else %}
+{{ aaa_config }} action apply cached-results
+{%             endif %}
+{%         endif %}
+{%         if dot1x.aaa.unresponsive.eap_response is arista.avd.defined %}
+{{ aaa_config }} eap response {{ dot1x.aaa.unresponsive.eap_response }}
+{%         endif %}
+{%         if dot1x.aaa.unresponsive.recovery_action_reauthenticate is arista.avd.defined(true) %}
+{{ aaa_config }} recovery action reauthenticate
+{%         endif %}
+{%     endif %}
 {% endif %}
