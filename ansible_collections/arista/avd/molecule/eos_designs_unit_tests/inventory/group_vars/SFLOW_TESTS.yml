@@ -15,10 +15,9 @@ sflow_settings:
     - destination: 10.10.10.12
       vrf: sflowvrf
       port: 1234
-  structured_config:
-    vrfs:
-      - name: sflowvrf
-        source_interface: Loopback321
+  vrfs:
+    - name: sflowvrf
+      source_interface: Loopback321
 
 fabric_sflow:
   uplinks: true

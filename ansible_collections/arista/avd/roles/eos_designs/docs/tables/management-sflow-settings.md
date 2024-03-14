@@ -18,8 +18,10 @@
     | [<samp>&nbsp;&nbsp;destinations</samp>](## "sflow_settings.destinations") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;destination</samp>](## "sflow_settings.destinations.[].destination") | String | Required |  |  | sFlow destination name or IP address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "sflow_settings.destinations.[].port") | Integer |  |  | Min: 1<br>Max: 65535 | UDP Port number. The default port number for sFlow is 6343. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "sflow_settings.destinations.[].vrf") | String |  |  |  | If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- Any other string will be used directly as the VRF name but source interface must be set with `sflow.structured_config` as needed. |
-    | [<samp>&nbsp;&nbsp;structured_config</samp>](## "sflow_settings.structured_config") | Dictionary |  |  |  | Custom structured config added under `sflow` for `eos_cli_config_gen`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "sflow_settings.destinations.[].vrf") | String |  |  |  | If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- Any other string will be used directly as the VRF name. Remember to set the `sflow_settings.vrfs[].source_interface` if needed. |
+    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "sflow_settings.vrfs") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "sflow_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "sflow_settings.vrfs.[].source_interface") | String |  |  |  | Source interface to use for sFlow destinations in this VRF.<br>If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence. |
 
 === "YAML"
 
@@ -65,9 +67,14 @@
           #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
           # - `use_inband_mgmt_vrf` will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-interface.
           #   An error will be raised if inband management is not configured for the device.
-          # - Any other string will be used directly as the VRF name but source interface must be set with `sflow.structured_config` as needed.
+          # - Any other string will be used directly as the VRF name. Remember to set the `sflow_settings.vrfs[].source_interface` if needed.
           vrf: <str>
+      vrfs:
 
-      # Custom structured config added under `sflow` for `eos_cli_config_gen`.
-      structured_config: <dict>
+          # VRF name.
+        - name: <str; required; unique>
+
+          # Source interface to use for sFlow destinations in this VRF.
+          # If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+          source_interface: <str>
     ```
