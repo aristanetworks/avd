@@ -36,9 +36,9 @@ router_bgp:
   neighbors:
   - ip_address: 10.0.2.1
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65009'
-    peer: downlink-ipv4-pool-l3leaf1
-    description: downlink-ipv4-pool-l3leaf1_Ethernet2
+    remote_as: '65019'
+    peer: downlink-ipv4-pool-l3leaf2
+    description: downlink-ipv4-pool-l3leaf2_Ethernet1
   - ip_address: 10.0.2.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65019'
@@ -54,11 +54,6 @@ router_bgp:
     remote_as: '65039'
     peer: downlink-ipv4-pool-l3leaf4
     description: downlink-ipv4-pool-l3leaf4_Ethernet2
-  - ip_address: 192.168.1.10
-    peer_group: EVPN-OVERLAY-PEERS
-    peer: downlink-ipv4-pool-l3leaf1
-    description: downlink-ipv4-pool-l3leaf1
-    remote_as: '65009'
   - ip_address: 192.168.1.20
     peer_group: EVPN-OVERLAY-PEERS
     peer: downlink-ipv4-pool-l3leaf2
@@ -96,10 +91,10 @@ management_api_http:
   enable_https: true
 ethernet_interfaces:
 - name: Ethernet3
-  peer: downlink-ipv4-pool-l3leaf1
-  peer_interface: Ethernet2
+  peer: downlink-ipv4-pool-l3leaf2
+  peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_DOWNLINK-IPV4-POOL-L3LEAF1_Ethernet2
+  description: P2P_LINK_TO_DOWNLINK-IPV4-POOL-L3LEAF2_Ethernet1
   shutdown: false
   mtu: 9214
   type: routed

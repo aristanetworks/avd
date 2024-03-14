@@ -38,20 +38,15 @@ router_bgp:
     remote_as: '65000'
     peer: downlink-ipv4-pool-spine1
     description: downlink-ipv4-pool-spine1_Ethernet3
-  - ip_address: 10.0.2.0
+  - ip_address: 10.0.1.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: downlink-ipv4-pool-spine2
-    description: downlink-ipv4-pool-spine2_Ethernet3
+    peer: downlink-ipv4-pool-spine1
+    description: downlink-ipv4-pool-spine1_Ethernet4
   - ip_address: 192.168.0.10
     peer_group: EVPN-OVERLAY-PEERS
     peer: downlink-ipv4-pool-spine1
     description: downlink-ipv4-pool-spine1
-    remote_as: '65000'
-  - ip_address: 192.168.0.20
-    peer_group: EVPN-OVERLAY-PEERS
-    peer: downlink-ipv4-pool-spine2
-    description: downlink-ipv4-pool-spine2
     remote_as: '65000'
   address_family_evpn:
     peer_groups:
@@ -82,14 +77,14 @@ ethernet_interfaces:
   type: routed
   ip_address: 10.0.1.1/31
 - name: Ethernet2
-  peer: downlink-ipv4-pool-spine2
-  peer_interface: Ethernet3
+  peer: downlink-ipv4-pool-spine1
+  peer_interface: Ethernet4
   peer_type: spine
-  description: P2P_LINK_TO_DOWNLINK-IPV4-POOL-SPINE2_Ethernet3
+  description: P2P_LINK_TO_DOWNLINK-IPV4-POOL-SPINE1_Ethernet4
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 10.0.2.1/31
+  ip_address: 10.0.1.3/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

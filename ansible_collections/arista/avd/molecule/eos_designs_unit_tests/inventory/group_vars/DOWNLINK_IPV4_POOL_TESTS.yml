@@ -29,18 +29,21 @@ l3leaf:
     loopback_ipv4_pool: 192.168.1.0/24
     vtep_loopback_ipv4_pool: 192.168.2.0/24
     bgp_as: 65000-65100
-    uplink_switches: [downlink-ipv4-pool-spine1, downlink-ipv4-pool-spine2]
     uplink_interfaces: [Ethernet1, Ethernet2]
   nodes:
     - name: downlink-ipv4-pool-l3leaf1
       id: 10
-      uplink_switch_interfaces: [Ethernet3, Ethernet3]
+      uplink_switches: [downlink-ipv4-pool-spine1, downlink-ipv4-pool-spine1]
+      uplink_switch_interfaces: [Ethernet3, Ethernet4]
     - name: downlink-ipv4-pool-l3leaf2
       id: 20
-      uplink_switch_interfaces: [Ethernet4, Ethernet4]
+      uplink_switches: [downlink-ipv4-pool-spine2, downlink-ipv4-pool-spine2]
+      uplink_switch_interfaces: [Ethernet3, Ethernet4]
     - name: downlink-ipv4-pool-l3leaf3
       id: 30
+      uplink_switches: [downlink-ipv4-pool-spine1, downlink-ipv4-pool-spine2]
       uplink_switch_interfaces: [Ethernet5, Ethernet5]
     - name: downlink-ipv4-pool-l3leaf4
       id: 40
+      uplink_switches: [downlink-ipv4-pool-spine1, downlink-ipv4-pool-spine2]
       uplink_switch_interfaces: [Ethernet6, Ethernet6]
