@@ -30,7 +30,7 @@ router_bgp:
       additional_paths:
         receive: true
         send: ecmp
-        ecmp_limit: 42
+        send_ecmp_limit: 42
     peer_groups:
       - name: PATH-SELECTION-PG-1
         activate: true
@@ -48,13 +48,11 @@ router_bgp:
       - name: PATH-SELECTION-PG-4
         activate: true
         additional_paths:
-          send: limit
-          ecmp_limit: 42
+          send_ecmp_limit: 42
       - name: PATH-SELECTION-PG-5
         activate: true
         additional_paths:
-          send: limit
-          limit: 42
+          send_limit: 42
     neighbors:
       - ip_address: 172.31.255.0
         activate: true
@@ -72,10 +70,8 @@ router_bgp:
       - ip_address: 172.31.255.3
         activate: true
         additional_paths:
-          send: ecmp
-          ecmp_limit: 42
+          send_ecmp_limit: 42
       - ip_address: 172.31.255.4
         activate: true
         additional_paths:
-          send: limit
-          limit: 42
+          send_limit: 42

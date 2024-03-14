@@ -17,14 +17,14 @@ $defs:
         ecmp: All paths in best path ECMP group.
         limit: Limit to n eligible paths
       valid_values: [ 'any', 'backup', 'ecmp', 'limit' ]
-    ecmp_limit:
+    send_ecmp_limit:
       type: int
       description: Amount of ECMP paths to send. If this key-value pair is not set, it will send all paths in best ECMP group.
       convert_types:
         - str
       min: 2
       max: 64
-    limit:
+    send_limit:
       type: int
       description: Number of paths to send through bgp updates(The value of 'send' key must be 'limit').
       convert_types:
