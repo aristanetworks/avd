@@ -10,3 +10,14 @@ dot1x:
   radius_av_pair:
     service_type: true
     framed_mtu: 1500
+  aaa:
+    unresponsive:
+      eap_response: success
+      action:
+        apply_cached_results: true
+        cached_results_timeout:
+          time_duration: 10
+          time_duration_unit: hours
+      phone_action:
+        traffic_allow: true
+      recovery_action_reauthenticate: true

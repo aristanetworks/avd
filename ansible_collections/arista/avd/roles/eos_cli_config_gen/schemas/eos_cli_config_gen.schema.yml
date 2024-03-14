@@ -1521,6 +1521,69 @@ keys:
             max: 9236
             convert_types:
             - str
+      aaa:
+        type: dict
+        keys:
+          unresponsive:
+            type: dict
+            keys:
+              eap_response:
+                type: str
+                valid_values:
+                - success
+                - disabled
+              action:
+                type: dict
+                keys:
+                  apply_cached_results:
+                    type: bool
+                  cached_results_timeout:
+                    type: dict
+                    keys:
+                      time_duration:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                      time_duration_unit:
+                        type: str
+                        required: true
+                        valid_values:
+                        - days
+                        - hours
+                        - minutes
+                        - seconds
+                  traffic_allow:
+                    type: bool
+                  traffic_allow_vlan:
+                    type: int
+                    convert_types:
+                    - str
+              phone_action:
+                type: dict
+                keys:
+                  apply_cached_results:
+                    type: bool
+                  cached_results_timeout:
+                    type: dict
+                    keys:
+                      time_duration:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                      time_duration_unit:
+                        type: str
+                        required: true
+                        valid_values:
+                        - days
+                        - hours
+                        - minutes
+                        - seconds
+                  traffic_allow:
+                    type: bool
+              recovery_action_reauthenticate:
+                type: bool
   dps_interfaces:
     type: list
     primary_key: name

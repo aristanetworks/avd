@@ -2136,6 +2136,134 @@
             "^_.+$": {}
           },
           "title": "Radius Av Pair"
+        },
+        "aaa": {
+          "type": "object",
+          "properties": {
+            "unresponsive": {
+              "type": "object",
+              "properties": {
+                "eap_response": {
+                  "type": "string",
+                  "enum": [
+                    "success",
+                    "disabled"
+                  ],
+                  "title": "Eap Response"
+                },
+                "action": {
+                  "type": "object",
+                  "properties": {
+                    "apply_cached_results": {
+                      "type": "boolean",
+                      "title": "Apply Cached Results"
+                    },
+                    "cached_results_timeout": {
+                      "type": "object",
+                      "properties": {
+                        "time_duration": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "title": "Time Duration"
+                        },
+                        "time_duration_unit": {
+                          "type": "string",
+                          "enum": [
+                            "days",
+                            "hours",
+                            "minutes",
+                            "seconds"
+                          ],
+                          "title": "Time Duration Unit"
+                        }
+                      },
+                      "required": [
+                        "time_duration_unit"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Cached Results Timeout"
+                    },
+                    "traffic_allow": {
+                      "type": "boolean",
+                      "title": "Traffic Allow"
+                    },
+                    "traffic_allow_vlan": {
+                      "type": "integer",
+                      "title": "Traffic Allow VLAN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Action"
+                },
+                "phone_action": {
+                  "type": "object",
+                  "properties": {
+                    "apply_cached_results": {
+                      "type": "boolean",
+                      "title": "Apply Cached Results"
+                    },
+                    "cached_results_timeout": {
+                      "type": "object",
+                      "properties": {
+                        "time_duration": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "title": "Time Duration"
+                        },
+                        "time_duration_unit": {
+                          "type": "string",
+                          "enum": [
+                            "days",
+                            "hours",
+                            "minutes",
+                            "seconds"
+                          ],
+                          "title": "Time Duration Unit"
+                        }
+                      },
+                      "required": [
+                        "time_duration_unit"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Cached Results Timeout"
+                    },
+                    "traffic_allow": {
+                      "type": "boolean",
+                      "title": "Traffic Allow"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Phone Action"
+                },
+                "recovery_action_reauthenticate": {
+                  "type": "boolean",
+                  "title": "Recovery Action Reauthenticate"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Unresponsive"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "AAA"
         }
       },
       "additionalProperties": false,
