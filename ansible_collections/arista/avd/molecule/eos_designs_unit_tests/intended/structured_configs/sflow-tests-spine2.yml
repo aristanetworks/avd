@@ -148,6 +148,8 @@ ethernet_interfaces:
   mtu: 9214
   sflow:
     enable: true
+metadata:
+  platform: vEOS-LAB
 sflow:
   run: true
   vrfs:
@@ -161,5 +163,3 @@ sflow:
     - destination: 10.10.10.12
       port: 1234
     source_interface: Loopback321
-metadata:
-  platform: vEOS-LAB

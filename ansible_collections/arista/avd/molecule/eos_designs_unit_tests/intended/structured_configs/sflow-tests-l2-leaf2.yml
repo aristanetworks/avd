@@ -73,6 +73,8 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.254.254.5/24
   type: inband_mgmt
+metadata:
+  platform: vEOS-lab
 sflow:
   run: true
   destinations:
@@ -84,5 +86,3 @@ sflow:
     destinations:
     - destination: 10.10.10.12
     source_interface: Management1
-metadata:
-  platform: vEOS-lab

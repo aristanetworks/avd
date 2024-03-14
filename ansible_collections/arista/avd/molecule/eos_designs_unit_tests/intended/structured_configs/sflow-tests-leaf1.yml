@@ -218,6 +218,8 @@ vxlan_interface:
       vrfs:
       - name: VRF1
         vni: 1
+metadata:
+  platform: vEOS-lab
 sflow:
   run: true
   vrfs:
@@ -231,5 +233,3 @@ sflow:
     - destination: 10.10.10.12
       port: 1234
     source_interface: Loopback321
-metadata:
-  platform: vEOS-lab
