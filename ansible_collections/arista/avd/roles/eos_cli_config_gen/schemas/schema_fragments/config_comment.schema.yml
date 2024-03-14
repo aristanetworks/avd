@@ -8,4 +8,4 @@ type: dict
 keys:
   config_comment:
     type: str
-    description:  Add custom comment to provide configlet information.
+    description: Add custom comment to provide configlet information.
