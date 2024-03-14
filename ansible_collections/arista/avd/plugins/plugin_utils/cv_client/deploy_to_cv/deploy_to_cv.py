@@ -63,7 +63,7 @@ async def deploy_to_cv(
             The `final_state` property will be inplace updated in the given CVWorkSpace object.
         change_control: CloudVision Change Control to create for the deployment. \
             It is not supported to reuse an existing Change Control, so the `id` field should not be set in the given CVChangeControl object. \
-            The `id` and `final_state` properties will be inplace updated in the given CVChangeControl object.
+            The `id` and `state` properties will be inplace updated in the given CVChangeControl object.
         configs: Configs to be deployed using the "Static Configlet Studio".
         device_tags: Device Tags to be deployed and assigned.
         interface_tags: Interface Tags to be deployed and assigned.

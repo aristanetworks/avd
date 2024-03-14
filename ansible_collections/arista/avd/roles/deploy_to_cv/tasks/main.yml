@@ -45,3 +45,4 @@
     timeouts:
       workspace_build_timeout: "{{ cv_workspace_build_timeout }}"
     return_details: "{{ cv_register_detailed_results }}"
+  register: deploy_to_cv_results

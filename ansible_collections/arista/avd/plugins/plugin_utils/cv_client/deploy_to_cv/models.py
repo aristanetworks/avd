@@ -33,7 +33,7 @@ class CVChangeControl:
     - `"completed"`: Approve and start the Change Control. Wait for the Change Control to be completed.
     - `"deleted"`: Create and delete the Change Control. Used for dry-run where no changes will be committed to the network.
     """
-    final_state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
+    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
 
 
 @dataclass
