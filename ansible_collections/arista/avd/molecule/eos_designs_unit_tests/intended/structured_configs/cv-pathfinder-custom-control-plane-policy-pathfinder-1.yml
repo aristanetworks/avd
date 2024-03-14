@@ -1,0 +1,601 @@
+hostname: cv-pathfinder-custom-control-plane-policy-pathfinder-1
+is_deployed: true
+router_bgp:
+  as: '65000'
+  router_id: 192.168.44.1
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 16
+  updates:
+    wait_install: true
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    route_map_in: RM-BGP-UNDERLAY-PEERS-IN
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    update_source: Dps1
+    bfd: true
+    password: htm4AZe9mIQOO1uiMuGgYQ==
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+    ttl_maximum_hops: 1
+    route_reflector_client: true
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
+  - name: WAN-RR-OVERLAY-PEERS
+    type: wan
+    update_source: Dps1
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+    ttl_maximum_hops: 1
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+    - name: WAN-RR-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  bgp_cluster_id: 192.168.44.1
+  listen_ranges:
+  - prefix: 192.168.142.0/24
+    peer_group: WAN-OVERLAY-PEERS
+    remote_as: '65000'
+  - prefix: 192.168.143.0/24
+    peer_group: WAN-OVERLAY-PEERS
+    remote_as: '65000'
+  address_family_evpn:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    - name: WAN-RR-OVERLAY-PEERS
+      activate: true
+    next_hop:
+      resolution_disabled: true
+  address_family_ipv4_sr_te:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    - name: WAN-RR-OVERLAY-PEERS
+      activate: true
+  address_family_link_state:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      missing_policy:
+        direction_out_action: deny
+    - name: WAN-RR-OVERLAY-PEERS
+      activate: true
+    path_selection:
+      roles:
+        consumer: true
+        propagator: true
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    - name: WAN-RR-OVERLAY-PEERS
+      activate: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
+  neighbors:
+  - ip_address: 192.168.144.1
+    peer_group: WAN-RR-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder
+  vrfs:
+  - name: default
+    rd: 192.168.44.1:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+service_routing_protocols_model: multi-agent
+ip_routing: true
+transceiver_qsfp_default_mode_4x10: false
+spanning_tree:
+  mode: none
+vrfs:
+- name: MGMT
+  ip_routing: false
+platform:
+  sfe:
+    data_plane_cpu_allocation_max: 1
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 10.7.7.7/31
+  shutdown: false
+  type: routed
+  description: Bouygues_Telecom_777
+  flow_tracker:
+    hardware: FLOW-TRACKER
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 172.16.0.1/31
+  shutdown: false
+  type: routed
+  description: Colt_10000
+  flow_tracker:
+    hardware: FLOW-TRACKER
+- name: Ethernet3
+  peer_type: l3_interface
+  ip_address: 10.9.9.9/31
+  shutdown: false
+  type: routed
+  description: Another-ISP_999
+  flow_tracker:
+    hardware: FLOW-TRACKER
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 192.168.44.1/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.44.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.44.1:0 additive
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - extcommunity ECL-EVPN-SOO
+static_routes:
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 10.7.7.6
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.44.1:0
+ip_security:
+  ike_policies:
+  - name: CP-IKE-POLICY
+    local_id: 192.168.144.1
+  sa_policies:
+  - name: CP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  profiles:
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
+    connection: start
+    shared_key: ABCDEF1234567890
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+management_security:
+  ssl_profiles:
+  - name: profileA
+    certificate:
+      file: profileA.crt
+      key: profileA.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
+router_adaptive_virtual_topology:
+  topology_role: pathfinder
+  profiles:
+  - name: CUSTOM-CP-POLICY
+    load_balance_policy: LB-CUSTOM-CP-POLICY
+  - name: DEFAULT-POLICY-VIDEO
+    load_balance_policy: LB-DEFAULT-POLICY-VIDEO
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  vrfs:
+  - name: default
+    policy: DEFAULT-POLICY-WITH-CP
+    profiles:
+    - name: CUSTOM-CP-POLICY
+      id: 254
+    - name: DEFAULT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+  - name: PROD
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+  - name: IT
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+  policies:
+  - name: DEFAULT-POLICY-WITH-CP
+    matches:
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: CUSTOM-CP-POLICY
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-POLICY-VIDEO
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY
+    matches:
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-POLICY-VIDEO
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
+  path_groups:
+  - name: MPLS
+    id: 100
+    local_interfaces:
+    - name: Ethernet2
+    static_peers:
+    - router_ip: 192.168.144.1
+      name: cv-pathfinder-pathfinder
+      ipv4_addresses:
+      - 172.16.0.1
+    keepalive:
+      interval: 300
+      failure_threshold: 5
+  - name: INET
+    id: 101
+    local_interfaces:
+    - name: Ethernet1
+    - name: Ethernet3
+    static_peers:
+    - router_ip: 192.168.144.1
+      name: cv-pathfinder-pathfinder
+      ipv4_addresses:
+      - 10.7.7.7
+      - 10.9.9.9
+    ipsec_profile: CP-PROFILE
+  - name: LTE
+    id: 102
+  - name: Equinix
+    id: 103
+  - name: Satellite
+    id: 104
+  - name: AWS
+    id: 105
+  - name: LAN_HA
+    id: 65535
+    flow_assignment: lan
+  peer_dynamic_source: stun
+  load_balance_policies:
+  - name: LB-CUSTOM-CP-POLICY
+    path_groups:
+    - name: INET
+    - name: MPLS
+      priority: 2
+    - name: LAN_HA
+    jitter: 5
+    lowest_hop_count: true
+  - name: LB-DEFAULT-POLICY-VIDEO
+    path_groups:
+    - name: MPLS
+    - name: INET
+    - name: LAN_HA
+  - name: LB-DEFAULT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
+    - name: LTE
+      priority: 42
+    - name: LAN_HA
+router_traffic_engineering:
+  enabled: true
+stun:
+  server:
+    local_interfaces:
+    - Ethernet1
+    - Ethernet2
+    - Ethernet3
+    ssl_profile: profileA
+application_traffic_recognition:
+  application_profiles:
+  - name: VIDEO
+    categories:
+    - name: VIDEO1
+    applications:
+    - name: CUSTOM-APPLICATION-1
+    - name: skype
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
+  categories:
+  - name: VIDEO1
+    applications:
+    - name: CUSTOM-APPLICATION-2
+    - name: microsoft-teams
+  applications:
+    ipv4_applications:
+    - name: CUSTOM-APPLICATION-1
+      protocols:
+      - tcp
+      src_prefix_set_name: CUSTOM-SRC-PREFIX-1
+      dest_prefix_set_name: CUSTOM-DEST-PREFIX-1
+    - name: CUSTOM-APPLICATION-2
+      protocols:
+      - tcp
+      tcp_src_port_set_name: TCP-SRC-2
+      tcp_dest_port_set_name: TCP-DEST-2
+    - name: APP-CONTROL-PLANE
+      src_prefix_set_name: PFX-LOCAL-VTEP-IP
+  field_sets:
+    l4_ports:
+    - name: TCP-SRC-2
+      port_values:
+      - '42'
+    - name: TCP-DEST-2
+      port_values:
+      - '666'
+      - '777'
+    ipv4_prefixes:
+    - name: CUSTOM-SRC-PREFIX-1
+      prefix_values:
+      - 42.42.42.0/24
+    - name: CUSTOM-DEST-PREFIX-1
+      prefix_values:
+      - 6.6.6.0/24
+    - name: PFX-LOCAL-VTEP-IP
+      prefix_values:
+      - 192.168.144.1/32
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  mtu: 9214
+  ip_address: 192.168.144.1/32
+  flow_tracker:
+    hardware: FLOW-TRACKER
+vxlan_interface:
+  Vxlan1:
+    description: cv-pathfinder-custom-control-plane-policy-pathfinder-1_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Dps1
+      vrfs:
+      - name: default
+        vni: 1
+metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: pathfinder
+    - name: PathfinderSet
+      value: PATHFINDERS
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Bouygues_Telecom
+      - name: Circuit
+        value: '777'
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10000'
+    - interface: Ethernet3
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Another-ISP
+      - name: Circuit
+        value: '999'
+  cv_pathfinder:
+    role: pathfinder
+    ssl_profile: profileA
+    vtep_ip: 192.168.144.1
+    interfaces:
+    - name: Ethernet1
+      carrier: Bouygues_Telecom
+      circuit_id: '777'
+      pathgroup: INET
+      public_ip: 10.7.7.7
+    - name: Ethernet2
+      carrier: Colt
+      circuit_id: '10000'
+      pathgroup: MPLS
+      public_ip: 172.16.0.1
+    - name: Ethernet3
+      carrier: Another-ISP
+      circuit_id: '999'
+      pathgroup: INET
+      public_ip: 10.9.9.9
+    pathgroups:
+    - name: MPLS
+      carriers:
+      - name: Colt
+      - name: ATT-MPLS
+    - name: INET
+      carriers:
+      - name: Comcast
+      - name: ATT
+      - name: Bouygues_Telecom
+      - name: SFR
+      - name: Orange
+      - name: Another-ISP
+    - name: LTE
+      carriers:
+      - name: Comcast-5G
+    - name: Equinix
+    - name: Satellite
+      carriers:
+      - name: Inmrasat
+    - name: AWS
+      carriers:
+      - name: AWS-1
+    regions:
+    - name: AVD_Land_West
+      id: 42
+      zones:
+      - name: AVD_Land_West-ZONE
+        id: 1
+        sites:
+        - name: Site422
+          id: 422
+          location:
+            address: Somewhere
+        - name: Site423
+          id: 423
+          location:
+            address: Somewhere-warm
+    - name: AVD_Land_East
+      id: 43
+      zones:
+      - name: AVD_Land_East-ZONE
+        id: 1
+        sites:
+        - name: Site511
+          id: 511
+    vrfs:
+    - name: default
+      vni: 1
+      avts:
+      - constraints:
+          jitter: 5
+        id: 254
+        name: CUSTOM-CP-POLICY
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: alternate
+        - name: LAN_HA
+          preference: preferred
+      - id: 3
+        name: DEFAULT-POLICY-VIDEO
+        pathgroups:
+        - name: MPLS
+          preference: preferred
+        - name: INET
+          preference: preferred
+        - name: LAN_HA
+          preference: preferred
+      - id: 1
+        name: DEFAULT-POLICY-DEFAULT
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: LTE
+          preference: alternate
+        - name: LAN_HA
+          preference: preferred
+    - name: PROD
+      vni: 42
+      avts:
+      - id: 3
+        name: DEFAULT-POLICY-VIDEO
+        pathgroups:
+        - name: MPLS
+          preference: preferred
+        - name: INET
+          preference: preferred
+        - name: LAN_HA
+          preference: preferred
+      - id: 1
+        name: DEFAULT-POLICY-DEFAULT
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: LTE
+          preference: alternate
+        - name: LAN_HA
+          preference: preferred
+    - name: IT
+      vni: 14
+      avts:
+      - id: 3
+        name: DEFAULT-POLICY-VIDEO
+        pathgroups:
+        - name: MPLS
+          preference: preferred
+        - name: INET
+          preference: preferred
+        - name: LAN_HA
+          preference: preferred
+      - id: 1
+        name: DEFAULT-POLICY-DEFAULT
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: LTE
+          preference: alternate
+        - name: LAN_HA
+          preference: preferred

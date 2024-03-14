@@ -5033,6 +5033,73 @@
       "type": "string",
       "title": "Fabric Name"
     },
+    "flow_tracking_settings": {
+      "description": "Define the flow tracking parameters for this topology.",
+      "type": "object",
+      "properties": {
+        "flow_tracker_name": {
+          "type": "string",
+          "default": "FLOW-TRACKER",
+          "description": "Flow Tracker Name.",
+          "title": "Flow Tracker Name"
+        },
+        "record_export": {
+          "type": "object",
+          "properties": {
+            "on_inactive_timeout": {
+              "description": "Flow record inactive export timeout in milliseconds.",
+              "type": "integer",
+              "minimum": 3000,
+              "maximum": 900000,
+              "default": 70000,
+              "title": "On Inactive Timeout"
+            },
+            "on_interval": {
+              "type": "integer",
+              "minimum": 1000,
+              "maximum": 36000000,
+              "default": 300000,
+              "description": "Flow record export interval in milliseconds.",
+              "title": "On Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Record Export"
+        },
+        "exporter": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "CV-TELEMETRY",
+              "description": "Exporter Name.",
+              "title": "Name"
+            },
+            "template_interval": {
+              "description": "Template interval in milliseconds.",
+              "type": "integer",
+              "minimum": 5000,
+              "maximum": 3600000,
+              "default": 3600000,
+              "title": "Template Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Exporter"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Flow Tracking Settings"
+    },
     "generate_cv_tags": {
       "type": "object",
       "description": "PREVIEW: This key is currently not supported\nGenerate CloudVision Tags based on AVD data.",
@@ -24868,6 +24935,23 @@
       },
       "title": "Wan Carriers"
     },
+    "wan_ha": {
+      "description": "PREVIEW: This key is currently not supported",
+      "type": "object",
+      "properties": {
+        "lan_ha_path_group_name": {
+          "type": "string",
+          "default": "LAN_HA",
+          "description": "When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.\nThis key allows to overwrite the default LAN HA path-group name.",
+          "title": "Lan Ha Path Group Name"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Wan Ha"
+    },
     "wan_ipsec_profiles": {
       "description": "PREVIEW: This key is currently not supported\n\nDefine IPsec profiles parameters for WAN configuration.",
       "type": "object",
@@ -25219,6 +25303,12 @@
               "type": "string",
               "description": "Optional name, if not set `CONTROL-PLANE-PROFILE` is used.",
               "title": "Name"
+            },
+            "application_profile": {
+              "type": "string",
+              "default": "APP-PROFILE-CONTROL-PLANE",
+              "description": "The application profile to use for control plane traffic.\n\nThe application profile should be defined under `application_classification.application_profiles`.\nIf not defined AVD will auto generate an application profile using the provided name or the default value.\n\nIf not overwritten elsewhere, the application profile is generated matching one application matching the control plane traffic either sourced from or destined to the WAN route servers.",
+              "title": "Application Profile"
             },
             "traffic_class": {
               "type": "integer",

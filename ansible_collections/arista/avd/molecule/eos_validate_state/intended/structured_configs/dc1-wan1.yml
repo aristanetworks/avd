@@ -142,7 +142,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 10.255.255.1/31
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer: dc1-leaf1b
   peer_interface: Ethernet6
@@ -153,7 +153,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 10.255.255.3/31
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.18.3.2/24
@@ -161,7 +161,7 @@ ethernet_interfaces:
   type: routed
   description: mpls-sp-1_DC1-MPLS-3
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet4
   peer_type: l3_interface
   ip_address: 100.64.3.2/24
@@ -169,7 +169,7 @@ ethernet_interfaces:
   type: routed
   description: isp-1_DC1-INET-3
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -282,16 +282,16 @@ agents:
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -416,14 +416,14 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: LAN_HA
-    - name: internet
     - name: mpls
+    - name: internet
+    - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: internet
     - name: mpls
+    - name: LAN_HA
 router_traffic_engineering:
   enabled: true
 application_traffic_recognition:
@@ -444,7 +444,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 10.255.1.1/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: dc1-wan1_VTEP

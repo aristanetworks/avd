@@ -7,14 +7,14 @@ anta.tests.interfaces:
   - VerifyInterfaceErrDisabled:
   - VerifyInterfacesStatus:
       interfaces:
-        - interface: Ethernet1
-          state: up
-        - interface: Ethernet2
-          state: up
-          protocol_status: up
-        - interface: Vlan10
-          state: adminDown
-          protocol_status: down
+        - name: Ethernet1
+          status: up
+        - name: Ethernet2
+          status: up
+          line_protocol_status: up
+        - name: Vlan10
+          status: adminDown
+          line_protocol_status: down
   - VerifyStormControlDrops:
   - VerifyPortChannels:
   - VerifyIllegalLACP:
@@ -39,6 +39,28 @@ anta.tests.interfaces:
       specific_mtu:
         - Ethernet1/1: 1500
 
+anta.tests.bfd:
+  - VerifyBFDSpecificPeers:
+      bfd_peers:
+        - peer_address: 192.0.255.8
+          vrf: default
+        - peer_address: 192.0.255.7
+          vrf: default
+  - VerifyBFDPeersIntervals:
+      bfd_peers:
+        - peer_address: 192.0.255.8
+          vrf: default
+          tx_interval: 1200
+          rx_interval: 1200
+          multiplier: 3
+        - peer_address: 192.0.255.7
+          vrf: default
+          tx_interval: 1200
+          rx_interval: 1200
+          multiplier: 3
+  - VerifyBFDPeersHealth:
+      down_threshold: 2
+
 anta.tests.routing:
   generic:
     - VerifyRoutingProtocolModel:
@@ -46,7 +68,6 @@ anta.tests.routing:
     - VerifyRoutingTableSize:
         minimum: 2
         maximum: 20
-    - VerifyBFD:
     - VerifyRoutingTableEntry:
         vrf: default
         routes:
