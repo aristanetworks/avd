@@ -1445,6 +1445,11 @@
         }
       }
     },
+    "config_comment": {
+      "type": "string",
+      "description": "Add custom comment to provide configlet information.",
+      "title": "Config Comment"
+    },
     "custom_templates": {
       "type": "array",
       "title": "Extensibility with Custom Templates",

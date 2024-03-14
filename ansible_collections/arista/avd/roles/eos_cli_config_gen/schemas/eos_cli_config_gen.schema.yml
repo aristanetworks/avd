@@ -952,6 +952,9 @@ keys:
             Example: "permit GSHUT 65123:123"
 
             '
+  config_comment:
+    type: str
+    description: Add custom comment to provide configlet information.
   custom_templates:
     type: list
     display_name: Extensibility with Custom Templates
