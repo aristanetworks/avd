@@ -124,7 +124,7 @@ class ChangeControlMixin:
         Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API
 
         Parameters:
-            change_control_id: Unique identifier the Change Control.
+            change_control_id: Unique identifier of the Change Control.
             timestamp: Timestamp for the change control information to be approved. \
                 This must be using the aristaproto._DateTime subclass which contains nanosecond information.
             description: Description to set on the approval.
@@ -160,7 +160,7 @@ class ChangeControlMixin:
         Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API
 
         Parameters:
-            change_control_id: Unique identifier the Change Control.
+            change_control_id: Unique identifier of the Change Control.
             description: Description to add for the start request.
             timeout: Timeout in seconds.
 
@@ -193,9 +193,9 @@ class ChangeControlMixin:
         Blocks until a reponse is returned or timed out.
 
         Parameters:
-            cc_id: Unique identifier the change control.
-            state: Requested state of change control.
-            timeout: Timeout in seconds for the Workspace to build.
+            cc_id: Unique identifier of the change control.
+            state: Change Control state to wait for.
+            timeout: Timeout in seconds for the Change Control to reach the expected state.
 
         Returns:
             Full change control object
@@ -211,8 +211,7 @@ class ChangeControlMixin:
         try:
             responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
-                # print(response, flush=true)
-                LOGGER.debug("Response: '%s.'", response)
+                LOGGER.debug("wait_for_change_control_complete: Response is '%s.'", response)
                 if hasattr(response, "value"):
                     if response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
                         LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)

@@ -209,7 +209,7 @@ cv_submit_workspace: true
 # If set, configurations will not be validated for non-streaming devices.
 cv_submit_workspace_force: false
 
-# Approve, Start and wait for Change Control to Complete. Otherwise the Change Control will be left in "pending approval" mode.
+# Approve, start and wait for the Change Control to Complete. Otherwise the Change Control will be left in "pending approval" mode.
 # Only applicable if cv_submit_workspace is true.
 cv_run_change_control: false
 
