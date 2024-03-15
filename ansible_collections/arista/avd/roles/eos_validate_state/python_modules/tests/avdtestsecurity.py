@@ -33,6 +33,6 @@ class AvdTestAPIHttpsSSL(AvdTestBase):
             LOGGER.info("No https ssl profile found. %s is skipped.", self.__class__.__name__)
             return None
 
-        anta_tests.append({"VerifyAPIHttpsSSL": {"profile": profile}})
+        anta_tests.append({"VerifyAPIHttpsSSL": {"profile": profile, "result_overwrite": {"custom_field": f"eAPI HTTPS SSL Profile: {profile}"}}})
 
         return {self.anta_module: anta_tests}

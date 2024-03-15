@@ -122,7 +122,7 @@ def get_anta_results(
         results,
         key=lambda result: (
             result.get("categories", [""])[0].lower(),
-            result.get("description", "").lower(),
+            result.get("test", "").lower(),
             result.get("custom_field", "").lower(),
         ),
     )
