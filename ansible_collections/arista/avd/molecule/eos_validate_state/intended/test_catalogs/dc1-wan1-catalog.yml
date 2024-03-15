@@ -58,20 +58,14 @@ anta.tests.connectivity:
       neighbor_port: Ethernet6
       port: Ethernet1
     result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet1 - remote: dc1-leaf1a_Ethernet6'
-      description: LLDP topology - validate peer and interface
+      custom_field: 'Local: Ethernet1 - Remote: dc1-leaf1a_Ethernet6'
 - VerifyLLDPNeighbors:
     neighbors:
     - neighbor_device: dc1-leaf1b.dc1.local
       neighbor_port: Ethernet6
       port: Ethernet2
     result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet2 - remote: dc1-leaf1b_Ethernet6'
-      description: LLDP topology - validate peer and interface
+      custom_field: 'Local: Ethernet2 - Remote: dc1-leaf1b_Ethernet6'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.0
@@ -79,10 +73,7 @@ anta.tests.connectivity:
       source: 10.255.255.1
       vrf: default
     result_overwrite:
-      categories:
-      - IP Reachability
-      custom_field: 'Source: dc1-wan1_Ethernet1 - Destination: dc1-leaf1a_Ethernet6'
-      description: ip reachability test p2p links
+      custom_field: 'Source: P2P Interface Ethernet1 - Destination: dc1-leaf1a_Ethernet6'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.2
@@ -90,18 +81,19 @@ anta.tests.connectivity:
       source: 10.255.255.3
       vrf: default
     result_overwrite:
-      categories:
-      - IP Reachability
-      custom_field: 'Source: dc1-wan1_Ethernet2 - Destination: dc1-leaf1b_Ethernet6'
-      description: ip reachability test p2p links
+      custom_field: 'Source: P2P Interface Ethernet2 - Destination: dc1-leaf1b_Ethernet6'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null
 anta.tests.hardware:
 - VerifyEnvironmentPower:
+    result_overwrite:
+      custom_field: 'Accepted States: ''ok'''
     states:
     - ok
 - VerifyEnvironmentCooling:
+    result_overwrite:
+      custom_field: 'Accepted States: ''ok'''
     states:
     - ok
 - VerifyTemperature: null
@@ -110,6 +102,9 @@ anta.tests.hardware:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
+    result_overwrite:
+      custom_field: 'Accepted Manufacturers: ''Arista Networks'', ''Arastra, Inc.'',
+        ''Not Present'''
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Not Present
@@ -176,9 +171,7 @@ anta.tests.routing.bgp:
       - 10.255.255.0
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.0'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf1a_10.255.255.0'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -186,20 +179,17 @@ anta.tests.routing.bgp:
       - 10.255.255.2
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.2'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf1b_10.255.255.2'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
     result_overwrite:
-      categories:
-      - BGP
       custom_field: 'Routing protocol model: multi-agent'
-      description: Verifies the configured routing protocol model.
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
+    result_overwrite:
+      custom_field: 'eAPI HTTPS SSL Profile: eAPI_SSL_Profile'
 anta.tests.snmp:
 - VerifySnmpStatus:
     vrf: default
@@ -219,12 +209,7 @@ anta.tests.software:
     - v1.13.6
     - v1.8.0
 anta.tests.system:
-- VerifyNTP:
-    result_overwrite:
-      categories:
-      - NTP
-      custom_field: NTP
-      description: Synchronised with NTP server
+- VerifyNTP: null
 - VerifyUptime:
     minimum: 86400
 - VerifyReloadCause: null

@@ -1,30 +1,6 @@
 [
   {
     "name": "dc2-leaf1c",
-    "test": "VerifyTacacsServerGroups",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies if the provided TACACS server group(s) are configured."
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyTacacsServers",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS servers are configured for a specified VRF."
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyTacacsSourceIntf",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS source-interface for a specified VRF."
-  },
-  {
-    "name": "dc2-leaf1c",
     "test": "VerifyAcctConsoleMethods",
     "categories": [
       "aaa"
@@ -57,6 +33,30 @@
   },
   {
     "name": "dc2-leaf1c",
+    "test": "VerifyTacacsServerGroups",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf1c",
     "test": "VerifyRunningConfigDiffs",
     "categories": [
       "configuration"
@@ -73,12 +73,21 @@
   },
   {
     "name": "dc2-leaf1c",
-    "test": "VerifyFieldNotice72Resolution",
+    "test": "VerifyLLDPNeighbors",
     "categories": [
-      "field notices",
-      "software"
+      "connectivity"
     ],
-    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet1 - Remote: dc2-leaf1a_Ethernet8"
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet2 - Remote: dc2-leaf1b_Ethernet8"
   },
   {
     "name": "dc2-leaf1c",
@@ -91,51 +100,20 @@
   },
   {
     "name": "dc2-leaf1c",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "hardware"
+      "field notices",
+      "software"
     ],
-    "description": "Verifies if all transceivers come from approved manufacturers."
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
   },
   {
     "name": "dc2-leaf1c",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyAdverseDrops",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if all transceivers come from approved manufacturers."
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the device temperature."
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the device temperature."
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the power supplies status."
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the power supplies status."
+    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc2-leaf1c",
@@ -151,7 +129,25 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the status of power supply fans and all fan trays."
+    "description": "Verifies the status of power supply fans and all fan trays.",
+    "custom_field": "Accepted States: 'ok'"
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status."
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status.",
+    "custom_field": "Accepted States: 'ok'"
   },
   {
     "name": "dc2-leaf1c",
@@ -163,19 +159,44 @@
   },
   {
     "name": "dc2-leaf1c",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers.",
+    "custom_field": "Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present'"
+  },
+  {
+    "name": "dc2-leaf1c",
     "test": "VerifyTransceiversTemperature",
     "categories": [
       "hardware"
     ],
     "description": "Verifies the transceivers temperature."
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyAdverseDrops",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc2-leaf1c",
@@ -215,38 +236,12 @@
   },
   {
     "name": "dc2-leaf1c",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet1 - remote: dc2-leaf1a_Ethernet8"
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet2 - remote: dc2-leaf1b_Ethernet8"
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyNTP",
-    "categories": [
-      "NTP"
-    ],
-    "description": "Synchronised with NTP server",
-    "custom_field": "NTP"
-  },
-  {
-    "name": "dc2-leaf1c",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
       "security"
     ],
-    "description": "Verifies if the eAPI has a valid SSL profile."
+    "description": "Verifies if the eAPI has a valid SSL profile.",
+    "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
   },
   {
     "name": "dc2-leaf1c",
@@ -290,38 +285,6 @@
   },
   {
     "name": "dc2-leaf1c",
-    "test": "VerifyNTP",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies if NTP is synchronised."
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyFileSystemUtilization",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyUptime",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies the device uptime."
-  },
-  {
-    "name": "dc2-leaf1c",
-    "test": "VerifyReloadCause",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies the last reload cause of the device."
-  },
-  {
-    "name": "dc2-leaf1c",
     "test": "VerifyAgentLogs",
     "categories": [
       "system"
@@ -346,10 +309,50 @@
   },
   {
     "name": "dc2-leaf1c",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc2-leaf1c",
     "test": "VerifyMemoryUtilization",
     "categories": [
       "system"
     ],
     "description": "Verifies whether the memory utilization is below 75%."
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc2-leaf1c",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the device uptime."
   }
 ]

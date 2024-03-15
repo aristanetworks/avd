@@ -79,30 +79,21 @@ anta.tests.connectivity:
       neighbor_port: Ethernet1
       port: Ethernet1
     result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet1 - remote: dc1-leaf1a_Ethernet1'
-      description: LLDP topology - validate peer and interface
+      custom_field: 'Local: Ethernet1 - Remote: dc1-leaf1a_Ethernet1'
 - VerifyLLDPNeighbors:
     neighbors:
     - neighbor_device: dc1-leaf1b.dc1.local
       neighbor_port: Ethernet1
       port: Ethernet2
     result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet2 - remote: dc1-leaf1b_Ethernet1'
-      description: LLDP topology - validate peer and interface
+      custom_field: 'Local: Ethernet2 - Remote: dc1-leaf1b_Ethernet1'
 - VerifyLLDPNeighbors:
     neighbors:
     - neighbor_device: dc1-leaf2a.dc1.local
       neighbor_port: Ethernet1
       port: Ethernet3
     result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet3 - remote: dc1-leaf2a_Ethernet1'
-      description: LLDP topology - validate peer and interface
+      custom_field: 'Local: Ethernet3 - Remote: dc1-leaf2a_Ethernet1'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.1
@@ -110,10 +101,7 @@ anta.tests.connectivity:
       source: 10.255.255.0
       vrf: default
     result_overwrite:
-      categories:
-      - IP Reachability
-      custom_field: 'Source: dc1-spine1_Ethernet1 - Destination: dc1-leaf1a_Ethernet1'
-      description: ip reachability test p2p links
+      custom_field: 'Source: P2P Interface Ethernet1 - Destination: dc1-leaf1a_Ethernet1'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.5
@@ -121,10 +109,7 @@ anta.tests.connectivity:
       source: 10.255.255.4
       vrf: default
     result_overwrite:
-      categories:
-      - IP Reachability
-      custom_field: 'Source: dc1-spine1_Ethernet2 - Destination: dc1-leaf1b_Ethernet1'
-      description: ip reachability test p2p links
+      custom_field: 'Source: P2P Interface Ethernet2 - Destination: dc1-leaf1b_Ethernet1'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.9
@@ -132,18 +117,19 @@ anta.tests.connectivity:
       source: 10.255.255.8
       vrf: default
     result_overwrite:
-      categories:
-      - IP Reachability
-      custom_field: 'Source: dc1-spine1_Ethernet3 - Destination: dc1-leaf2a_Ethernet1'
-      description: ip reachability test p2p links
+      custom_field: 'Source: P2P Interface Ethernet3 - Destination: dc1-leaf2a_Ethernet1'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null
 anta.tests.hardware:
 - VerifyEnvironmentPower:
+    result_overwrite:
+      custom_field: 'Accepted States: ''ok'''
     states:
     - ok
 - VerifyEnvironmentCooling:
+    result_overwrite:
+      custom_field: 'Accepted States: ''ok'''
     states:
     - ok
 - VerifyTemperature: null
@@ -152,6 +138,9 @@ anta.tests.hardware:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
+    result_overwrite:
+      custom_field: 'Accepted Manufacturers: ''Arista Networks'', ''Arastra, Inc.'',
+        ''Not Present'''
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Not Present
@@ -297,27 +286,21 @@ anta.tests.routing.bgp:
       peers:
       - 10.255.0.3
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP EVPN Peer: 10.255.0.3'
+      custom_field: 'BGP EVPN Peer: dc1-leaf1a_10.255.0.3'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: evpn
       peers:
       - 10.255.0.4
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP EVPN Peer: 10.255.0.4'
+      custom_field: 'BGP EVPN Peer: dc1-leaf1b_10.255.0.4'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: evpn
       peers:
       - 10.255.0.5
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP EVPN Peer: 10.255.0.5'
+      custom_field: 'BGP EVPN Peer: dc1-leaf2a_10.255.0.5'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -325,9 +308,7 @@ anta.tests.routing.bgp:
       - 10.255.255.1
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.1'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf1a_10.255.255.1'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -335,9 +316,7 @@ anta.tests.routing.bgp:
       - 10.255.255.5
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.5'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf1b_10.255.255.5'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -345,9 +324,7 @@ anta.tests.routing.bgp:
       - 10.255.255.9
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.9'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf2a_10.255.255.9'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -355,9 +332,7 @@ anta.tests.routing.bgp:
       - 123.1.1.10
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv4 Unicast Peer: 123.1.1.10'
+      custom_field: 'BGP IPv4 Unicast Peer: None_123.1.1.10'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -365,9 +340,7 @@ anta.tests.routing.bgp:
       - 123.1.1.11
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv4 Unicast Peer: 123.1.1.11'
+      custom_field: 'BGP IPv4 Unicast Peer: None_123.1.1.11'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv6
@@ -375,9 +348,7 @@ anta.tests.routing.bgp:
       - fd5a:fe45:8831:06c5::a
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv6 Unicast Peer: fd5a:fe45:8831:06c5::a'
+      custom_field: 'BGP IPv6 Unicast Peer: None_fd5a:fe45:8831:06c5::a'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv6
@@ -385,20 +356,17 @@ anta.tests.routing.bgp:
       - fd5a:fe45:8831:06c5::b
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv6 Unicast Peer: fd5a:fe45:8831:06c5::b'
+      custom_field: 'BGP IPv6 Unicast Peer: None_fd5a:fe45:8831:06c5::b'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
     result_overwrite:
-      categories:
-      - BGP
       custom_field: 'Routing protocol model: multi-agent'
-      description: Verifies the configured routing protocol model.
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
+    result_overwrite:
+      custom_field: 'eAPI HTTPS SSL Profile: eAPI_SSL_Profile'
 anta.tests.snmp:
 - VerifySnmpStatus:
     vrf: default
@@ -418,12 +386,7 @@ anta.tests.software:
     - v1.13.6
     - v1.8.0
 anta.tests.system:
-- VerifyNTP:
-    result_overwrite:
-      categories:
-      - NTP
-      custom_field: NTP
-      description: Synchronised with NTP server
+- VerifyNTP: null
 - VerifyUptime:
     minimum: 86400
 - VerifyReloadCause: null

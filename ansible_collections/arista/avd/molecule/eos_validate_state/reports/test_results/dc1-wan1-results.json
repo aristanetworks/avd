@@ -1,30 +1,6 @@
 [
   {
     "name": "dc1-wan1",
-    "test": "VerifyTacacsServerGroups",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies if the provided TACACS server group(s) are configured."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyTacacsServers",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS servers are configured for a specified VRF."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyTacacsSourceIntf",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS source-interface for a specified VRF."
-  },
-  {
-    "name": "dc1-wan1",
     "test": "VerifyAcctConsoleMethods",
     "categories": [
       "aaa"
@@ -57,30 +33,45 @@
   },
   {
     "name": "dc1-wan1",
-    "test": "VerifyRoutingProtocolModel",
+    "test": "VerifyTacacsServerGroups",
     "categories": [
-      "BGP"
+      "aaa"
     ],
-    "description": "Verifies the configured routing protocol model.",
-    "custom_field": "Routing protocol model: multi-agent"
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
   },
   {
     "name": "dc1-wan1",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.0"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1a_10.255.255.0"
   },
   {
     "name": "dc1-wan1",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.2"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1b_10.255.255.2"
   },
   {
     "name": "dc1-wan1",
@@ -100,12 +91,39 @@
   },
   {
     "name": "dc1-wan1",
-    "test": "VerifyFieldNotice72Resolution",
+    "test": "VerifyLLDPNeighbors",
     "categories": [
-      "field notices",
-      "software"
+      "connectivity"
     ],
-    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet1 - Remote: dc1-leaf1a_Ethernet6"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet2 - Remote: dc1-leaf1b_Ethernet6"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet1 - Destination: dc1-leaf1a_Ethernet6"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet2 - Destination: dc1-leaf1b_Ethernet6"
   },
   {
     "name": "dc1-wan1",
@@ -118,51 +136,20 @@
   },
   {
     "name": "dc1-wan1",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "hardware"
+      "field notices",
+      "software"
     ],
-    "description": "Verifies if all transceivers come from approved manufacturers."
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
   },
   {
     "name": "dc1-wan1",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyAdverseDrops",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if all transceivers come from approved manufacturers."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the device temperature."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the device temperature."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the power supplies status."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the power supplies status."
+    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc1-wan1",
@@ -178,7 +165,25 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the status of power supply fans and all fan trays."
+    "description": "Verifies the status of power supply fans and all fan trays.",
+    "custom_field": "Accepted States: 'ok'"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status.",
+    "custom_field": "Accepted States: 'ok'"
   },
   {
     "name": "dc1-wan1",
@@ -190,19 +195,44 @@
   },
   {
     "name": "dc1-wan1",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers.",
+    "custom_field": "Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present'"
+  },
+  {
+    "name": "dc1-wan1",
     "test": "VerifyTransceiversTemperature",
     "categories": [
       "hardware"
     ],
     "description": "Verifies the transceivers temperature."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyAdverseDrops",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc1-wan1",
@@ -269,48 +299,12 @@
   },
   {
     "name": "dc1-wan1",
-    "test": "VerifyReachability",
+    "test": "VerifyRoutingProtocolModel",
     "categories": [
-      "IP Reachability"
+      "routing"
     ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-wan1_Ethernet1 - Destination: dc1-leaf1a_Ethernet6"
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-wan1_Ethernet2 - Destination: dc1-leaf1b_Ethernet6"
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet1 - remote: dc1-leaf1a_Ethernet6"
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet2 - remote: dc1-leaf1b_Ethernet6"
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyNTP",
-    "categories": [
-      "NTP"
-    ],
-    "description": "Synchronised with NTP server",
-    "custom_field": "NTP"
+    "description": "Verifies the configured routing protocol model.",
+    "custom_field": "Routing protocol model: multi-agent"
   },
   {
     "name": "dc1-wan1",
@@ -318,7 +312,8 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if the eAPI has a valid SSL profile."
+    "description": "Verifies if the eAPI has a valid SSL profile.",
+    "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
   },
   {
     "name": "dc1-wan1",
@@ -362,38 +357,6 @@
   },
   {
     "name": "dc1-wan1",
-    "test": "VerifyNTP",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies if NTP is synchronised."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyFileSystemUtilization",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyUptime",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies the device uptime."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyReloadCause",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies the last reload cause of the device."
-  },
-  {
-    "name": "dc1-wan1",
     "test": "VerifyAgentLogs",
     "categories": [
       "system"
@@ -418,10 +381,50 @@
   },
   {
     "name": "dc1-wan1",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-wan1",
     "test": "VerifyMemoryUtilization",
     "categories": [
       "system"
     ],
     "description": "Verifies whether the memory utilization is below 75%."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the device uptime."
   }
 ]

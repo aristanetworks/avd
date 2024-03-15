@@ -1,30 +1,6 @@
 [
   {
     "name": "dc1-spine2",
-    "test": "VerifyTacacsServerGroups",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies if the provided TACACS server group(s) are configured."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyTacacsServers",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS servers are configured for a specified VRF."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyTacacsSourceIntf",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS source-interface for a specified VRF."
-  },
-  {
-    "name": "dc1-spine2",
     "test": "VerifyAcctConsoleMethods",
     "categories": [
       "aaa"
@@ -57,6 +33,30 @@
   },
   {
     "name": "dc1-spine2",
+    "test": "VerifyTacacsServerGroups",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
+  },
+  {
+    "name": "dc1-spine2",
     "test": "VerifyBFDPeersHealth",
     "categories": [
       "bfd"
@@ -65,19 +65,19 @@
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyBFDSpecificPeers",
-    "categories": [
-      "bfd"
-    ],
-    "description": "Verifies the IPv4 BFD peer's sessions and remote disc in the specified VRF."
-  },
-  {
-    "name": "dc1-spine2",
     "test": "VerifyBFDPeersIntervals",
     "categories": [
       "bfd"
     ],
     "description": "Verifies the timers of the IPv4 BFD peers in the specified VRF."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyBFDSpecificPeers",
+    "categories": [
+      "bfd"
+    ],
+    "description": "Verifies the IPv4 BFD peer's sessions and remote disc in the specified VRF."
   },
   {
     "name": "dc1-spine2",
@@ -121,12 +121,57 @@
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyFieldNotice72Resolution",
+    "test": "VerifyLLDPNeighbors",
     "categories": [
-      "field notices",
-      "software"
+      "connectivity"
     ],
-    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet1 - Remote: dc1-leaf1a_Ethernet2"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet2 - Remote: dc1-leaf1b_Ethernet2"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet3 - Remote: dc1-leaf2a_Ethernet2"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet1 - Destination: dc1-leaf1a_Ethernet2"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet2 - Destination: dc1-leaf1b_Ethernet2"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet3 - Destination: dc1-leaf2a_Ethernet2"
   },
   {
     "name": "dc1-spine2",
@@ -139,83 +184,12 @@
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "hardware"
+      "field notices",
+      "software"
     ],
-    "description": "Verifies if all transceivers come from approved manufacturers."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyTransceiversManufacturers",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies if all transceivers come from approved manufacturers."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the device temperature."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the device temperature."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the power supplies status."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the power supplies status."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyEnvironmentCooling",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the status of power supply fans and all fan trays."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyEnvironmentCooling",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the status of power supply fans and all fan trays."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyEnvironmentSystemCooling",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the system cooling status."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyTransceiversTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the transceivers temperature."
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
   },
   {
     "name": "dc1-spine2",
@@ -227,51 +201,118 @@
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyIPProxyARP",
+    "test": "VerifyEnvironmentCooling",
     "categories": [
-      "interfaces"
+      "hardware"
     ],
-    "description": "Verifies if Proxy ARP is enabled."
+    "description": "Verifies the status of power supply fans and all fan trays."
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyInterfaceUtilization",
+    "test": "VerifyEnvironmentCooling",
     "categories": [
-      "interfaces"
+      "hardware"
     ],
-    "description": "Verifies that all interfaces have a usage below 75%."
+    "description": "Verifies the status of power supply fans and all fan trays.",
+    "custom_field": "Accepted States: 'ok'"
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyL2MTU",
+    "test": "VerifyEnvironmentPower",
     "categories": [
-      "interfaces"
+      "hardware"
     ],
-    "description": "Verifies the global L2 MTU of all L2 interfaces."
+    "description": "Verifies the power supplies status."
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyL3MTU",
+    "test": "VerifyEnvironmentPower",
     "categories": [
-      "interfaces"
+      "hardware"
     ],
-    "description": "Verifies the global L3 MTU of all L3 interfaces."
+    "description": "Verifies the power supplies status.",
+    "custom_field": "Accepted States: 'ok'"
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyLoopbackCount",
+    "test": "VerifyEnvironmentSystemCooling",
     "categories": [
-      "interfaces"
+      "hardware"
     ],
-    "description": "Verifies the number of loopback interfaces and their status."
+    "description": "Verifies the system cooling status."
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifySVI",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers.",
+    "custom_field": "Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present'"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyTransceiversTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceivers temperature."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyIllegalLACP",
     "categories": [
       "interfaces"
     ],
-    "description": "Verifies the status of all SVIs."
+    "description": "Verifies there are no illegal LACP packets in all port channels."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyInterfaceDiscards",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies there are no interface discard counters."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyInterfaceErrDisabled",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies there are no interfaces in the errdisabled state."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyInterfaceErrors",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies there are no interface error counters."
   },
   {
     "name": "dc1-spine2",
@@ -328,11 +369,43 @@
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyIllegalLACP",
+    "test": "VerifyInterfaceUtilization",
     "categories": [
       "interfaces"
     ],
-    "description": "Verifies there are no illegal LACP packets in all port channels."
+    "description": "Verifies that all interfaces have a usage below 75%."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyIPProxyARP",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies if Proxy ARP is enabled."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyL2MTU",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the global L2 MTU of all L2 interfaces."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyL3MTU",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the global L3 MTU of all L3 interfaces."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyLoopbackCount",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the number of loopback interfaces and their status."
   },
   {
     "name": "dc1-spine2",
@@ -344,22 +417,6 @@
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyInterfaceDiscards",
-    "categories": [
-      "interfaces"
-    ],
-    "description": "Verifies there are no interface discard counters."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyInterfaceErrors",
-    "categories": [
-      "interfaces"
-    ],
-    "description": "Verifies there are no interface error counters."
-  },
-  {
-    "name": "dc1-spine2",
     "test": "VerifyStormControlDrops",
     "categories": [
       "interfaces"
@@ -368,82 +425,11 @@
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyInterfaceErrDisabled",
+    "test": "VerifySVI",
     "categories": [
       "interfaces"
     ],
-    "description": "Verifies there are no interfaces in the errdisabled state."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-spine2_Ethernet1 - Destination: dc1-leaf1a_Ethernet2"
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-spine2_Ethernet2 - Destination: dc1-leaf1b_Ethernet2"
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-spine2_Ethernet3 - Destination: dc1-leaf2a_Ethernet2"
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet1 - remote: dc1-leaf1a_Ethernet2"
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet2 - remote: dc1-leaf1b_Ethernet2"
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet3 - remote: dc1-leaf2a_Ethernet2"
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyNTP",
-    "categories": [
-      "NTP"
-    ],
-    "description": "Synchronised with NTP server",
-    "custom_field": "NTP"
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyOSPFNeighborState",
-    "categories": [
-      "ospf"
-    ],
-    "description": "Verifies all OSPF neighbors are in FULL state."
+    "description": "Verifies the status of all SVIs."
   },
   {
     "name": "dc1-spine2",
@@ -455,11 +441,11 @@
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyRoutingTableEntry",
+    "test": "VerifyOSPFNeighborState",
     "categories": [
-      "routing"
+      "ospf"
     ],
-    "description": "Verifies that the provided routes are present in the routing table of a specified VRF."
+    "description": "Verifies all OSPF neighbors are in FULL state."
   },
   {
     "name": "dc1-spine2",
@@ -468,6 +454,14 @@
       "routing"
     ],
     "description": "Verifies the configured routing protocol model."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF."
   },
   {
     "name": "dc1-spine2",
@@ -483,7 +477,8 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if the eAPI has a valid SSL profile."
+    "description": "Verifies if the eAPI has a valid SSL profile.",
+    "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
   },
   {
     "name": "dc1-spine2",
@@ -527,38 +522,6 @@
   },
   {
     "name": "dc1-spine2",
-    "test": "VerifyNTP",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies if NTP is synchronised."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyFileSystemUtilization",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyUptime",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies the device uptime."
-  },
-  {
-    "name": "dc1-spine2",
-    "test": "VerifyReloadCause",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies the last reload cause of the device."
-  },
-  {
-    "name": "dc1-spine2",
     "test": "VerifyAgentLogs",
     "categories": [
       "system"
@@ -583,10 +546,50 @@
   },
   {
     "name": "dc1-spine2",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-spine2",
     "test": "VerifyMemoryUtilization",
     "categories": [
       "system"
     ],
     "description": "Verifies whether the memory utilization is below 75%."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the device uptime."
   }
 ]
