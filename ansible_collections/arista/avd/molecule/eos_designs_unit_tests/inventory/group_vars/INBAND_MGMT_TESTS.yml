@@ -46,6 +46,7 @@ l2leaf:
       inband_mgmt_vlan: 102
       inband_mgmt_vrf: INBANDMGMT
       inband_mgmt_subnet: 192.168.102.0/24
+      inband_ztp_lacp_fallback_delay: 90
       id: 2
     - name: inband-mgmt-ip
       inband_mgmt_vlan: 103

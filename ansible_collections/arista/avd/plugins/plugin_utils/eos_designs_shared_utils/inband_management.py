@@ -123,3 +123,7 @@ class InbandManagementMixin:
         if inband_ztp and not self.uplink_type == "port-channel":
             raise AristaAvdError("'inband_ztp' is currently only supported for L2 switches ('uplink_type: port-channel').")
         return inband_ztp
+
+    @cached_property
+    def inband_ztp_lacp_fallback_delay(self: SharedUtils) -> int | None:
+        return default(get(self.switch_data_combined, "inband_ztp_lacp_fallback_delay"), 30)

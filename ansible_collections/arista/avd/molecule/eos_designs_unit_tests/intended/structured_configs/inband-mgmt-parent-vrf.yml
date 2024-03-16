@@ -111,6 +111,7 @@ port_channel_interfaces:
   mode: trunk
   vlans: '101'
   lacp_fallback_mode: individual
+  lacp_fallback_timeout: 30
 - name: Port-Channel22
   description: INBAND-MGMT-SUBNET-VRF_Po1
   type: switched
@@ -118,6 +119,7 @@ port_channel_interfaces:
   mode: trunk
   vlans: '102'
   lacp_fallback_mode: individual
+  lacp_fallback_timeout: 90
 - name: Port-Channel23
   description: INBAND-MGMT-IP_Po1
   type: switched

@@ -180,6 +180,7 @@ class AvdStructuredConfigMlag(AvdFacts):
 
         if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
             port_channel_interface["lacp_fallback_mode"] = "individual"
+            port_channel_interface["lacp_fallback_timeout"] = self.shared_utils.get_mlag_peer_fact("inband_ztp_lacp_fallback_delay")
 
         return [strip_empties_from_dict(port_channel_interface)]
 
