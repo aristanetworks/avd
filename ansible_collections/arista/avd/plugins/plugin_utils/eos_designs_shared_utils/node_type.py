@@ -112,6 +112,16 @@ class NodeTypeMixin:
         return get(self.node_type_key_data, "network_services.l3", default=False)
 
     @cached_property
+    def network_services_l2_as_subint(self: SharedUtils) -> bool:
+        """
+        network_services_l2_as_subint set based on
+        node_type_keys.<node_type_key>.network_services.l3 for uplink_type "lan" or "lan-port-channel"
+
+        This is used when deploying SVIs as subinterfaces.
+        """
+        return self.network_services_l3 and self.uplink_type in ["lan", "lan-port-channel"]
+
+    @cached_property
     def any_network_services(self: SharedUtils) -> bool:
         """
         Returns True if either L1, L2 or L3 network_services are enabled

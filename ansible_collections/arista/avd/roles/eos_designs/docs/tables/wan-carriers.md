@@ -16,7 +16,7 @@
 
     ```yaml
     # PREVIEW: This key is currently not supported
-
+    #
     # List of carriers used for the WAN configuration and their mapping to path-groups.
     wan_carriers:
 

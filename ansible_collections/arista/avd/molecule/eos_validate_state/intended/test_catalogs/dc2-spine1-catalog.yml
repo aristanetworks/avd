@@ -1,3 +1,56 @@
+anta.tests.aaa:
+- VerifyTacacsSourceIntf:
+    intf: Management0
+    vrf: default
+- VerifyTacacsServers:
+    servers:
+    - 1.1.1.1
+    - 2.2.2.2
+    vrf: default
+- VerifyTacacsServerGroups:
+    groups:
+    - admin
+    - user
+- VerifyAuthenMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - login
+    - enable
+    - dot1x
+- VerifyAuthzMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - commands
+    - exec
+- VerifyAcctDefaultMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - system
+    - exec
+    - commands
+    - dot1x
+- VerifyAcctConsoleMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - system
+    - exec
+    - commands
+    - dot1x
+anta.tests.configuration:
+- VerifyZeroTouch: null
+- VerifyRunningConfigDiffs: null
 anta.tests.connectivity:
 - VerifyLLDPNeighbors:
     neighbors:
@@ -125,6 +178,9 @@ anta.tests.connectivity:
       - IP Reachability
       custom_field: 'Source: dc2-spine1_Ethernet6 - Destination: dc2-leaf3b.arista.com_Ethernet1'
       description: ip reachability test p2p links
+anta.tests.field_notices:
+- VerifyFieldNotice44Resolution: null
+- VerifyFieldNotice72Resolution: null
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     states:
@@ -132,83 +188,72 @@ anta.tests.hardware:
 - VerifyEnvironmentCooling:
     states:
     - ok
-- VerifyTemperature: {}
+- VerifyTemperature: null
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
+- VerifyTransceiversManufacturers:
+    manufacturers:
+    - Not Present
+    - Arista Networks
+    - Arastra, Inc.
+- VerifyTemperature: null
+- VerifyTransceiversTemperature: null
+- VerifyEnvironmentSystemCooling: null
+- VerifyEnvironmentCooling:
+    states:
+    - ok
+- VerifyEnvironmentPower:
+    states:
+    - ok
+- VerifyAdverseDrops: null
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet1
-      protocol_status: up
-      state: up
+    - name: Ethernet1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet1 - P2P_LINK_TO_DC2-LEAF1A_Ethernet1
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet1 - P2P_LINK_TO_DC2-LEAF1A_Ethernet1 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet2
-      protocol_status: up
-      state: up
+    - name: Ethernet2
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet2 - P2P_LINK_TO_DC2-LEAF1B_Ethernet1
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet2 - P2P_LINK_TO_DC2-LEAF1B_Ethernet1 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet3
-      protocol_status: up
-      state: up
+    - name: Ethernet3
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet3 - P2P_LINK_TO_DC2-LEAF2A_Ethernet1
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet3 - P2P_LINK_TO_DC2-LEAF2A_Ethernet1 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet4
-      protocol_status: up
-      state: up
+    - name: Ethernet4
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet4 - P2P_LINK_TO_DC2-LEAF2B_Ethernet1
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet4 - P2P_LINK_TO_DC2-LEAF2B_Ethernet1 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet5
-      protocol_status: up
-      state: up
+    - name: Ethernet5
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet5 - P2P_LINK_TO_DC2-LEAF3A.ARISTA.COM_Ethernet1
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet5 - P2P_LINK_TO_DC2-LEAF3A.ARISTA.COM_Ethernet1
+        = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet6
-      protocol_status: up
-      state: up
+    - name: Ethernet6
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet6 - P2P_LINK_TO_DC2-LEAF3B.ARISTA.COM_Ethernet1
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet6 - P2P_LINK_TO_DC2-LEAF3B.ARISTA.COM_Ethernet1
+        = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Loopback0
-      protocol_status: up
-      state: up
+    - name: Loopback0
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Loopback0 - EVPN_Overlay_Peering
-      description: Loopback Interface Status & Line Protocol == 'up'
+      custom_field: Interface Loopback0 - EVPN_Overlay_Peering = 'up'
 anta.tests.routing.bgp:
 - VerifyBGPSpecificPeers:
     address_families:
@@ -335,6 +380,24 @@ anta.tests.routing.generic:
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
+anta.tests.snmp:
+- VerifySnmpStatus:
+    vrf: default
+- VerifySnmpIPv4Acl:
+    number: 3
+    vrf: default
+- VerifySnmpIPv6Acl:
+    number: 3
+    vrf: default
+anta.tests.software:
+- VerifyEOSVersion:
+    versions:
+    - 4.25.4M
+    - 4.26.1F
+- VerifyTerminAttrVersion:
+    versions:
+    - v1.13.6
+    - v1.8.0
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:
@@ -342,3 +405,12 @@ anta.tests.system:
       - NTP
       custom_field: NTP
       description: Synchronised with NTP server
+- VerifyUptime:
+    minimum: 86400
+- VerifyReloadCause: null
+- VerifyCoredump: null
+- VerifyAgentLogs: null
+- VerifyCPUUtilization: null
+- VerifyMemoryUtilization: null
+- VerifyFileSystemUtilization: null
+- VerifyNTP: null

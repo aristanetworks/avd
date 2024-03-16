@@ -159,11 +159,19 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
             return self.shared_utils.inband_mgmt_subnet
 
     @cached_property
+    def inband_mgmt_ipv6_subnet(self) -> str | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        if self.shared_utils.configure_parent_for_inband_mgmt_ipv6:
+            return self.shared_utils.inband_mgmt_ipv6_subnet
+
+    @cached_property
     def inband_mgmt_vlan(self) -> int | None:
         """
         Exposed in avd_switch_facts
         """
-        if self.shared_utils.configure_parent_for_inband_mgmt:
+        if self.shared_utils.configure_parent_for_inband_mgmt or self.shared_utils.configure_parent_for_inband_mgmt_ipv6:
             return self.shared_utils.inband_mgmt_vlan
 
     @cached_property

@@ -189,22 +189,22 @@ vlan_interfaces:
   description: Inband Management
   shutdown: false
   mtu: 1500
-  ip_address: 192.168.101.2/24
-  ip_virtual_router_addresses:
-  - 192.168.101.1
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ip_address: 192.168.101.2/24
+  ip_virtual_router_addresses:
+  - 192.168.101.1
 - name: Vlan102
   description: Inband Management
   shutdown: false
   mtu: 1500
-  ip_address: 192.168.102.2/24
-  ip_virtual_router_addresses:
-  - 192.168.102.1
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ip_address: 192.168.102.2/24
+  ip_virtual_router_addresses:
+  - 192.168.102.1
 vxlan_interface:
   Vxlan1:
     description: inband-mgmt-parent_VTEP

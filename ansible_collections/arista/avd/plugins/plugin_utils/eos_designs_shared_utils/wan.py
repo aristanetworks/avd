@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
@@ -63,22 +63,19 @@ class WanMixin:
         )
 
     @cached_property
-    def cv_pathfinder_role(self: SharedUtils) -> str | None:
-        if self.underlay_router is False or self.wan_mode != "cv-pathfinder":
+    def cv_pathfinder_transit_mode(self: SharedUtils) -> Literal["region", "zone"] | None:
+        """
+        When wan_mode is CV Pathfinder, return the transit mode "region", "zone" or None.
+        """
+        if not self.is_cv_pathfinder_client:
             return None
 
-        default_cv_pathfinder_role = get(self.node_type_key_data, "default_cv_pathfinder_role", default=None)
-        cv_pathfinder_role = get(self.switch_data_combined, "cv_pathfinder_role", default=default_cv_pathfinder_role)
-        if cv_pathfinder_role == "pathfinder" and not self.is_wan_server:
-            raise AristaAvdError("'wan_role' must be 'server' when 'cv_pathfinder_role' is set to 'pathfinder'")
-        if cv_pathfinder_role in ["transit", "edge"] and not self.is_wan_client:
-            raise AristaAvdError("'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'")
-        return cv_pathfinder_role
+        return get(self.switch_data_combined, "cv_pathfinder_transit_mode")
 
     @cached_property
     def wan_interfaces(self: SharedUtils) -> list:
         """
-        As a first approach, only interfaces under l3edge.l3_interfaces can be considered
+        As a first approach, only interfaces under node config l3_interfaces can be considered
         as WAN interfaces.
         This may need to be made wider.
         This also may require a different format for the dictionaries inside the list.
@@ -91,6 +88,10 @@ class WanMixin:
             if get(interface, "wan_carrier") is not None:
                 wan_interfaces.append(interface)
 
+        if not wan_interfaces:
+            raise AristaAvdError(
+                "At least one WAN interface must be configured on a WAN router. Add WAN interfaces under `l3_interfaces` node setting with `wan_carrier` set."
+            )
         return wan_interfaces
 
     @cached_property
@@ -136,7 +137,14 @@ class WanMixin:
 
     @cached_property
     def wan_path_groups(self: SharedUtils) -> list:
-        return get(self.hostvars, "wan_path_groups", required=True)
+        """
+        List of path-groups defined in the top level key `wan_path_groups`
+        Updating default preference for each path-group to 'preferred' if not set.
+        """
+        path_groups = get(self.hostvars, "wan_path_groups", required=True)
+        for path_group in path_groups:
+            path_group["default_preference"] = get(path_group, "default_preference", default="preferred")
+        return path_groups
 
     @cached_property
     def wan_local_path_groups(self: SharedUtils) -> list:
@@ -169,6 +177,13 @@ class WanMixin:
             local_path_groups_dict[path_group_name]["interfaces"].extend(carrier["interfaces"])
 
         return list(local_path_groups_dict.values())
+
+    @cached_property
+    def wan_local_path_group_names(self) -> list:
+        """
+        Return a list of wan_local_path_group names to be used by HA peer and in various places
+        """
+        return [path_group["name"] for path_group in self.wan_local_path_groups]
 
     @cached_property
     def this_wan_route_server(self: SharedUtils) -> dict:
@@ -215,7 +230,7 @@ class WanMixin:
             self.switch_data_combined,
             "cv_pathfinder_site",
             required=True,
-            org_key="A node variable 'cv_pathfinder_site' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
+            org_key="A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
         )
         sites = get(self.wan_region, "sites", required=True, org_key=f"The CV Pathfinder region '{self.wan_region['name']}' is missing a list of sites")
         return get_item(
@@ -240,7 +255,7 @@ class WanMixin:
             self.switch_data_combined,
             "cv_pathfinder_region",
             required=True,
-            org_key="A node variable 'cv_pathfinder_region' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
+            org_key="A node variable 'cv_pathfinder_region' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
         )
         regions = get(
             self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
@@ -270,17 +285,17 @@ class WanMixin:
         """
         WAN zone for Pathfinder
 
-        Currently, only default zone DEFAULT-ZONE with ID 1 is supported.
+        Currently, only one default zone with ID 1 is supported.
         """
-        # Injecting zone DEFAULT-ZONE with id 1.
-        return {"name": "DEFAULT-ZONE", "id": 1}
+        # Injecting default zone with id 1.
+        return {"name": f"{self.wan_region['name']}-ZONE", "id": 1}
 
     @cached_property
     def filtered_wan_route_servers(self: SharedUtils) -> dict:
         """
         Return a dict keyed by Wan RR based on the the wan_mode type with only the path_groups the router should connect to.
 
-        It the RR is part of the inventory, the peer_facts are read..
+        If the RR is part of the inventory, the peer_facts are read..
         If any key is specified in the variables, it overwrites whatever is in the peer_facts.
 
         If no peer_fact is found the variables are required in the inventory.
@@ -296,10 +311,10 @@ class WanMixin:
             if wan_rs == self.hostname:
                 # Don't add yourself
                 continue
-
             if (peer_facts := self.get_peer_facts(wan_rs, required=False)) is not None:
                 # Found a matching server in inventory
                 bgp_as = peer_facts.get("bgp_as")
+
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.bgp_as:
                     raise AristaAvdError(f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs} is different from our own: {self.bgp_as}.")
@@ -359,41 +374,67 @@ class WanMixin:
         )
 
     @cached_property
-    def wan_ha_flow_tracker_name(self: SharedUtils) -> str:
+    def wan_flow_tracker_name(self: SharedUtils) -> str:
         """
         Return the name of the WAN flow tracking object
         Used in both network services, underlay and overlay python modules.
-
-        TODO make this configurable
-        TODO may need to return exporter name also later
         """
-        return "WAN-FLOW-TRACKER"
+        return get(self.hostvars, "flow_tracking_settings.flow_tracker_name", default="FLOW-TRACKER")
 
     @cached_property
-    def is_cv_pathfinder_edge_or_transit(self: SharedUtils) -> bool:
+    def is_cv_pathfinder_router(self: SharedUtils) -> bool:
+        """
+        Return True is the current wan_mode is cv-pathfinder and the device is a wan router.
+        """
+        return self.wan_mode == "cv-pathfinder" and self.is_wan_router
+
+    @cached_property
+    def is_cv_pathfinder_client(self: SharedUtils) -> bool:
         """
         Return True is the current wan_mode is cv-pathfinder and the device is either an edge or a transit device
         """
-        return self.wan_mode == "cv-pathfinder" and self.cv_pathfinder_role in ["edge", "transit region"]
+        return self.is_cv_pathfinder_router and self.is_wan_client
+
+    @cached_property
+    def is_cv_pathfinder_server(self: SharedUtils) -> bool:
+        """
+        Return True is the current wan_mode is cv-pathfinder and the device is a pathfinder device
+        """
+        return self.is_cv_pathfinder_router and self.is_wan_server
+
+    @cached_property
+    def cv_pathfinder_role(self: SharedUtils) -> str | None:
+        if not self.is_cv_pathfinder_router:
+            return None
+
+        if self.is_cv_pathfinder_server:
+            return "pathfinder"
+
+        # Transit
+        if (transit_mode := self.cv_pathfinder_transit_mode) is not None:
+            return f"transit {transit_mode}"
+
+        # Edge
+        return "edge"
 
     @cached_property
     def wan_ha(self: SharedUtils) -> bool:
         """
-        Only trigger HA if 2 devices are in the same group and wan_ha.enabled is true
+        Only trigger HA if 2 cv_pathfinder clients are in the same group and wan_ha.enabled is true
         """
-        if self.cv_pathfinder_role in [None, "pathfinder"]:
-            return False
-        return get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
+        return self.is_cv_pathfinder_client and get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
+
+    @cached_property
+    def wan_ha_ipsec(self: SharedUtils) -> bool:
+        return self.wan_ha and get(self.switch_data_combined, "wan_ha.ipsec", default=True)
 
     @cached_property
     def wan_ha_path_group_name(self: SharedUtils) -> str:
         """
         Return HA path group name for the WAN design.
         Used in both network services and overlay python modules.
-
-        TODO make this configurable
         """
-        return "LAN_HA"
+        return get(self.hostvars, "wan_ha.lan_ha_path_group_name", default="LAN_HA")
 
     @cached_property
     def is_first_ha_peer(self: SharedUtils) -> bool:
@@ -463,3 +504,16 @@ class WanMixin:
             ip_addresses.append(f"{ip_address}/{prefix_length}")
 
         return ip_addresses
+
+    def generate_lb_policy_name(self: SharedUtils, name: str) -> str:
+        """
+        Returns LB-{name}
+        """
+        return f"LB-{name}"
+
+    @cached_property
+    def wan_stun_dtls_profile_name(self: SharedUtils) -> str | None:
+        if not self.is_wan_router or get(self.hostvars, "wan_stun_dtls_disable") is True:
+            return None
+
+        return get(self.hostvars, "wan_stun_dtls_profile_name", default="STUN-DTLS")

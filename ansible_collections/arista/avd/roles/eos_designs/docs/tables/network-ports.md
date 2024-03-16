@@ -160,13 +160,13 @@
 
         # List of ranges using AVD range_expand syntax.
         # For example:
-
+        #
         # switch_ports:
         #   - Ethernet1
         #   - Ethernet2-48
-
+        #
         # All switch_ports ranges are expanded into individual port configurations.
-
+        #
         # For more details and examples of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../docs/plugins/Filter_plugins/range_expand.md).
         switch_ports:
           - <str>

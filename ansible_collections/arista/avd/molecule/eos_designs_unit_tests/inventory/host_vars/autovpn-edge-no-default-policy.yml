@@ -30,11 +30,11 @@ wan_ipsec_profiles:
     shared_key: ABCDEF1234567890
 
 default_node_types:
-  - node_type: wan_edge
+  - node_type: wan_router
     match_hostnames:
       - "autovpn-edge.*"
 
-wan_edge:
+wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.30.0/24
     vtep_loopback_ipv4_pool: 192.168.255.0/24
@@ -53,7 +53,9 @@ wan_edge:
 
 wan_path_groups:
   - name: MPLS
-    ipsec: False
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
     id: 100
   - name: INET
     id: 101
@@ -76,5 +78,9 @@ tenants:
       - name: IT
         vrf_id: 100
 
-# empty
-wan_virtual_topologies: null
+wan_virtual_topologies:
+  vrfs:
+    - name: PROD
+      wan_vni: 42
+    - name: IT
+      wan_vni: 100

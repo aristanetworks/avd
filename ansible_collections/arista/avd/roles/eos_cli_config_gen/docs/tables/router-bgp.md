@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>router_bgp</samp>](## "router_bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;as</samp>](## "router_bgp.as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;as_notation</samp>](## "router_bgp.as_notation") | String |  |  | Valid Values:<br>- <code>asdot</code><br>- <code>asplain</code> | BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>". This flag indicates which mode is preferred - asplain is the default. |
     | [<samp>&nbsp;&nbsp;router_id</samp>](## "router_bgp.router_id") | String |  |  |  | In IP address format A.B.C.D |
     | [<samp>&nbsp;&nbsp;distance</samp>](## "router_bgp.distance") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;external_routes</samp>](## "router_bgp.distance.external_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
@@ -280,6 +281,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resolution_disabled</samp>](## "router_bgp.address_family_evpn.next_hop.resolution_disabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;route</samp>](## "router_bgp.address_family_evpn.route") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import_match_failure_action</samp>](## "router_bgp.address_family_evpn.route.import_match_failure_action") | String |  |  | Valid Values:<br>- <code>discard</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import_ethernet_segment_ip_mass_withdraw</samp>](## "router_bgp.address_family_evpn.route.import_ethernet_segment_ip_mass_withdraw") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;export_ethernet_segment_ip_mass_withdraw</samp>](## "router_bgp.address_family_evpn.route.export_ethernet_segment_ip_mass_withdraw") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop_unchanged</samp>](## "router_bgp.address_family_evpn.next_hop_unchanged") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;address_family_rtc</samp>](## "router_bgp.address_family_rtc") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_rtc.peer_groups") | List, items: Dictionary |  |  |  |  |
@@ -738,6 +741,9 @@
       # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
       # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
       as: <str>
+
+      # BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>". This flag indicates which mode is preferred - asplain is the default.
+      as_notation: <str; "asdot" | "asplain">
 
       # In IP address format A.B.C.D
       router_id: <str>
@@ -1239,6 +1245,8 @@
           resolution_disabled: <bool>
         route:
           import_match_failure_action: <str; "discard">
+          import_ethernet_segment_ip_mass_withdraw: <bool>
+          export_ethernet_segment_ip_mass_withdraw: <bool>
         next_hop_unchanged: <bool>
       address_family_rtc:
         peer_groups:

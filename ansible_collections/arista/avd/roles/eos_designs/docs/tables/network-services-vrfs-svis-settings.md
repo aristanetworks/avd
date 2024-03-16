@@ -17,6 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].profile") | String |  |  |  | SVI profile name to apply.<br>SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].tags") | List, items: String |  | `['all']` |  | Tags leveraged for networks services filtering.<br>Tags are matched against "filter.tags" defined under node type settings.<br>Tags are also matched against the "node_group" name under node type settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].tags.[]") | String |  |  |  | Tag value. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].evpn_vlan_bundle") | String |  |  |  | Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.<br>To use this option the common "evpn_vlan_aware_bundles" option must be set to true.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].node") | String | Required, Unique |  |  | l3_leaf inventory hostname |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].tags") | List, items: String |  | `['all']` |  | Tags leveraged for networks services filtering.<br>Tags are matched against "filter.tags" defined under node type settings.<br>Tags are also matched against the "node_group" name under node type settings.<br> |
@@ -98,10 +99,10 @@
       - name: <str; required; unique>
 
         # VRFs will only be configured on a node if any of the underlying objects like `svis` or `l3_interfaces` apply to the node.
-
+        #
         # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
         # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
-
+        #
         # VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,
         # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
         # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
@@ -129,6 +130,10 @@
 
                     # Tag value.
                   - <str>
+
+                # Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+                # To use this option the common "evpn_vlan_aware_bundles" option must be set to true.
+                evpn_vlan_bundle: <str>
 
                 # Define node specific configuration, such as unique IP addresses.
                 # Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.
@@ -227,7 +232,7 @@
                     # By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
                     # The rt_override allows us to override this value and statically define it.
                     # rt_override will default to vni_override if set.
-
+                    #
                     # rt_override supports two formats:
                     #   - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
                     #   - A full RT string with colon seperator which will override the full RT.
@@ -236,7 +241,7 @@
                     # By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
                     # The rt_override allows us to override this value and statically define it.
                     # rd_override will default to rt_override or vni_override if set.
-
+                    #
                     # rd_override supports two formats:
                     #   - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
                     #   - A full RD string with colon seperator which will override the full RD.
@@ -350,7 +355,7 @@
                 # By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
                 # The rt_override allows us to override this value and statically define it.
                 # rt_override will default to vni_override if set.
-
+                #
                 # rt_override supports two formats:
                 #   - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
                 #   - A full RT string with colon seperator which will override the full RT.
@@ -359,7 +364,7 @@
                 # By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
                 # The rt_override allows us to override this value and statically define it.
                 # rd_override will default to rt_override or vni_override if set.
-
+                #
                 # rd_override supports two formats:
                 #   - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
                 #   - A full RD string with colon seperator which will override the full RD.

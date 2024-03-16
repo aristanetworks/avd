@@ -46,7 +46,7 @@ class IpSecurityMixin(UtilsMixin):
         """
         In place update of ip_security
         """
-        if self.shared_utils.wan_ha:
+        if self.shared_utils.wan_ha_ipsec:
             ike_policy_name = get(data_plane_config, "ike_policy_name", default="DP-IKE-POLICY")
         else:
             ike_policy_name = None
@@ -55,7 +55,7 @@ class IpSecurityMixin(UtilsMixin):
         key = get(data_plane_config, "shared_key", required=True)
 
         # IKE policy for data-plane is not required for dynamic tunnels except for HA cases
-        if self.shared_utils.wan_ha:
+        if self.shared_utils.wan_ha_ipsec:
             ip_security["ike_policies"].append(self._ike_policy(ike_policy_name))
         ip_security["sa_policies"].append(self._sa_policy(sa_policy_name))
         ip_security["profiles"].append(self._profile(profile_name, ike_policy_name, sa_policy_name, key))
@@ -94,11 +94,13 @@ class IpSecurityMixin(UtilsMixin):
     def _sa_policy(self, name: str) -> dict | None:
         """
         Return an SA policy
+
+        By default using aes256gcm128 as GCM variants give higher performance.
         """
         sa_policy = {"name": name}
-        if self.shared_utils.cv_pathfinder_role:
+        if self.shared_utils.is_cv_pathfinder_router:
             # TODO, provide options to change this cv_pathfinder_wide
-            sa_policy["esp"] = {"encryption": "aes128"}
+            sa_policy["esp"] = {"encryption": "aes256gcm128"}
             sa_policy["pfs_dh_group"] = 14
         return sa_policy
 
@@ -107,7 +109,14 @@ class IpSecurityMixin(UtilsMixin):
         Return one IPsec Profile
 
         The expectation is that potential None values are stripped later.
+
+        Using connection start on all routers as using connection add on Pathfinders
+        as suggested would prevent Pathfinders to establish IPsec tunnels between themselves
+        which is undesirable.
         """
+        if self.shared_utils.wan_role is None:
+            return None
+
         return {
             "name": profile_name,
             "ike_policy": ike_policy_name,

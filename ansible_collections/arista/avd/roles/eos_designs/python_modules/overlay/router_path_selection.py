@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
@@ -67,22 +68,42 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         for path_group in path_groups_to_configure:
             pg_name = path_group.get("name")
+            ipsec = path_group.get("ipsec", {})
+            is_local_pg = pg_name in local_path_groups_names
+            disable_dynamic_peer_ipsec = is_local_pg and not ipsec.get("dynamic_peers", True)
 
             path_group_data = {
                 "name": pg_name,
                 "id": self._get_path_group_id(pg_name, path_group.get("id")),
                 "local_interfaces": self._get_local_interfaces_for_path_group(pg_name),
-                "dynamic_peers": self._get_dynamic_peers(),
+                "dynamic_peers": self._get_dynamic_peers(disable_dynamic_peer_ipsec),
                 "static_peers": self._get_static_peers_for_path_group(pg_name),
             }
 
-            # On pathfinder IPsec profile is not required for non local path_groups
-            if pg_name in local_path_groups_names and path_group.get("ipsec", True):
-                path_group_data["ipsec_profile"] = self._cp_ipsec_profile_name
+            if is_local_pg:
+                # On pathfinder IPsec profile is not required for non local path_groups
+                if ipsec.get("static_peers", True):
+                    path_group_data["ipsec_profile"] = self._cp_ipsec_profile_name
+
+                # KeepAlive config is not required for non local path_groups
+                keepalive = path_group.get("dps_keepalive", {})
+                if (interval := keepalive.get("interval")) is not None:
+                    if interval == "auto":
+                        path_group_data["keepalive"] = {"auto": True}
+                    else:
+                        if not (interval.isdigit() and 50 <= int(interval) <= 60000):
+                            raise AristaAvdError(
+                                f"Invalid value '{interval}' for dps_keepalive.interval - "
+                                f"should be either 'auto', or an integer[50-60000] for wan_path_groups[{pg_name}]"
+                            )
+                        path_group_data["keepalive"] = {
+                            "interval": int(interval),
+                            "failure_threshold": get(keepalive, "failure_threshold", default=5),
+                        }
 
             path_groups.append(path_group_data)
 
-        if (self.shared_utils.cv_pathfinder_role and self.shared_utils.wan_ha) or self.shared_utils.cv_pathfinder_role == "pathfinder":
+        if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
             path_groups.append(self._generate_ha_path_group())
 
         return path_groups
@@ -96,7 +117,7 @@ class RouterPathSelectionMixin(UtilsMixin):
             "id": self._get_path_group_id(self.shared_utils.wan_ha_path_group_name),
             "flow_assignment": "lan",
         }
-        if self.shared_utils.cv_pathfinder_role == "pathfinder":
+        if self.shared_utils.is_cv_pathfinder_server:
             return ha_path_group
 
         # not a pathfinder device
@@ -113,7 +134,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 ],
             }
         )
-        if get(self.shared_utils.switch_data_combined, "wan_ha.ipsec", default=True):
+        if self.shared_utils.wan_ha_ipsec:
             ha_path_group["ipsec_profile"] = self._dp_ipsec_profile_name
 
         return ha_path_group
@@ -160,13 +181,17 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         return local_interfaces
 
-    def _get_dynamic_peers(self) -> dict | None:
+    def _get_dynamic_peers(self, disable_ipsec: bool) -> dict | None:
         """
-        TODO support ip_local and ipsec ?
+        TODO support ip_local ?
         """
         if not self.shared_utils.is_wan_client:
             return None
-        return {"enabled": True}
+
+        dynamic_peers = {"enabled": True}
+        if disable_ipsec:
+            dynamic_peers["ipsec"] = False
+        return dynamic_peers
 
     def _get_static_peers_for_path_group(self, path_group_name: str) -> list | None:
         """

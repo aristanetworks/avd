@@ -4400,7 +4400,7 @@
           },
           "sites": {
             "type": "array",
-            "description": "All sites are placed in a default zone called DEFAULT-ZONE with ID 1.",
+            "description": "All sites are placed in a default zone \"<region_name>-ZONE\" with ID 1.",
             "items": {
               "type": "object",
               "properties": {
@@ -4410,7 +4410,7 @@
                 },
                 "id": {
                   "type": "integer",
-                  "description": "The site ID must be unique within a zone.\nGiven that all the sites are placed in the DEFAULT-ZONE, the site ID must be unique within a region.",
+                  "description": "The Site ID must be unique within a zone.\nGiven that all the Sites are placed in a Zone named after the Region, the Site ID must be unique within a Region.",
                   "minimum": 1,
                   "maximum": 10000,
                   "title": "ID"
@@ -5032,6 +5032,73 @@
       "description": "Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.",
       "type": "string",
       "title": "Fabric Name"
+    },
+    "flow_tracking_settings": {
+      "description": "Define the flow tracking parameters for this topology.",
+      "type": "object",
+      "properties": {
+        "flow_tracker_name": {
+          "type": "string",
+          "default": "FLOW-TRACKER",
+          "description": "Flow Tracker Name.",
+          "title": "Flow Tracker Name"
+        },
+        "record_export": {
+          "type": "object",
+          "properties": {
+            "on_inactive_timeout": {
+              "description": "Flow record inactive export timeout in milliseconds.",
+              "type": "integer",
+              "minimum": 3000,
+              "maximum": 900000,
+              "default": 70000,
+              "title": "On Inactive Timeout"
+            },
+            "on_interval": {
+              "type": "integer",
+              "minimum": 1000,
+              "maximum": 36000000,
+              "default": 300000,
+              "description": "Flow record export interval in milliseconds.",
+              "title": "On Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Record Export"
+        },
+        "exporter": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "CV-TELEMETRY",
+              "description": "Exporter Name.",
+              "title": "Name"
+            },
+            "template_interval": {
+              "description": "Template interval in milliseconds.",
+              "type": "integer",
+              "minimum": 5000,
+              "maximum": 3600000,
+              "default": 3600000,
+              "title": "Template Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Exporter"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Flow Tracking Settings"
     },
     "generate_cv_tags": {
       "type": "object",
@@ -5930,6 +5997,11 @@
             "description": "Node IPv4 address/Mask or 'dhcp'.",
             "title": "IP Address"
           },
+          "dhcp_ip_address": {
+            "type": "string",
+            "description": "When the `ip_address` is `dhcp`, this optional field allows to indicate the expected\nIPv4 address/Mask to be allocated on the interface if known.\nThis is not rendered in the configuration but can be used in ACLs in certain scenarios.",
+            "title": "DHCP IP Address"
+          },
           "encapsulation_dot1q_vlan": {
             "description": "For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.",
             "type": "integer",
@@ -5939,7 +6011,7 @@
           },
           "dhcp_accept_default_route": {
             "type": "boolean",
-            "default": false,
+            "default": true,
             "description": "Accept a default route from DHCP if `ip_address` is set to `dhcp`.",
             "title": "DHCP Accept Default Route"
           },
@@ -7090,6 +7162,37 @@
                       "sparse_mode": {
                         "type": "boolean",
                         "title": "Sparse Mode"
+                      },
+                      "bfd": {
+                        "type": "boolean",
+                        "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                        "title": "BFD"
+                      },
+                      "bidirectional": {
+                        "type": "boolean",
+                        "title": "Bidirectional"
+                      },
+                      "hello": {
+                        "type": "object",
+                        "properties": {
+                          "count": {
+                            "type": "string",
+                            "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                            "title": "Count"
+                          },
+                          "interval": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 65535,
+                            "description": "PIM hello interval in seconds.",
+                            "title": "Interval"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Hello"
                       }
                     },
                     "additionalProperties": false,
@@ -11124,6 +11227,37 @@
                           "sparse_mode": {
                             "type": "boolean",
                             "title": "Sparse Mode"
+                          },
+                          "bfd": {
+                            "type": "boolean",
+                            "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                            "title": "BFD"
+                          },
+                          "bidirectional": {
+                            "type": "boolean",
+                            "title": "Bidirectional"
+                          },
+                          "hello": {
+                            "type": "object",
+                            "properties": {
+                              "count": {
+                                "type": "string",
+                                "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                                "title": "Count"
+                              },
+                              "interval": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 65535,
+                                "description": "PIM hello interval in seconds.",
+                                "title": "Interval"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Hello"
                           }
                         },
                         "additionalProperties": false,
@@ -12394,6 +12528,37 @@
                       "sparse_mode": {
                         "type": "boolean",
                         "title": "Sparse Mode"
+                      },
+                      "bfd": {
+                        "type": "boolean",
+                        "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                        "title": "BFD"
+                      },
+                      "bidirectional": {
+                        "type": "boolean",
+                        "title": "Bidirectional"
+                      },
+                      "hello": {
+                        "type": "object",
+                        "properties": {
+                          "count": {
+                            "type": "string",
+                            "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                            "title": "Count"
+                          },
+                          "interval": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 65535,
+                            "description": "PIM hello interval in seconds.",
+                            "title": "Interval"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Hello"
                       }
                     },
                     "additionalProperties": false,
@@ -14068,16 +14233,6 @@
             "description": "PREVIEW: This key is currently not supported\nSet the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
             "title": "Default Wan Role"
           },
-          "default_cv_pathfinder_role": {
-            "type": "string",
-            "enum": [
-              "edge",
-              "transit region",
-              "pathfinder"
-            ],
-            "description": "PREVIEW: This key is currently not supported\nSet the default CV Pathfinder role.\n\nThis key is used for Pathfinder designs only when the `wan_mode` root\nkey is set to `cv-pathfinder`.\n\n`pathfinder` is only a valid if `wan_role` is `server`.\n`edge` and `transit` are only valid if `wan_role` is `client`.\n",
-            "title": "Default Cv Pathfinder Role"
-          },
           "mlag_support": {
             "type": "boolean",
             "default": false,
@@ -14124,10 +14279,11 @@
             "enum": [
               "p2p",
               "port-channel",
-              "p2p-vrfs"
+              "p2p-vrfs",
+              "lan"
             ],
             "default": "p2p",
-            "description": "`uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router` is true.\n\nFor `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF\nin `network_services` present on both the uplink and the downlink switch.\nThe subinterface ID is the `vrf_id`.\n'underlay_router' and 'network_services.l3' must be set to true.\nVRF `default` is always configured on the physical interface using the underlay routing protocol.\nAll subinterfaces use the same IP address as the physical interface.\nMulticast is not supported.\nOnly BGP is supported for subinterfaces.",
+            "description": "`uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep` or `underlay_router` is true.\n\nFor `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF\nin `network_services` present on both the uplink and the downlink switch.\nThe subinterface ID is the `vrf_id`.\n'underlay_router' and 'network_services.l3' must be set to true.\nVRF `default` is always configured on the physical interface using the underlay routing protocol.\nAll subinterfaces use the same IP address as the physical interface.\nMulticast is not supported.\nOnly BGP is supported for subinterfaces.\n\nFor `lan`, a single uplink interface is supported and will be configured as an L3 Interface with\nsubinterfaces for each SVI defined under the VRFs in `network_services` as long as the uplink switch also\nhas the VLAN permitted by tag/tenant filtering.",
             "title": "Uplink Type"
           },
           "vtep": {
@@ -14818,6 +14974,22 @@
           "reload_delay": {
             "mlag": 900,
             "non_mlag": 1020
+          }
+        },
+        {
+          "platforms": [
+            "7358X4"
+          ],
+          "management_interface": "Management1/1",
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          },
+          "feature_support": {
+            "queue_monitor_length_notify": false,
+            "interface_storm_control": true,
+            "bgp_update_wait_for_convergence": true,
+            "bgp_update_wait_install": false
           }
         },
         {
@@ -17242,6 +17414,37 @@
                           "sparse_mode": {
                             "type": "boolean",
                             "title": "Sparse Mode"
+                          },
+                          "bfd": {
+                            "type": "boolean",
+                            "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                            "title": "BFD"
+                          },
+                          "bidirectional": {
+                            "type": "boolean",
+                            "title": "Bidirectional"
+                          },
+                          "hello": {
+                            "type": "object",
+                            "properties": {
+                              "count": {
+                                "type": "string",
+                                "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                                "title": "Count"
+                              },
+                              "interval": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 65535,
+                                "description": "PIM hello interval in seconds.",
+                                "title": "Interval"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Hello"
                           }
                         },
                         "additionalProperties": false,
@@ -18512,6 +18715,37 @@
                       "sparse_mode": {
                         "type": "boolean",
                         "title": "Sparse Mode"
+                      },
+                      "bfd": {
+                        "type": "boolean",
+                        "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                        "title": "BFD"
+                      },
+                      "bidirectional": {
+                        "type": "boolean",
+                        "title": "Bidirectional"
+                      },
+                      "hello": {
+                        "type": "object",
+                        "properties": {
+                          "count": {
+                            "type": "string",
+                            "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                            "title": "Count"
+                          },
+                          "interval": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 65535,
+                            "description": "PIM hello interval in seconds.",
+                            "title": "Interval"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Hello"
                       }
                     },
                     "additionalProperties": false,
@@ -22196,6 +22430,37 @@
                             "local_interface": {
                               "type": "string",
                               "title": "Local Interface"
+                            },
+                            "bfd": {
+                              "type": "boolean",
+                              "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                              "title": "BFD"
+                            },
+                            "bidirectional": {
+                              "type": "boolean",
+                              "title": "Bidirectional"
+                            },
+                            "hello": {
+                              "type": "object",
+                              "properties": {
+                                "count": {
+                                  "type": "string",
+                                  "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                                  "title": "Count"
+                                },
+                                "interval": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 65535,
+                                  "description": "PIM hello interval in seconds.",
+                                  "title": "Interval"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Hello"
                             }
                           },
                           "additionalProperties": false,
@@ -23901,6 +24166,37 @@
                       "local_interface": {
                         "type": "string",
                         "title": "Local Interface"
+                      },
+                      "bfd": {
+                        "type": "boolean",
+                        "description": "Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.",
+                        "title": "BFD"
+                      },
+                      "bidirectional": {
+                        "type": "boolean",
+                        "title": "Bidirectional"
+                      },
+                      "hello": {
+                        "type": "object",
+                        "properties": {
+                          "count": {
+                            "type": "string",
+                            "description": "Number of missed hellos after which the neighbor expires. Range <1.5-65535>.",
+                            "title": "Count"
+                          },
+                          "interval": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 65535,
+                            "description": "PIM hello interval in seconds.",
+                            "title": "Interval"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Hello"
                       }
                     },
                     "additionalProperties": false,
@@ -24639,6 +24935,23 @@
       },
       "title": "Wan Carriers"
     },
+    "wan_ha": {
+      "description": "PREVIEW: This key is currently not supported",
+      "type": "object",
+      "properties": {
+        "lan_ha_path_group_name": {
+          "type": "string",
+          "default": "LAN_HA",
+          "description": "When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.\nThis key allows to overwrite the default LAN HA path-group name.",
+          "title": "Lan Ha Path Group Name"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Wan Ha"
+    },
     "wan_ipsec_profiles": {
       "description": "PREVIEW: This key is currently not supported\n\nDefine IPsec profiles parameters for WAN configuration.",
       "type": "object",
@@ -24759,14 +25072,31 @@
             "title": "Description"
           },
           "ipsec": {
-            "type": "boolean",
-            "description": "Flag to configure IPsec at the path-group level.\n\nWhen set to `true`, IPsec is enabled for both the static and dynamic peers.",
-            "default": true,
+            "type": "object",
+            "description": "Configuration of IPSec at the path-group level.",
+            "properties": {
+              "dynamic_peers": {
+                "type": "boolean",
+                "description": "Enable IPSec for dynamic peers.",
+                "default": true,
+                "title": "Dynamic Peers"
+              },
+              "static_peers": {
+                "type": "boolean",
+                "description": "Enable IPSec for static peers.",
+                "default": true,
+                "title": "Static Peers"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
             "title": "Ipsec"
           },
           "import_path_groups": {
             "type": "array",
-            "description": "List of [ath-groups to import in this path-group.",
+            "description": "List of path-groups to import in this path-group.",
             "items": {
               "type": "object",
               "properties": {
@@ -24787,6 +25117,42 @@
               }
             },
             "title": "Import Path Groups"
+          },
+          "default_preference": {
+            "type": "string",
+            "description": "Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when\nthe path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.\n\nValid values are 1-65535 | \"preferred\" | \"alternate\".\n\n`preferred` is converted to priority 1.\n`alternate` is converted to priority 2.",
+            "default": "preferred",
+            "title": "Default Preference"
+          },
+          "excluded_from_default_policy": {
+            "type": "boolean",
+            "default": false,
+            "description": "When set to `true`, the path-group is excluded from AVD auto generated policies.",
+            "title": "Excluded From Default Policy"
+          },
+          "dps_keepalive": {
+            "type": "object",
+            "description": "Period between the transmission of consecutive keepalive messages, and failure threshold.",
+            "properties": {
+              "interval": {
+                "type": "string",
+                "description": "Interval in milliseconds. Valid values are 50-60000 | \"auto\"\n\nWhen auto, the interval and failure_threshold are automatically determined based on\npath state.",
+                "title": "Interval"
+              },
+              "failure_threshold": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 100,
+                "default": 5,
+                "description": "Failure threshold in number of lost keep-alive messages.",
+                "title": "Failure Threshold"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "DPS Keepalive"
           }
         },
         "required": [
@@ -24877,6 +25243,18 @@
       },
       "title": "Wan Route Servers"
     },
+    "wan_stun_dtls_disable": {
+      "type": "boolean",
+      "default": false,
+      "description": "PREVIEW: This key is currently not supported\n\nWAN STUN connections will be authenticated and secured with DTLS by default.\nFor CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.\nIn case of AutoVPN the certificates must be deployed manually to all devices.\n\nFor LAB environments this can be disabled, if there are no certificates available.\nThis should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication.",
+      "title": "Wan STUN Dtls Disable"
+    },
+    "wan_stun_dtls_profile_name": {
+      "type": "string",
+      "default": "STUN-DTLS",
+      "description": "PREVIEW: This key is currently not supported\n\nName of the SSL profile used for DTLS on WAN STUN connections.\n\nWhen using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers.",
+      "title": "Wan STUN Dtls Profile Name"
+    },
     "wan_virtual_topologies": {
       "type": "object",
       "description": "PREVIEW: WAN Preview\n\nConfigure Virtual Topologies for CV Pathfinder and AutoVPN.\n\nAuto create a control plane profile/policy/application and enforce it being first in the default VRF.",
@@ -24894,17 +25272,26 @@
               },
               "policy": {
                 "type": "string",
-                "description": "Name of the AVT policy to apply to this VRF.",
+                "description": "Name of the policy to apply to this VRF.\nIt is possible to overwrite the default policy for all VRFs using it\nby redefining it in the `wan_virtual_topologies.policies` list using the\ndefault name `DEFAULT-POLICY`.",
+                "default": "DEFAULT-POLICY",
                 "title": "Policy"
+              },
+              "wan_vni": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 255,
+                "description": "Required for VRFs carried over AutoVPN or CV Pathfinder WAN.\n\nA VRF can have different VNIs between the Datacenters and the WAN.\nNote that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with\n`wan_vni` set to `1`.\nIn addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains.",
+                "title": "Wan Vni"
               }
             },
+            "required": [
+              "wan_vni",
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            },
-            "required": [
-              "name"
-            ]
+            }
           },
           "title": "VRFs"
         },
@@ -24916,6 +25303,12 @@
               "type": "string",
               "description": "Optional name, if not set `CONTROL-PLANE-PROFILE` is used.",
               "title": "Name"
+            },
+            "application_profile": {
+              "type": "string",
+              "default": "APP-PROFILE-CONTROL-PLANE",
+              "description": "The application profile to use for control plane traffic.\n\nThe application profile should be defined under `application_classification.application_profiles`.\nIf not defined AVD will auto generate an application profile using the provided name or the default value.\n\nIf not overwritten elsewhere, the application profile is generated matching one application matching the control plane traffic either sourced from or destined to the WAN route servers.",
+              "title": "Application Profile"
             },
             "traffic_class": {
               "type": "integer",
@@ -24930,6 +25323,12 @@
               "maximum": 63,
               "description": "Set DSCP for matched traffic.",
               "title": "DSCP"
+            },
+            "lowest_hop_count": {
+              "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+              "type": "boolean",
+              "default": false,
+              "title": "Lowest Hop Count"
             },
             "constraints": {
               "type": "object",
@@ -24978,8 +25377,7 @@
                   },
                   "preference": {
                     "type": "string",
-                    "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
-                    "default": "preferred",
+                    "description": "Valid values are 1-65535 | \"preferred\" | \"alternate\".\n\n\"preferred\" is converted to priority 1.\n\"alternate\" is converted to priority 2.\n\nIf not set, each path-group in `names` will be attributed its `default_preference`.",
                     "title": "Preference"
                   }
                 },
@@ -25002,7 +25400,7 @@
         },
         "policies": {
           "type": "array",
-          "description": "List of virtual toplogies policies.\n\nFor AutoVPN, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item\n        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane rule is injected\n    in the policy with index `1` referring to a control-plane load-balance policy as defined under\n    `control_plane_virtual_topology`.\n\n\nFor CV Pathfinder, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item ordered as in the model.\n      * one last match entry for the `default` application-profile using `default_virtual_topology` information.\n  * one profile per `application_virtual_topologies` item.\n  * one profile for the `default_virtual_topology`..\n  * one load-balance policy per `application_virtual_topologies`.\n  * one load_balance policy for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane profile is configured\n    and injected first in the policy assigned to the `default` VRF. This profile points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`.",
+          "description": "List of virtual toplogies policies.\n\nFor AutoVPN, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item\n        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane rule is injected\n    in the policy with index `1` referring to a control-plane load-balance policy as defined under\n    `control_plane_virtual_topology`.\n\nFor CV Pathfinder, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item ordered as in the model.\n      * one last match entry for the `default` application-profile using `default_virtual_topology` information.\n  * one profile per `application_virtual_topologies` item.\n  * one profile for the `default_virtual_topology`..\n  * one load-balance policy per `application_virtual_topologies`.\n  * one load_balance policy for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane profile is configured\n    and injected first in the policy assigned to the `default` VRF. This profile points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`.",
           "items": {
             "type": "object",
             "properties": {
@@ -25031,7 +25429,7 @@
                       "type": "integer",
                       "minimum": 2,
                       "maximum": 253,
-                      "description": "ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.\nID 1 is reserved for the default_virtual_toplogy.\nID 254 is reserved for the control_plane_virtual_topology.",
+                      "description": "ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.\nID 1 is reserved for the default_virtual_toplogy.\nID 254 is reserved for the control_plane_virtual_topology.\n\n`id` is required when `wan_mode` is 'cv-pathfinder'.",
                       "title": "ID"
                     },
                     "traffic_class": {
@@ -25047,6 +25445,12 @@
                       "maximum": 63,
                       "description": "Set DSCP for matched traffic.",
                       "title": "DSCP"
+                    },
+                    "lowest_hop_count": {
+                      "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+                      "type": "boolean",
+                      "default": false,
+                      "title": "Lowest Hop Count"
                     },
                     "constraints": {
                       "type": "object",
@@ -25095,8 +25499,7 @@
                           },
                           "preference": {
                             "type": "string",
-                            "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
-                            "default": "preferred",
+                            "description": "Valid values are 1-65535 | \"preferred\" | \"alternate\".\n\n\"preferred\" is converted to priority 1.\n\"alternate\" is converted to priority 2.\n\nIf not set, each path-group in `names` will be attributed its `default_preference`.",
                             "title": "Preference"
                           }
                         },
@@ -25150,6 +25553,12 @@
                     "description": "Set DSCP for matched traffic.",
                     "title": "DSCP"
                   },
+                  "lowest_hop_count": {
+                    "description": "Prefer paths with lowest hop-count.\nOnly applicable for `wan_mode: \"cv-pathfinder\"`.",
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Lowest Hop Count"
+                  },
                   "constraints": {
                     "type": "object",
                     "properties": {
@@ -25197,8 +25606,7 @@
                         },
                         "preference": {
                           "type": "string",
-                          "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
-                          "default": "preferred",
+                          "description": "Valid values are 1-65535 | \"preferred\" | \"alternate\".\n\n\"preferred\" is converted to priority 1.\n\"alternate\" is converted to priority 2.\n\nIf not set, each path-group in `names` will be attributed its `default_preference`.",
                           "title": "Preference"
                         }
                       },

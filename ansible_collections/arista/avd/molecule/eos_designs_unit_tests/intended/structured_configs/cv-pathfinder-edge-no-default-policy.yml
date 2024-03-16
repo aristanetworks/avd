@@ -127,23 +127,26 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: routed
+  description: ATT_666
   dhcp_client_accept_default_route: true
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.15.5.5/31
   shutdown: false
   type: routed
+  description: Colt_10555
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
   shutdown: false
   type: routed
+  description: Comcast-5G_AF830
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -183,19 +186,24 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -209,11 +217,11 @@ ip_security:
   sa_policies:
   - name: DP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
-      encryption: aes128
+      encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
@@ -237,37 +245,61 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: edge
   region:
     name: AVD_Land_East
     id: 43
   zone:
-    name: DEFAULT-ZONE
+    name: AVD_Land_East-ZONE
     id: 1
   site:
     name: Site511
     id: 511
   profiles:
-  - name: CONTROL-PLANE-PROFILE
-    load_balance_policy: LB-CONTROL-PLANE-PROFILE
-  - name: DEFAULT-AVT-POLICY-DEFAULT
-    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   vrfs:
-  - name: default
-    policy: DEFAULT-AVT-POLICY-WITH-CP
+  - name: PROD
+    policy: DEFAULT-POLICY
     profiles:
-    - name: CONTROL-PLANE-PROFILE
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+  - name: IT
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+  - name: default
+    policy: DEFAULT-POLICY-WITH-CP
+    profiles:
+    - name: DEFAULT-POLICY-CONTROL-PLANE
       id: 254
-    - name: DEFAULT-AVT-POLICY-DEFAULT
+    - name: DEFAULT-POLICY-DEFAULT
       id: 1
   policies:
-  - name: DEFAULT-AVT-POLICY-WITH-CP
+  - name: DEFAULT-POLICY
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
     - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
+      avt_profile: DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-WITH-CP
+    matches:
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-POLICY-CONTROL-PLANE
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300
@@ -303,11 +335,13 @@ router_path_selection:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2
     dynamic_peers:
       enabled: true
+      ipsec: false
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
       - 172.16.0.1
+    ipsec_profile: CP-PROFILE
   - name: LTE
     id: 102
     local_interfaces:
@@ -316,15 +350,15 @@ router_path_selection:
       enabled: true
     ipsec_profile: CP-PROFILE
   load_balance_policies:
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: INET
     - name: MPLS
-  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
-    path_groups:
     - name: INET
-    - name: MPLS
     - name: LTE
+  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
+    path_groups:
+    - name: MPLS
+    - name: INET
 router_traffic_engineering:
   enabled: true
 stun:
@@ -332,22 +366,25 @@ stun:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
       ip_address: 10.7.7.7
+      ssl_profile: STUN-DTLS
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
+      ssl_profile: STUN-DTLS
     - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
       ip_address: 172.16.0.1
+      ssl_profile: STUN-DTLS
 application_traffic_recognition:
   application_profiles:
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   applications:
     ipv4_applications:
-    - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     ipv4_prefixes:
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: PFX-PATHFINDERS
       prefix_values:
       - 192.168.144.1/32
 dps_interfaces:
@@ -356,7 +393,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 192.168.255.1/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: cv-pathfinder-edge-no-default-policy_VTEP
@@ -378,7 +415,7 @@ metadata:
     - name: Region
       value: AVD_Land_East
     - name: Zone
-      value: DEFAULT-ZONE
+      value: AVD_Land_East-ZONE
     - name: Site
       value: Site511
     interface_tags:
@@ -408,9 +445,10 @@ metadata:
         value: AF830
   cv_pathfinder:
     role: edge
+    ssl_profile: STUN-DTLS
     vtep_ip: 192.168.255.1
     region: AVD_Land_East
-    zone: DEFAULT-ZONE
+    zone: AVD_Land_East-ZONE
     site: Site511
     interfaces:
     - name: Ethernet1
