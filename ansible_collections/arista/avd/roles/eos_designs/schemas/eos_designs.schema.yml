@@ -3806,7 +3806,7 @@ keys:
                       description: Interface name.
                     ip_address:
                       type: str
-                      description: The public IP address without mask of the Route
+                      description: The public IPv4 address (without mask) of the Route
                         Reflector for this path-group.
   wan_stun_dtls_disable:
     type: bool

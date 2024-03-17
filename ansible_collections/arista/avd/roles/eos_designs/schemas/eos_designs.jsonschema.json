@@ -25211,7 +25211,7 @@
                       },
                       "ip_address": {
                         "type": "string",
-                        "description": "The public IP address without mask of the Route Reflector for this path-group.",
+                        "description": "The public IPv4 address (without mask) of the Route Reflector for this path-group.",
                         "title": "IP Address"
                       }
                     },
