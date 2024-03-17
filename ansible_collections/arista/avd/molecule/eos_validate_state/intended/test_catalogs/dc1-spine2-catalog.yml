@@ -48,6 +48,27 @@ anta.tests.aaa:
     - exec
     - commands
     - dot1x
+anta.tests.bfd:
+- VerifyBFDSpecificPeers:
+    bfd_peers:
+    - peer_address: 192.0.255.8
+      vrf: default
+    - peer_address: 192.0.255.7
+      vrf: default
+- VerifyBFDPeersIntervals:
+    bfd_peers:
+    - multiplier: 3
+      peer_address: 192.0.255.8
+      rx_interval: 1200
+      tx_interval: 1200
+      vrf: default
+    - multiplier: 3
+      peer_address: 192.0.255.7
+      rx_interval: 1200
+      tx_interval: 1200
+      vrf: default
+- VerifyBFDPeersHealth:
+    down_threshold: 2
 anta.tests.configuration:
 - VerifyZeroTouch: null
 - VerifyRunningConfigDiffs: null
@@ -149,68 +170,48 @@ anta.tests.hardware:
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet1
-      protocol_status: up
-      state: up
+    - name: Ethernet1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet2
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet2 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet2
-      protocol_status: up
-      state: up
+    - name: Ethernet2
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet2
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet2 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet3
-      protocol_status: up
-      state: up
+    - name: Ethernet3
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet3 - P2P_LINK_TO_DC1-LEAF2A_Ethernet2
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet3 - P2P_LINK_TO_DC1-LEAF2A_Ethernet2 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet4
-      protocol_status: down
-      state: adminDown
+    - name: Ethernet4
+      status: adminDown
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet4 - P2P_LINK_TO_DC1-LEAF2B_Ethernet2
-      description: Ethernet Interface & Line Protocol == 'adminDown'
+      custom_field: Interface Ethernet4 - P2P_LINK_TO_DC1-LEAF2B_Ethernet2 = 'adminDown'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Loopback0
-      protocol_status: up
-      state: up
+    - name: Loopback0
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Loopback0 - EVPN_Overlay_Peering
-      description: Loopback Interface Status & Line Protocol == 'up'
+      custom_field: Interface Loopback0 - EVPN_Overlay_Peering = 'up'
 - VerifyInterfaceUtilization: null
 - VerifyInterfaceErrors: null
 - VerifyInterfaceDiscards: null
 - VerifyInterfaceErrDisabled: null
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet1
-      state: up
-    - interface: Ethernet2
-      protocol_status: up
-      state: up
-    - interface: Vlan10
-      protocol_status: down
-      state: adminDown
+    - name: Ethernet1
+      status: up
+    - line_protocol_status: up
+      name: Ethernet2
+      status: up
+    - line_protocol_status: down
+      name: Vlan10
+      status: adminDown
 - VerifyStormControlDrops: null
 - VerifyPortChannels: null
 - VerifyIllegalLACP: null
@@ -280,7 +281,6 @@ anta.tests.routing:
   - VerifyRoutingTableSize:
       maximum: 20
       minimum: 2
-  - VerifyBFD: null
   - VerifyRoutingTableEntry:
       routes:
       - 10.1.0.1

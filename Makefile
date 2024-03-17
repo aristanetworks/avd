@@ -19,16 +19,24 @@ collection-build: ## Build arista.cvp collection locally
 # pyavd actions                 #
 #########################################
 .PHONY: pyavd-build
-pyavd-build: ## Build pyavd python package locally
+pyavd-build: ## Build PyAVD Python package locally
 	cd python-avd && $(MAKE) clean build
 
 .PHONY: pyavd-test
-pyavd-test: ## Test pyavd python code
+pyavd-test: ## Test PyAVD Python code
 	cd python-avd && $(MAKE) clean && tox -r
 
 .PHONY: pyavd-publish
-pyavd-publish: ## Build and publish pyavd python package
+pyavd-publish: ## Build and publish PyAVD Python package
 	cd python-avd && $(MAKE) clean build publish
+
+.PHONY: pyavd-install
+pyavd-install: pyavd-build ## Build and install PyAVD Python package
+	pip install python-avd/dist/*
+
+.PHONY: pyavd-editable-install
+pyavd-editable-install: ## Build and install PyAVD as editable
+	pip install -e python-avd
 
 #########################################
 # Code Validation using ansible-test 	#
