@@ -530,10 +530,10 @@ router_path_selection:
     - name: INET
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
+    - name: AWS
     - name: INET
     - name: Satellite
       priority: 2
-    - name: AWS
 router_traffic_engineering:
   enabled: true
 stun:
