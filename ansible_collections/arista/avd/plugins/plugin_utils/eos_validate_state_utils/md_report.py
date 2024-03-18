@@ -35,7 +35,7 @@ class MDReport:
             ValidateStateReport(mdfile, results),
             TestResultsSummary(mdfile, results),
             SummaryTotals(mdfile, results),
-            SummaryTotalsDevicesUnderTests(mdfile, results),
+            SummaryTotalsDeviceUnderTest(mdfile, results),
             SummaryTotalsPerCategory(mdfile, results),
             FailedTestResultsSummary(mdfile, results),
             AllTestResults(mdfile, results),
@@ -175,12 +175,12 @@ class SummaryTotals(MDReportBase):
         self.write_table(table_heading=self.TABLE_HEADING)
 
 
-class SummaryTotalsDevicesUnderTests(MDReportBase):
+class SummaryTotalsDeviceUnderTest(MDReportBase):
     """Generate the `### Summary Totals Devices Under Tests` section of the markdown report."""
 
     TABLE_HEADING: ClassVar[list[str]] = [
-        "| DUT | Total Tests | Tests Passed | Tests Failed | Tests Skipped | Categories Failed | Categories Skipped |",
-        "| --- | ----------- | ------------ | ------------ | ------------- | ----------------- | ------------------ |",
+        "| Device Under Test | Total Tests | Tests Passed | Tests Failed | Tests Skipped | Categories Failed | Categories Skipped |",
+        "| ------------------| ----------- | ------------ | ------------ | ------------- | ----------------- | ------------------ |",
     ]
 
     def generate_rows(self) -> Generator[str, None, None]:
@@ -224,8 +224,8 @@ class FailedTestResultsSummary(MDReportBase):
     """Generate the `## Failed Test Results Summary` section of the markdown report."""
 
     TABLE_HEADING: ClassVar[list[str]] = [
-        "| ID | DUT | Categories | Test | Description | Inputs | Result | Messages |",
-        "| -- | --- | ---------- | ---- | ----------- | ------ | -------| -------- |",
+        "| ID | Device Under Test | Categories | Test | Description | Inputs | Result | Messages |",
+        "| -- | ----------------- | ---------- | ---- | ----------- | ------ | -------| -------- |",
     ]
 
     def generate_rows(self) -> Generator[str, None, None]:
@@ -251,8 +251,8 @@ class AllTestResults(MDReportBase):
     """
 
     TABLE_HEADING: ClassVar[list[str]] = [
-        "| ID | DUT | Categories | Test | Description | Inputs | Result | Messages |",
-        "| -- | --- | ---------- | ---- | ----------- | ------ | -------| -------- |",
+        "| ID | Device Under Test | Categories | Test | Description | Inputs | Result | Messages |",
+        "| -- | ----------------- | ---------- | ---- | ----------- | ------ | -------| -------- |",
     ]
 
     def generate_rows(self) -> Generator[str, None, None]:

@@ -15,10 +15,10 @@
 | ----------- | ------------------ | ------------------ | ------------------- |
 | 1710 | 0 | 0 | 0 |
 
-### Summary Totals Devices Under Tests
+### Summary Totals Device Under Test
 
-| DUT | Total Tests | Tests Passed | Tests Failed | Tests Skipped | Categories Failed | Categories Skipped |
-| --- | ----------- | ------------ | ------------ | ------------- | ----------------- | ------------------ |
+| Device Under Test | Total Tests | Tests Passed | Tests Failed | Tests Skipped | Categories Failed | Categories Skipped |
+| ------------------| ----------- | ------------ | ------------ | ------------- | ----------------- | ------------------ |
 | dc1-leaf1a | 124 | 0 | 0 | 0 | - | - |
 | dc1-leaf1b | 117 | 0 | 0 | 0 | - | - |
 | dc1-leaf1c | 59 | 0 | 0 | 0 | - | - |
@@ -67,13 +67,13 @@
 
 ## Failed Test Results Summary
 
-| ID | DUT | Categories | Test | Description | Inputs | Result | Messages |
-| -- | --- | ---------- | ---- | ----------- | ------ | -------| -------- |
+| ID | Device Under Test | Categories | Test | Description | Inputs | Result | Messages |
+| -- | ----------------- | ---------- | ---- | ----------- | ------ | -------| -------- |
 
 ## All Test Results
 
-| ID | DUT | Categories | Test | Description | Inputs | Result | Messages |
-| -- | --- | ---------- | ---- | ----------- | ------ | -------| -------- |
+| ID | Device Under Test | Categories | Test | Description | Inputs | Result | Messages |
+| -- | ----------------- | ---------- | ---- | ----------- | ------ | -------| -------- |
 | 1 | dc1-leaf1a | AAA | VerifyAcctConsoleMethods | Verifies the AAA accounting console method lists for different accounting types (system, exec, commands, dot1x). | - | NOT RUN | - |
 | 2 | dc1-leaf1a | AAA | VerifyAcctDefaultMethods | Verifies the AAA accounting default method lists for different accounting types (system, exec, commands, dot1x). | - | NOT RUN | - |
 | 3 | dc1-leaf1a | AAA | VerifyAuthenMethods | Verifies the AAA authentication method lists for different authentication types (login, enable, dot1x). | - | NOT RUN | - |
