@@ -268,3 +268,5 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+      - name: PROD
+        vni: 42
