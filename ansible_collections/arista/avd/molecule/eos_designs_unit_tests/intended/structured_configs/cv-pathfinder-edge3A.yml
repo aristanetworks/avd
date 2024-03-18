@@ -48,6 +48,12 @@ router_bgp:
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+    neighbors:
+    - ip_address: 10.10.10.1
+      activate: true
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -73,6 +79,13 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder
+  - ip_address: 10.10.10.1
+    peer: cv-pathfinder-edge3B
+    description: cv-pathfinder-edge3B
+    update_source: Dps1
+    route_reflector_client: true
+    send_community: all
+    route_map_in: RM-WAN-HA-LOCAL-PREF-IN
   vrfs:
   - name: default
     rd: 192.168.42.6:1
@@ -141,14 +154,14 @@ ethernet_interfaces:
   description: ATT_404-01
   dhcp_client_accept_default_route: true
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet52
   type: routed
   peer_type: l3_interface
   peer: TODO-MY-HA-PEER
   shutdown: false
   description: LAN HA OMG
-  ip_address: 10.10.10.0
+  ip_address: 10.10.10.0/31
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -168,11 +181,11 @@ prefix_lists:
 - name: PL-WAN-HA-PREFIXES
   sequence_numbers:
   - sequence: 10
-    action: permit 10.10.10.0/32
+    action: permit 10.10.10.0/31
 - name: PL-WAN-HA-PEER-PREFIXES
   sequence_numbers:
   - sequence: 10
-    action: permit 10.10.10.1/32
+    action: permit 10.10.10.0/31
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -199,15 +212,15 @@ route_maps:
     match:
     - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
   - sequence: 20
-    type: permit
-    description: Allow prefixes originated from the HA peer
+    type: deny
+    description: Deny prefixes originated from the HA peer
     match:
     - extcommunity ECL-EVPN-SOO
     set:
     - as-path match all replacement auto auto
   - sequence: 30
-    type: permit
-    description: Use WAN routes from HA peer as backup
+    type: deny
+    description: Deny WAN routes from HA peer
     match:
     - as-path ASPATH-WAN
     set:
@@ -243,6 +256,13 @@ route_maps:
     type: permit
     set:
     - extcommunity soo 192.168.42.6:404 additive
+- name: RM-WAN-HA-LOCAL-PREF-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Set lower Local Preference for EVPN routes received from WAN HA peer
+    set:
+    - local-preference 50
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -257,16 +277,16 @@ agents:
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -417,7 +437,7 @@ router_path_selection:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
-      - 10.7.7.7
+      - 172.17.7.7
       - 10.9.9.9
     ipsec_profile: CP-PROFILE
   - name: LAN_HA
@@ -432,40 +452,40 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
-    - name: LAN_HA
     - name: INET
       priority: 2
+    - name: LAN_HA
     jitter: 42
     lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: INET
       priority: 2
+    - name: LAN_HA
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
 router_traffic_engineering:
   enabled: true
 stun:
   client:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
-      ip_address: 10.7.7.7
+      ip_address: 172.17.7.7
       ssl_profile: profileA
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
@@ -528,7 +548,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 192.168.142.6/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: cv-pathfinder-edge3A_VTEP
@@ -568,6 +588,7 @@ metadata:
         value: lan
   cv_pathfinder:
     role: edge
+    ssl_profile: profileA
     vtep_ip: 192.168.142.6
     region: AVD_Land_West
     zone: AVD_Land_West-ZONE

@@ -543,7 +543,7 @@ class WanMixin:
     def get_wan_ha_ip_address(self: SharedUtils, interface: str) -> str | None:
         """
         TODO
-        Render ipv4 address for mlag_ip using dynamically loaded python module.
+        Render ipv4 address for wan_ha_ip_address using dynamically loaded python module.
         """
         wan_ha_ipv4_pool = get(
             self.switch_data_combined,
@@ -552,16 +552,15 @@ class WanMixin:
             org_key="Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface",
         )
         if self.is_first_ha_peer:
-            # return self.ip_addressing.mlag_ip_primary()
-            return get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 0)
+            ip_address = get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 0)
         else:
-            # return self.ip_addressing.mlag_ip_secondary()
-            return get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 1)
+            ip_address = get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 1)
+        return f"{ip_address}/31"
 
     def get_wan_ha_peer_ip_address(self: SharedUtils, interface: str) -> str | None:
         """
         TODO
-        Render ipv4 address for mlag_ip using dynamically loaded python module.
+        Render ipv4 address for wan_ha_peer_ip using dynamically loaded python module.
         """
         wan_ha_ipv4_pool = get(
             self.switch_data_combined,
@@ -570,11 +569,10 @@ class WanMixin:
             org_key="Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface",
         )
         if self.is_first_ha_peer:
-            # return self.ip_addressing.mlag_ip_primary()
-            return get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 1)
+            ip_address = get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 1)
         else:
-            # return self.ip_addressing.mlag_ip_secondary()
-            return get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 0)
+            ip_address = get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 0)
+        return f"{ip_address}/31"
 
     def generate_lb_policy_name(self: SharedUtils, name: str) -> str:
         """

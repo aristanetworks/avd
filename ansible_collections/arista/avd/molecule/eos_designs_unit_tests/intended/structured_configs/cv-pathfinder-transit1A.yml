@@ -52,6 +52,13 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder
+  - ip_address: 172.17.0.3
+    peer: cv-pathfinder-transit1B
+    description: cv-pathfinder-transit1B
+    update_source: Dps1
+    route_reflector_client: true
+    send_community: all
+    route_map_in: RM-WAN-HA-LOCAL-PREF-IN
   vrfs:
   - name: IT
     router_id: 192.168.43.1
@@ -146,6 +153,12 @@ router_bgp:
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+    neighbors:
+    - ip_address: 172.17.0.3
+      activate: true
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -321,15 +334,15 @@ route_maps:
     match:
     - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
   - sequence: 20
-    type: permit
-    description: Allow prefixes originated from the HA peer
+    type: deny
+    description: Deny prefixes originated from the HA peer
     match:
     - extcommunity ECL-EVPN-SOO
     set:
     - as-path match all replacement auto auto
   - sequence: 30
-    type: permit
-    description: Use WAN routes from HA peer as backup
+    type: deny
+    description: Deny WAN routes from HA peer
     match:
     - as-path ASPATH-WAN
     set:
@@ -365,6 +378,13 @@ route_maps:
     type: permit
     set:
     - extcommunity soo 192.168.43.1:422 additive
+- name: RM-WAN-HA-LOCAL-PREF-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Set lower Local Preference for EVPN routes received from WAN HA peer
+    set:
+    - local-preference 50
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10

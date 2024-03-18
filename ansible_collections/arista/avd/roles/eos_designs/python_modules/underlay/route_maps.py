@@ -93,6 +93,8 @@ class RouteMapsMixin(UtilsMixin):
             )
 
         # Route-map IN and OUT for SOO, rendered for WAN routers
+        # TODO - by default underlay_routing_protocol is ebgp so the route-map is generated..
+        # Maybe need to change the default ?
         if self.shared_utils.underlay_routing_protocol == "ebgp" and self.shared_utils.wan_role == "client":
             # RM-BGP-UNDERLAY-PEERS-IN
             sequence_numbers = [
@@ -114,15 +116,15 @@ class RouteMapsMixin(UtilsMixin):
                         },
                         {
                             "sequence": 20,
-                            "type": "permit",
-                            "description": "Allow prefixes originated from the HA peer",
+                            "type": "deny",
+                            "description": "Deny prefixes originated from the HA peer",
                             "match": ["extcommunity ECL-EVPN-SOO"],
                             "set": ["as-path match all replacement auto auto"],
                         },
                         {
                             "sequence": 30,
-                            "type": "permit",
-                            "description": "Use WAN routes from HA peer as backup",
+                            "type": "deny",
+                            "description": "Deny WAN routes from HA peer",
                             "match": ["as-path ASPATH-WAN"],
                             "set": ["community no-advertise"],
                         },
@@ -131,6 +133,7 @@ class RouteMapsMixin(UtilsMixin):
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-IN", "sequence_numbers": sequence_numbers})
 
             # RM-BGP-UNDERLAY-PEERS-OUT
+            # TODO - could mark everything with the community
             sequence_numbers = [
                 {
                     "sequence": 10,

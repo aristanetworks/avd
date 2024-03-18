@@ -48,6 +48,12 @@ router_bgp:
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+    neighbors:
+    - ip_address: 10.10.10.0
+      activate: true
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -73,6 +79,13 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder
+  - ip_address: 10.10.10.0
+    peer: cv-pathfinder-edge3A
+    description: cv-pathfinder-edge3A
+    update_source: Dps1
+    route_reflector_client: true
+    send_community: all
+    route_map_in: RM-WAN-HA-LOCAL-PREF-IN
   vrfs:
   - name: default
     rd: 192.168.42.7:1
@@ -140,14 +153,14 @@ ethernet_interfaces:
   type: routed
   description: Colt_10423
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet52
   type: routed
   peer_type: l3_interface
   peer: TODO-MY-HA-PEER
   shutdown: false
   description: LAN HA OMG
-  ip_address: 10.10.10.1
+  ip_address: 10.10.10.1/31
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -167,11 +180,11 @@ prefix_lists:
 - name: PL-WAN-HA-PREFIXES
   sequence_numbers:
   - sequence: 10
-    action: permit 10.10.10.1/32
+    action: permit 10.10.10.0/31
 - name: PL-WAN-HA-PEER-PREFIXES
   sequence_numbers:
   - sequence: 10
-    action: permit 10.10.10.0/32
+    action: permit 10.10.10.0/31
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -198,15 +211,15 @@ route_maps:
     match:
     - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
   - sequence: 20
-    type: permit
-    description: Allow prefixes originated from the HA peer
+    type: deny
+    description: Deny prefixes originated from the HA peer
     match:
     - extcommunity ECL-EVPN-SOO
     set:
     - as-path match all replacement auto auto
   - sequence: 30
-    type: permit
-    description: Use WAN routes from HA peer as backup
+    type: deny
+    description: Deny WAN routes from HA peer
     match:
     - as-path ASPATH-WAN
     set:
@@ -242,6 +255,13 @@ route_maps:
     type: permit
     set:
     - extcommunity soo 192.168.42.6:404 additive
+- name: RM-WAN-HA-LOCAL-PREF-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Set lower Local Preference for EVPN routes received from WAN HA peer
+    set:
+    - local-preference 50
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -256,16 +276,16 @@ agents:
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -342,6 +362,8 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-PROD-AVT-POLICY-VOICE
   - name: PROD-AVT-POLICY-VIDEO
     load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
+  - name: PROD-AVT-POLICY-MPLS-ONLY
+    load_balance_policy: LB-PROD-AVT-POLICY-MPLS-ONLY
   - name: PROD-AVT-POLICY-DEFAULT
     load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
   vrfs:
@@ -361,6 +383,8 @@ router_adaptive_virtual_topology:
       id: 2
     - name: PROD-AVT-POLICY-VIDEO
       id: 4
+    - name: PROD-AVT-POLICY-MPLS-ONLY
+      id: 5
     - name: PROD-AVT-POLICY-DEFAULT
       id: 1
   - name: IT
@@ -385,6 +409,8 @@ router_adaptive_virtual_topology:
       avt_profile: PROD-AVT-POLICY-VOICE
     - application_profile: VIDEO
       avt_profile: PROD-AVT-POLICY-VIDEO
+    - application_profile: MPLS-ONLY
+      avt_profile: PROD-AVT-POLICY-MPLS-ONLY
     - application_profile: default
       avt_profile: PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-AVT-POLICY
@@ -432,33 +458,37 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: LAN_HA
     - name: MPLS
+    - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: MPLS
+    - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: MPLS
       priority: 4223
+    - name: LAN_HA
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
-    - name: LAN_HA
     - name: MPLS
+    - name: LAN_HA
     jitter: 42
     lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: MPLS
+    - name: LAN_HA
     loss_rate: '42.0'
+  - name: LB-PROD-AVT-POLICY-MPLS-ONLY
+    path_groups:
+    - name: MPLS
+    - name: LAN_HA
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: MPLS
       priority: 2
+    - name: LAN_HA
 router_traffic_engineering:
   enabled: true
 stun:
@@ -478,6 +508,7 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
+  - name: MPLS-ONLY
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
@@ -525,7 +556,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 192.168.142.7/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: cv-pathfinder-edge3B_VTEP
@@ -565,6 +596,7 @@ metadata:
         value: lan
   cv_pathfinder:
     role: edge
+    ssl_profile: profileA
     vtep_ip: 192.168.142.7
     region: AVD_Land_West
     zone: AVD_Land_West-ZONE

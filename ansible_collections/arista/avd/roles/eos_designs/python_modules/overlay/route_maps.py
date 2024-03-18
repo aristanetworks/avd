@@ -79,6 +79,20 @@ class RouteMapsMixin(UtilsMixin):
                     ],
                 }
             )
+            if self.shared_utils.wan_ha:
+                route_maps.append(
+                    {
+                        "name": "RM-WAN-HA-LOCAL-PREF-IN",
+                        "sequence_numbers": [
+                            {
+                                "sequence": 10,
+                                "type": "permit",
+                                "description": "Set lower Local Preference for EVPN routes received from WAN HA peer",
+                                "set": ["local-preference 50"],
+                            },
+                        ],
+                    }
+                )
 
         if route_maps:
             return route_maps
