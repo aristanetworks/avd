@@ -126,7 +126,7 @@ class WanMixin:
                 strip_empties_from_dict(
                     {
                         "name": get(interface, "name", required=True),
-                        "ip_address": self.get_public_ip_for_wan_interface(interface),
+                        "public_ip": self.get_public_ip_for_wan_interface(interface),
                         "connected_to_pathfinder": get(interface, "connected_to_pathfinder", default=True),
                         "wan_circuit_id": get(interface, "wan_circuit_id"),
                     }
@@ -153,7 +153,7 @@ class WanMixin:
         Also add for each path_groups the local interfaces in a data structure
             interfaces:
               - name: ...
-                ip: ...
+                public_ip: ...
         """
         if not self.is_wan_router:
             return []
@@ -211,8 +211,8 @@ class WanMixin:
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:
                 continue
 
-            if found_interface.get("ip_address") is not None:
-                return found_interface["ip_address"].split("/", maxsplit=1)[0]
+            if found_interface.get("public_ip") is not None:
+                return found_interface["public_ip"]
 
         if interface.get("public_ip") is not None:
             return interface["public_ip"]

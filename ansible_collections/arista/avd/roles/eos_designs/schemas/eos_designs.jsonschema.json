@@ -25209,10 +25209,10 @@
                         "description": "Interface name.",
                         "title": "Name"
                       },
-                      "ip_address": {
+                      "public_ip": {
                         "type": "string",
                         "description": "The public IPv4 address (without mask) of the Route Reflector for this path-group.",
-                        "title": "IP Address"
+                        "title": "Public IP"
                       }
                     },
                     "additionalProperties": false,
