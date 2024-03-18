@@ -383,6 +383,12 @@ class AvdSchemaList(AvdSchemaBaseModel):
     """
     secondary_key: str | None = Field(None, pattern=KEY_PATTERN)
     """Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."""
+    unique_keys: list[str] | None = None
+    """
+    Name of a key in a list of dictionaries.
+    The configured key must have unique values between the list elements.
+    This can also be a variable path using dot-notation like 'parent_key.child_key' in case of nested lists of dictionaries.
+    """
 
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenList

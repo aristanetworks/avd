@@ -41,8 +41,8 @@ router_bgp:
   - ip_address: 172.17.0.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: cv-pathfinder-edge-no-common-path-group
-    description: cv-pathfinder-edge-no-common-path-group_Ethernet52
+    peer: cv-pathfinder-edge1
+    description: cv-pathfinder-edge1_Ethernet52
   vrfs:
   - name: IT
     router_id: 192.168.45.4
@@ -54,7 +54,7 @@ router_bgp:
     - ip_address: 172.17.0.3
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-edge-no-common-path-group_Ethernet52.1000_vrf_IT
+      description: cv-pathfinder-edge1_Ethernet52.1000_vrf_IT
     rd: 192.168.45.4:1000
     route_targets:
       import:
@@ -77,7 +77,7 @@ router_bgp:
     - ip_address: 172.17.0.3
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-edge-no-common-path-group_Ethernet52.142_vrf_PROD
+      description: cv-pathfinder-edge1_Ethernet52.142_vrf_PROD
     rd: 192.168.45.4:142
     route_targets:
       import:
@@ -100,7 +100,7 @@ router_bgp:
     - ip_address: 172.17.0.3
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-edge-no-common-path-group_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+      description: cv-pathfinder-edge1_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
     rd: 192.168.45.4:666
     route_targets:
       import:
@@ -220,42 +220,42 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 172.17.0.0/31
 - name: Ethernet2
-  peer: cv-pathfinder-edge-no-common-path-group
+  peer: cv-pathfinder-edge1
   peer_interface: Ethernet52
   peer_type: wan_router
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE-NO-COMMON-PATH-GROUP_Ethernet52
+  description: P2P_LINK_TO_CV-PATHFINDER-EDGE1_Ethernet52
   shutdown: false
   mtu: 9214
   type: routed
   ip_address: 172.17.0.2/31
 - name: Ethernet2.1000
-  peer: cv-pathfinder-edge-no-common-path-group
+  peer: cv-pathfinder-edge1
   peer_interface: Ethernet52.1000
   peer_type: wan_router
   vrf: IT
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE-NO-COMMON-PATH-GROUP_Ethernet52.1000_vrf_IT
+  description: P2P_LINK_TO_CV-PATHFINDER-EDGE1_Ethernet52.1000_vrf_IT
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.2/31
 - name: Ethernet2.142
-  peer: cv-pathfinder-edge-no-common-path-group
+  peer: cv-pathfinder-edge1
   peer_interface: Ethernet52.142
   peer_type: wan_router
   vrf: PROD
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE-NO-COMMON-PATH-GROUP_Ethernet52.142_vrf_PROD
+  description: P2P_LINK_TO_CV-PATHFINDER-EDGE1_Ethernet52.142_vrf_PROD
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 142
   mtu: 9214
   ip_address: 172.17.0.2/31
 - name: Ethernet2.666
-  peer: cv-pathfinder-edge-no-common-path-group
+  peer: cv-pathfinder-edge1
   peer_interface: Ethernet52.666
   peer_type: wan_router
   vrf: ATTRACTED-VRF-FROM-UPLINK
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE-NO-COMMON-PATH-GROUP_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_LINK_TO_CV-PATHFINDER-EDGE1_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 666

@@ -118,11 +118,19 @@
   },
   {
     "name": "dc1-wan1",
-    "test": "VerifyTemperature",
+    "test": "VerifyTransceiversManufacturers",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range."
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers."
   },
   {
     "name": "dc1-wan1",
@@ -130,23 +138,15 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range."
+    "description": "Verifies the device temperature."
   },
   {
     "name": "dc1-wan1",
-    "test": "VerifyEnvironmentCooling",
+    "test": "VerifyTemperature",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the fans status are within the accepted states list."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyEnvironmentCooling",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies if the fans status are within the accepted states list."
+    "description": "Verifies the device temperature."
   },
   {
     "name": "dc1-wan1",
@@ -154,7 +154,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list."
+    "description": "Verifies the power supplies status."
   },
   {
     "name": "dc1-wan1",
@@ -162,15 +162,23 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list."
+    "description": "Verifies the power supplies status."
   },
   {
     "name": "dc1-wan1",
-    "test": "VerifyTransceiversTemperature",
+    "test": "VerifyEnvironmentCooling",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies that all transceivers are operating within the acceptable temperature range."
+    "description": "Verifies the status of power supply fans and all fan trays."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the status of power supply fans and all fan trays."
   },
   {
     "name": "dc1-wan1",
@@ -182,19 +190,11 @@
   },
   {
     "name": "dc1-wan1",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyTransceiversTemperature",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyTransceiversManufacturers",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+    "description": "Verifies the transceivers temperature."
   },
   {
     "name": "dc1-wan1",
@@ -208,64 +208,64 @@
     "name": "dc1-wan1",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "DPS Interface Status & Line Protocol == 'up'",
-    "custom_field": "Dps1 - DPS Interface"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Dps1 - DPS Interface = 'up'"
   },
   {
     "name": "dc1-wan1",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet6"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet6 = 'up'"
   },
   {
     "name": "dc1-wan1",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet6"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet6 = 'up'"
   },
   {
     "name": "dc1-wan1",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet3 - mpls-sp-1_DC1-MPLS-3"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet3 - mpls-sp-1_DC1-MPLS-3 = 'up'"
   },
   {
     "name": "dc1-wan1",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet4 - isp-1_DC1-INET-3"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet4 - isp-1_DC1-INET-3 = 'up'"
   },
   {
     "name": "dc1-wan1",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "custom_field": "Loopback0 - Router_ID"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Loopback0 - Router_ID = 'up'"
   },
   {
     "name": "dc1-wan1",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vxlan Interface Status & Line Protocol == 'up'",
-    "custom_field": "Vxlan1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vxlan1 = 'up'"
   },
   {
     "name": "dc1-wan1",
@@ -318,7 +318,7 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
+    "description": "Verifies if the eAPI has a valid SSL profile."
   },
   {
     "name": "dc1-wan1",
@@ -366,31 +366,7 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies if NTP is synchronised."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyUptime",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyCoredump",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies if there are core dump files in the /var/core directory."
-  },
-  {
-    "name": "dc1-wan1",
-    "test": "VerifyAgentLogs",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies that no agent crash reports are present on the device."
+    "description": "Verifies if NTP is synchronised."
   },
   {
     "name": "dc1-wan1",
@@ -398,7 +374,15 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the device uptime."
   },
   {
     "name": "dc1-wan1",
@@ -406,7 +390,23 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies the last reload cause of the device."
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies there are no agent crash reports."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies there are no core dump files."
   },
   {
     "name": "dc1-wan1",
@@ -414,7 +414,7 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies whether the CPU utilization is below 75%."
+    "description": "Verifies whether the CPU utilization is below 75%."
   },
   {
     "name": "dc1-wan1",
@@ -422,6 +422,6 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies whether the memory utilization is below 75%."
+    "description": "Verifies whether the memory utilization is below 75%."
   }
 ]

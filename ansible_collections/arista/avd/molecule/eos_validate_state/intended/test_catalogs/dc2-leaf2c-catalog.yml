@@ -106,44 +106,28 @@ anta.tests.hardware:
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet1
-      protocol_status: up
-      state: up
+    - name: Ethernet1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet1 - DC2-LEAF2A_Ethernet8
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet1 - DC2-LEAF2A_Ethernet8 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet2
-      protocol_status: up
-      state: up
+    - name: Ethernet2
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet2 - DC2-LEAF2B_Ethernet8
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet2 - DC2-LEAF2B_Ethernet8 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet5
-      protocol_status: up
-      state: up
+    - name: Ethernet5
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet5 - dc2-leaf2-server1_iLO
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet5 - dc2-leaf2-server1_iLO = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Port-Channel1
-      protocol_status: up
-      state: up
+    - name: Port-Channel1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Port-Channel1 - DC2_L3_LEAF2_Po8
-      description: Port-Channel Interface & Line Protocol == 'up'
+      custom_field: Interface Port-Channel1 - DC2_L3_LEAF2_Po8 = 'up'
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile

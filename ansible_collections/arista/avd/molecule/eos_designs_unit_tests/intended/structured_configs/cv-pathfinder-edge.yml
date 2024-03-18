@@ -179,7 +179,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.17.0.1/31
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet52.1000
   peer: site-ha-disabled-leaf
   peer_interface: Ethernet1.1000
@@ -191,6 +191,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.1/31
+  flow_tracker:
+    hardware: FLOW-TRACKER
 - name: Ethernet52.142
   peer: site-ha-disabled-leaf
   peer_interface: Ethernet1.142
@@ -202,6 +204,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 142
   mtu: 9214
   ip_address: 172.17.0.1/31
+  flow_tracker:
+    hardware: FLOW-TRACKER
 - name: Ethernet52.666
   peer: site-ha-disabled-leaf
   peer_interface: Ethernet1.666
@@ -213,6 +217,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.1/31
+  flow_tracker:
+    hardware: FLOW-TRACKER
 - name: Ethernet1
   peer_type: l3_interface
   peer: peer3
@@ -223,7 +229,7 @@ ethernet_interfaces:
   description: ATT_666_peer3_Ethernet42
   dhcp_client_accept_default_route: true
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.15.5.5/31
@@ -231,7 +237,7 @@ ethernet_interfaces:
   type: routed
   description: Colt_10555
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
@@ -239,7 +245,7 @@ ethernet_interfaces:
   type: routed
   description: Comcast-5G_AF830
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -330,16 +336,16 @@ agents:
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -413,6 +419,8 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-PROD-AVT-POLICY-VOICE
   - name: PROD-AVT-POLICY-VIDEO
     load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
+  - name: PROD-AVT-POLICY-MPLS-ONLY
+    load_balance_policy: LB-PROD-AVT-POLICY-MPLS-ONLY
   - name: PROD-AVT-POLICY-DEFAULT
     load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-DEFAULT
@@ -434,6 +442,8 @@ router_adaptive_virtual_topology:
       id: 2
     - name: PROD-AVT-POLICY-VIDEO
       id: 4
+    - name: PROD-AVT-POLICY-MPLS-ONLY
+      id: 5
     - name: PROD-AVT-POLICY-DEFAULT
       id: 1
   - name: IT
@@ -463,6 +473,8 @@ router_adaptive_virtual_topology:
       avt_profile: PROD-AVT-POLICY-VOICE
     - application_profile: VIDEO
       avt_profile: PROD-AVT-POLICY-VIDEO
+    - application_profile: MPLS-ONLY
+      avt_profile: PROD-AVT-POLICY-MPLS-ONLY
     - application_profile: default
       avt_profile: PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-AVT-POLICY
@@ -557,6 +569,9 @@ router_path_selection:
     - name: INET
       priority: 2
     loss_rate: '42.0'
+  - name: LB-PROD-AVT-POLICY-MPLS-ONLY
+    path_groups:
+    - name: MPLS
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
     - name: INET
@@ -591,6 +606,7 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
+  - name: MPLS-ONLY
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
@@ -638,7 +654,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 192.168.142.1/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: cv-pathfinder-edge_VTEP
