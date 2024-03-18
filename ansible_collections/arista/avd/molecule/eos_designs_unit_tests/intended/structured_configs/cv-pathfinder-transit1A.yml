@@ -604,8 +604,8 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: MPLS
     - name: INET
+    - name: MPLS
     - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
@@ -657,8 +657,8 @@ router_path_selection:
     - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: MPLS
     - name: INET
+    - name: MPLS
     - name: LAN_HA
 router_traffic_engineering:
   enabled: true

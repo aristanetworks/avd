@@ -8,7 +8,8 @@ from .compile_searchpath import compile_searchpath
 from .cprofile_decorator import cprofile
 from .default import default
 from .get import get
-from .get_all import get_all
+from .get_all import get_all, get_all_with_path
+from .get_indices_of_duplicate_items import get_indices_of_duplicate_items
 from .get_ip_from_pool import get_ip_from_pool
 from .get_item import get_item
 from .get_templar import get_templar
@@ -33,6 +34,8 @@ __all__ = [
     "default",
     "get",
     "get_all",
+    "get_all_with_path",
+    "get_indices_of_duplicate_items",
     "get_ip_from_pool",
     "get_item",
     "get_templar",
