@@ -12335,6 +12335,46 @@ keys:
               valid_values:
               - all
               - iif
+  router_internet_exit:
+    type: dict
+    keys:
+      policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            exit_groups:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  after:
+                    type: str
+                  before:
+                    type: str
+      exit_groups:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            fib_default:
+              type: bool
+            locals:
+              type: list
+              items:
+                type: dict
+                keys:
+                  connection:
+                    type: str
   router_isis:
     type: dict
     keys:
