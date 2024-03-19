@@ -224,6 +224,10 @@
                                 "description": "Name of a key in a list of dictionaries.\nThe configured key must have unique values between the list elements.\nThis can also be a variable path using dot-notation like 'parent_key.child_key' in case of nested lists of dictionaries."
                             }
                         },
+                        "allow_duplicate_primary_key": {
+                            "type": "boolean",
+                            "description": "Set to True to allow duplicate primary_key values for a list of dicts. Useful when primary key is only used for convert_dicts. NOTE! Should only be used in eos_designs inputs since we cannot merge on primary key if there are duplicate entries."
+                        },
                         "display_name": { "$ref": "#/$defs/display_name" },
                         "description": { "$ref": "#/$defs/description" },
                         "required": { "$ref": "#/$defs/required" },
