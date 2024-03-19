@@ -76,6 +76,20 @@ $defs:
           type: str
           description: |-
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
+        ipv4_acl_in:
+          description: |-
+            Name of the IPv4 Access-list to be assigned in the ingress direction.
+            The access-list must be defined under `ipv4_acls`.
+          type: str
+          convert_types:
+            - int
+        ipv4_acl_out:
+          description: |-
+            Name of the IPv4 Access-list to be assigned in the egress direction.
+            The access-list must be defined under `ipv4_acls`.
+          type: str
+          convert_types:
+            - int
         static_routes:
           description: Configure IPv4 static routes pointing to `peer_ip`.
           type: list

@@ -5338,6 +5338,196 @@
       },
       "title": "Internal VLAN Order"
     },
+    "ipv4_acls": {
+      "type": "array",
+      "description": "IPv4 Extended Access-lists supporting substition on certain fields.\nThe substition is useful when assigning the same access-list on multiple interfaces,\nbut where certain fields require unique values like the \"interface_ip\" or \"peer_ip\".\nWhen using substition, the interface name will be appended to the ACL name.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Access-list name.\nWhen using substition for any fields, the interface name will be appended to the ACL name.",
+            "title": "Name"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "description": "This field supports substition of the fields \"interface_ip\" and \"peer_ip\".\nAlternatively it can be set with a static value of \"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
+                  "title": "Source"
+                },
+                "destination": {
+                  "type": "string",
+                  "description": "This field supports substition of the fields \"interface_ip\" and \"peer_ip\".\nAlternatively it can be set with a static value of \"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
+                  "title": "Destination"
+                },
+                "sequence": {
+                  "type": "integer",
+                  "description": "ACL entry sequence number.",
+                  "title": "Sequence"
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in acl entry will be ignored.",
+                  "title": "Remark"
+                },
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "permit",
+                    "deny"
+                  ],
+                  "description": "ACL action.\nRequired except for remarks.",
+                  "title": "Action"
+                },
+                "protocol": {
+                  "type": "string",
+                  "description": "\"ip\", \"tcp\", \"udp\", \"icmp\" or other protocol name or number.\nRequired except for remarks.",
+                  "title": "Protocol"
+                },
+                "source_ports_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq",
+                    "range"
+                  ],
+                  "default": "eq",
+                  "title": "Source Ports Match"
+                },
+                "source_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP/UDP source port name or number."
+                  },
+                  "title": "Source Ports"
+                },
+                "destination_ports_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq",
+                    "range"
+                  ],
+                  "default": "eq",
+                  "title": "Destination Ports Match"
+                },
+                "destination_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP/UDP destination port name or number."
+                  },
+                  "title": "Destination Ports"
+                },
+                "tcp_flags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP Flag Name."
+                  },
+                  "title": "TCP Flags"
+                },
+                "fragments": {
+                  "type": "boolean",
+                  "description": "Match non-head fragment packets.",
+                  "title": "Fragments"
+                },
+                "log": {
+                  "type": "boolean",
+                  "description": "Log matches against this rule.",
+                  "title": "Log"
+                },
+                "ttl": {
+                  "type": "integer",
+                  "description": "TTL value",
+                  "minimum": 0,
+                  "maximum": 255,
+                  "title": "TTL"
+                },
+                "ttl_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq"
+                  ],
+                  "default": "eq",
+                  "title": "TTL Match"
+                },
+                "icmp_type": {
+                  "type": "string",
+                  "description": "Message type name/number for ICMP packets.",
+                  "title": "ICMP Type"
+                },
+                "icmp_code": {
+                  "type": "string",
+                  "description": "Message code for ICMP packets.",
+                  "title": "ICMP Code"
+                },
+                "nexthop_group": {
+                  "type": "string",
+                  "description": "nexthop-group name.",
+                  "title": "Nexthop Group"
+                },
+                "tracked": {
+                  "type": "boolean",
+                  "description": "Match packets in existing ICMP/UDP/TCP connections.",
+                  "title": "Tracked"
+                },
+                "dscp": {
+                  "type": "string",
+                  "description": "DSCP value or name.",
+                  "title": "DSCP"
+                },
+                "vlan_number": {
+                  "type": "integer",
+                  "title": "VLAN Number"
+                },
+                "vlan_inner": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "VLAN Inner"
+                },
+                "vlan_mask": {
+                  "type": "string",
+                  "description": "0x000-0xFFF VLAN mask.",
+                  "title": "VLAN Mask"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "description": "ACL Entries.",
+            "title": "Entries"
+          },
+          "counters_per_entry": {
+            "type": "boolean",
+            "title": "Counters Per Entry"
+          }
+        },
+        "required": [
+          "entries",
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IPv4 Acls"
+    },
     "ipv6_mgmt_destination_networks": {
       "description": "List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.\nReplaces the default route.\n",
       "type": "array",
@@ -6045,6 +6235,16 @@
             "type": "string",
             "description": "The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
             "title": "Peer IP"
+          },
+          "ipv4_acl_in": {
+            "description": "Name of the IPv4 Access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls`.",
+            "type": "string",
+            "title": "IPv4 Acl In"
+          },
+          "ipv4_acl_out": {
+            "description": "Name of the IPv4 Access-list to be assigned in the egress direction.\nThe access-list must be defined under `ipv4_acls`.",
+            "type": "string",
+            "title": "IPv4 Acl Out"
           },
           "static_routes": {
             "description": "Configure IPv4 static routes pointing to `peer_ip`.",

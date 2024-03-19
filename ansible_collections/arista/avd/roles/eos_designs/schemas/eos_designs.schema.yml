@@ -1350,6 +1350,54 @@ keys:
       range:
         beginning: 1006
         ending: 1199
+  ipv4_acls:
+    type: list
+    primary_key: name
+    description: 'IPv4 Extended Access-lists supporting substition on certain fields.
+
+      The substition is useful when assigning the same access-list on multiple interfaces,
+
+      but where certain fields require unique values like the "interface_ip" or "peer_ip".
+
+      When using substition, the interface name will be appended to the ACL name.'
+    items:
+      $ref: eos_cli_config_gen#/keys/ip_access_lists/items
+      type: dict
+      keys:
+        name:
+          type: str
+          description: 'Access-list name.
+
+            When using substition for any fields, the interface name will be appended
+            to the ACL name.'
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              source:
+                type: str
+                description: 'This field supports substition of the fields "interface_ip"
+                  and "peer_ip".
+
+                  Alternatively it can be set with a static value of "any", "<ip>/<mask>"
+                  or "<ip>".
+
+                  "<ip>" without a mask means host.
+
+                  Required except for remarks.'
+              destination:
+                type: str
+                description: 'This field supports substition of the fields "interface_ip"
+                  and "peer_ip".
+
+                  Alternatively it can be set with a static value of "any", "<ip>/<mask>"
+                  or "<ip>".
+
+                  "<ip>" without a mask means host.
+
+                  Required except for remarks.'
   ipv6_mgmt_destination_networks:
     documentation_options:
       table: management-settings
@@ -8069,6 +8117,22 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        ipv4_acl_in:
+          description: 'Name of the IPv4 Access-list to be assigned in the ingress
+            direction.
+
+            The access-list must be defined under `ipv4_acls`.'
+          type: str
+          convert_types:
+          - int
+        ipv4_acl_out:
+          description: 'Name of the IPv4 Access-list to be assigned in the egress
+            direction.
+
+            The access-list must be defined under `ipv4_acls`.'
+          type: str
+          convert_types:
+          - int
         static_routes:
           description: Configure IPv4 static routes pointing to `peer_ip`.
           type: list
