@@ -499,7 +499,7 @@ router_path_selection:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
-      - 10.7.7.7
+      - 172.17.7.7
       - 10.9.9.9
     ipsec_profile: CP-PROFILE
   load_balance_policies:
@@ -540,7 +540,7 @@ stun:
   client:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
-      ip_address: 10.7.7.7
+      ip_address: 172.17.7.7
       ssl_profile: profileA
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
