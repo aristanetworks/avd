@@ -483,6 +483,17 @@ class WanMixin:
         raise AristaAvdError("Either all `wan_ha.interfaces` must be uplinks intergaves or all of them must not be uplinks.")
 
     @cached_property
+    def wan_ha_interfaces(self: SharedUtils) -> list:
+        """
+        TODO make this better and maybe not redundant with above
+        """
+        if self.use_uplinks_for_wan_ha:
+            return [uplink["interface"] for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+        else:
+            # Using node values
+            return list(set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[])))
+
+    @cached_property
     def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:
         """
         Read the IP addresses/prefix length from HA peer uplinks

@@ -285,3 +285,8 @@ class UtilsMixin:
                     for interface_dict in get(path_group, "interfaces", required=True)
                 )
         return stun_server_profiles
+
+    def _wan_ha_peer_vtep_ip(self) -> str:
+        """ """
+        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer, required=True)
+        return get(peer_facts, "vtep_ip", required=True)

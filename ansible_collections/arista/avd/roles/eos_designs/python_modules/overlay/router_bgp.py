@@ -285,10 +285,7 @@ class RouterBgpMixin(UtilsMixin):
                     "enable": True,
                 }
             }
-            neighbors = []
-            for ip_address_mask in self.shared_utils.wan_ha_peer_ip_addresses:
-                neighbors.append({"ip_address": ip_address_mask.split("/", maxsplit=1)[0], "activate": True})
-            address_family_evpn["neighbors"] = neighbors
+            address_family_evpn["neighbors"] = [{"ip_address": self._wan_ha_peer_vtep_ip(), "activate": True}]
 
         return address_family_evpn
 
@@ -517,17 +514,17 @@ class RouterBgpMixin(UtilsMixin):
                     neighbors.append(neighbor)
 
                 if self.shared_utils.wan_ha:
-                    for ip_address_mask in self.shared_utils.wan_ha_peer_ip_addresses:
-                        neighbor = self._create_neighbor(ip_address_mask.split("/", maxsplit=1)[0], self.shared_utils.wan_ha_peer, None)
-                        neighbor.update(
-                            {
-                                "update_source": "Dps1",
-                                "route_reflector_client": True,
-                                "send_community": "all",
-                                "route_map_in": "RM-WAN-HA-LOCAL-PREF-IN",
-                            }
-                        )
-                        neighbors.append(neighbor)
+                    neighbor = self._create_neighbor(self._wan_ha_peer_vtep_ip(), self.shared_utils.wan_ha_peer, None)
+                    neighbor.update(
+                        {
+                            "remote_as": self.shared_utils.bgp_as,
+                            "update_source": "Dps1",
+                            "route_reflector_client": True,
+                            "send_community": "all",
+                            "route_map_in": "RM-WAN-HA-LOCAL-PREF-IN",
+                        }
+                    )
+                    neighbors.append(neighbor)
 
             if self.shared_utils.is_wan_server:
                 # No neighbor configured on the `wan_overlay_peers` peer group as it is covered by listen ranges

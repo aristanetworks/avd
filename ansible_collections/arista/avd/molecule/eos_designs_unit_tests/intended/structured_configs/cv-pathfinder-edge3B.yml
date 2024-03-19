@@ -52,7 +52,7 @@ router_bgp:
       next_hop_self_received_evpn_routes:
         enable: true
     neighbors:
-    - ip_address: 10.10.10.0
+    - ip_address: 192.168.142.6
       activate: true
   address_family_ipv4_sr_te:
     peer_groups:
@@ -79,9 +79,10 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder
-  - ip_address: 10.10.10.0
+  - ip_address: 192.168.142.6
     peer: cv-pathfinder-edge3A
     description: cv-pathfinder-edge3A
+    remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
     send_community: all
@@ -449,6 +450,8 @@ router_path_selection:
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
+    local_interfaces:
+    - name: Ethernet52
     static_peers:
     - router_ip: 192.168.142.6
       name: cv-pathfinder-edge3A

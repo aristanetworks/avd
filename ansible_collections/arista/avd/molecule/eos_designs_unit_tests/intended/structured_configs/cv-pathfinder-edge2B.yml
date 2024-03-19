@@ -57,16 +57,10 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder
-  - ip_address: 172.17.0.5
+  - ip_address: 192.168.142.2
     peer: cv-pathfinder-edge2A
     description: cv-pathfinder-edge2A
-    update_source: Dps1
-    route_reflector_client: true
-    send_community: all
-    route_map_in: RM-WAN-HA-LOCAL-PREF-IN
-  - ip_address: 172.17.0.7
-    peer: cv-pathfinder-edge2A
-    description: cv-pathfinder-edge2A
+    remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
     send_community: all
@@ -163,9 +157,7 @@ router_bgp:
       next_hop_self_received_evpn_routes:
         enable: true
     neighbors:
-    - ip_address: 172.17.0.5
-      activate: true
-    - ip_address: 172.17.0.7
+    - ip_address: 192.168.142.2
       activate: true
   address_family_ipv4_sr_te:
     peer_groups:
