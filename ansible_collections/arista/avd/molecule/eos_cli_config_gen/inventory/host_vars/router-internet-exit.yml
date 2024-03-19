@@ -1,5 +1,5 @@
 router_internet_exit:
-  policies: 
+  policies:
     - name: po_01
       exit_groups:
         - name: po_eg_01_01
@@ -12,7 +12,6 @@ router_internet_exit:
     - name: po_03
       exit_groups:
         - name: po_eg_03_01
-      
   exit_groups:
     - name: eg_01
     - name: eg_02
