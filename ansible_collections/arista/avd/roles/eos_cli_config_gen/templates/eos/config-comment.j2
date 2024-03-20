@@ -6,5 +6,11 @@
 {# eos - config comment #}
 {% if config_comment is arista.avd.defined %}
 !
-!CONFIG-COMMENT: {{ config_comment }}
+{%     set multiline_comment = config_comment.split('\n') %}
+{%     for comment in multiline_comment %}
+{# To avoid empty sting #}
+{%         if comment %}
+!{{ comment }}
+{%         endif %}
+{%     endfor %}
 {% endif %}
