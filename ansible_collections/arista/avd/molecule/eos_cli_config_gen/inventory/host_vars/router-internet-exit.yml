@@ -4,9 +4,7 @@ router_internet_exit:
       exit_groups:
         - name: po_eg_01_01
         - name: po_eg_01_02
-          before: po_eg_01_01
         - name: po_eg_01_03
-          after: po_eg_01_01
         - name: po_eg_01_04
     - name: po_02
     - name: po_03
@@ -18,11 +16,11 @@ router_internet_exit:
       fib_default: true
     - name: eg_03
       fib_default: true
-      locals:
-        - connection: eg_03_lo_01
-        - connection: eg_03_lo_02
+      local_connections:
+        - name: eg_03_lo_01
+        - name: eg_03_lo_02
     - name: eg_04
-      locals:
-        - connection: eg_04_lo_01
-        - connection: eg_04_lo_02
-        - connection: eg_04_lo_03
+      local_connections:
+        - name: eg_04_lo_01
+        - name: eg_04_lo_02
+        - name: eg_04_lo_03
