@@ -7,4 +7,21 @@
 {% if router_service_insertion.enabled is arista.avd.defined(true) %}
 !
 router service-insertion
+{%     if router_service_insertion.connections is arista.avd.defined %}
+{%         for connection in router_service_insertion.connections | arista.avd.natural_sort('connection_name') %}
+{%             if connection.connection_name is arista.avd.defined %}
+   connection {{ connection.connection_name }}
+{%             endif %}
+{%             if connection.interface is arista.avd.defined %}
+{%                 if connection.tunnel_config is arista.avd.defined %}
+      interface {{ connection.interface }} {{ connection.tunnel_config }}
+{%                 else %}
+      interface {{ connection.interface }} next-hop {{ connection.next_hop_ip_address }}
+{%                 endif %}
+{%             endif %}
+{%             if connection.monitor_connectivity_to_host is arista.avd.defined %}
+      monitor connectivity host {{ connection.monitor_connectivity_to_host }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {% endif %}

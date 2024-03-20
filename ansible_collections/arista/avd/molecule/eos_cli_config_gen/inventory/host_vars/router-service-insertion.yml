@@ -1,3 +1,12 @@
 ### Router service-insertion ###
 router_service_insertion:
   enabled: true
+  connections:
+    - connection_name: connection1
+      interface: ethernet2
+      next_hop_ip_address: '10.10.10.10'
+      monitor_connectivity_to_host: 'host1'
+    - connection_name: connection2
+      interface: tunnel2
+      tunnel_config: "primary"
+      monitor_connectivity_to_host: 'host2'

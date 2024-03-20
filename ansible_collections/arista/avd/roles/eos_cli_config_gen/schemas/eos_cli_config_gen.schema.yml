@@ -13456,10 +13456,32 @@ keys:
                         type: bool
   router_service_insertion:
     type: dict
-    description: Configure network services inserted to data forwarding
+    description: Configure network services inserted to data forwarding.
     keys:
       enabled:
         type: bool
+      connections:
+        type: list
+        items:
+          type: dict
+          keys:
+            connection_name:
+              type: str
+              description: Configure name of the network service.
+            interface:
+              type: str
+              description: Interface to be used to reach the network service.
+            tunnel_config:
+              type: str
+              valid_values:
+              - primary
+              - secondary
+            next_hop_ip_address:
+              type: str
+              description: Configure the next-hop ip address.
+            monitor_connectivity_to_host:
+              type: str
+              description: Monitor connectivity health to the network service host.
   router_traffic_engineering:
     type: dict
     keys:
