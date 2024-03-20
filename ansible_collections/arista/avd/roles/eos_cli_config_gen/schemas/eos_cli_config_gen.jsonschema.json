@@ -23340,11 +23340,52 @@
     },
     "router_service_insertion": {
       "type": "object",
-      "description": "Configure network services inserted to data forwarding",
+      "description": "Configure network services inserted to data forwarding.",
       "properties": {
         "enabled": {
           "type": "boolean",
           "title": "Enabled"
+        },
+        "connections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "connection_name": {
+                "type": "string",
+                "description": "Configure name of the network service.",
+                "title": "Connection Name"
+              },
+              "interface": {
+                "type": "string",
+                "description": "Interface to be used to reach the network service.",
+                "title": "Interface"
+              },
+              "tunnel_config": {
+                "type": "string",
+                "enum": [
+                  "primary",
+                  "secondary"
+                ],
+                "title": "Tunnel Config"
+              },
+              "next_hop_ip_address": {
+                "type": "string",
+                "description": "Configure the next-hop ip address.",
+                "title": "Next Hop IP Address"
+              },
+              "monitor_connectivity_to_host": {
+                "type": "string",
+                "description": "Monitor connectivity health to the network service host.",
+                "title": "Monitor Connectivity To Host"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Connections"
         }
       },
       "additionalProperties": false,
