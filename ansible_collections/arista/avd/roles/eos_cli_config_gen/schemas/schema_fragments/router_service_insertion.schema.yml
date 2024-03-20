@@ -17,20 +17,33 @@ keys:
         items:
           type: dict
           keys:
-            connection_name:
+            name:
               type: str
               description: Configure name of the network service.
             interface:
-              type: str
+              type: dict
               description: Interface to be used to reach the network service.
-            tunnel_config:
-              type: str
-              valid_values:
-                - "primary"
-                - "secondary"
-            next_hop_ip_address:
-              type: str
-              description: Configure the next-hop ip address.
+              keys:
+                ethernet:
+                  type: dict
+                  keys:
+                    interface_name:
+                      type: str
+                      description: e.g. ethernet2
+                    next_hop_ip_address:
+                      type: str
+                      description: Configure the next-hop ip address.
+                tunnel:
+                  type: dict
+                  keys:
+                    interface_name:
+                      type: str
+                      description: e.g. tunnel2
+                    tunnel_config:
+                      type: str
+                      valid_values:
+                        - "primary"
+                        - "secondary"
             monitor_connectivity_to_host:
               type: str
               description: Monitor connectivity health to the network service host.

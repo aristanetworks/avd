@@ -8,15 +8,15 @@
 !
 router service-insertion
 {%     if router_service_insertion.connections is arista.avd.defined %}
-{%         for connection in router_service_insertion.connections | arista.avd.natural_sort('connection_name') %}
-{%             if connection.connection_name is arista.avd.defined %}
-   connection {{ connection.connection_name }}
+{%         for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
+{%             if connection.name is arista.avd.defined %}
+   connection {{ connection.name }}
 {%             endif %}
 {%             if connection.interface is arista.avd.defined %}
-{%                 if connection.tunnel_config is arista.avd.defined %}
-      interface {{ connection.interface }} {{ connection.tunnel_config }}
-{%                 else %}
-      interface {{ connection.interface }} next-hop {{ connection.next_hop_ip_address }}
+{%                 if connection.interface.ethernet is arista.avd.defined %}
+      interface {{ connection.interface.ethernet.interface_name }} next-hop {{ connection.interface.ethernet.next_hop_ip_address }}
+{%                 elif connection.interface.tunnel is arista.avd.defined %}
+      interface {{ connection.interface.tunnel.interface_name }} {{ connection.interface.tunnel.tunnel_config }}
 {%                 endif %}
 {%             endif %}
 {%             if connection.monitor_connectivity_to_host is arista.avd.defined %}
