@@ -10,10 +10,14 @@
     | [<samp>router_service_insertion</samp>](## "router_service_insertion") | Dictionary |  |  |  | Configure network services inserted to data forwarding. |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "router_service_insertion.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;connections</samp>](## "router_service_insertion.connections") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;connection_name</samp>](## "router_service_insertion.connections.[].connection_name") | String |  |  |  | Configure name of the network service. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "router_service_insertion.connections.[].interface") | String |  |  |  | Interface to be used to reach the network service. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_config</samp>](## "router_service_insertion.connections.[].tunnel_config") | String |  |  | Valid Values:<br>- <code>primary</code><br>- <code>secondary</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_ip_address</samp>](## "router_service_insertion.connections.[].next_hop_ip_address") | String |  |  |  | Configure the next-hop ip address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_service_insertion.connections.[].name") | String |  |  |  | Configure name of the network service. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "router_service_insertion.connections.[].interface") | Dictionary |  |  |  | Interface to be used to reach the network service. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethernet</samp>](## "router_service_insertion.connections.[].interface.ethernet") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_name</samp>](## "router_service_insertion.connections.[].interface.ethernet.interface_name") | String |  |  |  | e.g. ethernet2 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_ip_address</samp>](## "router_service_insertion.connections.[].interface.ethernet.next_hop_ip_address") | String |  |  |  | Configure the next-hop ip address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel</samp>](## "router_service_insertion.connections.[].interface.tunnel") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_name</samp>](## "router_service_insertion.connections.[].interface.tunnel.interface_name") | String |  |  |  | e.g. tunnel2 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_config</samp>](## "router_service_insertion.connections.[].interface.tunnel.tunnel_config") | String |  |  | Valid Values:<br>- <code>primary</code><br>- <code>secondary</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;monitor_connectivity_to_host</samp>](## "router_service_insertion.connections.[].monitor_connectivity_to_host") | String |  |  |  | Monitor connectivity health to the network service host. |
 
 === "YAML"
@@ -25,14 +29,22 @@
       connections:
 
           # Configure name of the network service.
-        - connection_name: <str>
+        - name: <str>
 
           # Interface to be used to reach the network service.
-          interface: <str>
-          tunnel_config: <str; "primary" | "secondary">
+          interface:
+            ethernet:
 
-          # Configure the next-hop ip address.
-          next_hop_ip_address: <str>
+              # e.g. ethernet2
+              interface_name: <str>
+
+              # Configure the next-hop ip address.
+              next_hop_ip_address: <str>
+            tunnel:
+
+              # e.g. tunnel2
+              interface_name: <str>
+              tunnel_config: <str; "primary" | "secondary">
 
           # Monitor connectivity health to the network service host.
           monitor_connectivity_to_host: <str>

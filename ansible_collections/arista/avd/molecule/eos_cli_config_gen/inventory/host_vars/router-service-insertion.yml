@@ -2,11 +2,21 @@
 router_service_insertion:
   enabled: true
   connections:
-    - connection_name: connection1
-      interface: ethernet2
-      next_hop_ip_address: '10.10.10.10'
+    - name: connection1
+      interface:
+        ethernet:
+          interface_name: ethernet2
+          next_hop_ip_address: '10.10.10.10'
       monitor_connectivity_to_host: 'host1'
-    - connection_name: connection2
-      interface: tunnel2
-      tunnel_config: "primary"
+    - name: connection2
+      interface:
+        tunnel:
+          interface_name: tunnel2
+          tunnel_config: "primary"
       monitor_connectivity_to_host: 'host2'
+    - name: connection3
+      interface:
+        tunnel:
+          interface_name: tunnel3
+          tunnel_config: "secondary"
+      monitor_connectivity_to_host: 'host3'

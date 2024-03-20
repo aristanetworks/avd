@@ -23351,28 +23351,64 @@
           "items": {
             "type": "object",
             "properties": {
-              "connection_name": {
+              "name": {
                 "type": "string",
                 "description": "Configure name of the network service.",
-                "title": "Connection Name"
+                "title": "Name"
               },
               "interface": {
-                "type": "string",
+                "type": "object",
                 "description": "Interface to be used to reach the network service.",
+                "properties": {
+                  "ethernet": {
+                    "type": "object",
+                    "properties": {
+                      "interface_name": {
+                        "type": "string",
+                        "description": "e.g. ethernet2",
+                        "title": "Interface Name"
+                      },
+                      "next_hop_ip_address": {
+                        "type": "string",
+                        "description": "Configure the next-hop ip address.",
+                        "title": "Next Hop IP Address"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Ethernet"
+                  },
+                  "tunnel": {
+                    "type": "object",
+                    "properties": {
+                      "interface_name": {
+                        "type": "string",
+                        "description": "e.g. tunnel2",
+                        "title": "Interface Name"
+                      },
+                      "tunnel_config": {
+                        "type": "string",
+                        "enum": [
+                          "primary",
+                          "secondary"
+                        ],
+                        "title": "Tunnel Config"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Tunnel"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "Interface"
-              },
-              "tunnel_config": {
-                "type": "string",
-                "enum": [
-                  "primary",
-                  "secondary"
-                ],
-                "title": "Tunnel Config"
-              },
-              "next_hop_ip_address": {
-                "type": "string",
-                "description": "Configure the next-hop ip address.",
-                "title": "Next Hop IP Address"
               },
               "monitor_connectivity_to_host": {
                 "type": "string",
