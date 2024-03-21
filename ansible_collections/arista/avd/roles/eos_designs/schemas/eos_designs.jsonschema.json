@@ -6189,7 +6189,7 @@
           },
           "dhcp_ip": {
             "type": "string",
-            "description": "When the `ip_address` is `dhcp`, this optional field allows to indicate the expected\nIPv4 address (without mask) to be allocated on the interface if known.\nThis is not rendered in the configuration but can be used for substution of 'interface_ip' in the Access-list\nset under `ipv4_acl_in` and `ipv4_acl_out`.",
+            "description": "When the `ip_address` is `dhcp`, this optional field allows to indicate the expected\nIPv4 address (without mask) to be allocated on the interface if known.\nThis is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list\nset under `ipv4_acl_in` and `ipv4_acl_out`.",
             "title": "DHCP IP"
           },
           "public_ip": {

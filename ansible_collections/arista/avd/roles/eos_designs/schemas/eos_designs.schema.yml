@@ -8076,7 +8076,7 @@ $defs:
 
             IPv4 address (without mask) to be allocated on the interface if known.
 
-            This is not rendered in the configuration but can be used for substution
+            This is not rendered in the configuration but can be used for substitution
             of ''interface_ip'' in the Access-list
 
             set under `ipv4_acl_in` and `ipv4_acl_out`.'
