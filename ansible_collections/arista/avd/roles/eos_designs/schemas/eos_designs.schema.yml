@@ -1353,13 +1353,13 @@ keys:
   ipv4_acls:
     type: list
     primary_key: name
-    description: 'IPv4 Extended Access-lists supporting substition on certain fields.
+    description: 'IPv4 Extended Access-lists supporting substitution on certain fields.
 
-      The substition is useful when assigning the same access-list on multiple interfaces,
+      The substitution is useful when assigning the same access-list on multiple interfaces,
 
       but where certain fields require unique values like the "interface_ip" or "peer_ip".
 
-      When using substition, the interface name will be appended to the ACL name.'
+      When using substitution, the interface name will be appended to the ACL name.'
     items:
       $ref: eos_cli_config_gen#/keys/ip_access_lists/items
       type: dict
@@ -1368,7 +1368,7 @@ keys:
           type: str
           description: 'Access-list name.
 
-            When using substition for any fields, the interface name will be appended
+            When using substitution for any fields, the interface name will be appended
             to the ACL name.'
         entries:
           type: list
@@ -1378,7 +1378,7 @@ keys:
             keys:
               source:
                 type: str
-                description: 'This field supports substition of the fields "interface_ip"
+                description: 'This field supports substitution of the fields "interface_ip"
                   and "peer_ip".
 
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>"
@@ -1389,7 +1389,7 @@ keys:
                   Required except for remarks.'
               destination:
                 type: str
-                description: 'This field supports substition of the fields "interface_ip"
+                description: 'This field supports substitution of the fields "interface_ip"
                   and "peer_ip".
 
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>"

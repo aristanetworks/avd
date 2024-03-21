@@ -317,7 +317,7 @@ class MiscMixin:
     def get_ipv4_acl(self: SharedUtils, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None):
         """
         Get one IPv4 ACL from "ipv4_acls" where fields have been substituted.
-        If any substition is done, the ACL name will get "_<interface_name>" appended.
+        If any substitution is done, the ACL name will get "_<interface_name>" appended.
         """
         org_ipv4_acl = get_item(self.ipv4_acls, "name", name, required=True, var_name=f"ipv4_acls[name={name}]")
         # deepcopy to avoid inplace updates below from modifying the original.
@@ -333,19 +333,19 @@ class MiscMixin:
             err_context = f"ipv4_acls[name={name}].entries[{index}]"
             source_field = get(entry, "source", required=True, org_key=f"{err_context}.source")
             destination_field = get(entry, "destination", required=True, org_key=f"{err_context}.destination")
-            entry["source"] = self._get_ipv4_acl_field_with_substition(source_field, ip_replacements, f"{err_context}.source", interface_name)
-            entry["destination"] = self._get_ipv4_acl_field_with_substition(destination_field, ip_replacements, f"{err_context}.destination", interface_name)
+            entry["source"] = self._get_ipv4_acl_field_with_substitution(source_field, ip_replacements, f"{err_context}.source", interface_name)
+            entry["destination"] = self._get_ipv4_acl_field_with_substitution(destination_field, ip_replacements, f"{err_context}.destination", interface_name)
 
         if ipv4_acl != org_ipv4_acl:
             ipv4_acl["name"] += f"_{interface_name}"
         return ipv4_acl
 
     @staticmethod
-    def _get_ipv4_acl_field_with_substition(field_value: str, replacements: dict[str, str], field_context: str, interface_name: str) -> str:
+    def _get_ipv4_acl_field_with_substitution(field_value: str, replacements: dict[str, str], field_context: str, interface_name: str) -> str:
         """
         Checks one field if the value can be substituted.
         The given "replacements" dict will be parsed as:
-          key: substition field to look for
+          key: substitution field to look for
           value: replacement value to set
 
         If a replacement is done, but the value is None, an error will be raised.
@@ -356,8 +356,8 @@ class MiscMixin:
 
             if value is None:
                 raise AristaAvdError(
-                    f"Unable to perform substition of the value '{key}' defined under '{field_context}', "
-                    f"since no substition value was found for interface '{interface_name}'. "
+                    f"Unable to perform substitution of the value '{key}' defined under '{field_context}', "
+                    f"since no substitution value was found for interface '{interface_name}'. "
                     "Make sure to set the appropriate fields on the interface."
                 )
 

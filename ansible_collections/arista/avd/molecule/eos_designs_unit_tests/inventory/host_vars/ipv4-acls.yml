@@ -53,11 +53,11 @@ ipv4_acls:
     entries:
       - action: permit
         protocol: ip
-        source: host 172.18.18.18
+        source: 172.18.18.18
         destination: any
   - name: TEST-IPV4-ACL-WITH-NO-FIELDS-OUT
     entries:
       - action: permit
         protocol: ip
-        source: host 172.18.18.18
+        source: 172.18.18.18
         destination: any
