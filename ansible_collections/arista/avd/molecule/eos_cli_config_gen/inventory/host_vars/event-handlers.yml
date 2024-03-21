@@ -43,3 +43,13 @@ event_handlers:
       after_before_stage: bgp
     action_type: bash
     action: echo "on-maintenance"
+  - name: trigger-on-maintenance3
+    trigger: on-maintenance
+    trigger_on_maintenance:
+      operation: enter
+      bgp:
+        neighbor_address_ipv4: 10.0.0.2
+      vrf: vrf1
+      stage: all
+    action_type: bash
+    action: echo "on-maintenance"

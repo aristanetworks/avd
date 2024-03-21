@@ -19,7 +19,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor_address_ipv4</samp>](## "event_handlers.[].trigger_on_maintenance.bgp.neighbor_address_ipv4") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor_address_ipv6</samp>](## "event_handlers.[].trigger_on_maintenance.bgp.neighbor_address_ipv6") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_group_name</samp>](## "event_handlers.[].trigger_on_maintenance.bgp.peer_group_name") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage</samp>](## "event_handlers.[].trigger_on_maintenance.stage") | String | Required |  | Valid Values:<br>- <code>after</code><br>- <code>before</code><br>- <code>all</code><br>- <code>begin</code><br>- <code>end</code><br>- <code>vrf</code> | Stages of maintenance operation. "vrf" stage can be defined for "bgp" only. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage</samp>](## "event_handlers.[].trigger_on_maintenance.stage") | String | Required |  | Valid Values:<br>- <code>after</code><br>- <code>before</code><br>- <code>all</code><br>- <code>begin</code><br>- <code>end</code> | Stages of maintenance operation. "vrf" stage can be defined for "bgp" only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;after_before_stage</samp>](## "event_handlers.[].trigger_on_maintenance.after_before_stage") | String |  |  | Valid Values:<br>- <code>bgp</code><br>- <code>linkdown</code><br>- <code>mlag</code><br>- <code>ratemon</code> | Action is triggered after/before specified stage. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "event_handlers.[].trigger_on_maintenance.vrf") | String |  |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "event_handlers.[].trigger_on_maintenance.interface") | String |  |  |  | Trigger condition occurs on maintenance operation of specified interface. |
@@ -59,7 +59,7 @@
             peer_group_name: <str>
 
           # Stages of maintenance operation. "vrf" stage can be defined for "bgp" only.
-          stage: <str; "after" | "before" | "all" | "begin" | "end" | "vrf"; required>
+          stage: <str; "after" | "before" | "all" | "begin" | "end"; required>
 
           # Action is triggered after/before specified stage.
           after_before_stage: <str; "bgp" | "linkdown" | "mlag" | "ratemon">

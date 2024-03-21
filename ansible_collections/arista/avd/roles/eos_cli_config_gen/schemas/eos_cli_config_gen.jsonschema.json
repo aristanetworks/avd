@@ -5515,8 +5515,7 @@
                   "before",
                   "all",
                   "begin",
-                  "end",
-                  "vrf"
+                  "end"
                 ],
                 "title": "Stage"
               },

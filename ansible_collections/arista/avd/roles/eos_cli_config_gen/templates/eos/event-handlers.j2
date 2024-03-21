@@ -21,6 +21,9 @@ event-handler {{ handler.name }}
 {%                     elif handler.trigger_on_maintenance.bgp.peer_group_name is arista.avd.defined %}
 {%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " bgp " ~ handler.trigger_on_maintenance.bgp.peer_group_name %}
 {%                     endif %}
+{%                     if handler.trigger_on_maintenance.vrf is arista.avd.defined %}
+{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " vrf " ~ handler.trigger_on_maintenance.vrf %}
+{%                     endif %}
 {%                 elif handler.trigger_on_maintenance.interface is arista.avd.defined %}
 {%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " interface " ~ handler.trigger_on_maintenance.interface %}
 {%                 elif handler.trigger_on_maintenance.unit is arista.avd.defined %}
@@ -34,8 +37,6 @@ event-handler {{ handler.name }}
 {%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " begin" %}
 {%                 elif handler.trigger_on_maintenance.stage is arista.avd.defined("end") %}
 {%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " end" %}
-{%                 elif handler.trigger_on_maintenance.stage is arista.avd.defined("vrf") %}
-{%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " vrf " ~ handler.trigger_on_maintenance.vrf %}
 {%                 endif %}
    {{ trigger_on_manitenance_cli }}
 {%             else %}

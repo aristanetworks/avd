@@ -3416,7 +3416,6 @@ keys:
               - all
               - begin
               - end
-              - vrf
             after_before_stage:
               type: str
               description: Action is triggered after/before specified stage.
