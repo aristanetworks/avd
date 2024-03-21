@@ -74,7 +74,8 @@ class RouteMapsMixin(UtilsMixin):
                         {
                             "sequence": 10,
                             "type": "permit",
-                            "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                            "match": ["extcommunity ECL-EVPN-SOO"],
+                            # "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                         },
                     ],
                 }

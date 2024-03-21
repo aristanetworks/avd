@@ -326,9 +326,9 @@ route_maps:
   sequence_numbers:
   - sequence: 30
     type: permit
-    description: Send only prefixes originated from the site.
-    match:
-    - extcommunity ECL-EVPN-SOO
+    description: Set SOO on prefixes from the site.
+    set:
+    - extcommunity soo 192.168.43.1:422 additive
   - sequence: 10
     type: permit
     description: Allow WAN HA peer interface prefixes
@@ -376,8 +376,8 @@ route_maps:
   sequence_numbers:
   - sequence: 10
     type: permit
-    set:
-    - extcommunity soo 192.168.43.1:422 additive
+    match:
+    - extcommunity ECL-EVPN-SOO
 - name: RM-WAN-HA-LOCAL-PREF-IN
   sequence_numbers:
   - sequence: 10

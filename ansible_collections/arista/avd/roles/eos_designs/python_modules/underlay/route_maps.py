@@ -101,9 +101,8 @@ class RouteMapsMixin(UtilsMixin):
                 {
                     "sequence": 30,
                     "type": "permit",
-                    "description": "Send only prefixes originated from the site.",
-                    "match": ["extcommunity ECL-EVPN-SOO"],
-                    # "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                    "description": "Set SOO on prefixes from the site.",
+                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                 },
             ]
             if self.shared_utils.wan_ha:

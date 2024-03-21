@@ -272,9 +272,9 @@ route_maps:
   sequence_numbers:
   - sequence: 30
     type: permit
-    description: Send only prefixes originated from the site.
-    match:
-    - extcommunity ECL-EVPN-SOO
+    description: Set SOO on prefixes from the site.
+    set:
+    - extcommunity soo 192.168.42.2:511 additive
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 20
@@ -299,8 +299,8 @@ route_maps:
   sequence_numbers:
   - sequence: 10
     type: permit
-    set:
-    - extcommunity soo 192.168.42.2:511 additive
+    match:
+    - extcommunity ECL-EVPN-SOO
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
