@@ -99,10 +99,11 @@ class RouteMapsMixin(UtilsMixin):
             # RM-BGP-UNDERLAY-PEERS-IN
             sequence_numbers = [
                 {
-                    "sequence": 40,
+                    "sequence": 30,
                     "type": "permit",
-                    "description": "Mark prefixes originated from the LAN",
-                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                    "description": "Send only prefixes originated from the site.",
+                    "match": ["extcommunity ECL-EVPN-SOO"],
+                    # "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                 },
             ]
             if self.shared_utils.wan_ha:
@@ -117,16 +118,8 @@ class RouteMapsMixin(UtilsMixin):
                         {
                             "sequence": 20,
                             "type": "deny",
-                            "description": "Deny prefixes originated from the HA peer",
-                            "match": ["extcommunity ECL-EVPN-SOO"],
-                            "set": ["as-path match all replacement auto auto"],
-                        },
-                        {
-                            "sequence": 30,
-                            "type": "deny",
-                            "description": "Deny WAN routes from HA peer",
+                            "description": "Deny other routes from the HA peer",
                             "match": ["as-path ASPATH-WAN"],
-                            "set": ["community no-advertise"],
                         },
                     ]
                 )
@@ -136,26 +129,35 @@ class RouteMapsMixin(UtilsMixin):
             # TODO - could mark everything with the community
             sequence_numbers = [
                 {
-                    "sequence": 10,
+                    "sequence": 20,
                     "type": "permit",
                     "description": "Advertise local routes towards LAN",
                     "match": ["extcommunity ECL-EVPN-SOO"],
                 },
                 {
-                    "sequence": 20,
+                    "sequence": 30,
                     "type": "permit",
                     "description": "Advertise routes received from WAN iBGP towards LAN",
                     "match": ["route-type internal"],
                 },
             ]
             if self.shared_utils.wan_ha:
-                sequence_numbers.append(
-                    {
-                        "sequence": 30,
-                        "type": "permit",
-                        "description": "Advertise WAN HA prefixes towards LAN",
-                        "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
-                    },
+                sequence_numbers.extend(
+                    [
+                        {
+                            "sequence": 10,
+                            "type": "permit",
+                            "description": "Make tagged routes received from WAN HA peer less preferred for LAN router",
+                            "match": ["tag 50", "route-type internal"],
+                            "set": ["metric 50"],
+                        },
+                        {
+                            "sequence": 40,
+                            "type": "permit",
+                            "description": "Advertise WAN HA prefixes towards LAN",
+                            "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
+                        },
+                    ]
                 )
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})
 

@@ -168,19 +168,19 @@ route_maps:
     - extcommunity soo 192.168.42.3:511 additive
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
-  - sequence: 40
+  - sequence: 30
     type: permit
-    description: Mark prefixes originated from the LAN
-    set:
-    - extcommunity soo 192.168.42.3:511 additive
+    description: Send only prefixes originated from the site.
+    match:
+    - extcommunity ECL-EVPN-SOO
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
-  - sequence: 10
+  - sequence: 20
     type: permit
     description: Advertise local routes towards LAN
     match:
     - extcommunity ECL-EVPN-SOO
-  - sequence: 20
+  - sequence: 30
     type: permit
     description: Advertise routes received from WAN iBGP towards LAN
     match:

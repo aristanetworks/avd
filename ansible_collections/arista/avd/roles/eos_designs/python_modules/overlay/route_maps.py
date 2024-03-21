@@ -87,8 +87,14 @@ class RouteMapsMixin(UtilsMixin):
                             {
                                 "sequence": 10,
                                 "type": "permit",
-                                "description": "Set lower Local Preference for EVPN routes received from WAN HA peer",
-                                "set": ["local-preference 50"],
+                                "description": "Make EVPN routes originated from WAN HA peer less preferred and tag them",
+                                "set": ["local-preference 75", "tag 50"],
+                            },
+                            {
+                                "sequence": 20,
+                                "type": "permit",
+                                "description": "Make EVPN routes received by WAN HA peer less preferred and tag them",
+                                "set": ["local-preference 50", "tag 50"],
                             },
                         ],
                     }
