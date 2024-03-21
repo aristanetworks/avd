@@ -49,6 +49,7 @@ interface Management1
 | trigger-on-maintenance | bash | <code>echo "on-maintenance"</code> | on-maintenance |
 | trigger-on-maintenance1 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
 | trigger-on-maintenance2 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
+| trigger-on-maintenance3 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
 
 #### Event Handler Device Configuration
 
@@ -75,10 +76,14 @@ event-handler trigger-on-maintenance
    action bash echo "on-maintenance"
 !
 event-handler trigger-on-maintenance1
-   trigger on-maintenance enter bgp 10.0.0.2 after stage linkdown
+   trigger on-maintenance enter bgp 10.0.0.2 vrf vrf1 after stage linkdown
    action bash echo "on-maintenance"
 !
 event-handler trigger-on-maintenance2
    trigger on-maintenance enter unit unit1 before stage bgp
+   action bash echo "on-maintenance"
+!
+event-handler trigger-on-maintenance3
+   trigger on-maintenance enter bgp 10.0.0.2 vrf vrf1 all
    action bash echo "on-maintenance"
 ```
