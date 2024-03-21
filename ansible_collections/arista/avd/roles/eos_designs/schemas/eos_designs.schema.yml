@@ -8069,15 +8069,17 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        dhcp_ip_address:
+        dhcp_ip:
           type: str
           description: 'When the `ip_address` is `dhcp`, this optional field allows
             to indicate the expected
 
-            IPv4 address/Mask to be allocated on the interface if known.
+            IPv4 address (without mask) to be allocated on the interface if known.
 
-            This is not rendered in the configuration but can be used in ACLs in certain
-            scenarios.'
+            This is not rendered in the configuration but can be used for substution
+            of ''interface_ip'' in the Access-list
+
+            set under `ipv4_acl_in` and `ipv4_acl_out`.'
         public_ip:
           type: str
           description: "Node IPv4 address (no mask).\n\nThis is used to get the public

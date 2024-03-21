@@ -301,7 +301,7 @@ class UtilsMixin:
                 continue
 
             interface_name = l3_interface["name"]
-            interface_ip: str | None = l3_interface.get("dhcp_ip_address") if (ip_address := l3_interface.get("ip_address")) == "dhcp" else ip_address
+            interface_ip: str | None = l3_interface.get("dhcp_ip") if (ip_address := l3_interface.get("ip_address")) == "dhcp" else ip_address
             if interface_ip is not None and "/" in interface_ip:
                 interface_ip = interface_ip.split("/", maxsplit=1)[0]
             peer_ip: str | None = get(l3_interface, "peer_ip")

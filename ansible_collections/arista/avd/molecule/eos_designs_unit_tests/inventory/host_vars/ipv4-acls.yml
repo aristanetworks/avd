@@ -15,7 +15,7 @@ spine:
           peer_ip: 172.16.0.1/30
         - name: Ethernet2
           ip_address: dhcp
-          dhcp_ip_address: 172.17.17.17/24
+          dhcp_ip: 172.17.17.17
           peer_ip: 172.17.17.1
           ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
           ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
