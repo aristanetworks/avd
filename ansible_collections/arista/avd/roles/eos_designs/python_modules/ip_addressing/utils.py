@@ -133,6 +133,8 @@ class UtilsMixin:
                 if uplink_switch_interface == downlink_interface:
                     return (get(downlink_pool_and_interfaces, "downlink_ipv4_pool"), interface_index)
 
+        return (None, None)
+
     def _get_p2p_ipv4_pool_and_offset(self: "AvdIpAddressing", uplink_switch_index: int) -> tuple[str, int]:
         """
         Returns IP pool and offset as a tuple according to the uplink_switch_index

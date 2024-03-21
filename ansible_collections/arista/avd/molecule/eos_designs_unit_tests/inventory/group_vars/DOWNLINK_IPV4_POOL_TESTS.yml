@@ -15,13 +15,15 @@ spine:
       downlink_pools:
         - downlink_ipv4_pool: 10.0.1.0/24
           downlink_interfaces: [Ethernet3-6]
+        - downlink_ipv4_pool: 10.0.3.0/24
+          downlink_interfaces: [Ethernet15, Ethernet7-14, Ethernet16]
       id: 10
     - name: downlink-ipv4-pool-spine2
       downlink_pools:
         - downlink_ipv4_pool: 10.0.2.0/24
           downlink_interfaces: [Ethernet3-4]
         - downlink_ipv4_pool: 10.0.4.0/24
-          downlink_interfaces: [Ethernet5, Ethernet6]
+          downlink_interfaces: [Ethernet5, Ethernet6, Ethernet15, Ethernet16]
       id: 20
 
 l3leaf:
@@ -29,7 +31,7 @@ l3leaf:
     loopback_ipv4_pool: 192.168.1.0/24
     vtep_loopback_ipv4_pool: 192.168.2.0/24
     bgp_as: 65000-65100
-    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_interfaces: [Ethernet1-2]
   nodes:
     - name: downlink-ipv4-pool-l3leaf1
       id: 10
@@ -41,9 +43,11 @@ l3leaf:
       uplink_switch_interfaces: [Ethernet3, Ethernet4]
     - name: downlink-ipv4-pool-l3leaf3
       id: 30
-      uplink_switches: [downlink-ipv4-pool-spine1, downlink-ipv4-pool-spine2]
-      uplink_switch_interfaces: [Ethernet5, Ethernet5]
+      uplink_interfaces: [Ethernet1-4]
+      uplink_switches: [downlink-ipv4-pool-spine1, downlink-ipv4-pool-spine2, downlink-ipv4-pool-spine1, downlink-ipv4-pool-spine2]
+      uplink_switch_interfaces: [Ethernet5, Ethernet5, Ethernet15, Ethernet15]
     - name: downlink-ipv4-pool-l3leaf4
       id: 40
-      uplink_switches: [downlink-ipv4-pool-spine1, downlink-ipv4-pool-spine2]
-      uplink_switch_interfaces: [Ethernet6, Ethernet6]
+      uplink_interfaces: [Ethernet1-4]
+      uplink_switches: [downlink-ipv4-pool-spine1, downlink-ipv4-pool-spine2, downlink-ipv4-pool-spine1, downlink-ipv4-pool-spine2]
+      uplink_switch_interfaces: [Ethernet6, Ethernet6, Ethernet16, Ethernet16]

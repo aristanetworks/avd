@@ -130,7 +130,7 @@ class MiscMixin:
             get(self.cv_topology_config, "uplink_switch_interfaces"),
         )
         if uplink_switch_interfaces is not None:
-            return uplink_switch_interfaces
+            return range_expand(uplink_switch_interfaces)
 
         if not self.uplink_switches:
             return []
