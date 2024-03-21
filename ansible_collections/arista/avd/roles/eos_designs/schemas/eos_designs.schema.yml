@@ -7591,7 +7591,7 @@ $defs:
             description: 'Enable to configure upstream device with proper configuration
               to allow downstream devices to ZTP inband.
 
-              This setting also requires that the inband_mgmt_vlan is set for the
+              This setting also requires that the `inband_mgmt_vlan` is set for the
               node.'
             type: bool
             default: false
@@ -7601,7 +7601,7 @@ $defs:
             description: 'Set the LACP fallback timeout of the upstream device''s
               port-channel towards the downstream inband ZTP node.
 
-              This setting also requires that inband_ztp is set for the node.'
+              This setting also requires that `inband_ztp` is set for the node.'
             type: int
             min: 0
             max: 300
