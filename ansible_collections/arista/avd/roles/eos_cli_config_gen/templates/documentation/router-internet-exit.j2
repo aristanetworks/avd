@@ -1,0 +1,49 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - router internet exit #}
+{% if router_internet_exit is arista.avd.defined %}
+
+### Router Internet Exit
+
+#### Exit Group Summary
+
+| Exit Group | Local Connection | Fib Default | Policy | Policy Exit Group |
+| ---------- | ---------------- | ----------- | ------ | ----------------- |
+{%     if router_internet_exit.exit_groups is arista.avd.defined %}
+{%         for exit_group in router_internet_exit.exit_groups | arista.avd.default([]) %}
+{%             if exit_group.local_connections is arista.avd.defined %}
+{%                 for local_connection in exit_group.local_connections | arista.avd.default([]) %}
+| {{ exit_group.name }} | {{ local_connection.name }} | - | - | - |
+{%                 endfor %}
+{%             endif %}
+{%             if exit_group.fib_default is arista.avd.defined(true) %}
+| {{ exit_group.name }} | - | True | - | - |
+{%             endif %}
+{%             if exit_group.local_connections is not arista.avd.defined and exit_group.fib_default is not arista.avd.defined(true) %}
+| {{ exit_group.name }} | - | - | - | - |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if router_internet_exit.policies is arista.avd.defined %}
+{%         for policy in router_internet_exit.policies | arista.avd.default([]) %}
+{%             if policy.exit_groups is arista.avd.defined %}
+{%                 for exit_group in policy.exit_groups | arista.avd.default([]) %}
+{%                     if exit_group.name is arista.avd.defined %}
+| - | - | - | {{ policy.name }} | {{ exit_group.name }} |
+{%                     endif %}
+{%                 endfor %}
+{%             else %}
+| - | - | - | {{ policy.name }} | - |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+#### Router Internet Exit Device Configuration
+
+```eos
+{%     include 'eos/router-internet-exit.j2' %}
+```
+{% endif %}
