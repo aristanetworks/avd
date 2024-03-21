@@ -23578,6 +23578,10 @@
           "type": "boolean",
           "title": "Sample Input Subinterface"
         },
+        "sample_output_subinterface": {
+          "type": "boolean",
+          "title": "Sample Output Subinterface"
+        },
         "dangerous": {
           "type": "boolean",
           "title": "Dangerous"

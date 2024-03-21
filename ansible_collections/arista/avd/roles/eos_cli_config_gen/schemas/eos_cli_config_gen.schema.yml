@@ -13586,6 +13586,8 @@ keys:
         - str
       sample_input_subinterface:
         type: bool
+      sample_output_subinterface:
+        type: bool
       dangerous:
         type: bool
       polling_interval:

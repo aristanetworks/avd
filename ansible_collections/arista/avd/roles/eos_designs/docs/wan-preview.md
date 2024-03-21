@@ -39,6 +39,7 @@ The intention is to support both a single AutoVPN design and [CV Pathfinder](htt
   - If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
   - For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
   - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default. It is possible to disable HA under node settings.
+  - For a given application profile match in a WAN policy, if the path-groups in the input data have an empty intersection with the path-groups on the device (no common path-group), the match statement / AVT profile is **NOT** configured on the device. This implies that the traffic could be matched in one of the following application profiles or the default virtual topology. Note that the default virtual topology can be configured to drop traffic.
 
 #### LAN Designs
 
@@ -111,20 +112,6 @@ The HA tunnel will come up properly today but route redistribution will be missi
 
 - Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`.
 - Because of the previous point, in `eos_designs`, the `transit` node type is always configured as `transit region`.
-- For `cv-pathfinder` mode, the following flow-tracking configuration is applied
-    without any customization possible:
-
-    ```eos
-    flow tracking hardware
-       tracker WAN-FLOW-TRACKER
-        record export on inactive timeout 70000
-        record export on interval 5000
-        exporter DPI-EXPORTER
-         collector 127.0.0.1
-         local interface Loopback0
-         template interval 5000
-    ```
-
 - All Pathfinders must be able to create a full mesh
 - No IPv6 support
 - For WAN interfaces, NAT IP on the Pathfinder side can be supported using the `wan_route_servers.path_groups.interfaces` key.
@@ -133,6 +120,7 @@ The HA tunnel will come up properly today but route redistribution will be missi
 - The name of the AVT policies and AVT profiles are configurable in the input variables. The Load Balance policies are named `LB-<profile_name>` and are not configurable.
 - For LAN, the current supported funcitonality is to use `uplink_type: p2p-vrfs` on the WAN routers and to have the relevant VRFs present on the uplink switches via `network_services`. Other LAN scenarios will come with time.
 - HA for AutoVPN is not supported
+- All the WAN routers must have a common path-group with at least one WAN route server to be able to inject the default control-plane match statement in the VRF default WAN policy.
 
 ## Future work
 
@@ -214,6 +202,12 @@ roles/eos_designs/docs/tables/wan-virtual-topologies.md
 
 --8<--
 roles/eos_designs/docs/tables/application-classification.md
+--8<--
+
+#### Flow Tracking Settings
+
+--8<--
+roles/eos_designs/docs/tables/flow-tracking-settings.md
 --8<--
 
 #### New BGP peer-group

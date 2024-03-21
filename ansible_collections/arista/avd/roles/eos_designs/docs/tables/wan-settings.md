@@ -8,6 +8,8 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>wan_edge</samp>](## "wan_edge") <span style="color:red">removed</span> | Dictionary |  |  |  | The `wan_edge` node type was introduced and removed while the AVD WAN feature was in PREVIEW MODE.<br>Migrate your existing edge nodes to using `wan_router` node_type.<span style="color:red">This key was removed. Support was removed in AVD version 4.6.0-dev1. Use <samp>wan_router</samp> instead.</span> |
+    | [<samp>wan_ha</samp>](## "wan_ha") | Dictionary |  |  |  | PREVIEW: This key is currently not supported |
+    | [<samp>&nbsp;&nbsp;lan_ha_path_group_name</samp>](## "wan_ha.lan_ha_path_group_name") | String |  | `LAN_HA` |  | When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.<br>This key allows to overwrite the default LAN HA path-group name. |
     | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>Define IPsec profiles parameters for WAN configuration. |
     | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  | PREVIEW: This key is currently not supported |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.control_plane.ike_policy_name") | String |  | `CP-IKE-POLICY` |  | Name of the IKE policy. |
@@ -27,7 +29,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].path_groups.[].name") | String | Required, Unique |  |  | Path-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "wan_route_servers.[].path_groups.[].interfaces") | List, items: Dictionary | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].path_groups.[].interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].path_groups.[].interfaces.[].ip_address") | String |  |  |  | The public IP address of the Route Reflector for this path-group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].path_groups.[].interfaces.[].ip_address") <span style="color:red">removed</span> | String |  |  |  | The public IPv4 address (without mask) of the Route Reflector for this path-group.<span style="color:red">This key was removed. Support was removed in AVD version 4.7.0. Use <samp>public_ip</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "wan_route_servers.[].path_groups.[].interfaces.[].public_ip") | String |  |  |  | The public IPv4 address (without mask) of the Route Reflector for this path-group. |
     | [<samp>wan_stun_dtls_disable</samp>](## "wan_stun_dtls_disable") | Boolean |  | `False` |  | PREVIEW: This key is currently not supported<br><br>WAN STUN connections will be authenticated and secured with DTLS by default.<br>For CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.<br>In case of AutoVPN the certificates must be deployed manually to all devices.<br><br>For LAB environments this can be disabled, if there are no certificates available.<br>This should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication. |
     | [<samp>wan_stun_dtls_profile_name</samp>](## "wan_stun_dtls_profile_name") | String |  | `STUN-DTLS` |  | PREVIEW: This key is currently not supported<br><br>Name of the SSL profile used for DTLS on WAN STUN connections.<br><br>When using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers. |
     | [<samp>wan_transit</samp>](## "wan_transit") <span style="color:red">removed</span> | Dictionary |  |  |  | The `wan_transit` node type was introduced and removed while the AVD WAN feature was in PREVIEW MODE.<br>Migrate your existing transit nodes to using `wan_router` node_type and set<br>`cv_pathfinder_transit_mode: region` under node settings.<span style="color:red">This key was removed. Support was removed in AVD version 4.6.0-dev1. Use <samp>node_type `wan_router` and set `cv_pathfinder_transit_mode: region` under node settings</samp> instead.</span> |
@@ -35,6 +38,13 @@
 === "YAML"
 
     ```yaml
+    # PREVIEW: This key is currently not supported
+    wan_ha:
+
+      # When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.
+      # This key allows to overwrite the default LAN HA path-group name.
+      lan_ha_path_group_name: <str; default="LAN_HA">
+
     # PREVIEW: This key is currently not supported
     #
     # Define IPsec profiles parameters for WAN configuration.
@@ -102,8 +112,8 @@
                 # Interface name.
               - name: <str; required; unique>
 
-                # The public IP address of the Route Reflector for this path-group.
-                ip_address: <str>
+                # The public IPv4 address (without mask) of the Route Reflector for this path-group.
+                public_ip: <str>
 
     # PREVIEW: This key is currently not supported
     #

@@ -111,7 +111,7 @@ ethernet_interfaces:
   ip_address: 10.0.10.1/24
   mtu: 9214
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet2.100
   peer: uplink_lan_l2leaf
   peer_interface: Ethernet1 VLAN 100
@@ -126,7 +126,7 @@ ethernet_interfaces:
   ipv6_enable: true
   eos_cli: comment yo
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
   _custom_key: custom_value
 - name: Ethernet1
   peer_type: l3_interface
@@ -135,7 +135,7 @@ ethernet_interfaces:
   type: routed
   description: Comcast_999
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -208,16 +208,16 @@ agents:
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -268,10 +268,10 @@ router_adaptive_virtual_topology:
     name: site1
     id: 1
   profiles:
-  - name: DEFAULT-POLICY-CONTROL-PLANE
-    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   - name: DEFAULT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   vrfs:
   - name: VRF1
     policy: DEFAULT-POLICY
@@ -338,7 +338,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 192.168.2.1/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: uplink_lan_wan_router1_VTEP
@@ -380,6 +380,7 @@ metadata:
         value: '999'
   cv_pathfinder:
     role: edge
+    ssl_profile: STUN-DTLS
     vtep_ip: 192.168.2.1
     region: region1
     zone: region1-ZONE

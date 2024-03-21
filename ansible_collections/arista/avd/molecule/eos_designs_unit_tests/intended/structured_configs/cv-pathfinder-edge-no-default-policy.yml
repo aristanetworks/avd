@@ -130,7 +130,7 @@ ethernet_interfaces:
   description: ATT_666
   dhcp_client_accept_default_route: true
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.15.5.5/31
@@ -138,7 +138,7 @@ ethernet_interfaces:
   type: routed
   description: Colt_10555
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
@@ -146,7 +146,7 @@ ethernet_interfaces:
   type: routed
   description: Comcast-5G_AF830
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -194,16 +194,16 @@ agents:
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -267,10 +267,10 @@ router_adaptive_virtual_topology:
     name: Site511
     id: 511
   profiles:
-  - name: DEFAULT-POLICY-CONTROL-PLANE
-    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   - name: DEFAULT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   vrfs:
   - name: PROD
     policy: DEFAULT-POLICY
@@ -323,7 +323,7 @@ router_path_selection:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
-      - 10.7.7.7
+      - 172.17.7.7
       - 10.9.9.9
     ipsec_profile: CP-PROFILE
   - name: MPLS
@@ -352,20 +352,20 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: MPLS
     - name: INET
     - name: LTE
+    - name: MPLS
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: MPLS
     - name: INET
+    - name: MPLS
 router_traffic_engineering:
   enabled: true
 stun:
   client:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
-      ip_address: 10.7.7.7
+      ip_address: 172.17.7.7
       ssl_profile: STUN-DTLS
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
@@ -393,7 +393,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 192.168.255.1/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: cv-pathfinder-edge-no-default-policy_VTEP
@@ -445,6 +445,7 @@ metadata:
         value: AF830
   cv_pathfinder:
     role: edge
+    ssl_profile: STUN-DTLS
     vtep_ip: 192.168.255.1
     region: AVD_Land_East
     zone: AVD_Land_East-ZONE
