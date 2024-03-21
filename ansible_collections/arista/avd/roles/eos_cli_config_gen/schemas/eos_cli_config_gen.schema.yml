@@ -6320,13 +6320,13 @@ keys:
         type: str
       peer_address:
         type: str
-        description: IPv4 Address
+        description: IPv4 or IPv6 Address
       peer_address_heartbeat:
         type: dict
         keys:
           peer_ip:
             type: str
-            description: IPv4 Address
+            description: IPv4 or IPv6 Address
           vrf:
             description: VRF Name
             type: str
