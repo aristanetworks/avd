@@ -39,7 +39,15 @@ dot1x
 {%     endif %}
 {%     if dot1x.aaa.unresponsive is arista.avd.defined %}
 {%         set aaa_config = "aaa unresponsive" %}
-{%         if dot1x.aaa.unresponsive.phone_action.traffic_allow is arista.avd.defined(true) %}
+{%         if dot1x.aaa.unresponsive.phone_action.apply_alternate is arista.avd.defined(true) %}
+{%             if dot1x.aaa.unresponsive.phone_action.apply_cached_results is arista.avd.defined(true) and dot1x.aaa.unresponsive.phone_action.traffic_allow is arista.avd.defined(true) %}
+{%                 if dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration is arista.avd.defined and dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit is arista.avd.defined %}
+{{ aaa_config }} phone action apply cached-results timeout {{ dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration }} {{ dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit }} else traffic allow
+{%                 else %}
+{{ aaa_config }} phone action apply cached-results else traffic allow
+{%                 endif %}
+{%             endif %}
+{%         elif dot1x.aaa.unresponsive.phone_action.traffic_allow is arista.avd.defined(true) %}
 {{ aaa_config }} phone action traffic allow
 {%         elif dot1x.aaa.unresponsive.phone_action.apply_cached_results is arista.avd.defined(true) %}
 {%             if dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration is arista.avd.defined and dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit is arista.avd.defined %}
@@ -48,7 +56,20 @@ dot1x
 {{ aaa_config }} phone action apply cached-results
 {%             endif %}
 {%         endif %}
-{%         if dot1x.aaa.unresponsive.action.traffic_allow is arista.avd.defined(true) %}
+{%         if dot1x.aaa.unresponsive.action.apply_alternate is arista.avd.defined(true) %}
+{%             if dot1x.aaa.unresponsive.phone_action.traffic_allow is arista.avd.defined(true) %}
+{%                 set traffic = "traffic allow" %}
+{%             elif dot1x.aaa.unresponsive.phone_action.traffic_allow_vlan is arista.avd.defined %}
+{%                 set traffic = "traffic allow vlan " ~ dot1x.aaa.unresponsive.phone_action.traffic_allow_vlan %}
+{%             endif %}
+{%             if dot1x.aaa.unresponsive.action.apply_cached_results is arista.avd.defined(true) and (dot1x.aaa.unresponsive.action.traffic_allow is arista.avd.defined(true) or dot1x.aaa.unresponsive.action.traffic_allow_vlan is arista.avd.defined) %}
+{%                 if dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration is arista.avd.defined and dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration_unit is arista.avd.defined %}
+{{ aaa_config }} action apply cached-results timeout {{ dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration }} {{ dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration_unit }} else {{ traffic }}
+{%                 else %}
+{{ aaa_config }} action apply cached-results else {{ traffic }}
+{%                 endif %}
+{%             endif %}
+{%         elif dot1x.aaa.unresponsive.action.traffic_allow is arista.avd.defined(true) %}
 {{ aaa_config }} action traffic allow
 {%         elif dot1x.aaa.unresponsive.action.traffic_allow_vlan is arista.avd.defined %}
 {{ aaa_config }} action traffic allow vlan {{ dot1x.aaa.unresponsive.action.traffic_allow_vlan }}

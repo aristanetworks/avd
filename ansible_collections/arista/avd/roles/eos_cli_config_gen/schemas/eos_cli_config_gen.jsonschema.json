@@ -2134,9 +2134,11 @@
         },
         "aaa": {
           "type": "object",
+          "description": "Configure AAA parameters.",
           "properties": {
             "unresponsive": {
               "type": "object",
+              "description": "Configure AAA timeout options.",
               "properties": {
                 "eap_response": {
                   "type": "string",
@@ -2148,9 +2150,11 @@
                 },
                 "action": {
                   "type": "object",
+                  "description": "Set action for supplicant when AAA times out.",
                   "properties": {
                     "apply_cached_results": {
                       "type": "boolean",
+                      "description": "Use results from a previous AAA response.",
                       "title": "Apply Cached Results"
                     },
                     "cached_results_timeout": {
@@ -2181,8 +2185,14 @@
                       },
                       "title": "Cached Results Timeout"
                     },
+                    "apply_alternate": {
+                      "type": "boolean",
+                      "description": "Apply alternate action if primary action fails.",
+                      "title": "Apply Alternate"
+                    },
                     "traffic_allow": {
                       "type": "boolean",
+                      "description": "Set action for supplicant traffic when AAA times out.",
                       "title": "Traffic Allow"
                     },
                     "traffic_allow_vlan": {
@@ -2198,9 +2208,11 @@
                 },
                 "phone_action": {
                   "type": "object",
+                  "description": "Set action for supplicant when AAA times out.",
                   "properties": {
                     "apply_cached_results": {
                       "type": "boolean",
+                      "description": "Use results from a previous AAA response.",
                       "title": "Apply Cached Results"
                     },
                     "cached_results_timeout": {
@@ -2231,7 +2243,13 @@
                       },
                       "title": "Cached Results Timeout"
                     },
+                    "apply_alternate": {
+                      "type": "boolean",
+                      "description": "Apply alternate action if primary action fails.",
+                      "title": "Apply Alternate"
+                    },
                     "traffic_allow": {
+                      "description": "Set action for supplicant traffic when AAA times out.",
                       "type": "boolean",
                       "title": "Traffic Allow"
                     }

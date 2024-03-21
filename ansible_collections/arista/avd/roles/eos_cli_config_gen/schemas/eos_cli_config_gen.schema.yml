@@ -1518,9 +1518,11 @@ keys:
             - str
       aaa:
         type: dict
+        description: Configure AAA parameters.
         keys:
           unresponsive:
             type: dict
+            description: Configure AAA timeout options.
             keys:
               eap_response:
                 type: str
@@ -1529,9 +1531,11 @@ keys:
                 - disabled
               action:
                 type: dict
+                description: Set action for supplicant when AAA times out.
                 keys:
                   apply_cached_results:
                     type: bool
+                    description: Use results from a previous AAA response.
                   cached_results_timeout:
                     type: dict
                     keys:
@@ -1548,17 +1552,24 @@ keys:
                         - hours
                         - minutes
                         - seconds
+                  apply_alternate:
+                    type: bool
+                    description: Apply alternate action if primary action fails.
                   traffic_allow:
                     type: bool
+                    description: Set action for supplicant traffic when AAA times
+                      out.
                   traffic_allow_vlan:
                     type: int
                     convert_types:
                     - str
               phone_action:
                 type: dict
+                description: Set action for supplicant when AAA times out.
                 keys:
                   apply_cached_results:
                     type: bool
+                    description: Use results from a previous AAA response.
                   cached_results_timeout:
                     type: dict
                     keys:
@@ -1575,7 +1586,12 @@ keys:
                         - hours
                         - minutes
                         - seconds
+                  apply_alternate:
+                    type: bool
+                    description: Apply alternate action if primary action fails.
                   traffic_allow:
+                    description: Set action for supplicant traffic when AAA times
+                      out.
                     type: bool
               recovery_action_reauthenticate:
                 type: bool
