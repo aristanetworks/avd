@@ -4833,9 +4833,9 @@
                 },
                 "title": "BGP"
               },
-              "stage": {
+              "action": {
                 "type": "string",
-                "description": "Stages of maintenance operation. \"vrf\" stage can be defined for \"bgp\" only.",
+                "description": "Action for maintenance operation.",
                 "enum": [
                   "after",
                   "before",
@@ -4843,9 +4843,9 @@
                   "begin",
                   "end"
                 ],
-                "title": "Stage"
+                "title": "Action"
               },
-              "after_before_stage": {
+              "stage": {
                 "type": "string",
                 "description": "Action is triggered after/before specified stage.",
                 "enum": [
@@ -4854,11 +4854,11 @@
                   "mlag",
                   "ratemon"
                 ],
-                "title": "After Before Stage"
+                "title": "Stage"
               },
               "vrf": {
                 "type": "string",
-                "description": "VRF name.",
+                "description": "VRF name. VRF can be defined for \"bgp\" only.",
                 "title": "VRF"
               },
               "interface": {
@@ -4874,7 +4874,7 @@
             },
             "required": [
               "operation",
-              "stage"
+              "action"
             ],
             "additionalProperties": false,
             "patternProperties": {
