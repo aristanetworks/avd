@@ -14,10 +14,12 @@ dot1x:
     unresponsive:
       eap_response: success
       action:
-        apply_cached_results: true
+        traffic_allow_vlan: 10
         cached_results_timeout:
           time_duration: 10
           time_duration_unit: hours
       phone_action:
+        apply_cached_results: true
         traffic_allow: true
+        apply_alternate: true
       recovery_action_reauthenticate: true
