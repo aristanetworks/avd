@@ -380,13 +380,13 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: MPLS
-    - name: INET
+    - name: AWS
     - name: Equinix
       priority: 2
+    - name: INET
+    - name: MPLS
     - name: Satellite
       priority: 2
-    - name: AWS
     - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
@@ -442,13 +442,13 @@ router_path_selection:
     - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: MPLS
-    - name: INET
+    - name: AWS
     - name: Equinix
       priority: 2
+    - name: INET
+    - name: MPLS
     - name: Satellite
       priority: 2
-    - name: AWS
     - name: LAN_HA
 router_traffic_engineering:
   enabled: true
@@ -527,6 +527,14 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+      - name: PROD
+        vni: 42
+      - name: IT
+        vni: 100
+      - name: TRANSIT
+        vni: 66
+      - name: ATTRACTED-VRF-FROM-UPLINK
+        vni: 166
 metadata:
   cv_tags:
     device_tags:
@@ -560,12 +568,12 @@ metadata:
       carrier: SFR
       circuit_id: '999'
       pathgroup: INET
-      public_ip: 10.9.9.9
+      public_ip: 10.9.9.6
     - name: Ethernet2
       carrier: ATT-MPLS
       circuit_id: '10999'
       pathgroup: MPLS
-      public_ip: 172.19.9.9
+      public_ip: 10.9.9.5
     pathgroups:
     - name: MPLS
       carriers:
@@ -619,16 +627,16 @@ metadata:
       - id: 254
         name: DEFAULT-AVT-POLICY-CONTROL-PLANE
         pathgroups:
-        - name: MPLS
-          preference: preferred
-        - name: INET
+        - name: AWS
           preference: preferred
         - name: Equinix
           preference: alternate
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: preferred
         - name: Satellite
           preference: alternate
-        - name: AWS
-          preference: preferred
         - name: LAN_HA
           preference: preferred
       - id: 3
@@ -746,15 +754,15 @@ metadata:
       - id: 1
         name: DEFAULT-POLICY-DEFAULT
         pathgroups:
-        - name: MPLS
-          preference: preferred
-        - name: INET
+        - name: AWS
           preference: preferred
         - name: Equinix
           preference: alternate
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: preferred
         - name: Satellite
           preference: alternate
-        - name: AWS
-          preference: preferred
         - name: LAN_HA
           preference: preferred

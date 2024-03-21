@@ -21,7 +21,7 @@ wan_route_servers:
       - name: INET
         interfaces:
           - name: Ethernet1
-            ip_address: 10.7.7.7/31
+            public_ip: 10.7.7.7
   - hostname: autovpn-rr2
 
 wan_ipsec_profiles:
