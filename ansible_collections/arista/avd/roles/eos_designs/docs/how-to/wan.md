@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Ansible Collection Role eos_designs - WAN preview
+title: Ansible Collection Role eos_designs - WAN
 ---
 <!--
   ~ Copyright (c) 2023-2024 Arista Networks, Inc.
@@ -8,79 +8,73 @@ title: Ansible Collection Role eos_designs - WAN preview
   ~ that can be found in the LICENSE file.
   -->
 
-# WAN preview
+# WAN
 
 !!! warning
 
-    The integration of WAN designs to `eos_designs` role is in preview mode.
+    Some of the WAN functionality is still in PREVIEW. When this is the case it
+    is indicated as such in the documentation.
+    The integration of WAN designs to `eos_designs` role is
 
     Everything is subject to change, is not supported and may not be complete.
 
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
-## Overview
+!!! note
 
-The intention is to support both a single AutoVPN design and [CV Pathfinder](https://www.arista.com/en/solutions/enterprise-wan/pathfinder).
+    `eos_cli_config_gen` schema should support all of the required keys to configure a WAN network, whether AutoVPN or Pathfinder except for the most recent features.
+    This means that any missing eos_designs feature should be supported using `custom_structured_configuration` functionality.
+    If you find any missing functionality, please open an issue on Github.
+
+## Overview
 
 ### Design points
 
+- When deploying CV Pathfinder, the assumption is that the deployment is using CVaaS.
 - The intent is to be able to support having the different WAN participating devices in different inventories.
 - Only iBGP is supported as an overlay_routing_protocol.
-- On the AutoVPN Route Reflectors and Pathfinders, a listen range statement is used for BGP to allow for point number 1.
-- The default VRF is being configured by default on all WAN devices with a `vni_id` of 1. To override this, it is necessary to configure the `default` VRF in a tenant in `network_services`.
-- When configuring HA on a site, the path-group ID `65535` is reserved for the path-group called `LAN_HA`.
-- The policies definition works as follow:
+- On the AutoVPN Route Reflectors and Pathfinders, a listen range statement is used for BGP to allow for distributed inventories.
+- The default VRF is being configured by default on all WAN devices with a `wan_vni` of 1. To override this, it is necessary to configure the `default` VRF in a tenant in `network_services`.
+- Path-group ID `65535` is reserved for the path-group called `LAN_HA`.
 
-  - The policies are defined under `wan_virtual_topologies.policies`. For AutoVPN mode, the policies are configured under `router path-selection`, for CV Pathfinder, they are configured under `router adaptive-virtual-topology`.
-  - A policy is composed of a list of `application_virtual_topologies` and one `default_virtual_topology`.
-  - The `application_virtual_topologies` entries and the `default_virtual_topology` key are used to create the policy match statement, the AVT profile (when `wan_mode` is CV Pathfinder) and the load balancing policy.
-  - The `default_virtual_topology` is used as the default match in the policy.  To prevent configuring it, the `drop_unmatched` boolean must be set to `true` otherwise, at least one `path-group` must be configured or AVD will raise an error.
-  - Policies are assigned to VRFs using the list `wan_virtual_topologies.vrfs`. A policy can be reused in multiple VRFs.
-  - If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
-  - For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
+### Features in PREVIEW
+
+- WAN HA is in PREVIEW
+
   - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default. It is possible to disable HA under node settings.
-  - For a given application profile match in a WAN policy, if the path-groups in the input data have an empty intersection with the path-groups on the device (no common path-group), the match statement / AVT profile is **NOT** configured on the device. This implies that the traffic could be matched in one of the following application profiles or the default virtual topology. Note that the default virtual topology can be configured to drop traffic.
+  - It is not yet supported to disable HA on a specific LAN interface on the device, nor is it supported to add HA configuration on a non-uplink interface.
+  - HA for AutoVPN is not supported
 
-## Known limitations
+- `eos_validate_state` is being enriched to support new tests for WAN designs.
+    These new tests are added only in the [ANTA preview](../../../eos_validate_state/ANTA-Preview.md) mode.
 
-- Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`.
-- Because of the previous point, in `eos_designs`, the `transit` node type is always configured as `transit region`.
+### Known limitations
+
+- Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`. Hence, in `eos_designs`, the `transit` node type is always configured as `transit region`.
 - All Pathfinders must be able to create a full mesh
 - No IPv6 support
-- For WAN interfaces, NAT IP on the Pathfinder side can be supported using the `wan_route_servers.path_groups.interfaces` key.
 - Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
-- It is not yet supported to disable HA on a specific LAN interface on the device, nor is it supported to add HA configuration on a non-uplink interface.
 - The name of the AVT policies and AVT profiles are configurable in the input variables. The Load Balance policies are named `LB-<profile_name>` and are not configurable.
-- For LAN, the current supported funcitonality is to use `uplink_type: p2p-vrfs` on the WAN routers and to have the relevant VRFs present on the uplink switches via `network_services`. Other LAN scenarios will come with time.
-- HA for AutoVPN is not supported
+- LAN support is limited to single L2 using `uplink_type: lan` and eBGP L3 using `uplink_type: p2p-vrfs` in conjunction of `underlay_routing_protocol: ebgp`.
 - All the WAN routers must have a common path-group with at least one WAN route server to be able to inject the default control-plane match statement in the VRF default WAN policy.
 
-## Future work
+### Future work
 
+- HA support out of PREVIEW
 - New LAN scenarios (L2 port-channel, HA for L2 `lan` using VRRP..)
+- HA for AutoVPN
 - WAN Internet exit
-- Indirect connectivity to pathfinder
 - `import path-group` functionality
+- Indirect connectivity to pathfinder
 - BGP peerings on WAN L3 interfaces
-- Connectivity Monitor configuration
-- More configuration options for static generated config (flow tracker names, timers,...)
 - Extra STUN server for a given path-group not connected to pathfinder
 - Auto generation of Path-group IDs and other IDs.
 - Proper OSPF-BGP redistribution in VRF default.
-- Support for OSPF subinterfaces.
-- validate_state support for AutoVPN and CV-Pathfinder
+- Support for OSPF subinterfaces for `p2p-vrfs`.
+- Increase test coverage in `eos_validate_state` support for AutoVPN and CV-Pathfinder
 - Path selection outlier detection feature
-- HA for AutoVPN
-
-## `eos_cli_config_gen` support
-
-- `eos_cli_config_gen` schema should support all of the required keys to
-    configure a WAN network, whether AutoVPN or Pathfinder. If you find any
-    missing functionality, please open an issue on Github.
 
 ## Getting started with WAN
-
-When deploying CV Pathfinder, the assumption is that the deployment is using CVaaS.
 
 !!! Warning Disclaimer
     This section does not intend to be a network design nor a best practice document.
@@ -97,23 +91,22 @@ When deploying CV Pathfinder, the assumption is that the deployment is using CVa
 
 #### TL;DR
 
-The following top level keys must be defined globally and have the same value for every single WAN router.
+The following table list some `eos_designs` top level keys used for WAN and how they should be set:
 
-- `wan_mode`: Two possible modes, `autovpn` and `cv-pathfinder` (default)
-- `wan_virtual_topologies`: to define the Policies and the VRF to policy mappings
-- `wan_path_groups`: to define the list of path-groups in the network
-- `wan_carriers`: to define the list of carriers in the network, each carrier is assigned to a path-group
-- `wan_ipsec_profiles`: to define the shared key for the Control Plane and Data Plane IPSec profiles.
-- `cv_pathfinder_regions`: to define the Region/Zone/Site hierarchy, not required for AutoVPN.
-- `tenants`: the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF informaiton
-- `wan_stun_dtls_disable`: disable dTLS for STUN for instance for lab. (**NOT** recommended in production)
-- `application_classification`: to define the specific traffic classification required for the WAN if any.
+| Key | Must be the same for all the WAN routers | Comment |
+| --- | ---------------------------------------- | ------- |
+| `wan_mode` | ✅ |  Two possible modes, `autovpn` and `cv-pathfinder` (default) |
+| `wan_virtual_topologies` | ✅ |  to define the Policies and the VRF to policy mappings |
+| `wan_path_groups` | ✅ |  to define the list of path-groups in the network |
+| `wan_carriers` | ✅ |  to define the list of carriers in the network, each carrier is assigned to a path-group |
+| `wan_ipsec_profiles` | ✅ |  to define the shared key for the Control Plane and Data Plane IPSec profiles. |
+| `cv_pathfinder_regions` | ✅ |  to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
+| `tenants` | ✅ |  the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF informaiton |
+| `wan_stun_dtls_disable` | ✅ |  disable dTLS for STUN for instance for lab. (**NOT** recommended in production) |
+| `application_classification` | ✅ |  to define the specific traffic classification required for the WAN if any. |
+| `wan_route_servers` | ✘|  Indicate to which WAN route servers the WAN router should connect to. This key is also used to tell every WAN Route Reflectors with which other RRs it should peer with. |
 
-The following keys must be set for each WAN router but can have different values
-
-- `wan_route_servers`: To indicate to which WAN route servers the WAN router should connect to.
-
-The following keys must be set for the WAN route servers for the connectivity to work:
+Additionally, following keys must be set for the WAN route servers for the connectivity to work:
 
 - `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes`: To set the ranges of IP address from which to expect BGP peerings for the WAN.
 
@@ -208,7 +201,6 @@ In AVD, the list of desired path-groups must be defined the same across all WAN 
 ```yaml
 wan_path_groups:
   - name: MPLS
-    # TODO update ipsec documentation
     ipsec: false
     id: 100
   - name: INET
@@ -274,6 +266,7 @@ wan_router:
             wan_circuit_id: 666
             dhcp_accept_default_route: true
             ip_address: dhcp
+            dhcp_ip: 7.7.7.7
           - name: Ethernet2
             wan_carrier: MPLS-1
             wan_circuit_id: 10555
@@ -287,9 +280,72 @@ wan_router:
             ip_address: 172.20.20.20/31
 ```
 
-### Defining policies
+### WAN policies
 
-TODO
+The policies definition works as follow:
+
+- The policies are defined under `wan_virtual_topologies.policies`. For AutoVPN mode, the policies are configured under `router path-selection`, for CV Pathfinder, they are configured under `router adaptive-virtual-topology`.
+- A policy is composed of a list of `application_virtual_topologies` and one `default_virtual_topology`.
+- The `application_virtual_topologies` entries and the `default_virtual_topology` key are used to create the policy match statement, the AVT profile (when `wan_mode` is CV Pathfinder) and the load balancing policy.
+- The `default_virtual_topology` is used as the default match in the policy.  To prevent configuring it, the `drop_unmatched` boolean must be set to `true` otherwise, at least one `path-group` must be configured or AVD will raise an error.
+- Policies are assigned to VRFs using the list `wan_virtual_topologies.vrfs`. A policy can be reused in multiple VRFs.
+- If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
+- For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
+- For a given application profile match in a WAN policy, if the path-groups in the input data have an empty intersection with the path-groups on the device (no common path-group), the match statement / AVT profile is **NOT** configured on the device. This implies that the traffic could be matched in one of the following application profiles or the default virtual topology. Note that the default virtual topology can be configured to drop traffic.
+
+```yaml
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      wan_vni: 1
+    - name: PROD  # (1)!
+      policy: PROD-AVT-POLICY
+      wan_vni: 42
+  policies:
+    - name: PROD-AVT-POLICY  # (2)!
+      default_virtual_topology: # (3)!
+        path_groups:
+          - names: [INET]
+            preference: preferred
+          - names: [MPLS]
+            preference: alternate
+      application_virtual_topologies:
+        - application_profile: VOICE # (4)!
+          lowest_hop_count: true
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+            - names: [INET]
+              preference: alternate
+          constraints: # (5)!
+            delay: 120
+            jitter: 20
+            loss_rate: 0.3
+          id: 2 # (6)!
+        - application_profile: VIDEO
+          path_groups:
+            - names: [MPLS, LTE]
+              preference: preferred
+            - names: [INET]
+              preference: alternate
+          constraints:
+            loss_rate: 42.0
+          id: 4
+        # This will not be rendered on devices without MPLS
+        - application_profile: MPLS-ONLY # (7)!
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+          id: 5
+```
+
+1. Assign the `PROD-AVT-POLICY` to the `PROD` VRF.
+2. Define the `PROD-AVT-POLICY`,
+3. `default_virtual_topology` is used to configure the default match in the policy
+4. Rendered configuration
+5. Rendered configuration
+6. Rendered configuration
+7. Rendered configuration
 
 ### LAN Designs
 
@@ -371,96 +427,6 @@ The HA tunnel will come up properly today but route redistribution will be missi
 !!! warning
 
     Not Implemented - will be using VRRP
-
-## Input variables
-
-!!! warning
-    All the keys in this section marked as PREVIEW or children of a key marked as
-    PREVIEW are subject to change and are not supported.
-
-### New node types in L3LS eos_designs
-
-- `wan_router`: Edge routers for AutoVPN or Edge and Transit routers for CV Pathfinder depending on the `wan_mode` value.
-- `wan_rr`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
-
-The following table indicates the settings:
-
-| Node Type Key | Underlay Router | Uplink Type | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default CV Pathfinder Role | Default Underlay Routing Protocol | Default Overlay Routing Protocol |
-| ------------- | --------------- | ----------- | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | -------------------------- | --------------------------------- | -------------------------------- |
-| wan_rr        | ✅               | p2p         | server            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | server          | pathfinder                 | none                           | iBGP                             |
-| wan_router    | ✅               | p2p         | client            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | client          | edge                       | none                           | iBGP                             |
-
-### WAN Settings
-
-#### Top level keys
-
---8<--
-roles/eos_designs/docs/tables/wan-settings.md
---8<--
-
-##### WAN path-groups
-
---8<--
-roles/eos_designs/docs/tables/wan-path-groups.md
---8<--
-
-##### WAN carriers
-
---8<--
-roles/eos_designs/docs/tables/wan-carriers.md
---8<--
-
-##### WAN hierarchy
-
-!!! note
-
-    This section is only relevant for CV Pathfinder and not for AutoVPN
-
---8<--
-roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
---8<--
-
-#### WAN interfaces
-
---8<--
-roles/eos_designs/docs/tables/wan-interfaces-settings.md
---8<--
-
-#### WAN Virtual topologies
-
---8<--
-roles/eos_designs/docs/tables/wan-virtual-topologies.md
---8<--
-
-#### Application Classification
-
---8<--
-roles/eos_designs/docs/tables/application-classification.md
---8<--
-
-#### Flow Tracking Settings
-
---8<--
-roles/eos_designs/docs/tables/flow-tracking-settings.md
---8<--
-
-#### New BGP peer-group
-
---8<--
-roles/eos_designs/docs/tables/wan-bgp-peer-groups.md
---8<--
-
-#### New node keys
-
---8<--
-roles/eos_designs/docs/tables/node-type-wan-configuration.md
---8<--
-
-#### New node type keys
-
---8<--
-roles/eos_designs/docs/tables/node-type-key-wan-configuration.md
---8<--
 
 ### CloudVision Tags
 

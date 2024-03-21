@@ -10,8 +10,6 @@ keys:
     documentation_options:
       table: wan-settings
     description: |-
-      PREVIEW: This key is currently not supported
-
       List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders
       when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
 

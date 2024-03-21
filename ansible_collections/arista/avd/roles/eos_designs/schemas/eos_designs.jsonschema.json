@@ -3,7 +3,7 @@
   "properties": {
     "application_classification": {
       "type": "object",
-      "description": "PREVIEW: WAN Preview",
+      "description": "Application traffic recognition configuration.",
       "properties": {
         "categories": {
           "type": "array",
@@ -2917,7 +2917,6 @@
         },
         "wan_overlay_peers": {
           "type": "object",
-          "description": "PREVIEW: This key is currently not supported",
           "properties": {
             "name": {
               "type": "string",
@@ -3317,7 +3316,7 @@
         },
         "wan_rr_overlay_peers": {
           "type": "object",
-          "description": "PREVIEW: This key is currently not supported\nConfiguration options for the peer-group created to peer between\nAutoVPN RRs or CV-Pathfinders.",
+          "description": "Configuration options for the peer-group created to peer between AutoVPN RRs or CV Pathfinders.",
           "properties": {
             "name": {
               "type": "string",
@@ -4382,7 +4381,7 @@
       "title": "Custom Structured Configuration Prefix"
     },
     "cv_pathfinder_regions": {
-      "description": "PREVIEW: This key is currently not supported\nDefine the SDWAN hierarchy for the device.",
+      "description": "Define the CV Pathfinder hierarchy.",
       "type": "array",
       "items": {
         "type": "object",
@@ -6210,7 +6209,7 @@
     },
     "l3_interface_profiles": {
       "type": "array",
-      "description": "PREVIEW: This key is currently not supported\n\nProfiles to inherit common settings for l3_interfaces defined under the node type key.\nThese profiles will *not* work for `l3_interfaces` defined under `vrfs`.",
+      "description": "Profiles to inherit common settings for l3_interfaces defined under the node type key.\nThese profiles will *not* work for `l3_interfaces` defined under `vrfs`.",
       "items": {
         "type": "object",
         "properties": {
@@ -14709,7 +14708,7 @@
               "client",
               "server"
             ],
-            "description": "PREVIEW: This key is currently not supported\nSet the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
+            "description": "Set the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
             "title": "Default Wan Role"
           },
           "mlag_support": {
@@ -25574,7 +25573,7 @@
       "title": "Vtep Vvtep IP"
     },
     "wan_carriers": {
-      "description": "PREVIEW: This key is currently not supported\n\nList of carriers used for the WAN configuration and their mapping to path-groups.",
+      "description": "List of carriers used for the WAN configuration and their mapping to path-groups.",
       "type": "array",
       "items": {
         "type": "object",
@@ -25630,7 +25629,7 @@
       "title": "Wan Ha"
     },
     "wan_ipsec_profiles": {
-      "description": "PREVIEW: This key is currently not supported\n\nDefine IPsec profiles parameters for WAN configuration.",
+      "description": "Define IPsec profiles parameters for WAN configuration.",
       "type": "object",
       "properties": {
         "control_plane": {
@@ -25667,7 +25666,6 @@
           "patternProperties": {
             "^_.+$": {}
           },
-          "description": "PREVIEW: This key is currently not supported",
           "title": "Control Plane"
         },
         "data_plane": {
@@ -25718,7 +25716,7 @@
       "title": "Wan Ipsec Profiles"
     },
     "wan_mode": {
-      "description": "PREVIEW: This key is currently not supported\n\nSelect if the WAN should be run using CV Pathfinder or Auto VPN only.",
+      "description": "Select if the WAN should be run using CV Pathfinder or AutoVPN only.",
       "type": "string",
       "default": "cv-pathfinder",
       "enum": [
@@ -25728,7 +25726,7 @@
       "title": "Wan Mode"
     },
     "wan_path_groups": {
-      "description": "PREVIEW: This key is currently not supported\nList of path-groups used for the WAN configuration.",
+      "description": "List of path-groups used for the WAN configuration.",
       "type": "array",
       "items": {
         "type": "object",
@@ -25844,7 +25842,7 @@
       "title": "Wan Path Groups"
     },
     "wan_route_servers": {
-      "description": "PREVIEW: This key is currently not supported\n\nList of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders\nwhen using `wan_mode`=`cv-pathfinder`, to which the device should connect to.\n\nWhen the route server is part of the same inventory as the WAN routers,\nonly the name is required.",
+      "description": "List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders\nwhen using `wan_mode`=`cv-pathfinder`, to which the device should connect to.\n\nWhen the route server is part of the same inventory as the WAN routers,\nonly the name is required.",
       "type": "array",
       "items": {
         "type": "object",
@@ -25923,18 +25921,18 @@
     "wan_stun_dtls_disable": {
       "type": "boolean",
       "default": false,
-      "description": "PREVIEW: This key is currently not supported\n\nWAN STUN connections will be authenticated and secured with DTLS by default.\nFor CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.\nIn case of AutoVPN the certificates must be deployed manually to all devices.\n\nFor LAB environments this can be disabled, if there are no certificates available.\nThis should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication.",
+      "description": "WAN STUN connections will be authenticated and secured with DTLS by default.\nFor CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.\nIn case of AutoVPN the certificates must be deployed manually to all devices.\n\nFor LAB environments this can be disabled, if there are no certificates available.\nThis should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication.",
       "title": "Wan STUN Dtls Disable"
     },
     "wan_stun_dtls_profile_name": {
       "type": "string",
       "default": "STUN-DTLS",
-      "description": "PREVIEW: This key is currently not supported\n\nName of the SSL profile used for DTLS on WAN STUN connections.\n\nWhen using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers.",
+      "description": "Name of the SSL profile used for DTLS on WAN STUN connections.\n\nWhen using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers.",
       "title": "Wan STUN Dtls Profile Name"
     },
     "wan_virtual_topologies": {
       "type": "object",
-      "description": "PREVIEW: WAN Preview\n\nConfigure Virtual Topologies for CV Pathfinder and AutoVPN.\n\nAuto create a control plane profile/policy/application and enforce it being first in the default VRF.",
+      "description": "Configure Virtual Topologies for CV Pathfinder and AutoVPN.\nAuto create a control plane profile/policy/application and enforce it being first in the default VRF.",
       "properties": {
         "vrfs": {
           "type": "array",

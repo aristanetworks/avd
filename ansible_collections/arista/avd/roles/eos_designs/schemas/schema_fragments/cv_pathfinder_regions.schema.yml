@@ -9,9 +9,7 @@ keys:
   cv_pathfinder_regions:
     documentation_options:
       table: wan-cv-pathfinder-regions
-    description: |-
-      PREVIEW: This key is currently not supported
-      Define the SDWAN hierarchy for the device.
+    description: Define the CV Pathfinder hierarchy.
     type: list
     primary_key: name
     items:

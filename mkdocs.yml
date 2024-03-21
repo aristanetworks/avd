@@ -92,6 +92,7 @@ plugins:
 markdown_extensions:
   - admonition
   - attr_list
+  - md_in_html
   - mdx_truly_sane_lists
   - pymdownx.arithmatex
   - pymdownx.betterem:
@@ -145,10 +146,10 @@ nav:
           - Input Variables: roles/eos_designs/docs/input-variables.md
           - How-To Guides:
               - Configuring PTP: roles/eos_designs/docs/how-to/ptp.md
+              - Configuring WAN: roles/eos_designs/docs/how-to/wan.md
               - Custom Structured Configuration: roles/eos_designs/docs/how-to/custom-structured-configuration.md
               - Custom Templates: roles/eos_designs/docs/how-to/custom-templates.md
               - Generate CloudVision Tags Preview: roles/eos_designs/docs/how-to/cloudvision-tags-preview.md
-          - WAN Preview: roles/eos_designs/docs/wan-preview.md
       - eos_cli_config_gen:
           - Overview: roles/eos_cli_config_gen/README.md
           - Role Configuration: roles/eos_cli_config_gen/docs/role-configuration.md

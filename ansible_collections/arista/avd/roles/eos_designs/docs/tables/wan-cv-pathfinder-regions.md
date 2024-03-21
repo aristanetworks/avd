@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>cv_pathfinder_regions</samp>](## "cv_pathfinder_regions") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Define the SDWAN hierarchy for the device. |
+    | [<samp>cv_pathfinder_regions</samp>](## "cv_pathfinder_regions") | List, items: Dictionary |  |  |  | Define the CV Pathfinder hierarchy. |
     | [<samp>&nbsp;&nbsp;-&nbsp;description</samp>](## "cv_pathfinder_regions.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "cv_pathfinder_regions.[].id") | Integer | Required |  | Min: 1<br>Max: 255 | The region ID must be unique for the whole WAN deployment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sites</samp>](## "cv_pathfinder_regions.[].sites") | List, items: Dictionary |  |  |  | All sites are placed in a default zone "<region_name>-ZONE" with ID 1. |
@@ -22,8 +22,7 @@
 === "YAML"
 
     ```yaml
-    # PREVIEW: This key is currently not supported
-    # Define the SDWAN hierarchy for the device.
+    # Define the CV Pathfinder hierarchy.
     cv_pathfinder_regions:
       - description: <str>
 

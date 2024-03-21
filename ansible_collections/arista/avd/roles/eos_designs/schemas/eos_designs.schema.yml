@@ -7,7 +7,6 @@ allow_other_keys: true
 keys:
   application_classification:
     type: dict
-    description: 'PREVIEW: WAN Preview'
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
   avd_data_conversion_mode:
     documentation_options:
@@ -344,9 +343,6 @@ keys:
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
       wan_overlay_peers:
         type: dict
-        documentation_options:
-          table: wan-bgp-peer-groups
-        description: 'PREVIEW: This key is currently not supported'
         keys:
           name:
             type: str
@@ -401,13 +397,8 @@ keys:
             default: 1
       wan_rr_overlay_peers:
         type: dict
-        documentation_options:
-          table: wan-bgp-peer-groups
-        description: 'PREVIEW: This key is currently not supported
-
-          Configuration options for the peer-group created to peer between
-
-          AutoVPN RRs or CV-Pathfinders.'
+        description: Configuration options for the peer-group created to peer between
+          AutoVPN RRs or CV Pathfinders.
         keys:
           name:
             type: str
@@ -605,9 +596,7 @@ keys:
   cv_pathfinder_regions:
     documentation_options:
       table: wan-cv-pathfinder-regions
-    description: 'PREVIEW: This key is currently not supported
-
-      Define the SDWAN hierarchy for the device.'
+    description: Define the CV Pathfinder hierarchy.
     type: list
     primary_key: name
     items:
@@ -1556,12 +1545,9 @@ keys:
   l3_interface_profiles:
     type: list
     documentation_options:
-      table: wan-interfaces-settings
-    description: 'PREVIEW: This key is currently not supported
-
-
-      Profiles to inherit common settings for l3_interfaces defined under the node
-      type key.
+      table: node-type-l3-interfaces-configuration
+    description: 'Profiles to inherit common settings for l3_interfaces defined under
+      the node type key.
 
       These profiles will *not* work for `l3_interfaces` defined under `vrfs`.'
     primary_key: profile
@@ -1878,15 +1864,11 @@ keys:
 
             '
         default_wan_role:
-          documentation_options:
-            table: node-type-key-wan-configuration
           type: str
           valid_values:
           - client
           - server
-          description: 'PREVIEW: This key is currently not supported
-
-            Set the default WAN role.
+          description: 'Set the default WAN role.
 
 
             This is used both for AutoVPN and Pathfinder designs.
@@ -3706,10 +3688,10 @@ keys:
     type: bool
     default: false
   wan_carriers:
-    description: 'PREVIEW: This key is currently not supported
-
-
-      List of carriers used for the WAN configuration and their mapping to path-groups.'
+    documentation_options:
+      table: wan-path-groups-and-carriers
+    description: List of carriers used for the WAN configuration and their mapping
+      to path-groups.
     type: list
     primary_key: name
     items:
@@ -3762,10 +3744,7 @@ keys:
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
-    description: 'PREVIEW: This key is currently not supported
-
-
-      Define IPsec profiles parameters for WAN configuration.'
+    description: Define IPsec profiles parameters for WAN configuration.
     type: dict
     keys:
       control_plane:
@@ -3807,19 +3786,16 @@ keys:
   wan_mode:
     documentation_options:
       table: wan-settings
-    description: 'PREVIEW: This key is currently not supported
-
-
-      Select if the WAN should be run using CV Pathfinder or Auto VPN only.'
+    description: Select if the WAN should be run using CV Pathfinder or AutoVPN only.
     type: str
     default: cv-pathfinder
     valid_values:
     - autovpn
     - cv-pathfinder
   wan_path_groups:
-    description: 'PREVIEW: This key is currently not supported
-
-      List of path-groups used for the WAN configuration.'
+    documentation_options:
+      table: wan-path-groups-and-carriers
+    description: List of path-groups used for the WAN configuration.
     type: list
     primary_key: name
     items:
@@ -3917,10 +3893,8 @@ keys:
   wan_route_servers:
     documentation_options:
       table: wan-settings
-    description: 'PREVIEW: This key is currently not supported
-
-
-      List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders
+    description: 'List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the
+      Pathfinders
 
       when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
 
@@ -3980,10 +3954,8 @@ keys:
     documentation_options:
       table: wan-settings
     default: false
-    description: 'PREVIEW: This key is currently not supported
-
-
-      WAN STUN connections will be authenticated and secured with DTLS by default.
+    description: 'WAN STUN connections will be authenticated and secured with DTLS
+      by default.
 
       For CV-Pathfinder deployments CloudVision will automatically deploy certificates
       on the devices.
@@ -4000,10 +3972,7 @@ keys:
     documentation_options:
       table: wan-settings
     default: STUN-DTLS
-    description: 'PREVIEW: This key is currently not supported
-
-
-      Name of the SSL profile used for DTLS on WAN STUN connections.
+    description: 'Name of the SSL profile used for DTLS on WAN STUN connections.
 
 
       When using automatic ceritficate deployment via CloudVision this name must be
@@ -4026,11 +3995,7 @@ keys:
       remove_in_version: 4.6.0-dev1
   wan_virtual_topologies:
     type: dict
-    description: 'PREVIEW: WAN Preview
-
-
-      Configure Virtual Topologies for CV Pathfinder and AutoVPN.
-
+    description: 'Configure Virtual Topologies for CV Pathfinder and AutoVPN.
 
       Auto create a control plane profile/policy/application and enforce it being
       first in the default VRF.'
@@ -4942,7 +4907,6 @@ $defs:
                   description: Used for documentation purposes.
   ipsec_profile:
     type: dict
-    description: 'PREVIEW: This key is currently not supported'
     keys:
       ike_policy_name:
         type: str
@@ -8048,9 +8012,7 @@ $defs:
               table: node-type-wan-configuration
             type: str
             $ref: eos_designs#/keys/node_type_keys/items/keys/default_wan_role
-            description: 'PREVIEW: This key is currently not supported
-
-              Override the default WAN role.
+            description: 'Override the default WAN role.
 
 
               This is used both for AutoVPN and Pathfinder designs.
@@ -8068,9 +8030,8 @@ $defs:
             valid_values:
             - region
             - zone
-            description: 'PREVIEW: This key is currently not supported
-
-              Configure the transit mode for a WAN client for CV Pathfinder designs
+            description: 'Configure the transit mode for a WAN client for CV Pathfinder
+              designs
 
               only when the `wan_mode` root key is set to `cv_pathfinder`.
 
@@ -8080,10 +8041,7 @@ $defs:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            description: 'PREVIEW: This key is currently not supported
-
-
-              The CV Pathfinder region name.
+            description: 'The CV Pathfinder region name.
 
               This key is required for WAN routers but optional for pathfinders.
 
@@ -8092,10 +8050,7 @@ $defs:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            description: 'PREVIEW: This key is currently not supported
-
-
-              The CV Pathfinder site name.
+            description: 'The CV Pathfinder site name.
 
               This key is required for WAN routers but ignored for pathfinders.
 
@@ -8129,20 +8084,17 @@ $defs:
               table: node-type-wan-configuration
             type: str
             $ref: eos_cli_config_gen#/keys/router_path_selection/keys/tcp_mss_ceiling/keys/ipv4_segment_size
-            description: 'PREVIEW: This key is currently not supported
-
-
-              IPv4 MSS value configured under "router path-selection" on WAN Devices.'
+            description: IPv4 MSS value configured under "router path-selection" on
+              WAN Devices.
             default: auto
           l3_interfaces:
             type: list
             $ref: eos_designs#/$defs/node_type_l3_interfaces
             documentation_options:
-              table: wan-interfaces-settings
-            description: 'PREVIEW: This key is currently not supported
+              table: node-type-l3-interfaces-configuration
+            description: 'L3 Interfaces to configure on the node.
 
-
-              L3 Interfaces currently only use for WAN interfaces.'
+              Used to define the node for WAN interfaces when `wan_carrier` is set.'
             items:
               type: dict
               keys:

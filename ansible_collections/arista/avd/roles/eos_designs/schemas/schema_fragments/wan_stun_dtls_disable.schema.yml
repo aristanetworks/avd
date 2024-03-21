@@ -12,8 +12,6 @@ keys:
       table: wan-settings
     default: false
     description: |-
-      PREVIEW: This key is currently not supported
-
       WAN STUN connections will be authenticated and secured with DTLS by default.
       For CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.
       In case of AutoVPN the certificates must be deployed manually to all devices.

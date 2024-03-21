@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>wan_virtual_topologies</samp>](## "wan_virtual_topologies") | Dictionary |  |  |  | PREVIEW: WAN Preview<br><br>Configure Virtual Topologies for CV Pathfinder and AutoVPN.<br><br>Auto create a control plane profile/policy/application and enforce it being first in the default VRF. |
+    | [<samp>wan_virtual_topologies</samp>](## "wan_virtual_topologies") | Dictionary |  |  |  | Configure Virtual Topologies for CV Pathfinder and AutoVPN.<br>Auto create a control plane profile/policy/application and enforce it being first in the default VRF. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "wan_virtual_topologies.vrfs") | List, items: Dictionary |  |  |  | Map a VRF that exists in network_services to an AVT policy.<br>TODO: missing default VRF behavior |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_virtual_topologies.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "wan_virtual_topologies.vrfs.[].policy") | String |  | `DEFAULT-POLICY` |  | Name of the policy to apply to this VRF.<br>It is possible to overwrite the default policy for all VRFs using it<br>by redefining it in the `wan_virtual_topologies.policies` list using the<br>default name `DEFAULT-POLICY`. |
@@ -61,10 +61,7 @@
 === "YAML"
 
     ```yaml
-    # PREVIEW: WAN Preview
-    #
     # Configure Virtual Topologies for CV Pathfinder and AutoVPN.
-    #
     # Auto create a control plane profile/policy/application and enforce it being first in the default VRF.
     wan_virtual_topologies:
 

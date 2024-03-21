@@ -9,10 +9,7 @@ keys:
   wan_virtual_topologies:
     type: dict
     description: |-
-      PREVIEW: WAN Preview
-
       Configure Virtual Topologies for CV Pathfinder and AutoVPN.
-
       Auto create a control plane profile/policy/application and enforce it being first in the default VRF.
     keys:
       vrfs:
