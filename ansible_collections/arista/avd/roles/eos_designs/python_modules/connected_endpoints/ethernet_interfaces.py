@@ -87,7 +87,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "l2_mru": adapter.get("l2_mru"),
                 "mode": adapter.get("mode"),
                 "vlans": adapter.get("vlans"),
-                "vlan_tags": adapter.get("vlan_tags"),
                 "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
                 "native_vlan_tag": adapter.get("native_vlan_tag"),
                 "native_vlan": adapter.get("native_vlan"),
