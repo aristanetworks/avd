@@ -200,7 +200,7 @@ class UtilsMixin:
             if vrf_name in self.shared_utils.vrfs or self.shared_utils.is_wan_server:
                 wan_vrf = {
                     "name": vrf_name,
-                    "policy": get(vrf, "policy", default=self._default_wan_policy["name"]),
+                    "policy": get(vrf, "policy", default=self._default_wan_policy_name),
                     "wan_vni": get(
                         vrf, "wan_vni", required=True, org_key=f"Required `wan_vni` is missing for VRF {vrf_name} under `wan_virtual_topologies.vrfs`."
                     ),
@@ -213,9 +213,9 @@ class UtilsMixin:
             wan_vrfs.append(
                 {
                     "name": "default",
-                    "policy": f"{self._default_wan_policy['name']}-WITH-CP",
+                    "policy": f"{self._default_wan_policy_name}-WITH-CP",
                     "wan_vni": 1,
-                    "original_policy": self._default_wan_policy["name"],
+                    "original_policy": self._default_wan_policy_name,
                 }
             )
         else:
@@ -231,7 +231,7 @@ class UtilsMixin:
         """
         policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
         # If not overwritten, inject the default policy in case it is required for one of the VRFs
-        if get_item(policies, "name", self._default_wan_policy["name"]) is None:
+        if get_item(policies, "name", self._default_wan_policy_name) is None:
             policies.append(self._default_wan_policy)
 
         return policies
@@ -499,6 +499,31 @@ class UtilsMixin:
         return priority
 
     @cached_property
+    def _default_wan_policy_name(self) -> str:
+        """
+        TODO make this configurable
+        """
+        return "DEFAULT-POLICY"
+
+    @cached_property
+    def _default_policy_path_group_names(self) -> list:
+        """
+        Return the list of path-groups to consider when generating a default policy with AVD
+        whether for the default policy or the special Control-plane policy.
+        """
+        path_group_names = {
+            path_group["name"] for path_group in self.shared_utils.wan_path_groups if not get(path_group, "excluded_from_default_policy", default=False)
+        }
+        if not path_group_names.intersection(self.shared_utils.wan_local_path_group_names):
+            # No common path-group between this device local path-groups and the available path-group for the default policy
+            raise AristaAvdError(
+                f"Unable to generate the default WAN policy as none of the device local path-groups {self.shared_utils.wan_local_path_group_names} "
+                "is eligible to be included. Make sure that at least one path-group for the device is not configured with "
+                "`excluded_from_default_policy: true` under `wan_path_groups`."
+            )
+        return natural_sort(path_group_names)
+
+    @cached_property
     def _default_wan_policy(self) -> dict:
         """
         If no policy is defined for a VRF under 'wan_virtual_topologies.vrfs', a default policy named DEFAULT-POLICY is used
@@ -507,19 +532,10 @@ class UtilsMixin:
         Returning policy containing all path groups not excluded from default policy.
         """
 
-        res = {
-            "name": "DEFAULT-POLICY",
-            "default_virtual_topology": {
-                "path_groups": [
-                    {
-                        "names": [
-                            path_group["name"] for path_group in self.shared_utils.wan_path_groups if not path_group.get("excluded_from_default_policy", False)
-                        ]
-                    }
-                ]
-            },
+        return {
+            "name": self._default_wan_policy_name,
+            "default_virtual_topology": {"path_groups": [{"names": self._default_policy_path_group_names}]},
         }
-        return res
 
     def _default_profile_name(self, profile_name: str, application_profile: str) -> str:
         """
@@ -537,9 +553,7 @@ class UtilsMixin:
         The default control_plane_virtual_topology, excluding path_groups with excluded_from_default_policy
         """
         if (control_plane_virtual_topology := get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology")) is None:
-            path_groups = [
-                path_group["name"] for path_group in self.shared_utils.wan_path_groups if not get(path_group, "excluded_from_default_policy", default=False)
-            ]
+            path_groups = self._default_policy_path_group_names
             if self.shared_utils.is_wan_client:
                 # Filter only the path-groups connected to pathfinder
                 path_groups = [path_group for path_group in path_groups if path_group in self._local_path_groups_connected_to_pathfinder]

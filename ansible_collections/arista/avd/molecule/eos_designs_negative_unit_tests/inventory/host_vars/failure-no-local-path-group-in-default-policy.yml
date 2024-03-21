@@ -39,7 +39,7 @@ wan_ipsec_profiles:
 default_node_types:
   - node_type: wan_router
     match_hostnames:
-      - "missing-avt-id-cv-pathfinder"
+      - "failure-no-local-path-group-in-default-policy"
 
 wan_router:
   defaults:
@@ -48,7 +48,7 @@ wan_router:
     filter:
       always_include_vrfs_in_tenants: [TenantA]
   nodes:
-    - name: missing-avt-id-cv-pathfinder
+    - name: failure-no-local-path-group-in-default-policy
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site422
       id: 1
@@ -60,8 +60,12 @@ wan_router:
           ip_address: dhcp
 
 wan_path_groups:
+  - name: MPLS
+    id: 100
   - name: INET
     id: 101
+    # exclude the only LOCAL path-group
+    excluded_from_default_policy: true
 
 wan_carriers:
   - name: ATT
@@ -79,18 +83,9 @@ wan_virtual_topologies:
   vrfs:
     - name: PROD
       wan_vni: 42
-  policies:
-    - name: DEFAULT-POLICY
-      default_virtual_topology:
-        drop_unmatched: true
-      application_virtual_topologies:
-        - application_profile: TEST
-          path_groups:
-            - names: [ INET ]
-          # no id
 
 application_classification:
   application_profiles:
     - name: TEST
 
-expected_error_message: "Missing mandatory `id` in `wan_virtual_topologies.policies[DEFAULT-POLICY].application_virtual_topologies[TEST]` when `wan_mode` is 'cv-pathfinder"
+expected_error_message: "Unable to generate the default WAN policy as none of the device local path-groups ['INET'] is eligible to be included. Make sure that at least one path-group for the device is not configured with `excluded_from_default_policy: true` under `wan_path_groups`."
