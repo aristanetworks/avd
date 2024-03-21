@@ -58,14 +58,14 @@ anta.tests.connectivity:
       neighbor_port: Ethernet8
       port: Ethernet1
     result_overwrite:
-      custom_field: 'Local: Ethernet1 - Remote: dc2-leaf2a_Ethernet8'
+      custom_field: 'Local: Ethernet1 - Remote: dc2-leaf2a Ethernet8'
 - VerifyLLDPNeighbors:
     neighbors:
     - neighbor_device: dc2-leaf2b
       neighbor_port: Ethernet8
       port: Ethernet2
     result_overwrite:
-      custom_field: 'Local: Ethernet2 - Remote: dc2-leaf2b_Ethernet8'
+      custom_field: 'Local: Ethernet2 - Remote: dc2-leaf2b Ethernet8'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null

@@ -58,28 +58,28 @@ anta.tests.connectivity:
       neighbor_port: Ethernet3
       port: Ethernet1
     result_overwrite:
-      custom_field: 'Local: Ethernet1 - Remote: dc1-spine1_Ethernet3'
+      custom_field: 'Local: Ethernet1 - Remote: dc1-spine1 Ethernet3'
 - VerifyLLDPNeighbors:
     neighbors:
     - neighbor_device: dc1-spine2.dc1.local
       neighbor_port: Ethernet3
       port: Ethernet2
     result_overwrite:
-      custom_field: 'Local: Ethernet2 - Remote: dc1-spine2_Ethernet3'
+      custom_field: 'Local: Ethernet2 - Remote: dc1-spine2 Ethernet3'
 - VerifyLLDPNeighbors:
     neighbors:
     - neighbor_device: dc1-leaf2c.dc1.local
       neighbor_port: Ethernet1
       port: Ethernet8
     result_overwrite:
-      custom_field: 'Local: Ethernet8 - Remote: dc1-leaf2c_Ethernet1'
+      custom_field: 'Local: Ethernet8 - Remote: dc1-leaf2c Ethernet1'
 - VerifyLLDPNeighbors:
     neighbors:
     - neighbor_device: dc2-leaf2a
       neighbor_port: Ethernet6
       port: Ethernet6
     result_overwrite:
-      custom_field: 'Local: Ethernet6 - Remote: dc2-leaf2a_Ethernet6'
+      custom_field: 'Local: Ethernet6 - Remote: dc2-leaf2a Ethernet6'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.8
@@ -87,7 +87,8 @@ anta.tests.connectivity:
       source: 10.255.255.9
       vrf: default
     result_overwrite:
-      custom_field: 'Source: P2P Interface Ethernet1 - Destination: dc1-spine1_Ethernet3'
+      custom_field: 'Source: P2P Interface Ethernet1 (IP: 10.255.255.9) - Destination:
+        dc1-spine1 Ethernet3 (IP: 10.255.255.8)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.10
@@ -95,7 +96,8 @@ anta.tests.connectivity:
       source: 10.255.255.11
       vrf: default
     result_overwrite:
-      custom_field: 'Source: P2P Interface Ethernet2 - Destination: dc1-spine2_Ethernet3'
+      custom_field: 'Source: P2P Interface Ethernet2 (IP: 10.255.255.11) - Destination:
+        dc1-spine2 Ethernet3 (IP: 10.255.255.10)'
 - VerifyReachability:
     hosts:
     - destination: 192.168.100.1
@@ -103,7 +105,8 @@ anta.tests.connectivity:
       source: 192.168.100.0
       vrf: default
     result_overwrite:
-      custom_field: 'Source: P2P Interface Ethernet6 - Destination: dc2-leaf2a_Ethernet6'
+      custom_field: 'Source: P2P Interface Ethernet6 (IP: 192.168.100.0) - Destination:
+        dc2-leaf2a Ethernet6 (IP: 192.168.100.1)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.1
@@ -111,7 +114,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc1-spine1_10.255.0.1'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc1-spine1
+        Loopback0 (IP: 10.255.0.1)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.2
@@ -119,7 +123,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc1-spine2_10.255.0.2'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc1-spine2
+        Loopback0 (IP: 10.255.0.2)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.3
@@ -127,7 +132,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc1-leaf1a_10.255.0.3'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc1-leaf1a
+        Loopback0 (IP: 10.255.0.3)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.4
@@ -135,7 +141,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc1-leaf1b_10.255.0.4'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc1-leaf1b
+        Loopback0 (IP: 10.255.0.4)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.5
@@ -143,7 +150,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc1-leaf2a_10.255.0.5'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc1-leaf2a
+        Loopback0 (IP: 10.255.0.5)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.2.1
@@ -151,7 +159,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc1-wan1_10.255.2.1'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc1-wan1 Loopback0
+        (IP: 10.255.2.1)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.2.2
@@ -159,7 +168,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc1-wan2_10.255.2.2'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc1-wan2 Loopback0
+        (IP: 10.255.2.2)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.11
@@ -167,7 +177,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc2-spine1_10.255.128.11'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc2-spine1
+        Loopback0 (IP: 10.255.128.11)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.12
@@ -175,7 +186,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc2-spine2_10.255.128.12'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc2-spine2
+        Loopback0 (IP: 10.255.128.12)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.13
@@ -183,7 +195,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc2-leaf1a_10.255.128.13'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc2-leaf1a
+        Loopback0 (IP: 10.255.128.13)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.14
@@ -191,7 +204,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc2-leaf1b_10.255.128.14'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc2-leaf1b
+        Loopback0 (IP: 10.255.128.14)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.15
@@ -199,7 +213,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc2-leaf2a_10.255.128.15'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc2-leaf2a
+        Loopback0 (IP: 10.255.128.15)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.16
@@ -207,7 +222,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc2-leaf2b_10.255.128.16'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc2-leaf2b
+        Loopback0 (IP: 10.255.128.16)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.17
@@ -215,7 +231,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc2-leaf3a.arista.com_10.255.128.17'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc2-leaf3a.arista.com
+        Loopback0 (IP: 10.255.128.17)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.18
@@ -223,7 +240,8 @@ anta.tests.connectivity:
       source: 10.255.0.5
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Loopback0_10.255.0.5 - Destination: dc2-leaf3b.arista.com_10.255.128.18'
+      custom_field: 'Source: Loopback0 (IP: 10.255.0.5) - Destination: dc2-leaf3b.arista.com
+        Loopback0 (IP: 10.255.128.18)'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null
@@ -422,21 +440,21 @@ anta.tests.routing.bgp:
       peers:
       - 10.255.0.1
     result_overwrite:
-      custom_field: 'BGP EVPN Peer: dc1-spine1_10.255.0.1'
+      custom_field: 'BGP EVPN Peer: dc1-spine1 (IP: 10.255.0.1)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: evpn
       peers:
       - 10.255.0.2
     result_overwrite:
-      custom_field: 'BGP EVPN Peer: dc1-spine2_10.255.0.2'
+      custom_field: 'BGP EVPN Peer: dc1-spine2 (IP: 10.255.0.2)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: evpn
       peers:
       - 10.255.128.15
     result_overwrite:
-      custom_field: 'BGP EVPN Peer: dc2-leaf2a_10.255.128.15'
+      custom_field: 'BGP EVPN Peer: dc2-leaf2a (IP: 10.255.128.15)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -444,7 +462,7 @@ anta.tests.routing.bgp:
       - 10.255.255.8
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv4 Unicast Peer: dc1-spine1_10.255.255.8'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-spine1 (IP: 10.255.255.8)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -452,7 +470,7 @@ anta.tests.routing.bgp:
       - 10.255.255.10
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv4 Unicast Peer: dc1-spine2_10.255.255.10'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-spine2 (IP: 10.255.255.10)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -460,7 +478,7 @@ anta.tests.routing.bgp:
       - 192.168.100.1
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv4 Unicast Peer: dc2-leaf2a_192.168.100.1'
+      custom_field: 'BGP IPv4 Unicast Peer: dc2-leaf2a (IP: 192.168.100.1)'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent

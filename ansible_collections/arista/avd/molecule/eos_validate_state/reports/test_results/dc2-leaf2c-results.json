@@ -78,7 +78,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet1 - Remote: dc2-leaf2a_Ethernet8"
+    "custom_field": "Local: Ethernet1 - Remote: dc2-leaf2a Ethernet8"
   },
   {
     "name": "dc2-leaf2c",
@@ -87,7 +87,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet2 - Remote: dc2-leaf2b_Ethernet8"
+    "custom_field": "Local: Ethernet2 - Remote: dc2-leaf2b Ethernet8"
   },
   {
     "name": "dc2-leaf2c",

@@ -62,7 +62,7 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: dc2-spine1_10.255.128.11"
+    "custom_field": "BGP EVPN Peer: dc2-spine1 (IP: 10.255.128.11)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -71,7 +71,7 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: dc2-spine2_10.255.128.12"
+    "custom_field": "BGP EVPN Peer: dc2-spine2 (IP: 10.255.128.12)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -80,7 +80,7 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: dc2-leaf3a.arista.com_10.255.129.124"
+    "custom_field": "BGP IPv4 Unicast Peer: dc2-leaf3a.arista.com (IP: 10.255.129.124)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -89,7 +89,7 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: dc2-spine1_10.255.255.124"
+    "custom_field": "BGP IPv4 Unicast Peer: dc2-spine1 (IP: 10.255.255.124)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -98,7 +98,7 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: dc2-spine2_10.255.255.126"
+    "custom_field": "BGP IPv4 Unicast Peer: dc2-spine2 (IP: 10.255.255.126)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -123,7 +123,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet1 - Remote: dc2-spine1_Ethernet6"
+    "custom_field": "Local: Ethernet1 - Remote: dc2-spine1 Ethernet6"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -132,7 +132,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet2 - Remote: dc2-spine2_Ethernet6"
+    "custom_field": "Local: Ethernet2 - Remote: dc2-spine2 Ethernet6"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -141,7 +141,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet3 - Remote: dc2-leaf3a.arista.com_Ethernet3"
+    "custom_field": "Local: Ethernet3 - Remote: dc2-leaf3a.arista.com Ethernet3"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -150,7 +150,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet4 - Remote: dc2-leaf3a.arista.com_Ethernet4"
+    "custom_field": "Local: Ethernet4 - Remote: dc2-leaf3a.arista.com Ethernet4"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -159,7 +159,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc1-leaf1a_10.255.0.3"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc1-leaf1a Loopback0 (IP: 10.255.0.3)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -168,7 +168,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc1-leaf1b_10.255.0.4"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc1-leaf1b Loopback0 (IP: 10.255.0.4)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -177,7 +177,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc1-leaf2a_10.255.0.5"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc1-leaf2a Loopback0 (IP: 10.255.0.5)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -186,7 +186,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc1-spine1_10.255.0.1"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc1-spine1 Loopback0 (IP: 10.255.0.1)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -195,7 +195,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc1-spine2_10.255.0.2"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc1-spine2 Loopback0 (IP: 10.255.0.2)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -204,7 +204,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc1-wan1_10.255.2.1"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc1-wan1 Loopback0 (IP: 10.255.2.1)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -213,7 +213,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc1-wan2_10.255.2.2"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc1-wan2 Loopback0 (IP: 10.255.2.2)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -222,7 +222,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc2-leaf1a_10.255.128.13"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc2-leaf1a Loopback0 (IP: 10.255.128.13)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -231,7 +231,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc2-leaf1b_10.255.128.14"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc2-leaf1b Loopback0 (IP: 10.255.128.14)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -240,7 +240,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc2-leaf2a_10.255.128.15"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc2-leaf2a Loopback0 (IP: 10.255.128.15)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -249,7 +249,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc2-leaf2b_10.255.128.16"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc2-leaf2b Loopback0 (IP: 10.255.128.16)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -258,7 +258,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc2-leaf3a.arista.com_10.255.128.17"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc2-leaf3a.arista.com Loopback0 (IP: 10.255.128.17)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -267,7 +267,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc2-leaf3b.arista.com_10.255.128.18"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc2-leaf3b.arista.com Loopback0 (IP: 10.255.128.18)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -276,7 +276,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc2-spine1_10.255.128.11"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc2-spine1 Loopback0 (IP: 10.255.128.11)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -285,7 +285,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: Loopback0_10.255.128.18 - Destination: dc2-spine2_10.255.128.12"
+    "custom_field": "Source: Loopback0 (IP: 10.255.128.18) - Destination: dc2-spine2 Loopback0 (IP: 10.255.128.12)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -294,7 +294,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: P2P Interface Ethernet1 - Destination: dc2-spine1_Ethernet6"
+    "custom_field": "Source: P2P Interface Ethernet1 (IP: 10.255.255.125) - Destination: dc2-spine1 Ethernet6 (IP: 10.255.255.124)"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -303,7 +303,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: P2P Interface Ethernet2 - Destination: dc2-spine2_Ethernet6"
+    "custom_field": "Source: P2P Interface Ethernet2 (IP: 10.255.255.127) - Destination: dc2-spine2 Ethernet6 (IP: 10.255.255.126)"
   },
   {
     "name": "dc2-leaf3b.arista.com",

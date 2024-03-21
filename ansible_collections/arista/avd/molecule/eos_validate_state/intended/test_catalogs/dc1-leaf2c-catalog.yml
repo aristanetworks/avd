@@ -58,127 +58,142 @@ anta.tests.connectivity:
       neighbor_port: Ethernet8
       port: Ethernet1
     result_overwrite:
-      custom_field: 'Local: Ethernet1 - Remote: dc1-leaf2a_Ethernet8'
+      custom_field: 'Local: Ethernet1 - Remote: dc1-leaf2a Ethernet8'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.1
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc1-spine1_10.255.0.1'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-spine1 Loopback0 (IP: 10.255.0.1)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.2
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc1-spine2_10.255.0.2'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-spine2 Loopback0 (IP: 10.255.0.2)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.3
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc1-leaf1a_10.255.0.3'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-leaf1a Loopback0 (IP: 10.255.0.3)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.4
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc1-leaf1b_10.255.0.4'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-leaf1b Loopback0 (IP: 10.255.0.4)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.5
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc1-leaf2a_10.255.0.5'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-leaf2a Loopback0 (IP: 10.255.0.5)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.2.1
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc1-wan1_10.255.2.1'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-wan1 Loopback0 (IP: 10.255.2.1)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.2.2
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc1-wan2_10.255.2.2'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-wan2 Loopback0 (IP: 10.255.2.2)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.11
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc2-spine1_10.255.128.11'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-spine1 Loopback0 (IP: 10.255.128.11)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.12
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc2-spine2_10.255.128.12'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-spine2 Loopback0 (IP: 10.255.128.12)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.13
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc2-leaf1a_10.255.128.13'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf1a Loopback0 (IP: 10.255.128.13)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.14
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc2-leaf1b_10.255.128.14'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf1b Loopback0 (IP: 10.255.128.14)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.15
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc2-leaf2a_10.255.128.15'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf2a Loopback0 (IP: 10.255.128.15)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.16
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc2-leaf2b_10.255.128.16'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf2b Loopback0 (IP: 10.255.128.16)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.17
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc2-leaf3a.arista.com_10.255.128.17'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf3a.arista.com Loopback0 (IP: 10.255.128.17)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.18
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      custom_field: 'Source: Inband MGMT SVI_Vlan4085 - Destination: dc2-leaf3b.arista.com_10.255.128.18'
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf3b.arista.com Loopback0 (IP: 10.255.128.18)'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null

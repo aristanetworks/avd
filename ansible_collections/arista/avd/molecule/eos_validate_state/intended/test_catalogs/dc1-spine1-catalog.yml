@@ -79,21 +79,21 @@ anta.tests.connectivity:
       neighbor_port: Ethernet1
       port: Ethernet1
     result_overwrite:
-      custom_field: 'Local: Ethernet1 - Remote: dc1-leaf1a_Ethernet1'
+      custom_field: 'Local: Ethernet1 - Remote: dc1-leaf1a Ethernet1'
 - VerifyLLDPNeighbors:
     neighbors:
     - neighbor_device: dc1-leaf1b.dc1.local
       neighbor_port: Ethernet1
       port: Ethernet2
     result_overwrite:
-      custom_field: 'Local: Ethernet2 - Remote: dc1-leaf1b_Ethernet1'
+      custom_field: 'Local: Ethernet2 - Remote: dc1-leaf1b Ethernet1'
 - VerifyLLDPNeighbors:
     neighbors:
     - neighbor_device: dc1-leaf2a.dc1.local
       neighbor_port: Ethernet1
       port: Ethernet3
     result_overwrite:
-      custom_field: 'Local: Ethernet3 - Remote: dc1-leaf2a_Ethernet1'
+      custom_field: 'Local: Ethernet3 - Remote: dc1-leaf2a Ethernet1'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.1
@@ -101,7 +101,8 @@ anta.tests.connectivity:
       source: 10.255.255.0
       vrf: default
     result_overwrite:
-      custom_field: 'Source: P2P Interface Ethernet1 - Destination: dc1-leaf1a_Ethernet1'
+      custom_field: 'Source: P2P Interface Ethernet1 (IP: 10.255.255.0) - Destination:
+        dc1-leaf1a Ethernet1 (IP: 10.255.255.1)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.5
@@ -109,7 +110,8 @@ anta.tests.connectivity:
       source: 10.255.255.4
       vrf: default
     result_overwrite:
-      custom_field: 'Source: P2P Interface Ethernet2 - Destination: dc1-leaf1b_Ethernet1'
+      custom_field: 'Source: P2P Interface Ethernet2 (IP: 10.255.255.4) - Destination:
+        dc1-leaf1b Ethernet1 (IP: 10.255.255.5)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.9
@@ -117,7 +119,8 @@ anta.tests.connectivity:
       source: 10.255.255.8
       vrf: default
     result_overwrite:
-      custom_field: 'Source: P2P Interface Ethernet3 - Destination: dc1-leaf2a_Ethernet1'
+      custom_field: 'Source: P2P Interface Ethernet3 (IP: 10.255.255.8) - Destination:
+        dc1-leaf2a Ethernet1 (IP: 10.255.255.9)'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null
@@ -286,21 +289,21 @@ anta.tests.routing.bgp:
       peers:
       - 10.255.0.3
     result_overwrite:
-      custom_field: 'BGP EVPN Peer: dc1-leaf1a_10.255.0.3'
+      custom_field: 'BGP EVPN Peer: dc1-leaf1a (IP: 10.255.0.3)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: evpn
       peers:
       - 10.255.0.4
     result_overwrite:
-      custom_field: 'BGP EVPN Peer: dc1-leaf1b_10.255.0.4'
+      custom_field: 'BGP EVPN Peer: dc1-leaf1b (IP: 10.255.0.4)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: evpn
       peers:
       - 10.255.0.5
     result_overwrite:
-      custom_field: 'BGP EVPN Peer: dc1-leaf2a_10.255.0.5'
+      custom_field: 'BGP EVPN Peer: dc1-leaf2a (IP: 10.255.0.5)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -308,7 +311,7 @@ anta.tests.routing.bgp:
       - 10.255.255.1
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf1a_10.255.255.1'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf1a (IP: 10.255.255.1)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -316,7 +319,7 @@ anta.tests.routing.bgp:
       - 10.255.255.5
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf1b_10.255.255.5'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf1b (IP: 10.255.255.5)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -324,7 +327,7 @@ anta.tests.routing.bgp:
       - 10.255.255.9
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf2a_10.255.255.9'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf2a (IP: 10.255.255.9)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -332,7 +335,7 @@ anta.tests.routing.bgp:
       - 123.1.1.10
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv4 Unicast Peer: None_123.1.1.10'
+      custom_field: 'BGP IPv4 Unicast Peer: None (IP: 123.1.1.10)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -340,7 +343,7 @@ anta.tests.routing.bgp:
       - 123.1.1.11
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv4 Unicast Peer: None_123.1.1.11'
+      custom_field: 'BGP IPv4 Unicast Peer: None (IP: 123.1.1.11)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv6
@@ -348,7 +351,7 @@ anta.tests.routing.bgp:
       - fd5a:fe45:8831:06c5::a
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv6 Unicast Peer: None_fd5a:fe45:8831:06c5::a'
+      custom_field: 'BGP IPv6 Unicast Peer: None (IP: fd5a:fe45:8831:06c5::a)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv6
@@ -356,7 +359,7 @@ anta.tests.routing.bgp:
       - fd5a:fe45:8831:06c5::b
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv6 Unicast Peer: None_fd5a:fe45:8831:06c5::b'
+      custom_field: 'BGP IPv6 Unicast Peer: None (IP: fd5a:fe45:8831:06c5::b)'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent

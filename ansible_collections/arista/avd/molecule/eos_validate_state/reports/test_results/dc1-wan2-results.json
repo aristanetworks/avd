@@ -62,7 +62,7 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1a_10.255.255.4"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1a (IP: 10.255.255.4)"
   },
   {
     "name": "dc1-wan2",
@@ -71,7 +71,7 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1b_10.255.255.6"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1b (IP: 10.255.255.6)"
   },
   {
     "name": "dc1-wan2",
@@ -96,7 +96,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet1 - Remote: dc1-leaf1a_Ethernet7"
+    "custom_field": "Local: Ethernet1 - Remote: dc1-leaf1a Ethernet7"
   },
   {
     "name": "dc1-wan2",
@@ -105,7 +105,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet2 - Remote: dc1-leaf1b_Ethernet7"
+    "custom_field": "Local: Ethernet2 - Remote: dc1-leaf1b Ethernet7"
   },
   {
     "name": "dc1-wan2",
@@ -114,7 +114,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: P2P Interface Ethernet1 - Destination: dc1-leaf1a_Ethernet7"
+    "custom_field": "Source: P2P Interface Ethernet1 (IP: 10.255.255.5) - Destination: dc1-leaf1a Ethernet7 (IP: 10.255.255.4)"
   },
   {
     "name": "dc1-wan2",
@@ -123,7 +123,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: P2P Interface Ethernet2 - Destination: dc1-leaf1b_Ethernet7"
+    "custom_field": "Source: P2P Interface Ethernet2 (IP: 10.255.255.7) - Destination: dc1-leaf1b Ethernet7 (IP: 10.255.255.6)"
   },
   {
     "name": "dc1-wan2",

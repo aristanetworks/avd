@@ -126,7 +126,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet1 - Remote: dc1-leaf1a_Ethernet2"
+    "custom_field": "Local: Ethernet1 - Remote: dc1-leaf1a Ethernet2"
   },
   {
     "name": "dc1-spine2",
@@ -135,7 +135,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet2 - Remote: dc1-leaf1b_Ethernet2"
+    "custom_field": "Local: Ethernet2 - Remote: dc1-leaf1b Ethernet2"
   },
   {
     "name": "dc1-spine2",
@@ -144,7 +144,7 @@
       "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
-    "custom_field": "Local: Ethernet3 - Remote: dc1-leaf2a_Ethernet2"
+    "custom_field": "Local: Ethernet3 - Remote: dc1-leaf2a Ethernet2"
   },
   {
     "name": "dc1-spine2",
@@ -153,7 +153,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: P2P Interface Ethernet1 - Destination: dc1-leaf1a_Ethernet2"
+    "custom_field": "Source: P2P Interface Ethernet1 (IP: 10.255.255.2) - Destination: dc1-leaf1a Ethernet2 (IP: 10.255.255.3)"
   },
   {
     "name": "dc1-spine2",
@@ -162,7 +162,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: P2P Interface Ethernet2 - Destination: dc1-leaf1b_Ethernet2"
+    "custom_field": "Source: P2P Interface Ethernet2 (IP: 10.255.255.6) - Destination: dc1-leaf1b Ethernet2 (IP: 10.255.255.7)"
   },
   {
     "name": "dc1-spine2",
@@ -171,7 +171,7 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: P2P Interface Ethernet3 - Destination: dc1-leaf2a_Ethernet2"
+    "custom_field": "Source: P2P Interface Ethernet3 (IP: 10.255.255.10) - Destination: dc1-leaf2a Ethernet2 (IP: 10.255.255.11)"
   },
   {
     "name": "dc1-spine2",
