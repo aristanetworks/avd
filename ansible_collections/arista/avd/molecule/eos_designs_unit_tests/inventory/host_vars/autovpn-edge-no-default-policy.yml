@@ -20,7 +20,7 @@ wan_route_servers:
       - name: INET
         interfaces:
           - name: Ethernet1
-            ip_address: 10.7.7.7/31
+            public_ip: 10.7.7.7
 
 wan_ipsec_profiles:
   control_plane:
@@ -53,7 +53,9 @@ wan_router:
 
 wan_path_groups:
   - name: MPLS
-    ipsec: False
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
     id: 100
   - name: INET
     id: 101

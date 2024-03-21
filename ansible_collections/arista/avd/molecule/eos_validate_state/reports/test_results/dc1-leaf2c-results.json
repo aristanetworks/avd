@@ -91,11 +91,19 @@
   },
   {
     "name": "dc1-leaf2c",
-    "test": "VerifyTemperature",
+    "test": "VerifyTransceiversManufacturers",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range."
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers."
   },
   {
     "name": "dc1-leaf2c",
@@ -103,23 +111,15 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range."
+    "description": "Verifies the device temperature."
   },
   {
     "name": "dc1-leaf2c",
-    "test": "VerifyEnvironmentCooling",
+    "test": "VerifyTemperature",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the fans status are within the accepted states list."
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyEnvironmentCooling",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies if the fans status are within the accepted states list."
+    "description": "Verifies the device temperature."
   },
   {
     "name": "dc1-leaf2c",
@@ -127,7 +127,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list."
+    "description": "Verifies the power supplies status."
   },
   {
     "name": "dc1-leaf2c",
@@ -135,15 +135,23 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list."
+    "description": "Verifies the power supplies status."
   },
   {
     "name": "dc1-leaf2c",
-    "test": "VerifyTransceiversTemperature",
+    "test": "VerifyEnvironmentCooling",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies that all transceivers are operating within the acceptable temperature range."
+    "description": "Verifies the status of power supply fans and all fan trays."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the status of power supply fans and all fan trays."
   },
   {
     "name": "dc1-leaf2c",
@@ -155,19 +163,11 @@
   },
   {
     "name": "dc1-leaf2c",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyTransceiversTemperature",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyTransceiversManufacturers",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+    "description": "Verifies the transceivers temperature."
   },
   {
     "name": "dc1-leaf2c",
@@ -181,46 +181,46 @@
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'adminDown'",
-    "custom_field": "Ethernet2 - DC1-LEAF2B_Ethernet8"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet1 - DC1-LEAF2A_Ethernet8 = 'up'"
   },
   {
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet1 - DC1-LEAF2A_Ethernet8"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet2 - DC1-LEAF2B_Ethernet8 = 'adminDown'"
   },
   {
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet5 - dc1-leaf2-server1_iLO"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet5 - dc1-leaf2-server1_iLO = 'up'"
   },
   {
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "custom_field": "Port-Channel1 - DC1_L3_LEAF2_Po8"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Port-Channel1 - DC1_L3_LEAF2_Po8 = 'up'"
   },
   {
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan4085 - L2LEAF_INBAND_MGMT"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan4085 - L2LEAF_INBAND_MGMT = 'up'"
   },
   {
     "name": "dc1-leaf2c",
@@ -350,6 +350,24 @@
   },
   {
     "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.2.1"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Inband Mgmt Reachability",
+    "custom_field": "Source: dc1-leaf2c - Vlan4085 Destination: 10.255.2.2"
+  },
+  {
+    "name": "dc1-leaf2c",
     "test": "VerifyNTP",
     "categories": [
       "NTP"
@@ -363,7 +381,7 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
+    "description": "Verifies if the eAPI has a valid SSL profile."
   },
   {
     "name": "dc1-leaf2c",
@@ -411,31 +429,7 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies if NTP is synchronised."
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyUptime",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyCoredump",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies if there are core dump files in the /var/core directory."
-  },
-  {
-    "name": "dc1-leaf2c",
-    "test": "VerifyAgentLogs",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies that no agent crash reports are present on the device."
+    "description": "Verifies if NTP is synchronised."
   },
   {
     "name": "dc1-leaf2c",
@@ -443,7 +437,15 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the device uptime."
   },
   {
     "name": "dc1-leaf2c",
@@ -451,7 +453,23 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies the last reload cause of the device."
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies there are no agent crash reports."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies there are no core dump files."
   },
   {
     "name": "dc1-leaf2c",
@@ -459,7 +477,7 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies whether the CPU utilization is below 75%."
+    "description": "Verifies whether the CPU utilization is below 75%."
   },
   {
     "name": "dc1-leaf2c",
@@ -467,6 +485,6 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies whether the memory utilization is below 75%."
+    "description": "Verifies whether the memory utilization is below 75%."
   }
 ]
