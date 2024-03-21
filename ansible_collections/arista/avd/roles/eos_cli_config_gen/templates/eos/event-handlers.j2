@@ -11,7 +11,7 @@ event-handler {{ handler.name }}
 {%         if handler.trigger is arista.avd.defined %}
 {%             if handler.trigger is arista.avd.defined("on-maintenance")
                   and handler.trigger_on_maintenance.operation is arista.avd.defined
-                  and handler.trigger_on_maintenance.stage is arista.avd.defined %}
+                  and handler.trigger_on_maintenance.action is arista.avd.defined %}
 {%                 set trigger_on_manitenance_cli =  "trigger " ~ handler.trigger ~ " " ~ handler.trigger_on_maintenance.operation %}
 {%                 if handler.trigger_on_maintenance.bgp is arista.avd.defined %}
 {%                     if handler.trigger_on_maintenance.bgp.neighbor_address_ipv4 is arista.avd.defined %}
@@ -29,13 +29,13 @@ event-handler {{ handler.name }}
 {%                 elif handler.trigger_on_maintenance.unit is arista.avd.defined %}
 {%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " unit " ~ handler.trigger_on_maintenance.unit %}
 {%                 endif %}
-{%                 if handler.trigger_on_maintenance.stage is arista.avd.defined("after") or handler.trigger_on_maintenance.stage is arista.avd.defined("before") %}
-{%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " " ~ handler.trigger_on_maintenance.stage ~ " stage " ~ handler.trigger_on_maintenance.after_before_stage %}
-{%                 elif handler.trigger_on_maintenance.stage is arista.avd.defined("all") %}
+{%                 if handler.trigger_on_maintenance.action is arista.avd.defined("after") or handler.trigger_on_maintenance.action is arista.avd.defined("before") %}
+{%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " " ~ handler.trigger_on_maintenance.action ~ " stage " ~ handler.trigger_on_maintenance.stage %}
+{%                 elif handler.trigger_on_maintenance.action is arista.avd.defined("all") %}
 {%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " all" %}
-{%                 elif handler.trigger_on_maintenance.stage is arista.avd.defined("begin") %}
+{%                 elif handler.trigger_on_maintenance.action is arista.avd.defined("begin") %}
 {%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " begin" %}
-{%                 elif handler.trigger_on_maintenance.stage is arista.avd.defined("end") %}
+{%                 elif handler.trigger_on_maintenance.action is arista.avd.defined("end") %}
 {%                     set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " end" %}
 {%                 endif %}
    {{ trigger_on_manitenance_cli }}

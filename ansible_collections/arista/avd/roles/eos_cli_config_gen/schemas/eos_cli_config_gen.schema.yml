@@ -3405,18 +3405,17 @@ keys:
                   type: str
                 peer_group_name:
                   type: str
-            stage:
+            action:
               type: str
               required: true
-              description: Stages of maintenance operation. "vrf" stage can be defined
-                for "bgp" only.
+              description: Action for maintenance operation.
               valid_values:
               - after
               - before
               - all
               - begin
               - end
-            after_before_stage:
+            stage:
               type: str
               description: Action is triggered after/before specified stage.
               valid_values:
@@ -3426,7 +3425,7 @@ keys:
               - ratemon
             vrf:
               type: str
-              description: VRF name.
+              description: VRF name. VRF can be defined for "bgp" only.
             interface:
               type: str
               description: Trigger condition occurs on maintenance operation of specified

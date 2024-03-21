@@ -46,7 +46,6 @@ interface Management1
 | CONFIG_VERSIONING | bash | <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config |
 | evpn-blacklist-recovery | bash | <code>FastCli -p 15 -c "clear bgp evpn host-flap"</code> | on-logging |
 | trigger-on-boot | bash | <code>echo "on-boot"</code> | on-boot |
-| trigger-on-maintenance | bash | <code>echo "on-maintenance"</code> | on-maintenance |
 | trigger-on-maintenance1 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
 | trigger-on-maintenance2 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
 | trigger-on-maintenance3 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
@@ -71,12 +70,8 @@ event-handler trigger-on-boot
    trigger on-boot
    action bash echo "on-boot"
 !
-event-handler trigger-on-maintenance
-   trigger on-maintenance enter interface Ethernet4 all
-   action bash echo "on-maintenance"
-!
 event-handler trigger-on-maintenance1
-   trigger on-maintenance enter bgp 10.0.0.2 vrf vrf1 after stage linkdown
+   trigger on-maintenance enter interface Management3 after stage linkdown
    action bash echo "on-maintenance"
 !
 event-handler trigger-on-maintenance2
