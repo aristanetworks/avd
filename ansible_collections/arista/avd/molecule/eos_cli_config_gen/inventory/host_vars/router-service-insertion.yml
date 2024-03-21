@@ -11,12 +11,12 @@ router_service_insertion:
     - name: connection2
       interface:
         tunnel:
-          interface_name: tunnel2
-          tunnel_config: "primary"
+          primary_interface_name: tunnel2
+          secondary_interface_name: tunnel3
       monitor_connectivity_to_host: 'host2'
     - name: connection3
       interface:
         tunnel:
-          interface_name: tunnel3
-          tunnel_config: "secondary"
+          primary_interface_name: tunnel4
+          secondary_interface_name: tunnel5
       monitor_connectivity_to_host: 'host3'

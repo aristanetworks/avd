@@ -13474,6 +13474,8 @@ keys:
               keys:
                 ethernet:
                   type: dict
+                  description: Configure to use ethernet interface to reach the network
+                    service.
                   keys:
                     interface_name:
                       type: str
@@ -13483,15 +13485,14 @@ keys:
                       description: Configure the next-hop ip address.
                 tunnel:
                   type: dict
+                  description: Configure to use tunnel interface to reach the network
+                    service.
                   keys:
-                    interface_name:
+                    primary_interface_name:
                       type: str
                       description: e.g. tunnel2
-                    tunnel_config:
+                    secondary_interface_name:
                       type: str
-                      valid_values:
-                      - primary
-                      - secondary
             monitor_connectivity_to_host:
               type: str
               description: Monitor connectivity health to the network service host.

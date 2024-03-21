@@ -23362,6 +23362,7 @@
                 "properties": {
                   "ethernet": {
                     "type": "object",
+                    "description": "Configure to use ethernet interface to reach the network service.",
                     "properties": {
                       "interface_name": {
                         "type": "string",
@@ -23382,19 +23383,16 @@
                   },
                   "tunnel": {
                     "type": "object",
+                    "description": "Configure to use tunnel interface to reach the network service.",
                     "properties": {
-                      "interface_name": {
+                      "primary_interface_name": {
                         "type": "string",
                         "description": "e.g. tunnel2",
-                        "title": "Interface Name"
+                        "title": "Primary Interface Name"
                       },
-                      "tunnel_config": {
+                      "secondary_interface_name": {
                         "type": "string",
-                        "enum": [
-                          "primary",
-                          "secondary"
-                        ],
-                        "title": "Tunnel Config"
+                        "title": "Secondary Interface Name"
                       }
                     },
                     "additionalProperties": false,
