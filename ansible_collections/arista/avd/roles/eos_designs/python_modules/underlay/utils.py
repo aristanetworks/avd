@@ -90,6 +90,10 @@ class UtilsMixin:
                         "spanning_tree_portfast": get(uplink, "peer_spanning_tree_portfast"),
                         "structured_config": get(uplink, "structured_config"),
                     }
+                    if get(peer_facts, "inband_ztp"):
+                        link["inband_ztp_vlan"] = get(peer_facts, "inband_mgmt_vlan")
+                        link["inband_ztp_lacp_fallback_delay"] = get(peer_facts, "inband_ztp_lacp_fallback_delay")
+
                     if (subinterfaces := get(uplink, "subinterfaces")) is not None:
                         link["subinterfaces"] = [
                             {
