@@ -4,6 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+  - [Router Internet Exit](#router-internet-exit)
 
 ## Management
 
@@ -31,4 +32,58 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+### Router Internet Exit
+
+#### Exit Group Summary
+
+| Exit Group | Local Connection | Fib Default | Policy | Policy Exit Group |
+| ---------- | ---------------- | ----------- | ------ | ----------------- |
+| eg_01 | - | - | - | - |
+| eg_02 | - | True | - | - |
+| eg_03 | eg_03_lo_01 | - | - | - |
+| eg_03 | eg_03_lo_02 | - | - | - |
+| eg_03 | - | True | - | - |
+| eg_04 | eg_04_lo_01 | - | - | - |
+| eg_04 | eg_04_lo_02 | - | - | - |
+| eg_04 | eg_04_lo_03 | - | - | - |
+| - | - | - | po_01 | po_eg_01_01 |
+| - | - | - | po_01 | po_eg_01_02 |
+| - | - | - | po_01 | po_eg_01_03 |
+| - | - | - | po_01 | po_eg_01_04 |
+| - | - | - | po_02 | - |
+| - | - | - | po_03 | po_eg_03_01 |
+
+#### Router Internet Exit Device Configuration
+
+```eos
+!
+router internet-exit
+    !
+    exit-group eg_01
+    !
+    exit-group eg_02
+        fib-default
+    !
+    exit-group eg_03
+        local connection eg_03_lo_01
+        local connection eg_03_lo_02
+        fib-default
+    !
+    exit-group eg_04
+        local connection eg_04_lo_01
+        local connection eg_04_lo_02
+        local connection eg_04_lo_03
+    !
+    policy po_01
+        exit-group po_eg_01_01
+        exit-group po_eg_01_02
+        exit-group po_eg_01_03
+        exit-group po_eg_01_04
+    !
+    policy po_02
+    !
+    policy po_03
+        exit-group po_eg_03_01
 ```
