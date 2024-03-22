@@ -14,12 +14,8 @@ event-handler {{ handler.name }}
                   and handler.trigger_on_maintenance.action is arista.avd.defined %}
 {%                 set trigger_on_manitenance_cli =  "trigger " ~ handler.trigger ~ " " ~ handler.trigger_on_maintenance.operation %}
 {%                 if handler.trigger_on_maintenance.bgp is arista.avd.defined %}
-{%                     if handler.trigger_on_maintenance.bgp.neighbor_address_ipv4 is arista.avd.defined %}
-{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " bgp " ~ handler.trigger_on_maintenance.bgp.neighbor_address_ipv4 %}
-{%                     elif handler.trigger_on_maintenance.bgp.neighbor_address_ipv6 is arista.avd.defined %}
-{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " bgp " ~ handler.trigger_on_maintenance.bgp.neighbor_address_ipv6 %}
-{%                     elif handler.trigger_on_maintenance.bgp.peer_group_name is arista.avd.defined %}
-{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " bgp " ~ handler.trigger_on_maintenance.bgp.peer_group_name %}
+{%                     if handler.trigger_on_maintenance.bgp.peer is arista.avd.defined %}
+{%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " bgp " ~ handler.trigger_on_maintenance.bgp.peer %}
 {%                     endif %}
 {%                     if handler.trigger_on_maintenance.vrf is arista.avd.defined %}
 {%                         set trigger_on_manitenance_cli = trigger_on_manitenance_cli ~ " vrf " ~ handler.trigger_on_maintenance.vrf %}

@@ -3399,12 +3399,9 @@ keys:
                 BGP peer.
               type: dict
               keys:
-                neighbor_address_ipv4:
+                peer:
                   type: str
-                neighbor_address_ipv6:
-                  type: str
-                peer_group_name:
-                  type: str
+                  description: Ipv4/Ipv6 address or peer group name.
             action:
               type: str
               required: true
