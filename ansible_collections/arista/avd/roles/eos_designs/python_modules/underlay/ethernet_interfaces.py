@@ -135,7 +135,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                             },
                         }
                     )
-
+                    if get(link, "inband_ztp_vlan"):
+                        ethernet_interface.update({"mode": "access", "vlans": link["inband_ztp_vlan"]})
                 else:
                     # Render trunk interface
                     ethernet_interface.update(
