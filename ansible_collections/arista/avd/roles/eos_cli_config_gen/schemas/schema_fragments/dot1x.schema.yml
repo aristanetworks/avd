@@ -54,6 +54,7 @@ keys:
             keys:
               eap_response:
                 type: str
+                description: EAP response to send.
                 valid_values:
                   - "success"
                   - "disabled"
@@ -72,6 +73,12 @@ keys:
                         convert_types:
                           - str
                         min: 1
+                        description: |-
+                          Enable caching for a specific duration -
+                          <1-10000>      duration in days
+                          <1-14400000>   duration in minutes
+                          <1-240000>     duration in hours
+                          <1-864000000>  duration in seconds
                       time_duration_unit:
                         type: str
                         required: true
@@ -105,6 +112,12 @@ keys:
                         convert_types:
                           - str
                         min: 1
+                        description: |-
+                          Enable caching for a specific duration -
+                          <1-10000>      duration in days
+                          <1-14400000>   duration in minutes
+                          <1-240000>     duration in hours
+                          <1-864000000>  duration in seconds
                       time_duration_unit:
                         type: str
                         required: true
