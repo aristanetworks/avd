@@ -9,7 +9,7 @@
 Router service-insertion is enabled.
 {%     if router_service_insertion.connections is arista.avd.defined %}
 
-##### Network Services Information
+## Network Services Information
 {%         for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
 {%             if connection.name is arista.avd.defined and connection.interface is arista.avd.defined %}
 {%                 if connection.interface.ethernet is arista.avd.defined %}
@@ -49,7 +49,7 @@ Router service-insertion is enabled.
 {%         endfor %}
 {%     endif %}
 
-##### Router Service-Insertion Configuration
+## Router Service-Insertion Configuration
 
 ```eos
 {%     include 'eos/router-service-insertion.j2' %}
