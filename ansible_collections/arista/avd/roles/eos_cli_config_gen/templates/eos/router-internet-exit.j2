@@ -7,31 +7,23 @@
 {% if router_internet_exit is arista.avd.defined %}
 !
 router internet-exit
-{%     if router_internet_exit.exit_groups is arista.avd.defined %}
-{%         for exit_group in router_internet_exit.exit_groups | arista.avd.default([]) %}
+{%     for exit_group in router_internet_exit.exit_groups | arista.avd.default([]) %}
     !
     exit-group {{ exit_group.name }}
-{%             if exit_group.local_connections is arista.avd.defined %}
-{%                 for local_connection in exit_group.local_connections | arista.avd.default([]) %}
+{%         for local_connection in exit_group.local_connections | arista.avd.default([]) %}
         local connection {{ local_connection.name }}
-{%                 endfor %}
-{%             endif %}
-{%             if exit_group.fib_default is arista.avd.defined(true) %}
-        fib-default
-{%             endif %}
 {%         endfor %}
-{%     endif %}
-{%     if router_internet_exit.policies is arista.avd.defined %}
-{%         for policy in router_internet_exit.policies | arista.avd.default([]) %}
+{%         if exit_group.fib_default is arista.avd.defined(true) %}
+        fib-default
+{%         endif %}
+{%     endfor %}
+{%     for policy in router_internet_exit.policies | arista.avd.default([]) %}
     !
     policy {{ policy.name }}
-{%             if policy.exit_groups is arista.avd.defined %}
-{%                 for exit_group in policy.exit_groups | arista.avd.default([]) %}
-{%                     if exit_group.name is arista.avd.defined %}
+{%         for exit_group in policy.exit_groups | arista.avd.default([]) %}
+{%             if exit_group.name is arista.avd.defined %}
         exit-group {{ exit_group.name }}
-{%                     endif %}
-{%                 endfor %}
 {%             endif %}
 {%         endfor %}
-{%     endif %}
+{%     endfor %}
 {% endif %}

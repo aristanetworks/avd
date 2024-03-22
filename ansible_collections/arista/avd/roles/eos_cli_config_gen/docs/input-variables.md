@@ -869,6 +869,12 @@ roles/eos_cli_config_gen/docs/tables/router-general.md
 roles/eos_cli_config_gen/docs/tables/router-isis.md
 --8<--
 
+### Router internet-exit
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-internet-exit.md
+--8<--
+
 ### Router L2 VPN
 
 --8<--

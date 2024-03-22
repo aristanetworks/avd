@@ -97,6 +97,8 @@
 {% include 'eos/switchport-port-security.j2' %}
 {# router adaptive-virtual-topology #}
 {% include 'eos/router-adaptive-virtual-topology.j2' %}
+{# router internet-exit configuration #}
+{% include 'eos/router-internet-exit.j2' %}
 {# router l2-vpn #}
 {% include 'eos/router-l2-vpn.j2' %}
 {# router path-selection #}
@@ -271,8 +273,6 @@
 {% include 'eos/peer-filters.j2' %}
 {# router bgp configuration #}
 {% include 'eos/router-bgp.j2' %}
-{# router internet exit configuration #}
-{% include 'eos/router-internet-exit.j2' %}
 {# router igmp configuration #}
 {% include 'eos/router-igmp.j2' %}
 {# router multicast configuration #}
