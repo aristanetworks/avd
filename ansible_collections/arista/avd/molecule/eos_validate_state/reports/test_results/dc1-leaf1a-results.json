@@ -163,11 +163,19 @@
   },
   {
     "name": "dc1-leaf1a",
-    "test": "VerifyTemperature",
+    "test": "VerifyTransceiversManufacturers",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range."
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers."
   },
   {
     "name": "dc1-leaf1a",
@@ -175,23 +183,15 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range."
+    "description": "Verifies the device temperature."
   },
   {
     "name": "dc1-leaf1a",
-    "test": "VerifyEnvironmentCooling",
+    "test": "VerifyTemperature",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the fans status are within the accepted states list."
-  },
-  {
-    "name": "dc1-leaf1a",
-    "test": "VerifyEnvironmentCooling",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies if the fans status are within the accepted states list."
+    "description": "Verifies the device temperature."
   },
   {
     "name": "dc1-leaf1a",
@@ -199,7 +199,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list."
+    "description": "Verifies the power supplies status."
   },
   {
     "name": "dc1-leaf1a",
@@ -207,15 +207,23 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list."
+    "description": "Verifies the power supplies status."
   },
   {
     "name": "dc1-leaf1a",
-    "test": "VerifyTransceiversTemperature",
+    "test": "VerifyEnvironmentCooling",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies that all transceivers are operating within the acceptable temperature range."
+    "description": "Verifies the status of power supply fans and all fan trays."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the status of power supply fans and all fan trays."
   },
   {
     "name": "dc1-leaf1a",
@@ -227,19 +235,11 @@
   },
   {
     "name": "dc1-leaf1a",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyTransceiversTemperature",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
-  },
-  {
-    "name": "dc1-leaf1a",
-    "test": "VerifyTransceiversManufacturers",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+    "description": "Verifies the transceivers temperature."
   },
   {
     "name": "dc1-leaf1a",
@@ -253,226 +253,226 @@
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet3 - MLAG_PEER_dc1-leaf1b_Ethernet3"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet3 - MLAG_PEER_dc1-leaf1b_Ethernet3 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet4 - MLAG_PEER_dc1-leaf1b_Ethernet4"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet4 - MLAG_PEER_dc1-leaf1b_Ethernet4 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet5 - dc1-leaf1-server1_PCI1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet5 - dc1-leaf1-server1_PCI1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet6 - P2P_LINK_TO_DC1-WAN1_Ethernet1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet6 - P2P_LINK_TO_DC1-WAN1_Ethernet1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet7 - P2P_LINK_TO_DC1-WAN2_Ethernet1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet7 - P2P_LINK_TO_DC1-WAN2_Ethernet1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet8 - DC1-LEAF1C_Ethernet1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet8 - DC1-LEAF1C_Ethernet1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "custom_field": "Loopback0 - EVPN_Overlay_Peering"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Loopback0 - EVPN_Overlay_Peering = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "custom_field": "Loopback1 - VTEP_VXLAN_Tunnel_Source"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Loopback1 - VTEP_VXLAN_Tunnel_Source = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "custom_field": "Loopback10 - VRF10_VTEP_DIAGNOSTICS"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "custom_field": "Loopback11 - VRF11_VTEP_DIAGNOSTICS"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "custom_field": "Port-Channel3 - MLAG_PEER_dc1-leaf1b_Po3"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Port-Channel3 - MLAG_PEER_dc1-leaf1b_Po3 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "custom_field": "Port-Channel5 - dc1-leaf1-server1_PortChannel dc1-leaf1-server1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Port-Channel5 - dc1-leaf1-server1_PortChannel dc1-leaf1-server1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "custom_field": "Port-Channel8 - DC1-LEAF1C_Po1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Port-Channel8 - DC1-LEAF1C_Po1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan11 - VRF10_VLAN11"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan11 - VRF10_VLAN11 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan12 - VRF10_VLAN12"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan12 - VRF10_VLAN12 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan21 - VRF11_VLAN21"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan21 - VRF11_VLAN21 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan22 - VRF11_VLAN22"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan22 - VRF11_VLAN22 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan4085 - Inband Management"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan4085 - Inband Management = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan4093 - MLAG_PEER_L3_PEERING"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan4094 - MLAG_PEER"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan4094 - MLAG_PEER = 'up'"
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vxlan Interface Status & Line Protocol == 'up'",
-    "custom_field": "Vxlan1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vxlan1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
@@ -714,7 +714,7 @@
     "categories": [
       "mlag"
     ],
-    "description": "This test verifies the health status of the MLAG configuration."
+    "description": "Verifies the health status of the MLAG configuration."
   },
   {
     "name": "dc1-leaf1a",
@@ -927,7 +927,7 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
+    "description": "Verifies if the eAPI has a valid SSL profile."
   },
   {
     "name": "dc1-leaf1a",
@@ -983,31 +983,7 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies if NTP is synchronised."
-  },
-  {
-    "name": "dc1-leaf1a",
-    "test": "VerifyUptime",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
-  },
-  {
-    "name": "dc1-leaf1a",
-    "test": "VerifyCoredump",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies if there are core dump files in the /var/core directory."
-  },
-  {
-    "name": "dc1-leaf1a",
-    "test": "VerifyAgentLogs",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies that no agent crash reports are present on the device."
+    "description": "Verifies if NTP is synchronised."
   },
   {
     "name": "dc1-leaf1a",
@@ -1015,7 +991,15 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
+    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the device uptime."
   },
   {
     "name": "dc1-leaf1a",
@@ -1023,7 +1007,23 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies the last reload cause of the device."
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies there are no agent crash reports."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies there are no core dump files."
   },
   {
     "name": "dc1-leaf1a",
@@ -1031,7 +1031,7 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies whether the CPU utilization is below 75%."
+    "description": "Verifies whether the CPU utilization is below 75%."
   },
   {
     "name": "dc1-leaf1a",
@@ -1039,23 +1039,7 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies whether the memory utilization is below 75%."
-  },
-  {
-    "name": "dc1-leaf1a",
-    "test": "VerifyVxlan1Interface",
-    "categories": [
-      "vxlan"
-    ],
-    "description": "This test verifies if the Vxlan1 interface is configured and 'up/up'."
-  },
-  {
-    "name": "dc1-leaf1a",
-    "test": "VerifyVxlanConfigSanity",
-    "categories": [
-      "vxlan"
-    ],
-    "description": "This test verifies that no issues are detected with the VXLAN configuration."
+    "description": "Verifies whether the memory utilization is below 75%."
   },
   {
     "name": "dc1-leaf1a",
@@ -1063,7 +1047,7 @@
     "categories": [
       "vxlan"
     ],
-    "description": "Verifies the VNI-VLAN bindings of the Vxlan1 interface"
+    "description": "Verifies the VNI-VLAN bindings of the Vxlan1 interface."
   },
   {
     "name": "dc1-leaf1a",
@@ -1072,5 +1056,21 @@
       "vxlan"
     ],
     "description": "Verifies the VTEP peers of the Vxlan1 interface"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyVxlan1Interface",
+    "categories": [
+      "vxlan"
+    ],
+    "description": "Verifies the Vxlan1 interface status."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyVxlanConfigSanity",
+    "categories": [
+      "vxlan"
+    ],
+    "description": "Verifies there are no VXLAN config-sanity inconsistencies."
   }
 ]

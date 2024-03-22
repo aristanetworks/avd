@@ -1,0 +1,6 @@
+---
+# Testing CV pathfinder edge, override LAN_HA path group name
+# Other variables inherited from CV_PATHFINDER_TESTS
+
+wan_ha:
+  lan_ha_path_group_name: CUSTOM_LAN_HA

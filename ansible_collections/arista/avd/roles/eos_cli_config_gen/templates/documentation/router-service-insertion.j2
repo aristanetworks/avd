@@ -14,12 +14,9 @@ Router service-insertion is enabled.
 {%             if connection.name is arista.avd.defined and connection.interface is arista.avd.defined %}
 {%                 if connection.interface.ethernet is arista.avd.defined %}
 
-| Name | Interface | next_hop_ip_address |
-| ---- | --------- | ------------------- |
+| Name | Interface | Next Hop |
+| ---- | --------- | -------- |
 {%                     break %}
-{%                 endif %}
-{%                 if connection.interface.tunnel is arista.avd.defined %}
-{%                     set tunnel_connection = true %}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

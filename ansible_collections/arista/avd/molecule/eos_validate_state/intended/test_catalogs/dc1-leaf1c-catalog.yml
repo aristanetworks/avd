@@ -271,54 +271,34 @@ anta.tests.hardware:
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet1
-      protocol_status: up
-      state: up
+    - name: Ethernet1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet1 - DC1-LEAF1A_Ethernet8
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet1 - DC1-LEAF1A_Ethernet8 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet2
-      protocol_status: up
-      state: up
+    - name: Ethernet2
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet2 - DC1-LEAF1B_Ethernet8
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet2 - DC1-LEAF1B_Ethernet8 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet5
-      protocol_status: up
-      state: up
+    - name: Ethernet5
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet5 - dc1-leaf1-server1_iLO
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet5 - dc1-leaf1-server1_iLO = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Port-Channel1
-      protocol_status: up
-      state: up
+    - name: Port-Channel1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Port-Channel1 - DC1_L3_LEAF1_Po8
-      description: Port-Channel Interface & Line Protocol == 'up'
+      custom_field: Interface Port-Channel1 - DC1_L3_LEAF1_Po8 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan4085
-      protocol_status: up
-      state: up
+    - name: Vlan4085
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vlan4085 - L2LEAF_INBAND_MGMT
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: Interface Vlan4085 - L2LEAF_INBAND_MGMT = 'up'
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile

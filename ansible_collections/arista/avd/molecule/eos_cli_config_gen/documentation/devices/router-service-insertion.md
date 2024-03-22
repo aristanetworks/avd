@@ -42,8 +42,8 @@ Router service-insertion is enabled.
 
 ## Network Services Information
 
-| Name | Interface | next_hop_ip_address |
-| ---- | --------- | ------------------- |
+| Name | Interface | Next Hop |
+| ---- | --------- | -------- |
 | connection1 | ethernet2 | 10.10.10.10 |
 
 | Name | Primary Interface | Secondary Interface |

@@ -94,7 +94,7 @@ wan_router:
               wan_circuit_id: AF830
               ip_address: 172.20.20.20/31
               connected_to_pathfinder: false
-        - name: cv-pathfinder-edge-no-common-path-group
+        - name: cv-pathfinder-edge1
           id: 2
           uplink_switch_interfaces: [Ethernet2]
           l3_interfaces:
@@ -109,6 +109,11 @@ wan_router:
               dhcp_accept_default_route: true
               ip_address: dhcp
               connected_to_pathfinder: false
+            - name: Ethernet3
+              wan_carrier: ATT
+              wan_circuit_id: 404
+              dhcp_accept_default_route: true
+              ip_address: dhcp
     # SITE_HA_ENABLED
     - group: Site423
       cv_pathfinder_region: AVD_Land_West
@@ -216,6 +221,7 @@ wan_rr:
           static_routes:
             - prefix: 0.0.0.0/0
           ip_address: 10.7.7.7/31
+          public_ip: 172.17.7.7
           peer_ip: 10.7.7.6
         - name: Ethernet2
           wan_carrier: Colt
@@ -245,6 +251,10 @@ wan_rr:
           wan_carrier: ATT-MPLS
           wan_circuit_id: 10999
           ip_address: 172.19.9.9/31
+          # public IP here will be overriden by
+          # wan_route_servers.path_groups.interfaces.ip_address
+          # in CV_PATHFINDER_MULTI_RR_TESTS groups vars.
+          public_ip: 10.37.37.7
 
 wan_path_groups:
   - name: MPLS
@@ -392,6 +402,12 @@ wan_virtual_topologies:
           constraints:
             loss_rate: 42.0
           id: 4
+        # This will not be rendered on devices without MPLS
+        - application_profile: MPLS-ONLY
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+          id: 5
     - name: DEFAULT-AVT-POLICY
       default_virtual_topology:
         path_groups:
@@ -436,6 +452,7 @@ application_classification:
         # Builtin application that should not raise
         - name: skype
     - name: IT
+    - name: MPLS-ONLY
     - name: VOICE
       applications:
         # Testing applications in application-profiles filtering
