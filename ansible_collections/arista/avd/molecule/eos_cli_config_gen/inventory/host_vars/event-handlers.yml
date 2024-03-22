@@ -38,7 +38,7 @@ event_handlers:
     trigger_on_maintenance:
       operation: enter
       bgp:
-        neighbor_address_ipv4: 10.0.0.2
+        peer: 10.0.0.2
       vrf: vrf1
       action: all
     action_type: bash
