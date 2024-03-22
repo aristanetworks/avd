@@ -14,7 +14,9 @@ router service-insertion
 {%             endif %}
 {%             if connection.interface is arista.avd.defined %}
 {%                 if connection.interface.ethernet is arista.avd.defined %}
+{%                     if connection.interface.ethernet.interface_name is arista.avd.defined and connection.interface.ethernet.next_hop_ip_address is arista.avd.defined %}
       interface {{ connection.interface.ethernet.interface_name }} next-hop {{ connection.interface.ethernet.next_hop_ip_address }}
+{%                     endif %}
 {%                 elif connection.interface.tunnel is arista.avd.defined %}
 {%                     if connection.interface.tunnel.primary_interface_name is arista.avd.defined %}
       interface {{ connection.interface.tunnel.primary_interface_name }} primary
