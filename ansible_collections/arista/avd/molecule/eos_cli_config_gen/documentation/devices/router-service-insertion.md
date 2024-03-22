@@ -37,3 +37,32 @@ interface Management1
 ## Routing
 
 Router service-insertion is enabled.
+
+##### Network Services Information
+
+| Name | Interface | next_hop_ip_address |
+| ---- | --------- | ------------------- |
+| connection1 | ethernet2 | 10.10.10.10 |
+
+| Name | Primary Interface | Secondary Interface |
+| ---- | ----------------- | ------------------- |
+| connection2 | tunnel2 | tunnel3 |
+| connection3 | tunnel4 | tunnel5 |
+
+##### Router Service-Insertion Configuration
+
+```eos
+!
+router service-insertion
+   connection connection1
+      interface ethernet2 next-hop 10.10.10.10
+      monitor connectivity host host1
+   connection connection2
+      interface tunnel2 primary
+      interface tunnel3 secondary
+      monitor connectivity host host2
+   connection connection3
+      interface tunnel4 primary
+      interface tunnel5 secondary
+      monitor connectivity host host3
+```
