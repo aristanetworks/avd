@@ -2142,6 +2142,7 @@
               "properties": {
                 "eap_response": {
                   "type": "string",
+                  "description": "EAP response to send.",
                   "enum": [
                     "success",
                     "disabled"
@@ -2163,6 +2164,7 @@
                         "time_duration": {
                           "type": "integer",
                           "minimum": 1,
+                          "description": "Enable caching for a specific duration -\n<1-10000>      duration in days\n<1-14400000>   duration in minutes\n<1-240000>     duration in hours\n<1-864000000>  duration in seconds",
                           "title": "Time Duration"
                         },
                         "time_duration_unit": {
@@ -2221,6 +2223,7 @@
                         "time_duration": {
                           "type": "integer",
                           "minimum": 1,
+                          "description": "Enable caching for a specific duration -\n<1-10000>      duration in days\n<1-14400000>   duration in minutes\n<1-240000>     duration in hours\n<1-864000000>  duration in seconds",
                           "title": "Time Duration"
                         },
                         "time_duration_unit": {
