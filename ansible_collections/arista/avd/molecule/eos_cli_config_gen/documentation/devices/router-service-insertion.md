@@ -5,7 +5,9 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
-- [Network Services Information](#network-services-information)
+- [Connections](#connections)
+  - [Connections Through Ethernet Interface](#connections-through-ethernet-interface)
+  - [Connections Through Tunnel Interface](#connections-through-tunnel-interface)
 - [Router Service-Insertion Configuration](#router-service-insertion-configuration)
 
 ## Management
@@ -40,16 +42,21 @@ interface Management1
 
 Router service-insertion is enabled.
 
-## Network Services Information
+## Connections
 
-| Name | Interface | Next Hop |
-| ---- | --------- | -------- |
-| connection1 | ethernet2 | 10.10.10.10 |
+### Connections Through Ethernet Interface
 
-| Name | Primary Interface | Secondary Interface |
-| ---- | ----------------- | ------------------- |
-| connection2 | tunnel2 | tunnel3 |
-| connection3 | tunnel4 | tunnel5 |
+| Name | Interface | Next Hop | Monitor Connectivity Host |
+| ---- | --------- | -------- | ------------------------- |
+| connection1 | Ethernet2/2.2 | 10.10.10.10 | host1 |
+| connection4 | Ethernet3/1.1 | 10.10.10.10 | host4 |
+
+### Connections Through Tunnel Interface
+
+| Name | Primary Interface | Secondary Interface | Monitor Connectivity Host |
+| ---- | ----------------- | ------------------- | ------------------------- |
+| connection2 | Tunnel2 | Tunnel3 | host2 |
+| connection3 | Tunnel4 | Tunnel5 | host3 |
 
 ## Router Service-Insertion Configuration
 
@@ -57,14 +64,17 @@ Router service-insertion is enabled.
 !
 router service-insertion
    connection connection1
-      interface ethernet2 next-hop 10.10.10.10
+      interface Ethernet2/2.2 next-hop 10.10.10.10
       monitor connectivity host host1
    connection connection2
-      interface tunnel2 primary
-      interface tunnel3 secondary
+      interface Tunnel2 primary
+      interface Tunnel3 secondary
       monitor connectivity host host2
    connection connection3
-      interface tunnel4 primary
-      interface tunnel5 secondary
+      interface Tunnel4 primary
+      interface Tunnel5 secondary
       monitor connectivity host host3
+   connection connection4
+      interface Ethernet3/1.1 next-hop 10.10.10.10
+      monitor connectivity host host4
 ```

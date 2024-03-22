@@ -23353,71 +23353,63 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Configure name of the network service.",
+                "description": "Connection name.",
                 "title": "Name"
               },
-              "interface": {
+              "ethernet_interface": {
                 "type": "object",
-                "description": "Interface to be used to reach the network service.",
+                "description": "Outgoing physical interface or subinterface to use for the connection.\nIf both ethernet interface and tunnel interface are configured, ethernet interface will be used.",
                 "properties": {
-                  "ethernet": {
-                    "type": "object",
-                    "description": "Configure to use ethernet interface to reach the network service.",
-                    "properties": {
-                      "interface_name": {
-                        "type": "string",
-                        "description": "e.g. ethernet2",
-                        "title": "Interface Name"
-                      },
-                      "next_hop_ip_address": {
-                        "type": "string",
-                        "description": "Configure the next-hop ip address.",
-                        "title": "Next Hop IP Address"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "title": "Ethernet"
+                  "name": {
+                    "type": "string",
+                    "description": "e.g. Ethernet2/2.2",
+                    "title": "Name"
                   },
-                  "tunnel": {
-                    "type": "object",
-                    "description": "Configure to use tunnel interface to reach the network service.",
-                    "properties": {
-                      "primary_interface_name": {
-                        "type": "string",
-                        "description": "e.g. tunnel2",
-                        "title": "Primary Interface Name"
-                      },
-                      "secondary_interface_name": {
-                        "type": "string",
-                        "title": "Secondary Interface Name"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "title": "Tunnel"
+                  "next_hop": {
+                    "type": "string",
+                    "description": "Next-hop IPv4 address (without mask).",
+                    "title": "Next Hop"
                   }
                 },
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
                 },
-                "title": "Interface"
+                "title": "Ethernet Interface"
               },
-              "monitor_connectivity_to_host": {
+              "tunnel_interface": {
+                "type": "object",
+                "description": "Outgoing tunnel interface(s) to use for this connection.\nIf both ethernet interface and tunnel interface are configured, ethernet interface will be used.",
+                "properties": {
+                  "primary": {
+                    "type": "string",
+                    "description": "e.g. Tunnel2",
+                    "title": "Primary"
+                  },
+                  "secondary": {
+                    "type": "string",
+                    "title": "Secondary"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Tunnel Interface"
+              },
+              "monitor_connectivity_host": {
                 "type": "string",
-                "description": "Monitor connectivity health to the network service host.",
-                "title": "Monitor Connectivity To Host"
+                "description": "Monitor connectivity host to use to derive the health of the connecion.\nThe host must be defined under `monitor_connectivity.hosts`.",
+                "title": "Monitor Connectivity Host"
               }
             },
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Connections"
         }

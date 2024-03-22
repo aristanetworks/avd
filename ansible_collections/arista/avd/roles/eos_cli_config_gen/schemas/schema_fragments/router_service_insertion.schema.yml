@@ -14,35 +14,38 @@ keys:
         type: bool
       connections:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
-              description: Configure name of the network service.
-            interface:
+              description: Connection name.
+            ethernet_interface:
               type: dict
-              description: Interface to be used to reach the network service.
+              description: |-
+                Outgoing physical interface or subinterface to use for the connection.
+                If both ethernet interface and tunnel interface are configured, ethernet interface will be used.
               keys:
-                ethernet:
-                  type: dict
-                  description: Configure to use ethernet interface to reach the network service.
-                  keys:
-                    interface_name:
-                      type: str
-                      description: e.g. ethernet2
-                    next_hop_ip_address:
-                      type: str
-                      description: Configure the next-hop ip address.
-                tunnel:
-                  type: dict
-                  description: Configure to use tunnel interface to reach the network service.
-                  keys:
-                    primary_interface_name:
-                      type: str
-                      description: e.g. tunnel2
-                    secondary_interface_name:
-                      type: str
-            monitor_connectivity_to_host:
+                name:
+                  type: str
+                  description: e.g. Ethernet2/2.2
+                next_hop:
+                  type: str
+                  description: Next-hop IPv4 address (without mask).
+            tunnel_interface:
+              type: dict
+              description: |-
+                Outgoing tunnel interface(s) to use for this connection.
+                If both ethernet interface and tunnel interface are configured, ethernet interface will be used.
+              keys:
+                primary:
+                  type: str
+                  description: e.g. Tunnel2
+                secondary:
+                  type: str
+            monitor_connectivity_host:
               type: str
-              description: Monitor connectivity health to the network service host.
+              description: |-
+                Monitor connectivity host to use to derive the health of the connecion.
+                The host must be defined under `monitor_connectivity.hosts`.

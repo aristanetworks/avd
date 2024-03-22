@@ -9,38 +9,36 @@
 Router service-insertion is enabled.
 {%     if router_service_insertion.connections is arista.avd.defined %}
 
-## Network Services Information
+## Connections
 {%         for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
-{%             if connection.name is arista.avd.defined and connection.interface is arista.avd.defined %}
-{%                 if connection.interface.ethernet is arista.avd.defined %}
+{%             if connection.ethernet_interface.name is arista.avd.defined connection.ethernet_interface.next_hop is arista.avd.defined and connection.monitor_connectivity_host is arista.avd.defined %}
 
-| Name | Interface | Next Hop |
-| ---- | --------- | -------- |
-{%                     break %}
-{%                 endif %}
-{%             endif %}
-{%         endfor %}
-{%         for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
-{%             if connection.name is arista.avd.defined and connection.interface is arista.avd.defined %}
-{%                 if connection.interface.ethernet is arista.avd.defined %}
-| {{ connection.name }} | {{ connection.interface.ethernet.interface_name }} | {{ connection.interface.ethernet.next_hop_ip_address }} |
-{%                 endif %}
-{%             endif %}
-{%         endfor %}
-{%         for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
-{%             if connection.name is arista.avd.defined and connection.interface is arista.avd.defined %}
-{%                 if connection.interface.tunnel is arista.avd.defined %}
+### Connections Through Ethernet Interface
 
-| Name | Primary Interface | Secondary Interface |
-| ---- | ----------------- | ------------------- |
-{%                     break %}
-{%                 endif %}
+| Name | Interface | Next Hop | Monitor Connectivity Host |
+| ---- | --------- | -------- | ------------------------- |
+{%                 break %}
 {%             endif %}
 {%         endfor %}
 {%         for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
-{%             if connection.name is arista.avd.defined and connection.interface is arista.avd.defined %}
-{%                 if connection.interface.tunnel is arista.avd.defined %}
-| {{ connection.name }} | {{ connection.interface.tunnel.primary_interface_name }} | {{ connection.interface.tunnel.secondary_interface_name }} |
+{%             if connection.ethernet_interface.name is arista.avd.defined and connection.ethernet_interface.next_hop is arista.avd.defined and connection.monitor_connectivity_host is arista.avd.defined %}
+| {{ connection.name }} | {{ connection.ethernet_interface.name }} | {{ connection.ethernet_interface.next_hop }} | {{ connection.monitor_connectivity_host }} |
+{%             endif %}
+{%         endfor %}
+{%         for connection in router_service_insertion.connections %}
+{%             if connection.tunnel_interface.primary is arista.avd.defined and connection.tunnel_interface.secondary is arista.avd.defined and connection.monitor_connectivity_host is arista.avd.defined %}
+
+### Connections Through Tunnel Interface
+
+| Name | Primary Interface | Secondary Interface | Monitor Connectivity Host |
+| ---- | ----------------- | ------------------- | ------------------------- |
+{%                 break %}
+{%             endif %}
+{%         endfor %}
+{%         for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
+{%             if connection.ethernet_interface is not arista.avd.defined %}
+{%                 if connection.tunnel_interface.primary is arista.avd.defined and connection.tunnel_interface.secondary is arista.avd.defined and connection.monitor_connectivity_host is arista.avd.defined %}
+| {{ connection.name }} | {{ connection.tunnel_interface.primary }} | {{ connection.tunnel_interface.secondary }} | {{ connection.monitor_connectivity_host }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

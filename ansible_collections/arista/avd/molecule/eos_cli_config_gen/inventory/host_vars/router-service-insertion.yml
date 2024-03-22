@@ -3,20 +3,25 @@ router_service_insertion:
   enabled: true
   connections:
     - name: connection1
-      interface:
-        ethernet:
-          interface_name: ethernet2
-          next_hop_ip_address: '10.10.10.10'
-      monitor_connectivity_to_host: 'host1'
+      ethernet_interface:
+        name: Ethernet2/2.2
+        next_hop: 10.10.10.10
+      monitor_connectivity_host: host1
     - name: connection2
-      interface:
-        tunnel:
-          primary_interface_name: tunnel2
-          secondary_interface_name: tunnel3
-      monitor_connectivity_to_host: 'host2'
+      tunnel_interface:
+        primary: Tunnel2
+        secondary: Tunnel3
+      monitor_connectivity_host: host2
     - name: connection3
-      interface:
-        tunnel:
-          primary_interface_name: tunnel4
-          secondary_interface_name: tunnel5
-      monitor_connectivity_to_host: 'host3'
+      tunnel_interface:
+        primary: Tunnel4
+        secondary: Tunnel5
+      monitor_connectivity_host: host3
+    - name: connection4
+      ethernet_interface:
+        name: Ethernet3/1.1
+        next_hop: 10.10.10.10
+      tunnel_interface:
+        primary: Tunnel6
+        secondary: Tunnel7
+      monitor_connectivity_host: host4

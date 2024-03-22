@@ -7,28 +7,22 @@
 {% if router_service_insertion.enabled is arista.avd.defined(true) %}
 !
 router service-insertion
-{%     if router_service_insertion.connections is arista.avd.defined %}
-{%         for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
-{%             if connection.name is arista.avd.defined %}
+{%     for connection in router_service_insertion.connections | arista.avd.natural_sort('name') | arista.avd.default([]) %}
    connection {{ connection.name }}
+{%         if connection.ethernet_interface is arista.avd.defined %}
+{%             if connection.ethernet_interface.name is arista.avd.defined and connection.ethernet_interface.next_hop is arista.avd.defined %}
+      interface {{ connection.ethernet_interface.name }} next-hop {{ connection.ethernet_interface.next_hop }}
 {%             endif %}
-{%             if connection.interface is arista.avd.defined %}
-{%                 if connection.interface.ethernet is arista.avd.defined %}
-{%                     if connection.interface.ethernet.interface_name is arista.avd.defined and connection.interface.ethernet.next_hop_ip_address is arista.avd.defined %}
-      interface {{ connection.interface.ethernet.interface_name }} next-hop {{ connection.interface.ethernet.next_hop_ip_address }}
-{%                     endif %}
-{%                 elif connection.interface.tunnel is arista.avd.defined %}
-{%                     if connection.interface.tunnel.primary_interface_name is arista.avd.defined %}
-      interface {{ connection.interface.tunnel.primary_interface_name }} primary
-{%                     endif %}
-{%                     if connection.interface.tunnel.secondary_interface_name is arista.avd.defined %}
-      interface {{ connection.interface.tunnel.secondary_interface_name }} secondary
-{%                     endif %}
-{%                 endif %}
+{%         elif connection.tunnel_interface is arista.avd.defined %}
+{%             if connection.tunnel_interface.primary is arista.avd.defined %}
+      interface {{ connection.tunnel_interface.primary }} primary
 {%             endif %}
-{%             if connection.monitor_connectivity_to_host is arista.avd.defined %}
-      monitor connectivity host {{ connection.monitor_connectivity_to_host }}
+{%             if connection.tunnel_interface.secondary is arista.avd.defined %}
+      interface {{ connection.tunnel_interface.secondary }} secondary
 {%             endif %}
-{%         endfor %}
-{%     endif %}
+{%         endif %}
+{%         if connection.monitor_connectivity_host is arista.avd.defined %}
+      monitor connectivity host {{ connection.monitor_connectivity_host }}
+{%         endif %}
+{%     endfor %}
 {% endif %}
