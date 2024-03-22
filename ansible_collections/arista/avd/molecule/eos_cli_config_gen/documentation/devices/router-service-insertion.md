@@ -5,6 +5,8 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
+- [Network Services Information](#network-services-information)
+- [Router Service-Insertion Configuration](#router-service-insertion-configuration)
 
 ## Management
 
@@ -38,7 +40,7 @@ interface Management1
 
 Router service-insertion is enabled.
 
-##### Network Services Information
+## Network Services Information
 
 | Name | Interface | next_hop_ip_address |
 | ---- | --------- | ------------------- |
@@ -49,7 +51,7 @@ Router service-insertion is enabled.
 | connection2 | tunnel2 | tunnel3 |
 | connection3 | tunnel4 | tunnel5 |
 
-##### Router Service-Insertion Configuration
+## Router Service-Insertion Configuration
 
 ```eos
 !
