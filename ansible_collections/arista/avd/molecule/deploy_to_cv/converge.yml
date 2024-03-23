@@ -35,6 +35,9 @@
         cc_desctiption: sample description
       run_once: true
 
+###########################
+##### deploy_to_cv ########
+###########################
     - name: Test = Provision CVP with AVD configuration
       run_once: true
       delegate_to: localhost
@@ -203,6 +206,9 @@
       loop:
         "{{ intended_tags.metadata.cv_tags.interface_tags }}"
 
+###########################
+##### Strict tags  ########
+###########################
     - name: Test Strict tags - Set tags
       run_once: true
       delegate_to: localhost
@@ -254,6 +260,9 @@
       loop:
         "{{ intended_strict_tags.metadata.cv_tags.device_tags }}"
 
+###########################
+### Tags value change  ####
+###########################
     - name: Test tags - Value change
       run_once: true
       delegate_to: localhost
