@@ -174,11 +174,8 @@ nav:
   - Ansible Collection Plugins: docs/plugins/
   - Contributing to AVD:
       - Overview: docs/contribution/overview.md
-      - Setup Environment: docs/contribution/setup-environment.md
-      - Git Installation: docs/contribution/setup-git.md
-      - Getting Started: docs/contribution/getting-started.md
+      - Development Tooling: docs/contribution/development-tooling.md
       - Code Style: docs/contribution/style-guide.md
-      - Development Tips & Tricks: docs/contribution/development.md
       - Validation of Input Variables: docs/contribution/input-variable-validation.md
       - EOS Designs internal notes: docs/contribution/eos_designs_internal_notes.md
   - External Resources:
