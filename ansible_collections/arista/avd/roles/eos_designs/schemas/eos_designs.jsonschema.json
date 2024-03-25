@@ -5033,6 +5033,47 @@
       "type": "string",
       "title": "Fabric Name"
     },
+    "fabric_sflow": {
+      "type": "object",
+      "description": "Default enabling of sFlow for various interface types across the fabric.\nsFlow can also be enabled/disabled under each of the specific data models.\nFor general sFlow settings see `sflow_settings`.",
+      "properties": {
+        "uplinks": {
+          "description": "Enable sFlow on all fabric uplinks.",
+          "type": "boolean",
+          "title": "Uplinks"
+        },
+        "downlinks": {
+          "description": "Enable sFlow on all fabric downlinks.",
+          "type": "boolean",
+          "title": "Downlinks"
+        },
+        "endpoints": {
+          "description": "Enable sFlow on all endpoints ports.",
+          "type": "boolean",
+          "title": "Endpoints"
+        },
+        "l3_edge": {
+          "description": "Enable sFlow on all p2p_links defined under l3_edge.",
+          "type": "boolean",
+          "title": "L3 Edge"
+        },
+        "core_interfaces": {
+          "description": "Enable sFlow on all p2p_links defined under core_interfaces.",
+          "type": "boolean",
+          "title": "Core Interfaces"
+        },
+        "mlag_interfaces": {
+          "description": "Enable sFlow on all MLAG peer interfaces.",
+          "type": "boolean",
+          "title": "MLAG Interfaces"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Fabric Sflow"
+    },
     "flow_tracking_settings": {
       "description": "Define the flow tracking parameters for this topology.",
       "type": "object",
@@ -20540,6 +20581,76 @@
       "description": "Serial Number of the device.\nUsed for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.\n\"serial_number\" can also be set directly under node type settings.\nIf both are set, the value under node type settings takes precedence.\n",
       "type": "string",
       "title": "Serial Number"
+    },
+    "sflow_settings": {
+      "type": "object",
+      "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.",
+      "properties": {
+        "destinations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "string",
+                "description": "sFlow destination name or IP address.",
+                "title": "Destination"
+              },
+              "port": {
+                "type": "integer",
+                "description": "UDP Port number. The default port number for sFlow is 6343.",
+                "minimum": 1,
+                "maximum": 65535,
+                "title": "Port"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.\nThe value of `vrf` will be interpreted according to these rules:\n- `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.\n  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf` will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-interface.\n  An error will be raised if inband management is not configured for the device.\n- Any other string will be used directly as the VRF name. Remember to set the `sflow_settings.vrfs[].source_interface` if needed.",
+                "title": "VRF"
+              }
+            },
+            "required": [
+              "destination"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Destinations"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name.",
+                "title": "Name"
+              },
+              "source_interface": {
+                "type": "string",
+                "description": "Source interface to use for sFlow destinations in this VRF.\nIf set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.",
+                "title": "Source Interface"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Sflow Settings"
     },
     "shutdown_interfaces_towards_undeployed_peers": {
       "type": "boolean",
