@@ -1,12 +1,13 @@
 ---
-type: spine
-
-spine:
+type: wan_router
+wan_mode: autovpn
+wan_router:
   nodes:
     - bgp_as: 65000
       name: ipv4-acl-in-missing-on-wan-interface
       id: 1
       loopback_ipv4_pool: 192.168.0.0/24
+      vtep_loopback_ipv4_pool: 192.168.1.0/24
       l3_interfaces:
         - name: Ethernet1
           wan_carrier: FOO
