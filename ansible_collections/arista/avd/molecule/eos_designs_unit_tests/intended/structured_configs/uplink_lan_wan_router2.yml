@@ -119,8 +119,6 @@ ethernet_interfaces:
   vrf: VRF1
   ip_address: 10.0.10.1/24
   mtu: 9214
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet2.100
   peer: uplink_lan_l2leaf
   peer_interface: Ethernet2 VLAN 100
@@ -134,8 +132,6 @@ ethernet_interfaces:
   ipv6_address: cafe::cafe/64
   ipv6_enable: true
   eos_cli: comment yo
-  flow_tracker:
-    hardware: FLOW-TRACKER
   _custom_key: custom_value
 - name: Ethernet1
   peer_type: l3_interface
@@ -143,8 +139,6 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Comcast_999
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
