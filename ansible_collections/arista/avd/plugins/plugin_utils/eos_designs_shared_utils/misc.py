@@ -9,8 +9,10 @@ from typing import TYPE_CHECKING
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+
 if TYPE_CHECKING:
     from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts.eos_designs_facts import EosDesignsFacts
+
 from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
