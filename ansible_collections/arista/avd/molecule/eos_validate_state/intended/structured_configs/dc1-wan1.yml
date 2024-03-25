@@ -141,8 +141,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.1/31
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer: dc1-leaf1b
   peer_interface: Ethernet6
@@ -152,24 +150,18 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.3/31
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.18.3.2/24
   shutdown: false
   type: routed
   description: mpls-sp-1_DC1-MPLS-3
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet4
   peer_type: l3_interface
   ip_address: 100.64.3.2/24
   shutdown: false
   type: routed
   description: isp-1_DC1-INET-3
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
