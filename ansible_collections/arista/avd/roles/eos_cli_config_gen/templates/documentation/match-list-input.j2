@@ -14,13 +14,13 @@
 | Prefix List Name | Prefixes |
 | -------- | ------ |
 {%         for match_list in match_list_input.prefix_ipv4 %}
-{%              for prefix in match_list.prefixes %}
-{%                  if loop.first %}
+{%             for prefix in match_list.prefixes %}
+{%                 if loop.first %}
 | {{ match_list.name }} | {{ prefix }}
-{%                   else %}
+{%                 else %}
 |   | {{ prefix }} |
-{%                   endif %}
-{%               endfor %}
+{%                 endif %}
+{%             endfor %}
 {%         endfor %}
 {%     endif %}
 {%     if match_list_input.prefix_ipv6 is arista.avd.defined %}
@@ -30,13 +30,13 @@
 | Prefix List Name | Prefixes |
 | -------- | ------ |
 {%         for match_list in match_list_input.prefix_ipv6 %}
-{%              for prefix in match_list.prefixes %}
-{%                  if loop.first %}
+{%             for prefix in match_list.prefixes %}
+{%                 if loop.first %}
 | {{ match_list.name }} | {{ prefix }}
-{%                   else %}
+{%                 else %}
 |   | {{ prefix }} |
-{%                   endif %}
-{%               endfor %}
+{%                 endif %}
+{%             endfor %}
 {%         endfor %}
 {%     endif %}
 {%     if match_list_input.string is arista.avd.defined %}
