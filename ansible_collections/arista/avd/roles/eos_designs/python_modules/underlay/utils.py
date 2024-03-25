@@ -200,10 +200,11 @@ class UtilsMixin:
         if self.shared_utils.is_cv_pathfinder_router:
             interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
-        if l3_interface.get("wan_carrier") is not None and interface["access_group_in"] is None:
-            raise AristaAvdError(
-                f"'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set. 'ipv4_acl_in' is missing on interface '{interface_name}'"
-            )
+        if self.shared_utils.is_wan_router and (wan_carrier_name := l3_interface.get("wan_carrier")) is not None and interface["access_group_in"] is None:
+            if not get(get_item(self.shared_utils.wan_carriers, "name", wan_carrier_name, default={}), "trusted"):
+                raise AristaAvdError(
+                    f"'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set. 'ipv4_acl_in' is missing on interface '{interface_name}'"
+                )
 
         return strip_empties_from_dict(interface)
 

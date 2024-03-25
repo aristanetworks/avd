@@ -23,12 +23,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls`.<br>Required for WAN interfaces (`wan_carrier` is set). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls`.<br>Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
@@ -51,12 +51,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls`.<br>Required for WAN interfaces (`wan_carrier` is set). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls`.<br>Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
@@ -75,12 +75,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls`.<br>Required for WAN interfaces (`wan_carrier` is set). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls`.<br>Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
@@ -101,12 +101,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls`.<br>Required for WAN interfaces (`wan_carrier` is set). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls`.<br>Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
@@ -125,12 +125,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "l3_interface_profiles.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "l3_interface_profiles.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "l3_interface_profiles.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "l3_interface_profiles.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls`.<br>Required for WAN interfaces (`wan_carrier` is set). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "l3_interface_profiles.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls`.<br>Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "l3_interface_profiles.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "l3_interface_profiles.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "l3_interface_profiles.[].static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_interface_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "l3_interface_profiles.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "l3_interface_profiles.[].wan_carrier") | String |  |  |  | The WAN Carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "l3_interface_profiles.[].wan_circuit_id") | String |  |  |  | The WAN Circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "l3_interface_profiles.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_interface_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
@@ -204,7 +204,7 @@
 
             # Name of the IPv4 Access-list to be assigned in the ingress direction.
             # The access-list must be defined under `ipv4_acls`.
-            # Required for WAN interfaces (`wan_carrier` is set).
+            # Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`.
             ipv4_acl_in: <str>
 
             # Name of the IPv4 Access-list to be assigned in the egress direction.
@@ -222,7 +222,7 @@
 
             # The WAN Carrier this interface is connected to.
             # This is used to infer the path-groups in which this interface should be configured.
-            # When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration.
+            # Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.
             wan_carrier: <str>
 
             # The WAN Circuit ID for this interface.
@@ -311,7 +311,7 @@
 
                   # Name of the IPv4 Access-list to be assigned in the ingress direction.
                   # The access-list must be defined under `ipv4_acls`.
-                  # Required for WAN interfaces (`wan_carrier` is set).
+                  # Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`.
                   ipv4_acl_in: <str>
 
                   # Name of the IPv4 Access-list to be assigned in the egress direction.
@@ -329,7 +329,7 @@
 
                   # The WAN Carrier this interface is connected to.
                   # This is used to infer the path-groups in which this interface should be configured.
-                  # When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration.
+                  # Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.
                   wan_carrier: <str>
 
                   # The WAN Circuit ID for this interface.
@@ -405,7 +405,7 @@
 
               # Name of the IPv4 Access-list to be assigned in the ingress direction.
               # The access-list must be defined under `ipv4_acls`.
-              # Required for WAN interfaces (`wan_carrier` is set).
+              # Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`.
               ipv4_acl_in: <str>
 
               # Name of the IPv4 Access-list to be assigned in the egress direction.
@@ -423,7 +423,7 @@
 
               # The WAN Carrier this interface is connected to.
               # This is used to infer the path-groups in which this interface should be configured.
-              # When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration.
+              # Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.
               wan_carrier: <str>
 
               # The WAN Circuit ID for this interface.
@@ -505,7 +505,7 @@
 
               # Name of the IPv4 Access-list to be assigned in the ingress direction.
               # The access-list must be defined under `ipv4_acls`.
-              # Required for WAN interfaces (`wan_carrier` is set).
+              # Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`.
               ipv4_acl_in: <str>
 
               # Name of the IPv4 Access-list to be assigned in the egress direction.
@@ -523,7 +523,7 @@
 
               # The WAN Carrier this interface is connected to.
               # This is used to infer the path-groups in which this interface should be configured.
-              # When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration.
+              # Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.
               wan_carrier: <str>
 
               # The WAN Circuit ID for this interface.
@@ -600,7 +600,7 @@
 
         # Name of the IPv4 Access-list to be assigned in the ingress direction.
         # The access-list must be defined under `ipv4_acls`.
-        # Required for WAN interfaces (`wan_carrier` is set).
+        # Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`.
         ipv4_acl_in: <str>
 
         # Name of the IPv4 Access-list to be assigned in the egress direction.
@@ -618,7 +618,7 @@
 
         # The WAN Carrier this interface is connected to.
         # This is used to infer the path-groups in which this interface should be configured.
-        # When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration.
+        # Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.
         wan_carrier: <str>
 
         # The WAN Circuit ID for this interface.

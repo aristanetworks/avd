@@ -26,3 +26,8 @@ keys:
           type: str
           description: The path-group to which this carrier belongs.
           required: true
+        trusted:
+          type: bool
+          default: false
+          description: |-
+            WAN interfaces will require an inbound Access-list to be set, unless the provider is "trusted".

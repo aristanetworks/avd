@@ -81,7 +81,7 @@ $defs:
           description: |-
             Name of the IPv4 Access-list to be assigned in the ingress direction.
             The access-list must be defined under `ipv4_acls`.
-            Required for WAN interfaces (`wan_carrier` is set).
+            Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`.
           type: str
           convert_types:
             - int
@@ -111,7 +111,7 @@ $defs:
           description: |-
             The WAN Carrier this interface is connected to.
             This is used to infer the path-groups in which this interface should be configured.
-            When setting this, `ipv4_acl_in` is also required, to ensure a secure configuration.
+            Unless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.
         wan_circuit_id:
           type: str
           convert_types:

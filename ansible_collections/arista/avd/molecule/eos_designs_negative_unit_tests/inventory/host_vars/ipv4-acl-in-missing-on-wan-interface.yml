@@ -13,5 +13,14 @@ spine:
           ip_address: 172.16.0.2/30
           # ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN Testing not setting ipv4_acl_in will raise an error.
 
+wan_carriers:
+  - name: FOO
+    path_group: INTERNET
+
+wan_path_groups:
+  - id: 100
+    name: INTERNET
+
+
 expected_error_message: >-
   'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set. 'ipv4_acl_in' is missing on interface 'Ethernet1'

@@ -6237,7 +6237,7 @@
             "title": "Peer IP"
           },
           "ipv4_acl_in": {
-            "description": "Name of the IPv4 Access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls`.\nRequired for WAN interfaces (`wan_carrier` is set).",
+            "description": "Name of the IPv4 Access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls`.\nRequired for all WAN interfaces (`wan_carrier` is set) unless the Carrier is marked as 'trusted' under `wan_carriers`.",
             "type": "string",
             "title": "IPv4 Acl In"
           },
@@ -6276,7 +6276,7 @@
           },
           "wan_carrier": {
             "type": "string",
-            "description": "The WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.\nWhen setting this, `ipv4_acl_in` is also required, to ensure a secure configuration.",
+            "description": "The WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.\nUnless the Carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.",
             "title": "Wan Carrier"
           },
           "wan_circuit_id": {
@@ -25127,6 +25127,12 @@
             "type": "string",
             "description": "The path-group to which this carrier belongs.",
             "title": "Path Group"
+          },
+          "trusted": {
+            "type": "boolean",
+            "default": false,
+            "description": "WAN interfaces will require an inbound Access-list to be set, unless the provider is \"trusted\".",
+            "title": "Trusted"
           }
         },
         "required": [
