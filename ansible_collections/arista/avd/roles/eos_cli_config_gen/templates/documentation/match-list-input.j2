@@ -7,8 +7,40 @@
 {% if match_list_input is arista.avd.defined %}
 
 ### Match-lists
+{%     if match_list_input.prefix_ipv4 is arista.avd.defined %}
 
+#### Match-list Input IPv4-Prefix Summary
+
+| Prefix List Name | Prefixes |
+| -------- | ------ |
+{%         for match_list in match_list_input.prefix_ipv4 %}
+{%              for prefix in match_list.prefixes %}
+{%                  if loop.first %}
+| {{ match_list.name }} | {{ prefix }}
+{%                   else %}
+|   | {{ prefix }} |
+{%                   endif %}
+{%               endfor %}
+{%         endfor %}
+{%     endif %}
+{%     if match_list_input.prefix_ipv6 is arista.avd.defined %}
+
+#### Match-list Input IPv6-Prefix Summary
+
+| Prefix List Name | Prefixes |
+| -------- | ------ |
+{%         for match_list in match_list_input.prefix_ipv6 %}
+{%              for prefix in match_list.prefixes %}
+{%                  if loop.first %}
+| {{ match_list.name }} | {{ prefix }}
+{%                   else %}
+|   | {{ prefix }} |
+{%                   endif %}
+{%               endfor %}
+{%         endfor %}
+{%     endif %}
 {%     if match_list_input.string is arista.avd.defined %}
+
 #### Match-list Input String Summary
 
 {%         for match_list in match_list_input.string | arista.avd.natural_sort('name') %}
