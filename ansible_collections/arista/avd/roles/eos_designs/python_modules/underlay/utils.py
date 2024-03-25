@@ -203,7 +203,10 @@ class UtilsMixin:
         if self.shared_utils.is_wan_router and (wan_carrier_name := l3_interface.get("wan_carrier")) is not None and interface["access_group_in"] is None:
             if not get(get_item(self.shared_utils.wan_carriers, "name", wan_carrier_name, default={}), "trusted"):
                 raise AristaAvdError(
-                    f"'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set. 'ipv4_acl_in' is missing on interface '{interface_name}'"
+                    (
+                        "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
+                        f"under 'wan_carriers'. 'ipv4_acl_in' is missing on interface '{interface_name}'."
+                    )
                 )
 
         return strip_empties_from_dict(interface)

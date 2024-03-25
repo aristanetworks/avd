@@ -10,8 +10,8 @@ keys:
     type: list
     primary_key: name
     description: |-
-      IPv4 Extended Access-lists supporting substitution on certain fields.
-      These Access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.
+      IPv4 extended access-lists supporting substitution on certain fields.
+      These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.
 
       The substitution is useful when assigning the same access-list on multiple interfaces,
       but where certain fields require unique values like the "interface_ip" or "peer_ip".

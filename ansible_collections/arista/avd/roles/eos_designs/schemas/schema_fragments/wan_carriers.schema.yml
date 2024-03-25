@@ -30,4 +30,5 @@ keys:
           type: bool
           default: false
           description: |-
-            WAN interfaces will require an inbound Access-list to be set, unless the provider is "trusted".
+            Set this to `true` to mark this carrier as "trusted".
+            WAN interfaces require an inbound access-list to be set unless the carrier is "trusted".

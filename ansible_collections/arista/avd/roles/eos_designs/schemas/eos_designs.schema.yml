@@ -1353,9 +1353,9 @@ keys:
   ipv4_acls:
     type: list
     primary_key: name
-    description: 'IPv4 Extended Access-lists supporting substitution on certain fields.
+    description: 'IPv4 extended access-lists supporting substitution on certain fields.
 
-      These Access-lists can be referenced under node settings `l3_interfaces`, and
+      These access-lists can be referenced under node settings `l3_interfaces`, and
       will only be configured on devices where they are in use.
 
 
@@ -3630,8 +3630,10 @@ keys:
         trusted:
           type: bool
           default: false
-          description: WAN interfaces will require an inbound Access-list to be set,
-            unless the provider is "trusted".
+          description: 'Set this to `true` to mark this carrier as "trusted".
+
+            WAN interfaces require an inbound access-list to be set unless the carrier
+            is "trusted".'
   wan_edge:
     documentation_options:
       table: wan-settings
@@ -8150,12 +8152,12 @@ $defs:
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
         ipv4_acl_in:
-          description: 'Name of the IPv4 Access-list to be assigned in the ingress
+          description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
 
             The access-list must be defined under `ipv4_acls`.
 
-            Required for all WAN interfaces (`wan_carrier` is set) unless the Carrier
+            Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
             is marked as ''trusted'' under `wan_carriers`.'
           type: str
           convert_types:
@@ -8184,18 +8186,18 @@ $defs:
           description: QOS service profile.
         wan_carrier:
           type: str
-          description: 'The WAN Carrier this interface is connected to.
+          description: 'The WAN carrier this interface is connected to.
 
             This is used to infer the path-groups in which this interface should be
             configured.
 
-            Unless the Carrier is marked as ''trusted'' under `wan_carriers`, `ipv4_acl_in`
+            Unless the carrier is marked as ''trusted'' under `wan_carriers`, `ipv4_acl_in`
             is also required on all WAN interfaces.'
         wan_circuit_id:
           type: str
           convert_types:
           - int
-          description: 'The WAN Circuit ID for this interface.
+          description: 'The WAN circuit ID for this interface.
 
             This is not rendered in the configuration but used for WAN designs.'
         connected_to_pathfinder:
