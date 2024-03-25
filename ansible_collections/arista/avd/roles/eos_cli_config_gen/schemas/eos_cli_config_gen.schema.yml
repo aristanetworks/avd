@@ -6049,14 +6049,23 @@ keys:
         type: list
         items:
           type: str
+      fips_restrictions:
+        type: bool
+        description: Use FIPS compliant algorithms.
       hostkey:
         type: dict
         keys:
           server:
-            description: SSH host key settings
+            description: SSH host key settings.
             type: list
             items:
               type: str
+          server_cert:
+            type: str
+            description: Configure switch's hostkey cert file.
+          client_strict_checking:
+            type: bool
+            description: Enforce strict host key checking.
       enable:
         description: Enable SSH daemon
         type: bool

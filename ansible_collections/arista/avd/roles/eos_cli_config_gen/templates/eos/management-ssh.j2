@@ -54,6 +54,15 @@ management ssh
 {%     if management_ssh.hostkey.server is arista.avd.defined %}
    hostkey server {{ management_ssh.hostkey.server | join(" ") }}
 {%     endif %}
+{%     if management_ssh.fips_restrictions is arista.avd.defined(true) %}
+   fips restrictions
+{%     endif %}
+{%     if management_ssh.hostkey.client_strict_checking is arista.avd.defined(true) %}
+   hostkey client strict-checking
+{%     endif %}
+{%     if management_ssh.hostkey.server_cert is arista.avd.defined %}
+   hostkey server cert {{ management_ssh.hostkey.server_cert }}
+{%     endif %}
 {%     if management_ssh.enable is arista.avd.defined(false) %}
    shutdown
 {%     elif management_ssh.enable is arista.avd.defined(true) %}
