@@ -16,7 +16,7 @@ keys:
         items:
           type: dict
           keys:
-            name: 
+            name:
               type: str
               description: Prefix-List Name
             prefixes:
@@ -31,7 +31,7 @@ keys:
         items:
           type: dict
           keys:
-            name: 
+            name:
               type: str
               description: Prefix-List Name
             prefixes:
