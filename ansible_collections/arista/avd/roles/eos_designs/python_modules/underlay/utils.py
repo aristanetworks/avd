@@ -200,6 +200,11 @@ class UtilsMixin:
         if self.shared_utils.is_cv_pathfinder_router:
             interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
+        if l3_interface.get("wan_carrier") is not None and interface["access_group_in"] is None:
+            raise AristaAvdError(
+                f"'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set. 'ipv4_acl_in' is missing on interface '{interface_name}'"
+            )
+
         return strip_empties_from_dict(interface)
 
     def _get_l3_uplink_with_l2_as_subint(self, link: dict) -> tuple[dict, list[dict]]:

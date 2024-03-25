@@ -5340,7 +5340,7 @@
     },
     "ipv4_acls": {
       "type": "array",
-      "description": "IPv4 Extended Access-lists supporting substitution on certain fields.\nThe substitution is useful when assigning the same access-list on multiple interfaces,\nbut where certain fields require unique values like the \"interface_ip\" or \"peer_ip\".\nWhen using substitution, the interface name will be appended to the ACL name.",
+      "description": "IPv4 Extended Access-lists supporting substitution on certain fields.\nThese Access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.\n\nThe substitution is useful when assigning the same access-list on multiple interfaces,\nbut where certain fields require unique values like the \"interface_ip\" or \"peer_ip\".\nWhen using substitution, the interface name will be appended to the ACL name.",
       "items": {
         "type": "object",
         "properties": {
@@ -6237,7 +6237,7 @@
             "title": "Peer IP"
           },
           "ipv4_acl_in": {
-            "description": "Name of the IPv4 Access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls`.",
+            "description": "Name of the IPv4 Access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls`.\nRequired for WAN interfaces (`wan_carrier` is set).",
             "type": "string",
             "title": "IPv4 Acl In"
           },
@@ -6276,7 +6276,7 @@
           },
           "wan_carrier": {
             "type": "string",
-            "description": "The WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
+            "description": "The WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.\nWhen setting this, `ipv4_acl_in` is also required, to ensure a secure configuration.",
             "title": "Wan Carrier"
           },
           "wan_circuit_id": {
@@ -6287,7 +6287,7 @@
           "connected_to_pathfinder": {
             "type": "boolean",
             "default": true,
-            "description": "For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.",
+            "description": "For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.",
             "title": "Connected To Pathfinder"
           },
           "raw_eos_cli": {

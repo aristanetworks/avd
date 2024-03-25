@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv4_acls</samp>](## "ipv4_acls") | List, items: Dictionary |  |  |  | IPv4 Extended Access-lists supporting substitution on certain fields.<br>The substitution is useful when assigning the same access-list on multiple interfaces,<br>but where certain fields require unique values like the "interface_ip" or "peer_ip".<br>When using substitution, the interface name will be appended to the ACL name. |
+    | [<samp>ipv4_acls</samp>](## "ipv4_acls") | List, items: Dictionary |  |  |  | IPv4 Extended Access-lists supporting substitution on certain fields.<br>These Access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.<br><br>The substitution is useful when assigning the same access-list on multiple interfaces,<br>but where certain fields require unique values like the "interface_ip" or "peer_ip".<br>When using substitution, the interface name will be appended to the ACL name. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv4_acls.[].name") | String | Required, Unique |  |  | Access-list name.<br>When using substitution for any fields, the interface name will be appended to the ACL name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ipv4_acls.[].entries") | List, items: Dictionary | Required |  |  | ACL Entries. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "ipv4_acls.[].entries.[].source") | String |  |  |  | This field supports substitution of the fields "interface_ip" and "peer_ip".<br>Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".<br>"<ip>" without a mask means host.<br>Required except for remarks. |
@@ -42,6 +42,8 @@
 
     ```yaml
     # IPv4 Extended Access-lists supporting substitution on certain fields.
+    # These Access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.
+    #
     # The substitution is useful when assigning the same access-list on multiple interfaces,
     # but where certain fields require unique values like the "interface_ip" or "peer_ip".
     # When using substitution, the interface name will be appended to the ACL name.
