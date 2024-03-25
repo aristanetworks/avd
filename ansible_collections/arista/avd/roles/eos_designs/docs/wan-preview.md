@@ -265,3 +265,8 @@ TODO
 ### Defining policies
 
 TODO
+
+### Flow tracking
+
+For scalabilty reasons, flow-tracking is enabled only on Dps1 interface by default.
+It can be added on WAN and LAN interfaces using `custom_structured_configuration`.

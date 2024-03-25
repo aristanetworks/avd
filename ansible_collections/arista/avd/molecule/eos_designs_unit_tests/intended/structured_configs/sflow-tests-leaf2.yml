@@ -165,6 +165,7 @@ vlans:
   tenant: SFLOW
 ip_igmp_snooping:
   globally_enabled: true
+ip_virtual_router_mac_address: 00:11:22:33:44:55
 vlan_interfaces:
 - name: Vlan11
   tenant: SFLOW
@@ -184,5 +185,18 @@ vxlan_interface:
       vrfs:
       - name: VRF1
         vni: 1
+sflow:
+  run: true
+  vrfs:
+  - name: MGMT
+    destinations:
+    - destination: 10.10.10.10
+    - destination: 10.10.10.11
+    source_interface: Management1
+  - name: sflowvrf
+    destinations:
+    - destination: 10.10.10.12
+      port: 1234
+    source_interface: Loopback321
 metadata:
   platform: vEOS-lab
