@@ -6780,7 +6780,7 @@ $defs:
             items:
               type: dict
               keys:
-                downlink_ipv4_pool:
+                ipv4_pool:
                   type: str
                   format: ipv4_cidr
                   description: IPv4 pool from which subnets will be allocated for

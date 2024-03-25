@@ -13,16 +13,16 @@ spine:
   nodes:
     - name: downlink-ipv4-pool-spine1
       downlink_pools:
-        - downlink_ipv4_pool: 10.0.1.0/24
+        - ipv4_pool: 10.0.1.0/24
           downlink_interfaces: [Ethernet3-6]
-        - downlink_ipv4_pool: 10.0.3.0/24
+        - ipv4_pool: 10.0.3.0/24
           downlink_interfaces: [Ethernet15, Ethernet7-14, Ethernet16]
       id: 10
     - name: downlink-ipv4-pool-spine2
       downlink_pools:
-        - downlink_ipv4_pool: 10.0.2.0/24
+        - ipv4_pool: 10.0.2.0/24
           downlink_interfaces: [Ethernet3-4]
-        - downlink_ipv4_pool: 10.0.4.0/24
+        - ipv4_pool: 10.0.4.0/24
           downlink_interfaces: [Ethernet5, Ethernet6, Ethernet15, Ethernet16]
       id: 20
 

@@ -16,7 +16,7 @@ spine:
   nodes:
     - name: downlink-pools-duplicate-spine
       downlink_pools:
-        - downlink_ipv4_pool: 10.0.2.0/24
+        - ipv4_pool: 10.0.2.0/24
           downlink_interfaces: [Ethernet3]
       id: 10
 

@@ -131,7 +131,7 @@ class UtilsMixin:
 
             for interface_index, downlink_interface in enumerate(downlink_interfaces):
                 if uplink_switch_interface == downlink_interface:
-                    return (get(downlink_pool_and_interfaces, "downlink_ipv4_pool"), interface_index)
+                    return (get(downlink_pool_and_interfaces, "ipv4_pool"), interface_index)
 
         return (None, None)
 
