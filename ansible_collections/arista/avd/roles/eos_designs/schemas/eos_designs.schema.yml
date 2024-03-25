@@ -5615,6 +5615,7 @@ $defs:
                   table: network-services-vrfs-svis-settings
                 type: list
                 primary_key: id
+                allow_duplicate_primary_key: true
                 convert_types:
                 - dict
                 description: 'List of SVIs.
@@ -6212,6 +6213,7 @@ $defs:
             table: network-services-l2vlans-settings
           type: list
           primary_key: id
+          allow_duplicate_primary_key: true
           convert_types:
           - dict
           description: Define L2 network services organized by vlan id.
