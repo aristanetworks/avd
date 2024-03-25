@@ -6085,6 +6085,34 @@ keys:
     type: dict
     display_name: Match Lists
     keys:
+      prefix_ipv4:
+        type: list
+        primary_key: name
+        items:
+          name:
+            type: str
+            description: Prefix-List Name
+          prefixes:
+            type: list
+            required: true
+            description: List of IPv4 Prefixes (with the subnet mask e.g. 10.10.10.0/24)
+            items:
+              type: str
+              required: true
+      prefix_ipv6:
+        type: list
+        primary_key: name
+        items:
+          name:
+            type: str
+            description: Prefix-List Name
+          prefixes:
+            type: list
+            required: true
+            description: List of IPv6 Prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64)
+            items:
+              type: str
+              required: true
       string:
         type: list
         primary_key: name

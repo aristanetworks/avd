@@ -10189,6 +10189,16 @@
       "type": "object",
       "title": "Match Lists",
       "properties": {
+        "prefix_ipv4": {
+          "type": "array",
+          "items": {},
+          "title": "Prefix IPv4"
+        },
+        "prefix_ipv6": {
+          "type": "array",
+          "items": {},
+          "title": "Prefix IPv6"
+        },
         "string": {
           "type": "array",
           "items": {
