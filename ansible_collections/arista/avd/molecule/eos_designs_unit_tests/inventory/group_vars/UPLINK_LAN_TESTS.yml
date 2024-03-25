@@ -97,6 +97,7 @@ wan_path_groups:
 wan_carriers:
   - name: Comcast
     path_group: INET
+    trusted: true
 bgp_peer_groups:
   wan_overlay_peers:
     listen_range_prefixes: [0.0.0.0/0]
