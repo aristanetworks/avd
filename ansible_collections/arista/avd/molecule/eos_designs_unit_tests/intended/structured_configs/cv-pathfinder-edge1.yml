@@ -1,4 +1,4 @@
-hostname: cv-pathfinder-edge-no-common-path-group
+hostname: cv-pathfinder-edge1
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -20,12 +20,16 @@ router_bgp:
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
-    bfd: false
+    bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
     ttl_maximum_hops: 1
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -41,6 +45,10 @@ router_bgp:
     remote_as: '65199'
     peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet2
+  - ip_address: 192.168.144.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder
   vrfs:
   - name: IT
     router_id: 192.168.42.2
@@ -168,8 +176,6 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 172.17.0.3/31
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.1000
   peer: site-ha-disabled-leaf
   peer_interface: Ethernet2.1000
@@ -208,9 +214,21 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: routed
+  description: Inmrasat_S511
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: dhcp
+  shutdown: false
+  type: routed
+  description: AWS-1_212
   dhcp_client_accept_default_route: true
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+- name: Ethernet3
+  peer_type: l3_interface
+  ip_address: dhcp
+  shutdown: false
+  type: routed
+  description: ATT_404
+  dhcp_client_accept_default_route: true
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -275,19 +293,24 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -329,20 +352,30 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: profileA
+    certificate:
+      file: profileA.crt
+      key: profileA.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: edge
   region:
     name: AVD_Land_East
     id: 43
   zone:
-    name: DEFAULT-ZONE
+    name: AVD_Land_East-ZONE
     id: 1
   site:
     name: Site511
     id: 511
   profiles:
-  - name: CONTROL-PLANE-PROFILE
-    load_balance_policy: LB-CONTROL-PLANE-PROFILE
+  - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
   - name: DEFAULT-AVT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: DEFAULT-AVT-POLICY-DEFAULT
@@ -359,7 +392,7 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
-    - name: CONTROL-PLANE-PROFILE
+    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
       id: 254
     - name: DEFAULT-AVT-POLICY-VIDEO
       id: 3
@@ -389,8 +422,8 @@ router_adaptive_virtual_topology:
   policies:
   - name: DEFAULT-AVT-POLICY-WITH-CP
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-AVT-POLICY-CONTROL-PLANE
     - application_profile: VIDEO
       avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
@@ -429,22 +462,75 @@ router_path_selection:
     dynamic_peers:
       enabled: true
     ipsec_profile: CP-PROFILE
+    keepalive:
+      auto: true
+  - name: AWS
+    id: 105
+    local_interfaces:
+    - name: Ethernet2
+    dynamic_peers:
+      enabled: true
+    ipsec_profile: CP-PROFILE
+  - name: INET
+    id: 101
+    local_interfaces:
+    - name: Ethernet3
+      stun:
+        server_profiles:
+        - INET-cv-pathfinder-pathfinder-Ethernet1
+        - INET-cv-pathfinder-pathfinder-Ethernet3
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 192.168.144.1
+      name: cv-pathfinder-pathfinder
+      ipv4_addresses:
+      - 172.17.7.7
+      - 10.9.9.9
+    ipsec_profile: CP-PROFILE
   load_balance_policies:
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
+    - name: INET
     - name: Satellite
+      priority: 2
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
+    path_groups:
+    - name: INET
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
   - name: LB-PROD-AVT-POLICY-VOICE
+    path_groups:
+    - name: INET
+      priority: 2
     jitter: 42
+    lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
+    path_groups:
+    - name: INET
+      priority: 2
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
+    - name: AWS
+    - name: INET
     - name: Satellite
+      priority: 2
 router_traffic_engineering:
   enabled: true
+stun:
+  client:
+    server_profiles:
+    - name: INET-cv-pathfinder-pathfinder-Ethernet1
+      ip_address: 172.17.7.7
+      ssl_profile: profileA
+    - name: INET-cv-pathfinder-pathfinder-Ethernet3
+      ip_address: 10.9.9.9
+      ssl_profile: profileA
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
@@ -456,9 +542,9 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   categories:
   - name: VIDEO1
     applications:
@@ -476,8 +562,8 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
-    - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -494,17 +580,19 @@ application_traffic_recognition:
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: PFX-PATHFINDERS
+      prefix_values:
+      - 192.168.144.1/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9214
   ip_address: 192.168.142.2/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
-    description: cv-pathfinder-edge-no-common-path-group_VTEP
+    description: cv-pathfinder-edge1_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1
@@ -525,11 +613,23 @@ metadata:
     - name: Region
       value: AVD_Land_East
     - name: Zone
-      value: DEFAULT-ZONE
+      value: AVD_Land_East-ZONE
     - name: Site
       value: Site511
     interface_tags:
     - interface: Ethernet52
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.1000
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.142
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.666
       tags:
       - name: Type
         value: lan
@@ -541,14 +641,41 @@ metadata:
         value: Inmrasat
       - name: Circuit
         value: S511
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: AWS-1
+      - name: Circuit
+        value: '212'
+    - interface: Ethernet3
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: ATT
+      - name: Circuit
+        value: '404'
   cv_pathfinder:
     role: edge
+    ssl_profile: profileA
     vtep_ip: 192.168.142.2
     region: AVD_Land_East
-    zone: DEFAULT-ZONE
+    zone: AVD_Land_East-ZONE
     site: Site511
     interfaces:
     - name: Ethernet1
       carrier: Inmrasat
       circuit_id: S511
       pathgroup: Satellite
+    - name: Ethernet2
+      carrier: AWS-1
+      circuit_id: '212'
+      pathgroup: AWS
+    - name: Ethernet3
+      carrier: ATT
+      circuit_id: '404'
+      pathgroup: INET
+    pathfinders:
+    - vtep_ip: 192.168.144.1

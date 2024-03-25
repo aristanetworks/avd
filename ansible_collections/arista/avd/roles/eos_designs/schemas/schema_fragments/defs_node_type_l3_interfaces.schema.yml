@@ -26,6 +26,25 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        dhcp_ip_address:
+          type: str
+          description: |-
+            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+            IPv4 address/Mask to be allocated on the interface if known.
+            This is not rendered in the configuration but can be used in ACLs in certain scenarios.
+        public_ip:
+          type: str
+          description: |-
+            Node IPv4 address (no mask).
+
+            This is used to get the public IP (if known) when the device is behind NAT.
+            This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP
+            with the following preference:
+              `wan_route_servers.path_groups.interfaces.ip_address`
+                  -> `l3_interfaces.public_ip`
+                      -> `l3_interfaces.ip_address`
+
+            The determined Public IP is used by WAN routers when peering with this interface.
         encapsulation_dot1q_vlan:
           description: For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
           type: int
@@ -35,7 +54,7 @@ $defs:
           max: 4094
         dhcp_accept_default_route:
           type: bool
-          default: false
+          default: true
           description: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
         enabled:
           type: bool

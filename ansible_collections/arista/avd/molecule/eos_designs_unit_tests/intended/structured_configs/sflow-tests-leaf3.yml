@@ -60,6 +60,7 @@ router_bgp:
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
+  - source_protocol: attached-host
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -145,6 +146,9 @@ vlans:
   trunk_groups:
   - LEAF_PEER_L3
   tenant: SFLOW
+- id: 4092
+  tenant: system
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
@@ -170,6 +174,16 @@ vlan_interfaces:
   vrf: VRF1
   mtu: 9214
   ip_address: 10.254.1.104/31
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_attached_host_route_export:
+    enabled: true
+    distance: 19
+  ip_address: 10.254.254.2/24
+  ip_virtual_router_addresses:
+  - 10.254.254.1
 port_channel_interfaces:
 - name: Port-Channel11
   description: port-channel-interface-true
@@ -191,7 +205,7 @@ port_channel_interfaces:
   mode: trunk
   sflow:
     enable: true
-  vlans: '11'
+  vlans: 11,4092
   mlag: 16
 - name: Port-Channel17
   description: SFLOW-TESTS-L2-LEAF2_Po1
@@ -200,7 +214,7 @@ port_channel_interfaces:
   mode: trunk
   sflow:
     enable: true
-  vlans: '11'
+  vlans: 11,4092
   mlag: 17
 - name: Port-Channel13
   description: port-channel-interface-false
@@ -326,6 +340,10 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 20
+    type: permit
+    match:
+    - ip address prefix-list PL-L2LEAF-INBAND-MGMT
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -342,6 +360,10 @@ prefix_lists:
     action: permit 10.254.1.0/27 eq 32
   - sequence: 20
     action: permit 10.254.11.0/27 eq 32
+- name: PL-L2LEAF-INBAND-MGMT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.254.254.0/24
 router_bfd:
   multihop:
     interval: 300
@@ -349,6 +371,7 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
+ip_virtual_router_mac_address: 00:11:22:33:44:55
 vxlan_interface:
   Vxlan1:
     description: sflow-tests-leaf3_VTEP
@@ -362,5 +385,18 @@ vxlan_interface:
       vrfs:
       - name: VRF1
         vni: 1
+sflow:
+  run: true
+  vrfs:
+  - name: MGMT
+    destinations:
+    - destination: 10.10.10.10
+    - destination: 10.10.10.11
+    source_interface: Management1
+  - name: sflowvrf
+    destinations:
+    - destination: 10.10.10.12
+      port: 1234
+    source_interface: Loopback321
 metadata:
   platform: vEOS-lab

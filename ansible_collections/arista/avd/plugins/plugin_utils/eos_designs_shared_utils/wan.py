@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Literal
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
@@ -75,7 +75,7 @@ class WanMixin:
     @cached_property
     def wan_interfaces(self: SharedUtils) -> list:
         """
-        As a first approach, only interfaces under l3edge.l3_interfaces can be considered
+        As a first approach, only interfaces under node config l3_interfaces can be considered
         as WAN interfaces.
         This may need to be made wider.
         This also may require a different format for the dictionaries inside the list.
@@ -88,6 +88,10 @@ class WanMixin:
             if get(interface, "wan_carrier") is not None:
                 wan_interfaces.append(interface)
 
+        if not wan_interfaces:
+            raise AristaAvdError(
+                "At least one WAN interface must be configured on a WAN router. Add WAN interfaces under `l3_interfaces` node setting with `wan_carrier` set."
+            )
         return wan_interfaces
 
     @cached_property
@@ -122,7 +126,7 @@ class WanMixin:
                 strip_empties_from_dict(
                     {
                         "name": get(interface, "name", required=True),
-                        "ip_address": self.get_public_ip_for_wan_interface(interface),
+                        "public_ip": self.get_public_ip_for_wan_interface(interface),
                         "connected_to_pathfinder": get(interface, "connected_to_pathfinder", default=True),
                         "wan_circuit_id": get(interface, "wan_circuit_id"),
                     }
@@ -133,7 +137,14 @@ class WanMixin:
 
     @cached_property
     def wan_path_groups(self: SharedUtils) -> list:
-        return get(self.hostvars, "wan_path_groups", required=True)
+        """
+        List of path-groups defined in the top level key `wan_path_groups`
+        Updating default preference for each path-group to 'preferred' if not set.
+        """
+        path_groups = get(self.hostvars, "wan_path_groups", required=True)
+        for path_group in path_groups:
+            path_group["default_preference"] = get(path_group, "default_preference", default="preferred")
+        return path_groups
 
     @cached_property
     def wan_local_path_groups(self: SharedUtils) -> list:
@@ -142,7 +153,7 @@ class WanMixin:
         Also add for each path_groups the local interfaces in a data structure
             interfaces:
               - name: ...
-                ip: ...
+                public_ip: ...
         """
         if not self.is_wan_router:
             return []
@@ -168,6 +179,13 @@ class WanMixin:
         return list(local_path_groups_dict.values())
 
     @cached_property
+    def wan_local_path_group_names(self) -> list:
+        """
+        Return a list of wan_local_path_group names to be used by HA peer and in various places
+        """
+        return [path_group["name"] for path_group in self.wan_local_path_groups]
+
+    @cached_property
     def this_wan_route_server(self: SharedUtils) -> dict:
         """
         Returns the instance for this wan_rs found under wan_route_servers.
@@ -180,20 +198,24 @@ class WanMixin:
         """
         Takes a dict which looks like `l3_interface` from node config
 
-        If not a WAN route-server this just returns the interface IP.
+        If not a WAN route-server this returns public IP and if not found then the interface IP without a mask.
 
         For WAN route-servers we try to find the IP under wan_route_servers.path_groups.interfaces.
-        If not found we use the IP under the interface, unless it is "dhcp" where we raise.
+        If not found we look for the public_ip and then the ip_address under the interface.
+        If there is no public_ip and if ip_address is "dhcp" we raise an error.
         """
         if not self.is_wan_server:
-            return interface["ip_address"]
+            return default(interface.get("public_ip"), interface["ip_address"].split("/", maxsplit=1)[0])
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:
                 continue
 
-            if found_interface.get("ip_address") is not None:
-                return found_interface["ip_address"]
+            if found_interface.get("public_ip") is not None:
+                return found_interface["public_ip"]
+
+        if interface.get("public_ip") is not None:
+            return interface["public_ip"]
 
         if interface["ip_address"] == "dhcp":
             raise AristaAvdError(
@@ -201,7 +223,7 @@ class WanMixin:
                 "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
             )
 
-        return interface["ip_address"]
+        return interface["ip_address"].split("/", maxsplit=1)[0]
 
     @cached_property
     def wan_site(self: SharedUtils) -> dict:
@@ -267,17 +289,17 @@ class WanMixin:
         """
         WAN zone for Pathfinder
 
-        Currently, only default zone DEFAULT-ZONE with ID 1 is supported.
+        Currently, only one default zone with ID 1 is supported.
         """
-        # Injecting zone DEFAULT-ZONE with id 1.
-        return {"name": "DEFAULT-ZONE", "id": 1}
+        # Injecting default zone with id 1.
+        return {"name": f"{self.wan_region['name']}-ZONE", "id": 1}
 
     @cached_property
     def filtered_wan_route_servers(self: SharedUtils) -> dict:
         """
         Return a dict keyed by Wan RR based on the the wan_mode type with only the path_groups the router should connect to.
 
-        It the RR is part of the inventory, the peer_facts are read..
+        If the RR is part of the inventory, the peer_facts are read..
         If any key is specified in the variables, it overwrites whatever is in the peer_facts.
 
         If no peer_fact is found the variables are required in the inventory.
@@ -293,10 +315,10 @@ class WanMixin:
             if wan_rs == self.hostname:
                 # Don't add yourself
                 continue
-
             if (peer_facts := self.get_peer_facts(wan_rs, required=False)) is not None:
                 # Found a matching server in inventory
                 bgp_as = peer_facts.get("bgp_as")
+
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.bgp_as:
                     raise AristaAvdError(f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs} is different from our own: {self.bgp_as}.")
@@ -360,11 +382,8 @@ class WanMixin:
         """
         Return the name of the WAN flow tracking object
         Used in both network services, underlay and overlay python modules.
-
-        TODO make this configurable
-        TODO may need to return exporter name also later
         """
-        return "WAN-FLOW-TRACKER"
+        return get(self.hostvars, "flow_tracking_settings.flow_tracker_name", default="FLOW-TRACKER")
 
     @cached_property
     def is_cv_pathfinder_router(self: SharedUtils) -> bool:
@@ -410,14 +429,16 @@ class WanMixin:
         return self.is_cv_pathfinder_client and get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
 
     @cached_property
+    def wan_ha_ipsec(self: SharedUtils) -> bool:
+        return self.wan_ha and get(self.switch_data_combined, "wan_ha.ipsec", default=True)
+
+    @cached_property
     def wan_ha_path_group_name(self: SharedUtils) -> str:
         """
         Return HA path group name for the WAN design.
         Used in both network services and overlay python modules.
-
-        TODO make this configurable
         """
-        return "LAN_HA"
+        return get(self.hostvars, "wan_ha.lan_ha_path_group_name", default="LAN_HA")
 
     @cached_property
     def is_first_ha_peer(self: SharedUtils) -> bool:
@@ -493,3 +514,10 @@ class WanMixin:
         Returns LB-{name}
         """
         return f"LB-{name}"
+
+    @cached_property
+    def wan_stun_dtls_profile_name(self: SharedUtils) -> str | None:
+        if not self.is_wan_router or get(self.hostvars, "wan_stun_dtls_disable") is True:
+            return None
+
+        return get(self.hostvars, "wan_stun_dtls_profile_name", default="STUN-DTLS")

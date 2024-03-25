@@ -168,6 +168,17 @@
           reload_delay:
             mlag: 900
             non_mlag: 1020
+        - feature_support:
+            bgp_update_wait_for_convergence: true
+            bgp_update_wait_install: false
+            interface_storm_control: true
+            queue_monitor_length_notify: false
+          management_interface: Management1/1
+          platforms:
+          - 7358X4
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
         - management_interface: Management0
           platforms:
           - 7368X4

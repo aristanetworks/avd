@@ -7,5 +7,17 @@ wan_rr:
   nodes:
     - name: missing-data-plane_cpu-allocation-max
       id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: TEST
+          ip_address: 42.42.42.42/24
+
+wan_carriers:
+  - name: TEST
+    path_group: TEST
+
+wan_path_groups:
+  - name: TEST
+    id: 42
 
 expected_error_message: "For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set"

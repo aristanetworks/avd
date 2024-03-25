@@ -142,15 +142,13 @@ ethernet_interfaces:
   ip_address: 10.9.9.9/31
   shutdown: false
   type: routed
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+  description: SFR_999
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.19.9.9/31
   shutdown: false
   type: routed
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+  description: ATT-MPLS_10999
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -176,19 +174,24 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -215,11 +218,21 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+management_security:
+  ssl_profiles:
+  - name: profileB
+    certificate:
+      file: profileB.crt
+      key: profileB.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: pathfinder
   profiles:
-  - name: CONTROL-PLANE-PROFILE
-    load_balance_policy: LB-CONTROL-PLANE-PROFILE
+  - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
   - name: DEFAULT-AVT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: DEFAULT-AVT-POLICY-DEFAULT
@@ -228,6 +241,8 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-PROD-AVT-POLICY-VOICE
   - name: PROD-AVT-POLICY-VIDEO
     load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
+  - name: PROD-AVT-POLICY-MPLS-ONLY
+    load_balance_policy: LB-PROD-AVT-POLICY-MPLS-ONLY
   - name: PROD-AVT-POLICY-DEFAULT
     load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
   - name: CUSTOM-VOICE-PROFILE-NAME
@@ -240,7 +255,7 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
-    - name: CONTROL-PLANE-PROFILE
+    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
       id: 254
     - name: DEFAULT-AVT-POLICY-VIDEO
       id: 3
@@ -253,6 +268,8 @@ router_adaptive_virtual_topology:
       id: 2
     - name: PROD-AVT-POLICY-VIDEO
       id: 4
+    - name: PROD-AVT-POLICY-MPLS-ONLY
+      id: 5
     - name: PROD-AVT-POLICY-DEFAULT
       id: 1
   - name: IT
@@ -277,8 +294,8 @@ router_adaptive_virtual_topology:
   policies:
   - name: DEFAULT-AVT-POLICY-WITH-CP
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-AVT-POLICY-CONTROL-PLANE
     - application_profile: VIDEO
       avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
@@ -289,6 +306,8 @@ router_adaptive_virtual_topology:
       avt_profile: PROD-AVT-POLICY-VOICE
     - application_profile: VIDEO
       avt_profile: PROD-AVT-POLICY-VIDEO
+    - application_profile: MPLS-ONLY
+      avt_profile: PROD-AVT-POLICY-MPLS-ONLY
     - application_profile: default
       avt_profile: PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-AVT-POLICY
@@ -325,6 +344,9 @@ router_path_selection:
       name: cv-pathfinder-pathfinder3
       ipv4_addresses:
       - 172.17.17.17
+    keepalive:
+      interval: 300
+      failure_threshold: 5
   - name: INET
     id: 101
     local_interfaces:
@@ -345,66 +367,85 @@ router_path_selection:
     id: 103
   - name: Satellite
     id: 104
+  - name: AWS
+    id: 105
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
   peer_dynamic_source: stun
   load_balance_policies:
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: LAN_HA
+    - name: AWS
+    - name: Equinix
+      priority: 2
     - name: INET
     - name: MPLS
+    - name: Satellite
+      priority: 2
+    - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: MPLS
-    - name: INET
-  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
-    path_groups:
-    - name: LAN_HA
     - name: INET
     - name: Equinix
+    - name: LAN_HA
+  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
+    - name: Equinix
+      priority: 2
     - name: MPLS
-      priority: 42
+      priority: 4223
+    - name: LAN_HA
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
-    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
+    - name: LAN_HA
     jitter: 42
+    lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: MPLS
     - name: LTE
     - name: INET
       priority: 2
+    - name: LAN_HA
     loss_rate: '42.0'
+  - name: LB-PROD-AVT-POLICY-MPLS-ONLY
+    path_groups:
+    - name: MPLS
+    - name: LAN_HA
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
+    - name: LAN_HA
   - name: LB-CUSTOM-VOICE-PROFILE-NAME
     path_groups:
-    - name: LAN_HA
     - name: MPLS
     - name: INET
       priority: 2
+    - name: LAN_HA
   - name: LB-TRANSIT-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
+    - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
+    - name: AWS
+    - name: Equinix
+      priority: 2
     - name: INET
     - name: MPLS
+    - name: Satellite
+      priority: 2
+    - name: LAN_HA
 router_traffic_engineering:
   enabled: true
 stun:
@@ -412,6 +453,7 @@ stun:
     local_interfaces:
     - Ethernet1
     - Ethernet2
+    ssl_profile: profileB
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
@@ -423,9 +465,10 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: MPLS-ONLY
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   categories:
   - name: VIDEO1
     applications:
@@ -443,8 +486,8 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
-    - name: CONTROL-PLANE-APPLICATION
-      src_prefix_set_name: CONTROL-PLANE-APP-SRC-PREFIXES
+    - name: APP-CONTROL-PLANE
+      src_prefix_set_name: PFX-LOCAL-VTEP-IP
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -461,7 +504,7 @@ application_traffic_recognition:
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: CONTROL-PLANE-APP-SRC-PREFIXES
+    - name: PFX-LOCAL-VTEP-IP
       prefix_values:
       - 192.168.144.3/32
 dps_interfaces:
@@ -470,7 +513,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 192.168.144.3/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: cv-pathfinder-pathfinder2_VTEP
@@ -480,6 +523,14 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+      - name: PROD
+        vni: 42
+      - name: IT
+        vni: 100
+      - name: TRANSIT
+        vni: 66
+      - name: ATTRACTED-VRF-FROM-UPLINK
+        vni: 166
 metadata:
   cv_tags:
     device_tags:
@@ -506,18 +557,19 @@ metadata:
         value: '10999'
   cv_pathfinder:
     role: pathfinder
+    ssl_profile: profileB
     vtep_ip: 192.168.144.3
     interfaces:
     - name: Ethernet1
       carrier: SFR
       circuit_id: '999'
       pathgroup: INET
-      public_ip: 10.9.9.9
+      public_ip: 10.9.9.6
     - name: Ethernet2
       carrier: ATT-MPLS
       circuit_id: '10999'
       pathgroup: MPLS
-      public_ip: 172.19.9.9
+      public_ip: 10.9.9.5
     pathgroups:
     - name: MPLS
       carriers:
@@ -538,11 +590,14 @@ metadata:
     - name: Satellite
       carriers:
       - name: Inmrasat
+    - name: AWS
+      carriers:
+      - name: AWS-1
     regions:
     - name: AVD_Land_West
       id: 42
       zones:
-      - name: DEFAULT-ZONE
+      - name: AVD_Land_West-ZONE
         id: 1
         sites:
         - name: Site422
@@ -556,7 +611,7 @@ metadata:
     - name: AVD_Land_East
       id: 43
       zones:
-      - name: DEFAULT-ZONE
+      - name: AVD_Land_East-ZONE
         id: 1
         sites:
         - name: Site511
@@ -566,121 +621,144 @@ metadata:
       vni: 1
       avts:
       - id: 254
-        name: CONTROL-PLANE-PROFILE
+        name: DEFAULT-AVT-POLICY-CONTROL-PLANE
         pathgroups:
-        - name: LAN_HA
+        - name: AWS
           preference: preferred
+        - name: Equinix
+          preference: alternate
         - name: INET
           preference: preferred
         - name: MPLS
+          preference: preferred
+        - name: Satellite
+          preference: alternate
+        - name: LAN_HA
           preference: preferred
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
-        - name: LAN_HA
-          preference: preferred
         - name: MPLS
-          preference: preferred
-        - name: INET
-          preference: preferred
-      - id: 1
-        name: DEFAULT-AVT-POLICY-DEFAULT
-        pathgroups:
-        - name: LAN_HA
           preference: preferred
         - name: INET
           preference: preferred
         - name: Equinix
           preference: preferred
+        - name: LAN_HA
+          preference: preferred
+      - id: 1
+        name: DEFAULT-AVT-POLICY-DEFAULT
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: Equinix
+          preference: alternate
         - name: MPLS
           preference: alternate
+        - name: LAN_HA
+          preference: preferred
     - name: PROD
-      vni: 142
+      vni: 42
       avts:
       - constraints:
           jitter: 42
         id: 2
         name: PROD-AVT-POLICY-VOICE
         pathgroups:
-        - name: LAN_HA
-          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
           preference: alternate
+        - name: LAN_HA
+          preference: preferred
       - id: 4
         name: PROD-AVT-POLICY-VIDEO
         pathgroups:
-        - name: LAN_HA
-          preference: preferred
         - name: MPLS
           preference: preferred
         - name: LTE
           preference: preferred
         - name: INET
           preference: alternate
+        - name: LAN_HA
+          preference: preferred
+      - id: 5
+        name: PROD-AVT-POLICY-MPLS-ONLY
+        pathgroups:
+        - name: MPLS
+          preference: preferred
+        - name: LAN_HA
+          preference: preferred
       - id: 1
         name: PROD-AVT-POLICY-DEFAULT
         pathgroups:
-        - name: LAN_HA
-          preference: preferred
         - name: INET
           preference: preferred
         - name: MPLS
           preference: alternate
+        - name: LAN_HA
+          preference: preferred
     - name: IT
-      vni: 1000
+      vni: 100
       avts:
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
-        - name: LAN_HA
-          preference: preferred
         - name: MPLS
-          preference: preferred
-        - name: INET
-          preference: preferred
-      - id: 1
-        name: DEFAULT-AVT-POLICY-DEFAULT
-        pathgroups:
-        - name: LAN_HA
           preference: preferred
         - name: INET
           preference: preferred
         - name: Equinix
           preference: preferred
+        - name: LAN_HA
+          preference: preferred
+      - id: 1
+        name: DEFAULT-AVT-POLICY-DEFAULT
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: Equinix
+          preference: alternate
         - name: MPLS
           preference: alternate
+        - name: LAN_HA
+          preference: preferred
     - name: TRANSIT
       vni: 66
       avts:
       - id: 42
         name: CUSTOM-VOICE-PROFILE-NAME
         pathgroups:
-        - name: LAN_HA
-          preference: preferred
         - name: MPLS
           preference: preferred
         - name: INET
           preference: alternate
+        - name: LAN_HA
+          preference: preferred
       - id: 1
         name: TRANSIT-AVT-POLICY-DEFAULT
         pathgroups:
-        - name: LAN_HA
-          preference: preferred
         - name: INET
           preference: preferred
         - name: MPLS
           preference: alternate
+        - name: LAN_HA
+          preference: preferred
     - name: ATTRACTED-VRF-FROM-UPLINK
-      vni: 666
+      vni: 166
       avts:
       - id: 1
         name: DEFAULT-POLICY-DEFAULT
         pathgroups:
-        - name: LAN_HA
+        - name: AWS
           preference: preferred
+        - name: Equinix
+          preference: alternate
         - name: INET
           preference: preferred
         - name: MPLS
+          preference: preferred
+        - name: Satellite
+          preference: alternate
+        - name: LAN_HA
           preference: preferred

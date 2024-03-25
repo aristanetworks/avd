@@ -71,6 +71,16 @@ keys:
           name:
             type: str
             description: Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
+          application_profile:
+            type: str
+            default: APP-PROFILE-CONTROL-PLANE
+            description: |-
+              The application profile to use for control plane traffic.
+
+              The application profile should be defined under `application_classification.application_profiles`.
+              If not defined AVD will auto generate an application profile using the provided name or the default value.
+
+              If not overwritten elsewhere, the application profile is generated matching one application matching the control plane traffic either sourced from or destined to the WAN route servers.
       policies:
         type: list
         description: |-
@@ -128,6 +138,8 @@ keys:
                       ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.
                       ID 1 is reserved for the default_virtual_toplogy.
                       ID 254 is reserved for the control_plane_virtual_topology.
+
+                      `id` is required when `wan_mode` is 'cv-pathfinder'.
             default_virtual_topology:
               type: dict
               description: |-

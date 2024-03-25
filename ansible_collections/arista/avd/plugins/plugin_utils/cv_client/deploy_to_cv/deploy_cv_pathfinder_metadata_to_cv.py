@@ -12,8 +12,15 @@ from .models import CVDevice, CVPathfinderMetadata, DeployToCvResult
 
 LOGGER = getLogger(__name__)
 
-CV_PATHFINDER_METADATA_STUDIO_ID = "studio-caravan"
-CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {"pathfinders": [], "pathgroups": [], "regions": [], "routers": [], "vrfs": [], "version": "3"}
+CV_PATHFINDER_METADATA_STUDIO_ID = "studio-avd-pathfinder-metadata"
+CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {
+    "pathfinders": [],
+    "pathgroups": [],
+    "regions": [],
+    "routers": [],
+    "vrfs": [],
+    "version": "3.1",
+}
 
 
 def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
@@ -24,13 +31,13 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
         {
             "pathgroups": [
                 {
-                    "carriers": get(pathgroup, "carriers", required=True),
+                    "carriers": get(pathgroup, "carriers", default=[]),
                     "importedCarriers": get(pathgroup, "imported_carriers", default=[]),
                     "name": get(pathgroup, "name", required=True),
                 }
-                for pathgroup in get(metadata, "pathgroups", required=True)
+                for pathgroup in get(metadata, "pathgroups", default=[])
             ],
-            "regions": get(metadata, "regions", required=True),
+            "regions": get(metadata, "regions", default=[]),
             "vrfs": get(metadata, "vrfs", default=[]),
         }
     )
@@ -85,14 +92,13 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
     In-place insert / update metadata for one edge device in studio_inputs.
     """
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_edge %s", device.hostname)
-    role = metadata.get("role", "")
-    role = "transit" if "transit" in role else role
     edge_metadata = {
         "inputs": {
             "router": {
+                "sslProfileName": metadata.get("ssl_profile", ""),
                 "pathfinders": [{"vtepIp": pathfinder["vtep_ip"]} for pathfinder in metadata.get("pathfinders", [])],
                 "region": metadata.get("region", ""),
-                "role": role,
+                "role": metadata.get("role", ""),
                 "site": metadata.get("site", ""),
                 "vtepIp": metadata.get("vtep_ip", ""),
                 "wanInterfaces": [
@@ -144,6 +150,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     region: EMEA
     role: "transit region"
     site: Paris
+    ssl_profile: VERYSAFE
     vtep_ip: 10.10.10.10
     interfaces:
       - name: Ethernet1
@@ -209,6 +216,18 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     existing_studio_inputs = await cv_client.get_studio_inputs(
         studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS
     )
+
+    # Ensure the metadata studio schema match our supported version
+    if (studio_version := existing_studio_inputs.get("version")) != "3.1":
+        LOGGER.warning(
+            (
+                "deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '%s'. "
+                "This plugin only accepts version '3.1'. Skipping upload of metadata."
+            ),
+            studio_version,
+        )
+        return
+
     studio_inputs = deepcopy(existing_studio_inputs)
 
     # Walk through given metadata, skip missing devices or invalid roles.
@@ -239,7 +258,6 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
                 device_metadata.device.serial_number,
                 device_role,
             )
-            edges.append(device_metadata)
             pathfinders.append(device_metadata)
         else:
             LOGGER.info(

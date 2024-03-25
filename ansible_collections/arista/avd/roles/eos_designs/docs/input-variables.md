@@ -712,6 +712,12 @@ roles/eos_designs/docs/tables/management-settings.md
 roles/eos_designs/docs/tables/management-source-interfaces-settings.md
 --8<--
 
+### sFlow settings
+
+--8<--
+roles/eos_designs/docs/tables/management-sflow-settings.md
+--8<--
+
 ### SNMP settings
 
 --8<--

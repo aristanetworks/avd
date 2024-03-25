@@ -1,6 +1,62 @@
 [
   {
     "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTacacsServerGroups",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAcctConsoleMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA accounting console method lists for different accounting types (system, exec, commands, dot1x)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAcctDefaultMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA accounting default method lists for different accounting types (system, exec, commands, dot1x)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAuthenMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA authentication method lists for different authentication types (login, enable, dot1x)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAuthzMethods",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies the AAA authorization method lists for different authorization types (commands, exec)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
     "test": "VerifyRoutingProtocolModel",
     "categories": [
       "BGP"
@@ -55,27 +111,37 @@
   },
   {
     "name": "dc2-leaf3a.arista.com",
-    "test": "VerifyTemperature",
+    "test": "VerifyRunningConfigDiffs",
     "categories": [
-      "hardware"
+      "configuration"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range."
+    "description": "Verifies there is no difference between the running-config and the startup-config"
   },
   {
     "name": "dc2-leaf3a.arista.com",
-    "test": "VerifyEnvironmentCooling",
+    "test": "VerifyZeroTouch",
     "categories": [
-      "hardware"
+      "configuration"
     ],
-    "description": "Verifies if the fans status are within the accepted states list."
+    "description": "Verifies ZeroTouch is disabled"
   },
   {
     "name": "dc2-leaf3a.arista.com",
-    "test": "VerifyEnvironmentPower",
+    "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "hardware"
+      "field notices",
+      "software"
     ],
-    "description": "Verifies if the power supplies status are within the accepted states list."
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyFieldNotice44Resolution",
+    "categories": [
+      "field notices",
+      "software"
+    ],
+    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -83,187 +149,267 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the status of power supply fans and all fan trays."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the status of power supply fans and all fan trays."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyEnvironmentSystemCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the system cooling status."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTransceiversTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceivers temperature."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAdverseDrops",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet5"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet5 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet11 - dc2-leaf3-fw1_e1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet11 - dc2-leaf3-fw1_e1 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet5"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet5 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet3 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet3"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet3 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet3 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet4 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet4"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet4 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet4 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "custom_field": "Loopback0 - EVPN_Overlay_Peering"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Loopback0 - EVPN_Overlay_Peering = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "custom_field": "Loopback1 - VTEP_VXLAN_Tunnel_Source"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Loopback1 - VTEP_VXLAN_Tunnel_Source = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "custom_field": "Loopback10 - VRF10_VTEP_DIAGNOSTICS"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Loopback Interface Status & Line Protocol == 'up'",
-    "custom_field": "Loopback11 - VRF11_VTEP_DIAGNOSTICS"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "custom_field": "Port-Channel11 - dc2-leaf3-fw1_PortChannel"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Port-Channel11 - dc2-leaf3-fw1_PortChannel = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "custom_field": "Port-Channel3 - MLAG_PEER_dc2-leaf3b.arista.com_Po3"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Port-Channel3 - MLAG_PEER_dc2-leaf3b.arista.com_Po3 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan11 - VRF10_VLAN11"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan11 - VRF10_VLAN11 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan12 - VRF10_VLAN12"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan12 - VRF10_VLAN12 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan21 - VRF11_VLAN21"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan21 - VRF11_VLAN21 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan22 - VRF11_VLAN22"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan22 - VRF11_VLAN22 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan4093 - MLAG_PEER_L3_PEERING"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan4094 - MLAG_PEER"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan4094 - MLAG_PEER = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vxlan Interface Status & Line Protocol == 'up'",
-    "custom_field": "Vxlan1"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vxlan1 = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -318,6 +464,70 @@
     ],
     "description": "LLDP topology - validate peer and interface",
     "custom_field": "local: Ethernet4 - remote: dc2-leaf3b.arista.com_Ethernet4"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingWarning",
+    "categories": [
+      "logging"
+    ],
+    "description": "This test verifies there are no syslog messages with a severity of ERRORS or higher."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingAccounting",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if AAA accounting logs are generated."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingPersistent",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logging persistent is enabled and logs are saved in flash."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingTimestamp",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated with the appropriate timestamp."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingHostname",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated with the device FQDN."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingLogsGeneration",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies if logs are generated."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingHosts",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies logging hosts (syslog servers) for a specified VRF."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyLoggingSourceInt",
+    "categories": [
+      "logging"
+    ],
+    "description": "Verifies logging source-interface for a specified VRF."
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -438,11 +648,87 @@
   },
   {
     "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.2.1"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "custom_field": "Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination: 10.255.2.2"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
     "test": "VerifyMlagStatus",
     "categories": [
       "mlag"
     ],
-    "description": "This test verifies the health status of the MLAG configuration."
+    "description": "Verifies the health status of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMlagStatus",
+    "categories": [
+      "mlag"
+    ],
+    "description": "Verifies the health status of the MLAG configuration."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMlagDualPrimary",
+    "categories": [
+      "mlag"
+    ],
+    "description": "Verifies the MLAG dual-primary detection parameters."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMlagReloadDelay",
+    "categories": [
+      "mlag"
+    ],
+    "description": "Verifies the MLAG reload-delay parameters."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMlagInterfaces",
+    "categories": [
+      "mlag"
+    ],
+    "description": "Verifies there are no inactive or active-partial MLAG ports."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMlagConfigSanity",
+    "categories": [
+      "mlag"
+    ],
+    "description": "Verifies there are no MLAG config-sanity inconsistencies."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyIGMPSnoopingVlans",
+    "categories": [
+      "multicast",
+      "igmp"
+    ],
+    "description": "Verifies the IGMP snooping configuration for some VLANs."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyIGMPSnoopingGlobal",
+    "categories": [
+      "multicast",
+      "igmp"
+    ],
+    "description": "Verifies the IGMP snooping global configuration."
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -576,6 +862,24 @@
     "categories": [
       "Routing Table"
     ],
+    "description": "Remote Lo0 address",
+    "custom_field": "10.255.2.1"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "custom_field": "10.255.2.2"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
     "description": "Remote VTEP address",
     "custom_field": "10.255.1.3"
   },
@@ -621,6 +925,150 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
+    "description": "Verifies if the eAPI has a valid SSL profile."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySnmpIPv4Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv4 ACL(s) configured."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySnmpIPv6Acl",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent has IPv6 ACL(s) configured."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySnmpStatus",
+    "categories": [
+      "snmp"
+    ],
+    "description": "Verifies if the SNMP agent is enabled."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyEOSVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed EOS version."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyTerminAttrVersion",
+    "categories": [
+      "software"
+    ],
+    "description": "Verifies the device is running one of the allowed TerminAttr version."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySTPForwardingPorts",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies that all interfaces are forwarding for a provided list of VLAN(s)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySTPMode",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies the configured STP mode for a provided list of VLAN(s)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySTPRootPriority",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies the STP root priority for a provided list of VLAN or MST instance ID(s)."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySTPCounters",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies there is no errors in STP BPDU packets."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifySTPBlockedPorts",
+    "categories": [
+      "stp"
+    ],
+    "description": "Verifies there is no STP blocked ports."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the device uptime."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyAgentLogs",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies there are no agent crash reports."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyCoredump",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies there are no core dump files."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyCPUUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies whether the CPU utilization is below 75%."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyMemoryUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies whether the memory utilization is below 75%."
   }
 ]

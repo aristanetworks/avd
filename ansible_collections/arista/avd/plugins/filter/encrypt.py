@@ -27,7 +27,8 @@ options:
       Type of password to encrypt.
       `bgp` and `ospf_simple` requires the `password` and `key` inputs.
       `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
-    choices: ["bgp", "ospf_simple", "ospf_message_digest"]
+      `isis` requires the `password`, `key` and `isis_mode` inputs.
+    choices: ["bgp", "ospf_simple", "ospf_message_digest", "isis"]
     required: true
   key:
     type: string
@@ -35,6 +36,7 @@ options:
       Encryption key. The value depends on the type of password.
       For BGP passwords, the key is the Neighbor IP or the BGP Peer Group Name in EOS.
       For OSPF passwords, the key is the interface name (e.g., `Ethernet1`).
+      For ISIS passwords the key is the ISIS instance name (from `router isis <instance name>` or `isis enable <instance name>`).
     required: true
   hash_algorithm:
     type: string
@@ -47,6 +49,10 @@ options:
       Key ID to use with `passwd_type=ospf_message_digest`.
     min: 1
     max: 255
+  isis_mode:
+    type: string
+    description: ISIS encryption mode (`none`, `text`, `md5`, `sha`) or shared-secret algorithm (`sha-1`, `sha-224`, `sha-256`, `sha-384`, `sha1-512`).
+    choices: ["none", "text", "md5", "sha", "sha-1", "sha-224", "sha-256", "sha-384", "sha1-512"]
 """
 
 EXAMPLES = r"""

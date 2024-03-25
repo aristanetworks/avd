@@ -109,6 +109,7 @@ ethernet_interfaces:
   ip_address: 10.8.8.8/31
   shutdown: false
   type: routed
+  description: ATT_888
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -137,6 +138,11 @@ route_maps:
 static_routes:
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.8.8.9
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -184,9 +190,11 @@ router_path_selection:
     id: 102
   peer_dynamic_source: stun
   load_balance_policies:
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
+      priority: 42
+    - name: MPLS
   - name: LB-DEFAULT-AUTOVPN-POLICY-IT
     path_groups:
     - name: MPLS
@@ -205,8 +213,8 @@ router_path_selection:
   - name: DEFAULT-AUTOVPN-POLICY-WITH-CP
     rules:
     - id: 10
-      application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      load_balance: LB-CONTROL-PLANE-PROFILE
+      application_profile: APP-PROFILE-CONTROL-PLANE
+      load_balance: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     - id: 20
       application_profile: IT
       load_balance: LB-DEFAULT-AUTOVPN-POLICY-IT
@@ -234,16 +242,16 @@ application_traffic_recognition:
   - name: IT
   - name: VOICE
   - name: VIDEO
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: APP-PROFILE-CONTROL-PLANE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: APP-CONTROL-PLANE
   applications:
     ipv4_applications:
-    - name: CONTROL-PLANE-APPLICATION
-      src_prefix_set_name: CONTROL-PLANE-APP-SRC-PREFIXES
+    - name: APP-CONTROL-PLANE
+      src_prefix_set_name: PFX-LOCAL-VTEP-IP
   field_sets:
     ipv4_prefixes:
-    - name: CONTROL-PLANE-APP-SRC-PREFIXES
+    - name: PFX-LOCAL-VTEP-IP
       prefix_values:
       - 192.168.131.2/32
 dps_interfaces:
@@ -260,3 +268,5 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+      - name: PROD
+        vni: 42

@@ -71,6 +71,7 @@ ethernet_interfaces:
   shutdown: true
   type: routed
   description: This is a custom description
+  dhcp_client_accept_default_route: true
 - name: Ethernet43
   peer_type: l3_interface
   ip_address: 192.168.42.42/24

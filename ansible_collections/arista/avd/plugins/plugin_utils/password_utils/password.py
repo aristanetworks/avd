@@ -160,3 +160,79 @@ def bgp_decrypt(password: str, key) -> str:
         return cbc_decrypt(key, data).decode()
     except Exception as exc:
         raise AristaAvdError("BGP password decryption failed - check the input parameters") from exc
+
+
+##############
+# ISIS
+##############
+_ISIS_MODE_MAP = {
+    "none": "noAuth",
+    "text": "clearText",
+    "md5": "md5",
+    "sha": "sha",
+    "sha-1": "sha_1",
+    "sha-224": "sha_224",
+    "sha-256": "sha_256",
+    "sha-384": "sha_384",
+    "sha-512": "sha_512",
+}
+
+
+def _validate_isis_args(password: str, key: str, mode: str):
+    if not password:
+        raise AristaAvdError("Password is required for encryption/decryption")
+
+    if not isinstance(password, str):
+        raise AristaAvdError(f"Password MUST be of type 'str' but is of type {type(password)}")
+
+    if not isinstance(key, str):
+        raise AristaAvdError(f"Key MUST be of type 'str' but is of type {type(key)}")
+
+    if not isinstance(mode, str):
+        raise AristaAvdError(f"Mode MUST be a string with one of the following options: {list(_ISIS_MODE_MAP)}. Got '{mode}'.")
+
+    if not mode:
+        raise AristaAvdError("Mode is required for encryption/decryption")
+
+
+def _get_isis_key(key: str, mode: str) -> bytes:
+    return bytes(f"{key}_{_ISIS_MODE_MAP[mode]}", encoding="UTF-8")
+
+
+def isis_encrypt(password: str, key: str, mode: str) -> str:
+    """
+    Encrypt a password for ISIS authentication.
+
+    Args:
+        password: Password as string
+        key: ISIS instance name as string.
+        mode: 'none', 'text', 'md5' or 'sha' or for shared-secret mode 'sha-1', 'sha-224', 'sha-256', 'sha-384', 'sha-512'.
+
+    Returns the encrypted password as a string.
+    """
+    _validate_isis_args(password, key, mode)
+
+    data = bytes(password, encoding="UTF-8")
+
+    return cbc_encrypt(_get_isis_key(key, mode), data).decode()
+
+
+def isis_decrypt(password: str, key: str, mode: str) -> str:
+    """
+    Decrypt a password for ISIS authentication.
+
+    <key> ISIS instance name.
+    <mode> 'none', 'text', 'md5' or 'sha' or for shared-secret mode 'sha-1', 'sha-224', 'sha-256', 'sha-384', 'sha-512'.
+
+    Returns the decrypted password as a string.
+
+    Raises AristaAvdError is decryption fails
+    """
+    _validate_isis_args(password, key, mode)
+
+    data = bytes(password, encoding="UTF-8")
+
+    try:
+        return cbc_decrypt(_get_isis_key(key, mode), data).decode()
+    except Exception as exc:
+        raise AristaAvdError("ISIS password decryption failed - check the input parameters") from exc
