@@ -143,16 +143,12 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: SFR_999
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.19.9.9/31
   shutdown: false
   type: routed
   description: ATT-MPLS_10999
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID

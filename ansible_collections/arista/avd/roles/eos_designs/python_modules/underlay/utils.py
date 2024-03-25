@@ -197,8 +197,9 @@ class UtilsMixin:
         if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", True):
             interface["dhcp_client_accept_default_route"] = True
 
-        if self.shared_utils.is_cv_pathfinder_router:
-            interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+        # TODO: enable flow tracking once toggle is in place
+        # if self.shared_utils.is_cv_pathfinder_router:
+        #    interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
         if self.shared_utils.is_wan_router and (wan_carrier_name := l3_interface.get("wan_carrier")) is not None and interface["access_group_in"] is None:
             if not get(get_item(self.shared_utils.wan_carriers, "name", wan_carrier_name, default={}), "trusted"):
@@ -289,9 +290,10 @@ class UtilsMixin:
         # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
         self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
 
+        # TODO: enable flow tracking once toggle is in place
         # Configuring flow tracking on LAN interfaces of WAN routers
-        if self.shared_utils.is_cv_pathfinder_client:
-            subinterface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+        # if self.shared_utils.is_cv_pathfinder_client:
+        #    subinterface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
         return strip_empties_from_dict(subinterface)
 
