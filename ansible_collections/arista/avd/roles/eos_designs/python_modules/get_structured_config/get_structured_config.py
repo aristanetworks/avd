@@ -15,6 +15,7 @@ from ..base import AvdStructuredConfigBase
 from ..connected_endpoints import AvdStructuredConfigConnectedEndpoints
 from ..core_interfaces_and_l3_edge import AvdStructuredConfigCoreInterfacesAndL3Edge
 from ..custom_structured_configuration import AvdStructuredConfigCustomStructuredConfiguration
+from ..flows import AvdStructuredConfigFlows
 from ..inband_management import AvdStructuredConfigInbandManagement
 from ..metadata import AvdStructuredConfigMetadata
 from ..mlag import AvdStructuredConfigMlag
@@ -31,8 +32,13 @@ AVD_STRUCTURED_CONFIG_CLASSES = [
     AvdStructuredConfigNetworkServices,
     AvdStructuredConfigConnectedEndpoints,
     AvdStructuredConfigInbandManagement,
+    # The Flows module must be rendered after others contributing interfaces,
+    # since it parses those interfaces for sFlow or flow tracking (ipfix) config.
+    AvdStructuredConfigFlows,
     # Metadata must be after anything else that can generate structured config, since CV tags can consume from structured config.
     AvdStructuredConfigMetadata,
+    # The Custom Structured Configuration module must be rendered last,
+    # since it parses all supported object looking for `struct_cfg`.
     AvdStructuredConfigCustomStructuredConfiguration,
 ]
 """
