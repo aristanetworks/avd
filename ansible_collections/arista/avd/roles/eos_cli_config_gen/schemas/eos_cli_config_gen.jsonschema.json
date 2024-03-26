@@ -10196,12 +10196,13 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Prefix-List Name",
+                "description": "Prefix-List Name.",
                 "title": "Name"
               },
               "prefixes": {
                 "type": "array",
-                "description": "List of IPv4 Prefixes (with the subnet mask e.g. 10.10.10.0/24)",
+                "minItems": 1,
+                "description": "List of IPv4 prefixes (with the subnet mask e.g. 192.0.2.0/24).",
                 "items": {
                   "type": "string"
                 },
@@ -10226,12 +10227,13 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Prefix-List Name",
+                "description": "Prefix-List Name.",
                 "title": "Name"
               },
               "prefixes": {
                 "type": "array",
-                "description": "List of IPv6 Prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64)",
+                "minItems": 1,
+                "description": "List of IPv6 prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64).",
                 "items": {
                   "type": "string"
                 },
