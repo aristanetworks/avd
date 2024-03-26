@@ -33,7 +33,7 @@ class CVChangeControl:
     - `"completed"`: Approve and start the Change Control. Wait for the Change Control to be completed.
     - `"deleted"`: Create and delete the Change Control. Used for dry-run where no changes will be committed to the network.
     """
-    final_state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
+    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
 
 
 @dataclass
@@ -92,7 +92,7 @@ class CVWorkspace:
     """
     force: bool = False
     """ Force submit the workspace even if some devices are not actively streaming to CloudVision."""
-    final_state: Literal["pending", "built", "submitted", "build failed", "submit failed", "abandoned", "deleted"] | None = None
+    state: Literal["pending", "built", "submitted", "build failed", "submit failed", "abandoned", "deleted"] | None = None
     """The final state of the Workspace. Do not set this manually."""
     change_control_id: str | None = None
     """Do not set this manually."""
