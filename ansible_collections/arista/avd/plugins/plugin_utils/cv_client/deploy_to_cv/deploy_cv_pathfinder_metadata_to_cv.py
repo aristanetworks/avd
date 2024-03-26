@@ -54,6 +54,7 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
             "value": {
                 "sslProfileName": metadata.get("ssl_profile", ""),
                 "vtepIp": metadata.get("vtep_ip", ""),
+                "region": metadata.get("region", ""),
                 "wanInterfaces": [
                     {
                         "inputs": {
