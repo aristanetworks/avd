@@ -4426,6 +4426,13 @@ $defs:
             - str
             min: 1
             max: 10
+          unauthorized:
+            type: dict
+            keys:
+              access_vlan_membership_egress:
+                type: bool
+              native_vlan_membership_egress:
+                type: bool
       poe:
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
         type: dict
