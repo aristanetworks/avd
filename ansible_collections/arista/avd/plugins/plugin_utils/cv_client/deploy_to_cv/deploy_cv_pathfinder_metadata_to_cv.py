@@ -33,7 +33,7 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
             constraints: dict = avt.setdefault("constraints", {})
             constraints.setdefault("latency", 4294967295)
             constraints.setdefault("jitter", 4294967295)
-            constraints.setdefault("loss_rate", 99)
+            constraints.setdefault("lossrate", 99)
 
     studio_inputs.update(
         {
