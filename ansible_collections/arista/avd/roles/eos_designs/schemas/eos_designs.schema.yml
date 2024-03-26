@@ -767,6 +767,19 @@ keys:
       '
     type: bool
     default: true
+  default_interface_mtu:
+    documentation_options:
+      table: system-settings
+    type: int
+    convert_types:
+    - str
+    description: 'Default interface MTU configured on EOS under "interface defaults".
+
+      Can be overriden per platform under platform settings.
+
+      '
+    min: 68
+    max: 65535
   default_interfaces:
     documentation_options:
       table: default-interfaces

@@ -4564,6 +4564,13 @@
       "default": true,
       "title": "Default IGMP Snooping Enabled"
     },
+    "default_interface_mtu": {
+      "type": "integer",
+      "description": "Default interface MTU configured on EOS under \"interface defaults\".\nCan be overriden per platform under platform settings.\n",
+      "minimum": 68,
+      "maximum": 65535,
+      "title": "Default Interface MTU"
+    },
     "default_interfaces": {
       "type": "array",
       "description": "Default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).\n",
