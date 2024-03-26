@@ -12,7 +12,7 @@
 #### Match-list Input IPv4-Prefix Summary
 
 | Prefix List Name | Prefixes |
-| -------- | ------ |
+| ---------------- | -------- |
 {%         for match_list in match_list_input.prefix_ipv4 %}
 | {{ match_list.name }} | {{ match_list.prefixes | arista.avd.default(['-']) | join(', ') }} |
 {%         endfor %}
