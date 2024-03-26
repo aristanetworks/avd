@@ -35,28 +35,19 @@ interface Management1
 ```
 
 ### Router Internet Exit
-
-#### Exit Groups Summary
+#### Exit Groups
 
 | Exit Groups | Local Connections | Fib Default |
 | ----------- | ----------------- | ----------- |
 | eg_01 | - | - |
 | eg_02 | - | True |
-| eg_03 | eg_03_lo_01 | - |
-| eg_03 | eg_03_lo_02 | - |
-| eg_03 | - | True |
-| eg_04 | eg_04_lo_01 | - |
-| eg_04 | eg_04_lo_02 | - |
-| eg_04 | eg_04_lo_03 | - |
-
-#### Policies Summary
+| eg_03 | eg_03_lo_01<br>eg_03_lo_02 | True |
+| eg_04 | eg_04_lo_01<br>eg_04_lo_02<br>eg_04_lo_03 | - |
+#### Internet Exit Policies
 
 | Policies | Policy Exit Groups |
 | -------- | ------------------ |
-| po_01 | po_eg_01_01 |
-| po_01 | po_eg_01_02 |
-| po_01 | po_eg_01_03 |
-| po_01 | po_eg_01_04 |
+| po_01 | po_eg_01_01<br>po_eg_01_02<br>po_eg_01_03<br>po_eg_01_04 |
 | po_02 | - |
 | po_03 | po_eg_03_01 |
 

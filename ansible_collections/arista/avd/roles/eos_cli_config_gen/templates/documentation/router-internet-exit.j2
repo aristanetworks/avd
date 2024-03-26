@@ -7,37 +7,39 @@
 {% if router_internet_exit is arista.avd.defined %}
 
 ### Router Internet Exit
-
 {%     if router_internet_exit.exit_groups is arista.avd.defined %}
-#### Exit Groups Summary
+#### Exit Groups
 
 | Exit Groups | Local Connections | Fib Default |
 | ----------- | ----------------- | ----------- |
 {%         for exit_group in router_internet_exit.exit_groups %}
+{%             set local_connections = [] %}
+{%             set fib_default = exit_group.fib_default | arista.avd.default("-") %}
 {%             for local_connection in exit_group.local_connections | arista.avd.default([]) %}
-| {{ exit_group.name }} | {{ local_connection.name }} | - |
+{%                 do local_connections.append(local_connection.name) %}
 {%             endfor %}
-{%             if exit_group.fib_default is arista.avd.defined(true) %}
-| {{ exit_group.name }} | - | True |
-{%             endif %}
-{%             if exit_group.local_connections is not arista.avd.defined and exit_group.fib_default is not arista.avd.defined(true) %}
-| {{ exit_group.name }} | - | - |
+{%             if local_connections != [] %}
+| {{ exit_group.name }} | {{ local_connections | join("<br>") }} | {{ fib_default }} |
+{%             else %}
+| {{ exit_group.name }} | - | {{ fib_default }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-
 {%     if router_internet_exit.policies is arista.avd.defined %}
-#### Policies Summary
+#### Internet Exit Policies
 
 | Policies | Policy Exit Groups |
 | -------- | ------------------ |
 {%         for policy in router_internet_exit.policies %}
+{%             set policy_exit_groups = [] %}
 {%             for exit_group in policy.exit_groups | arista.avd.default([]) %}
 {%                 if exit_group.name is arista.avd.defined %}
-| {{ policy.name }} | {{ exit_group.name }} |
+{%                     do policy_exit_groups.append(exit_group.name) %}
 {%                 endif %}
 {%             endfor %}
-{%             if policy.exit_groups is not arista.avd.defined %}
+{%             if policy_exit_groups != [] %}
+| {{ policy.name }} | {{ policy_exit_groups | join("<br>") }} |
+{%             else %}
 | {{ policy.name }} | - |
 {%             endif %}
 {%         endfor %}
