@@ -53,13 +53,17 @@ class PrefixListsMixin(UtilsMixin):
                 {"sequence": 10 * (index + 1), "action": f"permit {ipaddress.ip_network(ip_address, strict=False)}"}
                 for index, ip_address in enumerate(self.shared_utils.wan_ha_ip_addresses)
             ]
-            prefix_lists.append({"name": "PL-WAN-HA-PREFIXES", "sequence_numbers": sequence_numbers})
+            # TODO should we raise?
+            if sequence_numbers:
+                prefix_lists.append({"name": "PL-WAN-HA-PREFIXES", "sequence_numbers": sequence_numbers})
 
             sequence_numbers = [
                 {"sequence": 10 * (index + 1), "action": f"permit {ipaddress.ip_network(ip_address, strict=False)}"}
                 for index, ip_address in enumerate(self.shared_utils.wan_ha_peer_ip_addresses)
             ]
-            prefix_lists.append({"name": "PL-WAN-HA-PEER-PREFIXES", "sequence_numbers": sequence_numbers})
+            # TODO should we raise?
+            if sequence_numbers:
+                prefix_lists.append({"name": "PL-WAN-HA-PEER-PREFIXES", "sequence_numbers": sequence_numbers})
 
         return prefix_lists
 

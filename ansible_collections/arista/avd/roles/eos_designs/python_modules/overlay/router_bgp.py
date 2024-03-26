@@ -276,6 +276,17 @@ class RouterBgpMixin(UtilsMixin):
 
         if self.shared_utils.is_wan_server:
             address_family_evpn["next_hop"] = {"resolution_disabled": True}
+
+        # Activitating HA iBGP session for WAN HA
+        if self.shared_utils.wan_ha:
+            # TODO: @gmuloc duplicate with EVPN gateway VXLAN
+            address_family_evpn["neighbor_default"] = {
+                "next_hop_self_received_evpn_routes": {
+                    "enable": True,
+                }
+            }
+            address_family_evpn["neighbors"] = [{"ip_address": self._wan_ha_peer_vtep_ip(), "activate": True}]
+
         return address_family_evpn
 
     def _address_family_ipv4_sr_te(self) -> dict | None:
@@ -501,6 +512,20 @@ class RouterBgpMixin(UtilsMixin):
                 for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
                     neighbor = self._create_neighbor(data["vtep_ip"], wan_route_server, self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"])
                     neighbors.append(neighbor)
+
+                if self.shared_utils.wan_ha:
+                    neighbor = self._create_neighbor(self._wan_ha_peer_vtep_ip(), self.shared_utils.wan_ha_peer, None)
+                    neighbor.update(
+                        {
+                            "remote_as": self.shared_utils.bgp_as,
+                            "update_source": "Dps1",
+                            "route_reflector_client": True,
+                            "send_community": "all",
+                            "route_map_in": "RM-WAN-HA-LOCAL-PREF-IN",
+                        }
+                    )
+                    neighbors.append(neighbor)
+
             if self.shared_utils.is_wan_server:
                 # No neighbor configured on the `wan_overlay_peers` peer group as it is covered by listen ranges
                 for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():

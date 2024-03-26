@@ -603,6 +603,10 @@ metadata:
       - name: AVD_Land_West-ZONE
         id: 1
         sites:
+        - name: Site404
+          id: 404
+          location:
+            address: Not Found
         - name: Site422
           id: 422
           location:

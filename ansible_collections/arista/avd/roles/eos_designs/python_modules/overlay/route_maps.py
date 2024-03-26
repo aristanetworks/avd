@@ -74,11 +74,32 @@ class RouteMapsMixin(UtilsMixin):
                         {
                             "sequence": 10,
                             "type": "permit",
-                            "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                            "match": ["extcommunity ECL-EVPN-SOO"],
+                            # "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                         },
                     ],
                 }
             )
+            if self.shared_utils.wan_ha:
+                route_maps.append(
+                    {
+                        "name": "RM-WAN-HA-LOCAL-PREF-IN",
+                        "sequence_numbers": [
+                            {
+                                "sequence": 10,
+                                "type": "permit",
+                                "description": "Make EVPN routes originated from WAN HA peer less preferred and tag them",
+                                "set": ["local-preference 75", "tag 50"],
+                            },
+                            {
+                                "sequence": 20,
+                                "type": "permit",
+                                "description": "Make EVPN routes received by WAN HA peer less preferred and tag them",
+                                "set": ["local-preference 50", "tag 50"],
+                            },
+                        ],
+                    }
+                )
 
         if route_maps:
             return route_maps

@@ -171,6 +171,15 @@ anta.tests.interfaces:
 anta.tests.routing.bgp:
 - VerifyBGPSpecificPeers:
     address_families:
+    - afi: evpn
+      peers:
+      - 10.255.1.2
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'BGP EVPN Peer: 10.255.1.2'
+- VerifyBGPSpecificPeers:
+    address_families:
     - afi: ipv4
       peers:
       - 10.255.255.0
