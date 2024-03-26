@@ -22,7 +22,7 @@
 #### Match-list Input IPv6-Prefix Summary
 
 | Prefix List Name | Prefixes |
-| -------- | ------ |
+| ---------------- | -------- |
 {%         for match_list in match_list_input.prefix_ipv6 %}
 | {{ match_list.name }} | {{ match_list.prefixes | arista.avd.default(['-']) | join(', ') }} |
 {%         endfor %}
