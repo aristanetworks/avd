@@ -29,7 +29,7 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
     """
     # Temporary fix for default values in metadata studio
     for vrf in get(metadata, "vrfs", default=[]):
-        for avt in vrf.get("avts", default=[]):
+        for avt in get(vrf, "avts", default=[]):
             constraints: dict = avt.setdefault("constraints", {})
             constraints.setdefault("latency", 4294967295)
             constraints.setdefault("jitter", 4294967295)
