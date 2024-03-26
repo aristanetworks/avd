@@ -238,8 +238,8 @@ The tags will only be generated when `wan_mode` is set to `cv-pathfinder`.
 
 | Tag Name        | Source of information                                      |
 | --------------- | ---------------------------------------------------------- |
-| `Region`        | `cv_pathfinder_region` for `wan_router`                    |
-| `Zone`          | `<region_name>-ZONE` for `wan_router`                            |
+| `Region`        | `cv_pathfinder_region`                                     |
+| `Zone`          | `<region_name>-ZONE` for `wan_router`                      |
 | `Site`          | `cv_pathfinder_site` for `wan_router`                      |
 | `PathfinderSet` | name of `node_group` or default `PATHFINDERS` for `wan_rr` |
 | `Role`          | `pathfinder`, `edge`, `transit region` or `transit zone`   |
