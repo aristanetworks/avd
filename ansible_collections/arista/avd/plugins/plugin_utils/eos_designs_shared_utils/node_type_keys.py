@@ -65,6 +65,7 @@ DEFAULT_NODE_TYPE_KEYS = {
             "type": "wan_router",
             "default_evpn_role": "client",
             "default_wan_role": "client",
+            "default_underlay_routing_protocol": "none",
             "default_overlay_routing_protocol": "ibgp",
             "vtep": True,
             "network_services": {
@@ -76,6 +77,7 @@ DEFAULT_NODE_TYPE_KEYS = {
             "type": "wan_rr",
             "default_evpn_role": "server",
             "default_wan_role": "server",
+            "default_underlay_routing_protocol": "none",
             "default_overlay_routing_protocol": "ibgp",
             "vtep": True,
             "network_services": {

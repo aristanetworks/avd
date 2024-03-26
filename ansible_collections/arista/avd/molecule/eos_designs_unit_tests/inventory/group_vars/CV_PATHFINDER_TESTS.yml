@@ -1,6 +1,9 @@
 ---
 # Testing cv-pathfinder
 wan_mode: cv-pathfinder
+# Have all the router in the examples use eBGP as underlay routing protocol -
+# the default is "none" for WAN routers"
+underlay_routing_protocol: ebgp
 
 cv_pathfinder_regions:
   - name: AVD_Land_West
