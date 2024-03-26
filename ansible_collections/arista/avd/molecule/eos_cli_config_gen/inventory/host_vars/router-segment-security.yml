@@ -13,3 +13,32 @@ router_segment_security:
           action: drop
   vrfs:
     - name: default
+      segments:
+        - name: SEGMENT-TEST1
+          definition:
+            - name: MATCH-LIST10
+              address_family: ipv4
+            - name: MATCH-LIST1
+              address_family: ipv4
+            - name: MATCH-LIST11
+              address_family: ipv6
+          policies:
+            - source: MATCH-LIST20
+              policy: policy-forward-all
+            - source: MATCH-LIST21
+              policy: POLICY-TEST1
+            - source: MATCH-LIST30
+              policy: policy-drop-all
+    - name: SECURE
+      segments:
+        - name: SEGMENT-TEST1
+          definition:
+            - name: MATCH-LIST10
+              address_family: ipv4
+            - name: MATCH-LIST1
+              address_family: ipv4
+          policies:
+            - source: MATCH-LIST20
+              policy: policy-forward-all
+            - source: MATCH-LIST30
+              policy: policy-drop-all
