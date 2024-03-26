@@ -22,6 +22,7 @@ keys:
             prefixes:
               type: list
               required: true
+              min_length: 1
               description: List of IPv4 prefixes (with the subnet mask e.g. 192.0.2.0/24).
               items:
                 type: str
@@ -37,6 +38,7 @@ keys:
             prefixes:
               type: list
               required: true
+              min_length: 1
               description: List of IPv6 prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64).
               items:
                 type: str
