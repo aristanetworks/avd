@@ -7,6 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>wan_advertise_wan_servers_loopbacks_in_default_vrf</samp>](## "wan_advertise_wan_servers_loopbacks_in_default_vrf") | Boolean |  | `False` |  | Advertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers when set to true.<br><br>By default, this is not done to speed up convergence. The consequence is that Loopback0 IPs from<br>WAN route servers are not reachable over the WAN from the WAN routers. |
     | [<samp>wan_edge</samp>](## "wan_edge") <span style="color:red">removed</span> | Dictionary |  |  |  | The `wan_edge` node type was introduced and removed while the AVD WAN feature was in PREVIEW MODE.<br>Migrate your existing edge nodes to using `wan_router` node_type.<span style="color:red">This key was removed. Support was removed in AVD version 4.6.0-dev1. Use <samp>wan_router</samp> instead.</span> |
     | [<samp>wan_ha</samp>](## "wan_ha") | Dictionary |  |  |  | PREVIEW: This key is currently not supported |
     | [<samp>&nbsp;&nbsp;lan_ha_path_group_name</samp>](## "wan_ha.lan_ha_path_group_name") | String |  | `LAN_HA` |  | When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.<br>This key allows to overwrite the default LAN HA path-group name. |
@@ -38,6 +39,12 @@
 === "YAML"
 
     ```yaml
+    # Advertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers when set to true.
+    #
+    # By default, this is not done to speed up convergence. The consequence is that Loopback0 IPs from
+    # WAN route servers are not reachable over the WAN from the WAN routers.
+    wan_advertise_wan_servers_loopbacks_in_default_vrf: <bool; default=False>
+
     # PREVIEW: This key is currently not supported
     wan_ha:
 

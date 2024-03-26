@@ -115,26 +115,6 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.31.2/32
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 192.168.31.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    set:
-    - extcommunity soo 192.168.31.2:0 additive
-- name: RM-EVPN-EXPORT-VRF-DEFAULT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - extcommunity ECL-EVPN-SOO
 static_routes:
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.8.8.9
@@ -254,6 +234,13 @@ application_traffic_recognition:
     - name: PFX-LOCAL-VTEP-IP
       prefix_values:
       - 192.168.131.2/32
+route_maps:
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - extcommunity ECL-EVPN-SOO
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

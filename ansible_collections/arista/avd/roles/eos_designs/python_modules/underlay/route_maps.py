@@ -31,15 +31,16 @@ class RouteMapsMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol != "none" and self.shared_utils.underlay_filter_redistribute_connected:
             # RM-CONN-2-BGP
             sequence_numbers = []
-            sequence_10 = {
-                "sequence": 10,
-                "type": "permit",
-                "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
-            }
-            if self.shared_utils.wan_role:
-                sequence_10["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
+            if not self.shared_utils.is_wan_server or self.shared_utils.wan_advertise_wan_servers_loopbacks_in_default_vrf:
+                sequence_10 = {
+                    "sequence": 10,
+                    "type": "permit",
+                    "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
+                }
+                if self.shared_utils.wan_role:
+                    sequence_10["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
 
-            sequence_numbers.append(sequence_10)
+                sequence_numbers.append(sequence_10)
 
             # SEQ 20 is set by inband management if applicable, so avoid setting that here
 
@@ -70,7 +71,8 @@ class RouteMapsMixin(UtilsMixin):
                     }
                 )
 
-            route_maps.append({"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers})
+            if sequence_numbers:
+                route_maps.append({"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers})
 
         # RM-BGP-AS{{ asn }}-OUT
         for asn in self._underlay_filter_peer_as_route_maps_asns:
