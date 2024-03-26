@@ -22,7 +22,7 @@ keys:
             prefixes:
               type: list
               required: true
-              description: List of IPv4 prefixes (with the subnet mask e.g. 10.10.10.0/24).
+              description: List of IPv4 prefixes (with the subnet mask e.g. 192.0.2.0/24).
               items:
                 type: str
       prefix_ipv6:
