@@ -5043,6 +5043,110 @@
             "description": "Set to false to disable interface validation by the `eos_validate_state` role",
             "title": "Validate State"
           },
+          "switchport": {
+            "type": "object",
+            "properties": {
+              "port_security": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "mac_address_maximum": {
+                    "type": "object",
+                    "description": "Maximum number of MAC addresses allowed on the interface.",
+                    "properties": {
+                      "disabled": {
+                        "type": "boolean",
+                        "description": "Disable port level check for port security (only in violation 'shutdown' mode).",
+                        "title": "Disabled"
+                      },
+                      "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000,
+                        "description": "MAC address limit.",
+                        "title": "Limit"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "MAC Address Maximum"
+                  },
+                  "violation": {
+                    "type": "object",
+                    "description": "Configure violation mode (shutdown or protect), EOS default is 'shutdown'.",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "shutdown",
+                          "protect"
+                        ],
+                        "description": "Configure port security mode.",
+                        "title": "Mode"
+                      },
+                      "protect_log": {
+                        "type": "boolean",
+                        "description": "Log new addresses seen after limit is reached in protect mode.",
+                        "title": "Protect Log"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Violation"
+                  },
+                  "vlan_default_mac_address_maximum": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000,
+                    "description": "Default maximum MAC addresses for all VLANs on this interface.",
+                    "title": "VLAN Default MAC Address Maximum"
+                  },
+                  "vlans": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "range": {
+                          "type": "string",
+                          "description": "VLAN ID or range(s) of VLAN IDs, <1-4094>.\nExample:\n  - 3\n  - 1,3\n  - 1-10\n",
+                          "title": "Range"
+                        },
+                        "mac_address_maximum": {
+                          "type": "integer",
+                          "title": "MAC Address Maximum"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "range"
+                      ]
+                    },
+                    "title": "VLANs"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Port Security"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Switchport"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -10010,16 +10114,31 @@
           },
           "title": "MAC"
         },
+        "fips_restrictions": {
+          "type": "boolean",
+          "description": "Use FIPS compliant algorithms.",
+          "title": "Fips Restrictions"
+        },
         "hostkey": {
           "type": "object",
           "properties": {
             "server": {
-              "description": "SSH host key settings",
+              "description": "SSH host key settings.",
               "type": "array",
               "items": {
                 "type": "string"
               },
               "title": "Server"
+            },
+            "server_cert": {
+              "type": "string",
+              "description": "Configure switch's hostkey cert file.",
+              "title": "Server Cert"
+            },
+            "client_strict_checking": {
+              "type": "boolean",
+              "description": "Enforce strict host key checking.",
+              "title": "Client Strict Checking"
             }
           },
           "additionalProperties": false,
@@ -24785,6 +24904,42 @@
         "^_.+$": {}
       },
       "title": "Switchport Default"
+    },
+    "switchport_port_security": {
+      "type": "object",
+      "properties": {
+        "mac_address": {
+          "type": "object",
+          "properties": {
+            "aging": {
+              "type": "boolean",
+              "title": "Aging"
+            },
+            "moveable": {
+              "type": "boolean",
+              "title": "Moveable"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MAC Address"
+        },
+        "persistence_disabled": {
+          "type": "boolean",
+          "title": "Persistence Disabled"
+        },
+        "violation_protect_chip_based": {
+          "type": "boolean",
+          "title": "Violation Protect Chip Based"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Switchport Port Security"
     },
     "system": {
       "type": "object",
