@@ -767,6 +767,19 @@ keys:
       '
     type: bool
     default: true
+  default_interface_mtu:
+    documentation_options:
+      table: system-settings
+    type: int
+    convert_types:
+    - str
+    description: 'Default interface MTU configured on EOS under "interface defaults".
+
+      Can be overriden per platform under platform settings.
+
+      '
+    min: 68
+    max: 65535
   default_interfaces:
     documentation_options:
       table: default-interfaces
@@ -1291,9 +1304,7 @@ keys:
             sourced from structured configuration.
           keys:
             name:
-              description: Tag name to be assigned to generated tags. Tag names must
-                be lower case.
-              convert_to_lower_case: true
+              description: Tag name to be assigned to generated tags.
               required: true
               type: str
             data_path:
@@ -1319,9 +1330,7 @@ keys:
             sourced from structured configuration.
           keys:
             name:
-              description: Tag name to be assigned to generated tags. Tag names must
-                be lower case.
-              convert_to_lower_case: true
+              description: Tag name to be assigned to generated tags.
               required: true
               type: str
             data_path:
@@ -4426,6 +4435,13 @@ $defs:
             - str
             min: 1
             max: 10
+          unauthorized:
+            type: dict
+            keys:
+              access_vlan_membership_egress:
+                type: bool
+              native_vlan_membership_egress:
+                type: bool
       poe:
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
         type: dict
@@ -8008,7 +8024,11 @@ $defs:
             description: 'PREVIEW: This key is currently not supported
 
 
-              The CV Pathfinder region name.'
+              The CV Pathfinder region name.
+
+              This key is required for WAN routers but optional for pathfinders.
+
+              The region name must be defined under ''cv_pathfinder_regions''.'
           cv_pathfinder_site:
             documentation_options:
               table: node-type-wan-configuration
@@ -8016,7 +8036,11 @@ $defs:
             description: 'PREVIEW: This key is currently not supported
 
 
-              The CV Pathfinder site name.'
+              The CV Pathfinder site name.
+
+              This key is required for WAN routers but ignored for pathfinders.
+
+              The site name must be defined for the relevant region under ''cv_pathfinder_regions''.'
           wan_ha:
             documentation_options:
               table: node-type-wan-configuration
