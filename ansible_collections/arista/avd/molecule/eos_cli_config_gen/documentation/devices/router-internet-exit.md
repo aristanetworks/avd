@@ -35,6 +35,7 @@ interface Management1
 ```
 
 ### Router Internet Exit
+
 #### Exit Groups
 
 | Exit Groups | Local Connections | Fib Default |
@@ -43,6 +44,7 @@ interface Management1
 | eg_02 | - | True |
 | eg_03 | eg_03_lo_01<br>eg_03_lo_02 | True |
 | eg_04 | eg_04_lo_01<br>eg_04_lo_02<br>eg_04_lo_03 | - |
+
 #### Internet Exit Policies
 
 | Policies | Policy Exit Groups |
