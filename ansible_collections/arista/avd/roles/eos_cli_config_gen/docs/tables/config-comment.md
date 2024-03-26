@@ -7,11 +7,12 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>config_comment</samp>](## "config_comment") | String |  |  |  | Add custom comment to provide configlet information. |
+    | [<samp>config_comment</samp>](## "config_comment") | String |  |  |  | Add a comment to provide information about the configuration.<br>This comment will be rendered at the top of the generated configuration. |
 
 === "YAML"
 
     ```yaml
-    # Add custom comment to provide configlet information.
+    # Add a comment to provide information about the configuration.
+    # This comment will be rendered at the top of the generated configuration.
     config_comment: <str>
     ```

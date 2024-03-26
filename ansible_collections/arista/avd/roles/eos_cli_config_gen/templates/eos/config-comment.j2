@@ -8,9 +8,6 @@
 !
 {%     set multiline_comment = config_comment.split('\n') %}
 {%     for comment in multiline_comment %}
-{# To avoid empty sting #}
-{%         if comment %}
 !{{ comment }}
-{%         endif %}
 {%     endfor %}
 {% endif %}

@@ -1447,7 +1447,7 @@
     },
     "config_comment": {
       "type": "string",
-      "description": "Add custom comment to provide configlet information.",
+      "description": "Add a comment to provide information about the configuration.\nThis comment will be rendered at the top of the generated configuration.",
       "title": "Config Comment"
     },
     "custom_templates": {

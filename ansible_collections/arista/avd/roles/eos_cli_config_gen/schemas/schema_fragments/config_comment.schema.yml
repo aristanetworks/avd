@@ -8,4 +8,6 @@ type: dict
 keys:
   config_comment:
     type: str
-    description: Add custom comment to provide configlet information.
+    description: |-
+      Add a comment to provide information about the configuration.
+      This comment will be rendered at the top of the generated configuration.
