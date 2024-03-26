@@ -4606,12 +4606,12 @@
               },
               "groups": {
                 "type": "array",
-                "description": "Group Address.",
                 "items": {
                   "type": "object",
                   "properties": {
                     "group": {
                       "type": "string",
+                      "description": "Multicast Address.",
                       "title": "Group"
                     },
                     "exclude": {
@@ -4669,7 +4669,6 @@
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 31744,
-                "default": 1,
                 "description": "Time interval between unsolicited reports.",
                 "title": "Report Interval"
               },
@@ -4698,7 +4697,6 @@
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 3,
-                "default": 3,
                 "description": "IGMP version on IGMP host-proxy interface.",
                 "title": "Version"
               }
@@ -13850,12 +13848,12 @@
               },
               "groups": {
                 "type": "array",
-                "description": "Group Address.",
                 "items": {
                   "type": "object",
                   "properties": {
                     "group": {
                       "type": "string",
+                      "description": "Multicast Address.",
                       "title": "Group"
                     },
                     "exclude": {
@@ -13913,7 +13911,6 @@
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 31744,
-                "default": 1,
                 "description": "Time interval between unsolicited reports.",
                 "title": "Report Interval"
               },
@@ -13942,7 +13939,6 @@
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 3,
-                "default": 3,
                 "description": "IGMP version on IGMP host-proxy interface.",
                 "title": "Version"
               }
@@ -26362,12 +26358,12 @@
               },
               "groups": {
                 "type": "array",
-                "description": "Group Address.",
                 "items": {
                   "type": "object",
                   "properties": {
                     "group": {
                       "type": "string",
+                      "description": "Multicast Address.",
                       "title": "Group"
                     },
                     "exclude": {
@@ -26425,7 +26421,6 @@
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 31744,
-                "default": 1,
                 "description": "Time interval between unsolicited reports.",
                 "title": "Report Interval"
               },
@@ -26454,7 +26449,6 @@
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 3,
-                "default": 3,
                 "description": "IGMP version on IGMP host-proxy interface.",
                 "title": "Version"
               }
