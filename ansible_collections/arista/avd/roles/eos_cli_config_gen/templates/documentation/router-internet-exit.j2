@@ -8,6 +8,7 @@
 
 ### Router Internet Exit
 {%     if router_internet_exit.exit_groups is arista.avd.defined %}
+
 #### Exit Groups
 
 | Exit Groups | Local Connections | Fib Default |
@@ -26,6 +27,7 @@
 {%         endfor %}
 {%     endif %}
 {%     if router_internet_exit.policies is arista.avd.defined %}
+
 #### Internet Exit Policies
 
 | Policies | Policy Exit Groups |
