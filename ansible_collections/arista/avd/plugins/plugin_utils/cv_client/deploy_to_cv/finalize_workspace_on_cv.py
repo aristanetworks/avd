@@ -25,42 +25,42 @@ WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
 async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) -> None:
     """
     Finalize a Workspace from the given result.CVWorkspace object.
-    Depending on the requested final_state the Workspace will be left in pending, built, submitted, abandoned or deleted.
+    Depending on the requested state the Workspace will be left in pending, built, submitted, abandoned or deleted.
     In-place update the workspace state and creates/updates a ChangeControl object on the result object if applicable.
     """
 
     LOGGER.info("finalize_workspace_on_cv: %s", workspace)
 
-    if workspace.requested_state == workspace.final_state or workspace.requested_state == "pending":
+    if workspace.requested_state == workspace.state or workspace.requested_state == "pending":
         return
 
     workspace_config = await cv_client.build_workspace(workspace_id=workspace.id)
     build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=workspace_config.request_params.request_id)
     if build_result.status != ResponseStatus.SUCCESS:
-        workspace.final_state = "build failed"
+        workspace.state = "build failed"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         raise CVWorkspaceBuildFailed(
             f"Failed to build workspace {workspace.id}: {build_result}. "
             f"See details: https://{cv_client._servers[0]}/cv/provisioning/workspaces?ws={workspace.id}"
         )
 
-    workspace.final_state = "built"
+    workspace.state = "built"
     LOGGER.info("finalize_workspace_on_cv: %s", workspace)
     if workspace.requested_state == "built":
         return
 
     # We can only submit if the build was successful
-    if workspace.requested_state == "submitted" and workspace.final_state == "built":
+    if workspace.requested_state == "submitted" and workspace.state == "built":
         workspace_config = await cv_client.submit_workspace(workspace_id=workspace.id, force=workspace.force)
         submit_result, cv_workspace = await cv_client.wait_for_workspace_response(
             workspace_id=workspace.id, request_id=workspace_config.request_params.request_id
         )
         if submit_result.status != ResponseStatus.SUCCESS:
-            workspace.final_state = "submit failed"
+            workspace.state = "submit failed"
             LOGGER.info("finalize_workspace_on_cv: %s", workspace)
             raise CVWorkspaceSubmitFailed(f"Failed to submit workspace {workspace.id}: {submit_result}")
 
-        workspace.final_state = "submitted"
+        workspace.state = "submitted"
         if cv_workspace.cc_ids.values:
             workspace.change_control_id = cv_workspace.cc_ids.values[0]
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
@@ -69,13 +69,13 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) 
     # We can abort or delete even if we got some unexpected build state.
     if workspace.requested_state == "abandoned":
         await cv_client.abandon_workspace(workspace_id=workspace.id)
-        workspace.final_state = "abandoned"
+        workspace.state = "abandoned"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         return
 
     if workspace.requested_state == "deleted":
         await cv_client.delete_workspace(workspace_id=workspace.id)
-        workspace.final_state = "deleted"
+        workspace.state = "deleted"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         return
 

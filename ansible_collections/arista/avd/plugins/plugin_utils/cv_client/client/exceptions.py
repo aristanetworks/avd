@@ -70,3 +70,7 @@ class CVWorkspaceSubmitFailed(CVClientException):
 
 class CVWorkspaceStateTimeout(CVClientException):
     """Timed out waiting for Workspace to get to the expected state"""
+
+
+class CVChangeControlFailed(CVClientException):
+    """CloudVision ChangeControl failed during execution"""
