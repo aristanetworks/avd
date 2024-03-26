@@ -13701,7 +13701,7 @@ keys:
                         policy:
                           type: str
                           description: The name of the policy to apply. The built-in
-                            policies are `policy-forward-all` and `policy-drop-all`.
+                            policies are 'policy-forward-all' and 'policy-drop-all'.
   router_service_insertion:
     type: dict
     description: Configure network services inserted to data forwarding
