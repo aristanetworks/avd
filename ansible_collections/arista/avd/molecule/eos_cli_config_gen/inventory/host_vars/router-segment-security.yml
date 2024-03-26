@@ -1,0 +1,15 @@
+### Router Segment-Security
+
+router_segment_security:
+  enabled: true
+  policies:
+    - name: POLICY-TEST1
+      sequence_numbers:
+        - sequence: 10
+          application: APP-TEST-1
+          action: forward
+        - sequence: 20
+          application: APP-TEST-2
+          action: drop
+  vrfs:
+    - name: default

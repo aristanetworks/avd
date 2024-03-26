@@ -1,0 +1,27 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - router segment-security #}
+{% if router_segment_security is arista.avd.defined %}
+!
+router segment-security
+{%    if router_segment_security.enabled is arista.avd.defined(true) %}
+   no shutdown
+{%    endif %}
+{%    if router_segment_security.policies is arista.avd.defined %}
+{%       for policy in router_segment_security.policies %}
+   !
+   policy {{ policy.name }}
+{%          for sequence in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%             if sequence.action != "next-hop " %}
+{%                set action = sequence.action ~ " stateless" %}
+{%             else %}
+{%                set action = sequence.action ~ " next-hop " ~ sequence.next_hop %}
+{%             endif %}
+      {{ sequence.sequence }} application {{ sequence.application }} action {{ action }}
+{%          endfor %}
+{%       endfor %}
+{%    endif %}
+{% endif %}
