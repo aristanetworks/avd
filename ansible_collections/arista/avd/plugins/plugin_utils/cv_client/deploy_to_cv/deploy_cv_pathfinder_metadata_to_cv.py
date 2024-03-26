@@ -54,6 +54,7 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
             "value": {
                 "sslProfileName": metadata.get("ssl_profile", ""),
                 "vtepIp": metadata.get("vtep_ip", ""),
+                "region": metadata.get("region", ""),
                 "wanInterfaces": [
                     {
                         "inputs": {
@@ -92,15 +93,13 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
     In-place insert / update metadata for one edge device in studio_inputs.
     """
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_edge %s", device.hostname)
-    role = metadata.get("role", "")
-    role = "transit" if "transit" in role else role
     edge_metadata = {
         "inputs": {
             "router": {
                 "sslProfileName": metadata.get("ssl_profile", ""),
                 "pathfinders": [{"vtepIp": pathfinder["vtep_ip"]} for pathfinder in metadata.get("pathfinders", [])],
                 "region": metadata.get("region", ""),
-                "role": role,
+                "role": metadata.get("role", ""),
                 "site": metadata.get("site", ""),
                 "vtepIp": metadata.get("vtep_ip", ""),
                 "wanInterfaces": [

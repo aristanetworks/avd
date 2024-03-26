@@ -8,9 +8,12 @@ type: dict
 keys:
   fabric_sflow:
     documentation_options:
-      table: fabric-settings
+      table: management-sflow-settings
     type: dict
-    description: Fabric-wide sFlow settings.
+    description: |-
+      Default enabling of sFlow for various interface types across the fabric.
+      sFlow can also be enabled/disabled under each of the specific data models.
+      For general sFlow settings see `sflow_settings`.
     keys:
       uplinks:
         description: Enable sFlow on all fabric uplinks.

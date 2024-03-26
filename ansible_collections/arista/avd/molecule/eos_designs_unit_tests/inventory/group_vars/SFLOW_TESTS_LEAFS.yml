@@ -14,7 +14,7 @@ l3leaf:
     mlag_peer_l3_ipv4_pool: 10.254.1.96/27
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
-
+    virtual_router_mac_address: 00:11:22:33:44:55
 
   nodes:
     - name: sflow-tests-leaf1

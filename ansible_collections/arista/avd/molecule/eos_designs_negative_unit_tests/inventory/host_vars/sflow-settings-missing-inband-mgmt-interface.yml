@@ -1,0 +1,21 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: sflow-settings-missing-inband-mgmt-interface
+      id: 1
+      mgmt_ip: 192.168.0.2/24
+
+sflow_settings:
+  destinations:
+    - destination: 10.10.10.10
+      vrf: use_inband_mgmt_vrf
+
+servers:
+  - name: test
+    adapters:
+      - switches: [sflow-settings-missing-inband-mgmt-interface]
+        switch_ports: [Ethernet1]
+        sflow: true
+
+expected_error_message: >-
+  Unable to configure sFlow source-interface with 'use_inband_mgmt_vrf' since 'inband_mgmt_interface' is not set.

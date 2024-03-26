@@ -112,24 +112,18 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Bouygues_Telecom_777
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.16.0.1/31
   shutdown: false
   type: routed
   description: Colt_10000
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 10.9.9.9/31
   shutdown: false
   type: routed
   description: Another-ISP_999
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -347,13 +341,13 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: MPLS
-    - name: INET
+    - name: AWS
     - name: Equinix
       priority: 2
+    - name: INET
+    - name: MPLS
     - name: Satellite
       priority: 2
-    - name: AWS
     - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
@@ -409,13 +403,13 @@ router_path_selection:
     - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: MPLS
-    - name: INET
+    - name: AWS
     - name: Equinix
       priority: 2
+    - name: INET
+    - name: MPLS
     - name: Satellite
       priority: 2
-    - name: AWS
     - name: LAN_HA
 router_traffic_engineering:
   enabled: true
@@ -495,6 +489,14 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+      - name: PROD
+        vni: 42
+      - name: IT
+        vni: 100
+      - name: TRANSIT
+        vni: 66
+      - name: ATTRACTED-VRF-FROM-UPLINK
+        vni: 166
 metadata:
   cv_tags:
     device_tags:
@@ -536,7 +538,7 @@ metadata:
       carrier: Bouygues_Telecom
       circuit_id: '777'
       pathgroup: INET
-      public_ip: 10.7.7.7
+      public_ip: 172.17.7.7
     - name: Ethernet2
       carrier: Colt
       circuit_id: '10000'
@@ -600,16 +602,16 @@ metadata:
       - id: 254
         name: DEFAULT-AVT-POLICY-CONTROL-PLANE
         pathgroups:
-        - name: MPLS
-          preference: preferred
-        - name: INET
+        - name: AWS
           preference: preferred
         - name: Equinix
           preference: alternate
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: preferred
         - name: Satellite
           preference: alternate
-        - name: AWS
-          preference: preferred
         - name: LAN_HA
           preference: preferred
       - id: 3
@@ -727,15 +729,15 @@ metadata:
       - id: 1
         name: DEFAULT-POLICY-DEFAULT
         pathgroups:
-        - name: MPLS
-          preference: preferred
-        - name: INET
+        - name: AWS
           preference: preferred
         - name: Equinix
           preference: alternate
+        - name: INET
+          preference: preferred
+        - name: MPLS
+          preference: preferred
         - name: Satellite
           preference: alternate
-        - name: AWS
-          preference: preferred
         - name: LAN_HA
           preference: preferred

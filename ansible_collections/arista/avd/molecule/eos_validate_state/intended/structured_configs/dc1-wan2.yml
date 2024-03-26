@@ -141,8 +141,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.5/31
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer: dc1-leaf1b
   peer_interface: Ethernet7
@@ -152,24 +150,18 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.7/31
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.18.4.2/24
   shutdown: false
   type: routed
   description: mpls-sp-1_DC1-MPLS-4
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet4
   peer_type: l3_interface
   ip_address: 100.64.4.2/24
   shutdown: false
   type: routed
   description: isp-1_DC1-INET-4
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -416,13 +408,13 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: mpls
     - name: internet
+    - name: mpls
     - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: mpls
     - name: internet
+    - name: mpls
     - name: LAN_HA
 router_traffic_engineering:
   enabled: true

@@ -139,24 +139,18 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Bouygues_Telecom_777
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.16.0.1/31
   shutdown: false
   type: routed
   description: Colt_10000
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 10.9.9.9/31
   shutdown: false
   type: routed
   description: Another-ISP_999
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -317,7 +311,7 @@ router_path_selection:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
-      - 10.7.7.7
+      - 172.17.7.7
       - 10.9.9.9
     ipsec_profile: CP-PROFILE
   - name: LTE
@@ -426,6 +420,10 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+      - name: PROD
+        vni: 42
+      - name: IT
+        vni: 14
 metadata:
   cv_tags:
     device_tags:
