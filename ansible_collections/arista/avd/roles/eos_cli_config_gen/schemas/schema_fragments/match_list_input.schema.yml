@@ -18,11 +18,11 @@ keys:
           keys:
             name:
               type: str
-              description: Prefix-List Name
+              description: Prefix-List Name.
             prefixes:
               type: list
               required: true
-              description: List of IPv4 Prefixes (with the subnet mask e.g. 10.10.10.0/24)
+              description: List of IPv4 prefixes (with the subnet mask e.g. 10.10.10.0/24).
               items:
                 type: str
       prefix_ipv6:
@@ -33,11 +33,11 @@ keys:
           keys:
             name:
               type: str
-              description: Prefix-List Name
+              description: Prefix-List Name.
             prefixes:
               type: list
               required: true
-              description: List of IPv6 Prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64)
+              description: List of IPv6 prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64).
               items:
                 type: str
       string:
