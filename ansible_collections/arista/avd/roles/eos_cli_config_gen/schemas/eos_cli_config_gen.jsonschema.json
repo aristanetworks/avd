@@ -23634,9 +23634,6 @@
           "title": "VRFs"
         }
       },
-      "required": [
-        "vrfs"
-      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
