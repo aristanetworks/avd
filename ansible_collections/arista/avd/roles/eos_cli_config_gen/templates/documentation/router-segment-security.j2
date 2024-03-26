@@ -13,16 +13,41 @@
 {%     if router_segment_security.policies is arista.avd.defined %}
 
 ##### Segmentation Policies
-{%        for policy in router_segment_security.policies %}
+{%         for policy in router_segment_security.policies %}
 
 ###### {{ policy.name }}
 
 | Sequence Number | Application Name | Action | Next-Hop |
 | --------------- | ---------------- | ------ | -------- |
-{%           for entry in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%             for entry in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ entry.sequence }} | {{ entry.application }} | {{ entry.action }} | {{ entry.next_hop | arista.avd.default('-') }} |
-{%           endfor %}
-{%        endfor %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+{%     if router_segment_security.vrfs is arista.avd.defined %}
+
+##### Segment Definitions
+{%         for vrf in router_segment_security.vrfs | arista.avd.natural_sort('name') %}
+
+###### VRF {{ vrf.name }} Segmentation
+{%             for segment in vrf.segments %}
+####### Segment {{ segment.name }} Definitions
+
+| Match-List Name | Address Family | Covered |
+| ------------ | -------------- | ------- |
+{%                 for entry in segment.definition | arista.avd.natural_sort('name') %}
+| {{ entry.name }} | {{ entry.address_family }} | {{ entry.covered | arista.avd.default('False') }} |
+{%                 endfor %}
+
+####### Segment {{ segment.name }} Policies
+
+| Source Segment | Policy Applied |
+| -------------- | -------------- |
+{%                 for entry in segment.policies | arista.avd.natural_sort('name') %}
+| {{ entry.source }} | {{ entry.policy }} |
+{%                 endfor %}
+{%             endfor %}
+{%         endfor %}
 {%     endif %}
 
 ##### Router MSS-G Device Configuration
