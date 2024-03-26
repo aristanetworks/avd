@@ -3,7 +3,7 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{# doc - router internet exit #}
+{# doc - router internet-exit #}
 {% if router_internet_exit is arista.avd.defined %}
 
 ### Router Internet Exit
@@ -11,8 +11,8 @@
 
 #### Exit Groups
 
-| Exit Groups | Local Connections | Fib Default |
-| ----------- | ----------------- | ----------- |
+| Exit Group Name | Local Connections | Fib Default |
+| --------------- | ----------------- | ----------- |
 {%         for exit_group in router_internet_exit.exit_groups %}
 {%             set local_connections = [] %}
 {%             set fib_default = exit_group.fib_default | arista.avd.default("-") %}
@@ -30,8 +30,8 @@
 
 #### Internet Exit Policies
 
-| Policies | Policy Exit Groups |
-| -------- | ------------------ |
+| Policy Name | Exit Groups |
+| ----------- | ----------- |
 {%         for policy in router_internet_exit.policies %}
 {%             set policy_exit_groups = [] %}
 {%             for exit_group in policy.exit_groups | arista.avd.default([]) %}
