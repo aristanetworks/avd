@@ -6156,6 +6156,38 @@ keys:
     type: dict
     display_name: Match Lists
     keys:
+      prefix_ipv4:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Prefix-List Name.
+            prefixes:
+              type: list
+              required: true
+              min_length: 1
+              description: List of IPv4 prefixes (with the subnet mask e.g. 192.0.2.0/24).
+              items:
+                type: str
+      prefix_ipv6:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Prefix-List Name.
+            prefixes:
+              type: list
+              required: true
+              min_length: 1
+              description: List of IPv6 prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64).
+              items:
+                type: str
       string:
         type: list
         primary_key: name
