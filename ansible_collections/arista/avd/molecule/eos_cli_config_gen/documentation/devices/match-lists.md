@@ -39,13 +39,13 @@ interface Management1
 
 ### Match-lists
 
-#### Match-list Input IPv4-Prefix Summary
+#### Match-list Input IPv4-prefix Summary
 
 | Prefix List Name | Prefixes |
 | ---------------- | -------- |
 | molecule_v4 | 10.10.10.0/24, 10.10.20.0/24 |
 
-#### Match-list Input IPv6-Prefix Summary
+#### Match-list Input IPv6-prefix Summary
 
 | Prefix List Name | Prefixes |
 | ---------------- | -------- |
