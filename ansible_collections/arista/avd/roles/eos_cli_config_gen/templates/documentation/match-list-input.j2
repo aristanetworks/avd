@@ -16,7 +16,7 @@
 {%         for match_list in match_list_input.prefix_ipv4 %}
 {%             for prefix in match_list.prefixes %}
 {%                 if loop.first %}
-| {{ match_list.name }} | {{ prefix }}
+| {{ match_list.name }} | {{ prefix }} |
 {%                 else %}
 |   | {{ prefix }} |
 {%                 endif %}
@@ -32,7 +32,7 @@
 {%         for match_list in match_list_input.prefix_ipv6 %}
 {%             for prefix in match_list.prefixes %}
 {%                 if loop.first %}
-| {{ match_list.name }} | {{ prefix }}
+| {{ match_list.name }} | {{ prefix }} |
 {%                 else %}
 |   | {{ prefix }} |
 {%                 endif %}
