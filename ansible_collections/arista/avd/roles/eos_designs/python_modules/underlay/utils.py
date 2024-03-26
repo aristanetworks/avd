@@ -57,6 +57,13 @@ class UtilsMixin:
             for uplink in underlay_links:
                 uplink.update({"sflow": {"enable": self.shared_utils.fabric_sflow_uplinks}})
 
+        uplinks_flow_tracker = self.shared_utils.get_flow_tracker(None, "uplinks")
+        if uplinks_flow_tracker is not None:
+            for uplink in underlay_links:
+                uplink.update({"flow_tracker": uplinks_flow_tracker})
+
+        downlinks_flow_tracker = self.shared_utils.get_flow_tracker(None, "downlinks")
+
         for peer in self._avd_peers:
             peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
             for uplink in peer_facts["uplinks"]:
@@ -87,6 +94,7 @@ class UtilsMixin:
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
+                        "flow_tracker": downlinks_flow_tracker,
                         "spanning_tree_portfast": get(uplink, "peer_spanning_tree_portfast"),
                         "structured_config": get(uplink, "structured_config"),
                     }
@@ -195,9 +203,8 @@ class UtilsMixin:
         if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", True):
             interface["dhcp_client_accept_default_route"] = True
 
-        # TODO: enable flow tracking once toggle is in place
-        # if self.shared_utils.is_cv_pathfinder_router:
-        #    interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+        if (flow_tracker := self.shared_utils.get_flow_tracker(l3_interface, "node_l3_interfaces")) is not None:
+            interface["flow_tracker"] = flow_tracker
 
         return strip_empties_from_dict(interface)
 
@@ -282,6 +289,6 @@ class UtilsMixin:
         # TODO: enable flow tracking once toggle is in place
         # Configuring flow tracking on LAN interfaces of WAN routers
         # if self.shared_utils.is_cv_pathfinder_client:
-        #    subinterface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+        #     subinterface["flow_tracker"] = {"hardware": self.shared_utils.default_flow_tracker_name}
 
         return strip_empties_from_dict(subinterface)

@@ -170,6 +170,9 @@ class AvdStructuredConfigMlag(AvdFacts):
         if (self.shared_utils.fabric_sflow_mlag_interfaces) is not None:
             port_channel_interface["sflow"] = {"enable": self.shared_utils.fabric_sflow_mlag_interfaces}
 
+        if (flow_tracker := self.shared_utils.get_flow_tracker(None, "mlag_interfaces")) is not None:
+            port_channel_interface["flow_tracker"] = flow_tracker
+
         if self.shared_utils.ptp_enabled and self.shared_utils.ptp_mlag:
             ptp_config = {}
             ptp_config.update(self.shared_utils.ptp_profile)

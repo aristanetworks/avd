@@ -38,6 +38,7 @@ class DpsInterfacesMixin(UtilsMixin):
         # When needed - need a default value if different than IPv4
 
         if self.shared_utils.is_cv_pathfinder_router:
-            dps1["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+            if (dpsFlow := self.shared_utils.get_flow_tracker(dps1, "dps_interfaces")) is not None:
+                dps1["flow_tracker"] = dpsFlow
 
         return [dps1]

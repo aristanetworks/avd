@@ -10,42 +10,18 @@ keys:
     description: |-
       Define the flow tracking parameters for this topology.
     type: dict
-    keys:
-      flow_tracker_name:
-        type: str
-        default: FLOW-TRACKER
-        description: Flow Tracker Name.
-      record_export:
-        type: dict
-        keys:
-          on_inactive_timeout:
-            description: Flow record inactive export timeout in milliseconds.
-            type: int
-            convert_types:
-              - str
-            min: 3000
-            max: 900000
-            default: 70000
-          on_interval:
-            type: int
-            convert_types:
-              - str
-            min: 1000
-            max: 36000000
-            default: 300000
-            description: Flow record export interval in milliseconds.
-      exporter:
-        type: dict
-        keys:
-          name:
-            type: str
-            default: CV-TELEMETRY
-            description: Exporter Name.
-          template_interval:
-            description: Template interval in milliseconds.
-            type: int
-            convert_types:
-              - str
-            min: 5000
-            max: 3600000
-            default: 3600000
+    $ref: eos_cli_config_gen#/keys/flow_tracking
+    default:
+      hardware:
+        trackers:
+        - name: FLOW-TRACKER
+          record_export:
+            on_inactive_timeout: 70000
+            on_interval: 300000
+          exporters:
+          - name: CV-TELEMETRY
+            collector:
+              host: 127.0.0.1
+            local_interface: Loopback0
+            template_interval: 3600000
+        shutdown: false

@@ -265,3 +265,6 @@ class UtilsMixin:
             return {"enable": adapter_sflow}
 
         return None
+
+    def _get_adapter_flow_tracking(self, adapter: dict) -> dict | None:
+        return self.shared_utils.get_flow_tracker(adapter, "endpoints")
