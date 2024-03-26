@@ -19,7 +19,7 @@ CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {
     "regions": [],
     "routers": [],
     "vrfs": [],
-    "version": "3.1",
+    "version": "3.2",
 }
 
 
@@ -219,11 +219,11 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     )
 
     # Ensure the metadata studio schema match our supported version
-    if (studio_version := existing_studio_inputs.get("version")) != "3.1":
+    if (studio_version := existing_studio_inputs.get("version")) != "3.2":
         LOGGER.warning(
             (
                 "deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '%s'. "
-                "This plugin only accepts version '3.1'. Skipping upload of metadata."
+                "This plugin only accepts version '3.2'. Skipping upload of metadata."
             ),
             studio_version,
         )
