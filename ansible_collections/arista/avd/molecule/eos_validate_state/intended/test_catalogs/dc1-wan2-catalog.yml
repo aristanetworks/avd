@@ -58,20 +58,14 @@ anta.tests.connectivity:
       neighbor_port: Ethernet7
       port: Ethernet1
     result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet1 - remote: dc1-leaf1a_Ethernet7'
-      description: LLDP topology - validate peer and interface
+      custom_field: 'Local: Ethernet1 - Remote: dc1-leaf1a Ethernet7'
 - VerifyLLDPNeighbors:
     neighbors:
     - neighbor_device: dc1-leaf1b.dc1.local
       neighbor_port: Ethernet7
       port: Ethernet2
     result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet2 - remote: dc1-leaf1b_Ethernet7'
-      description: LLDP topology - validate peer and interface
+      custom_field: 'Local: Ethernet2 - Remote: dc1-leaf1b Ethernet7'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.4
@@ -79,10 +73,8 @@ anta.tests.connectivity:
       source: 10.255.255.5
       vrf: default
     result_overwrite:
-      categories:
-      - IP Reachability
-      custom_field: 'Source: dc1-wan2_Ethernet1 - Destination: dc1-leaf1a_Ethernet7'
-      description: ip reachability test p2p links
+      custom_field: 'Source: P2P Interface Ethernet1 (IP: 10.255.255.5) - Destination:
+        dc1-leaf1a Ethernet7 (IP: 10.255.255.4)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.6
@@ -90,18 +82,20 @@ anta.tests.connectivity:
       source: 10.255.255.7
       vrf: default
     result_overwrite:
-      categories:
-      - IP Reachability
-      custom_field: 'Source: dc1-wan2_Ethernet2 - Destination: dc1-leaf1b_Ethernet7'
-      description: ip reachability test p2p links
+      custom_field: 'Source: P2P Interface Ethernet2 (IP: 10.255.255.7) - Destination:
+        dc1-leaf1b Ethernet7 (IP: 10.255.255.6)'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null
 anta.tests.hardware:
 - VerifyEnvironmentPower:
+    result_overwrite:
+      custom_field: 'Accepted States: ''ok'''
     states:
     - ok
 - VerifyEnvironmentCooling:
+    result_overwrite:
+      custom_field: 'Accepted States: ''ok'''
     states:
     - ok
 - VerifyTemperature: null
@@ -110,6 +104,9 @@ anta.tests.hardware:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
+    result_overwrite:
+      custom_field: 'Accepted Manufacturers: ''Arista Networks'', ''Arastra, Inc.'',
+        ''Not Present'''
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Not Present
@@ -128,74 +125,46 @@ anta.tests.hardware:
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet1
-      protocol_status: up
-      state: up
+    - name: Ethernet1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet7
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet7 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet2
-      protocol_status: up
-      state: up
+    - name: Ethernet2
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet7
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet7 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet3
-      protocol_status: up
-      state: up
+    - name: Ethernet3
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet3 - mpls-sp-1_DC1-MPLS-4
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet3 - mpls-sp-1_DC1-MPLS-4 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet4
-      protocol_status: up
-      state: up
+    - name: Ethernet4
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet4 - isp-1_DC1-INET-4
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet4 - isp-1_DC1-INET-4 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Loopback0
-      protocol_status: up
-      state: up
+    - name: Loopback0
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Loopback0 - Router_ID
-      description: Loopback Interface Status & Line Protocol == 'up'
+      custom_field: Interface Loopback0 - Router_ID = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Dps1
-      protocol_status: up
-      state: up
+    - name: Dps1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Dps1 - DPS Interface
-      description: DPS Interface Status & Line Protocol == 'up'
+      custom_field: Interface Dps1 - DPS Interface = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vxlan1
-      protocol_status: up
-      state: up
+    - name: Vxlan1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vxlan1
-      description: Vxlan Interface Status & Line Protocol == 'up'
+      custom_field: Interface Vxlan1 = 'up'
 anta.tests.routing.bgp:
 - VerifyBGPSpecificPeers:
     address_families:
@@ -204,9 +173,7 @@ anta.tests.routing.bgp:
       - 10.255.255.4
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.4'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf1a (IP: 10.255.255.4)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -214,20 +181,17 @@ anta.tests.routing.bgp:
       - 10.255.255.6
       safi: unicast
     result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'BGP IPv4 Unicast Peer: 10.255.255.6'
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-leaf1b (IP: 10.255.255.6)'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
     result_overwrite:
-      categories:
-      - BGP
       custom_field: 'Routing protocol model: multi-agent'
-      description: Verifies the configured routing protocol model.
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
+    result_overwrite:
+      custom_field: 'eAPI HTTPS SSL Profile: eAPI_SSL_Profile'
 anta.tests.snmp:
 - VerifySnmpStatus:
     vrf: default
@@ -247,12 +211,7 @@ anta.tests.software:
     - v1.13.6
     - v1.8.0
 anta.tests.system:
-- VerifyNTP:
-    result_overwrite:
-      categories:
-      - NTP
-      custom_field: NTP
-      description: Synchronised with NTP server
+- VerifyNTP: null
 - VerifyUptime:
     minimum: 86400
 - VerifyReloadCause: null

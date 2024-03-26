@@ -112,24 +112,18 @@ ethernet_interfaces:
   type: routed
   description: ATT_666
   dhcp_client_accept_default_route: true
-  flow_tracker:
-    hardware: custom_flow_track_name
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.15.5.5/31
   shutdown: false
   type: routed
   description: Colt_10555
-  flow_tracker:
-    hardware: custom_flow_track_name
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
   shutdown: false
   type: routed
   description: Comcast-5G_AF830
-  flow_tracker:
-    hardware: custom_flow_track_name
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -311,7 +305,7 @@ router_path_selection:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
-      - 10.7.7.7
+      - 172.17.7.7
       - 10.9.9.9
     ipsec_profile: CP-PROFILE
   - name: MPLS
@@ -338,8 +332,8 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: MPLS
     - name: INET
+    - name: MPLS
   - name: LB-DEFAULT-POLICY-VIDEO
     path_groups:
     - name: MPLS
@@ -355,7 +349,7 @@ stun:
   client:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
-      ip_address: 10.7.7.7
+      ip_address: 172.17.7.7
       ssl_profile: STUN-DTLS
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9

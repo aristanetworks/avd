@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Literal
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
@@ -126,7 +126,7 @@ class WanMixin:
                 strip_empties_from_dict(
                     {
                         "name": get(interface, "name", required=True),
-                        "ip_address": self.get_public_ip_for_wan_interface(interface),
+                        "public_ip": self.get_public_ip_for_wan_interface(interface),
                         "connected_to_pathfinder": get(interface, "connected_to_pathfinder", default=True),
                         "wan_circuit_id": get(interface, "wan_circuit_id"),
                     }
@@ -153,7 +153,7 @@ class WanMixin:
         Also add for each path_groups the local interfaces in a data structure
             interfaces:
               - name: ...
-                ip: ...
+                public_ip: ...
         """
         if not self.is_wan_router:
             return []
@@ -179,6 +179,13 @@ class WanMixin:
         return list(local_path_groups_dict.values())
 
     @cached_property
+    def wan_local_path_group_names(self) -> list:
+        """
+        Return a list of wan_local_path_group names to be used by HA peer and in various places
+        """
+        return [path_group["name"] for path_group in self.wan_local_path_groups]
+
+    @cached_property
     def this_wan_route_server(self: SharedUtils) -> dict:
         """
         Returns the instance for this wan_rs found under wan_route_servers.
@@ -191,20 +198,24 @@ class WanMixin:
         """
         Takes a dict which looks like `l3_interface` from node config
 
-        If not a WAN route-server this just returns the interface IP.
+        If not a WAN route-server this returns public IP and if not found then the interface IP without a mask.
 
         For WAN route-servers we try to find the IP under wan_route_servers.path_groups.interfaces.
-        If not found we use the IP under the interface, unless it is "dhcp" where we raise.
+        If not found we look for the public_ip and then the ip_address under the interface.
+        If there is no public_ip and if ip_address is "dhcp" we raise an error.
         """
         if not self.is_wan_server:
-            return interface["ip_address"]
+            return default(interface.get("public_ip"), interface["ip_address"].split("/", maxsplit=1)[0])
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:
                 continue
 
-            if found_interface.get("ip_address") is not None:
-                return found_interface["ip_address"]
+            if found_interface.get("public_ip") is not None:
+                return found_interface["public_ip"]
+
+        if interface.get("public_ip") is not None:
+            return interface["public_ip"]
 
         if interface["ip_address"] == "dhcp":
             raise AristaAvdError(
@@ -212,7 +223,7 @@ class WanMixin:
                 "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
             )
 
-        return interface["ip_address"]
+        return interface["ip_address"].split("/", maxsplit=1)[0]
 
     @cached_property
     def wan_site(self: SharedUtils) -> dict:
@@ -238,18 +249,23 @@ class WanMixin:
         )
 
     @cached_property
-    def wan_region(self: SharedUtils) -> dict:
+    def wan_region(self: SharedUtils) -> dict | None:
         """
         WAN region for CV Pathfinder
 
         Also checking if site names are unique across all regions.
+
+        The region is required for edges, but optional for pathfinders
         """
         node_defined_region = get(
             self.switch_data_combined,
             "cv_pathfinder_region",
-            required=True,
+            required=self.is_cv_pathfinder_client,
             org_key="A node variable 'cv_pathfinder_region' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
         )
+        if node_defined_region is None:
+            return None
+
         regions = get(
             self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
         )
@@ -415,7 +431,23 @@ class WanMixin:
         """
         Only trigger HA if 2 cv_pathfinder clients are in the same group and wan_ha.enabled is true
         """
-        return self.is_cv_pathfinder_client and get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
+        if not (self.is_cv_pathfinder_client and len(self.switch_data_node_group_nodes) == 2):
+            return False
+
+        if (ha_enabled := get(self.switch_data_combined, "wan_ha.enabled")) is None:
+            raise AristaAvdError(
+                (
+                    "Placing two WAN routers in a common node group will trigger WAN HA in a future AVD release. "
+                    "Currently WAN HA is in preview, so it will not be automatically enabled. "
+                    "To avoid unplanned configuration changes once the feature is released, "
+                    "it is currently required to set 'wan_ha.enabled' to 'true' or 'false'."
+                )
+            )
+        return ha_enabled
+
+    @cached_property
+    def wan_ha_ipsec(self: SharedUtils) -> bool:
+        return self.wan_ha and get(self.switch_data_combined, "wan_ha.ipsec", default=True)
 
     @cached_property
     def wan_ha_path_group_name(self: SharedUtils) -> str:

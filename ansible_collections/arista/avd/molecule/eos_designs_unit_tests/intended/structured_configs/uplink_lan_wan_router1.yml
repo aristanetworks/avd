@@ -110,8 +110,6 @@ ethernet_interfaces:
   vrf: VRF1
   ip_address: 10.0.10.1/24
   mtu: 9214
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet2.100
   peer: uplink_lan_l2leaf
   peer_interface: Ethernet1 VLAN 100
@@ -125,8 +123,6 @@ ethernet_interfaces:
   ipv6_address: cafe::cafe/64
   ipv6_enable: true
   eos_cli: comment yo
-  flow_tracker:
-    hardware: FLOW-TRACKER
   _custom_key: custom_value
 - name: Ethernet1
   peer_type: l3_interface
@@ -134,19 +130,11 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Comcast_999
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
   shutdown: false
   ip_address: 192.168.1.1/32
-as_path:
-  access_lists:
-  - name: ASPATH-WAN
-    entries:
-    - type: permit
-      match: '65100'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -161,25 +149,6 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
     - extcommunity soo 192.168.1.1:1 additive
-- name: RM-BGP-UNDERLAY-PEERS-IN
-  sequence_numbers:
-  - sequence: 40
-    type: permit
-    description: Mark prefixes originated from the LAN
-    set:
-    - extcommunity soo 192.168.1.1:1 additive
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Advertise local routes towards LAN
-    match:
-    - extcommunity ECL-EVPN-SOO
-  - sequence: 20
-    type: permit
-    description: Advertise routes received from WAN iBGP towards LAN
-    match:
-    - route-type internal
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -268,10 +237,10 @@ router_adaptive_virtual_topology:
     name: site1
     id: 1
   profiles:
-  - name: DEFAULT-POLICY-CONTROL-PLANE
-    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   - name: DEFAULT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   vrfs:
   - name: VRF1
     policy: DEFAULT-POLICY

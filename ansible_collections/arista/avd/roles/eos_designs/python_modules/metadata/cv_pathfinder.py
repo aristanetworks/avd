@@ -33,6 +33,7 @@ class CvPathfinderMixin:
                 "role": self.shared_utils.cv_pathfinder_role,
                 "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
                 "vtep_ip": self.shared_utils.vtep_ip,
+                "region": get(self.shared_utils.wan_region or {}, "name"),
                 "interfaces": self._metadata_interfaces(),
                 "pathgroups": self._metadata_pathgroups(),
                 "regions": self._metadata_regions(),
@@ -58,7 +59,7 @@ class CvPathfinderMixin:
                 "carrier": carrier["name"],
                 "circuit_id": interface.get("wan_circuit_id"),
                 "pathgroup": carrier["path_group"],
-                "public_ip": str(interface["ip_address"]).split("/", maxsplit=1)[0] if self.shared_utils.is_cv_pathfinder_server else None,
+                "public_ip": str(interface["public_ip"]) if self.shared_utils.is_cv_pathfinder_server else None,
             }
             for carrier in self.shared_utils.wan_local_carriers
             for interface in carrier["interfaces"]
