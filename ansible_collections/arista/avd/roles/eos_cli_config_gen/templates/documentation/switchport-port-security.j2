@@ -1,0 +1,33 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - switchport port-security #}
+{% if switchport_port_security is arista.avd.defined %}
+
+## Switchport Port-security
+
+### Switchport Port-security Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%     if switchport_port_security.mac_address.aging is arista.avd.defined(true) %}
+| Mac-address Aging | {{ switchport_port_security.mac_address.aging }} |
+{%     endif %}
+{%     if switchport_port_security.mac_address.moveable is arista.avd.defined(true) %}
+| Mac-address Moveable | {{ switchport_port_security.mac_address.moveable }} |
+{%     endif %}
+{%     if switchport_port_security.persistence_disabled is arista.avd.defined(true) %}
+| Disable Persistence | {{ switchport_port_security.persistence_disabled }} |
+{%     endif %}
+{%     if switchport_port_security.violation_protect_chip_based is arista.avd.defined(true) %}
+| Violation Protect Chip-based | {{ switchport_port_security.violation_protect_chip_based }} |
+{%     endif %}
+
+### Switchport Port-security Device Configuration
+
+```eos
+{%     include 'eos/switchport-port-security.j2' %}
+```
+{% endif %}

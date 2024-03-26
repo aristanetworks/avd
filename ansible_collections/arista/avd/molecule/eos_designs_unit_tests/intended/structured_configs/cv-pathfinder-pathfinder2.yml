@@ -536,6 +536,8 @@ metadata:
     device_tags:
     - name: Role
       value: pathfinder
+    - name: Region
+      value: AVD_Land_East
     - name: PathfinderSet
       value: PATHFINDERS
     interface_tags:
@@ -559,6 +561,7 @@ metadata:
     role: pathfinder
     ssl_profile: profileB
     vtep_ip: 192.168.144.3
+    region: AVD_Land_East
     interfaces:
     - name: Ethernet1
       carrier: SFR

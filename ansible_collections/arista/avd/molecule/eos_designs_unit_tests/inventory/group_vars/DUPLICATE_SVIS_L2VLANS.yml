@@ -1,0 +1,46 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    loopback_ipv4_pool: 10.0.0.0/24
+    vtep_loopback_ipv4_pool: 10.10.0.0/24
+    bgp_as: 65000
+  nodes:
+    - name: DUP-LEAF1
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+      filter:
+        tags: [DUP-LEAF1]
+    - name: DUP-LEAF2
+      mgmt_ip: 192.168.200.102/24
+      id: 2
+      filter:
+        tags: [DUP-LEAF2]
+
+tenants:
+  - name: Tenant_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TEST
+        description: "TEST"
+        vrf_id: 10
+        svis:
+          # Test non unique svi ids in schema
+          - id: 100
+            name: Duplicate_SVI_100_LEAF1
+            tags: [ DUP-LEAF1 ]
+            enabled: True
+          - id: 100
+            name: Duplicate_SVI_100_LEAF2
+            tags: [ DUP-LEAF2 ]
+            enabled: True
+    l2vlans:
+      # Test non unique l2vlans ids in schema
+      - id: 200
+        name: Duplicate_L2VLAN_200_LEAF1
+        tags: [ DUP-LEAF1 ]
+      - id: 200
+        name: Duplicate_L2VLAN_200_LEAF2
+        tags: [ DUP-LEAF2 ]

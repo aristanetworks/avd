@@ -15,3 +15,6 @@ management_ssh:
   client_alive:
     count_max: 42
     interval: 666
+  hostkey:
+    client_strict_checking: true
+  fips_restrictions: true

@@ -100,7 +100,7 @@ metadata:
       value: myvalue
     - name: dynamic_device_tag
       value: '65000'
-    - name: uppercase_device_tag
+    - name: UPPERCASE_DEVICE_TAG
       value: something with spaces
     interface_tags:
     - interface: Ethernet1
@@ -109,5 +109,5 @@ metadata:
         value: myinterfacevalue
       - name: dynamic_interface_tag
         value: Someotherdevice
-      - name: uppercase_interface_tag
+      - name: UPPERCASE_INTERFACE_TAG
         value: something else with spaces

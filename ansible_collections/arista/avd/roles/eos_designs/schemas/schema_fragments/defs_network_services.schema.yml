@@ -527,6 +527,7 @@ $defs:
                   table: network-services-vrfs-svis-settings
                 type: list
                 primary_key: id
+                allow_duplicate_primary_key: True
                 convert_types:
                   - dict
                 description: |
@@ -1029,6 +1030,7 @@ $defs:
             table: network-services-l2vlans-settings
           type: list
           primary_key: id
+          allow_duplicate_primary_key: True
           convert_types:
             - dict
           description: Define L2 network services organized by vlan id.

@@ -11,11 +11,11 @@
     | [<samp>generate_cv_tags</samp>](## "generate_cv_tags") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Generate CloudVision Tags based on AVD data. |
     | [<samp>&nbsp;&nbsp;topology_hints</samp>](## "generate_cv_tags.topology_hints") | Boolean |  | `False` |  | Enable the generation of CloudVision Topology Tags (hints). |
     | [<samp>&nbsp;&nbsp;interface_tags</samp>](## "generate_cv_tags.interface_tags") | List, items: Dictionary |  |  |  | List of interface tags that should be generated. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "generate_cv_tags.interface_tags.[].name") | String | Required, Unique |  | Value is converted to lower case. | Tag name to be assigned to generated tags. Tag names must be lower case. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "generate_cv_tags.interface_tags.[].name") | String | Required, Unique |  |  | Tag name to be assigned to generated tags. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_path</samp>](## "generate_cv_tags.interface_tags.[].data_path") | String |  |  |  | Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.<br>For Example: 'data_path: channel_group.id' would set the tag with the value of the channel id of the interface. If there is no channel id, the tag is not created.<br>`data_path` is ignored if `value` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "generate_cv_tags.interface_tags.[].value") | String |  |  |  | Value to be assigned to the tag. |
     | [<samp>&nbsp;&nbsp;device_tags</samp>](## "generate_cv_tags.device_tags") | List, items: Dictionary |  |  |  | List of device tags that should be generated. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "generate_cv_tags.device_tags.[].name") | String | Required |  | Value is converted to lower case. | Tag name to be assigned to generated tags. Tag names must be lower case. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "generate_cv_tags.device_tags.[].name") | String | Required |  |  | Tag name to be assigned to generated tags. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_path</samp>](## "generate_cv_tags.device_tags.[].data_path") | String |  |  |  | Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.<br>For Example: 'data_path: router_bfd.multihop.interval' would set the tag with the value of the interval for multihop bfd. If this value is not specified in the structured config, the tag is not created.<br>`data_path` is ignored if `value` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "generate_cv_tags.device_tags.[].value") | String |  |  |  | Value to be assigned to the tag. |
     | [<samp>node_type_keys</samp>](## "node_type_keys") | List, items: Dictionary |  |  |  | Define Node Type Keys, to specify the properties of each node type in the fabric.<br>This allows for complete customization of the fabric layout and functionality.<br>`node_type_keys` should be defined in top level group_var for the fabric.<br>The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.<br> |
@@ -39,7 +39,7 @@
       # List of interface tags that should be generated.
       interface_tags:
 
-          # Tag name to be assigned to generated tags. Tag names must be lower case.
+          # Tag name to be assigned to generated tags.
         - name: <str; required; unique>
 
           # Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.
@@ -53,7 +53,7 @@
       # List of device tags that should be generated.
       device_tags:
 
-          # Tag name to be assigned to generated tags. Tag names must be lower case.
+          # Tag name to be assigned to generated tags.
         - name: <str; required>
 
           # Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.

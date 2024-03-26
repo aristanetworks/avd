@@ -1,6 +1,9 @@
 ---
 # Testing cv-pathfinder
 wan_mode: cv-pathfinder
+# Have all the router in the examples use eBGP as underlay routing protocol -
+# the default is "none" for WAN routers"
+underlay_routing_protocol: ebgp
 
 cv_pathfinder_regions:
   - name: AVD_Land_West
@@ -121,6 +124,8 @@ wan_router:
       uplink_type: p2p-vrfs
       uplink_switches: [ site-ha-enabled-leaf2A, site-ha-enabled-leaf2B ]
       uplink_interfaces: [ Ethernet52, Ethernet53 ]
+      wan_ha:
+        enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
       nodes:
         - name: cv-pathfinder-edge2A
           id: 2
@@ -153,6 +158,7 @@ wan_router:
       cv_pathfinder_transit_mode: region
       # Disable HA IPsec
       wan_ha:
+        enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
         ipsec: false
       nodes:
         - name: cv-pathfinder-transit1A
@@ -241,6 +247,7 @@ wan_rr:
           ip_address: 10.8.8.8/31
     - name: cv-pathfinder-pathfinder2
       id: 3
+      cv_pathfinder_region: AVD_Land_East
       data_plane_cpu_allocation_max: 3
       l3_interfaces:
         - name: Ethernet1

@@ -27,7 +27,7 @@ class AvdStructuredConfigMetadata(AvdFacts, CvTagsMixin, CvPathfinderMixin):
                     {"name": "topolgoy_hint_rack", "value": <value copied from rack field if it is defined for the node>},
                     {"name": "<custom_tag_name>", "value": "custom tag value"},
                     {"name": "<custom_tag_name>", "value": "<value extracted from structured_config>"},
-                    {"name": "Region", "value": <value copied from cv_pathfinder_region for pathfinder clients>},
+                    {"name": "Region", "value": <value copied from cv_pathfinder_region>},
                     {"name": "Zone", "value": <"<region-name>-ZONE" for pathfinder clients>},
                     {"name": "Site", "value": <value copied from cv_pathfinder_site for pathfinder clients>},
                     {"name": "PathfinderSet", "value": <value copied from node group or default "PATHFINDERS" for pathfinder servers>},

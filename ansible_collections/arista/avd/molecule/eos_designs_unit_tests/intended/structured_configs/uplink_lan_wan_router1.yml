@@ -135,12 +135,6 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.1.1/32
-as_path:
-  access_lists:
-  - name: ASPATH-WAN
-    entries:
-    - type: permit
-      match: '65100'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -155,25 +149,6 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
     - extcommunity soo 192.168.1.1:1 additive
-- name: RM-BGP-UNDERLAY-PEERS-IN
-  sequence_numbers:
-  - sequence: 40
-    type: permit
-    description: Mark prefixes originated from the LAN
-    set:
-    - extcommunity soo 192.168.1.1:1 additive
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Advertise local routes towards LAN
-    match:
-    - extcommunity ECL-EVPN-SOO
-  - sequence: 20
-    type: permit
-    description: Advertise routes received from WAN iBGP towards LAN
-    match:
-    - route-type internal
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10

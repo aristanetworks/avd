@@ -79,6 +79,8 @@ management ssh
    connection per-host 10
    client-alive interval 666
    client-alive count-max 42
+   fips restrictions
+   hostkey client strict-checking
    no shutdown
    log-level debug
    !

@@ -12,6 +12,8 @@ wan_router: # dynamic_key: node_type
     uplink_interfaces: [Ethernet1, Ethernet2]
     uplink_switches: [dc1-leaf1a, dc1-leaf1b]
     uplink_type: p2p-vrfs
+    wan_ha:
+      enabled: true # TODO: AVD 4.8.0 Remove this once WAN HA is out of preview
   node_groups:
     - group: DC1-WAN
       bgp_as: 65000
