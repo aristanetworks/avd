@@ -426,7 +426,19 @@ class WanMixin:
         """
         Only trigger HA if 2 cv_pathfinder clients are in the same group and wan_ha.enabled is true
         """
-        return self.is_cv_pathfinder_client and get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
+        if not (self.is_cv_pathfinder_client and len(self.switch_data_node_group_nodes) == 2):
+            return False
+
+        if (ha_enabled := get(self.switch_data_combined, "wan_ha.enabled")) is None:
+            raise AristaAvdError(
+                (
+                    "Placing two WAN routers in a common node group will trigger WAN HA in a future AVD release. "
+                    "Currently WAN HA is in preview, so it will not be automatically enabled. "
+                    "To avoid unplanned configuration changes once the feature is released, "
+                    "it is currently required to set 'wan_ha.enabled' to 'true' or 'false'."
+                )
+            )
+        return ha_enabled
 
     @cached_property
     def wan_ha_ipsec(self: SharedUtils) -> bool:
