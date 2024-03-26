@@ -46,8 +46,12 @@ keys:
                     type: str
                     required: true
                     valid_values:
-                      - "permit"
-                      - "deny"
+                      - "forward"
+                      - "drop"
+                      - "redirect"
+                  next_hop:
+                    type: str
+                    description: When the action is redirect, this indicates the IPv4 next hop to redirect to.
       vrfs:
         type: list
         description: The name of the VRF that the segments and policies are defined in.

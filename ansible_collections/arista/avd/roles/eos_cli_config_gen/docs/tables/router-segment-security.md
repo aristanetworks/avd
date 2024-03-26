@@ -14,17 +14,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "router_segment_security.policies.[].sequence_numbers") | List, items: Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "router_segment_security.policies.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application</samp>](## "router_segment_security.policies.[].sequence_numbers.[].application") | String | Required |  |  | The name of the application. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_segment_security.policies.[].sequence_numbers.[].action") | String | Required |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> |  |
-    | [<samp>&nbsp;&nbsp;segments</samp>](## "router_segment_security.segments") | List, items: Dictionary | Required |  |  | Defining the segments and associated policies. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.segments.[].name") | String | Required, Unique |  |  | Segment name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "router_segment_security.segments.[].vrf") | String |  | `default` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;definition</samp>](## "router_segment_security.segments.[].definition") | List, items: Dictionary | Required |  |  | The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.segments.[].definition.[].name") | String |  |  |  | The name of the prefix match-list. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "router_segment_security.segments.[].definition.[].address_family") | String | Required |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Indicate which address family the match list belongs to e.g. ipv4 or ipv6. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;covered</samp>](## "router_segment_security.segments.[].definition.[].covered") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "router_segment_security.segments.[].policies") | List, items: Dictionary | Required |  |  | The policies controlling traffic into the segment. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "router_segment_security.segments.[].policies.[].source") | String |  |  |  | The name of the source segment. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "router_segment_security.segments.[].policies.[].policy") | String |  |  |  | The name of the policy to apply. The built-in policies are ‘policy-forward-all’ and ‘policy-drop-all’. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_segment_security.policies.[].sequence_numbers.[].action") | String | Required |  | Valid Values:<br>- <code>forward</code><br>- <code>drop</code><br>- <code>redirect</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "router_segment_security.policies.[].sequence_numbers.[].next_hop") | String |  |  |  | When the action is redirect, this indicates the IPv4 next hop to redirect to. |
+    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_segment_security.vrfs") | List, items: Dictionary | Required |  |  | The name of the VRF that the segments and policies are defined in. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.vrfs.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segments</samp>](## "router_segment_security.vrfs.[].segments") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.vrfs.[].segments.[].name") | String | Required, Unique |  |  | Segment name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;definition</samp>](## "router_segment_security.vrfs.[].segments.[].definition") | List, items: Dictionary | Required |  |  | The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].name") | String |  |  |  | The name of the prefix match-list. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].address_family") | String | Required |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Indicate which address family the match list belongs to e.g. ipv4 or ipv6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;covered</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].covered") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "router_segment_security.vrfs.[].segments.[].policies") | List, items: Dictionary | Required |  |  | The policies controlling traffic into the segment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "router_segment_security.vrfs.[].segments.[].policies.[].source") | String |  |  |  | The name of the source segment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "router_segment_security.vrfs.[].segments.[].policies.[].policy") | String |  |  |  | The name of the policy to apply. The built-in policies are ‘policy-forward-all’ and ‘policy-drop-all’. |
 
 === "YAML"
 
@@ -46,31 +48,35 @@
 
               # The name of the application.
               application: <str; required>
-              action: <str; "permit" | "deny"; required>
+              action: <str; "forward" | "drop" | "redirect"; required>
 
-      # Defining the segments and associated policies.
-      segments: # required
+              # When the action is redirect, this indicates the IPv4 next hop to redirect to.
+              next_hop: <str>
 
-          # Segment name.
+      # The name of the VRF that the segments and policies are defined in.
+      vrfs: # required
         - name: <str; required; unique>
-          vrf: <str; default="default">
+          segments:
 
-          # The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.
-          definition: # required
+              # Segment name.
+            - name: <str; required; unique>
 
-              # The name of the prefix match-list.
-            - name: <str>
+              # The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.
+              definition: # required
 
-              # Indicate which address family the match list belongs to e.g. ipv4 or ipv6.
-              address_family: <str; "ipv4" | "ipv6"; required>
-              covered: <bool; default=False>
+                  # The name of the prefix match-list.
+                - name: <str>
 
-          # The policies controlling traffic into the segment.
-          policies: # required
+                  # Indicate which address family the match list belongs to e.g. ipv4 or ipv6.
+                  address_family: <str; "ipv4" | "ipv6"; required>
+                  covered: <bool; default=False>
 
-              # The name of the source segment.
-            - source: <str>
+              # The policies controlling traffic into the segment.
+              policies: # required
 
-              # The name of the policy to apply. The built-in policies are ‘policy-forward-all’ and ‘policy-drop-all’.
-              policy: <str>
+                  # The name of the source segment.
+                - source: <str>
+
+                  # The name of the policy to apply. The built-in policies are ‘policy-forward-all’ and ‘policy-drop-all’.
+                  policy: <str>
     ```

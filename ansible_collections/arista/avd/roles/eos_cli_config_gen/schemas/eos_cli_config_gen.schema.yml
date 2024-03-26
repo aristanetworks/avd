@@ -13569,8 +13569,13 @@ keys:
                     type: str
                     required: true
                     valid_values:
-                    - permit
-                    - deny
+                    - forward
+                    - drop
+                    - redirect
+                  next_hop:
+                    type: str
+                    description: When the action is redirect, this indicates the IPv4
+                      next hop to redirect to.
       vrfs:
         type: list
         description: The name of the VRF that the segments and policies are defined
@@ -13579,51 +13584,54 @@ keys:
         primary_key: name
         items:
           type: dict
-          name:
-            type: str
-          segments:
-            type: list
-            primary_key: name
-            keys:
-              name:
-                type: str
-                description: Segment name.
-              definition:
-                type: list
-                required: true
-                description: The set of match-lists that define the segment. These
-                  can be a mix of IPv4 and IPv6 lists.
-                items:
-                  type: dict
-                  keys:
-                    name:
-                      type: str
-                      description: The name of the prefix match-list.
-                    address_family:
-                      type: str
-                      required: true
-                      description: Indicate which address family the match list belongs
-                        to e.g. ipv4 or ipv6.
-                      valid_values:
-                      - ipv4
-                      - ipv6
-                    covered:
-                      type: bool
-                      default: false
-              policies: null
+          keys:
+            name:
+              type: str
+            segments:
               type: list
-              required: true
-              description: The policies controlling traffic into the segment.
+              primary_key: name
               items:
                 type: dict
                 keys:
-                  source:
+                  name:
                     type: str
-                    description: The name of the source segment.
-                  policy:
-                    type: str
-                    description: "The name of the policy to apply. The built-in policies
-                      are \u2018policy-forward-all\u2019 and \u2018policy-drop-all\u2019."
+                    description: Segment name.
+                  definition:
+                    type: list
+                    required: true
+                    description: The set of match-lists that define the segment. These
+                      can be a mix of IPv4 and IPv6 lists.
+                    items:
+                      type: dict
+                      keys:
+                        name:
+                          type: str
+                          description: The name of the prefix match-list.
+                        address_family:
+                          type: str
+                          required: true
+                          description: Indicate which address family the match list
+                            belongs to e.g. ipv4 or ipv6.
+                          valid_values:
+                          - ipv4
+                          - ipv6
+                        covered:
+                          type: bool
+                          default: false
+                  policies:
+                    type: list
+                    required: true
+                    description: The policies controlling traffic into the segment.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+                          description: The name of the source segment.
+                        policy:
+                          type: str
+                          description: "The name of the policy to apply. The built-in
+                            policies are \u2018policy-forward-all\u2019 and \u2018policy-drop-all\u2019."
   router_service_insertion:
     type: dict
     description: Configure network services inserted to data forwarding
