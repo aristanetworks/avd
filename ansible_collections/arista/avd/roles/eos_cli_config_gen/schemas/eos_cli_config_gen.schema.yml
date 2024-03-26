@@ -13589,6 +13589,7 @@ keys:
             segments:
               type: list
               primary_key: name
+              required: true
               items:
                 type: dict
                 keys:

@@ -23623,13 +23623,14 @@
                 "title": "Segments"
               }
             },
+            "required": [
+              "segments",
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            },
-            "required": [
-              "name"
-            ]
+            }
           },
           "title": "VRFs"
         }
