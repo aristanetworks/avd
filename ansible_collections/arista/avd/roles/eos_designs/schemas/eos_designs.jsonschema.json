@@ -4564,6 +4564,13 @@
       "default": true,
       "title": "Default IGMP Snooping Enabled"
     },
+    "default_interface_mtu": {
+      "type": "integer",
+      "description": "Default interface MTU configured on EOS under \"interface defaults\".\nCan be overriden per platform under platform settings.\n",
+      "minimum": 68,
+      "maximum": 65535,
+      "title": "Default Interface MTU"
+    },
     "default_interfaces": {
       "type": "array",
       "description": "Default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).\n",
@@ -5159,7 +5166,7 @@
             "description": "Each tag can either have a static value or a dynamic value sourced from structured configuration.",
             "properties": {
               "name": {
-                "description": "Tag name to be assigned to generated tags. Tag names must be lower case.",
+                "description": "Tag name to be assigned to generated tags.",
                 "type": "string",
                 "title": "Name"
               },
@@ -5192,7 +5199,7 @@
             "description": "Each tag can either have a static value or a dynamic value sourced from structured configuration.",
             "properties": {
               "name": {
-                "description": "Tag name to be assigned to generated tags. Tag names must be lower case.",
+                "description": "Tag name to be assigned to generated tags.",
                 "type": "string",
                 "title": "Name"
               },
@@ -9441,6 +9448,24 @@
                 "minimum": 1,
                 "maximum": 10,
                 "title": "Reauthorization Request Limit"
+              },
+              "unauthorized": {
+                "type": "object",
+                "properties": {
+                  "access_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Access VLAN Membership Egress"
+                  },
+                  "native_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Native VLAN Membership Egress"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unauthorized"
               }
             },
             "additionalProperties": false,
@@ -15732,6 +15757,24 @@
                 "minimum": 1,
                 "maximum": 10,
                 "title": "Reauthorization Request Limit"
+              },
+              "unauthorized": {
+                "type": "object",
+                "properties": {
+                  "access_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Access VLAN Membership Egress"
+                  },
+                  "native_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Native VLAN Membership Egress"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unauthorized"
               }
             },
             "additionalProperties": false,

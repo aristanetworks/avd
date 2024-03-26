@@ -3974,6 +3974,18 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression
+  ip_ftp_client_source_interfaces:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Interface Name
+        vrf:
+          type: str
+          description: VRF Name
   ip_hardware:
     type: dict
     keys:
@@ -4563,6 +4575,30 @@ keys:
           display_name: VRF
           convert_types:
           - int
+  ip_telnet_client_source_interfaces:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Interface Name
+        vrf:
+          type: str
+          description: VRF Name
+  ip_tftp_client_source_interfaces:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Interface Name
+        vrf:
+          type: str
+          description: VRF Name
   ip_virtual_router_mac_address:
     type: str
     description: MAC address (hh:hh:hh:hh:hh:hh)
@@ -6156,6 +6192,38 @@ keys:
     type: dict
     display_name: Match Lists
     keys:
+      prefix_ipv4:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Prefix-List Name.
+            prefixes:
+              type: list
+              required: true
+              min_length: 1
+              description: List of IPv4 prefixes (with the subnet mask e.g. 192.0.2.0/24).
+              items:
+                type: str
+      prefix_ipv6:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Prefix-List Name.
+            prefixes:
+              type: list
+              required: true
+              min_length: 1
+              description: List of IPv6 prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64).
+              items:
+                type: str
       string:
         type: list
         primary_key: name
