@@ -32,3 +32,27 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+#### Group-Based Multi-domain Segmentation Services (MSS-Group)
+
+- MSS-G is enabled.
+
+##### Segmentation Policies
+
+###### POLICY-TEST1
+
+| Sequence Number | Application Name | Action | Next-Hop |
+| --------------- | ---------------- | ------ | -------- |
+| 10 | APP-TEST-1 | forward | - |
+| 20 | APP-TEST-2 | drop | - |
+
+##### Router MSS-G Device Configuration
+
+```eos
+!
+router segment-security
+   no shutdown
+   !
+   policy POLICY-TEST1
+      10 application APP-TEST-1 action forward stateless
+      20 application APP-TEST-2 action drop stateless
+```
