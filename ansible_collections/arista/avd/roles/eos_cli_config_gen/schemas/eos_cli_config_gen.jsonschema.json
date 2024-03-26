@@ -23457,6 +23457,171 @@
       },
       "title": "Router PIM Sparse Mode"
     },
+    "router_segment_security": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "policies": {
+          "type": "array",
+          "description": "Customised application policies.\nUsing the Application Traffic Recognition L4 profiles, custom policies can be defined. The built-in application 'app-match-all' can be used to match any packets.\nNote that this is stateless, so both the source and destination flows need to be considered.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Policy name.",
+                "title": "Name"
+              },
+              "sequence_numbers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "sequence": {
+                      "type": "integer",
+                      "description": "Sequence ID.",
+                      "title": "Sequence"
+                    },
+                    "application": {
+                      "type": "string",
+                      "description": "The name of the application.",
+                      "title": "Application"
+                    },
+                    "action": {
+                      "type": "string",
+                      "enum": [
+                        "permit",
+                        "deny"
+                      ],
+                      "title": "Action"
+                    }
+                  },
+                  "required": [
+                    "application",
+                    "action",
+                    "sequence"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Sequence Numbers"
+              }
+            },
+            "required": [
+              "sequence_numbers",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Policies"
+        },
+        "segments": {
+          "type": "array",
+          "description": "Defining the segments and associated policies.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Segment name.",
+                "title": "Name"
+              },
+              "vrf": {
+                "type": "string",
+                "default": "default",
+                "title": "VRF"
+              },
+              "definition": {
+                "type": "array",
+                "description": "The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the prefix match-list.",
+                      "title": "Name"
+                    },
+                    "address_family": {
+                      "type": "string",
+                      "description": "Indicate which address family the match list belongs to e.g. ipv4 or ipv6.",
+                      "enum": [
+                        "ipv4",
+                        "ipv6"
+                      ],
+                      "title": "Address Family"
+                    },
+                    "covered": {
+                      "type": "boolean",
+                      "default": false,
+                      "title": "Covered"
+                    }
+                  },
+                  "required": [
+                    "address_family"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Definition"
+              },
+              "policies": {
+                "type": "array",
+                "description": "The policies controlling traffic into the segment.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "type": "string",
+                      "description": "The name of the source segment.",
+                      "title": "Source"
+                    },
+                    "policy": {
+                      "type": "string",
+                      "description": "The name of the policy to apply. The built-in policies are \u2018policy-forward-all\u2019 and \u2018policy-drop-all\u2019.",
+                      "title": "Policy"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Policies"
+              }
+            },
+            "required": [
+              "definition",
+              "policies",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Segments"
+        }
+      },
+      "required": [
+        "segments"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Router Segment Security"
+    },
     "router_service_insertion": {
       "type": "object",
       "description": "Configure network services inserted to data forwarding",

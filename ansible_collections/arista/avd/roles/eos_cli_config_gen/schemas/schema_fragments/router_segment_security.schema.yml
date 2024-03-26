@@ -1,0 +1,97 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_segment_security:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      policies:
+        type: list
+        description: |-
+          Customised application policies.
+          Using the Application Traffic Recognition L4 profiles, custom policies can be defined. The built-in application 'app-match-all' can be used to match any packets.
+          Note that this is stateless, so both the source and destination flows need to be considered.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy name.
+            sequence_numbers:
+              type: list
+              required: true
+              primary_key: sequence
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  sequence:
+                    type: int
+                    description: Sequence ID.
+                    convert_types:
+                      - str
+                  application:
+                    type: str
+                    required: true
+                    description: The name of the application.
+                  action:
+                    type: str
+                    required: true
+                    valid_values:
+                      - "permit"
+                      - "deny"
+      segments:
+        type: list
+        description: Defining the segments and associated policies.
+        required: true
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Segment name.
+            vrf:
+              type: str
+              default: "default"
+            definition:
+              type: list
+              required: true
+              description: The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: The name of the prefix match-list.
+                  address_family:
+                    type: str
+                    required: true
+                    description: Indicate which address family the match list belongs to e.g. ipv4 or ipv6.
+                    valid_values:
+                      - "ipv4"
+                      - "ipv6"
+                  covered:
+                    type: bool
+                    default: false
+            policies:
+              type: list
+              required: true
+              description: The policies controlling traffic into the segment.
+              items:
+                type: dict
+                keys:
+                  source:
+                    type: str
+                    description: The name of the source segment.
+                  policy:
+                    type: str
+                    description: The name of the policy to apply. The built-in policies are ‘policy-forward-all’ and ‘policy-drop-all’.
