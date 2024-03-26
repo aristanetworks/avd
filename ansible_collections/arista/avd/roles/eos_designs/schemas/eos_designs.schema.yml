@@ -1291,9 +1291,7 @@ keys:
             sourced from structured configuration.
           keys:
             name:
-              description: Tag name to be assigned to generated tags. Tag names must
-                be lower case.
-              convert_to_lower_case: true
+              description: Tag name to be assigned to generated tags.
               required: true
               type: str
             data_path:
@@ -1319,9 +1317,7 @@ keys:
             sourced from structured configuration.
           keys:
             name:
-              description: Tag name to be assigned to generated tags. Tag names must
-                be lower case.
-              convert_to_lower_case: true
+              description: Tag name to be assigned to generated tags.
               required: true
               type: str
             data_path:

@@ -5159,7 +5159,7 @@
             "description": "Each tag can either have a static value or a dynamic value sourced from structured configuration.",
             "properties": {
               "name": {
-                "description": "Tag name to be assigned to generated tags. Tag names must be lower case.",
+                "description": "Tag name to be assigned to generated tags.",
                 "type": "string",
                 "title": "Name"
               },
@@ -5192,7 +5192,7 @@
             "description": "Each tag can either have a static value or a dynamic value sourced from structured configuration.",
             "properties": {
               "name": {
-                "description": "Tag name to be assigned to generated tags. Tag names must be lower case.",
+                "description": "Tag name to be assigned to generated tags.",
                 "type": "string",
                 "title": "Name"
               },
