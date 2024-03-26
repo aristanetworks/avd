@@ -5,6 +5,7 @@
 #}
 {# doc - router pim sparse mode #}
 {% if router_segment_security is arista.avd.defined %}
+
 #### Group-Based Multi-domain Segmentation Services (MSS-Group)
 
 {%     if router_segment_security.enabled is arista.avd.defined(true) %}
@@ -31,6 +32,7 @@
 
 ###### VRF {{ vrf.name }} Segmentation
 {%             for segment in vrf.segments %}
+
 ####### Segment {{ segment.name }} Definitions
 
 | Match-List Name | Address Family | Covered |
