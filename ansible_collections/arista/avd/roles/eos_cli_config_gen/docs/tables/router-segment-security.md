@@ -18,11 +18,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "router_segment_security.policies.[].sequence_numbers.[].next_hop") | String |  |  |  | When the action is redirect, this indicates the IPv4 next hop to redirect to. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_segment_security.vrfs") | List, items: Dictionary |  |  |  | The name of the VRF that the segments and policies are defined in. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.vrfs.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segments</samp>](## "router_segment_security.vrfs.[].segments") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segments</samp>](## "router_segment_security.vrfs.[].segments") | List, items: Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.vrfs.[].segments.[].name") | String | Required, Unique |  |  | Segment name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;definition</samp>](## "router_segment_security.vrfs.[].segments.[].definition") | List, items: Dictionary | Required |  |  | The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].name") | String |  |  |  | The name of the prefix match-list. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].address_family") | String | Required |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Indicate which address family the match list belongs to e.g. ipv4 or ipv6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;definition</samp>](## "router_segment_security.vrfs.[].segments.[].definition") | List, items: Dictionary | Required |  | Max Length: 2 | The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].name") | String |  |  |  | The name of the prefix match-list. You can have a maximum of one per address-family. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].address_family") | String | Required |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Indicate which address-family the match list belongs to e.g. ipv4 or ipv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;covered</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].covered") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "router_segment_security.vrfs.[].segments.[].policies") | List, items: Dictionary | Required |  |  | The policies controlling traffic into the segment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "router_segment_security.vrfs.[].segments.[].policies.[].source") | String |  |  |  | The name of the source segment. |
@@ -56,18 +56,18 @@
       # The name of the VRF that the segments and policies are defined in.
       vrfs:
         - name: <str; required; unique>
-          segments:
+          segments: # required
 
               # Segment name.
             - name: <str; required; unique>
 
               # The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.
-              definition: # required
+              definition: # <=2 items; required
 
-                  # The name of the prefix match-list.
+                  # The name of the prefix match-list. You can have a maximum of one per address-family.
                 - name: <str>
 
-                  # Indicate which address family the match list belongs to e.g. ipv4 or ipv6.
+                  # Indicate which address-family the match list belongs to e.g. ipv4 or ipv6.
                   address_family: <str; "ipv4" | "ipv6"; required>
                   covered: <bool; default=False>
 

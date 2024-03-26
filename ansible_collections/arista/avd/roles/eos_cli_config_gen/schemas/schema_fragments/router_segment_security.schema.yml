@@ -75,16 +75,17 @@ keys:
                     type: list
                     required: true
                     description: The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.
+                    max_length: 2
                     items:
                       type: dict
                       keys:
                         name:
                           type: str
-                          description: The name of the prefix match-list.
+                          description: The name of the prefix match-list. You can have a maximum of one per address-family.
                         address_family:
                           type: str
                           required: true
-                          description: Indicate which address family the match list belongs to e.g. ipv4 or ipv6.
+                          description: Indicate which address-family the match list belongs to e.g. ipv4 or ipv6.
                           valid_values:
                             - "ipv4"
                             - "ipv6"

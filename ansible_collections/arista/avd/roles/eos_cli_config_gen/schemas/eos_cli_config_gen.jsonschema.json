@@ -23552,17 +23552,18 @@
                     "definition": {
                       "type": "array",
                       "description": "The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.",
+                      "maxItems": 2,
                       "items": {
                         "type": "object",
                         "properties": {
                           "name": {
                             "type": "string",
-                            "description": "The name of the prefix match-list.",
+                            "description": "The name of the prefix match-list. You can have a maximum of one per address-family.",
                             "title": "Name"
                           },
                           "address_family": {
                             "type": "string",
-                            "description": "Indicate which address family the match list belongs to e.g. ipv4 or ipv6.",
+                            "description": "Indicate which address-family the match list belongs to e.g. ipv4 or ipv6.",
                             "enum": [
                               "ipv4",
                               "ipv6"
