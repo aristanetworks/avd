@@ -90,6 +90,10 @@ class UtilsMixin:
                         "spanning_tree_portfast": get(uplink, "peer_spanning_tree_portfast"),
                         "structured_config": get(uplink, "structured_config"),
                     }
+                    if get(peer_facts, "inband_ztp"):
+                        link["inband_ztp_vlan"] = get(peer_facts, "inband_mgmt_vlan")
+                        link["inband_ztp_lacp_fallback_delay"] = get(peer_facts, "inband_ztp_lacp_fallback_delay")
+
                     if (subinterfaces := get(uplink, "subinterfaces")) is not None:
                         link["subinterfaces"] = [
                             {
@@ -188,11 +192,12 @@ class UtilsMixin:
         if iface_type == "l3dot1q":
             interface["encapsulation_dot1q_vlan"] = encapsulation
 
-        if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", False):
+        if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", True):
             interface["dhcp_client_accept_default_route"] = True
 
-        if self.shared_utils.is_cv_pathfinder_router:
-            interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+        # TODO: enable flow tracking once toggle is in place
+        # if self.shared_utils.is_cv_pathfinder_router:
+        #    interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
         return strip_empties_from_dict(interface)
 
@@ -274,8 +279,9 @@ class UtilsMixin:
         # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
         self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
 
+        # TODO: enable flow tracking once toggle is in place
         # Configuring flow tracking on LAN interfaces of WAN routers
-        if self.shared_utils.is_cv_pathfinder_client:
-            subinterface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+        # if self.shared_utils.is_cv_pathfinder_client:
+        #    subinterface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
         return strip_empties_from_dict(subinterface)

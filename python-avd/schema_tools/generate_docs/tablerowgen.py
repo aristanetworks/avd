@@ -178,7 +178,7 @@ class TableRowGenBase(ABC):
         Render markdown for "required" field.
         """
         if self.schema._is_primary_key:
-            return "Required, Unique"
+            return "Required, Unique" if self.schema._is_unique else "Required"
         if self.schema.required:
             return "Required"
 

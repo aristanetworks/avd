@@ -168,10 +168,10 @@ class SnmpServerMixin(UtilsMixin):
         has_mgmt_ip = (self.shared_utils.mgmt_ip is not None) or (self.shared_utils.ipv6_mgmt_ip is not None)
 
         for host in natural_sort(hosts, "host"):
-            # Initialize a set with vrf defined under the host (Catching None value with or [])
             vrfs = set()
             if (vrf := host.pop("vrf", None)) is not None:
                 vrfs.add(vrf)
+
             if (use_mgmt_interface_vrf := host.pop("use_mgmt_interface_vrf", False)) is True and has_mgmt_ip:
                 vrfs.add(self.shared_utils.mgmt_interface_vrf)
 

@@ -235,6 +235,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>min_length</samp> | Integer | | | | Minimum length |
 | <samp>primary_key</samp> | String | | | Pattern: `^[a-z][a-z0-9_]*$` | Name of a primary key in a list of dictionaries.<br>The configured key is implicitly required and must have unique values between the list elements |
 | <samp>secondary_key</samp> | String | | | Pattern: `^[a-z][a-z0-9_]*$` | Name of a secondary key, which is used with `convert_types:['dict']` in case of values not being dictionaries |
+| <samp>unique_keys</samp> | List, items: String | | | Item Pattern: `^[a-z][a-z0-9_]*$` | Name of a key in a list of dictionaries.<br>The configured key must have unique values between the list elements.<br>This can also be a variable path using dot-notation like `parent_key.child_key` in case of nested lists of dictionaries. |
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
 | <samp>description</samp> | String | | | Minimum Length: 1 | Free text description for forms and documentation (multi line) |
 | <samp>required</samp> | Boolean | | | | Set if variable is required |

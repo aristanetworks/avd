@@ -119,6 +119,28 @@ anta.tests.connectivity:
       description: Inband Mgmt Reachability
 - VerifyReachability:
     hosts:
+    - destination: 10.255.2.1
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.2.1'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.2.2
+      repeat: 1
+      source: Vlan4085
+      vrf: MGMT
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.2.2'
+      description: Inband Mgmt Reachability
+- VerifyReachability:
+    hosts:
     - destination: 10.255.128.11
       repeat: 1
       source: Vlan4085
@@ -239,54 +261,34 @@ anta.tests.hardware:
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet1
-      protocol_status: up
-      state: up
+    - name: Ethernet1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet1 - DC1-LEAF2A_Ethernet8
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet1 - DC1-LEAF2A_Ethernet8 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet2
-      protocol_status: down
-      state: adminDown
+    - name: Ethernet2
+      status: adminDown
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet2 - DC1-LEAF2B_Ethernet8
-      description: Ethernet Interface & Line Protocol == 'adminDown'
+      custom_field: Interface Ethernet2 - DC1-LEAF2B_Ethernet8 = 'adminDown'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet5
-      protocol_status: up
-      state: up
+    - name: Ethernet5
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet5 - dc1-leaf2-server1_iLO
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet5 - dc1-leaf2-server1_iLO = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Port-Channel1
-      protocol_status: up
-      state: up
+    - name: Port-Channel1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Port-Channel1 - DC1_L3_LEAF2_Po8
-      description: Port-Channel Interface & Line Protocol == 'up'
+      custom_field: Interface Port-Channel1 - DC1_L3_LEAF2_Po8 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan4085
-      protocol_status: up
-      state: up
+    - name: Vlan4085
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vlan4085 - L2LEAF_INBAND_MGMT
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: Interface Vlan4085 - L2LEAF_INBAND_MGMT = 'up'
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
