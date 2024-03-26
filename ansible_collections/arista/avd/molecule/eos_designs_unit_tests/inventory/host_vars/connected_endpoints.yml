@@ -58,6 +58,11 @@ servers:
             mode: individual
             individual:
               profile: INDIVIDUAL_TRUNK
+  - name: DOT1X_UNAUTHORIZED
+    adapters:
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet14]
+        profile: INDIVIDUAL_TRUNK
 
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
@@ -67,3 +72,7 @@ port_profiles:
     native_vlan: 123
     spanning_tree_portfast: "edge"
     spanning_tree_bpdufilter: True
+    dot1x:
+      unauthorized:
+        access_vlan_membership_egress: True
+        native_vlan_membership_egress: True
