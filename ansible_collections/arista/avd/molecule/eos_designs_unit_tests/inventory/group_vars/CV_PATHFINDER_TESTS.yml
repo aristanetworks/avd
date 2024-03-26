@@ -247,6 +247,7 @@ wan_rr:
           ip_address: 10.8.8.8/31
     - name: cv-pathfinder-pathfinder2
       id: 3
+      cv_pathfinder_region: AVD_Land_East
       data_plane_cpu_allocation_max: 3
       l3_interfaces:
         - name: Ethernet1
