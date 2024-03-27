@@ -19,8 +19,6 @@ class AvdTestP2PIPReachability(AvdTestBase):
     """
 
     anta_module = "anta.tests.connectivity"
-    categories = ["IP Reachability"]
-    description = "ip reachability test p2p links"
 
     @cached_property
     def test_definition(self) -> dict | None:
@@ -53,12 +51,12 @@ class AvdTestP2PIPReachability(AvdTestBase):
 
             src_ip = str(ip_interface(interface["ip_address"]).ip)
             dst_ip = str(ip_interface(peer_interface_ip).ip)
-            custom_field = f"Source: {self.device_name}_{interface['name']} - Destination: {peer}_{interface['peer_interface']}"
+            custom_field = f"Source: P2P Interface {interface['name']} (IP: {src_ip}) - Destination: {peer} {interface['peer_interface']} (IP: {dst_ip})"
             anta_tests.append(
                 {
                     "VerifyReachability": {
                         "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
-                        "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
+                        "result_overwrite": {"custom_field": custom_field},
                     }
                 }
             )
@@ -72,8 +70,6 @@ class AvdTestInbandReachability(AvdTestBase):
     """
 
     anta_module = "anta.tests.connectivity"
-    categories = ["Loopback0 Reachability"]
-    description = "Inband Mgmt Reachability"
 
     @cached_property
     def test_definition(self) -> dict | None:
@@ -89,23 +85,27 @@ class AvdTestInbandReachability(AvdTestBase):
             LOGGER.info("No vlan interfaces found. %s is skipped.", self.__class__.__name__)
             return None
 
+        required_keys = ["name", "ip_address"]
+
         for idx, interface in enumerate(vlan_interfaces):
             self.update_interface_shutdown(interface)
-            if not self.validate_data(data=interface, data_path=f"vlan_interfaces.[{idx}]", required_keys="name", type="inband_mgmt", shutdown=False):
+            if not self.validate_data(data=interface, data_path=f"vlan_interfaces.[{idx}]", required_keys=required_keys, type="inband_mgmt", shutdown=False):
                 continue
 
             vrf = interface.get("vrf", "default")
+
+            src_ip = str(ip_interface(interface["ip_address"]).ip)
 
             for dst_node, dst_ip in self.loopback0_mapping:
                 if not self.is_peer_available(dst_node):
                     continue
 
-                custom_field = f"Source: {self.device_name} - {interface['name']} Destination: {dst_ip}"
+                custom_field = f"Source: Inband MGMT SVI {interface['name']} (IP: {src_ip}) - Destination: {dst_node} Loopback0 (IP: {dst_ip})"
                 anta_tests.append(
                     {
                         "VerifyReachability": {
-                            "hosts": [{"source": interface["name"], "destination": dst_ip, "vrf": vrf, "repeat": 1}],
-                            "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
+                            "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": vrf, "repeat": 1}],
+                            "result_overwrite": {"custom_field": custom_field},
                         }
                     }
                 )
@@ -119,8 +119,6 @@ class AvdTestLoopback0Reachability(AvdTestBase):
     """
 
     anta_module = "anta.tests.connectivity"
-    categories = ["Loopback0 Reachability"]
-    description = "Loopback0 Reachability"
 
     @cached_property
     def test_definition(self) -> dict | None:
@@ -136,19 +134,21 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         if not self.validate_data(type="l3leaf"):
             return None
 
-        if (src_ip := self.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")) is None:
+        if (loopback0_ip := self.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")) is None:
             return None
+
+        src_ip = str(ip_interface(loopback0_ip).ip)
 
         for dst_node, dst_ip in self.loopback0_mapping:
             if not self.is_peer_available(dst_node):
                 continue
 
-            custom_field = f"Source: {self.device_name} - {src_ip} Destination: {dst_ip}"
+            custom_field = f"Source: Loopback0 (IP: {src_ip}) - Destination: {dst_node} Loopback0 (IP: {dst_ip})"
             anta_tests.append(
                 {
                     "VerifyReachability": {
-                        "hosts": [{"source": str(ip_interface(src_ip).ip), "destination": dst_ip, "vrf": "default", "repeat": 1}],
-                        "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
+                        "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
+                        "result_overwrite": {"custom_field": custom_field},
                     }
                 }
             )
@@ -162,8 +162,6 @@ class AvdTestLLDPTopology(AvdTestBase):
     """
 
     anta_module = "anta.tests.connectivity"
-    categories = ["LLDP Topology"]
-    description = "LLDP topology - validate peer and interface"
 
     @cached_property
     def test_definition(self) -> dict | None:
@@ -194,7 +192,7 @@ class AvdTestLLDPTopology(AvdTestBase):
             if not self.is_peer_available(peer := interface["peer"]):
                 continue
 
-            custom_field = f"local: {interface['name']} - remote: {peer}_{interface['peer_interface']}"
+            custom_field = f"Local: {interface['name']} - Remote: {peer} {interface['peer_interface']}"
 
             if (dns_domain := get(self.hostvars[peer], "dns_domain")) is not None:
                 peer = f"{peer}.{dns_domain}"
@@ -209,7 +207,7 @@ class AvdTestLLDPTopology(AvdTestBase):
                                 "neighbor_port": str(interface["peer_interface"]),
                             }
                         ],
-                        "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
+                        "result_overwrite": {"custom_field": custom_field},
                     }
                 }
             )

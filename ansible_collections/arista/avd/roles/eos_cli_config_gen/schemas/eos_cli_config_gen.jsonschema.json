@@ -6460,6 +6460,32 @@
         }
       }
     },
+    "ip_ftp_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Ftp Client Source Interfaces"
+    },
     "ip_hardware": {
       "type": "object",
       "properties": {
@@ -7644,6 +7670,58 @@
           "^_.+$": {}
         }
       }
+    },
+    "ip_telnet_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Telnet Client Source Interfaces"
+    },
+    "ip_tftp_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Tftp Client Source Interfaces"
     },
     "ip_virtual_router_mac_address": {
       "type": "string",
@@ -10308,6 +10386,68 @@
       "type": "object",
       "title": "Match Lists",
       "properties": {
+        "prefix_ipv4": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Prefix-List Name.",
+                "title": "Name"
+              },
+              "prefixes": {
+                "type": "array",
+                "minItems": 1,
+                "description": "List of IPv4 prefixes (with the subnet mask e.g. 192.0.2.0/24).",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Prefixes"
+              }
+            },
+            "required": [
+              "prefixes",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Prefix IPv4"
+        },
+        "prefix_ipv6": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Prefix-List Name.",
+                "title": "Name"
+              },
+              "prefixes": {
+                "type": "array",
+                "minItems": 1,
+                "description": "List of IPv6 prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64).",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Prefixes"
+              }
+            },
+            "required": [
+              "prefixes",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Prefix IPv6"
+        },
         "string": {
           "type": "array",
           "items": {

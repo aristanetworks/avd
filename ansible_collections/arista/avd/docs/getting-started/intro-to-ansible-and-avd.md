@@ -428,9 +428,6 @@ If you want to push to switches in the entire fabric using CloudVision, your pla
     - name: Generate device intended config and documentation
       ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
-    - name: Deploy configuration to device
-      ansible.builtin.import_role:
-         name: arista.avd.eos_config_deploy_eapi
 
 - name: Push to CVP
   hosts: CVP
