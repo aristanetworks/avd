@@ -1,0 +1,53 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_internet_exit:
+    type: dict
+    description: Internet-exit feature to configure internet bound service for virtual topologies.
+    keys:
+      policies:
+        type: list
+        description: Internet-exit policy represent a policy which can be attached to a virtual topology profile.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            exit_groups:
+              type: list
+              description: The exit groups that are configured under a policy are strictly ordered, meaning an exit group appearing first has more priority than the exit group that follows it.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+      exit_groups:
+        type: list
+        description: |-
+          Exit groups represent a group of exit options (connections).
+          Traffic flows are load balanced in a round robin fashion across all the members (exits) of the exit-group.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            fib_default:
+              type: bool
+              description: Fib default exit indicates that the flows that select this exit will follow the default route available in the VRF of the flow.
+            local_connections:
+              type: list
+              description: |-
+                Local connections refer to connections configured under the `router_service_insertion`.
+                The service-insertion module reports the health of the connection and the exit will qualify for use only when it is healthy.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
