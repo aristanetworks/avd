@@ -11391,6 +11391,195 @@
       },
       "title": "Monitor Sessions"
     },
+    "monitor_telemetry_postcard": {
+      "type": "object",
+      "properties": {
+        "disabled": {
+          "type": "boolean",
+          "description": "Enable or disable the postcard telemetry feature.",
+          "title": "Disabled"
+        },
+        "ingress": {
+          "type": "object",
+          "properties": {
+            "collection": {
+              "type": "object",
+              "description": "Collector configuration.",
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "description": "Configure source IP address of GRE tunnel.",
+                  "title": "Source"
+                },
+                "destination": {
+                  "type": "string",
+                  "description": "Configure destination IP address of GRE tunnel.",
+                  "title": "Destination"
+                },
+                "version": {
+                  "type": "integer",
+                  "description": "Postcard version",
+                  "enum": [
+                    1,
+                    2
+                  ],
+                  "title": "Version"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Collection"
+            },
+            "sample": {
+              "type": "object",
+              "description": "Configure sampling parameters.",
+              "properties": {
+                "rate": {
+                  "type": "integer",
+                  "description": "Configure sampling rate.",
+                  "enum": [
+                    16384,
+                    32768,
+                    65536
+                  ],
+                  "title": "Rate"
+                },
+                "tcp_udp_checksum": {
+                  "type": "integer",
+                  "description": "Configure TCP/UDP checksum or IP ID checksum.",
+                  "title": "TCP UDP Checksum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Sample"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Ingress"
+        },
+        "profiles": {
+          "type": "array",
+          "description": "Configure the postcard telemetry profile.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Profile name",
+                "title": "Name"
+              },
+              "ingress_sample_policy": {
+                "type": "string",
+                "description": "Configure ingress sample policy for the profile.",
+                "title": "Ingress Sample Policy"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Profiles"
+        },
+        "sample_policies": {
+          "type": "array",
+          "description": "Configure sample policies.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Configure sample policy name.",
+                "title": "Name"
+              },
+              "match_rules": {
+                "type": "array",
+                "description": "Configure rules for sample policy.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "rule_name": {
+                      "type": "string",
+                      "title": "Rule Name"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Select the IP address version.",
+                      "enum": [
+                        "ipv4",
+                        "ipv6"
+                      ],
+                      "title": "Type"
+                    },
+                    "destination_prefix": {
+                      "type": "string",
+                      "description": "IPv4 Network/Mask or IPv6 Network/Mask.",
+                      "title": "Destination Prefix"
+                    },
+                    "source_prefix": {
+                      "type": "string",
+                      "description": "IPv4 Network/Mask or IPv6 Network/Mask.",
+                      "title": "Source Prefix"
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "Select TCP/UDP.",
+                      "enum": [
+                        "tcp",
+                        "udp"
+                      ],
+                      "title": "Protocol"
+                    },
+                    "destination_port": {
+                      "type": "array",
+                      "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                      "title": "Destination Port"
+                    },
+                    "source_port": {
+                      "type": "array",
+                      "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                      "title": "Source Port"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "rule_name"
+                  ]
+                },
+                "title": "Match Rules"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Sample Policies"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Monitor Telemetry Postcard"
+    },
     "mpls": {
       "type": "object",
       "properties": {
