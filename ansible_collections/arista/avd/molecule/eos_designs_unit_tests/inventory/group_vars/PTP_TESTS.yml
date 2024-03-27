@@ -86,6 +86,20 @@ servers:
           enabled: true
           endpoint_role: follower
 
+  - name: Endpoint-with-mpass
+    adapters:
+      - endpoint_ports: [ PCI1, PCI2 ]
+        switch_ports: [ Ethernet6, Ethernet6 ]
+        switches: [ ptp-tests-leaf1, ptp-tests-leaf2 ]
+        vlans: 11
+        mode: access
+        ptp:
+          enabled: true
+          endpoint_role: follower
+        port_channel:
+          mode: "active"
+          ptp_mpass: true
+
   - name: Endpoint-with-specific-PTP-profile
     adapters:
       - endpoint_ports: [ eth3 ]

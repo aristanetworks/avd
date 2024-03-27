@@ -10151,6 +10151,12 @@
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
+              "ptp_mpass": {
+                "type": "boolean",
+                "default": false,
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "PTP Mpass"
+              },
               "short_esi": {
                 "type": "string",
                 "description": "In format xxxx:xxxx:xxxx or \"auto\".\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.",
@@ -11206,6 +11212,11 @@
                           "layer2"
                         ],
                         "title": "Transport"
+                      },
+                      "mpass": {
+                        "type": "boolean",
+                        "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                        "title": "Mpass"
                       }
                     },
                     "additionalProperties": false,
@@ -16460,6 +16471,12 @@
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
+              "ptp_mpass": {
+                "type": "boolean",
+                "default": false,
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "PTP Mpass"
+              },
               "short_esi": {
                 "type": "string",
                 "description": "In format xxxx:xxxx:xxxx or \"auto\".\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.",
@@ -17515,6 +17532,11 @@
                           "layer2"
                         ],
                         "title": "Transport"
+                      },
+                      "mpass": {
+                        "type": "boolean",
+                        "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                        "title": "Mpass"
                       }
                     },
                     "additionalProperties": false,
