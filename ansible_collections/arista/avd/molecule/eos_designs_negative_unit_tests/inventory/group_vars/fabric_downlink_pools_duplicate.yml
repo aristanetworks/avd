@@ -1,0 +1,38 @@
+---
+fabric_name: fabric_downlink_pools_duplicate
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - downlink-pools-duplicate-spine
+  - node_type: l3leaf
+    match_hostnames:
+      - downlink-pools-duplicate-l3leaf
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+    bgp_as: 65000
+  nodes:
+    - name: downlink-pools-duplicate-spine
+      downlink_pools:
+        - ipv4_pool: 10.0.2.0/24
+          downlink_interfaces: [Ethernet3]
+      id: 10
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.1.0/24
+    uplink_ipv4_pool: 10.0.2.0/24
+    vtep_loopback_ipv4_pool: 192.168.2.0/24
+    bgp_as: 65000-65100
+    uplink_switches: [downlink-pools-duplicate-spine]
+    uplink_interfaces: [Ethernet1]
+  nodes:
+    - name: downlink-pools-duplicate-l3leaf
+      id: 10
+      uplink_switch_interfaces: [Ethernet3]
+
+expected_error_message: >-
+  Unexpected failure during module execution: Unable to assign IPs for uplinks. 'uplink_ipv4_pool' (10.0.2.0/24)
+  on this switch cannot be combined with 'downlink_pools' (10.0.2.0/24) on any uplink switch.

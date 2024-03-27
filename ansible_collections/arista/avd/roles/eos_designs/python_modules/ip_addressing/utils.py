@@ -6,7 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
     from .avdipaddressing import AvdIpAddressing
@@ -107,3 +109,65 @@ class UtilsMixin:
             odd_id = self._mlag_secondary_id
 
         return int((odd_id - 1) / 2)
+
+    def _get_downlink_ipv4_pool_and_offset(self: "AvdIpAddressing", uplink_switch_index: int) -> tuple[str, int]:
+        """
+        Returns the downlink IP pool and offset as a tuple according to the uplink_switch_index
+
+        Offset is the matching interface's index in the list of downlink_interfaces
+        (None, None) is returned if downlink_pools are not used
+        """
+
+        uplink_switch_interface = self.shared_utils.uplink_switch_interfaces[uplink_switch_index]
+        uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
+        peer_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
+        downlink_pools = get(peer_facts, "downlink_pools")
+
+        if not downlink_pools:
+            return (None, None)
+
+        for downlink_pool_and_interfaces in downlink_pools:
+            downlink_interfaces = range_expand(get(downlink_pool_and_interfaces, "downlink_interfaces"))
+
+            for interface_index, downlink_interface in enumerate(downlink_interfaces):
+                if uplink_switch_interface == downlink_interface:
+                    return (get(downlink_pool_and_interfaces, "ipv4_pool"), interface_index)
+
+        # If none of the interfaces match up, throw error
+        raise AristaAvdError(
+            f"'downlink_pools' was defined at uplink_switch, but one of the 'uplink_switch_interfaces' ({uplink_switch_interface}) "
+            "in the downlink_switch does not match any of the downlink_pools"
+        )
+
+    def _get_p2p_ipv4_pool_and_offset(self: "AvdIpAddressing", uplink_switch_index: int) -> tuple[str, int]:
+        """
+        Returns IP pool and offset as a tuple according to the uplink_switch_index
+
+        Uplink pool or downlink pool is returned with its corresponding offset
+        A downlink pool's offset is the matching interface's index in the list of downlink_interfaces
+        A uplink pool's offset is `((id - 1) * 2 * max_uplink_switches * max_parallel_uplinks) + (uplink_switch_index * 2) + 1`
+
+        One and only one of these pools are required to be set, otherwise an error will be thrown
+        """
+
+        uplink_pool = self.shared_utils.uplink_ipv4_pool
+        if self.shared_utils.uplink_ipv4_pool:
+            uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
+
+        downlink_pool, downlink_offset = self._get_downlink_ipv4_pool_and_offset(uplink_switch_index)
+
+        if uplink_pool is not None and downlink_pool is not None:
+            raise AristaAvdError(
+                f"Unable to assign IPs for uplinks. 'uplink_ipv4_pool' ({uplink_pool}) on this switch cannot be combined "
+                f"with 'downlink_pools' ({downlink_pool}) on any uplink switch."
+            )
+
+        if uplink_pool is None and downlink_pool is None:
+            raise AristaAvdMissingVariableError(
+                "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches"
+            )
+
+        if downlink_pool is None:
+            return (uplink_pool, uplink_offset)
+
+        return (downlink_pool, downlink_offset)

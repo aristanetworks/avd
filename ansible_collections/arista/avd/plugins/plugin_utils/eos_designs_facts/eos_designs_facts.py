@@ -127,6 +127,15 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
         return None
 
     @cached_property
+    def downlink_pools(self) -> dict | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        if self.shared_utils.underlay_router:
+            return self.shared_utils.downlink_pools
+        return None
+
+    @cached_property
     def bgp_as(self) -> str | None:
         """
         Exposed in avd_switch_facts

@@ -1,0 +1,34 @@
+---
+fabric_name: fabric_downlink_pools_missing
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - downlink-pools-missing-spine
+  - node_type: l3leaf
+    match_hostnames:
+      - downlink-pools-missing-l3leaf
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+    bgp_as: 65000
+  nodes:
+    - name: downlink-pools-missing-spine
+      id: 10
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.1.0/24
+    vtep_loopback_ipv4_pool: 192.168.2.0/24
+    bgp_as: 65000-65100
+    uplink_switches: [downlink-pools-missing-spine]
+    uplink_interfaces: [Ethernet1]
+  nodes:
+    - name: downlink-pools-missing-l3leaf
+      id: 10
+      uplink_switch_interfaces: [Ethernet3]
+
+expected_error_message: >-
+  Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on
+  all the uplink switches is required but was not found for host 'downlink-pools-missing-l3leaf'
