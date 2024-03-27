@@ -1,0 +1,51 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - router segment-security #}
+{% if router_segment_security is arista.avd.defined %}
+!
+router segment-security
+{%     if router_segment_security.enabled is arista.avd.defined(true) %}
+   no shutdown
+{%     endif %}
+{%     if router_segment_security.policies is arista.avd.defined %}
+{%         for policy in router_segment_security.policies %}
+   !
+   policy {{ policy.name }}
+{%             for sequence in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%                 if sequence.action != "redirect" %}
+{%                     set action = sequence.action ~ " stateless" %}
+{%                 else %}
+{%                     set action = sequence.action ~ " next-hop " ~ sequence.next_hop %}
+{%                 endif %}
+      {{ sequence.sequence }} application {{ sequence.application }} action {{ action }}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+{%     if router_segment_security.vrfs is arista.avd.defined %}
+{%         for vrf in router_segment_security.vrfs | arista.avd.natural_sort('name') %}
+   !
+   vrf {{ vrf.name }}
+{%             for segment in vrf.segments %}
+      segment {{ segment.name }}
+         definition
+{%                 for entry in segment.definition | arista.avd.natural_sort('name') %}
+{%                     if entry.covered is arista.avd.defined %}
+{%                         set host_cli = "match covered prefix-list " %}
+{%                     else %}
+{%                         set host_cli = "match prefix-" %}
+{%                     endif %}
+{%                     set host_cli = host_cli ~ entry.address_family ~ " " ~ entry.name %}
+            {{ host_cli }}
+{%                 endfor %}
+         !
+         policies
+{%                 for entry in segment.policies | arista.avd.natural_sort('name') %}
+            from {{ entry.source }} policy {{ entry.policy }}
+{%                 endfor %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+{% endif %}
