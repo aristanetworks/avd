@@ -12,7 +12,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") | String |  |  | Valid Values:<br>- <code>bash</code><br>- <code>increment</code><br>- <code>log</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") | String |  |  |  | Command to execute<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "event_handlers.[].delay") | Integer |  |  |  | Event-handler delay in seconds<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger</samp>](## "event_handlers.[].trigger") | String |  |  | Valid Values:<br>- <code>on-boot</code><br>- <code>on-logging</code><br>- <code>on-startup-config</code> | Configure event trigger condition.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger</samp>](## "event_handlers.[].trigger") | String |  |  | Valid Values:<br>- <code>on-boot</code><br>- <code>on-logging</code><br>- <code>on-startup-config</code><br>- <code>on-maintenance</code> | Configure event trigger condition.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger_on_maintenance</samp>](## "event_handlers.[].trigger_on_maintenance") | Dictionary |  |  |  | Settings required for trigger 'on-maintenance'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;operation</samp>](## "event_handlers.[].trigger_on_maintenance.operation") | String | Required |  | Valid Values:<br>- <code>enter</code><br>- <code>exit</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "event_handlers.[].trigger_on_maintenance.bgp") | Dictionary |  |  |  | Trigger condition occurs on maintenance operation of specified BGP peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "event_handlers.[].trigger_on_maintenance.bgp.peer") | String |  |  |  | Ipv4/Ipv6 address or peer group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].trigger_on_maintenance.action") | String | Required |  | Valid Values:<br>- <code>after</code><br>- <code>before</code><br>- <code>all</code><br>- <code>begin</code><br>- <code>end</code> | Action for maintenance operation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage</samp>](## "event_handlers.[].trigger_on_maintenance.stage") | String |  |  | Valid Values:<br>- <code>bgp</code><br>- <code>linkdown</code><br>- <code>mlag</code><br>- <code>ratemon</code> | Action is triggered after/before specified stage. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "event_handlers.[].trigger_on_maintenance.vrf") | String |  |  |  | VRF name. VRF can be defined for "bgp" only. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "event_handlers.[].trigger_on_maintenance.interface") | String |  |  |  | Trigger condition occurs on maintenance operation of specified interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "event_handlers.[].trigger_on_maintenance.unit") | String |  |  |  | Name of unit. Trigger condition occurs on maintenance operation of specified unit |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") | String |  |  |  | Regular expression to use for searching log messages. Required for on-logging trigger<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous</samp>](## "event_handlers.[].asynchronous") | Boolean |  | `False` |  | Set the action to be non-blocking.<br> |
 
@@ -35,7 +44,32 @@
         delay: <int>
 
         # Configure event trigger condition.
-        trigger: <str; "on-boot" | "on-logging" | "on-startup-config">
+        trigger: <str; "on-boot" | "on-logging" | "on-startup-config" | "on-maintenance">
+
+        # Settings required for trigger 'on-maintenance'.
+        trigger_on_maintenance:
+          operation: <str; "enter" | "exit"; required>
+
+          # Trigger condition occurs on maintenance operation of specified BGP peer.
+          bgp:
+
+            # Ipv4/Ipv6 address or peer group name.
+            peer: <str>
+
+          # Action for maintenance operation.
+          action: <str; "after" | "before" | "all" | "begin" | "end"; required>
+
+          # Action is triggered after/before specified stage.
+          stage: <str; "bgp" | "linkdown" | "mlag" | "ratemon">
+
+          # VRF name. VRF can be defined for "bgp" only.
+          vrf: <str>
+
+          # Trigger condition occurs on maintenance operation of specified interface.
+          interface: <str>
+
+          # Name of unit. Trigger condition occurs on maintenance operation of specified unit
+          unit: <str>
 
         # Regular expression to use for searching log messages. Required for on-logging trigger
         regex: <str>
