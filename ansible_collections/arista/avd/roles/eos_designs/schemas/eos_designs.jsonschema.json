@@ -246,7 +246,7 @@
                   },
                   "protocol_ranges": {
                     "type": "array",
-                    "description": "Acccept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
+                    "description": "Accept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
                     "items": {
                       "type": "string"
                     },
@@ -16799,7 +16799,7 @@
                             },
                             "protocol_ranges": {
                               "type": "array",
-                              "description": "Acccept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
+                              "description": "Accept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
                               "items": {
                                 "type": "string"
                               },
