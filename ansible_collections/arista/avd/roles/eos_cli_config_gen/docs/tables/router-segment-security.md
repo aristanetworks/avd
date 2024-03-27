@@ -22,10 +22,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.vrfs.[].segments.[].name") | String | Required, Unique |  |  | Segment name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;definition</samp>](## "router_segment_security.vrfs.[].segments.[].definition") | List, items: Dictionary | Required |  | Max Length: 2 | The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].name") | String |  |  |  | The name of the prefix match-list. You can have a maximum of one per address-family. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].address_family") | String | Required |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Indicate which address-family the match list belongs to e.g. ipv4 or ipv6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].address_family") | String | Required, Unique |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Indicate which address-family the match list belongs to e.g. ipv4 or ipv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;covered</samp>](## "router_segment_security.vrfs.[].segments.[].definition.[].covered") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "router_segment_security.vrfs.[].segments.[].policies") | List, items: Dictionary | Required |  |  | The policies controlling traffic into the segment. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "router_segment_security.vrfs.[].segments.[].policies.[].source") | String |  |  |  | The name of the source segment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "router_segment_security.vrfs.[].segments.[].policies.[].source") | String | Required, Unique |  |  | The name of the source segment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "router_segment_security.vrfs.[].segments.[].policies.[].policy") | String |  |  |  | The name of the policy to apply. The built-in policies are 'policy-forward-all' and 'policy-drop-all'. |
 
 === "YAML"
@@ -68,14 +68,14 @@
                 - name: <str>
 
                   # Indicate which address-family the match list belongs to e.g. ipv4 or ipv6.
-                  address_family: <str; "ipv4" | "ipv6"; required>
+                  address_family: <str; "ipv4" | "ipv6"; required; unique>
                   covered: <bool; default=False>
 
               # The policies controlling traffic into the segment.
               policies: # required
 
                   # The name of the source segment.
-                - source: <str>
+                - source: <str; required; unique>
 
                   # The name of the policy to apply. The built-in policies are 'policy-forward-all' and 'policy-drop-all'.
                   policy: <str>

@@ -23746,7 +23746,10 @@
                         "additionalProperties": false,
                         "patternProperties": {
                           "^_.+$": {}
-                        }
+                        },
+                        "required": [
+                          "source"
+                        ]
                       },
                       "title": "Policies"
                     }

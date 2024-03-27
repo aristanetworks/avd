@@ -13670,6 +13670,7 @@ keys:
                     description: The set of match-lists that define the segment. These
                       can be a mix of IPv4 and IPv6 lists.
                     max_length: 2
+                    primary_key: address_family
                     items:
                       type: dict
                       keys:
@@ -13692,6 +13693,7 @@ keys:
                     type: list
                     required: true
                     description: The policies controlling traffic into the segment.
+                    primary_key: source
                     items:
                       type: dict
                       keys:
