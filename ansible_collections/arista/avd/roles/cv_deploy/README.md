@@ -32,7 +32,10 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
 
 - It is not possible to authenticate with username/password.
 - Configuration deployment is based on the "Static Configuration Studio" which is still a Beta feature on CloudVision.
+  - This role is **only** supported on **CloudVision as a Service (CVaaS)** or "on-prem" **CloudVision 2024.1.0** or later.
   - Make sure to enable "Studios - End-to-End Provisioning" under Settings, Features.
+
+![Figure 1: Ansible Role arista.avd.cv_deploy](../../docs/_media/studios_end_to_end_provisioning.png)
 
 ## Roadmap
 
@@ -69,10 +72,10 @@ The workspace will be built and submitted, and a change control will be created 
 
 ## Role Inputs and Outputs
 
-Figure 1 below provides a visualization of the role's inputs, outputs executed by the role.
+Figure 2 below provides a visualization of the role's inputs, outputs executed by the role.
 
-![Figure 1: Ansible Role arista.avd.cv_deploy](../../docs/_media/cv_deploy_dark.svg#only-dark)
-![Figure 1: Ansible Role arista.avd.cv_deploy](../../docs/_media/cv_deploy_light.svg#only-light)
+![Figure 2: Ansible Role arista.avd.cv_deploy](../../docs/_media/cv_deploy_dark.svg#only-dark)
+![Figure 2: Ansible Role arista.avd.cv_deploy](../../docs/_media/cv_deploy_light.svg#only-light)
 
 ### Inputs
 
