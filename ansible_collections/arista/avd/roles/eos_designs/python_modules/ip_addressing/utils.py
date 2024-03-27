@@ -135,7 +135,7 @@ class UtilsMixin:
 
         # If none of the interfaces match up, throw error
         raise AristaAvdError(
-            f"'downlink_pools' was defined at uplink_switch, but one of the 'uplink_switch_interfaces' ({uplink_switch_interface})"
+            f"'downlink_pools' was defined at uplink_switch, but one of the 'uplink_switch_interfaces' ({uplink_switch_interface}) "
             f"in the downlink_switch does not match any of the downlink_pools"
         )
 
