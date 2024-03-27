@@ -149,10 +149,6 @@ keys:
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       wan_overlay_peers:
         type: dict
-        documentation_options:
-          table: wan-bgp-peer-groups
-        description: |-
-          PREVIEW: This key is currently not supported
         keys:
           name:
             type: str
@@ -189,25 +185,20 @@ keys:
             items:
               type: str
               description: The prefixes to use in listen_range.
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+              - str
+            default: 1
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
-          ttl_maximum_hops:
-            type: int
-            convert_types:
-              - str
-            default: 1
       wan_rr_overlay_peers:
         type: dict
-        documentation_options:
-          table: wan-bgp-peer-groups
-        description: |-
-          PREVIEW: This key is currently not supported
-          Configuration options for the peer-group created to peer between
-          AutoVPN RRs or CV-Pathfinders.
+        description: Configuration options for the peer-group created to peer between AutoVPN RRs or CV Pathfinders.
         keys:
           name:
             type: str
@@ -236,17 +227,17 @@ keys:
               multiplier:
                 type: int
                 default: 10
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+              - str
+            default: 1
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
-          ttl_maximum_hops:
-            type: int
-            convert_types:
-              - str
-            default: 1
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:

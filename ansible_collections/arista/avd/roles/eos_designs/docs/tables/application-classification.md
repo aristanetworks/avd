@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>application_classification</samp>](## "application_classification") | Dictionary |  |  |  | PREVIEW: WAN Preview |
+    | [<samp>application_classification</samp>](## "application_classification") | Dictionary |  |  |  | Application traffic recognition configuration. |
     | [<samp>&nbsp;&nbsp;categories</samp>](## "application_classification.categories") | List, items: Dictionary |  |  |  | List of categories. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "application_classification.categories.[].name") | String | Required, Unique |  |  | Category name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;applications</samp>](## "application_classification.categories.[].applications") | List, items: Dictionary |  |  |  | List of applications. |
@@ -49,7 +49,7 @@
 === "YAML"
 
     ```yaml
-    # PREVIEW: WAN Preview
+    # Application traffic recognition configuration.
     application_classification:
 
       # List of categories.

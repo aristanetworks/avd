@@ -9,15 +9,17 @@ keys:
   cv_pathfinder_regions:
     documentation_options:
       table: wan-cv-pathfinder-regions
-    description: |-
-      PREVIEW: This key is currently not supported
-      Define the SDWAN hierarchy for the device.
+    description: Define the CV Pathfinder hierarchy.
     type: list
     primary_key: name
     items:
       type: dict
       $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/region"
       keys:
+        name:
+          type: str
+          description: |-
+            The region name.
         description:
           type: str
         id:
@@ -33,16 +35,20 @@ keys:
             type: dict
             $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site"
             keys:
+              name:
+                type: str
+                description: |-
+                  The site name.
               description:
                 type: str
               id:
                 type: int
                 description: |-
-                  The Site ID must be unique within a zone.
-                  Given that all the Sites are placed in a Zone named after the Region, the Site ID must be unique within a Region.
+                  The site ID must be unique within a zone.
+                  Given that all the sites are placed in a zone named after the region, the site ID must be unique within a region.
               location:
                 type: str
-                description: Will be interpreted
+                description: Location as a sring is resolved on Cloudvision.
               site_contact:
                 type: str
               site_after_hours_contact:

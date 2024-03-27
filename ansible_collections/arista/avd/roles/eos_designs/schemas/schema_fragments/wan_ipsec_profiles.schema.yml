@@ -9,10 +9,7 @@ keys:
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
-    description: |-
-      PREVIEW: This key is currently not supported
-
-      Define IPsec profiles parameters for WAN configuration.
+    description: Define IPsec profiles parameters for WAN configuration.
     type: dict
     keys:
       control_plane:

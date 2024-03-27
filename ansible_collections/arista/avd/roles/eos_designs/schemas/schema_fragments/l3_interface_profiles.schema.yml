@@ -9,10 +9,8 @@ keys:
   l3_interface_profiles:
     type: list
     documentation_options:
-      table: wan-interfaces-settings
+      table: node-type-l3-interfaces-configuration
     description: |-
-      PREVIEW: This key is currently not supported
-
       Profiles to inherit common settings for l3_interfaces defined under the node type key.
       These profiles will *not* work for `l3_interfaces` defined under `vrfs`.
     primary_key: profile
