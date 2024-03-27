@@ -185,7 +185,6 @@ AVD provides the capability to customize your node types, supporting a variety o
         type: spine
         default_evpn_role: server
         default_ptp_priority1: 20
-        cv_tags_topology_type: spine
 
       - key: l3leaf
         type: l3leaf
@@ -197,7 +196,6 @@ AVD provides the capability to customize your node types, supporting a variety o
           l2: true
           l3: true
         vtep: true
-        cv_tags_topology_type: leaf
 
       - key: l2leaf
         type: l2leaf
@@ -207,16 +205,13 @@ AVD provides the capability to customize your node types, supporting a variety o
           l2: true
         underlay_router: false
         uplink_type: port-channel
-        cv_tags_topology_type: leaf
 
       - key: super_spine
         type: super-spine
-        cv_tags_topology_type: core
 
       - key: overlay_controller
         type: overlay-controller
         default_evpn_role: server
-        cv_tags_topology_type: spine
 
       - key: wan_router
         type: wan_router
@@ -227,7 +222,6 @@ AVD provides the capability to customize your node types, supporting a variety o
         network_services:
           l3: true
         vtep: true
-        cv_tags_topology_type: wan
 
       - key: wan_rr
         type: wan_rr
@@ -238,7 +232,6 @@ AVD provides the capability to customize your node types, supporting a variety o
         network_services:
           l3: true
         vtep: true
-        cv_tags_topology_type: wan
     ```
 
 ??? example "Default value for design `l2ls`"
