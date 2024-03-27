@@ -7,3 +7,19 @@ plugin_routing:
       deprecation:
         removal_version: 5.0.0
         warning_text: Use arista.avd.snmp_hash instead
+  modules:
+    deploy_to_cv:
+      deprecation:
+        removal_version: 4.8.0
+        warning_text: |-
+          The preview module 'arista.avd.deploy_to_cv' has been released under the new name 'arista.avd.cv_workflow'.
+          The module will be redirected automatically until AVD version 4.8.0 after which it will be removed.
+      redirect: arista.avd.cv_workflow
+  action:
+    deploy_to_cv:
+      deprecation:
+        removal_version: 4.8.0
+        warning_text: |-
+          The preview module 'arista.avd.deploy_to_cv' has been released under the new name 'arista.avd.cv_workflow'.
+          The module will be redirected automatically until AVD version 4.8.0 after which it will be removed.
+      redirect: arista.avd.cv_workflow

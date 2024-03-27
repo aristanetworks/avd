@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Ansible Collection Role deploy_to_cv
+title: Ansible Collection Role cv_deploy
 ---
 <!--
   ~ Copyright (c) 2024 Arista Networks, Inc.
@@ -8,18 +8,11 @@ title: Ansible Collection Role deploy_to_cv
   ~ that can be found in the LICENSE file.
   -->
 
-# arista.avd.deploy_to_cv
-
-!!! warning
-    `arista.avd.deploy_to_cv` is in preview. Everything is subject to change.
-
-    The role will fail to run unless `deploy_to_cv_accept_preview` is set. Make sure to read this document before accepting. Especially the notes under [limitations](#limitations).
-
-    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
+# arista.avd.cv_deploy
 
 ## Overview
 
-**arista.avd.deploy_to_cv** deploys EOS device configurations and tags to the CloudVision management platform.
+**arista.avd.cv_deploy** deploys EOS device configurations and tags to the CloudVision management platform.
 
 Depending on the configured options, the role supports multiple operations:
 
@@ -43,13 +36,12 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
 
 ## Roadmap
 
-This feature is still under "preview", so several planned features are not implemented yet.
+This feature is still under development, so several planned features are not implemented yet.
 
 - Make all timeouts configurable. Current exposed settings have no effect.
 - Detect changes in configlets and only update when needed. (Depends on newer API)
 - Validate tag labels and values
 - Detect conflicting devices like using the same serial number or mac for more than one hostname.
-- Support waiting for change controls to complete before returning.
 - Support for assigning change control templates.
 - Add automatic testing.
 - Add required CloudVision versions once the APIs are generally available.
@@ -67,11 +59,10 @@ This basic example will deploy configurations and tags for all devices in the in
   tasks:
     - name: Deploy configurations and tags to CloudVision
       ansible.builtin.import_role:
-        name: arista.avd.deploy_to_cv
+        name: arista.avd.cv_deploy
       vars:
         cv_server: www.arista.io
         cv_token: <insert service_account token here - use Ansible Vault>
-        deploy_to_cv_accept_preview: true
 ```
 
 The workspace will be built and submitted, and a change control will be created and left in `pending approval` state.
@@ -80,23 +71,12 @@ The workspace will be built and submitted, and a change control will be created 
 
 Figure 1 below provides a visualization of the role's inputs, outputs executed by the role.
 
-![Figure 1: Ansible Role arista.avd.deploy_to_cv](../../docs/_media/deploy_to_cv_dark.svg#only-dark)
-![Figure 1: Ansible Role arista.avd.deploy_to_cv](../../docs/_media/deploy_to_cv_light.svg#only-light)
+![Figure 1: Ansible Role arista.avd.cv_deploy](../../docs/_media/cv_deploy_dark.svg#only-dark)
+![Figure 1: Ansible Role arista.avd.cv_deploy](../../docs/_media/cv_deploy_light.svg#only-light)
 
 ### Inputs
 
 All `cv_*` settings described below can be set either as inventory variables, group_vars, host_vars or directly in the playbook task under `vars`.
-
-#### Accept Preview
-
-Since the role is in preview and subject to change, it will require acceptance before using.
-Make sure to read this document before accepting. Especially the notes under [limitations](#limitations).
-
-```yaml
-deploy_to_cv_accept_preview: true
-```
-
-Once the role and underlying libraries leave "preview" state, this can be removed.
 
 #### CloudVision Server configuration
 
@@ -147,9 +127,7 @@ By default this role will deploy configurations for all hosts targeted by the An
   tasks:
     - name: Deploy configurations and tags to CloudVision
       ansible.builtin.import_role:
-        name: arista.avd.deploy_to_cv
-      vars:
-        deploy_to_cv_accept_preview: true
+        name: arista.avd.cv_deploy
 ```
 
 This playbook targets the Ansible inventory group "FABRIC", so all devices under this group will be used for the deployment.
@@ -233,7 +211,7 @@ cv_strict_tags: false
 # Set the template to be used to generate the configlet names in CloudVision Static Config Studio.
 cv_configlet_name_template: "AVD-${hostname}"
 
-# If true, detailed deployment results will be registered into 'deploy_to_cv_results' variable.
+# If true, detailed deployment results will be registered into 'cv_deploy_results' variable.
 # Otherwise only the basic result like 'failed', 'warnings' and 'errors' are registered.
 # There is a small performance impact on this, which is why it is not registered by default.
 cv_register_detailed_results: false
@@ -250,7 +228,7 @@ The directories are configured with the same variables as for the other AVD role
 
 ```yaml
 --8<--
-roles/deploy_to_cv/defaults/main/directories.yml
+roles/cv_deploy/defaults/main/directories.yml
 --8<--
 ```
 
