@@ -1048,6 +1048,8 @@ vlan_interfaces:
   - 10.3.11.1/24
   ipv6_virtual_router_addresses:
   - 2001:db8:311::1
+  access_group_in: ACL_IN
+  access_group_out: ACL_OUT
   vrf: Tenant_D_OP_Zone
 - name: Vlan412
   tenant: Tenant_D

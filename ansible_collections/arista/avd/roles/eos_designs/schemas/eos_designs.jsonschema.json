@@ -21898,6 +21898,16 @@
                   },
                   "title": "IPv6 Virtual Router Addresses"
                 },
+                "access_group_in": {
+                  "type": "string",
+                  "description": "Access-group is assigned on an interface to filter the data packets as they enter the interface.",
+                  "title": "Access Group In"
+                },
+                "access_group_out": {
+                  "type": "string",
+                  "description": "Access-group is assigned on an interface to filter the data packets as they leave the interface.",
+                  "title": "Access Group Out"
+                },
                 "ip_helpers": {
                   "type": "array",
                   "description": "IP helper for DHCP relay",
@@ -23633,6 +23643,16 @@
               "description": "IPv6_address"
             },
             "title": "IPv6 Virtual Router Addresses"
+          },
+          "access_group_in": {
+            "type": "string",
+            "description": "Access-group is assigned on an interface to filter the data packets as they enter the interface.",
+            "title": "Access Group In"
+          },
+          "access_group_out": {
+            "type": "string",
+            "description": "Access-group is assigned on an interface to filter the data packets as they leave the interface.",
+            "title": "Access Group Out"
           },
           "ip_helpers": {
             "type": "array",
