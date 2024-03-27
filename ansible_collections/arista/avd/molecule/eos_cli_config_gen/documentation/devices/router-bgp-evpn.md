@@ -260,7 +260,6 @@ router bgp 65101
       neighbor ADDITIONAL-PATH-PG-5 activate
       neighbor ADDITIONAL-PATH-PG-5 additional-paths send limit 42
       neighbor ADDITIONAL-PATH-PG-6 activate
-      no neighbor ADDITIONAL-PATH-PG-6 additional-paths send any
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan

@@ -968,32 +968,7 @@ keys:
                     - "mpls"
                 additional_paths:
                   type: dict
-                  keys:
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send
-                          convert_types:
-                            - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send
-                          convert_types:
-                            - str
-                          min: 2
-                          max: 64
+                  $ref: "eos_cli_config_gen#/$defs/additional_paths"
           evpn_hostflap_detection:
             type: dict
             keys:
@@ -1618,32 +1593,7 @@ keys:
             keys:
               additional_paths:
                 type: dict
-                keys:
-                  receive:
-                    type: bool
-                  send:
-                    type: dict
-                    keys:
-                      any:
-                        type: bool
-                      backup:
-                        type: bool
-                      ecmp:
-                        type: bool
-                      ecmp_limit:
-                        type: int
-                        description: Amount of ECMP paths to send
-                        convert_types:
-                          - str
-                        min: 2
-                        max: 64
-                      limit:
-                        type: int
-                        description: Amount of paths to send
-                        convert_types:
-                          - str
-                        min: 2
-                        max: 64
+                $ref: "eos_cli_config_gen#/$defs/additional_paths"
           neighbors:
             type: list
             primary_key: ip_address
@@ -1658,36 +1608,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  keys:
-                    install:
-                      type: bool
-                    install_ecmp_primary:
-                      type: bool
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send
-                          convert_types:
-                            - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send
-                          convert_types:
-                            - str
-                          min: 2
-                          max: 64
+                  $ref: "eos_cli_config_gen#/$defs/additional_paths"
           peer_groups:
             type: list
             primary_key: name
@@ -1701,36 +1622,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  keys:
-                    install:
-                      type: bool
-                    install_ecmp_primary:
-                      type: bool
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send
-                          convert_types:
-                            - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send
-                          convert_types:
-                            - str
-                          min: 2
-                          max: 64
+                  $ref: "eos_cli_config_gen#/$defs/additional_paths"
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -2232,36 +2124,7 @@ keys:
                             - "permit"
                     additional_paths:
                       type: dict
-                      keys:
-                        install:
-                          type: bool
-                        install_ecmp_primary:
-                          type: bool
-                        receive:
-                          type: bool
-                        send:
-                          type: dict
-                          keys:
-                            any:
-                              type: bool
-                            backup:
-                              type: bool
-                            ecmp:
-                              type: bool
-                            ecmp_limit:
-                              type: int
-                              description: Amount of ECMP paths to send
-                              convert_types:
-                                - str
-                              min: 2
-                              max: 64
-                            limit:
-                              type: int
-                              description: Amount of paths to send
-                              convert_types:
-                                - str
-                              min: 2
-                              max: 64
+                      $ref: "eos_cli_config_gen#/$defs/additional_paths"
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -2333,36 +2196,7 @@ keys:
                             - "permit"
                     additional_paths:
                       type: dict
-                      keys:
-                        install:
-                          type: bool
-                        install_ecmp_primary:
-                          type: bool
-                        receive:
-                          type: bool
-                        send:
-                          type: dict
-                          keys:
-                            any:
-                              type: bool
-                            backup:
-                              type: bool
-                            ecmp:
-                              type: bool
-                            ecmp_limit:
-                              type: int
-                              description: Amount of ECMP paths to send
-                              convert_types:
-                                - str
-                              min: 2
-                              max: 64
-                            limit:
-                              type: int
-                              description: Amount of paths to send
-                              convert_types:
-                                - str
-                              min: 2
-                              max: 64
+                      $ref: "eos_cli_config_gen#/$defs/additional_paths"
                 neighbors:
                   type: list
                   primary_key: ip_address
