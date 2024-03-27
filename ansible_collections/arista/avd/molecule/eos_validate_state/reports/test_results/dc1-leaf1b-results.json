@@ -1,30 +1,6 @@
 [
   {
     "name": "dc1-leaf1b",
-    "test": "VerifyTacacsServerGroups",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies if the provided TACACS server group(s) are configured."
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyTacacsServers",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS servers are configured for a specified VRF."
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyTacacsSourceIntf",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS source-interface for a specified VRF."
-  },
-  {
-    "name": "dc1-leaf1b",
     "test": "VerifyAcctConsoleMethods",
     "categories": [
       "aaa"
@@ -57,75 +33,90 @@
   },
   {
     "name": "dc1-leaf1b",
-    "test": "VerifyRoutingProtocolModel",
+    "test": "VerifyTacacsServerGroups",
     "categories": [
-      "BGP"
+      "aaa"
     ],
-    "description": "Verifies the configured routing protocol model.",
-    "custom_field": "Routing protocol model: multi-agent"
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: 10.255.0.1"
+    "custom_field": "BGP EVPN Peer: dc1-spine1 (IP: 10.255.0.1)"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP EVPN Peer: 10.255.0.2"
+    "custom_field": "BGP EVPN Peer: dc1-spine2 (IP: 10.255.0.2)"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.1.96"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1a (IP: 10.255.1.96)"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.3"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-spine1 (IP: 10.255.255.4)"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.4"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-spine2 (IP: 10.255.255.6)"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.6"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-wan1 (IP: 10.255.255.3)"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.7"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-wan2 (IP: 10.255.255.7)"
   },
   {
     "name": "dc1-leaf1b",
@@ -145,12 +136,237 @@
   },
   {
     "name": "dc1-leaf1b",
-    "test": "VerifyFieldNotice72Resolution",
+    "test": "VerifyLLDPNeighbors",
     "categories": [
-      "field notices",
-      "software"
+      "connectivity"
     ],
-    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet1 - Remote: dc1-spine1 Ethernet2"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet2 - Remote: dc1-spine2 Ethernet2"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet3 - Remote: dc1-leaf1a Ethernet3"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet4 - Remote: dc1-leaf1a Ethernet4"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet6 - Remote: dc1-wan1 Ethernet2"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet7 - Remote: dc1-wan2 Ethernet2"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet8 - Remote: dc1-leaf1c Ethernet2"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc1-leaf1a Loopback0 (IP: 10.255.0.3)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc1-leaf1b Loopback0 (IP: 10.255.0.4)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc1-leaf2a Loopback0 (IP: 10.255.0.5)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc1-spine1 Loopback0 (IP: 10.255.0.1)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc1-spine2 Loopback0 (IP: 10.255.0.2)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc1-wan1 Loopback0 (IP: 10.255.2.1)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc1-wan2 Loopback0 (IP: 10.255.2.2)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc2-leaf1a Loopback0 (IP: 10.255.128.13)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc2-leaf1b Loopback0 (IP: 10.255.128.14)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc2-leaf2a Loopback0 (IP: 10.255.128.15)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc2-leaf2b Loopback0 (IP: 10.255.128.16)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc2-leaf3a.arista.com Loopback0 (IP: 10.255.128.17)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc2-leaf3b.arista.com Loopback0 (IP: 10.255.128.18)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc2-spine1 Loopback0 (IP: 10.255.128.11)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.4) - Destination: dc2-spine2 Loopback0 (IP: 10.255.128.12)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet1 (IP: 10.255.255.5) - Destination: dc1-spine1 Ethernet2 (IP: 10.255.255.4)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet2 (IP: 10.255.255.7) - Destination: dc1-spine2 Ethernet2 (IP: 10.255.255.6)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet6 (IP: 10.255.255.2) - Destination: dc1-wan1 Ethernet2 (IP: 10.255.255.3)"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet7 (IP: 10.255.255.6) - Destination: dc1-wan2 Ethernet2 (IP: 10.255.255.7)"
   },
   {
     "name": "dc1-leaf1b",
@@ -163,51 +379,20 @@
   },
   {
     "name": "dc1-leaf1b",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "hardware"
+      "field notices",
+      "software"
     ],
-    "description": "Verifies if all transceivers come from approved manufacturers."
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
   },
   {
     "name": "dc1-leaf1b",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyAdverseDrops",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies if all transceivers come from approved manufacturers."
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the device temperature."
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the device temperature."
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the power supplies status."
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the power supplies status."
+    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc1-leaf1b",
@@ -223,7 +408,25 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the status of power supply fans and all fan trays."
+    "description": "Verifies the status of power supply fans and all fan trays.",
+    "custom_field": "Accepted States: 'ok'"
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status."
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status.",
+    "custom_field": "Accepted States: 'ok'"
   },
   {
     "name": "dc1-leaf1b",
@@ -235,19 +438,44 @@
   },
   {
     "name": "dc1-leaf1b",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers.",
+    "custom_field": "Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present'"
+  },
+  {
+    "name": "dc1-leaf1b",
     "test": "VerifyTransceiversTemperature",
     "categories": [
       "hardware"
     ],
     "description": "Verifies the transceivers temperature."
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyAdverseDrops",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc1-leaf1b",
@@ -476,240 +704,6 @@
   },
   {
     "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-leaf1b_Ethernet1 - Destination: dc1-spine1_Ethernet2"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-leaf1b_Ethernet2 - Destination: dc1-spine2_Ethernet2"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-leaf1b_Ethernet6 - Destination: dc1-wan1_Ethernet2"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "IP Reachability"
-    ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-leaf1b_Ethernet7 - Destination: dc1-wan2_Ethernet2"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet1 - remote: dc1-spine1_Ethernet2"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet2 - remote: dc1-spine2_Ethernet2"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet3 - remote: dc1-leaf1a_Ethernet3"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet4 - remote: dc1-leaf1a_Ethernet4"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet6 - remote: dc1-wan1_Ethernet2"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet7 - remote: dc1-wan2_Ethernet2"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet8 - remote: dc1-leaf1c_Ethernet2"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.0.1"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.0.2"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.0.3"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.0.4"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.0.5"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.11"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.12"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.13"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.14"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.15"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.16"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.17"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.18"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.2.1"
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Loopback0 Reachability",
-    "custom_field": "Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.2.2"
-  },
-  {
-    "name": "dc1-leaf1b",
     "test": "VerifyMlagStatus",
     "categories": [
       "mlag"
@@ -718,192 +712,192 @@
   },
   {
     "name": "dc1-leaf1b",
-    "test": "VerifyNTP",
+    "test": "VerifyRoutingProtocolModel",
     "categories": [
-      "NTP"
+      "routing"
     ],
-    "description": "Synchronised with NTP server",
-    "custom_field": "NTP"
+    "description": "Verifies the configured routing protocol model.",
+    "custom_field": "Routing protocol model: multi-agent"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.0.1"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.0.1 - Peer: dc1-spine1"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.0.2"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.0.2 - Peer: dc1-spine2"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.0.3"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.0.3 - Peer: dc1-leaf1a"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.0.4"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.0.4 - Peer: dc1-leaf1b"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.0.5"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.0.5 - Peer: dc1-leaf2a"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.128.11"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.1.3 - Peer: dc1-leaf1a"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.128.12"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.1.5 - Peer: dc1-leaf2a"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.128.13"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.11 - Peer: dc2-spine1"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.128.14"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.12 - Peer: dc2-spine2"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.128.15"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.13 - Peer: dc2-leaf1a"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.128.16"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.14 - Peer: dc2-leaf1b"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.128.17"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.15 - Peer: dc2-leaf2a"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.128.18"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.16 - Peer: dc2-leaf2b"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.2.1"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.17 - Peer: dc2-leaf3a.arista.com"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote Lo0 address",
-    "custom_field": "10.255.2.2"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.18 - Peer: dc2-leaf3b.arista.com"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote VTEP address",
-    "custom_field": "10.255.1.3"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.129.13 - Peer: dc2-leaf1a"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote VTEP address",
-    "custom_field": "10.255.1.5"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.129.15 - Peer: dc2-leaf2a"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote VTEP address",
-    "custom_field": "10.255.129.13"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.129.17 - Peer: dc2-leaf3a.arista.com"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote VTEP address",
-    "custom_field": "10.255.129.15"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.2.1 - Peer: dc1-wan1"
   },
   {
     "name": "dc1-leaf1b",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "Routing Table"
+      "routing"
     ],
-    "description": "Remote VTEP address",
-    "custom_field": "10.255.129.17"
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.2.2 - Peer: dc1-wan2"
   },
   {
     "name": "dc1-leaf1b",
@@ -911,7 +905,8 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if the eAPI has a valid SSL profile."
+    "description": "Verifies if the eAPI has a valid SSL profile.",
+    "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
   },
   {
     "name": "dc1-leaf1b",
@@ -955,38 +950,6 @@
   },
   {
     "name": "dc1-leaf1b",
-    "test": "VerifyNTP",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies if NTP is synchronised."
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyFileSystemUtilization",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyUptime",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies the device uptime."
-  },
-  {
-    "name": "dc1-leaf1b",
-    "test": "VerifyReloadCause",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies the last reload cause of the device."
-  },
-  {
-    "name": "dc1-leaf1b",
     "test": "VerifyAgentLogs",
     "categories": [
       "system"
@@ -1011,10 +974,50 @@
   },
   {
     "name": "dc1-leaf1b",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-leaf1b",
     "test": "VerifyMemoryUtilization",
     "categories": [
       "system"
     ],
     "description": "Verifies whether the memory utilization is below 75%."
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-leaf1b",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the device uptime."
   }
 ]

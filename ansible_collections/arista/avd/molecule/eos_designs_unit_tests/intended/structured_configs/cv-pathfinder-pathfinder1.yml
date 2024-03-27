@@ -143,8 +143,6 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Orange_888
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -643,7 +641,9 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
-      - id: 4
+      - constraints:
+          lossrate: 42.0
+        id: 4
         name: PROD-AVT-POLICY-VIDEO
         pathgroups:
         - name: MPLS

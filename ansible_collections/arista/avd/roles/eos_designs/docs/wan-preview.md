@@ -149,12 +149,10 @@ The HA tunnel will come up properly today but route redistribution will be missi
 
 The following table indicates the settings:
 
-| Node Type Key | Underlay Router | Uplink Type | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default CV Pathfinder Role |
-| ------------- | --------------- | ----------- | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | -------------------------- |
-| wan_rr        | ✅               | p2p         | server            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | server          | pathfinder                 |
-| wan_router    | ✅               | p2p         | client            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | client          | edge                       |
-
-All these node types are defined with `default_underlay_routing_protocol: none` and `default_overlay_routing_protocol: ibgp`.
+| Node Type Key | Underlay Router | Uplink Type | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default CV Pathfinder Role | Default Underlay Routing Protocol | Default Overlay Routing Protocol |
+| ------------- | --------------- | ----------- | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | -------------------------- | --------------------------------- | -------------------------------- |
+| wan_rr        | ✅               | p2p         | server            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | server          | pathfinder                 | none                           | iBGP                             |
+| wan_router    | ✅               | p2p         | client            | ✘                   | ✅                   | ✅    | ✘            | ✘                   | client          | edge                       | none                           | iBGP                             |
 
 ### WAN Settings
 
@@ -238,8 +236,8 @@ The tags will only be generated when `wan_mode` is set to `cv-pathfinder`.
 
 | Tag Name        | Source of information                                      |
 | --------------- | ---------------------------------------------------------- |
-| `Region`        | `cv_pathfinder_region` for `wan_router`                    |
-| `Zone`          | `<region_name>-ZONE` for `wan_router`                            |
+| `Region`        | `cv_pathfinder_region`                                     |
+| `Zone`          | `<region_name>-ZONE` for `wan_router`                      |
 | `Site`          | `cv_pathfinder_site` for `wan_router`                      |
 | `PathfinderSet` | name of `node_group` or default `PATHFINDERS` for `wan_rr` |
 | `Role`          | `pathfinder`, `edge`, `transit region` or `transit zone`   |
@@ -265,3 +263,8 @@ TODO
 ### Defining policies
 
 TODO
+
+### Flow tracking
+
+For scalabilty reasons, flow-tracking is enabled only on Dps1 interface by default.
+It can be added on WAN and LAN interfaces using `custom_structured_configuration`.

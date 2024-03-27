@@ -948,6 +948,24 @@ $defs:
               This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
             type: int
             default: 1500
+          inband_ztp:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |-
+              Enable to configure upstream device with proper configuration to allow downstream devices to ZTP inband.
+              This setting also requires that the `inband_mgmt_vlan` is set for the node.
+            type: bool
+            default: false
+          inband_ztp_lacp_fallback_delay:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |-
+              Set the LACP fallback timeout of the upstream device's port-channel towards the downstream inband ZTP node.
+              This setting also requires that `inband_ztp` is set for the node.
+            type: int
+            min: 0
+            max: 300
+            default: 30
           inband_management_subnet:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -1230,6 +1248,8 @@ $defs:
               PREVIEW: This key is currently not supported
 
               The CV Pathfinder region name.
+              This key is required for WAN routers but optional for pathfinders.
+              The region name must be defined under 'cv_pathfinder_regions'.
           cv_pathfinder_site:
             documentation_options:
               table: node-type-wan-configuration
@@ -1238,6 +1258,8 @@ $defs:
               PREVIEW: This key is currently not supported
 
               The CV Pathfinder site name.
+              This key is required for WAN routers but ignored for pathfinders.
+              The site name must be defined for the relevant region under 'cv_pathfinder_regions'.
           wan_ha:
             documentation_options:
               table: node-type-wan-configuration

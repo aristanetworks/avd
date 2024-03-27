@@ -4564,6 +4564,13 @@
       "default": true,
       "title": "Default IGMP Snooping Enabled"
     },
+    "default_interface_mtu": {
+      "type": "integer",
+      "description": "Default interface MTU configured on EOS under \"interface defaults\".\nCan be overriden per platform under platform settings.\n",
+      "minimum": 68,
+      "maximum": 65535,
+      "title": "Default Interface MTU"
+    },
     "default_interfaces": {
       "type": "array",
       "description": "Default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).\n",
@@ -5033,6 +5040,47 @@
       "type": "string",
       "title": "Fabric Name"
     },
+    "fabric_sflow": {
+      "type": "object",
+      "description": "Default enabling of sFlow for various interface types across the fabric.\nsFlow can also be enabled/disabled under each of the specific data models.\nFor general sFlow settings see `sflow_settings`.",
+      "properties": {
+        "uplinks": {
+          "description": "Enable sFlow on all fabric uplinks.",
+          "type": "boolean",
+          "title": "Uplinks"
+        },
+        "downlinks": {
+          "description": "Enable sFlow on all fabric downlinks.",
+          "type": "boolean",
+          "title": "Downlinks"
+        },
+        "endpoints": {
+          "description": "Enable sFlow on all endpoints ports.",
+          "type": "boolean",
+          "title": "Endpoints"
+        },
+        "l3_edge": {
+          "description": "Enable sFlow on all p2p_links defined under l3_edge.",
+          "type": "boolean",
+          "title": "L3 Edge"
+        },
+        "core_interfaces": {
+          "description": "Enable sFlow on all p2p_links defined under core_interfaces.",
+          "type": "boolean",
+          "title": "Core Interfaces"
+        },
+        "mlag_interfaces": {
+          "description": "Enable sFlow on all MLAG peer interfaces.",
+          "type": "boolean",
+          "title": "MLAG Interfaces"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Fabric Sflow"
+    },
     "flow_tracking_settings": {
       "description": "Define the flow tracking parameters for this topology.",
       "type": "object",
@@ -5118,7 +5166,7 @@
             "description": "Each tag can either have a static value or a dynamic value sourced from structured configuration.",
             "properties": {
               "name": {
-                "description": "Tag name to be assigned to generated tags. Tag names must be lower case.",
+                "description": "Tag name to be assigned to generated tags.",
                 "type": "string",
                 "title": "Name"
               },
@@ -5151,7 +5199,7 @@
             "description": "Each tag can either have a static value or a dynamic value sourced from structured configuration.",
             "properties": {
               "name": {
-                "description": "Tag name to be assigned to generated tags. Tag names must be lower case.",
+                "description": "Tag name to be assigned to generated tags.",
                 "type": "string",
                 "title": "Name"
               },
@@ -5337,6 +5385,196 @@
         }
       },
       "title": "Internal VLAN Order"
+    },
+    "ipv4_acls": {
+      "type": "array",
+      "description": "IPv4 extended access-lists supporting substitution on certain fields.\nThese access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.\n\nThe substitution is useful when assigning the same access-list on multiple interfaces,\nbut where certain fields require unique values like the \"interface_ip\" or \"peer_ip\".\nWhen using substitution, the interface name will be appended to the ACL name.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Access-list name.\nWhen using substitution for any fields, the interface name will be appended to the ACL name.",
+            "title": "Name"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "description": "This field supports substitution of the fields \"interface_ip\" and \"peer_ip\".\nAlternatively it can be set with a static value of \"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
+                  "title": "Source"
+                },
+                "destination": {
+                  "type": "string",
+                  "description": "This field supports substitution of the fields \"interface_ip\" and \"peer_ip\".\nAlternatively it can be set with a static value of \"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
+                  "title": "Destination"
+                },
+                "sequence": {
+                  "type": "integer",
+                  "description": "ACL entry sequence number.",
+                  "title": "Sequence"
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in the ACL entry will be ignored.",
+                  "title": "Remark"
+                },
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "permit",
+                    "deny"
+                  ],
+                  "description": "ACL action.\nRequired except for remarks.",
+                  "title": "Action"
+                },
+                "protocol": {
+                  "type": "string",
+                  "description": "\"ip\", \"tcp\", \"udp\", \"icmp\" or other protocol name or number.\nRequired except for remarks.",
+                  "title": "Protocol"
+                },
+                "source_ports_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq",
+                    "range"
+                  ],
+                  "default": "eq",
+                  "title": "Source Ports Match"
+                },
+                "source_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP/UDP source port name or number."
+                  },
+                  "title": "Source Ports"
+                },
+                "destination_ports_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq",
+                    "range"
+                  ],
+                  "default": "eq",
+                  "title": "Destination Ports Match"
+                },
+                "destination_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP/UDP destination port name or number."
+                  },
+                  "title": "Destination Ports"
+                },
+                "tcp_flags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP Flag Name."
+                  },
+                  "title": "TCP Flags"
+                },
+                "fragments": {
+                  "type": "boolean",
+                  "description": "Match non-head fragment packets.",
+                  "title": "Fragments"
+                },
+                "log": {
+                  "type": "boolean",
+                  "description": "Log matches against this rule.",
+                  "title": "Log"
+                },
+                "ttl": {
+                  "type": "integer",
+                  "description": "TTL value",
+                  "minimum": 0,
+                  "maximum": 255,
+                  "title": "TTL"
+                },
+                "ttl_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq"
+                  ],
+                  "default": "eq",
+                  "title": "TTL Match"
+                },
+                "icmp_type": {
+                  "type": "string",
+                  "description": "Message type name/number for ICMP packets.",
+                  "title": "ICMP Type"
+                },
+                "icmp_code": {
+                  "type": "string",
+                  "description": "Message code for ICMP packets.",
+                  "title": "ICMP Code"
+                },
+                "nexthop_group": {
+                  "type": "string",
+                  "description": "nexthop-group name.",
+                  "title": "Nexthop Group"
+                },
+                "tracked": {
+                  "type": "boolean",
+                  "description": "Match packets in existing ICMP/UDP/TCP connections.",
+                  "title": "Tracked"
+                },
+                "dscp": {
+                  "type": "string",
+                  "description": "DSCP value or name.",
+                  "title": "DSCP"
+                },
+                "vlan_number": {
+                  "type": "integer",
+                  "title": "VLAN Number"
+                },
+                "vlan_inner": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "VLAN Inner"
+                },
+                "vlan_mask": {
+                  "type": "string",
+                  "description": "0x000-0xFFF VLAN mask.",
+                  "title": "VLAN Mask"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "description": "ACL Entries.",
+            "title": "Entries"
+          },
+          "counters_per_entry": {
+            "type": "boolean",
+            "title": "Counters Per Entry"
+          }
+        },
+        "required": [
+          "entries",
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IPv4 Acls"
     },
     "ipv6_mgmt_destination_networks": {
       "description": "List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.\nReplaces the default route.\n",
@@ -5997,10 +6235,10 @@
             "description": "Node IPv4 address/Mask or 'dhcp'.",
             "title": "IP Address"
           },
-          "dhcp_ip_address": {
+          "dhcp_ip": {
             "type": "string",
-            "description": "When the `ip_address` is `dhcp`, this optional field allows to indicate the expected\nIPv4 address/Mask to be allocated on the interface if known.\nThis is not rendered in the configuration but can be used in ACLs in certain scenarios.",
-            "title": "DHCP IP Address"
+            "description": "When the `ip_address` is `dhcp`, this optional field allows to indicate the expected\nIPv4 address (without mask) to be allocated on the interface if known.\nThis is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list\nset under `ipv4_acl_in` and `ipv4_acl_out`.",
+            "title": "DHCP IP"
           },
           "public_ip": {
             "type": "string",
@@ -6046,6 +6284,16 @@
             "description": "The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
             "title": "Peer IP"
           },
+          "ipv4_acl_in": {
+            "description": "Name of the IPv4 access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls`.\nRequired for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.",
+            "type": "string",
+            "title": "IPv4 Acl In"
+          },
+          "ipv4_acl_out": {
+            "description": "Name of the IPv4 Access-list to be assigned in the egress direction.\nThe access-list must be defined under `ipv4_acls`.",
+            "type": "string",
+            "title": "IPv4 Acl Out"
+          },
           "static_routes": {
             "description": "Configure IPv4 static routes pointing to `peer_ip`.",
             "type": "array",
@@ -6076,18 +6324,18 @@
           },
           "wan_carrier": {
             "type": "string",
-            "description": "The WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
+            "description": "The WAN carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.\nUnless the carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.",
             "title": "Wan Carrier"
           },
           "wan_circuit_id": {
             "type": "string",
-            "description": "The WAN Circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
+            "description": "The WAN circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
             "title": "Wan Circuit ID"
           },
           "connected_to_pathfinder": {
             "type": "boolean",
             "default": true,
-            "description": "For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.",
+            "description": "For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.",
             "title": "Connected To Pathfinder"
           },
           "raw_eos_cli": {
@@ -8711,6 +8959,110 @@
                 "description": "Set to false to disable interface validation by the `eos_validate_state` role",
                 "title": "Validate State"
               },
+              "switchport": {
+                "type": "object",
+                "properties": {
+                  "port_security": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "mac_address_maximum": {
+                        "type": "object",
+                        "description": "Maximum number of MAC addresses allowed on the interface.",
+                        "properties": {
+                          "disabled": {
+                            "type": "boolean",
+                            "description": "Disable port level check for port security (only in violation 'shutdown' mode).",
+                            "title": "Disabled"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 1000,
+                            "description": "MAC address limit.",
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "MAC Address Maximum"
+                      },
+                      "violation": {
+                        "type": "object",
+                        "description": "Configure violation mode (shutdown or protect), EOS default is 'shutdown'.",
+                        "properties": {
+                          "mode": {
+                            "type": "string",
+                            "enum": [
+                              "shutdown",
+                              "protect"
+                            ],
+                            "description": "Configure port security mode.",
+                            "title": "Mode"
+                          },
+                          "protect_log": {
+                            "type": "boolean",
+                            "description": "Log new addresses seen after limit is reached in protect mode.",
+                            "title": "Protect Log"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Violation"
+                      },
+                      "vlan_default_mac_address_maximum": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000,
+                        "description": "Default maximum MAC addresses for all VLANs on this interface.",
+                        "title": "VLAN Default MAC Address Maximum"
+                      },
+                      "vlans": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "range": {
+                              "type": "string",
+                              "description": "VLAN ID or range(s) of VLAN IDs, <1-4094>.\nExample:\n  - 3\n  - 1,3\n  - 1-10\n",
+                              "title": "Range"
+                            },
+                            "mac_address_maximum": {
+                              "type": "integer",
+                              "title": "MAC Address Maximum"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "range"
+                          ]
+                        },
+                        "title": "VLANs"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Port Security"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Switchport"
+              },
               "eos_cli": {
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -9296,6 +9648,24 @@
                 "minimum": 1,
                 "maximum": 10,
                 "title": "Reauthorization Request Limit"
+              },
+              "unauthorized": {
+                "type": "object",
+                "properties": {
+                  "access_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Access VLAN Membership Egress"
+                  },
+                  "native_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Native VLAN Membership Egress"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unauthorized"
               }
             },
             "additionalProperties": false,
@@ -14076,6 +14446,110 @@
                 "type": "boolean",
                 "description": "Set to false to disable interface validation by the `eos_validate_state` role",
                 "title": "Validate State"
+              },
+              "switchport": {
+                "type": "object",
+                "properties": {
+                  "port_security": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "mac_address_maximum": {
+                        "type": "object",
+                        "description": "Maximum number of MAC addresses allowed on the interface.",
+                        "properties": {
+                          "disabled": {
+                            "type": "boolean",
+                            "description": "Disable port level check for port security (only in violation 'shutdown' mode).",
+                            "title": "Disabled"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 1000,
+                            "description": "MAC address limit.",
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "MAC Address Maximum"
+                      },
+                      "violation": {
+                        "type": "object",
+                        "description": "Configure violation mode (shutdown or protect), EOS default is 'shutdown'.",
+                        "properties": {
+                          "mode": {
+                            "type": "string",
+                            "enum": [
+                              "shutdown",
+                              "protect"
+                            ],
+                            "description": "Configure port security mode.",
+                            "title": "Mode"
+                          },
+                          "protect_log": {
+                            "type": "boolean",
+                            "description": "Log new addresses seen after limit is reached in protect mode.",
+                            "title": "Protect Log"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Violation"
+                      },
+                      "vlan_default_mac_address_maximum": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000,
+                        "description": "Default maximum MAC addresses for all VLANs on this interface.",
+                        "title": "VLAN Default MAC Address Maximum"
+                      },
+                      "vlans": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "range": {
+                              "type": "string",
+                              "description": "VLAN ID or range(s) of VLAN IDs, <1-4094>.\nExample:\n  - 3\n  - 1,3\n  - 1-10\n",
+                              "title": "Range"
+                            },
+                            "mac_address_maximum": {
+                              "type": "integer",
+                              "title": "MAC Address Maximum"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "range"
+                          ]
+                        },
+                        "title": "VLANs"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Port Security"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Switchport"
               },
               "eos_cli": {
                 "type": "string",
@@ -15483,6 +15957,24 @@
                 "minimum": 1,
                 "maximum": 10,
                 "title": "Reauthorization Request Limit"
+              },
+              "unauthorized": {
+                "type": "object",
+                "properties": {
+                  "access_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Access VLAN Membership Egress"
+                  },
+                  "native_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Native VLAN Membership Egress"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unauthorized"
               }
             },
             "additionalProperties": false,
@@ -20264,6 +20756,110 @@
                 "description": "Set to false to disable interface validation by the `eos_validate_state` role",
                 "title": "Validate State"
               },
+              "switchport": {
+                "type": "object",
+                "properties": {
+                  "port_security": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "mac_address_maximum": {
+                        "type": "object",
+                        "description": "Maximum number of MAC addresses allowed on the interface.",
+                        "properties": {
+                          "disabled": {
+                            "type": "boolean",
+                            "description": "Disable port level check for port security (only in violation 'shutdown' mode).",
+                            "title": "Disabled"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 1000,
+                            "description": "MAC address limit.",
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "MAC Address Maximum"
+                      },
+                      "violation": {
+                        "type": "object",
+                        "description": "Configure violation mode (shutdown or protect), EOS default is 'shutdown'.",
+                        "properties": {
+                          "mode": {
+                            "type": "string",
+                            "enum": [
+                              "shutdown",
+                              "protect"
+                            ],
+                            "description": "Configure port security mode.",
+                            "title": "Mode"
+                          },
+                          "protect_log": {
+                            "type": "boolean",
+                            "description": "Log new addresses seen after limit is reached in protect mode.",
+                            "title": "Protect Log"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Violation"
+                      },
+                      "vlan_default_mac_address_maximum": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000,
+                        "description": "Default maximum MAC addresses for all VLANs on this interface.",
+                        "title": "VLAN Default MAC Address Maximum"
+                      },
+                      "vlans": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "range": {
+                              "type": "string",
+                              "description": "VLAN ID or range(s) of VLAN IDs, <1-4094>.\nExample:\n  - 3\n  - 1,3\n  - 1-10\n",
+                              "title": "Range"
+                            },
+                            "mac_address_maximum": {
+                              "type": "integer",
+                              "title": "MAC Address Maximum"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "range"
+                          ]
+                        },
+                        "title": "VLANs"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Port Security"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Switchport"
+              },
               "eos_cli": {
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -20540,6 +21136,76 @@
       "description": "Serial Number of the device.\nUsed for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.\n\"serial_number\" can also be set directly under node type settings.\nIf both are set, the value under node type settings takes precedence.\n",
       "type": "string",
       "title": "Serial Number"
+    },
+    "sflow_settings": {
+      "type": "object",
+      "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.",
+      "properties": {
+        "destinations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "string",
+                "description": "sFlow destination name or IP address.",
+                "title": "Destination"
+              },
+              "port": {
+                "type": "integer",
+                "description": "UDP Port number. The default port number for sFlow is 6343.",
+                "minimum": 1,
+                "maximum": 65535,
+                "title": "Port"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.\nThe value of `vrf` will be interpreted according to these rules:\n- `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.\n  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf` will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-interface.\n  An error will be raised if inband management is not configured for the device.\n- Any other string will be used directly as the VRF name. Remember to set the `sflow_settings.vrfs[].source_interface` if needed.",
+                "title": "VRF"
+              }
+            },
+            "required": [
+              "destination"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Destinations"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name.",
+                "title": "Name"
+              },
+              "source_interface": {
+                "type": "string",
+                "description": "Source interface to use for sFlow destinations in this VRF.\nIf set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.",
+                "title": "Source Interface"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Sflow Settings"
     },
     "shutdown_interfaces_towards_undeployed_peers": {
       "type": "boolean",
@@ -24927,6 +25593,12 @@
             "type": "string",
             "description": "The path-group to which this carrier belongs.",
             "title": "Path Group"
+          },
+          "trusted": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set this to `true` to mark this carrier as \"trusted\".\nWAN interfaces require an inbound access-list to be set unless the carrier is \"trusted\".",
+            "title": "Trusted"
           }
         },
         "required": [

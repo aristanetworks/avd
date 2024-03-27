@@ -3,20 +3,19 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from copy import deepcopy
 from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 if TYPE_CHECKING:
     from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts.eos_designs_facts import EosDesignsFacts
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
-
-if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
 
@@ -362,3 +361,58 @@ class MiscMixin:
         else:
             default_value = False
         return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
+
+    @cached_property
+    def ipv4_acls(self: SharedUtils) -> list:
+        return get(self.hostvars, "ipv4_acls", default=[])
+
+    def get_ipv4_acl(self: SharedUtils, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None):
+        """
+        Get one IPv4 ACL from "ipv4_acls" where fields have been substituted.
+        If any substitution is done, the ACL name will get "_<interface_name>" appended.
+        """
+        org_ipv4_acl = get_item(self.ipv4_acls, "name", name, required=True, var_name=f"ipv4_acls[name={name}]")
+        # deepcopy to avoid inplace updates below from modifying the original.
+        ipv4_acl = deepcopy(org_ipv4_acl)
+        ip_replacements = {
+            "interface_ip": interface_ip,
+            "peer_ip": peer_ip,
+        }
+        for index, entry in enumerate(get(ipv4_acl, "entries", default=[])):
+            if entry.get("remark") is not None:
+                continue
+
+            err_context = f"ipv4_acls[name={name}].entries[{index}]"
+            source_field = get(entry, "source", required=True, org_key=f"{err_context}.source")
+            destination_field = get(entry, "destination", required=True, org_key=f"{err_context}.destination")
+            entry["source"] = self._get_ipv4_acl_field_with_substitution(source_field, ip_replacements, f"{err_context}.source", interface_name)
+            entry["destination"] = self._get_ipv4_acl_field_with_substitution(destination_field, ip_replacements, f"{err_context}.destination", interface_name)
+
+        if ipv4_acl != org_ipv4_acl:
+            ipv4_acl["name"] += f"_{interface_name}"
+        return ipv4_acl
+
+    @staticmethod
+    def _get_ipv4_acl_field_with_substitution(field_value: str, replacements: dict[str, str], field_context: str, interface_name: str) -> str:
+        """
+        Checks one field if the value can be substituted.
+        The given "replacements" dict will be parsed as:
+          key: substitution field to look for
+          value: replacement value to set
+
+        If a replacement is done, but the value is None, an error will be raised.
+        """
+        for key, value in replacements.items():
+            if field_value != key:
+                continue
+
+            if value is None:
+                raise AristaAvdError(
+                    f"Unable to perform substitution of the value '{key}' defined under '{field_context}', "
+                    f"since no substitution value was found for interface '{interface_name}'. "
+                    "Make sure to set the appropriate fields on the interface."
+                )
+
+            return value
+
+        return field_value
