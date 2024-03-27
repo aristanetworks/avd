@@ -59,6 +59,16 @@ router_bgp:
     remote_as: '65105'
     peer: EVPN-MULTICAST-L3LEAF3B
     description: EVPN-MULTICAST-L3LEAF3B_Ethernet1
+  - ip_address: 172.31.255.11
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65106'
+    peer: EVPN-MULTICAST-DISABLED
+    description: EVPN-MULTICAST-DISABLED_Ethernet1
+  - ip_address: 192.168.255.8
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: EVPN-MULTICAST-DISABLED
+    description: EVPN-MULTICAST-DISABLED
+    remote_as: '65106'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-L3LEAF1A
@@ -177,6 +187,18 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 172.31.255.8/31
+  pim:
+    ipv4:
+      sparse_mode: true
+- name: Ethernet6
+  peer: EVPN-MULTICAST-DISABLED
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_EVPN-MULTICAST-DISABLED_Ethernet1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 172.31.255.10/31
   pim:
     ipv4:
       sparse_mode: true

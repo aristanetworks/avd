@@ -13,7 +13,7 @@ l3leaf:
     virtual_router_mac_address: 00:dc:00:00:00:0a
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
-    bgp_as: 65101-65105
+    bgp_as: 65101-65106
   node_groups:
   # Tests:
   #  - MLAG pair
@@ -60,3 +60,10 @@ l3leaf:
           id: 5
           mgmt_ip: 192.168.200.109/24
           uplink_switch_interfaces: [ Ethernet5 ]
+    - group: EVPN_MULTICAST_DISABLED
+      mlag: false
+      nodes:
+        - name: EVPN-MULTICAST-DISABLED
+          id: 6
+          mgmt_ip: 192.168.200.108/24
+          uplink_switch_interfaces: [ Ethernet6 ]

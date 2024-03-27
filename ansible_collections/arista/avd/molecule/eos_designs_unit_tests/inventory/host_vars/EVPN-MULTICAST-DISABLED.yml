@@ -1,0 +1,5 @@
+# Disable EVPN Multicast while still having EVPN Multicast to be configured on node.
+# We should see that no EVPN services be configured with EVPN Multicast
+
+evpn_multicast: false
+underlay_multicast: true
