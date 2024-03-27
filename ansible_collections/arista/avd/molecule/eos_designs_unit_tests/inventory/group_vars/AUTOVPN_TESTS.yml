@@ -102,10 +102,13 @@ wan_path_groups:
 wan_carriers:
   - name: Comcast
     path_group: INET
+    trusted: true
   - name: ATT
     path_group: INET
+    trusted: true
   - name: MPLS-SP-1
     path_group: MPLS
+    trusted: true
 
 # SVI and L2VLAN is inserted to ensure these are *not* rendered.
 tenants:
