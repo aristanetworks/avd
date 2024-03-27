@@ -647,7 +647,6 @@ interface Ethernet48
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | Router_ID | default | - |
 
-
 #### Loopback Interfaces Device Configuration
 
 ```eos
@@ -817,7 +816,6 @@ router multicast
    ipv4
       routing
 ```
-
 
 ### PIM Sparse Mode
 
