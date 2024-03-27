@@ -1,0 +1,79 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  influxdb:
+    type: dict
+    keys:
+      vrf:
+        type: str
+      destinations:
+        type: list
+        primary_key: name
+        description: Configure telemetry output destinations.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: InfluxDB connection name.
+            database:
+              type: str
+            policy:
+              type: str
+              description: Confiure data retention policy.
+            url:
+              type: str
+              description: Configure URL for the destination.
+            username:
+              type: str
+              description: Configure login details with destination.
+            password:
+              type: str
+              description: Assign login password
+            encryption:
+              type: str
+              convert_types:
+                - int
+              description: |-
+                0: Indicates that keystring is not encrypted.
+                7: Speciefies that HIDDEN key will follow.
+                8a: Speciefies that AES-256-GCM encrypted key will follow.
+      source_standard_enabled:
+        type: bool
+        description: Enable standard set of telemetry.
+      source_sockets:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Label of the socket connection.
+            connection_limit:
+              type: int
+              min: 0
+              max: 4294967295
+              convert_types:
+                - str
+            url:
+              type: str
+              description: Configure socket URL.
+      tags:
+        type: list
+        primary_key: name
+        description: Add extra tag to the telemetry output.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Specify the key of the global tag pair.
+            value:
+              type: str
+              description: Specify the value of the global tag pair.
