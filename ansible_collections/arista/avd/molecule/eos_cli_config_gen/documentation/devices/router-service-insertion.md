@@ -49,14 +49,17 @@ Router service-insertion is enabled.
 | Name | Interface | Next Hop | Monitor Connectivity Host |
 | ---- | --------- | -------- | ------------------------- |
 | connection1 | Ethernet2/2.2 | 10.10.10.10 | host1 |
-| connection4 | Ethernet3/1.1 | 10.10.10.10 | host4 |
+| connection6 | Ethernet2/2.2 | 10.10.10.10 | - |
+| connection7 | Ethernet3/1 | 10.10.10.10 | host4 |
 
 ### Connections Through Tunnel Interface
 
 | Name | Primary Interface | Secondary Interface | Monitor Connectivity Host |
 | ---- | ----------------- | ------------------- | ------------------------- |
-| connection2 | Tunnel2 | Tunnel3 | host2 |
-| connection3 | Tunnel4 | Tunnel5 | host3 |
+| connection2 | Tunnel1 | Tunnel2 | host2 |
+| connection3 | - | Tunnel3 | host3 |
+| connection4 | Tunnel4 | - | - |
+| connection5 | Tunnel5 | Tunnel6 | - |
 
 ## Router Service-Insertion Configuration
 
@@ -67,14 +70,20 @@ router service-insertion
       interface Ethernet2/2.2 next-hop 10.10.10.10
       monitor connectivity host host1
    connection connection2
-      interface Tunnel2 primary
-      interface Tunnel3 secondary
+      interface Tunnel1 primary
+      interface Tunnel2 secondary
       monitor connectivity host host2
    connection connection3
-      interface Tunnel4 primary
-      interface Tunnel5 secondary
+      interface Tunnel3 secondary
       monitor connectivity host host3
    connection connection4
-      interface Ethernet3/1.1 next-hop 10.10.10.10
+      interface Tunnel4 primary
+   connection connection5
+      interface Tunnel5 primary
+      interface Tunnel6 secondary
+   connection connection6
+      interface Ethernet2/2.2 next-hop 10.10.10.10
+   connection connection7
+      interface Ethernet3/1 next-hop 10.10.10.10
       monitor connectivity host host4
 ```

@@ -29,9 +29,11 @@ keys:
               keys:
                 name:
                   type: str
-                  description: e.g. Ethernet2/2.2
+                  required: true
+                  description: e.g. Ethernet2 or Ethernet2/2.2
                 next_hop:
                   type: str
+                  required: true
                   description: Next-hop IPv4 address (without mask).
             tunnel_interface:
               type: dict
@@ -44,6 +46,7 @@ keys:
                   description: e.g. Tunnel2
                 secondary:
                   type: str
+                  description: e.g Tunnel3
             monitor_connectivity_host:
               type: str
               description: |-

@@ -23362,7 +23362,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "e.g. Ethernet2/2.2",
+                    "description": "e.g. Ethernet2 or Ethernet2/2.2",
                     "title": "Name"
                   },
                   "next_hop": {
@@ -23371,6 +23371,10 @@
                     "title": "Next Hop"
                   }
                 },
+                "required": [
+                  "name",
+                  "next_hop"
+                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
@@ -23388,6 +23392,7 @@
                   },
                   "secondary": {
                     "type": "string",
+                    "description": "e.g Tunnel3",
                     "title": "Secondary"
                   }
                 },
