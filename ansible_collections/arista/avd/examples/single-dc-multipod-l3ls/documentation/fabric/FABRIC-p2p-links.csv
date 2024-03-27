@@ -1,0 +1,17 @@
+Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
+l3leaf,leaf1,Ethernet3,192.168.103.1/31,spine,spine1,Ethernet3,192.168.103.0/31
+l3leaf,leaf1,Ethernet4,192.168.103.3/31,spine,spine2,Ethernet3,192.168.103.2/31
+l3leaf,leaf2,Ethernet3,192.168.103.5/31,spine,spine1,Ethernet4,192.168.103.4/31
+l3leaf,leaf2,Ethernet4,192.168.103.7/31,spine,spine2,Ethernet4,192.168.103.6/31
+l3leaf,leaf3,Ethernet5,192.168.103.9/31,spine,spine3,Ethernet5,192.168.103.8/31
+l3leaf,leaf3,Ethernet6,192.168.103.11/31,spine,spine4,Ethernet5,192.168.103.10/31
+l3leaf,leaf4,Ethernet5,192.168.103.13/31,spine,spine3,Ethernet6,192.168.103.12/31
+l3leaf,leaf4,Ethernet6,192.168.103.15/31,spine,spine4,Ethernet6,192.168.103.14/31
+spine,spine1,Ethernet7,192.168.103.41/31,super-spine,superspine1,Ethernet3,192.168.103.40/31
+spine,spine1,Ethernet8,192.168.103.43/31,super-spine,superspine2,Ethernet3,192.168.103.42/31
+spine,spine2,Ethernet7,192.168.103.45/31,super-spine,superspine1,Ethernet4,192.168.103.44/31
+spine,spine2,Ethernet8,192.168.103.47/31,super-spine,superspine2,Ethernet4,192.168.103.46/31
+spine,spine3,Ethernet7,192.168.103.49/31,super-spine,superspine1,Ethernet5,192.168.103.48/31
+spine,spine3,Ethernet8,192.168.103.51/31,super-spine,superspine2,Ethernet5,192.168.103.50/31
+spine,spine4,Ethernet7,192.168.103.53/31,super-spine,superspine1,Ethernet6,192.168.103.52/31
+spine,spine4,Ethernet8,192.168.103.55/31,super-spine,superspine2,Ethernet6,192.168.103.54/31

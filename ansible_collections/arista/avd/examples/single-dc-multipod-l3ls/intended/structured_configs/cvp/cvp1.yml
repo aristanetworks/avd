@@ -1,0 +1,59 @@
+---
+cvp_devices:
+  - fqdn: leaf1
+    parentContainerName: POD1_LEAFS
+    configlets:
+      - AVD_leaf1
+  - fqdn: leaf2
+    parentContainerName: POD1_LEAFS
+    configlets:
+      - AVD_leaf2
+  - fqdn: leaf3
+    parentContainerName: POD2_LEAFS
+    configlets:
+      - AVD_leaf3
+  - fqdn: leaf4
+    parentContainerName: POD2_LEAFS
+    configlets:
+      - AVD_leaf4
+  - fqdn: spine1
+    parentContainerName: POD1_SPINES
+    configlets:
+      - AVD_spine1
+  - fqdn: spine2
+    parentContainerName: POD1_SPINES
+    configlets:
+      - AVD_spine2
+  - fqdn: spine3
+    parentContainerName: POD2_SPINES
+    configlets:
+      - AVD_spine3
+  - fqdn: spine4
+    parentContainerName: POD2_SPINES
+    configlets:
+      - AVD_spine4
+  - fqdn: superspine1
+    parentContainerName: SUPERSPINES
+    configlets:
+      - AVD_superspine1
+  - fqdn: superspine2
+    parentContainerName: SUPERSPINES
+    configlets:
+      - AVD_superspine2
+cvp_containers:
+  FABRIC:
+    parentContainerName: Tenant
+  POD1:
+    parentContainerName: FABRIC
+  POD1_LEAFS:
+    parentContainerName: POD1
+  POD1_SPINES:
+    parentContainerName: POD1
+  POD2:
+    parentContainerName: FABRIC
+  POD2_LEAFS:
+    parentContainerName: POD2
+  POD2_SPINES:
+    parentContainerName: POD2
+  SUPERSPINES:
+    parentContainerName: FABRIC
