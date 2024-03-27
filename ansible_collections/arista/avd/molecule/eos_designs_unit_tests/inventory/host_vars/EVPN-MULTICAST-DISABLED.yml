@@ -1,0 +1,4 @@
+# Disable Multicast to be configured on node
+
+# evpn_multicast: false
+# underlay_multicast: false
