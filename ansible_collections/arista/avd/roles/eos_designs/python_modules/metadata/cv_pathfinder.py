@@ -163,7 +163,7 @@ class CvPathfinderMixin:
                         "constraints": {
                             "jitter": lb_policy.get("jitter"),
                             "latency": lb_policy.get("latency"),
-                            "lossrate": float(lb_policy["lossrate"]) if "lossrate" in lb_policy else None,
+                            "lossrate": float(lb_policy["loss_rate"]) if "loss_rate" in lb_policy else None,
                         },
                         "description": "",  # TODO: Not sure we have this field anywhere
                         "id": profile["id"],

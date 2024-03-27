@@ -22,7 +22,7 @@ class InventoryMixin:
 
     async def get_inventory_devices(
         self: CVClient,
-        devices: list[tuple[str, str, str]] | None,
+        devices: list[tuple[str, str, str]] | None = None,
         time: datetime | None = None,
         timeout: float = 10.0,
     ) -> list[Device]:

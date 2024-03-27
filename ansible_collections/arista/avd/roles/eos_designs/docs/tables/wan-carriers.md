@@ -11,6 +11,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_carriers.[].name") | String | Required, Unique |  |  | Carrier name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "wan_carriers.[].description") | String |  |  |  | Additional information about the carrier for documentation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_group</samp>](## "wan_carriers.[].path_group") | String | Required |  |  | The path-group to which this carrier belongs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trusted</samp>](## "wan_carriers.[].trusted") | Boolean |  | `False` |  | Set this to `true` to mark this carrier as "trusted".<br>WAN interfaces require an inbound access-list to be set unless the carrier is "trusted". |
 
 === "YAML"
 
@@ -28,4 +29,8 @@
 
         # The path-group to which this carrier belongs.
         path_group: <str; required>
+
+        # Set this to `true` to mark this carrier as "trusted".
+        # WAN interfaces require an inbound access-list to be set unless the carrier is "trusted".
+        trusted: <bool; default=False>
     ```

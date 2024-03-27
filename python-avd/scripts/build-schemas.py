@@ -24,7 +24,7 @@ path.insert(0, str(REPO_ROOT))
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtojsonschemaconverter import AvdToJsonSchemaConverter
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.store import create_store
 
-FRAGMENTS_PATTERN = "*.schema.yml"
+FRAGMENTS_PATTERN = "*.yml"
 
 
 def combine_schemas():

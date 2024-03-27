@@ -354,7 +354,7 @@ class StudioMixin:
         self: CVClient,
         workspace_id: str,
         device_inputs: list[tuple[str, str]],
-        timeout: float = 30.0,
+        timeout: float = 10.0,
     ) -> list[InputsConfig]:
         """
         TODO: Once the topology studio inputs API is public, this function can be replaced by the _future variant.
@@ -365,7 +365,7 @@ class StudioMixin:
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             device_inputs: List of Tuples with the format (<device_id>, <hostname>, <system_mac>).
-            timeout: Timeout in seconds.
+            timeout: Base timeout in seconds. 0.5 second will be added per device.
         """
         device_inputs_by_id = {device_id: {"hostname": hostname, "macAddress": system_mac} for device_id, hostname, system_mac in device_inputs}
 
@@ -391,7 +391,7 @@ class StudioMixin:
                     workspace_id=workspace_id,
                     input_path=["devices", str(device_index), "inputs", "device"],
                     inputs=device_info,
-                    timeout=timeout,
+                    timeout=timeout + len(device_inputs_by_id) * 0.5,
                 )
             )
         index_offset = len(studio_inputs.get("devices", []))
@@ -409,7 +409,7 @@ class StudioMixin:
                     workspace_id=workspace_id,
                     input_path=["devices", str(device_index)],
                     inputs=device_entry,
-                    timeout=timeout,
+                    timeout=timeout + len(device_inputs_by_id) * 0.5,
                 )
             )
         return await gather(*coroutines)

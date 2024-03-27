@@ -93,24 +93,34 @@ wan_path_groups:
 wan_carriers:
   - name: Comcast
     path_group: INET
+    trusted: true
   - name: ATT
     path_group: INET
+    trusted: true
   - name: Bouygues_Telecom
     path_group: INET
+    trusted: true
   - name: SFR
     path_group: INET
+    trusted: true
   - name: Orange
     path_group: INET
+    trusted: true
   - name: Another-ISP
     path_group: INET
+    trusted: true
   - name: Colt
     path_group: MPLS
+    trusted: true
   - name: ATT-MPLS
     path_group: MPLS
+    trusted: true
   - name: Comcast-5G
     path_group: LTE
+    trusted: true
   - name: Inmrasat
     path_group: Satellite
+    trusted: true
 
 tenants:
   - name: TenantA

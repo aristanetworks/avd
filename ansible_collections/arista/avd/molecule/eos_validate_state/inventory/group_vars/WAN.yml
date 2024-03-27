@@ -24,5 +24,7 @@ wan_path_groups:
 wan_carriers:
   - name: isp-1
     path_group: internet
+    trusted: true
   - name: mpls-sp-1
     path_group: mpls
+    trusted: true

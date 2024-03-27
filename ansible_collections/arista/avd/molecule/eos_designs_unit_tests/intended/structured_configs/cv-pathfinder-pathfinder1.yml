@@ -641,7 +641,9 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
-      - id: 4
+      - constraints:
+          lossrate: 42.0
+        id: 4
         name: PROD-AVT-POLICY-VIDEO
         pathgroups:
         - name: MPLS

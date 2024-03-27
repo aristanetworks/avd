@@ -112,6 +112,23 @@ ethernet_interfaces:
   native_vlan: 123
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
+- name: Ethernet14
+  peer: DOT1X_UNAUTHORIZED
+  peer_type: server
+  port_profile: INDIVIDUAL_TRUNK
+  description: DOT1X_UNAUTHORIZED
+  shutdown: false
+  type: switched
+  mode: trunk
+  vlans: 1,2,3,4,5,6,7,123,234
+  native_vlan_tag: false
+  native_vlan: 123
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  dot1x:
+    unauthorized:
+      access_vlan_membership_egress: true
+      native_vlan_membership_egress: true
 port_channel_interfaces:
 - name: Port-Channel5
   description: OLD_SW-1/5_PORT_CHANNEL_DESCRIPTION

@@ -21,6 +21,7 @@ wan_router:
 wan_carriers:
   - name: TEST
     path_group: TEST
+    trusted: true
 
 wan_path_groups:
   - name: TEST

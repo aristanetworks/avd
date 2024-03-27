@@ -41,12 +41,12 @@ class CSVReport:
             yield {
                 **result,
                 "messages": ";".join(result["messages"]),
-                "test_categories": ";".join(result["test_categories"]),
+                "categories": ";".join(result["categories"]),
             }
 
     def generate_report(self) -> None:
         """Generate and writes the CSV report using the collected test results."""
-        fieldnames = ["test_id", "node", "test_categories", "test_description", "test", "result", "messages"]
+        fieldnames = ["id", "dut", "categories", "test", "description", "inputs", "result", "messages"]
         writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
 

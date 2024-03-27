@@ -143,7 +143,7 @@ class ConfigletMixin:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
             containers: List of Tuples with the format\
                 (container_id, display_name, description, configlet_ids, query, list_of_configlet_ids, match_policy).
-            timeout: Timeout in seconds.
+            timeout: Base timeout in seconds. 0.5 second will be added per container.
 
         Returns:
             ConfigletAssignmentKey objects after being set including any server-generated values.
@@ -166,7 +166,7 @@ class ConfigletMixin:
         client = ConfigletAssignmentConfigServiceStub(self._channel)
         assignment_keys = []
         try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+            responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.5)
             async for response in responses:
                 assignment_keys.append(response.key)
 

@@ -132,7 +132,7 @@ class TagMixin:
         workspace_id: str,
         tags: list[tuple[str, str]],
         element_type: Literal["device", "interface"],
-        timeout: float = 30.0,
+        timeout: float = 10.0,
     ) -> list[TagKey]:
         """
         Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
@@ -141,7 +141,7 @@ class TagMixin:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             tags: List of tuples where each tuple is in the format (<tag_label>, <tag_value>).
             element_type: Type of Tag(s) to create.
-            timeout: Timeout in seconds.
+            timeout: Base timeout in seconds. 0.1 second will be added per Tag.
 
         TODO: Consider if we should add sub_type.
 
@@ -164,7 +164,7 @@ class TagMixin:
         tag_keys = []
         client = TagConfigServiceStub(self._channel)
         try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+            responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
             async for response in responses:
                 # Recreating a full tag object. Since we just created it, it *must* be a user created tag.
                 tag_keys.append(response.key)
@@ -252,7 +252,7 @@ class TagMixin:
         workspace_id: str,
         tag_assignments: list[tuple[str, str, str, str | None]],
         element_type: Literal["device", "interface"],
-        timeout: float = 30.0,
+        timeout: float = 10.0,
     ) -> list[TagAssignment]:
         """
         Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
@@ -261,7 +261,7 @@ class TagMixin:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             tag_assignments: List of tuples where each tuple is in the format (<tag_label>, <tag_value>, <device_id/serial_number>, <interface_name | None>).
             element_type: Type of Tag(s) to assign.
-            timeout: Timeout in seconds.
+            timeout: Base timeout in seconds. 0.1 second will be added per Tag assignment.
 
         TODO: Consider if we should add sub_type.
 
@@ -286,7 +286,7 @@ class TagMixin:
         tag_assignment_keys = []
         client = TagAssignmentConfigServiceStub(self._channel)
         try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+            responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
             async for response in responses:
                 tag_assignment_keys.append(response.key)
             return tag_assignment_keys
@@ -308,7 +308,7 @@ class TagMixin:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             tag_assignments: List of tuples where each tuple is in the format (<tag_label>, <tag_value>, <device_id/serial_number>, <interface_name | None>).
             element_type: Type of Tag assignment(s) to delete.
-            timeout: Timeout in seconds.
+            timeout: Base timeout in seconds. 0.1 second will be added per Tag assignment.
 
         TODO: Consider if we should add sub_type.
 
@@ -334,7 +334,7 @@ class TagMixin:
         tag_assignment_keys = []
         client = TagAssignmentConfigServiceStub(self._channel)
         try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+            responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
             async for response in responses:
                 tag_assignment_keys.append(response.key)
             return tag_assignment_keys

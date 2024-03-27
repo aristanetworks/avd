@@ -1,0 +1,63 @@
+---
+type: spine
+
+spine:
+  nodes:
+    - bgp_as: 65000
+      name: ipv4-acls
+      id: 1
+      loopback_ipv4_pool: 192.168.0.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.0.2/30
+          ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+          ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
+          peer_ip: 172.16.0.1/30
+        - name: Ethernet2
+          ip_address: dhcp
+          dhcp_ip: 172.17.17.17
+          peer_ip: 172.17.17.1
+          ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+          ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
+        - name: Ethernet3
+          ip_address: dhcp
+          ipv4_acl_in: TEST-IPV4-ACL-WITH-NO-FIELDS-IN
+          ipv4_acl_out: TEST-IPV4-ACL-WITH-NO-FIELDS-OUT
+        # Testing using the same ACL name on multiple interfaces - should not produce duplicate ACLs in structured config.
+        - name: Ethernet4
+          ip_address: 172.19.19.0/31
+          ipv4_acl_in: TEST-IPV4-ACL-WITH-NO-FIELDS-IN
+          ipv4_acl_out: TEST-IPV4-ACL-WITH-NO-FIELDS-OUT
+
+ipv4_acls:
+# ip_access_lists:
+  - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - sequence: 15
+        action: deny
+        protocol: ip
+        source: any
+        destination: interface_ip
+      - action: permit
+        protocol: ip
+        source: peer_ip
+        destination: interface_ip
+  - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
+    entries:
+      - remark: Some remark will not require source and destination fields.
+      - action: permit
+        protocol: ip
+        source: interface_ip
+        destination: any
+  - name: TEST-IPV4-ACL-WITH-NO-FIELDS-IN
+    entries:
+      - action: permit
+        protocol: ip
+        source: 172.18.18.18
+        destination: any
+  - name: TEST-IPV4-ACL-WITH-NO-FIELDS-OUT
+    entries:
+      - action: permit
+        protocol: ip
+        source: 172.18.18.18
+        destination: any

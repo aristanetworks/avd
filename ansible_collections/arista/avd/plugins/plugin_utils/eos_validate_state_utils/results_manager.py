@@ -79,12 +79,12 @@ class ResultsManager:
 
         # Create the parsed result dictionary
         return {
-            "test_id": self.test_id,
-            "node": result.get("name", ""),
-            "test_categories": test_categories,
-            "test_description": result.get("description", ""),
-            # Since AVD tests can have the same description and category, ANTA's custom_field is used to differentiate tests
-            "test": result.get("custom_field") or result.get("test", ""),
+            "id": self.test_id,
+            "dut": result.get("name", ""),
+            "categories": test_categories,
+            "test": result.get("test", ""),
+            "description": result.get("description", ""),
+            "inputs": result.get("custom_field"),
             "result": new_result,
             "messages": result.get("messages", []),
         }
@@ -125,8 +125,8 @@ class ResultsManager:
 
         parsed_result = self._parse_result(result)
         test_status = parsed_result["result"]
-        categories = parsed_result["test_categories"]
-        dut = parsed_result["node"]
+        categories = parsed_result["categories"]
+        dut = parsed_result["dut"]
 
         self._increment_stats(test_status, dut, categories)
 
