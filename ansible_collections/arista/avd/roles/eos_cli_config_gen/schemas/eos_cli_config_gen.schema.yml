@@ -15783,6 +15783,9 @@ keys:
                 type: int
                 convert_types:
                 - str
+              vtep_to_vtep_bridging:
+                type: bool
+                description: Enable bridging between different VTEPs in vxlan overlay.
               virtual_router_encapsulation_mac_address:
                 type: str
                 description: '"mlag-system-id" or ethernet_address (H.H.H)
