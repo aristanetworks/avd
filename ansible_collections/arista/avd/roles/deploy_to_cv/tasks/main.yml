@@ -13,3 +13,7 @@
 - name: Import new role arista.avd.cv_deploy
   ansible.builtin.import_role:
     name: arista.avd.cv_deploy
+
+- name: Set old result variable
+  set_fact:
+    deploy_to_cv_results: "{{ cv_deploy_results }}"
