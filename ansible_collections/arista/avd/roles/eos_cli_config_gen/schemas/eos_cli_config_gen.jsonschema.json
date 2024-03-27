@@ -23632,6 +23632,7 @@
                     },
                     "action": {
                       "type": "string",
+                      "description": "The action to take - note that platform support for the redirect action is limited.",
                       "enum": [
                         "forward",
                         "drop",

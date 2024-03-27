@@ -45,6 +45,7 @@ keys:
                   action:
                     type: str
                     required: true
+                    description: The action to take - note that platform support for the redirect action is limited.
                     valid_values:
                       - "forward"
                       - "drop"
