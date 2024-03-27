@@ -5083,7 +5083,7 @@
       "title": "Fabric Sflow"
     },
     "flow_tracking_settings": {
-      "description": "Define the flow tracking parameters for this topology.",
+      "description": "PREVIEW: This key is currently not supported\n\nDefine the flow tracking parameters for this topology.",
       "type": "object",
       "properties": {
         "flow_tracker_name": {

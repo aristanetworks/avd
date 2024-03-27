@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>flow_tracking_settings</samp>](## "flow_tracking_settings") | Dictionary |  |  |  | Define the flow tracking parameters for this topology. |
+    | [<samp>flow_tracking_settings</samp>](## "flow_tracking_settings") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>Define the flow tracking parameters for this topology. |
     | [<samp>&nbsp;&nbsp;flow_tracker_name</samp>](## "flow_tracking_settings.flow_tracker_name") | String |  | `FLOW-TRACKER` |  | Flow Tracker Name. |
     | [<samp>&nbsp;&nbsp;record_export</samp>](## "flow_tracking_settings.record_export") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;on_inactive_timeout</samp>](## "flow_tracking_settings.record_export.on_inactive_timeout") | Integer |  | `70000` | Min: 3000<br>Max: 900000 | Flow record inactive export timeout in milliseconds. |
@@ -19,6 +19,8 @@
 === "YAML"
 
     ```yaml
+    # PREVIEW: This key is currently not supported
+    #
     # Define the flow tracking parameters for this topology.
     flow_tracking_settings:
 

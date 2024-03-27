@@ -1236,7 +1236,10 @@ keys:
         description: Enable sFlow on all MLAG peer interfaces.
         type: bool
   flow_tracking_settings:
-    description: Define the flow tracking parameters for this topology.
+    description: 'PREVIEW: This key is currently not supported
+
+
+      Define the flow tracking parameters for this topology.'
     type: dict
     keys:
       flow_tracker_name:
