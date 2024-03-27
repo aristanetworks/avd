@@ -555,6 +555,12 @@ roles/eos_cli_config_gen/docs/tables/virtual-source-nat-vrfs.md
 
 ## Miscellaneous
 
+### Config comment
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/config-comment.md
+--8<--
+
 ### CVX
 
 --8<--

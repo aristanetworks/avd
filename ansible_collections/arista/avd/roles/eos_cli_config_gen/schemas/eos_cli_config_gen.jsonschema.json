@@ -1445,6 +1445,11 @@
         }
       }
     },
+    "config_comment": {
+      "type": "string",
+      "description": "Add a comment to provide information about the configuration.\nThis comment will be rendered at the top of the generated configuration.",
+      "title": "Config Comment"
+    },
     "custom_templates": {
       "type": "array",
       "title": "Extensibility with Custom Templates",
