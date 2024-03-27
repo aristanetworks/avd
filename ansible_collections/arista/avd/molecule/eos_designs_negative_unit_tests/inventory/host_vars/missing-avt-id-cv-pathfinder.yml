@@ -66,6 +66,7 @@ wan_path_groups:
 wan_carriers:
   - name: ATT
     path_group: INET
+    trusted: true
 
 tenants:
   - name: TenantA

@@ -6014,7 +6014,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Access-list Name",
+            "description": "Access-list Name.",
             "title": "Name"
           },
           "counters_per_entry": {
@@ -6023,18 +6023,18 @@
           },
           "entries": {
             "type": "array",
-            "description": "ACL Entries",
+            "description": "ACL Entries.",
             "items": {
               "type": "object",
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "description": "ACL entry sequence number.\n",
+                  "description": "ACL entry sequence number.",
                   "title": "Sequence"
                 },
                 "remark": {
                   "type": "string",
-                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in acl entry will be ignored.\n",
+                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in the ACL entry will be ignored.",
                   "title": "Remark"
                 },
                 "action": {
@@ -6043,17 +6043,17 @@
                     "permit",
                     "deny"
                   ],
-                  "description": "ACL action.\nRequired for standard entry.\n",
+                  "description": "ACL action.\nRequired except for remarks.",
                   "title": "Action"
                 },
                 "protocol": {
                   "type": "string",
-                  "description": "ip, tcp, udp, icmp or other protocol name or number.\nRequired for standard entry.\n",
+                  "description": "\"ip\", \"tcp\", \"udp\", \"icmp\" or other protocol name or number.\nRequired except for remarks.",
                   "title": "Protocol"
                 },
                 "source": {
                   "type": "string",
-                  "description": "any, A.B.C.D/E or A.B.C.D.\nA.B.C.D without a mask means host.\nRequired for standard entry.\n",
+                  "description": "\"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
                   "title": "Source"
                 },
                 "source_ports_match": {
@@ -6078,7 +6078,7 @@
                 },
                 "destination": {
                   "type": "string",
-                  "description": "any, A.B.C.D/E or A.B.C.D.\nA.B.C.D without a mask means host.\nRequired for standard entry.\n",
+                  "description": "\"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
                   "title": "Destination"
                 },
                 "destination_ports_match": {
@@ -6105,7 +6105,7 @@
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "description": "TCP Flag Name"
+                    "description": "TCP Flag Name."
                   },
                   "title": "TCP Flags"
                 },
@@ -6464,6 +6464,32 @@
           "^_.+$": {}
         }
       }
+    },
+    "ip_ftp_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Ftp Client Source Interfaces"
     },
     "ip_hardware": {
       "type": "object",
@@ -7649,6 +7675,58 @@
           "^_.+$": {}
         }
       }
+    },
+    "ip_telnet_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Telnet Client Source Interfaces"
+    },
+    "ip_tftp_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Tftp Client Source Interfaces"
     },
     "ip_virtual_router_mac_address": {
       "type": "string",
@@ -10313,6 +10391,68 @@
       "type": "object",
       "title": "Match Lists",
       "properties": {
+        "prefix_ipv4": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Prefix-List Name.",
+                "title": "Name"
+              },
+              "prefixes": {
+                "type": "array",
+                "minItems": 1,
+                "description": "List of IPv4 prefixes (with the subnet mask e.g. 192.0.2.0/24).",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Prefixes"
+              }
+            },
+            "required": [
+              "prefixes",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Prefix IPv4"
+        },
+        "prefix_ipv6": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Prefix-List Name.",
+                "title": "Name"
+              },
+              "prefixes": {
+                "type": "array",
+                "minItems": 1,
+                "description": "List of IPv6 prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64).",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Prefixes"
+              }
+            },
+            "required": [
+              "prefixes",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Prefix IPv6"
+        },
         "string": {
           "type": "array",
           "items": {
@@ -27364,6 +27504,11 @@
                 "udp_port": {
                   "type": "integer",
                   "title": "UDP Port"
+                },
+                "vtep_to_vtep_bridging": {
+                  "type": "boolean",
+                  "description": "Enable bridging between different VTEPs in vxlan overlay.",
+                  "title": "Vtep To Vtep Bridging"
                 },
                 "virtual_router_encapsulation_mac_address": {
                   "type": "string",

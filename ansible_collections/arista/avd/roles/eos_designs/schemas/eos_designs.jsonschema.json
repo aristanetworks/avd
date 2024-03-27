@@ -4564,6 +4564,13 @@
       "default": true,
       "title": "Default IGMP Snooping Enabled"
     },
+    "default_interface_mtu": {
+      "type": "integer",
+      "description": "Default interface MTU configured on EOS under \"interface defaults\".\nCan be overriden per platform under platform settings.\n",
+      "minimum": 68,
+      "maximum": 65535,
+      "title": "Default Interface MTU"
+    },
     "default_interfaces": {
       "type": "array",
       "description": "Default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).\n",
@@ -5379,6 +5386,196 @@
       },
       "title": "Internal VLAN Order"
     },
+    "ipv4_acls": {
+      "type": "array",
+      "description": "IPv4 extended access-lists supporting substitution on certain fields.\nThese access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.\n\nThe substitution is useful when assigning the same access-list on multiple interfaces,\nbut where certain fields require unique values like the \"interface_ip\" or \"peer_ip\".\nWhen using substitution, the interface name will be appended to the ACL name.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Access-list name.\nWhen using substitution for any fields, the interface name will be appended to the ACL name.",
+            "title": "Name"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "description": "This field supports substitution of the fields \"interface_ip\" and \"peer_ip\".\nAlternatively it can be set with a static value of \"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
+                  "title": "Source"
+                },
+                "destination": {
+                  "type": "string",
+                  "description": "This field supports substitution of the fields \"interface_ip\" and \"peer_ip\".\nAlternatively it can be set with a static value of \"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
+                  "title": "Destination"
+                },
+                "sequence": {
+                  "type": "integer",
+                  "description": "ACL entry sequence number.",
+                  "title": "Sequence"
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in the ACL entry will be ignored.",
+                  "title": "Remark"
+                },
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "permit",
+                    "deny"
+                  ],
+                  "description": "ACL action.\nRequired except for remarks.",
+                  "title": "Action"
+                },
+                "protocol": {
+                  "type": "string",
+                  "description": "\"ip\", \"tcp\", \"udp\", \"icmp\" or other protocol name or number.\nRequired except for remarks.",
+                  "title": "Protocol"
+                },
+                "source_ports_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq",
+                    "range"
+                  ],
+                  "default": "eq",
+                  "title": "Source Ports Match"
+                },
+                "source_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP/UDP source port name or number."
+                  },
+                  "title": "Source Ports"
+                },
+                "destination_ports_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq",
+                    "range"
+                  ],
+                  "default": "eq",
+                  "title": "Destination Ports Match"
+                },
+                "destination_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP/UDP destination port name or number."
+                  },
+                  "title": "Destination Ports"
+                },
+                "tcp_flags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP Flag Name."
+                  },
+                  "title": "TCP Flags"
+                },
+                "fragments": {
+                  "type": "boolean",
+                  "description": "Match non-head fragment packets.",
+                  "title": "Fragments"
+                },
+                "log": {
+                  "type": "boolean",
+                  "description": "Log matches against this rule.",
+                  "title": "Log"
+                },
+                "ttl": {
+                  "type": "integer",
+                  "description": "TTL value",
+                  "minimum": 0,
+                  "maximum": 255,
+                  "title": "TTL"
+                },
+                "ttl_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq"
+                  ],
+                  "default": "eq",
+                  "title": "TTL Match"
+                },
+                "icmp_type": {
+                  "type": "string",
+                  "description": "Message type name/number for ICMP packets.",
+                  "title": "ICMP Type"
+                },
+                "icmp_code": {
+                  "type": "string",
+                  "description": "Message code for ICMP packets.",
+                  "title": "ICMP Code"
+                },
+                "nexthop_group": {
+                  "type": "string",
+                  "description": "nexthop-group name.",
+                  "title": "Nexthop Group"
+                },
+                "tracked": {
+                  "type": "boolean",
+                  "description": "Match packets in existing ICMP/UDP/TCP connections.",
+                  "title": "Tracked"
+                },
+                "dscp": {
+                  "type": "string",
+                  "description": "DSCP value or name.",
+                  "title": "DSCP"
+                },
+                "vlan_number": {
+                  "type": "integer",
+                  "title": "VLAN Number"
+                },
+                "vlan_inner": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "VLAN Inner"
+                },
+                "vlan_mask": {
+                  "type": "string",
+                  "description": "0x000-0xFFF VLAN mask.",
+                  "title": "VLAN Mask"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "description": "ACL Entries.",
+            "title": "Entries"
+          },
+          "counters_per_entry": {
+            "type": "boolean",
+            "title": "Counters Per Entry"
+          }
+        },
+        "required": [
+          "entries",
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IPv4 Acls"
+    },
     "ipv6_mgmt_destination_networks": {
       "description": "List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.\nReplaces the default route.\n",
       "type": "array",
@@ -6038,10 +6235,10 @@
             "description": "Node IPv4 address/Mask or 'dhcp'.",
             "title": "IP Address"
           },
-          "dhcp_ip_address": {
+          "dhcp_ip": {
             "type": "string",
-            "description": "When the `ip_address` is `dhcp`, this optional field allows to indicate the expected\nIPv4 address/Mask to be allocated on the interface if known.\nThis is not rendered in the configuration but can be used in ACLs in certain scenarios.",
-            "title": "DHCP IP Address"
+            "description": "When the `ip_address` is `dhcp`, this optional field allows to indicate the expected\nIPv4 address (without mask) to be allocated on the interface if known.\nThis is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list\nset under `ipv4_acl_in` and `ipv4_acl_out`.",
+            "title": "DHCP IP"
           },
           "public_ip": {
             "type": "string",
@@ -6087,6 +6284,16 @@
             "description": "The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
             "title": "Peer IP"
           },
+          "ipv4_acl_in": {
+            "description": "Name of the IPv4 access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls`.\nRequired for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.",
+            "type": "string",
+            "title": "IPv4 Acl In"
+          },
+          "ipv4_acl_out": {
+            "description": "Name of the IPv4 Access-list to be assigned in the egress direction.\nThe access-list must be defined under `ipv4_acls`.",
+            "type": "string",
+            "title": "IPv4 Acl Out"
+          },
           "static_routes": {
             "description": "Configure IPv4 static routes pointing to `peer_ip`.",
             "type": "array",
@@ -6117,18 +6324,18 @@
           },
           "wan_carrier": {
             "type": "string",
-            "description": "The WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
+            "description": "The WAN carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.\nUnless the carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.",
             "title": "Wan Carrier"
           },
           "wan_circuit_id": {
             "type": "string",
-            "description": "The WAN Circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
+            "description": "The WAN circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
             "title": "Wan Circuit ID"
           },
           "connected_to_pathfinder": {
             "type": "boolean",
             "default": true,
-            "description": "For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.",
+            "description": "For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.",
             "title": "Connected To Pathfinder"
           },
           "raw_eos_cli": {
@@ -9441,6 +9648,24 @@
                 "minimum": 1,
                 "maximum": 10,
                 "title": "Reauthorization Request Limit"
+              },
+              "unauthorized": {
+                "type": "object",
+                "properties": {
+                  "access_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Access VLAN Membership Egress"
+                  },
+                  "native_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Native VLAN Membership Egress"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unauthorized"
               }
             },
             "additionalProperties": false,
@@ -15732,6 +15957,24 @@
                 "minimum": 1,
                 "maximum": 10,
                 "title": "Reauthorization Request Limit"
+              },
+              "unauthorized": {
+                "type": "object",
+                "properties": {
+                  "access_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Access VLAN Membership Egress"
+                  },
+                  "native_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Native VLAN Membership Egress"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unauthorized"
               }
             },
             "additionalProperties": false,
@@ -25350,6 +25593,12 @@
             "type": "string",
             "description": "The path-group to which this carrier belongs.",
             "title": "Path Group"
+          },
+          "trusted": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set this to `true` to mark this carrier as \"trusted\".\nWAN interfaces require an inbound access-list to be set unless the carrier is \"trusted\".",
+            "title": "Trusted"
           }
         },
         "required": [

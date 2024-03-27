@@ -17,7 +17,7 @@ from ansible.plugins.action import ActionBase, display
 from yaml import load
 
 from ansible_collections.arista.avd.plugins.plugin_utils.cv_client import deploy_to_cv
-from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.deploy_to_cv.models import (
+from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.workflows.models import (
     CloudVision,
     CVChangeControl,
     CVDevice,
@@ -171,7 +171,7 @@ class ActionModule(ActionBase):
 
     async def build_objects(
         self, device_list: list[str], structured_config_dir: str, structured_config_suffix: str, configuration_dir: str, configlet_name_template: str
-    ) -> (list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]):
+    ) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]]:
         """
         Parameters:
             device_list: List of device hostnames.
@@ -208,7 +208,7 @@ class ActionModule(ActionBase):
 
     async def build_object_for_device(
         self, hostname: str, structured_config_dir: str, structured_config_suffix: str, configuration_dir: str, configlet_name_template: str
-    ) -> (list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]):
+    ) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]]:
         """
         Parameters:
             device_list: List of device hostnames.

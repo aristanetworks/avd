@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: arista.avd.deploy_to_cv
+title: arista.avd.cv_workflow
 ---
 <!--
   ~ Copyright (c) 2023-2024 Arista Networks, Inc.
@@ -8,19 +8,16 @@ title: arista.avd.deploy_to_cv
   ~ that can be found in the LICENSE file.
   -->
 
-# deploy_to_cv
+# cv_workflow
 
 !!! note
-    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.deploy_to_cv` when using this plugin.
-
-!!! warning "This module is in **preview** mode"
-    This module is not guaranteed to have a backwards compatible interface.
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.cv_workflow` when using this plugin.
 
 Deploy various objects to CloudVision
 
 ## Synopsis
 
-The `arista.avd.deploy_to_cv` module is an Ansible Action Plugin providing the following capabilities:
+The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the following capabilities:
 
 - Verify Devices are in the CloudVision inventory.
 - Verify Devices are in the Inventory &amp; Topology Studio.
@@ -71,7 +68,7 @@ The `arista.avd.deploy_to_cv` module is an Ansible Action Plugin providing the f
     - name: Provision CVP with AVD configuration
       run_once: true
       delegate_to: localhost
-      arista.avd.deploy_to_cv:
+      arista.avd.cv_workflow:
         cv_servers: [ "www.arista.io" ]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: True

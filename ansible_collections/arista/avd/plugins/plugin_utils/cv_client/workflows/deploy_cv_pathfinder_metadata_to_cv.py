@@ -19,7 +19,6 @@ CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {
     "regions": [],
     "routers": [],
     "vrfs": [],
-    "version": "3.1",
 }
 
 
@@ -27,6 +26,14 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
     """
     In-place update general metadata in studio_inputs.
     """
+    # Temporary fix for default values in metadata studio
+    for vrf in get(metadata, "vrfs", default=[]):
+        for avt in get(vrf, "avts", default=[]):
+            constraints: dict = avt.setdefault("constraints", {})
+            constraints.setdefault("latency", 4294967295)
+            constraints.setdefault("jitter", 4294967295)
+            constraints.setdefault("lossrate", 99.0)
+
     studio_inputs.update(
         {
             "pathgroups": [
@@ -218,16 +225,16 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
         studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS
     )
 
-    # Ensure the metadata studio schema match our supported version
-    if (studio_version := existing_studio_inputs.get("version")) != "3.1":
-        LOGGER.warning(
-            (
-                "deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '%s'. "
-                "This plugin only accepts version '3.1'. Skipping upload of metadata."
-            ),
-            studio_version,
-        )
-        return
+    # TODO: Ensure the metadata studio schema match our supported version
+    # if (studio_version := existing_studio_inputs.get("version")) != "3.2":
+    #     LOGGER.warning(
+    #         (
+    #             "deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '%s'. "
+    #             "This plugin only accepts version '3.2'. Skipping upload of metadata."
+    #         ),
+    #         studio_version,
+    #     )
+    #     return
 
     studio_inputs = deepcopy(existing_studio_inputs)
 
