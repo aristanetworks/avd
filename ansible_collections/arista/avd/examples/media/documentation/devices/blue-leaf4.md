@@ -1,4 +1,5 @@
 # blue-leaf4
+
 # Table of Contents
 
 - [Management](#management)
@@ -1081,7 +1082,6 @@ interface Ethernet52/1
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | Router-id | default | - |
 
-
 ### Loopback Interfaces Device Configuration
 
 ```eos
@@ -1124,6 +1124,7 @@ interface Vlan12
 ```
 
 # Routing
+
 ## Service Routing Protocols Model
 
 Multi agent routing protocol model enabled
@@ -1162,6 +1163,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -1267,7 +1269,6 @@ router multicast
    ipv4
       routing
 ```
-
 
 ## PIM Sparse Mode
 
