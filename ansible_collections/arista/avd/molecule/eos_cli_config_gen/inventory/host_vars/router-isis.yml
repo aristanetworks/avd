@@ -34,6 +34,12 @@ router_isis:
       mode: sha
       sha:
         key_id: 2
+  eos_cli: |
+    address-family ipv6 unicast
+      multi-topology
+    traffic-engineering
+      no shutdown
+      is-type level-2
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:
