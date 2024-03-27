@@ -5,6 +5,7 @@ from .bgp_peer_groups import BgpPeerGroupsMixin
 from .connected_endpoints_keys import ConnectedEndpointsKeysMixin
 from .cv_topology import CvTopology
 from .filtered_tenants import FilteredTenantsMixin
+from .flow_tracking import FlowTrackingMixin
 from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
 from .ip_addressing import IpAddressingMixin
@@ -48,6 +49,7 @@ class SharedUtils(
     RoutingMixin,
     UnderlayMixin,
     UtilsMixin,
+    FlowTrackingMixin,
 ):
     """
     Class with commonly used methods / cached_properties to be shared between all the python_modules

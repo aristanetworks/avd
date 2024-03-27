@@ -383,14 +383,6 @@ class WanMixin:
         )
 
     @cached_property
-    def wan_flow_tracker_name(self: SharedUtils) -> str:
-        """
-        Return the name of the WAN flow tracking object
-        Used in both network services, underlay and overlay python modules.
-        """
-        return get(self.hostvars, "flow_tracking_settings.flow_tracker_name", default="FLOW-TRACKER")
-
-    @cached_property
     def is_cv_pathfinder_router(self: SharedUtils) -> bool:
         """
         Return True is the current wan_mode is cv-pathfinder and the device is a wan router.

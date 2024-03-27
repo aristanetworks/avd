@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, get_item
 
 
 class AvdStructuredConfigFlows(AvdFacts):
@@ -124,3 +124,98 @@ class AvdStructuredConfigFlows(AvdFacts):
                 return True
 
         return False
+
+    @cached_property
+    def _default_hardware_flow_tracker(self) -> dict:
+        return {
+                "name": self.shared_utils.default_flow_tracker_name,
+                "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000},
+                "exporters": [
+                    {"name": "CV-TELEMETRY", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 3600000}
+                ],
+            }
+
+    @cached_property
+    def flow_tracking(self) -> dict | None:
+        """
+        Return structured config for flow_tracking
+        """
+        configured_sampled_trackers, configured_hardware_trackers = self._get_enabled_flow_trackers()
+        if not(configured_sampled_trackers or configured_hardware_trackers):
+            return None
+
+        flow_tracking_settings = self.shared_utils.flow_tracker_settings
+
+        all_sampled_trackers = get(flow_tracking_settings, "sampled.trackers", default=[])
+        all_hardware_trackers = get(flow_tracking_settings, "hardware.trackers", default=[])
+
+        filtered_sampled_trackers = []
+        filtered_hardware_trackers = []
+
+        for tracker_name in configured_sampled_trackers:
+            filtered_sampled_trackers.append(get_item(
+                    all_sampled_trackers,
+                    "name",
+                    tracker_name,
+                    required=True,
+                    custom_error_msg=f"{tracker_name} is being used for one of the interfaces, but is not configured in flow_tracking_settings.sampled",
+                ))
+
+        add_default_tracker = True
+        for tracker in all_hardware_trackers:
+            if tracker.get('name') == self.shared_utils.default_flow_tracker_name:
+                add_default_tracker = False
+        if add_default_tracker:
+            all_hardware_trackers = all_hardware_trackers + [self._default_hardware_flow_tracker]
+
+        for tracker_name in configured_hardware_trackers:
+            filtered_hardware_trackers.append(get_item(
+                    all_hardware_trackers,
+                    "name",
+                    tracker_name,
+                    required=True,
+                    custom_error_msg=f"{tracker_name} is being used for one of the interfaces, but is not configured in flow_tracking_settings.hardware",
+                ))
+
+        flow_tracking = {}
+        if filtered_sampled_trackers:
+            flow_tracking['sampled'] = get(flow_tracking_settings, 'sampled', default={}).copy()
+            if flow_tracking['sampled'].get('shutdown') is None:
+                flow_tracking['sampled']['shutdown'] = False
+            flow_tracking['sampled']['trackers'] = filtered_sampled_trackers
+
+        if filtered_hardware_trackers:
+            flow_tracking['hardware'] = get(flow_tracking_settings, 'hardware', default={}).copy()
+            if flow_tracking['hardware'].get('shutdown') is None:
+                flow_tracking['hardware']['shutdown'] = False
+            flow_tracking['hardware']['trackers'] = filtered_hardware_trackers
+
+        return flow_tracking
+
+    def _get_enabled_flow_trackers(self) -> bool:
+        """
+        Enable flow-tracking if any interface is enabled for flow-tracking.
+
+        This relies on flow-tracking being rendered after all other eos_designs modules (except structured config).
+        """
+        trackers = {
+            "sampled" : {},
+            "hardware": {},
+        }
+
+        for interface in get(self._hostvars, "ethernet_interfaces", default=[]):
+            if (tracker:= get(interface, "flow_tracker")):
+                for trackerType, trackerName in tracker.items():
+                    trackers[trackerType][trackerName] = True
+
+        for interface in get(self._hostvars, "port_channel_interfaces", default=[]):
+            if (tracker:= get(interface, "flow_tracker")):
+                for trackerType, trackerName in tracker.items():
+                    trackers[trackerType][trackerName] = True
+
+        for interface in get(self._hostvars, "dps_interfaces", default=[]):
+            if (tracker:= get(interface, "flow_tracker")):
+                for trackerType, trackerName in tracker.items():
+                    trackers[trackerType][trackerName] = True
+
+        return trackers['sampled'].keys(), trackers['hardware'].keys()

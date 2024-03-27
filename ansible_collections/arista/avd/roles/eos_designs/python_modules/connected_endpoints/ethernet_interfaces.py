@@ -198,6 +198,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "ptp": self._get_adapter_ptp(adapter),
                     "service_profile": adapter.get("qos_profile"),
                     "sflow": self._get_adapter_sflow(adapter),
+                    "flow_tracker": self._get_adapter_flow_tracking(adapter),
                     "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
                         adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
                     ),

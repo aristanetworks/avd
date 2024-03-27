@@ -190,7 +190,11 @@ class YamlLineGenBase(ABC):
         Determines if this field should use a mkdocs codeblock annotation / popup to display the default value.
         Is true for list or dict with length above 1. Otherwise false.
         """
-        return self.schema.default is not None and isinstance(self.schema.default, (list, dict)) and len(self.schema.default) > 1
+        return (
+            self.schema.default is not None
+            and isinstance(self.schema.default, (list, dict))
+            and (len(self.schema.default) > 1 or len(str(self.schema.default)) > 40)
+        )
 
     def get_default(self) -> str | None:
         """
