@@ -1445,6 +1445,11 @@
         }
       }
     },
+    "config_comment": {
+      "type": "string",
+      "description": "Add a comment to provide information about the configuration.\nThis comment will be rendered at the top of the generated configuration.",
+      "title": "Config Comment"
+    },
     "custom_templates": {
       "type": "array",
       "title": "Extensibility with Custom Templates",
@@ -27688,6 +27693,11 @@
                 "udp_port": {
                   "type": "integer",
                   "title": "UDP Port"
+                },
+                "vtep_to_vtep_bridging": {
+                  "type": "boolean",
+                  "description": "Enable bridging between different VTEPs in vxlan overlay.",
+                  "title": "Vtep To Vtep Bridging"
                 },
                 "virtual_router_encapsulation_mac_address": {
                   "type": "string",

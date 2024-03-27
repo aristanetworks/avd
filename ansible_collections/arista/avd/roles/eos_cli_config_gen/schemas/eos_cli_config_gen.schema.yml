@@ -952,6 +952,11 @@ keys:
             Example: "permit GSHUT 65123:123"
 
             '
+  config_comment:
+    type: str
+    description: 'Add a comment to provide information about the configuration.
+
+      This comment will be rendered at the top of the generated configuration.'
   custom_templates:
     type: list
     display_name: Extensibility with Custom Templates
@@ -15896,6 +15901,9 @@ keys:
                 type: int
                 convert_types:
                 - str
+              vtep_to_vtep_bridging:
+                type: bool
+                description: Enable bridging between different VTEPs in vxlan overlay.
               virtual_router_encapsulation_mac_address:
                 type: str
                 description: '"mlag-system-id" or ethernet_address (H.H.H)
