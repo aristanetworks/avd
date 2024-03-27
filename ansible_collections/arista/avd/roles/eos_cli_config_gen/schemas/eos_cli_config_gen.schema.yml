@@ -6417,6 +6417,8 @@ keys:
                             type: int
                           lossrate:
                             type: str
+                            convert_types:
+                            - float
                       description:
                         type: str
                       id:
