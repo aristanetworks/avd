@@ -22,7 +22,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.data_plane.profile_name") | String |  | `DP-PROFILE` |  | Name of the IPSec profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.data_plane.shared_key") | String | Required |  |  | The type 7 encrypted IPSec shared key.<br>This variable is sensitive and should be configured using some vault mechanism. |
     | [<samp>wan_mode</samp>](## "wan_mode") | String |  | `cv-pathfinder` | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | Select if the WAN should be run using CV Pathfinder or AutoVPN only. |
-    | [<samp>wan_stun_dtls_disable</samp>](## "wan_stun_dtls_disable") | Boolean |  | `False` |  | WAN STUN connections will be authenticated and secured with DTLS by default.<br>For CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.<br>In case of AutoVPN the certificates must be deployed manually to all devices.<br><br>For LAB environments this can be disabled, if there are no certificates available.<br>This should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication. |
+    | [<samp>wan_stun_dtls_disable</samp>](## "wan_stun_dtls_disable") | Boolean |  | `False` |  | WAN STUN connections are authenticated and secured with DTLS by default.<br>For CV Pathfinder deployments CloudVision will automatically deploy certificates on the devices.<br>In case of AutoVPN the certificates must be deployed manually to all devices.<br><br>For LAB environments this can be disabled, if there are no certificates available.<br>This should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication. |
     | [<samp>wan_stun_dtls_profile_name</samp>](## "wan_stun_dtls_profile_name") | String |  | `STUN-DTLS` |  | Name of the SSL profile used for DTLS on WAN STUN connections.<br>When using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers. |
     | [<samp>wan_transit</samp>](## "wan_transit") <span style="color:red">removed</span> | Dictionary |  |  |  | The `wan_transit` node type was introduced and removed while the AVD WAN feature was in PREVIEW MODE.<br>Migrate your existing transit nodes to using `wan_router` node_type and set<br>`cv_pathfinder_transit_mode: region` under node settings.<span style="color:red">This key was removed. Support was removed in AVD version 4.6.0-dev1. Use <samp>node_type `wan_router` and set `cv_pathfinder_transit_mode: region` under node settings</samp> instead.</span> |
 
@@ -72,8 +72,8 @@
     # Select if the WAN should be run using CV Pathfinder or AutoVPN only.
     wan_mode: <str; "autovpn" | "cv-pathfinder"; default="cv-pathfinder">
 
-    # WAN STUN connections will be authenticated and secured with DTLS by default.
-    # For CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.
+    # WAN STUN connections are authenticated and secured with DTLS by default.
+    # For CV Pathfinder deployments CloudVision will automatically deploy certificates on the devices.
     # In case of AutoVPN the certificates must be deployed manually to all devices.
     #
     # For LAB environments this can be disabled, if there are no certificates available.

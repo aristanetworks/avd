@@ -10,20 +10,24 @@ title: Ansible Collection Role eos_designs - WAN
 
 # WAN
 
-!!! warning
+!!! warning "Disclaimer"
+
+    This how-to does not intend to be a network design nor a best practices document.
+    It is about how to deploy a WAN network using AVD.
+
+???+ warning "About PREVIEW keys in the schema"
 
     Some of the WAN functionality is still in PREVIEW. When this is the case it is indicated as such in the documentation.
     For these PREVIEW features, Everything is subject to change, is not supported and may not be complete.
 
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
-!!! info
-
-    `eos_cli_config_gen` schema should support all of the required keys to configure a WAN network, whether AutoVPN or Pathfinder except for the most recent features.
-    This means that any missing `eos_designs` feature should be supported using `custom_structured_configuration` functionality.
-    If you find any missing functionality, please open an issue on Github.
-
 ## Overview
+
+Please familiarize yourself with the Arista WAN terminology before proceeding:
+
+- https://www.arista.com/en/solutions/enterprise-wan
+- https://tech-library.arista.com/wan/ (Tech Library access requires an Arista account)
 
 ### Design points
 
@@ -42,7 +46,7 @@ title: Ansible Collection Role eos_designs - WAN
   - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default.
   - It is not yet supported to disable HA on a specific LAN interface on the device, nor is it supported to add HA configuration on a non-uplink interface.
   - HA for AutoVPN is not supported
-
+- `flow_tracking_settings` is in PREVIEW as the model will change in the next release.
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
     These new tests are added only in the [ANTA preview](../../../eos_validate_state/ANTA-Preview.md) mode.
 
@@ -72,12 +76,13 @@ title: Ansible Collection Role eos_designs - WAN
 - Increase test coverage in `eos_validate_state` support for AutoVPN and CV-Pathfinder
 - Path selection outlier detection feature
 
+!!! info
+
+    `eos_cli_config_gen` schema should support all of the required keys to configure a WAN network, whether AutoVPN or Pathfinder except for the most recent features.
+    This means that any missing `eos_designs` feature should be supported using `custom_structured_configuration` functionality.
+    If you find any missing functionality, please open an issue on Github.
+
 ## Getting started with WAN
-
-!!! warning "Disclaimer"
-
-    This section does not intend to be a network design nor a best practice document.
-    It is about how to deploy a WAN network using AVD.
 
 ### Global settings
 
@@ -158,7 +163,34 @@ However, if the WAN route servers are in a different inventory, it is then neces
 
 #### WAN STUN handling
 
-!!! Danger "TODO"
+WAN STUN connections are configured by default authenticated and secured with DTLS by default. A security profile is configured with an hardcoded root certificate and matching a certifcate `<profile_name>.crt` and  key `<profile_name>.key`:
+
+```eos
+management security
+   ssl profile STUN-DTLS
+      tls versions 1.2
+      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
+      certificate STUN-DTLS.crt key STUN-DTLS.key
+```
+
+These values can be overwritten using `custom_structured_configuration`.
+
+This configuration requires certificates to be distributed on the WAN devices to be able to authenticate themselves:
+
+- For CV Pathinder deployments,  CloudVision will automatically deploy certificates on the devices.
+- For AutoVPN, the certficiates must be generated and deployed to the devices for the STUN connections to work.
+
+!!! Danger "Disabling STUN"
+
+    It is possible to disable STUN using AVD but this implies that the STUN service is exposed with no authentication.
+
+```yaml
+# Use wan_stun_dtls_disable: true to disable STUN on all WAN devices
+wan_stun_dtls_disable: true
+
+# Use wan_stun_dtls_profile_name to overwrite the default profile name STUN-DTLS
+wan_stun_dtls_profile_name: profileA
+```
 
 #### CV Pathfinder hierarchy
 
@@ -225,7 +257,7 @@ wan_path_groups:
     excluded_from_default_policy: true # (1)!
     id: 102
   - name: Equinix
-    default_preference: alternate # (2) !
+    default_preference: alternate # (2)!
     id: 103
   - name: Satellite
     id: 104
@@ -238,7 +270,7 @@ wan_path_groups:
 
     The IDs are required and it is possible to turn on and off IPSec at the path-group level for dynamic or static peers.
 
-To allow for a better visualization in CVaaS, AVD implements on level of indirection to be able to specify the carrier for the last mile provider.
+To allow for a better visualization in CVaaS, AVD implements on level of indirection to be able to specify the carrier for the last mile provider. In addition some settings have been made available at the WAN carrier level like `trusted`.
 
 Each carrier is associated to a path-group and multiple carriers can be assigned to the same path-group (e.g. all the Internet providers can be differentiated at the carrier level but bundled together at the path-group level).
 
@@ -248,19 +280,21 @@ The list of carriers must also be the same across all WAN routers:
 wan_carriers:
   - name: IPS-1
     path_group: INET
-    # AVD won't require an interface ACL on WAN interfaces towards a trusted WAN carrier
-    trusted: true
   - name: ISP-2
     path_group: INET
   - name: MPLS-SP1
     path_group: MPLS
+    trusted: true # (1)!
   - name: MPLS-SP2
     path_group: MPLS
+    trusted: true
   - name: LTE-5G-SP
     path_group: LTE
   - name: Satellite-SP
     path_group: Satellite
 ```
+
+1. AVD won't require an interface ACL on WAN interfaces towards a `trusted` WAN carrier.
 
 ### Flow tracking
 
@@ -290,11 +324,13 @@ wan_router:
         uplink_switch_interfaces: [Ethernet1]
         l3_interfaces:
           # This is a WAN interface because `wan_carrier` is defined
-          - name: Ethernet1
+          - name: Ethernet1 # (1)!
             peer: peer3
             peer_interface: Ethernet42
             wan_carrier: ISP-1
-            wan_circuit_id: 666
+            wan_circuit_id: 666 # (2)!
+            ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN # (3)!
+            ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT # (3)!
             dhcp_accept_default_route: true
             ip_address: dhcp
             dhcp_ip: 7.7.7.7
@@ -310,6 +346,11 @@ wan_router:
           - name: Ethernet3
             ip_address: 172.20.20.20/31
 ```
+
+1. `peer` and `peer_interface` are optionals and used for description.
+2. `wan_circuit_id` is optional and used for description.
+3. Configure IPv4 ACLs in and out for the L3 interface. The access lists must
+    be defined under `ipv4_acls` top level key.
 
 ### WAN policies
 
@@ -393,17 +434,14 @@ wan_virtual_topologies:
     An important design point to keep in mind is that the current CV Pathfinder and AutoVPN solutions require the `Dps1` interface to be in VRF default.
     This implies that all the WAN interfaces will also be in VRF `default` and there may also be LAN interfaces in VRF `default`.
 
-!!! warning
+The following LAN scenarios are supported:
 
-    AVD does not yet configure any route-map to filter potential routes received
-    from the WAN for a WAN interface purpose (e.g. internet) to be advertised
-    towards the LAN. The plan is to add an inbound route-map set the
-    no-advertise community on the received routes.
+- Single Router L3 EBGP LAN
+- Single Router L2 LAN
 
-    Similarly there is no current mechanism to prevent advertising the LAN routes towards the WAN,
-    The plan is to apply an outbound route-map preventing any routes to be advertised.
+The following LAN scenarios are in PREVIEW:
 
-### TODO - this whole section need rework
+- Dual Router L3 EBGP LAN with HA
 
 #### EBGP LAN
 
@@ -413,13 +451,17 @@ wan_virtual_topologies:
 - the Underlay peer group (towards the LAN) is configured with two route-maps reused from existing designed but configured differently
   - one outbound route-map `RM-BGP-UNDERLAY-PEERS-OUT`:
     - advertised the local routes tagged with the SoO extended community.
-    - advertised the routes received from iBGP (WAN) towards the LAN
-  - one outbound route-map `RM-BGP-UNDERLAY-PEERS-IN`:
+    - advertised the routes received from iBGP (WAN) towards the LAN also marked with the SoO community.
+  - one inbound route-map `RM-BGP-UNDERLAY-PEERS-IN`:
     - deny routes received from LAN that already contain the WAN AS in the path.
     - accept routes coming from the LAN and set the SoO extended community on them.
 - For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SoO.
 
-##### HA
+##### HA (PREVIEW)
+
+!!! warning "PREVIEW: Changes ahead"
+
+    This configuration currently in PREVIEW **will** change in future version of AVD.
 
 for eBGP LAN routing protocol the following is done to enable HA:
 
@@ -438,13 +480,14 @@ BGP underlay peer group is configured with `allowas-in 1` to be able to learn th
     - allow all routes learned from iBGP (WAN)
     - Implicitly denying other routes which could be learned from BGP towards a WAN provider or redistributed without marking with SoO.
 
-#### OSPF LAN
+#### OSPF LAN (NOT SUPPORTED)
+
+!!! danger "NOT SUPPORTED"
+
+    This configuration is not supported and has not been thoroughly tested.
+    Use at your own risk.
 
 - Configure `underlay_routing_protocol` to OSPF for both the WAN router and the uplink router.
-
-!!! warning
-
-    In the current implementation, OSPF on LAN is not supported as there is no redistribution of route from OSPF to BGP and vice-versa implemented.
 
 ##### HA
 
@@ -454,19 +497,15 @@ The HA tunnel will come up properly today but route redistribution will be missi
 
 #### L2 LAN
 
-- Configure `underlay_routing_protocol` to OSPF for both the WAN router and the uplink router.
-
 !!! warning
 
     In the current implementation, OSPF on LAN is not supported as there is no redistribution of route from OSPF to BGP and vice-versa implemented.
 
-##### HA
+##### HA (NOT IMPLEMENTED)
 
-!!! warning
+!!! danger "NOT IMPLEMENTED"
 
     Not Implemented - will be using VRRP
-
-### TODO Separate inventories
 
 ### CloudVision Tags
 
@@ -491,3 +530,10 @@ The tags will only be generated when `wan_mode` is set to `cv-pathfinder`.
 | `Type`        | `lan` or `wan`                              |
 | `Carrier`     | `wan_carrier` if this is a WAN interface    |
 | `Circuit`     | `wan_circuit_id` if this is a WAN interface |
+
+### Using separate Ansible inventories
+
+As described in the design principles, the goal is to be able to distribute the
+WAN routers in separate Ansible inventories.
+
+!!! Danger "TO BE COMPLETED"
