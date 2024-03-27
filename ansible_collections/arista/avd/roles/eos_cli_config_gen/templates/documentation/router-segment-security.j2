@@ -3,20 +3,20 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{# doc - router pim sparse mode #}
+{# doc - router segment-security #}
 {% if router_segment_security is arista.avd.defined %}
 
-#### Group-Based Multi-domain Segmentation Services (MSS-Group)
+## Group-Based Multi-domain Segmentation Services (MSS-Group)
 
 {%     if router_segment_security.enabled is arista.avd.defined(true) %}
 - MSS-G is enabled.
 {%     endif %}
 {%     if router_segment_security.policies is arista.avd.defined %}
 
-##### Segmentation Policies
+### Segmentation Policies
 {%         for policy in router_segment_security.policies %}
 
-###### {{ policy.name }}
+#### {{ policy.name }}
 
 | Sequence Number | Application Name | Action | Next-Hop |
 | --------------- | ---------------- | ------ | -------- |
@@ -27,13 +27,13 @@
 {%     endif %}
 {%     if router_segment_security.vrfs is arista.avd.defined %}
 
-##### Segment Definitions
+### Segment Definitions
 {%         for vrf in router_segment_security.vrfs | arista.avd.natural_sort('name') %}
 
-###### VRF {{ vrf.name }} Segmentation
+#### VRF {{ vrf.name }} Segmentation
 {%             for segment in vrf.segments %}
 
-####### Segment {{ segment.name }} Definitions
+##### Segment {{ segment.name }} Definitions
 
 | Match-List Name | Address Family | Covered |
 | ------------ | -------------- | ------- |
@@ -41,7 +41,7 @@
 | {{ entry.name }} | {{ entry.address_family }} | {{ entry.covered | arista.avd.default('False') }} |
 {%                 endfor %}
 
-####### Segment {{ segment.name }} Policies
+##### Segment {{ segment.name }} Policies
 
 | Source Segment | Policy Applied |
 | -------------- | -------------- |
@@ -52,7 +52,7 @@
 {%         endfor %}
 {%     endif %}
 
-##### Router MSS-G Device Configuration
+### Router MSS-G Device Configuration
 
 ```eos
 {%     include 'eos/router-segment-security.j2' %}

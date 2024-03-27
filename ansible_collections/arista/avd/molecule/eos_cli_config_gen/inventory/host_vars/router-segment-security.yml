@@ -11,6 +11,10 @@ router_segment_security:
         - sequence: 20
           application: APP-TEST-2
           action: drop
+        - sequence: 25
+          application: APP-TEST-3
+          action: redirect
+          next_hop: 198.51.100.1 
   vrfs:
     - name: default
       segments:
@@ -18,9 +22,17 @@ router_segment_security:
           definition:
             - name: MATCH-LIST10
               address_family: ipv4
-            - name: MATCH-LIST1
-              address_family: ipv4
             - name: MATCH-LIST11
+              address_family: ipv6
+          policies:
+            - source: MATCH-LIST22
+              policy: POLICY-TEST1
+        - name: SEGMENT-TEST2
+          definition:
+            - name: MATCH-LIST4
+              address_family: ipv4
+              covered: true
+            - name: MATCH-LIST3
               address_family: ipv6
           policies:
             - source: MATCH-LIST20
@@ -36,7 +48,7 @@ router_segment_security:
             - name: MATCH-LIST10
               address_family: ipv4
             - name: MATCH-LIST1
-              address_family: ipv4
+              address_family: ipv6
           policies:
             - source: MATCH-LIST20
               policy: policy-forward-all

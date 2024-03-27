@@ -15,7 +15,7 @@ router segment-security
    !
    policy {{ policy.name }}
 {%             for sequence in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
-{%                 if sequence.action != "next-hop " %}
+{%                 if sequence.action != "redirect" %}
 {%                     set action = sequence.action ~ " stateless" %}
 {%                 else %}
 {%                     set action = sequence.action ~ " next-hop " ~ sequence.next_hop %}
@@ -23,10 +23,10 @@ router segment-security
       {{ sequence.sequence }} application {{ sequence.application }} action {{ action }}
 {%             endfor %}
 {%         endfor %}
-   !
 {%     endif %}
 {%     if router_segment_security.vrfs is arista.avd.defined %}
-{%         for vrf in router_segment_security.vrfs %}
+{%         for vrf in router_segment_security.vrfs | arista.avd.natural_sort('name') %}
+   !
    vrf {{ vrf.name }}
 {%             for segment in vrf.segments %}
       segment {{ segment.name }}

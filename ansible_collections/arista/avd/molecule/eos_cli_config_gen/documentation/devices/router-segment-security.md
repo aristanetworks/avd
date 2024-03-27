@@ -4,6 +4,10 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Group-Based Multi-domain Segmentation Services (MSS-Group)](#group-based-multi-domain-segmentation-services-mss-group)
+  - [Segmentation Policies](#segmentation-policies)
+  - [Segment Definitions](#segment-definitions)
+  - [Router MSS-G Device Configuration](#router-mss-g-device-configuration)
 
 ## Management
 
@@ -33,32 +37,45 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-#### Group-Based Multi-domain Segmentation Services (MSS-Group)
+## Group-Based Multi-domain Segmentation Services (MSS-Group)
 
 - MSS-G is enabled.
 
-##### Segmentation Policies
+### Segmentation Policies
 
-###### POLICY-TEST1
+#### POLICY-TEST1
 
 | Sequence Number | Application Name | Action | Next-Hop |
 | --------------- | ---------------- | ------ | -------- |
 | 10 | APP-TEST-1 | forward | - |
 | 20 | APP-TEST-2 | drop | - |
+| 25 | APP-TEST-3 | redirect | 198.51.100.1 |
 
-##### Segment Definitions
+### Segment Definitions
 
-###### VRF default Segmentation
+#### VRF default Segmentation
 
-####### Segment SEGMENT-TEST1 Definitions
+##### Segment SEGMENT-TEST1 Definitions
 
 | Match-List Name | Address Family | Covered |
 | ------------ | -------------- | ------- |
-| MATCH-LIST1 | ipv4 | False |
 | MATCH-LIST10 | ipv4 | False |
 | MATCH-LIST11 | ipv6 | False |
 
-####### Segment SEGMENT-TEST1 Policies
+##### Segment SEGMENT-TEST1 Policies
+
+| Source Segment | Policy Applied |
+| -------------- | -------------- |
+| MATCH-LIST22 | POLICY-TEST1 |
+
+##### Segment SEGMENT-TEST2 Definitions
+
+| Match-List Name | Address Family | Covered |
+| ------------ | -------------- | ------- |
+| MATCH-LIST3 | ipv6 | False |
+| MATCH-LIST4 | ipv4 | False |
+
+##### Segment SEGMENT-TEST2 Policies
 
 | Source Segment | Policy Applied |
 | -------------- | -------------- |
@@ -66,23 +83,23 @@ interface Management1
 | MATCH-LIST21 | POLICY-TEST1 |
 | MATCH-LIST30 | policy-drop-all |
 
-###### VRF SECURE Segmentation
+#### VRF SECURE Segmentation
 
-####### Segment SEGMENT-TEST1 Definitions
+##### Segment SEGMENT-TEST1 Definitions
 
 | Match-List Name | Address Family | Covered |
 | ------------ | -------------- | ------- |
-| MATCH-LIST1 | ipv4 | False |
+| MATCH-LIST1 | ipv6 | False |
 | MATCH-LIST10 | ipv4 | False |
 
-####### Segment SEGMENT-TEST1 Policies
+##### Segment SEGMENT-TEST1 Policies
 
 | Source Segment | Policy Applied |
 | -------------- | -------------- |
 | MATCH-LIST20 | policy-forward-all |
 | MATCH-LIST30 | policy-drop-all |
 
-##### Router MSS-G Device Configuration
+### Router MSS-G Device Configuration
 
 ```eos
 !
@@ -92,22 +109,30 @@ router segment-security
    policy POLICY-TEST1
       10 application APP-TEST-1 action forward stateless
       20 application APP-TEST-2 action drop stateless
+      25 application APP-TEST-3 action redirect next-hop 198.51.100.1
    !
    vrf default
       segment SEGMENT-TEST1
          definition
-            match prefix-ipv4 MATCH-LIST1
             match prefix-ipv4 MATCH-LIST10
             match prefix-ipv6 MATCH-LIST11
+         !
+         policies
+            from MATCH-LIST22 policy POLICY-TEST1
+      segment SEGMENT-TEST2
+         definition
+            match prefix-ipv6 MATCH-LIST3
+            match prefix-ipv4 MATCH-LIST4
          !
          policies
             from MATCH-LIST20 policy policy-forward-all
             from MATCH-LIST21 policy POLICY-TEST1
             from MATCH-LIST30 policy policy-drop-all
+   !
    vrf SECURE
       segment SEGMENT-TEST1
          definition
-            match prefix-ipv4 MATCH-LIST1
+            match prefix-ipv6 MATCH-LIST1
             match prefix-ipv4 MATCH-LIST10
          !
          policies
