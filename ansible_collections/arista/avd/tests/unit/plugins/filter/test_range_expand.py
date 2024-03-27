@@ -10,31 +10,41 @@ import pytest
 from ansible_collections.arista.avd.plugins.filter.range_expand import AnsibleFilterError, FilterModule, range_expand
 
 RANGE_TO_EXPAND_INVALID_VALUES = [
-    pytest.param(True, AnsibleFilterError, "value must be of type list or str, got <class 'bool'>", id="Wrong input type - bool"),
-    pytest.param({"key": "value"}, AnsibleFilterError, "value must be of type list or str, got <class 'dict'>", id="Wrong input type - dict"),
+    pytest.param(
+        True,
+        AnsibleFilterError,
+        "Error during expansion of range 'True': range_expand only accepts a string or a list. Got <class 'bool'>.",
+        id="Wrong input type - bool",
+    ),
+    pytest.param(
+        {"key": "value"},
+        AnsibleFilterError,
+        "Error during expansion of range '{'key': 'value'}': range_expand only accepts a string or a list. Got <class 'dict'>.",
+        id="Wrong input type - dict",
+    ),
     pytest.param(33, AnsibleFilterError, "", id="Wrong input type - int"),
     pytest.param(
         "Ethernet4-2",
         AnsibleFilterError,
-        "Range Ethernet4-2 could not be expanded because the first interface 4 is larger than last interface 2 in the range.",
+        "Error during expansion of range 'Ethernet4-2': Invalid range. Start value '4' is larger than end value '2'.",
         id="Wrong interface range",
     ),
     pytest.param(
         "Ethernet1,51-3/2",
         AnsibleFilterError,
-        "Range 51-3/2 could not be expanded because the first module 51 is larger than last module 3 in the range.",
+        "Error during expansion of range 'Ethernet1,51-3/2': Invalid range. Start value '51' is larger than end value '3'.",
         id="Wrong module range",
     ),
     pytest.param(
         "Ethernet1.42-21",
         AnsibleFilterError,
-        "Range Ethernet1.42-21 could not be expanded because the first subinterface 42 is larger than last subinterface 21 in the range.",
+        "Error during expansion of range 'Ethernet1.42-21': Invalid range. Start value '42' is larger than end value '21'.",
         id="Wrong subinterface range",
     ),
     pytest.param(
         "Ethernet4/2-1/4",
         AnsibleFilterError,
-        "Range Ethernet4/2-1/4 could not be expanded because the first interface 2 is larger than last interface 1 in the range.",
+        "Error during expansion of range 'Ethernet4/2-1/4': Invalid range. Start value '2' is larger than end value '1'.",
         id="Wrong parent interface range",
     ),
 ]
@@ -57,6 +67,7 @@ RANGE_TO_EXPAND_VALID_VALUES = [
     "65100.0-4",
     "65100.0-2,65200.1-2",
     "1-2.0-1",
+    "eth{7,9,11-13}/1,21/1,26/1",
 ]
 
 EXPECTED_RESULT_VALID_VALUES = [
@@ -77,6 +88,7 @@ EXPECTED_RESULT_VALID_VALUES = [
     ["65100.0", "65100.1", "65100.2", "65100.3", "65100.4"],
     ["65100.0", "65100.1", "65100.2", "65200.1", "65200.2"],
     ["1.0", "1.1", "2.0", "2.1"],
+    ["eth7/1", "eth9/1", "eth11/1", "eth12/1", "eth13/1", "eth21/1", "eth26/1"],
 ]
 
 f = FilterModule()
@@ -88,10 +100,10 @@ class TestRangeExpandFilter:
         with pytest.raises(expected_raise, match=expected_raise_message):
             range_expand(input_value)
 
-    @pytest.mark.parametrize("RANGE_TO_EXPAND_VALID", RANGE_TO_EXPAND_VALID_VALUES)
-    def test_range_expand_valid(self, RANGE_TO_EXPAND_VALID):
+    @pytest.mark.parametrize(["index", "RANGE_TO_EXPAND_VALID"], enumerate(RANGE_TO_EXPAND_VALID_VALUES))
+    def test_range_expand_valid(self, index, RANGE_TO_EXPAND_VALID):
         resp = range_expand(RANGE_TO_EXPAND_VALID)
-        assert resp in EXPECTED_RESULT_VALID_VALUES
+        assert resp == EXPECTED_RESULT_VALID_VALUES[index]
 
     def test_range_expand_filter(self):
         resp = f.filters()
