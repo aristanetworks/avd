@@ -55,6 +55,7 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: '110'
+  isis_enable: EVPN_UNDERLAY
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID

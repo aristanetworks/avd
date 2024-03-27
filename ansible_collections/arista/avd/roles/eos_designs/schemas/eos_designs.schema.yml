@@ -3501,6 +3501,11 @@ keys:
       '
     type: bool
     default: false
+  underlay_isis_bfd_enable:
+    documentation_options:
+      table: isis-settings
+    type: bool
+    default: false
   underlay_isis_instance_name:
     documentation_options:
       table: isis-settings

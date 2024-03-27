@@ -19,6 +19,7 @@ vlan_interfaces:
     ip_address_virtual: 10.2.2.1/24
     no_autostate: true
     isis_enable: "EVPN_UNDERLAY"
+    isis_bfd: true
     ip_verify_unicast_source_reachable_via: rx
 
   - name: Vlan81
