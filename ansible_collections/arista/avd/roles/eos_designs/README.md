@@ -111,6 +111,12 @@ Across all designs, the following functionality is provided:
 | L3 + OSPF | L2 | Arbitrary or leaf-spine |
 | L3 + ISIS | L2 | Arbitrary or leaf-spine |
 
+**L2LS topology example:**
+
+<div style="text-align:center">
+  <img src="../../media/l2ls-topology.svg" />
+</div>
+
 ### MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
 
 | Underlay | Overlay | Topology |
@@ -119,6 +125,12 @@ Across all designs, the following functionality is provided:
 | ISIS-SR + LDP | iBGP | Arbitrary Mesh or leaf-spine |
 | ISIS + LDP | iBGP | Arbitrary Mesh or leaf-spine |
 | OSPF + LDP | iBGP | Arbitrary Mesh or leaf-spine |
+
+**MPLS topology example:**
+
+<div style="text-align:center">
+  <img src="../../media/mpls-topology.svg" />
+</div>
 
 ## Requirements
 
