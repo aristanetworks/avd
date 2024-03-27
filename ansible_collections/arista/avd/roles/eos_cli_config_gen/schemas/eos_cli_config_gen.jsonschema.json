@@ -6009,7 +6009,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Access-list Name",
+            "description": "Access-list Name.",
             "title": "Name"
           },
           "counters_per_entry": {
@@ -6018,18 +6018,18 @@
           },
           "entries": {
             "type": "array",
-            "description": "ACL Entries",
+            "description": "ACL Entries.",
             "items": {
               "type": "object",
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "description": "ACL entry sequence number.\n",
+                  "description": "ACL entry sequence number.",
                   "title": "Sequence"
                 },
                 "remark": {
                   "type": "string",
-                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in acl entry will be ignored.\n",
+                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in the ACL entry will be ignored.",
                   "title": "Remark"
                 },
                 "action": {
@@ -6038,17 +6038,17 @@
                     "permit",
                     "deny"
                   ],
-                  "description": "ACL action.\nRequired for standard entry.\n",
+                  "description": "ACL action.\nRequired except for remarks.",
                   "title": "Action"
                 },
                 "protocol": {
                   "type": "string",
-                  "description": "ip, tcp, udp, icmp or other protocol name or number.\nRequired for standard entry.\n",
+                  "description": "\"ip\", \"tcp\", \"udp\", \"icmp\" or other protocol name or number.\nRequired except for remarks.",
                   "title": "Protocol"
                 },
                 "source": {
                   "type": "string",
-                  "description": "any, A.B.C.D/E or A.B.C.D.\nA.B.C.D without a mask means host.\nRequired for standard entry.\n",
+                  "description": "\"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
                   "title": "Source"
                 },
                 "source_ports_match": {
@@ -6073,7 +6073,7 @@
                 },
                 "destination": {
                   "type": "string",
-                  "description": "any, A.B.C.D/E or A.B.C.D.\nA.B.C.D without a mask means host.\nRequired for standard entry.\n",
+                  "description": "\"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
                   "title": "Destination"
                 },
                 "destination_ports_match": {
@@ -6100,7 +6100,7 @@
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "description": "TCP Flag Name"
+                    "description": "TCP Flag Name."
                   },
                   "title": "TCP Flags"
                 },

@@ -3636,14 +3636,14 @@ keys:
       keys:
         name:
           type: str
-          description: Access-list Name
+          description: Access-list Name.
           convert_types:
           - int
         counters_per_entry:
           type: bool
         entries:
           type: list
-          description: ACL Entries
+          description: ACL Entries.
           items:
             type: dict
             keys:
@@ -3651,16 +3651,12 @@ keys:
                 type: int
                 convert_types:
                 - str
-                description: 'ACL entry sequence number.
-
-                  '
+                description: ACL entry sequence number.
               remark:
                 type: str
                 description: 'Comment up to 100 characters.
 
-                  If remark is defined, other keys in acl entry will be ignored.
-
-                  '
+                  If remark is defined, other keys in the ACL entry will be ignored.'
               action:
                 type: str
                 valid_values:
@@ -3668,25 +3664,20 @@ keys:
                 - deny
                 description: 'ACL action.
 
-                  Required for standard entry.
-
-                  '
+                  Required except for remarks.'
               protocol:
                 type: str
-                description: 'ip, tcp, udp, icmp or other protocol name or number.
+                description: '"ip", "tcp", "udp", "icmp" or other protocol name or
+                  number.
 
-                  Required for standard entry.
-
-                  '
+                  Required except for remarks.'
               source:
                 type: str
-                description: 'any, A.B.C.D/E or A.B.C.D.
+                description: '"any", "<ip>/<mask>" or "<ip>".
 
-                  A.B.C.D without a mask means host.
+                  "<ip>" without a mask means host.
 
-                  Required for standard entry.
-
-                  '
+                  Required except for remarks.'
               source_ports_match:
                 type: str
                 valid_values:
@@ -3705,13 +3696,11 @@ keys:
                   description: TCP/UDP source port name or number.
               destination:
                 type: str
-                description: 'any, A.B.C.D/E or A.B.C.D.
+                description: '"any", "<ip>/<mask>" or "<ip>".
 
-                  A.B.C.D without a mask means host.
+                  "<ip>" without a mask means host.
 
-                  Required for standard entry.
-
-                  '
+                  Required except for remarks.'
               destination_ports_match:
                 type: str
                 valid_values:
@@ -3732,7 +3721,7 @@ keys:
                 type: list
                 items:
                   type: str
-                  description: TCP Flag Name
+                  description: TCP Flag Name.
               fragments:
                 type: bool
                 description: Match non-head fragment packets.
