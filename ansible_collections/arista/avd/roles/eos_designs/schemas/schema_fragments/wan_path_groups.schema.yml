@@ -24,8 +24,7 @@ keys:
             - str
           description: |-
             Path-group id.
-
-            TODO: Required until an auto ID algorithm is implemented.
+            Required until an auto ID algorithm is implemented.
           required: true
         description:
           type: str

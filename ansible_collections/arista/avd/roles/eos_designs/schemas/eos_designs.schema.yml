@@ -383,6 +383,11 @@ keys:
             items:
               type: str
               description: The prefixes to use in listen_range.
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+            - str
+            default: 1
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
@@ -390,11 +395,6 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
-          ttl_maximum_hops:
-            type: int
-            convert_types:
-            - str
-            default: 1
       wan_rr_overlay_peers:
         type: dict
         description: Configuration options for the peer-group created to peer between
@@ -429,6 +429,11 @@ keys:
               multiplier:
                 type: int
                 default: 10
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+            - str
+            default: 1
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
@@ -436,11 +441,6 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
-          ttl_maximum_hops:
-            type: int
-            convert_types:
-            - str
-            default: 1
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
@@ -603,6 +603,9 @@ keys:
       type: dict
       $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/region
       keys:
+        name:
+          type: str
+          description: The region name.
         description:
           type: str
         id:
@@ -617,17 +620,20 @@ keys:
             type: dict
             $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site
             keys:
+              name:
+                type: str
+                description: The site name.
               description:
                 type: str
               id:
                 type: int
-                description: 'The Site ID must be unique within a zone.
+                description: 'The site ID must be unique within a zone.
 
-                  Given that all the Sites are placed in a Zone named after the Region,
-                  the Site ID must be unique within a Region.'
+                  Given that all the sites are placed in a zone named after the region,
+                  the site ID must be unique within a region.'
               location:
                 type: str
-                description: Will be interpreted
+                description: Location as a sring is resolved on Cloudvision.
               site_contact:
                 type: str
               site_after_hours_contact:
@@ -3731,7 +3737,7 @@ keys:
   wan_ha:
     documentation_options:
       table: wan-settings
-    description: 'PREVIEW: This key is currently not supported'
+    description: 'PREVIEW: The `wan_ha` key is currently not supported'
     type: dict
     keys:
       lan_ha_path_group_name:
@@ -3810,8 +3816,7 @@ keys:
           - str
           description: 'Path-group id.
 
-
-            TODO: Required until an auto ID algorithm is implemented.'
+            Required until an auto ID algorithm is implemented.'
           required: true
         description:
           type: str
@@ -3891,12 +3896,12 @@ keys:
               convert_types:
               - str
   wan_route_servers:
-    documentation_options:
-      table: wan-settings
     description: 'List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the
       Pathfinders
 
       when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
+
+      This is also used to establish iBGP sessions between WAN route servers.
 
 
       When the route server is part of the same inventory as the WAN routers,
@@ -3974,7 +3979,6 @@ keys:
     default: STUN-DTLS
     description: 'Name of the SSL profile used for DTLS on WAN STUN connections.
 
-
       When using automatic ceritficate deployment via CloudVision this name must be
       the same on all WAN routers.'
   wan_transit:
@@ -4002,9 +4006,7 @@ keys:
     keys:
       vrfs:
         type: list
-        description: 'Map a VRF that exists in network_services to an AVT policy.
-
-          TODO: missing default VRF behavior'
+        description: Map a VRF that exists in network_services to an AVT policy.
         primary_key: name
         items:
           type: dict
@@ -4017,6 +4019,11 @@ keys:
             policy:
               type: str
               description: 'Name of the policy to apply to this VRF.
+
+                AVD will auto generate a default policy DEFAULT-POLICY and apply it
+                to the VRF(s)
+
+                where the `policy` key is not set.
 
                 It is possible to overwrite the default policy for all VRFs using
                 it
@@ -4086,17 +4093,18 @@ keys:
           for the `default_virtual_topology`.\n  * if the policy is associated with
           the default VRF, a special control-plane rule is injected\n    in the policy
           with index `1` referring to a control-plane load-balance policy as defined
-          under\n    `control_plane_virtual_topology`.\n\nFor CV Pathfinder, each
-          item in the list creates:\n  * one policy with:\n      * one `match` entry
-          per `application_virtual_topologies` item ordered as in the model.\n      *
-          one last match entry for the `default` application-profile using `default_virtual_topology`
-          information.\n  * one profile per `application_virtual_topologies` item.\n
-          \ * one profile for the `default_virtual_topology`..\n  * one load-balance
+          under\n    `control_plane_virtual_topology` or if not set, the default one.\n\nFor
+          CV Pathfinder, each item in the list creates:\n  * one policy with:\n      *
+          one `match` entry per `application_virtual_topologies` item ordered as in
+          the data.\n      * one last match entry for the `default` application-profile
+          using `default_virtual_topology` information.\n  * one profile per `application_virtual_topologies`
+          item.\n  * one profile for the `default_virtual_topology`.\n  * one load-balance
           policy per `application_virtual_topologies`.\n  * one load_balance policy
           for the `default_virtual_topology`.\n  * if the policy is associated with
           the default VRF, a special control-plane profile is configured\n    and
           injected first in the policy assigned to the `default` VRF. This profile
-          points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`."
+          points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`
+          or if not set, the default one."
         primary_key: name
         items:
           type: dict
@@ -4115,7 +4123,7 @@ keys:
                   application_profile:
                     type: str
                     description: The application profile to use for this virtual topology.
-                      It must be a defined `application_profile`.
+                      It must be a defined `application_classification.application_profile`.
                   name:
                     type: str
                     description: Optional name, if not set `<policy_name>-<application_profile>`

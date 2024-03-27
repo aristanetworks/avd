@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trusted</samp>](## "wan_carriers.[].trusted") | Boolean |  | `False` |  | Set this to `true` to mark this carrier as "trusted".<br>WAN interfaces require an inbound access-list to be set unless the carrier is "trusted". |
     | [<samp>wan_path_groups</samp>](## "wan_path_groups") | List, items: Dictionary |  |  |  | List of path-groups used for the WAN configuration. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_path_groups.[].name") | String | Required, Unique |  |  | Path-group name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_path_groups.[].id") | Integer | Required |  |  | Path-group id.<br><br>TODO: Required until an auto ID algorithm is implemented. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_path_groups.[].id") | Integer | Required |  |  | Path-group id.<br>Required until an auto ID algorithm is implemented. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "wan_path_groups.[].description") | String |  |  |  | Additional information about the path-group for documentation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "wan_path_groups.[].ipsec") | Dictionary |  |  |  | Configuration of IPSec at the path-group level. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_peers</samp>](## "wan_path_groups.[].ipsec.dynamic_peers") | Boolean |  | `True` |  | Enable IPSec for dynamic peers. |
@@ -54,8 +54,7 @@
       - name: <str; required; unique>
 
         # Path-group id.
-        #
-        # TODO: Required until an auto ID algorithm is implemented.
+        # Required until an auto ID algorithm is implemented.
         id: <int; required>
 
         # Additional information about the path-group for documentation purposes.

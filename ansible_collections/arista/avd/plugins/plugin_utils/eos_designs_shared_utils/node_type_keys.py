@@ -71,6 +71,7 @@ DEFAULT_NODE_TYPE_KEYS = {
             "network_services": {
                 "l3": True,
             },
+            "cv_tags_topology_type": "wan",
         },
         {
             "key": "wan_rr",
@@ -83,6 +84,7 @@ DEFAULT_NODE_TYPE_KEYS = {
             "network_services": {
                 "l3": True,
             },
+            "cv_tags_topology_type": "wan",
         },
     ],
     "mpls": [

@@ -12,15 +12,12 @@ title: Ansible Collection Role eos_designs - WAN
 
 !!! warning
 
-    Some of the WAN functionality is still in PREVIEW. When this is the case it
-    is indicated as such in the documentation.
-    The integration of WAN designs to `eos_designs` role is
-
-    Everything is subject to change, is not supported and may not be complete.
+    Some of the WAN functionality is still in PREVIEW. When this is the case it is indicated as such in the documentation.
+    For these PREVIEW features, Everything is subject to change, is not supported and may not be complete.
 
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
-!!! note
+!!! info
 
     `eos_cli_config_gen` schema should support all of the required keys to configure a WAN network, whether AutoVPN or Pathfinder except for the most recent features.
     This means that any missing eos_designs feature should be supported using `custom_structured_configuration` functionality.
@@ -66,7 +63,7 @@ title: Ansible Collection Role eos_designs - WAN
 - WAN Internet exit
 - `import path-group` functionality
 - Indirect connectivity to pathfinder
-- BGP peerings on WAN L3 interfaces
+- BGP peerings on WAN L3 interfaces and associated route filtering.
 - Extra STUN server for a given path-group not connected to pathfinder
 - Auto generation of Path-group IDs and other IDs.
 - Proper OSPF-BGP redistribution in VRF default.
@@ -76,22 +73,25 @@ title: Ansible Collection Role eos_designs - WAN
 
 ## Getting started with WAN
 
-!!! Warning Disclaimer
+!!! warning "Disclaimer"
+
     This section does not intend to be a network design nor a best practice document.
     It is about how to deploy a WAN network using AVD.
 
 ### Global settings
 
-!!! Warning
+!!! tip
 
     These global settings must be the same for every WAN device participating
-    in the WAN network. When using multiple inventories, the recommendation is
+    in the WAN network.
+
+    When using multiple inventories, the recommendation is
     to use Global Variables, for instance leveraging the `arista.avd.global_vars`
     Ansible plugin.
 
-#### TL;DR
+#### Summary
 
-The following table list some `eos_designs` top level keys used for WAN and how they should be set:
+The following table list the `eos_designs` top level keys used for WAN and how they should be set:
 
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
@@ -139,16 +139,25 @@ The top level `wan_route_servers` allow to indicate to which AutoVPN RRs or to w
 
 ```yaml
  WAN routers with this configuration will establish static peerings towards pf1 and pf2 and the common path-groups.
-wan_route_servers:
+wan_route_servers: # (1)!
   - hostname: pf1
   - hostname: pf2
 ```
 
-!!! Note
+1. A `wan_router` with this configuration will establish BGP peering to all the wan_route_servers in the list if it has a common path-group.
+    A `wan_rr` with this configuration will establish BPG peerings to every other wan_route_servers in the list if they have a common path-group.
+
+!!! note
+
     It is recommended to always have at least 2 WAN route servers for redundancy.
 
 When the WAN route servers are part of the same inventory, each WAN routers in the inventory is able to pick up the required information to generate the configuration from the inventory device.
+
 However, if the WAN route servers are in a different inventory, it is then necessary to add some information under the `wan_route_servers` key entry. AVD will raise an error if any required information to generate the configuration is missing. Note that the configuration under `wan_route_servers` takes precedence over what AVD could derive from the device if it is in the same inventory.
+
+#### WAN STUN handling
+
+!!! Danger "TODO"
 
 #### CV Pathfinder hierarchy
 
@@ -156,7 +165,7 @@ When deploying CV Pathfinder, it is required to define a hierarchy using the top
 level key `cv_pathfinder_regions` in order to then be able to allocat a region
 and a site to each WAN routers in the node settings.
 
-The hierarchy looks like:
+An example hierarchy looks like:
 
 ```yaml
 cv_pathfinder_regions:
@@ -183,7 +192,7 @@ cv_pathfinder_regions:
 !!! Note
     Site IDs and names must be unique per region.
 
-And then for each `wan_router` (not needed for Pathfinders node):
+And then for each `wan_router`:
 
 ```yaml
 wan_router:
@@ -193,36 +202,54 @@ wan_router:
       cv_pathfinder_site: Site11
 ```
 
+For Pathfinders (`wan_rr`), it is possible to set the `cv_pathfinder_region` key. It is not rendered in configuration but leveraged in Cloudvision for the visualization.
+
 #### WAN carriers and path-groups
 
 Path-groups are used to define overlays over the various providers a WAN network can use.
+
 In AVD, the list of desired path-groups must be defined the same across all WAN participating routers using the following top level key.
 
 ```yaml
 wan_path_groups:
   - name: MPLS
-    ipsec: false
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
+    dps_keepalive:
+      interval: 300
     id: 100
   - name: INET
     id: 101
   - name: LTE
+    excluded_from_default_policy: true # (1)!
     id: 102
   - name: Equinix
+    default_preference: alternate # (2) !
     id: 103
   - name: Satellite
     id: 104
 ```
 
-!!! Note
+1. The expectation here is that LTE shouldn't be present in automatically generated Load Balance policy(ies).
+2. This controls the preference allocated to the Path-group in a Load Balance policy when no preference is specified.
+
+!!! note
+
     The IDs are required and it is possible to turn on and off ipsec at the path-group level for dynamic or static peers.
 
-To allow for a better visualization in CVaaS, AVD implements on level of indirection to be able to specify the Carrier for the last mile provider. Each carrier is associated to a path-group and multiple carriers can be assigned to the same path-group (e.g. all the Internet providers can be differentiated at the carrier level but bundled together at the path-group level).
+To allow for a better visualization in CVaaS, AVD implements on level of indirection to be able to specify the Carrier for the last mile provider.
+
+Each carrier is associated to a path-group and multiple carriers can be assigned to the same path-group (e.g. all the Internet providers can be differentiated at the carrier level but bundled together at the path-group level).
+
 The list of carriers must also be the same across all WAN routers:
 
 ```yaml
 wan_carriers:
   - name: IPS-1
     path_group: INET
+    # AVD won't require an ACL for a trusted WAN carrier
+    trusted: true
   - name: ISP-2
     path_group: INET
   - name: MPLS-SP1
@@ -243,6 +270,10 @@ It can be added on WAN and LAN interfaces using `custom_structured_configuration
 ### WAN interfaces
 
 A WAN interface in AVD is defined under the node settings under the `l3_interfaces` list. To be considered as a WAN interface by AVD, the l3_interface must have the `wan_carrier` key defined (which will allow to detect the path-group thanks to the carrier to path-group mapping). The `wan_circuit_id` is optional and used on CVaaS to provide more information in the visualization as well as in the AVD generated interface description. Finally the key `connected_to_pathfinder` allows to disable the static peering configuration on a given path-group.
+
+!!! Danger
+
+    The WAN interfaces may be connected directly to the Internet, it is the user responsability to craft the ACLs required to ensure only the expected traffic is accepted and sent.
 
 ```yaml
 wan_router:
@@ -296,32 +327,32 @@ The policies definition works as follow:
 ```yaml
 wan_virtual_topologies:
   vrfs:
-    - name: default
-      wan_vni: 1
     - name: PROD  # (1)!
       policy: PROD-AVT-POLICY
       wan_vni: 42
+    - name: default # (2)!
+      wan_vni: 1
   policies:
-    - name: PROD-AVT-POLICY  # (2)!
-      default_virtual_topology: # (3)!
+    - name: PROD-AVT-POLICY  # (3)!
+      default_virtual_topology: # (4)!
         path_groups:
           - names: [INET]
             preference: preferred
           - names: [MPLS]
             preference: alternate
       application_virtual_topologies:
-        - application_profile: VOICE # (4)!
+        - application_profile: VOICE # (5)!
           lowest_hop_count: true
           path_groups:
             - names: [MPLS]
               preference: preferred
             - names: [INET]
               preference: alternate
-          constraints: # (5)!
+          constraints: # (6)!
             delay: 120
             jitter: 20
             loss_rate: 0.3
-          id: 2 # (6)!
+          id: 2 # (7)!
         - application_profile: VIDEO
           path_groups:
             - names: [MPLS, LTE]
@@ -332,30 +363,35 @@ wan_virtual_topologies:
             loss_rate: 42.0
           id: 4
         # This will not be rendered on devices without MPLS
-        - application_profile: MPLS-ONLY # (7)!
+        - application_profile: MPLS-ONLY # (8)!
           path_groups:
             - names: [MPLS]
               preference: preferred
           id: 5
 ```
 
-1. Assign the `PROD-AVT-POLICY` to the `PROD` VRF.
-2. Define the `PROD-AVT-POLICY`,
-3. `default_virtual_topology` is used to configure the default match in the policy
-4. Rendered configuration
-5. Rendered configuration
-6. Rendered configuration
-7. Rendered configuration
+1. Assign the `PROD-AVT-POLICY` to the `PROD` VRF, multiple VRFs can use the same policy.
+2. The `default` VRF will use the AVD auto-generated `DEFAULT-POLICY` as no policy is set.
+3. Define the `PROD-AVT-POLICY`,
+4. `default_virtual_topology` is used to configure the default match in the policy.
+    In this case, default traffic will use INET path-group first and MPLS as backup.
+5. This list element configures the policy to apply to traffic the `VOICE` application profile.
+   This block of configuration will configure the Load Balance policy, the match statement in the policy (in `router path-selection` for AutoVPN or `router adaptive-virtual-topology` for CV-Pathfinder) and for CV-Pathfinder, the AVT profile.
+   The application profile must be defined under `application_classification.application_profiles`.
+   The Load Balance policy will favor direct path over multihop path (`lowest_hop_count`).
+   MPLS is prefered over the INET path-group.
+6. The contraints are applied on the load-balance policy. If the delay, jitter or loss rate of a given path-selection path
+   exceeds the defined criteria, the path is avoided and the remaining ECMP paths are used or the next path in line meeting
+   the constraints is used.
+7. The `id` is used as the AVT profile ID in the configuration.
+8. The `MPLS-ONLY` application profile won't be rendered on devices not having this path-group.
 
 ### LAN Designs
 
-!!! note
+!!! danger "VRF default routing"
 
-    An important design point to keep in mind is that the current CV Pathfinder and AutoVPN
-    solutions require the Dps1 interface to be in VRF default.
-    This implies that all the WAN interfaces also live in VRF default.
-    And the LAN interfaces also have subnets in the default VRF.
-    All of this means VRF default routing must be handled with care.
+    An important design point to keep in mind is that the current CV Pathfinder and AutoVPN solutions require the Dps1 interface to be in VRF default.
+    This implies that all the WAN interfaces live in default VRF and the LAN interfaces also have subnets in the default VRF.
 
 !!! warning
 
@@ -366,6 +402,8 @@ wan_virtual_topologies:
 
     Similarly there is no current prevention to prevent advertising the LAN routes towards the WAN,
     The plan is to apply an outbound route-map preventing any routes to be advertised.
+
+### TODO - this whole section need rework
 
 #### EBGP LAN
 
@@ -427,6 +465,8 @@ The HA tunnel will come up properly today but route redistribution will be missi
 !!! warning
 
     Not Implemented - will be using VRRP
+
+### TODO Separate inventories
 
 ### CloudVision Tags
 

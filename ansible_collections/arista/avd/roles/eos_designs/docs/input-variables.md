@@ -27,7 +27,7 @@ The input variables are documented below in tables and YAML.
 
 ## Supported designs
 
-`eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, L2LS and MPLS. The sections below highlight these 3 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
+`eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
 
 ## Design type
 
@@ -36,6 +36,9 @@ By setting the `design.type` variable, the default node-types described in [Node
 --8<--
 roles/eos_designs/docs/tables/design.md
 --8<--
+
+!!! note
+    The node types for AutoVPN and CV Pathfinders are part of the `l3ls-evpn` design.
 
 ### 3-stage clos topology support (Leaf & Spine)
 
@@ -93,6 +96,18 @@ See the following example using the `mpls` design:
 
 - [AVD example for a MPLS-VPN based WAN Network](../../../examples/isis-ldp-ipvpn/README.md).
 
+### WAN - AutoVPN and CV Pathfinder
+
+The **eos_designs** role with the `l3ls-evpn` design type supports the node types `wan_rr` and `wan_router`.
+The default underlay routing protocol is set to none but eBGP is supported as well.
+
+The following overlay routing protocols are supported:
+
+- IBGP (default)
+
+!!! TODO
+    Add topo / example
+
 ## Fabric topology hierarchy
 
 <div style="text-align:center">
@@ -132,27 +147,27 @@ To customize or create new node types, please refer to [node type customization]
 | l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                  | ✅   | ✅           | ✅                  | ✘                | eBGP                             | eBGP                             |
 | l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  | ✘                | eBGP                             | eBGP                             |
 | overlay_controller | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
-| wan_rr             | ✅              | p2p-vrfs     | server            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | server           | none                             | iBGP                             |
-| wan_router         | ✅              | p2p-vrfs     | client            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | client           | none                             | iBGP                             |
+| wan_rr             | ✅              | p2p          | server            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | server           | none                             | iBGP                             |
+| wan_router         | ✅              | p2p          | client            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | client           | none                             | iBGP                             |
 
 - `wan_router`: Edge routers for AutoVPN or Edge and Transit routers for CV Pathfinder depending on the `wan_mode` value.
 - `wan_rr`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
 
 ### L2LS
 
-| Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
 | l3spine            | ✅              | p2p          | none              | ✅                  | ✅                  | ✘    | ✅           | ✅                  |
-| spine              | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                 |
-| leaf               | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                 |
+| spine              | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  |
+| leaf               | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  |
 
 ### MPLS
 
 | Node Type Key | Underlay Router | Uplink Type | Default Overlay Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | --------------| --------------- | ----------- | -------------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
-| p             | ✅              | p2p          | none                | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| rr            | ✅              | p2p          | server              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| pe            | ✅              | p2p          | client              | ✅                  | ✅                  | ✅   | ✘            | ✅                  |
+| p             | ✅              | p2p         | none                 | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| rr            | ✅              | p2p         | server               | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| pe            | ✅              | p2p         | client               | ✅                  | ✅                  | ✅   | ✘            | ✅                  |
 
 ## Node type customization
 
@@ -170,6 +185,7 @@ AVD provides the capability to customize your node types, supporting a variety o
         type: spine
         default_evpn_role: server
         default_ptp_priority1: 20
+        cv_tags_topology_type: spine
 
       - key: l3leaf
         type: l3leaf
@@ -181,6 +197,7 @@ AVD provides the capability to customize your node types, supporting a variety o
           l2: true
           l3: true
         vtep: true
+        cv_tags_topology_type: leaf
 
       - key: l2leaf
         type: l2leaf
@@ -190,13 +207,38 @@ AVD provides the capability to customize your node types, supporting a variety o
           l2: true
         underlay_router: false
         uplink_type: port-channel
+        cv_tags_topology_type: leaf
 
       - key: super_spine
         type: super-spine
+        cv_tags_topology_type: core
 
       - key: overlay_controller
         type: overlay-controller
         default_evpn_role: server
+        cv_tags_topology_type: spine
+
+      - key: wan_router
+        type: wan_router
+        default_evpn_role: client
+        default_wan_role: client
+        default_underlay_routing_protocol: none
+        default_overlay_routing_protocol: ibgp
+        network_services:
+          l3: true
+        vtep: true
+        cv_tags_topology_type: wan
+
+      - key: wan_rr
+        type: wan_rr
+        default_evpn_role: server
+        default_wan_role: server
+        default_underlay_routing_protocol: none
+        default_overlay_routing_protocol: ibgp
+        network_services:
+          l3: true
+        vtep: true
+        cv_tags_topology_type: wan
     ```
 
 ??? example "Default value for design `l2ls`"
@@ -493,6 +535,12 @@ roles/eos_designs/docs/tables/node-type-l2-mlag-configuration.md
 roles/eos_designs/docs/tables/node-type-loopback-vtep-configuration.md
 --8<--
 
+### Node type L3 interfaces configuration
+
+--8<--
+roles/eos_designs/docs/tables/node-type-l3-interfaces-configuration.md
+--8<--
+
 ### Node type BGP configuration
 
 --8<--
@@ -539,12 +587,6 @@ roles/eos_designs/docs/tables/node-type-wan-configuration.md
 
 --8<--
 roles/eos_designs/docs/tables/node-type-ptp-configuration.md
---8<--
-
-### Node type L3 interfaces
-
---8<--
-roles/eos_designs/docs/tables/node-type-l3-interfaces-configuration.md
 --8<--
 
 ## Default interface settings
@@ -722,14 +764,10 @@ roles/eos_designs/docs/tables/evpn-settings.md
 
 ## WAN Settings
 
+### WAN generic settings
+
 --8<--
 roles/eos_designs/docs/tables/wan-settings.md
---8<--
-
-### WAN path-groups and carriers
-
---8<--
-roles/eos_designs/docs/tables/wan-path-groups-and-carriers.md
 --8<--
 
 ### WAN hierarchy
@@ -742,13 +780,27 @@ roles/eos_designs/docs/tables/wan-path-groups-and-carriers.md
 roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
 --8<--
 
+### WAN path-groups and carriers
+
+--8<--
+roles/eos_designs/docs/tables/wan-path-groups-and-carriers.md
+--8<--
+
+### WAN route-servers
+
+--8<--
+roles/eos_designs/docs/tables/wan-route-servers.md
+--8<--
+
 ### WAN Virtual topologies
+
+WAN virtual topologies leverage Deep Packet Inspection Engine to match traffic.
 
 --8<--
 roles/eos_designs/docs/tables/wan-virtual-topologies.md
 --8<--
 
-### Application Classification
+#### Application Classification
 
 --8<--
 roles/eos_designs/docs/tables/application-classification.md
