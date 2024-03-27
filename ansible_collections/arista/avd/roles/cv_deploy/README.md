@@ -35,7 +35,7 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
   - This role is **only** supported on **CloudVision as a Service (CVaaS)** or "on-prem" **CloudVision 2024.1.0** or later.
   - Make sure to enable "Studios - End-to-End Provisioning" under Settings, Features.
 
-![Figure 1: Ansible Role arista.avd.cv_deploy](../../docs/_media/studios_end_to_end_provisioning.png)
+    ![Figure 1: Ansible Role arista.avd.cv_deploy](../../docs/_media/studios_end_to_end_provisioning.png)
 
 ## Roadmap
 
