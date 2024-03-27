@@ -3,13 +3,13 @@
 # that can be found in the LICENSE file.
 - name: Deprecation warning!
   delegate_to: localhost
-  debug:
+  ansible.builtin.debug:
     msg:
       - "!!! Deprecation Warning - The preview role 'arista.avd.deploy_to_cv' has been released under the new name 'arista.avd.cv_deploy'."
       - "!!! Deprecation Warning - The role will be redirected automatically until AVD version 5.0.0 after which it will be removed."
       - "!!! Deprecation Warning - Importing role: arista.avd.cv_deploy ..."
   run_once: true
 
-- name: import new role eos_designs
-  import_role:
+- name: Import new role arista.avd.cv_deploy
+  ansible.builtin.import_role:
     name: arista.avd.cv_deploy
