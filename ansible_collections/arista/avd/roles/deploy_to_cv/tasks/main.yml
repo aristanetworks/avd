@@ -6,7 +6,7 @@
   debug:
     msg:
       - "!!! Deprecation Warning - The preview role 'arista.avd.deploy_to_cv' has been released under the new name 'arista.avd.cv_deploy'."
-      - "!!! Deprecation Warning - The role will be redirected automatically until AVD version 4.8.0 after which it will be removed."
+      - "!!! Deprecation Warning - The role will be redirected automatically until AVD version 5.0.0 after which it will be removed."
       - "!!! Deprecation Warning - Importing role: arista.avd.cv_deploy ..."
   run_once: true
 

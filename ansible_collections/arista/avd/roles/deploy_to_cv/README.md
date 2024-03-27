@@ -8,4 +8,4 @@
 
 !!! Deprecation Warning
     The preview role 'arista.avd.deploy_to_cv' has been released under the new name 'arista.avd.cv_deploy'."
-    The role will be redirected automatically until AVD version 4.8.0 after which it will be removed."
+    The role will be redirected automatically until AVD version 5.0.0 after which it will be removed."
