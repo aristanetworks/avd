@@ -15,5 +15,5 @@
     name: arista.avd.cv_deploy
 
 - name: Set old result variable
-  set_fact:
+  ansible.builtin.set_fact:
     deploy_to_cv_results: "{{ cv_deploy_results }}"
