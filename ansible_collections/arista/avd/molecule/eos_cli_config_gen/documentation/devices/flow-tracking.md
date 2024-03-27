@@ -87,6 +87,12 @@ interface Management1
 | T3 | T3-E3 | - | - | Management1 |
 | T3 | T3-E4 | - | - | No local interface |
 
+##### Records Summary
+
+| Record | Value |
+| ------ | ----- |
+| Format ipfix standard timestamps counters | True |
+
 #### Flow Tracking Device Configuration
 
 ```eos
@@ -136,6 +142,7 @@ flow tracking hardware
          template interval 424242
       exporter T3-E4
          collector dead:beef::cafe
+   record format ipfix standard timestamps counters
    no shutdown
 ```
 
