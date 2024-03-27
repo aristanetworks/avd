@@ -2,6 +2,6 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-from .deploy_to_cv.deploy_to_cv import deploy_to_cv
+from .workflows.deploy_to_cv import deploy_to_cv
 
 __all__ = ["deploy_to_cv"]

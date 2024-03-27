@@ -62,6 +62,8 @@ sFlow Sample Rate: 1000
 
 sFlow Sample Input Subinterface is enabled.
 
+sFlow Sample Output Subinterface is enabled.
+
 sFlow Polling Interval: 10
 
 sFlow is enabled.
@@ -112,6 +114,7 @@ sflow vrf MGMT source-interface Ethernet3
 sflow destination 10.6.75.61
 sflow destination 10.6.75.62 123
 sflow source-interface Management0
+sflow sample output subinterface
 sflow extension bgp
 sflow extension router
 no sflow extension switch
