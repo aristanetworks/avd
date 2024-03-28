@@ -20,10 +20,10 @@ MSS-G is disabled.
 
 #### {{ policy.name }}
 
-| Sequence Number | Application Name | Action | Next-Hop |
-| --------------- | ---------------- | ------ | -------- |
+| Sequence Number | Application Name | Action | Next-Hop | Log | Stateless |
+| --------------- | ---------------- | ------ | -------- | --- | ---------
 {%             for entry in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
-| {{ entry.sequence }} | {{ entry.application }} | {{ entry.action }} | {{ entry.next_hop | arista.avd.default('-') }} |
+| {{ entry.sequence }} | {{ entry.application }} | {{ entry.action }} | {{ entry.next_hop | arista.avd.default('-') }} | {{ entry.log | arista.avd.default('-') }} | {{ entry.stateless | arista.avd.default('-') }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
@@ -37,11 +37,18 @@ MSS-G is disabled.
 
 ##### Segment {{ segment.name }} Definitions
 
-| Match-List Name | Address Family | Covered |
-| ------------ | -------------- | ------- |
-{%                 for entry in segment.definition | arista.avd.natural_sort('name') %}
-| {{ entry.name }} | {{ entry.address_family }} | {{ entry.covered | arista.avd.default('False') }} |
-{%                 endfor %}
+| Interface | Match-List Name | Address Family | Covered |
+| --------- |------------ | -------------- | ------- |
+{%                 if segment.definition.interfaces is arista.avd.defined %}
+{%                     for entry in segment.definition.interfaces %}
+| {{ entry }} | - | - | - |
+{%                     endfor %}
+{%                 endif %}
+{%                 if segment.definition.match_lists is arista.avd.defined %}
+{%                     for entry in segment.definition.match_lists | arista.avd.natural_sort('name') %}
+| - | {{ entry.name }} | {{ entry.address_family }} | {{ entry.covered | arista.avd.default('False') }} |
+{%                     endfor %}
+{%                 endif %}
 
 ##### Segment {{ segment.name }} Policies
 

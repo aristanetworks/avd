@@ -23645,6 +23645,17 @@
                       ],
                       "title": "Action"
                     },
+                    "log": {
+                      "type": "boolean",
+                      "description": "Enable logging - note that platform support is limited.",
+                      "title": "Log"
+                    },
+                    "stateless": {
+                      "type": "boolean",
+                      "description": "Take action, regardless of state. Should be set to 'true' for MSS-G.",
+                      "default": true,
+                      "title": "Stateless"
+                    },
                     "next_hop": {
                       "type": "string",
                       "description": "When the action is 'redirect', this indicates the IPv4 next hop to redirect to.",
@@ -23696,39 +23707,55 @@
                       "title": "Name"
                     },
                     "definition": {
-                      "type": "array",
-                      "description": "The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.",
-                      "maxItems": 2,
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string",
-                            "description": "The name of the prefix match-list. You can have a maximum of one per address-family.",
-                            "title": "Name"
-                          },
-                          "address_family": {
-                            "type": "string",
-                            "description": "Indicate which address-family the match list belongs to e.g. ipv4 or ipv6.",
-                            "enum": [
-                              "ipv4",
-                              "ipv6"
-                            ],
-                            "title": "Address Family"
-                          },
-                          "covered": {
-                            "type": "boolean",
-                            "default": false,
-                            "title": "Covered"
-                          }
+                      "type": "object",
+                      "properties": {
+                        "interfaces": {
+                          "type": "array",
+                          "description": "The names of the source interface e.g. Port-Channel1 - note that platform support is limited.",
+                          "minItems": 1,
+                          "title": "Interfaces"
                         },
-                        "required": [
-                          "address_family"
-                        ],
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
+                        "match_lists": {
+                          "type": "array",
+                          "description": "The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.",
+                          "maxItems": 2,
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the prefix match-list. You can have a maximum of one per address-family.",
+                                "title": "Name"
+                              },
+                              "address_family": {
+                                "type": "string",
+                                "description": "Indicate which address-family the match list belongs to e.g. ipv4 or ipv6.",
+                                "enum": [
+                                  "ipv4",
+                                  "ipv6"
+                                ],
+                                "title": "Address Family"
+                              },
+                              "covered": {
+                                "type": "boolean",
+                                "default": false,
+                                "title": "Covered"
+                              }
+                            },
+                            "required": [
+                              "address_family"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Match Lists"
                         }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
                       },
                       "title": "Definition"
                     },

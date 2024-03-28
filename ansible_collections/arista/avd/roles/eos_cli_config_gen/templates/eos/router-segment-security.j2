@@ -15,10 +15,16 @@ router segment-security
    !
    policy {{ policy.name }}
 {%             for sequence in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
-{%                 if sequence.action != "redirect" %}
-{%                     set eos_cli = sequence.action ~ " stateless" %}
-{%                 else %}
+{%                 if sequence.action == "redirect" %}
 {%                     set eos_cli = sequence.action ~ " next-hop " ~ sequence.next_hop %}
+{%                 else %}
+{%                     set eos_cli = sequence.action %}
+{%                 endif %}
+{%                 if sequence.stateless | arista.avd.default (true) %}
+{%                     set eos_cli = eos_cli ~ " stateless" %}
+{%                 endif %}
+{%                 if sequence.log is arista.avd.defined(true) %}
+{%                     set eos_cli = eos_cli ~ " log" %}
 {%                 endif %}
       {{ sequence.sequence }} application {{ sequence.application }} action {{ eos_cli }}
 {%             endfor %}
@@ -31,15 +37,22 @@ router segment-security
 {%             for segment in vrf.segments %}
       segment {{ segment.name }}
          definition
-{%                 for entry in segment.definition | arista.avd.natural_sort('name') %}
-{%                     if entry.covered is arista.avd.defined %}
-{%                         set host_cli = "match covered prefix-list " %}
-{%                     else %}
-{%                         set host_cli = "match prefix-" %}
-{%                     endif %}
-{%                     set host_cli = host_cli ~ entry.address_family ~ " " ~ entry.name %}
+{%                 if segment.definition.interfaces is arista.avd.defined %}
+{%                     for entry in segment.definition.interfaces | arista.avd.natural_sort %}
+            match interface {{ entry }}
+{%                     endfor %}
+{%                 endif %}
+{%                 if segment.definition.match_lists is arista.avd.defined %}
+{%                     for entry in segment.definition.match_lists | arista.avd.natural_sort('name') %}
+{%                         if entry.covered is arista.avd.defined %}
+{%                             set host_cli = "match covered prefix-list " %}
+{%                         else %}
+{%                             set host_cli = "match prefix-" %}
+{%                         endif %}
+{%                         set host_cli = host_cli ~ entry.address_family ~ " " ~ entry.name %}
             {{ host_cli }}
-{%                 endfor %}
+{%                     endfor %}
+{%                 endif %}
          !
          policies
 {%                 for entry in segment.policies | arista.avd.natural_sort('name') %}
