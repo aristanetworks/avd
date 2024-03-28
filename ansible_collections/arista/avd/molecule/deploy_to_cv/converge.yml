@@ -317,9 +317,9 @@
       loop:
         "{{ intended_value_tags.metadata.cv_tags.device_tags }}"
 
-    ###########################
-    ##### dotted hostname #####
-    ###########################
+###########################
+##### dotted hostname #####
+###########################
     - name: Set Dotted hostname
       run_once: true
       delegate_to: localhost

@@ -30,7 +30,7 @@
     - name: Clean up and provision CVP with with base AVD configuration
       run_once: true
       delegate_to: localhost
-      arista.avd.deploy_to_cv:
+      arista.avd.cv_workflow:
         configuration_dir: "{{ configuration_dir }}"
         structured_config_dir: "{{ structured_config_dir }}"
         # structured_config_suffix: "yml"
