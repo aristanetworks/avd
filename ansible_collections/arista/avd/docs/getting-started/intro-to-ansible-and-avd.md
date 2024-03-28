@@ -6,11 +6,11 @@
 
 # AVD and Ansible Overview
 
-## Day 1 Operation (i.e. provisioning a network from scratch)
+## Day 1 Operation
 
 Imagine being asked to configure a **layer 3 leaf spine (L3LS)** network from scratch:
 
-![Figure: Arista Leaf Spine topology](../_media/getting-started/single-dc-topology-physical.png)
+![Figure: Arista Leaf Spine topology](../_media/getting-started/single-dc.svg)
 
 Traditionally, one would configure the switches manually using a laptop, console cable, and USB key to load the correct EOS software image and configuration. Of course, the configuration would be manually generated using snippets from the relevant Arista design guides or copied/pasted from existing devices. Configurations must be manually adapted to every device, which is time-consuming and error-prone. Imagine a new pair of leaf switches or new VRFs/VLANs were added to the network; changes would need to be made to most of the devices.
 
@@ -46,7 +46,7 @@ By now, you can probably appreciate that we can use Ansible to automate many thi
 
 Ansible can run on almost anything, but in production scenarios, Ansible is typically deployed on a virtual Linux server, running on the customer's preferred hypervisor. This Ansible server then communicates directly with the Arista network devices via eAPI or Arista CloudVision Portal, which in turn communicates with the Arista network devices. Controlling what Ansible does is typically done using an SSH terminal session to the Ansible server from the Operator's computer.
 
-![Figure: Ansible and CVP](../_media/getting-started/ansible-and-cvp-httpapi.png)
+![Figure: Ansible and CVP](../_media/getting-started/requirements.svg)
 
 ## What is the arista.avd collection?
 
@@ -56,7 +56,7 @@ Arista and accepts third-party contributions on GitHub at [aristanetworks/avd](h
 While Ansible is the core automation engine, AVD is an Ansible Collection described above. It provides roles, modules, and plugins
 that allow the user to generate and deploy best-practice configurations to Arista based networks of various design types: Data Center, Campus and Wide Area Networks.
 
-![Figure: Arista Leaf Spine topology](../_media/getting-started/ansible-avd.png)
+![Figure: Arista Leaf Spine topology](../_media/getting-started/collections.svg)
 
 The illustration above shows the arista.avd collection as a box with a red background on the right-hand side.
 
@@ -179,7 +179,7 @@ The ***children:*** keyword is used to define "groups of groups," i.e., just an 
 
 The figure below is just a visualization of the same text file, showing the different grouping and parent/child relationships:
 
-![Figure: Ansible Inventory](../_media/getting-started/single-dc-inventory-and-vars.png)
+![Figure: Ansible Inventory](../_media/getting-started/groups.svg)
 
 The key takeaway is that configuration defined at a higher (parent) level will be inherited by the children, but if needed, this can be
 overridden by specifying it again, i.e., most specific wins.
