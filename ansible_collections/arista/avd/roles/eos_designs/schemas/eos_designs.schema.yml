@@ -3724,19 +3724,6 @@ keys:
 
             WAN interfaces require an inbound access-list to be set unless the carrier
             is "trusted".'
-  wan_edge:
-    documentation_options:
-      table: wan-settings
-    type: dict
-    description: 'The `wan_edge` node type was introduced and removed while the AVD
-      WAN feature was in PREVIEW MODE.
-
-      Migrate your existing edge nodes to using `wan_router` node_type.'
-    deprecation:
-      warning: true
-      new_key: wan_router
-      removed: true
-      remove_in_version: 4.6.0-dev1
   wan_ha:
     documentation_options:
       table: wan-settings
@@ -3984,22 +3971,6 @@ keys:
 
       When using automatic ceritficate deployment via CloudVision this name must be
       the same on all WAN routers.'
-  wan_transit:
-    documentation_options:
-      table: wan-settings
-    type: dict
-    description: 'The `wan_transit` node type was introduced and removed while the
-      AVD WAN feature was in PREVIEW MODE.
-
-      Migrate your existing transit nodes to using `wan_router` node_type and set
-
-      `cv_pathfinder_transit_mode: region` under node settings.'
-    deprecation:
-      warning: true
-      new_key: 'node_type `wan_router` and set `cv_pathfinder_transit_mode: region`
-        under node settings'
-      removed: true
-      remove_in_version: 4.6.0-dev1
   wan_virtual_topologies:
     type: dict
     description: 'Configure Virtual Topologies for CV Pathfinder and AutoVPN.
