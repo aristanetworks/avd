@@ -39,7 +39,7 @@ interface Management1
 
 ## Group-Based Multi-domain Segmentation Services (MSS-Group)
 
-- MSS-G is enabled.
+MSS-G is enabled.
 
 ### Segmentation Policies
 

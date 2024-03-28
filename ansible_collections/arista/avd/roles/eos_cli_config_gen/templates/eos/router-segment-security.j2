@@ -16,11 +16,11 @@ router segment-security
    policy {{ policy.name }}
 {%             for sequence in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
 {%                 if sequence.action != "redirect" %}
-{%                     set action = sequence.action ~ " stateless" %}
+{%                     set eos_cli = sequence.action ~ " stateless" %}
 {%                 else %}
-{%                     set action = sequence.action ~ " next-hop " ~ sequence.next_hop %}
+{%                     set eos_cli = sequence.action ~ " next-hop " ~ sequence.next_hop %}
 {%                 endif %}
-      {{ sequence.sequence }} application {{ sequence.application }} action {{ action }}
+      {{ sequence.sequence }} application {{ sequence.application }} action {{ eos_cli }}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
