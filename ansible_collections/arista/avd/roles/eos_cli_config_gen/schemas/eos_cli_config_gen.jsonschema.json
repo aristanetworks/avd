@@ -23647,7 +23647,7 @@
                     },
                     "next_hop": {
                       "type": "string",
-                      "description": "When the action is redirect, this indicates the IPv4 next hop to redirect to.",
+                      "description": "When the action is 'redirect', this indicates the IPv4 next hop to redirect to.",
                       "title": "Next Hop"
                     }
                   },

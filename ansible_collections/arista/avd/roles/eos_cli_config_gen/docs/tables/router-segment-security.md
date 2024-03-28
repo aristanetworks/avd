@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "router_segment_security.policies.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application</samp>](## "router_segment_security.policies.[].sequence_numbers.[].application") | String | Required |  |  | The name of the application. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_segment_security.policies.[].sequence_numbers.[].action") | String | Required |  | Valid Values:<br>- <code>forward</code><br>- <code>drop</code><br>- <code>redirect</code> | The action to take - note that platform support for the redirect action is limited. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "router_segment_security.policies.[].sequence_numbers.[].next_hop") | String |  |  |  | When the action is redirect, this indicates the IPv4 next hop to redirect to. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "router_segment_security.policies.[].sequence_numbers.[].next_hop") | String |  |  |  | When the action is 'redirect', this indicates the IPv4 next hop to redirect to. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_segment_security.vrfs") | List, items: Dictionary |  |  |  | The name of the VRF that the segments and policies are defined in. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_segment_security.vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segments</samp>](## "router_segment_security.vrfs.[].segments") | List, items: Dictionary | Required |  |  |  |
@@ -52,7 +52,7 @@
               # The action to take - note that platform support for the redirect action is limited.
               action: <str; "forward" | "drop" | "redirect"; required>
 
-              # When the action is redirect, this indicates the IPv4 next hop to redirect to.
+              # When the action is 'redirect', this indicates the IPv4 next hop to redirect to.
               next_hop: <str>
 
       # The name of the VRF that the segments and policies are defined in.

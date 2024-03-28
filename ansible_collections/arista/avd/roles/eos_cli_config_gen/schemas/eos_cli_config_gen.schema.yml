@@ -13615,8 +13615,6 @@ keys:
               type: list
               required: true
               primary_key: sequence
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -13640,8 +13638,8 @@ keys:
                     - redirect
                   next_hop:
                     type: str
-                    description: When the action is redirect, this indicates the IPv4
-                      next hop to redirect to.
+                    description: When the action is 'redirect', this indicates the
+                      IPv4 next hop to redirect to.
       vrfs:
         type: list
         description: The name of the VRF that the segments and policies are defined
