@@ -105,8 +105,7 @@ The following overlay routing protocols are supported:
 
 - IBGP (default)
 
-!!! TODO
-    Add topo / example
+For more information please read the [WAN how-to guide](./how-to/wan.md).
 
 ## Fabric topology hierarchy
 
