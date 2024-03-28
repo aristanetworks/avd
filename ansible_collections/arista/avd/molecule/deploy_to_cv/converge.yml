@@ -36,12 +36,12 @@
       run_once: true
 
 ###########################
-##### deploy_to_cv ########
+##### cv_workflow ########
 ###########################
     - name: Test = Provision CVP with AVD configuration
       run_once: true
       delegate_to: localhost
-      arista.avd.deploy_to_cv:
+      arista.avd.cv_workflow:
         configuration_dir: "{{ configuration_dir ~ '/test_configs' }}"
         structured_config_dir: "{{ structured_config_dir ~ '/test_configs' }}"
         # structured_config_suffix: "yml"
@@ -134,8 +134,8 @@
         body_format: json
         body:
           partialEqFilter:
-          - key:
-              id: Workspace-{{ ws_name }}
+            - key:
+                id: Workspace-{{ ws_name }}
       register: cc_info
       until: cc_info.json.result.value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
       retries: 5
@@ -172,12 +172,12 @@
         body_format: json
         body:
           partialEqFilter:
-          - key:
-              workspaceId: '{{ ws_name }}'
-              elementType: 1
-              label: "{{ item.name }}"
-              value: "{{ item.value }}"
-              deviceId: "{{ intended_tag_device }}"
+            - key:
+                workspaceId: '{{ ws_name }}'
+                elementType: 1
+                label: "{{ item.name }}"
+                value: "{{ item.value }}"
+                deviceId: "{{ intended_tag_device }}"
       loop:
         "{{ intended_tags.metadata.cv_tags.device_tags }}"
 
@@ -195,13 +195,13 @@
         body_format: json
         body:
           partialEqFilter:
-          - key:
-              workspaceId: '{{ ws_name }}'
-              elementType: 2
-              label: "{{ item.tags[0].name }}"
-              value: "{{ item.tags[0].value }}"
-              deviceId: "{{ intended_tag_device }}"
-              interfaceId: "{{ item.interface }}"
+            - key:
+                workspaceId: '{{ ws_name }}'
+                elementType: 2
+                label: "{{ item.tags[0].name }}"
+                value: "{{ item.tags[0].value }}"
+                deviceId: "{{ intended_tag_device }}"
+                interfaceId: "{{ item.interface }}"
       loop:
         "{{ intended_tags.metadata.cv_tags.interface_tags }}"
 
@@ -219,7 +219,7 @@
         cc_name_strict: cc_avd_studio-strict-{{ r }}
         cc_requested_state_strict: running
         cc_desctiption_strict: sample description
-      arista.avd.deploy_to_cv:
+      arista.avd.cv_workflow:
         configuration_dir: "{{ configuration_dir ~ '/strict_tags' }}"
         structured_config_dir: "{{ structured_config_dir  ~ '/strict_tags' }}"
         device_list: ["ci-s1-leaf1"]
@@ -251,12 +251,12 @@
         body_format: json
         body:
           partialEqFilter:
-          - key:
-              workspaceId: '{{ ws_name }}'
-              elementType: 1
-              label: "{{ item.name }}"
-              value: "{{ item.value }}"
-              deviceId: "{{ intended_tag_device }}"
+            - key:
+                workspaceId: '{{ ws_name }}'
+                elementType: 1
+                label: "{{ item.name }}"
+                value: "{{ item.value }}"
+                deviceId: "{{ intended_tag_device }}"
       loop:
         "{{ intended_strict_tags.metadata.cv_tags.device_tags }}"
 
@@ -274,7 +274,7 @@
         cc_name_value: cc_avd-static-studio-tag-value-change-{{ r }}
         cc_requested_state_value: running
         cc_desctiption_value: sample description
-      arista.avd.deploy_to_cv:
+      arista.avd.cv_workflow:
         configuration_dir: "{{ configuration_dir ~ '/change_tags' }}"
         structured_config_dir: "{{ structured_config_dir ~ '/change_tags' }}"
         device_list: ["ci-s1-leaf1"]
@@ -308,12 +308,12 @@
         body_format: json
         body:
           partialEqFilter:
-          - key:
-              workspaceId: '{{ ws_name_value }}'
-              elementType: 1
-              label: "{{ item.name }}"
-              value: "{{ item.value }}"
-              deviceId: "{{ intended_tag_device }}"
+            - key:
+                workspaceId: '{{ ws_name_value }}'
+                elementType: 1
+                label: "{{ item.name }}"
+                value: "{{ item.value }}"
+                deviceId: "{{ intended_tag_device }}"
       loop:
         "{{ intended_value_tags.metadata.cv_tags.device_tags }}"
 
@@ -331,7 +331,7 @@
         cc_name_dotted: cc_avd_studio-set-dotted-{{ r }}
         cc_requested_state_dotted: running
         cc_desctiption_dotted: sample description
-      arista.avd.deploy_to_cv:
+      arista.avd.cv_workflow:
         configuration_dir: "{{ configuration_dir ~ '/dotted_hostname/set_dotted_hostname' }}"
         structured_config_dir: "{{ structured_config_dir ~ '/dotted_hostname/set_dotted_hostname' }}"
         device_list: ["ci-s1-leaf1"]
@@ -367,8 +367,8 @@
         body_format: json
         body:
           partialEqFilter:
-          - key:
-              id: Workspace-{{ ws_name_dotted }}
+            - key:
+                id: Workspace-{{ ws_name_dotted }}
       register: cc_info_dotted_hostname
       until: cc_info_dotted_hostname.json.result.value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
       retries: 5
@@ -385,7 +385,7 @@
         cc_name_dotted: cc_avd_studio-test-dotted-{{ r }}
         cc_requested_state_dotted: running
         cc_desctiption_dotted: sample description
-      arista.avd.deploy_to_cv:
+      arista.avd.cv_workflow:
         configuration_dir: "{{ configuration_dir ~ '/dotted_hostname/test_dotted_hostname' }}"
         structured_config_dir: "{{ structured_config_dir ~ '/dotted_hostname/test_dotted_hostname' }}"
         device_list: ["ci-s1-leaf.1"]
@@ -448,7 +448,7 @@
         cc_name_dotted: cc_avd_studio-reset-dotted-{{ r }}
         cc_requested_state_dotted: running
         cc_desctiption_dotted: sample description
-      arista.avd.deploy_to_cv:
+      arista.avd.cv_workflow:
         configuration_dir: "{{ configuration_dir ~ '/dotted_hostname/reset_dotted_hostname' }}"
         structured_config_dir: "{{ structured_config_dir ~ '/dotted_hostname/reset_dotted_hostname' }}"
         device_list: ["ci-s1-leaf.1"]
@@ -484,8 +484,8 @@
         body_format: json
         body:
           partialEqFilter:
-          - key:
-              id: Workspace-{{ ws_name_dotted }}
+            - key:
+                id: Workspace-{{ ws_name_dotted }}
       register: cc_info_dotted_hostname_reset
       until: cc_info_dotted_hostname_reset.json.result.value.status == "CHANGE_CONTROL_STATUS_COMPLETED"
       retries: 5
