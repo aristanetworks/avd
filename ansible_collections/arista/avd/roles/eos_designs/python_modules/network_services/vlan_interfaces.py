@@ -77,6 +77,7 @@ class VlanInterfacesMixin(UtilsMixin):
                 raise AristaAvdMissingVariableError(
                     f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using {' or '.join(quoted_vars)} under 'svi'"
                 )
+
         vlan_interface_config = {
             "name": f"Vlan{int(svi['id'])}",
             "tenant": svi["tenant"],
