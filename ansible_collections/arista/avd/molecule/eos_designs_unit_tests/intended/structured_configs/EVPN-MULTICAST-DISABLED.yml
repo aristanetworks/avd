@@ -799,52 +799,6 @@ vlans:
   tenant: Tenant_E
 ip_igmp_snooping:
   globally_enabled: true
-  vlans:
-  - id: 110
-    querier:
-      enabled: true
-      address: 192.168.255.8
-  - id: 111
-    querier:
-      enabled: true
-      address: 192.168.255.8
-  - id: 210
-    querier:
-      enabled: true
-      address: 192.168.255.8
-  - id: 257
-    querier:
-      enabled: true
-      address: 192.168.255.8
-  - id: 4092
-    querier:
-      enabled: true
-      address: 192.168.255.8
-  - id: 1
-    querier:
-      enabled: true
-      address: 1.1.1.1
-      version: 3
-  - id: 2
-    querier:
-      enabled: true
-      address: 1.1.1.1
-      version: 3
-  - id: 3
-    querier:
-      enabled: true
-      address: 2.2.2.2
-      version: 1
-  - id: 8
-    querier:
-      enabled: true
-      address: 1.1.1.1
-      version: 3
-  - id: 9
-    querier:
-      enabled: true
-      address: 2.2.2.2
-      version: 1
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
 - name: Vlan310
@@ -1067,46 +1021,36 @@ vxlan_interface:
         vni: 10311
       - id: 110
         vni: 10110
-        multicast_group: 232.0.0.109
       - id: 111
         vni: 10111
-        multicast_group: 232.0.0.110
       - id: 210
         vni: 10210
-        multicast_group: 232.0.0.209
       - id: 211
         vni: 10211
       - id: 256
         vni: 10256
       - id: 257
         vni: 10257
-        multicast_group: 232.0.1.0
       - id: 4092
         vni: 14092
-        multicast_group: 232.0.15.251
       - id: 5
         vni: 10005
       - id: 6
         vni: 10006
       - id: 1
         vni: 10001
-        multicast_group: 232.0.16.1
       - id: 2
         vni: 10002
-        multicast_group: 232.0.16.2
       - id: 3
         vni: 10003
-        multicast_group: 232.0.16.3
       - id: 4
         vni: 10004
       - id: 7
         vni: 10007
       - id: 8
         vni: 10008
-        multicast_group: 232.0.16.8
       - id: 9
         vni: 10009
-        multicast_group: 232.0.16.9
       - id: 330
         vni: 10330
       - id: 331
