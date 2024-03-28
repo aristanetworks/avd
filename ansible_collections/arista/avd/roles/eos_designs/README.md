@@ -135,9 +135,9 @@ Across all designs, the following functionality is provided:
 
 ### WAN AutoVPN / CV Pathfinder
 
-| LAN | WAN Overlay | Topology |
-| -------- | ------- | -------- |
-| L3 eBGP | iBGP | Arbitrary Mesh or leaf-spine |
+| LAN Uplinks | WAN Overlay | Topology |
+| ----------- | ----------- | -------- |
+| L3 eBGP + p2p-vrf | iBGP | Arbitrary Mesh or leaf-spine |
 | L2 | iBGP | Arbitrary Mesh or leaf-spine |
 
 **WAN topology example:**
