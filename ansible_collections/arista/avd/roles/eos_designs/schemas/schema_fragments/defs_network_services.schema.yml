@@ -116,6 +116,7 @@ $defs:
             - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
             - Enables `redistribute igmp` on the router bgp MAC VRF.
             - When evpn_l2_multicast.enabled is true for a VLAN or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
+            - Requires `evpn_multicast` to also be set to `true`.
           type: dict
           keys:
             enabled:
@@ -143,6 +144,7 @@ $defs:
                  - If switch is part of an MLAG pair, enables "pim ipv4 sparse-mode" on the SVI.
                  - If switch is standalone or A-A MH, enables "ip igmp" on the SVI.
                  - If "ip address virtual" is configured, enables "pim ipv4 local-interface" and uses the diagnostic Loopback defined in the VRF
+            - Requires `evpn_multicast` to also be set to `true`.
           type: dict
           keys:
             enabled:

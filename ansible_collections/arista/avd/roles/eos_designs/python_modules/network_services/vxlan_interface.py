@@ -227,7 +227,9 @@ class VxlanInterfaceMixin(UtilsMixin):
             mac_vrf_vni_base = int(get(tenant, "mac_vrf_vni_base", required=True, org_key=f"'mac_vrf_vni_base' for Tenant: {tenant['name']}"))
             vxlan_interface_vlan["vni"] = mac_vrf_vni_base + vlan_id
 
-        vlan_evpn_l2_multicast_enabled = default(get(vlan, "evpn_l2_multicast.enabled"), get(tenant, "evpn_l2_multicast.enabled"))
+        vlan_evpn_l2_multicast_enabled = (
+            default(get(vlan, "evpn_l2_multicast.enabled"), get(tenant, "evpn_l2_multicast.enabled")) and self.shared_utils.evpn_multicast is True
+        )
         if vlan_evpn_l2_multicast_enabled is True:
             underlay_l2_multicast_group_ipv4_pool = get(
                 tenant,
