@@ -542,8 +542,10 @@ The following example will be leveraging this capability to share required WAN v
 This example contains contains two sites, SITE1 and SITE2 and a dedicate inventory for pathfinder nodes.
 This would still relevant for configuring AutoVPN in seperate ansible inventories.
 
-The PATHFINDERS inventory contains the `wan_rr` node types.
-SITE1 and SITE2 inventories contains the following node types: `wan_router`, `spine`, `l3leaf`.
+Inventory layout:
+
+- The PATHFINDERS inventory contains the `wan_rr` node types.
+- SITE1 and SITE2 inventories contains the following node types: `wan_router`, `spine`, `l3leaf`.
 
 ```bash title="Example layout for Ansible multi inventory"
 ├── global_vars
