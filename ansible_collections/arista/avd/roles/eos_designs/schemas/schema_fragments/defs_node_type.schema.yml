@@ -1219,7 +1219,6 @@ $defs:
             type: str
             $ref: "eos_designs#/keys/node_type_keys/items/keys/default_wan_role"
             description: |-
-              PREVIEW: This key is currently not supported
               Override the default WAN role.
 
               This is used both for AutoVPN and Pathfinder designs.
@@ -1235,7 +1234,6 @@ $defs:
               - region
               - zone
             description: |-
-              PREVIEW: This key is currently not supported
               Configure the transit mode for a WAN client for CV Pathfinder designs
               only when the `wan_mode` root key is set to `cv_pathfinder`.
 
@@ -1245,8 +1243,6 @@ $defs:
               table: node-type-wan-configuration
             type: str
             description: |-
-              PREVIEW: This key is currently not supported
-
               The CV Pathfinder region name.
               This key is required for WAN routers but optional for pathfinders.
               The region name must be defined under 'cv_pathfinder_regions'.
@@ -1255,8 +1251,6 @@ $defs:
               table: node-type-wan-configuration
             type: str
             description: |-
-              PREVIEW: This key is currently not supported
-
               The CV Pathfinder site name.
               This key is required for WAN routers but ignored for pathfinders.
               The site name must be defined for the relevant region under 'cv_pathfinder_regions'.
@@ -1286,20 +1280,16 @@ $defs:
               table: node-type-wan-configuration
             type: str
             $ref: "eos_cli_config_gen#/keys/router_path_selection/keys/tcp_mss_ceiling/keys/ipv4_segment_size"
-            description: |-
-              PREVIEW: This key is currently not supported
-
-              IPv4 MSS value configured under "router path-selection" on WAN Devices.
+            description: IPv4 MSS value configured under "router path-selection" on WAN Devices.
             default: "auto"
           l3_interfaces:
             type: list
             $ref: "eos_designs#/$defs/node_type_l3_interfaces"
             documentation_options:
-              table: wan-interfaces-settings
+              table: node-type-l3-interfaces-configuration
             description: |-
-              PREVIEW: This key is currently not supported
-
-              L3 Interfaces currently only use for WAN interfaces.
+              L3 Interfaces to configure on the node.
+              Used to define the node for WAN interfaces when `wan_carrier` is set.
             items:
               type: dict
               keys:

@@ -8,6 +8,4 @@ type: dict
 keys:
   application_classification:
     type: dict
-    description: |-
-      PREVIEW: WAN Preview
     $ref: "eos_cli_config_gen#/keys/application_traffic_recognition"
