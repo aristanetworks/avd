@@ -536,4 +536,133 @@ The tags will only be generated when `wan_mode` is set to `cv-pathfinder`.
 As described in the design principles, the goal is to be able to distribute the
 WAN routers in separate Ansible inventories.
 
-!!! Danger "TO BE COMPLETED"
+When leveraging multiple inventories, the arista.avd collection provide capabilites to create [global variables](../../../../docs/plugins/Vars_plugins/global_vars.md).
+The following example will be leveraging this capability to share required WAN variables accross multiple inventories.
+
+This example contains contains two sites, SITE1 and SITE2 and a dedicate inventory for pathfinder nodes.
+This would still relevant for configuring AutoVPN in seperate ansible inventories.
+
+The PATHFINDERS inventory contains the `wan_rr` node types.
+SITE1 and SITE2 inventories contains the following node types: `wan_router`, `spine`, `l3leaf`.
+
+```bash title="Example layout for Ansible multi inventory"
+├── global_vars
+│   ├── common.yml
+│   └── cv_pathfinder.yml
+├── PATHFINDERS
+│   ├── group_vars
+│   │   └── Pathfinders.yml
+│   └── inventory.yml
+├── SITE1
+│   ├── group_vars
+│   │   ├── LEAFS.yml
+│   │   ├── SITE1.yml
+│   │   ├── SPINES.yml
+│   │   └── WAN_ROUTERS.yml
+│   ├── host_vars
+│   │   └── inventory_hostname.yml
+│   └── inventory.yml
+├── SITE2
+│   ├── group_vars
+│   │   ├── LEAFS.yml
+│   │   ├── SITE2.yml
+│   │   ├── SPINES.yml
+│   │   └── WAN_ROUTERS.yml
+│   ├── host_vars
+│   │   └── inventory_hostname.yml
+│   └── inventory.yml
+```
+
+```yaml title="global_vars/cv_pathfinder.yml"
+wan_mode: cv-pathfinder
+
+# When Pathfinders are in a seperate inventory in addition to the hostname you also need to capture the `vtep_ip` and `path_groups`.
+wan_route_servers:
+  - hostname: pf1
+    vtep_ip: 10.255.0.1
+    path_groups:
+      - name: mpls
+        interfaces:
+          - name: Ethernet1
+            public_ip: 172.18.1.2/24
+      - name: internet
+        interfaces:
+          - name: Ethernet2
+            public_ip: 100.64.1.2/24
+  - hostname: pf2
+    vtep_ip: 10.255.0.2
+    path_groups:
+      - name: mpls
+        interfaces:
+          - name: Ethernet1
+            public_ip: 172.18.2.2/24
+      - name: internet
+        interfaces:
+          - name: Ethernet2
+            public_ip: 100.64.2.2/24
+
+# Suggested variables to share in your global variables accross inventories.
+
+cv_pathfinder_regions:
+  - name: Global
+    id: 1
+    sites:
+      - name: SITE1
+        id: 101
+      - name: SITE2
+        id: 102
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 10.0.0.0/8
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: 0110100A480E0A0E231D1E
+  data_plane:
+    shared_key: 0110100A480E0A0E231D1E
+
+wan_path_groups:
+  - name: mpls
+    id: 101
+  - name: internet
+    id: 102
+
+wan_carriers:
+  - name: isp-1
+    path_group: internet
+  - name: mpls-sp-1
+    path_group: mpls
+
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      policy: DEFAULT-AVT-POLICY
+      wan_vni: 1
+    - name: data
+      policy: DATA-AVT-POLICY
+      wan_vni: 20
+    - name: guest
+      policy: GUEST-AVT-POLICY
+      wan_vni: 10
+  policies:
+    - name: DEFAULT-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [internet]
+            preference: preferred
+    - name: GUEST-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [internet]
+            preference: preferred
+    - name: DATA-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [mpls]
+            preference: preferred
+          - names: [internet]
+            preference: alternate
+```
