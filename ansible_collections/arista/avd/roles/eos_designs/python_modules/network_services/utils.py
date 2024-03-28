@@ -585,3 +585,44 @@ class UtilsMixin:
             for path_group in self.shared_utils.wan_local_path_groups
             if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
         ]
+
+    @cached_property
+    def _svi_acls(self) -> dict[str, dict[str, dict]]:
+        """
+        Returns a dict of
+            <interface_name>: {
+                "ipv4_acl_in": <generated_ipv4_acl>,
+                "ipv4_acl_out": <generated_ipv4_acl>,
+            }
+        Only contains interfaces with ACLs and only the ACLs that are set,
+        so use `get(self._svi_acls, f"{interface_name}.ipv4_acl_in")` to get the value.
+        """
+
+        svi_acls = {}
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                for svi in vrf["svis"]:
+                    ipv4_acl_in = get(svi, "ipv4_acl_in")
+                    ipv4_acl_out = get(svi, "ipv4_acl_out")
+                    if ipv4_acl_in is None and ipv4_acl_out is None:
+                        continue
+
+                    interface_name = svi["name"]
+                    interface_ip: str | None = svi.get("ip_address_virtual")
+                    if interface_ip is not None and "/" in interface_ip:
+                        interface_ip = interface_ip.split("/", maxsplit=1)[0]
+
+                    if ipv4_acl_in is not None:
+                        svi_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
+                            name=ipv4_acl_in,
+                            interface_name=interface_name,
+                            interface_ip=interface_ip,
+                        )
+                    if ipv4_acl_out is not None:
+                        svi_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
+                            name=ipv4_acl_out,
+                            interface_name=interface_name,
+                            interface_ip=interface_ip,
+                        )
+
+        return svi_acls

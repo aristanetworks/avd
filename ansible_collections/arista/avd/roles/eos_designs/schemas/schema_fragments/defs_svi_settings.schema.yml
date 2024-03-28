@@ -80,6 +80,21 @@ $defs:
         items:
           type: str
           description: IPv6_address
+      ipv4_acl_in:
+        description: |-
+          Name of the IPv4 access-list to be assigned in the ingress direction.
+          The access-list must be defined under `ipv4_acls`.
+          Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.
+        type: str
+        convert_types:
+          - int
+      ipv4_acl_out:
+        description: |-
+          Name of the IPv4 Access-list to be assigned in the egress direction.
+          The access-list must be defined under `ipv4_acls`.
+        type: str
+        convert_types:
+          - int
       ip_helpers:
         type: list
         primary_key: ip_helper

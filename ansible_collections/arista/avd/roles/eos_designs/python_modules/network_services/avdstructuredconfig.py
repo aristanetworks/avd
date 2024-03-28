@@ -7,6 +7,7 @@ from .application_traffic_recognition import ApplicationTrafficRecognitionMixin
 from .dps_interfaces import DpsInterfacesMixin
 from .eos_cli import EosCliMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
+from .ip_access_lists import IpAccesslistsMixin
 from .ip_igmp_snooping import IpIgmpSnoopingMixin
 from .ip_virtual_router_mac_address import IpVirtualRouterMacAddressMixin
 from .ipv6_static_routes import Ipv6StaticRoutesMixin
@@ -63,6 +64,7 @@ class AvdStructuredConfigNetworkServices(
     RouterMulticastMixin,
     RouterPimSparseModeMixin,
     StandardAccessListsMixin,
+    IpAccesslistsMixin,
 ):
     """
     The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.

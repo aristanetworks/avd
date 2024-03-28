@@ -51144,6 +51144,16 @@
                   },
                   "title": "IPv6 Virtual Router Addresses"
                 },
+                "ipv4_acl_in": {
+                  "description": "Name of the IPv4 access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls`.\nRequired for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.",
+                  "type": "string",
+                  "title": "IPv4 Acl In"
+                },
+                "ipv4_acl_out": {
+                  "description": "Name of the IPv4 Access-list to be assigned in the egress direction.\nThe access-list must be defined under `ipv4_acls`.",
+                  "type": "string",
+                  "title": "IPv4 Acl Out"
+                },
                 "ip_helpers": {
                   "type": "array",
                   "description": "IP helper for DHCP relay",
@@ -52991,6 +53001,16 @@
               "description": "IPv6_address"
             },
             "title": "IPv6 Virtual Router Addresses"
+          },
+          "ipv4_acl_in": {
+            "description": "Name of the IPv4 access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls`.\nRequired for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.",
+            "type": "string",
+            "title": "IPv4 Acl In"
+          },
+          "ipv4_acl_out": {
+            "description": "Name of the IPv4 Access-list to be assigned in the egress direction.\nThe access-list must be defined under `ipv4_acls`.",
+            "type": "string",
+            "title": "IPv4 Acl Out"
           },
           "ip_helpers": {
             "type": "array",
