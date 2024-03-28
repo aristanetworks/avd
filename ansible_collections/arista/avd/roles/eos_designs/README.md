@@ -137,7 +137,7 @@ Across all designs, the following functionality is provided:
 
 | LAN Uplinks | WAN Overlay | Topology |
 | ----------- | ----------- | -------- |
-| L3 eBGP + p2p-vrfs | iBGP | Arbitrary Mesh or leaf-spine |
+| L3 eBGP with p2p-vrfs | iBGP | Arbitrary Mesh or leaf-spine |
 | L2 | iBGP | Arbitrary Mesh or leaf-spine |
 
 **WAN topology example:**
