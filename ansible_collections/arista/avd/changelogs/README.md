@@ -14,25 +14,13 @@
     - Search:
 
       ```re
-      [*-] (.*)[:-] (.*) by @.+ in (.*)$
+      ^* (.*)$
       ```
 
     - Replace (vscode syntax):
 
       ```re
-      $1 - $2 ($3)
-      ```
-
-    - converts
-
-      ```md
-      * Fix(eos_designs): Fix schema for BGP peers to allow shutdown key by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3100
-      ```
-
-    - to
-
-      ```md
-      - Fix(eos_designs) - Fix schema for BGP peers to allow shutdown key (https://github.com/aristanetworks/avd/pull/3100)
+      - |-\r $1
       ```
 
 - Copy the fragment to `changelogs/fragments_backup` *before* generating the changelog

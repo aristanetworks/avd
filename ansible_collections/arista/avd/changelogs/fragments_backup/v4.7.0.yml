@@ -1,0 +1,211 @@
+release_summary: |
+  Release 4.7.0 - See documentation on avd.arista.com for details.
+bugfixes:
+### Fixed issues in eos_cli_config_gen
+- |-
+ Fix(eos_cli_config_gen): Updating the valid values for PTP mode. by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/3685
+- |-
+ Fix(eos_cli_config_gen): Comply with EOS tacacs servers configuration order by @carlbuchmann in https://github.com/aristanetworks/avd/pull/3711
+### Fixed issues in eos_designs
+- |-
+ Fix(eos_designs): Use WAN VNI for cv-pathfinder metadata by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3728
+- |-
+ Fix(eos_designs): Do not generate DP IPsec profile when HA ipsec is disabled by @gmuloc in https://github.com/aristanetworks/avd/pull/3733
+- |-
+ Fix(eos_designs): Make metadata cloudvision tags name case sensitive by @carlbuchmann in https://github.com/aristanetworks/avd/pull/3771
+- |-
+ Fix(eos_designs): evpn_multicast error handling by @carlbuchmann in https://github.com/aristanetworks/avd/pull/3731
+### Other Fixed issues
+- |-
+ Fix(plugins): YAML Dumper/Loader not working without libyaml by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3706
+- |-
+ Fix(plugins): Add support for python3.9 for get_all_with_path by @sugetha24 in https://github.com/aristanetworks/avd/pull/3763
+- |-
+ Fix(eos_validate_state): ANTA Fix the report to have consistent test descriptions, categories and input details by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/3743
+minor_changes:
+### Documentation
+- |-
+ Doc: Fix YAML in schema docs for multiline descriptions with blank lines by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3651
+- |-
+ Doc: Fix CV playbook example in intro to ansible and avd by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3778
+- |-
+ Doc(eos_cli_config_gen, eos_designs): Add missing schema files by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3704
+- |-
+ Doc(eos_cli_config_gen): Add Dps1 to flow tracking output in device config by @gmuloc in https://github.com/aristanetworks/avd/pull/3786
+- |-
+ Doc(cv_deploy): Add supported CloudVision versions by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3788
+- |-
+ Doc: Adding eos designs diagrams for mpls and l2ls by @JulioPDX in https://github.com/aristanetworks/avd/pull/3790
+- |-
+ Doc: Updating diagrams for MPLS example by @JulioPDX in https://github.com/aristanetworks/avd/pull/3784
+- |-
+ Doc: Updating intro to avd and ansible diagrams by @JulioPDX in https://github.com/aristanetworks/avd/pull/3783
+- |-
+ Doc: Clean documentation for WAN by @gmuloc in https://github.com/aristanetworks/avd/pull/3665
+### New features and enhancements in eos_cli_config_gen
+- |-
+ Feat(eos_cli_config_gen): Add neighbors key to router_bgp.address_family_evpn. by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/3641
+- |-
+ Feat(eos_cli_config_gen): Support for EVPN Multihoming IP Mass-withdrawal by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/3656
+- |-
+ Feat(eos_cli_config_gen): Add 1-step Boundary Clock support by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/3666
+- |-
+ Feat(eos_cli_config_gen): Add support for setting the ASN notation by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/3678
+- |-
+ Feat(eos_cli_config_gen): Add more 'pim ipv4' interface commands by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/3663
+- |-
+ Feat(eos_cli_config_gen): add sFlow sample output subinterface support by @philippebureau in https://github.com/aristanetworks/avd/pull/3458
+- |-
+ Feat(eos_cli_config_gen): Add support for switchport port-security. by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/3561
+- |-
+ Feat(eos_cli_config_gen): Add FIPS and hostkey.client features to management_ssh by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/3571
+- |-
+ Feat(eos_cli_config_gen): Extend match lists to support IPv4 and IPv6 by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/3770
+- |-
+ Feat(eos_cli_config_gen): Add support for Interface Vxlan, vxlan bridging vtep-to-vtep by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/3718
+- |-
+ Feat(eos_cli_config_gen): Add custom comments at the top of the rendered configuration. by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/3738
+### New features and enhancements in eos_designs
+- |-
+ Feat(eos_designs): GTSM configuration to limit the TTL permitted for bgp peering to 1 for WAN by @amitsagar-arsita in https://github.com/aristanetworks/avd/pull/3607
+- |-
+ Feat(eos_designs): Make DPS1 interface MTU 9k by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/3619
+- |-
+ Feat(eos_designs): Implement WAN/LAN redistribution for eBGP LAN by @gmuloc in https://github.com/aristanetworks/avd/pull/3602
+- |-
+ Feat(eos_designs): Configure BFD timers higher than DPS timeouts for WAN BGP neighbors by @amitsagar-arsita in https://github.com/aristanetworks/avd/pull/3586
+- |-
+ Feat(eos_designs):  Replace wan_role checks with helper cached_property utils by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/3639
+- |-
+ Feat(eos_designs): Add 'maximum_routes_warning_only' to the 'bgp_peers' in network_services data model by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/3645
+- |-
+ Feat(eos_designs): Add system mac address to structured config under 'metadata'. by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/3658
+- |-
+ Feat(eos_designs): Add eBGP LAN HA support for CV Pathfinder by @gmuloc in https://github.com/aristanetworks/avd/pull/3494
+- |-
+ Feat(eos_designs): Add filter.allow_vrfs and filter.deny_vrfs by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3653
+- |-
+ Feat(eos_designs): Add wan_vni for WAN VRF by @gmuloc in https://github.com/aristanetworks/avd/pull/3600
+- |-
+ Feat(eos_designs): Add support for hop count lowest in load-balancing policies by @gmuloc in https://github.com/aristanetworks/avd/pull/3646
+- |-
+ Feat(eos_designs): Add wan_carrier and circuit_id to l3 interface description by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/3649
+- |-
+ Feat(eos_designs): Uplink type 'lan' for WAN routers by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3593
+- |-
+ Feat(eos_designs): Option to define evpn_vlan_bundle for SVIs by @bjmeuer in https://github.com/aristanetworks/avd/pull/3623
+- |-
+ Feat(eos_designs): IPv6 inband management settings by @emilarista in https://github.com/aristanetworks/avd/pull/3382
+- |-
+ Feat(eos_designs): STUN SSL profile support by @amitsagar-arsita in https://github.com/aristanetworks/avd/pull/3636
+- |-
+ Feat(eos_designs): Add 'dhcp_ip_address' under 'l3_interfaces' node settings by @gmuloc in https://github.com/aristanetworks/avd/pull/3686
+- |-
+ Feat(eos_designs): Allow to control DPS timers at the wan_path_group level by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/3625
+- |-
+ Feat(eos_designs): Add 1-step Boundary Clock support by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/3668
+- |-
+ Feat(eos_designs): Add flowtracking on WAN Router LAN uplinks by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3679
+- |-
+ Feat(eos_designs): Update platform.py with 7358X4 by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/3667
+- |-
+ Feat(eos_designs): Enable KERNELFIB_PROGRAM_ALL_ECMP for all wan routers by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/3689
+- |-
+ Feat(eos_designs): Add default_preference and excluded for wan_path_groups by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/3648
+- |-
+ Feat(eos_designs): Allow to disable IPsec on dynamic peers for a path-group avd by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/3695
+- |-
+ Feat(eos_designs): Allow custom name for LAN_HA path-group by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/3723
+- |-
+ Feat(eos_designs): Allow custom name for pathfinder Flow tracker tracker and exporter settings by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/3721
+- |-
+ Feat(eos_designs): Add ability to override wan control plane policy by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/3690
+- |-
+ Feat(eos_designs): public_ip input field support for devices behind NAT by @amitsagar-arsita in https://github.com/aristanetworks/avd/pull/3652
+- |-
+ Feat(eos_designs): Add Vxlan1 VRF VNI for WAN VRFs on Pathfinders by @gmuloc in https://github.com/aristanetworks/avd/pull/3746
+- |-
+ Feat(eos_designs): L2 inband ztp functionality by @jrecchia1029 in https://github.com/aristanetworks/avd/pull/3660
+- |-
+ Feat(eos_designs): Add sflow_settings by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3078
+- |-
+ Feat(eos_designs): Allow overlapping VLAN IDs under network services by @carlbuchmann in https://github.com/aristanetworks/avd/pull/3722
+- |-
+ Feat(eos_designs): Dot1x unauthorized access|native vlan membership egress to ethernet interfaces via port_profile by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/3779
+- |-
+ Feat(eos_designs): Add support for ipv4_acls with field replacement by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3750
+### Other new features and enhancements
+- |-
+ Feat(plugins): Add ISIS support to encrypt and decrypt filters by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3662
+- |-
+ Feat(eos_validate_state): ANTA Provide custom ANTA catalog files to validate state by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/3655
+- |-
+ Feat(eos_validate_state): Added support to validate DPS interface state by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/3692
+- |-
+ Feat(plugins): Add "unique_keys" in avdschema. by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3725
+### PyAVD Changes
+- |-
+ Refactor(pyavd): Add ability to detect running from source by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3632
+### Other Changes
+- |-
+ Refactor(eos_designs): Remove switch-focused config from WAN Routers by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3644
+- |-
+ Refactor(eos_designs): Better security for IPsec configuration for WAN by @gmuloc in https://github.com/aristanetworks/avd/pull/3543
+- |-
+ Refactor(eos_designs): Grouping name generation of  WAN profiles and policies by @gmuloc in https://github.com/aristanetworks/avd/pull/3638
+- |-
+ Refactor(eos_designs): Remove wan_transit and rename wan_edge to wan_router by @gmuloc in https://github.com/aristanetworks/avd/pull/3654
+- |-
+ Fix(deploy_to_cv): Do not add Pathfinders to Routers section of metadata studio by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3680
+- |-
+ Refactor(eos_designs): Rename WAN CONTROL-PLANE objects by @gmuloc in https://github.com/aristanetworks/avd/pull/3676
+- |-
+ Refactor(eos_designs): Set cv-pathfinder interface tags for subinterfaces by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3684
+- |-
+ Refactor(eos_designs): WAN Preview - Prefix default zone name with region name by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3688
+- |-
+ Refactor(eos_designs): Make id mandatory for AVTs when mode is cv-pathfinder by @gmuloc in https://github.com/aristanetworks/avd/pull/3707
+- |-
+ Refactor(eos_validate_state): ANTA Refactor AvdTestBase by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/3701
+- |-
+ Refactor(eos_designs): Make DHCP default route generated by default by @gmuloc in https://github.com/aristanetworks/avd/pull/3724
+- |-
+ Refactor(deploy_to_cv): Ignore missing metadata by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3703
+- |-
+ Refactor(eos_designs): CV Pathfinder metadata updates by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3697
+- |-
+ Refactor: Fix typo to render flow-tracking for LAN subif in WAN case by @gmuloc in https://github.com/aristanetworks/avd/pull/3729
+- |-
+ Refactor(eos_designs): Simplify WAN policies by @gmuloc in https://github.com/aristanetworks/avd/pull/3719
+- |-
+ Bump(eos_validate_state): ANTA Bump and update code for ANTA v0.13.0 by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/3726
+- |-
+ Refactor(deploy_to_cv): Update "role" field for "transit region" in metadata studio by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3744
+- |-
+ Refactor(plugins): Improve mergeonschema including more descriptive errors by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3734
+- |-
+ Refactor(eos_designs): Prevent empty path-groups for auto generated WAN policies by @gmuloc in https://github.com/aristanetworks/avd/pull/3710
+- |-
+ Refactor(plugins): Add option to allow duplicate primary keys in schema by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3747
+- |-
+ Bump: Update black by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3760
+- |-
+ Refactor(eos_designs): Make Flow tracking enabled on Dps1 interface only by @gmuloc in https://github.com/aristanetworks/avd/pull/3767
+- |-
+ Feat(deploy_to_cv): Add support for waiting for Change Control to be completed before returning by @sugetha24 in https://github.com/aristanetworks/avd/pull/3732
+- |-
+ Refactor(eos_designs): Force WAN HA to be either enabled or disabled by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3772
+- |-
+ Refactor(eos_designs): Set `default_underlay_routing_protocol: none` for wan_rr and wan_router by @gmuloc in https://github.com/aristanetworks/avd/pull/3775
+- |-
+ Refactor(eos_designs): Optional CV Pathfinder region for pathfinders by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3774
+- |-
+ Refactor(deploy_to_cv): Set default values for constraints in metadata studio by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3773
+- |-
+ Refactor(deploy_to_cv): Dynamic timeouts and library support for username/password by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3762
+- |-
+ Refactor(deploy_to_cv): Remove metadata studio version detection by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3781
+- |-
+ Refactor: Rename deploy_to_cv role and module and release as cv_deploy by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3785
+- |-
+ Refactor(eos_designs): Mark flow_tracking_settings as PREVIEW for 4.7.0 by @gmuloc in https://github.com/aristanetworks/avd/pull/3789

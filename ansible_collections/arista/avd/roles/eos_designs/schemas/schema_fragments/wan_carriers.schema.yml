@@ -7,10 +7,9 @@
 type: dict
 keys:
   wan_carriers:
-    description: |-
-      PREVIEW: This key is currently not supported
-
-      List of carriers used for the WAN configuration and their mapping to path-groups.
+    documentation_options:
+      table: wan-path-groups-and-carriers
+    description: List of carriers used for the WAN configuration and their mapping to path-groups.
     type: list
     primary_key: name
     items:
