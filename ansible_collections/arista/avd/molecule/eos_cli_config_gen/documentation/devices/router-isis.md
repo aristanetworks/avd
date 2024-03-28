@@ -334,5 +334,4 @@ router isis EVPN_UNDERLAY
    traffic-engineering
      no shutdown
      is-type level-2
-
 ```

@@ -34,7 +34,7 @@ router_isis:
       mode: sha
       sha:
         key_id: 2
-  eos_cli: |
+  eos_cli: |-
     address-family ipv6 unicast
       multi-topology
     traffic-engineering
