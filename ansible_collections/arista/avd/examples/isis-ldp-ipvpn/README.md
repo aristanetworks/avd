@@ -72,7 +72,7 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here is referenced across the entire example, so keep that in mind if this example must be adapted to a different topology. Finally, the Ansible host is connected to the dedicated out-of-band management port (Management1 when using vEOS-lab):
 
-![Figure: Arista MPLS-VPN physical topology](images/avd-isis-ldp-ipvpn-example.svg)
+![Figure: Arista MPLS-VPN physical topology](images/avd-isis-ldp-ipvpn.svg)
 
 ### IP ranges used
 
