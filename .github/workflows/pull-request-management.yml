@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ file-changes ]
     if: needs.file-changes.outputs.docs == 'true'
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
       - name: 'Start docker-compose stack'
@@ -124,7 +124,7 @@ jobs:
             --exclude "www.docker.com" \
             --exclude "hub.docker.com" \
             --exclude "tech-library.arista.com" \
-            --max-connections-per-host 10 \
+            --max-connections-per-host 30 \
             --max-redirections 3 \
             --rate-limit 1 \
             --timeout 30
