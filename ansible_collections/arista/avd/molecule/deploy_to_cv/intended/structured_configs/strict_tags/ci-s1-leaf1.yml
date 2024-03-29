@@ -1,4 +1,4 @@
-hostname: devel-s1-leaf1
+hostname: ci-s1-leaf1
 is_deployed: true
 metadata:
   cv_tags:

@@ -24,7 +24,7 @@
         ws_force: true
         cc_name: cc_avd_studio-cleanup-{{ r }}
         cc_requested_state: running
-        cc_desctiption: sample description
+        cc_description: sample description
       run_once: true
 
     - name: Clean up and provision CVP with with base AVD configuration
@@ -50,7 +50,7 @@
           force: '{{ ws_force }}'
         change_control:
           name: '{{ cc_name }}'
-          description: '{{ cc_desctiption }}'
+          description: '{{ cc_description }}'
           requested_state: '{{ cc_requested_state }}'
         # timeouts:
         #   workspace_build_timeout: 300.0

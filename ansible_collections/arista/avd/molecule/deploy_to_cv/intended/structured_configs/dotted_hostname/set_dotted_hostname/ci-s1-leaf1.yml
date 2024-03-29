@@ -1,2 +1,2 @@
-hostname: devel-s1-leaf.1
+hostname: ci-s1-leaf.1
 is_deployed: true
