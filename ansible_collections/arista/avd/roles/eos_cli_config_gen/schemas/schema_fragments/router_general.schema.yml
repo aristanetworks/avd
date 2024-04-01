@@ -70,5 +70,13 @@ keys:
               keys:
                 name:
                   type: str
+                  description: Name of the code unit.
                 content:
                   type: str
+                  description: |-
+                    Content of route control function. Write 'EOF' below the content.
+                    e.g.
+                    function ACCEPT_ALL() {
+                      return true;
+                      }
+                    EOF

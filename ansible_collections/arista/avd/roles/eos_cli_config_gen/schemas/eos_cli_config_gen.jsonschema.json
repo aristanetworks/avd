@@ -20840,10 +20840,12 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "Name of the code unit.",
                     "title": "Name"
                   },
                   "content": {
                     "type": "string",
+                    "description": "Content of route control function. Write 'EOF' below the content.\ne.g.\nfunction ACCEPT_ALL() {\n  return true;\n  }\nEOF",
                     "title": "Content"
                   }
                 },

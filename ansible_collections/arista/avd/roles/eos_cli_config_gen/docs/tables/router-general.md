@@ -22,8 +22,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.vrfs.[].routes.dynamic_prefix_lists.[].name") | String |  |  |  | Dynamic Prefix List Name |
     | [<samp>&nbsp;&nbsp;control_functions</samp>](## "router_general.control_functions") | Dictionary |  |  |  | Configure routing control function to control which routes to filter and accept from a peer or routing protocol. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;code_units</samp>](## "router_general.control_functions.code_units") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.control_functions.code_units.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content</samp>](## "router_general.control_functions.code_units.[].content") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.control_functions.code_units.[].name") | String | Required, Unique |  |  | Name of the code unit. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content</samp>](## "router_general.control_functions.code_units.[].content") | String |  |  |  | Content of route control function. Write 'EOF' below the content.<br>e.g.<br>function ACCEPT_ALL() {<br>  return true;<br>  }<br>EOF |
 
 === "YAML"
 
@@ -55,6 +55,15 @@
       # Configure routing control function to control which routes to filter and accept from a peer or routing protocol.
       control_functions:
         code_units:
+
+            # Name of the code unit.
           - name: <str; required; unique>
+
+            # Content of route control function. Write 'EOF' below the content.
+            # e.g.
+            # function ACCEPT_ALL() {
+            #   return true;
+            #   }
+            # EOF
             content: <str>
     ```
