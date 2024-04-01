@@ -39,6 +39,23 @@ router general
       exit
    !
 {%     endfor %}
+{%     if router_general.control_functions is arista.avd.defined %}
+   control-functions
+{%         if router_general.control_functions.code_units is arista.avd.defined %}
+{%             for code_unit in router_general.control_functions.code_units | arista.avd.natural_sort('name') %}
+{%                 set content = code_unit.content %}
+{%                 set content = content | ansible.builtin.regex_replace('.*code\ unit.*', '') %}
+      code unit {{ code_unit.name }}
+         {{ content | indent(width=9, first=False) }}
+{%                 if not 'EOF' in content %}
+         EOF
+{%                 endif %}
+         compile
+         commit
+{%             endfor %}
+   !
+{%         endif %}
+{%     endif %}
 {#    EOS issue #}
    exit
 {% endif %}

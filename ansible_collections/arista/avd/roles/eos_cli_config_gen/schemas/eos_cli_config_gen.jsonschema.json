@@ -20828,6 +20828,41 @@
             ]
           },
           "title": "VRFs"
+        },
+        "control_functions": {
+          "type": "object",
+          "description": "Configure routing control function to control which routes to filter and accept from a peer or routing protocol.",
+          "properties": {
+            "code_units": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "content": {
+                    "type": "string",
+                    "title": "Content"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Code Units"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Control Functions"
         }
       },
       "additionalProperties": false,
