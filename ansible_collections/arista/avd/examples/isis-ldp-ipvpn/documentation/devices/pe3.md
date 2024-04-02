@@ -174,9 +174,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_p3_Ethernet1 | routed | - | 100.64.48.22/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_p3_Ethernet1 | routed | - | 10.255.3.22/31 | default | 1500 | False | - | - |
 | Ethernet2 | C1_L3_SERVICE | routed | - | 10.0.1.9/30 | C1_VRF1 | - | False | - | - |
-| Ethernet3 | P2P_LINK_TO_p4_Ethernet3 | routed | - | 100.64.48.24/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_p4_Ethernet3 | routed | - | 10.255.3.24/31 | default | 1500 | False | - | - |
 | Ethernet4 | C2_L3_SERVICE | routed | - | 10.1.1.9/30 | C2_VRF1 | - | False | - | - |
 
 ##### ISIS
@@ -195,7 +195,7 @@ interface Ethernet1
    no shutdown
    mtu 1500
    no switchport
-   ip address 100.64.48.22/31
+   ip address 10.255.3.22/31
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -220,7 +220,7 @@ interface Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 100.64.48.24/31
+   ip address 10.255.3.24/31
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
