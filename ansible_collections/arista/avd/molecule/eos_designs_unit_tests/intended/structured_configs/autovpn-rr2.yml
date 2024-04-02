@@ -138,6 +138,11 @@ route_maps:
 static_routes:
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.8.8.9
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -188,6 +193,8 @@ router_path_selection:
   - name: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
+      priority: 42
+    - name: MPLS
   - name: LB-DEFAULT-AUTOVPN-POLICY-IT
     path_groups:
     - name: MPLS
@@ -261,3 +268,5 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+      - name: PROD
+        vni: 42

@@ -3,9 +3,13 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import logging
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestAPIHttpsSSL(AvdTestBase):
@@ -24,8 +28,11 @@ class AvdTestAPIHttpsSSL(AvdTestBase):
             test_definition (dict): ANTA test definition.
         """
         anta_tests = []
-        if (profile := self.logged_get(key="management_api_http..https_ssl_profile")) is None:
+
+        if (profile := get(self.structured_config, "management_api_http.https_ssl_profile")) is None:
+            LOGGER.info("No https ssl profile found. %s is skipped.", self.__class__.__name__)
             return None
-        anta_tests.append({"VerifyAPIHttpsSSL": {"profile": profile}})
+
+        anta_tests.append({"VerifyAPIHttpsSSL": {"profile": profile, "result_overwrite": {"custom_field": f"eAPI HTTPS SSL Profile: {profile}"}}})
 
         return {self.anta_module: anta_tests}

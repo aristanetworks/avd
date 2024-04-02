@@ -1,0 +1,30 @@
+---
+
+wan_mode: cv-pathfinder
+
+cv_pathfinder_regions:
+  - name: Global
+    id: 1
+    sites:
+      - name: DC1
+        id: 100
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: 0110100A480E0A0E231D1E
+  data_plane:
+    shared_key: 0110100A480E0A0E231D1E
+
+wan_path_groups:
+  - name: mpls
+    id: 101
+  - name: internet
+    id: 102
+
+wan_carriers:
+  - name: isp-1
+    path_group: internet
+    trusted: true
+  - name: mpls-sp-1
+    path_group: mpls
+    trusted: true

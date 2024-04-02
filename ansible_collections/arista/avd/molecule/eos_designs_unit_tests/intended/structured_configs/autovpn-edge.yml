@@ -108,6 +108,12 @@ ethernet_interfaces:
   type: routed
   description: Comcast_666
   dhcp_client_accept_default_route: true
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 10.14.14.14/31
+  shutdown: false
+  type: routed
+  description: MPLS-SP-1_Cat6
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -147,6 +153,11 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -200,12 +211,22 @@ router_path_selection:
       ipv4_addresses:
       - 10.8.8.8
     ipsec_profile: AUTOVPN
+  - name: MPLS
+    id: 100
+    local_interfaces:
+    - name: Ethernet2
+    dynamic_peers:
+      enabled: true
+      ipsec: false
   load_balance_policies:
   - name: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
+      priority: 42
+    - name: MPLS
   - name: LB-DEFAULT-AUTOVPN-POLICY-IT
     path_groups:
+    - name: MPLS
     - name: INET
       priority: 2
   - name: LB-PROD-AUTOVPN-POLICY-VOICE

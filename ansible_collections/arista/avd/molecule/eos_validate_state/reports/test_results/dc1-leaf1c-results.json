@@ -1,30 +1,6 @@
 [
   {
     "name": "dc1-leaf1c",
-    "test": "VerifyTacacsServerGroups",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies if the provided TACACS server group(s) are configured."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyTacacsServers",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS servers are configured for a specified VRF."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyTacacsSourceIntf",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS source-interface for a specified VRF."
-  },
-  {
-    "name": "dc1-leaf1c",
     "test": "VerifyAcctConsoleMethods",
     "categories": [
       "aaa"
@@ -57,6 +33,30 @@
   },
   {
     "name": "dc1-leaf1c",
+    "test": "VerifyTacacsServerGroups",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
+  },
+  {
+    "name": "dc1-leaf1c",
     "test": "VerifyRunningConfigDiffs",
     "categories": [
       "configuration"
@@ -73,12 +73,156 @@
   },
   {
     "name": "dc1-leaf1c",
-    "test": "VerifyFieldNotice72Resolution",
+    "test": "VerifyLLDPNeighbors",
     "categories": [
-      "field notices",
-      "software"
+      "connectivity"
     ],
-    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet1 - Remote: dc1-leaf1a Ethernet8"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet2 - Remote: dc1-leaf1b Ethernet8"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc1-leaf1a Loopback0 (IP: 10.255.0.3)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc1-leaf1b Loopback0 (IP: 10.255.0.4)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc1-leaf2a Loopback0 (IP: 10.255.0.5)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc1-spine1 Loopback0 (IP: 10.255.0.1)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc1-spine2 Loopback0 (IP: 10.255.0.2)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc1-wan1 Loopback0 (IP: 10.255.2.1)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc1-wan2 Loopback0 (IP: 10.255.2.2)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc2-leaf1a Loopback0 (IP: 10.255.128.13)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc2-leaf1b Loopback0 (IP: 10.255.128.14)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc2-leaf2a Loopback0 (IP: 10.255.128.15)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc2-leaf2b Loopback0 (IP: 10.255.128.16)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc2-leaf3a.arista.com Loopback0 (IP: 10.255.128.17)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc2-leaf3b.arista.com Loopback0 (IP: 10.255.128.18)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc2-spine1 Loopback0 (IP: 10.255.128.11)"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination: dc2-spine2 Loopback0 (IP: 10.255.128.12)"
   },
   {
     "name": "dc1-leaf1c",
@@ -91,83 +235,12 @@
   },
   {
     "name": "dc1-leaf1c",
-    "test": "VerifyTemperature",
+    "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "hardware"
+      "field notices",
+      "software"
     ],
-    "description": "Verifies if the device temperature is within the acceptable range."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies if the device temperature is within the acceptable range."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyEnvironmentCooling",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies if the fans status are within the accepted states list."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyEnvironmentCooling",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies if the fans status are within the accepted states list."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies if the power supplies status are within the accepted states list."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies if the power supplies status are within the accepted states list."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyTransceiversTemperature",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies that all transceivers are operating within the acceptable temperature range."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyEnvironmentSystemCooling",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the system cooling status."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyTransceiversManufacturers",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyTransceiversManufacturers",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers."
+    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
   },
   {
     "name": "dc1-leaf1c",
@@ -179,192 +252,131 @@
   },
   {
     "name": "dc1-leaf1c",
-    "test": "VerifyInterfacesStatus",
+    "test": "VerifyEnvironmentCooling",
     "categories": [
-      "Interface State"
+      "hardware"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet1 - DC1-LEAF1A_Ethernet8"
+    "description": "Verifies the status of power supply fans and all fan trays."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the status of power supply fans and all fan trays.",
+    "custom_field": "Accepted States: 'ok'"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status.",
+    "custom_field": "Accepted States: 'ok'"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyEnvironmentSystemCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the system cooling status."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers.",
+    "custom_field": "Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present'"
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyTransceiversTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceivers temperature."
   },
   {
     "name": "dc1-leaf1c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet2 - DC1-LEAF1B_Ethernet8"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet1 - DC1-LEAF1A_Ethernet8 = 'up'"
   },
   {
     "name": "dc1-leaf1c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Ethernet Interface & Line Protocol == 'up'",
-    "custom_field": "Ethernet5 - dc1-leaf1-server1_iLO"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet2 - DC1-LEAF1B_Ethernet8 = 'up'"
   },
   {
     "name": "dc1-leaf1c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Port-Channel Interface & Line Protocol == 'up'",
-    "custom_field": "Port-Channel1 - DC1_L3_LEAF1_Po8"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet5 - dc1-leaf1-server1_iLO = 'up'"
   },
   {
     "name": "dc1-leaf1c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interface State"
+      "interfaces"
     ],
-    "description": "Vlan Interface & Line Protocol == 'up'",
-    "custom_field": "Vlan4085 - L2LEAF_INBAND_MGMT"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Port-Channel1 - DC1_L3_LEAF1_Po8 = 'up'"
   },
   {
     "name": "dc1-leaf1c",
-    "test": "VerifyLLDPNeighbors",
+    "test": "VerifyInterfacesStatus",
     "categories": [
-      "LLDP Topology"
+      "interfaces"
     ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet1 - remote: dc1-leaf1a_Ethernet8"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyLLDPNeighbors",
-    "categories": [
-      "LLDP Topology"
-    ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet2 - remote: dc1-leaf1b_Ethernet8"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.1"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.2"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.3"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.4"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.0.5"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.11"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.12"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.13"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.14"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.15"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.16"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.17"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReachability",
-    "categories": [
-      "Loopback0 Reachability"
-    ],
-    "description": "Inband Mgmt Reachability",
-    "custom_field": "Source: dc1-leaf1c - Vlan4085 Destination: 10.255.128.18"
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyNTP",
-    "categories": [
-      "NTP"
-    ],
-    "description": "Synchronised with NTP server",
-    "custom_field": "NTP"
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vlan4085 - L2LEAF_INBAND_MGMT = 'up'"
   },
   {
     "name": "dc1-leaf1c",
@@ -372,7 +384,8 @@
     "categories": [
       "security"
     ],
-    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid."
+    "description": "Verifies if the eAPI has a valid SSL profile.",
+    "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
   },
   {
     "name": "dc1-leaf1c",
@@ -416,19 +429,11 @@
   },
   {
     "name": "dc1-leaf1c",
-    "test": "VerifyNTP",
+    "test": "VerifyAgentLogs",
     "categories": [
       "system"
     ],
-    "description": "This test verifies if NTP is synchronised."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyUptime",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies if the device uptime is higher than the provided minimum uptime value."
+    "description": "Verifies there are no agent crash reports."
   },
   {
     "name": "dc1-leaf1c",
@@ -436,31 +441,7 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies if there are core dump files in the /var/core directory."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyAgentLogs",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies that no agent crash reports are present on the device."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyFileSystemUtilization",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies that no partition is utilizing more than 75% of its disk space."
-  },
-  {
-    "name": "dc1-leaf1c",
-    "test": "VerifyReloadCause",
-    "categories": [
-      "system"
-    ],
-    "description": "This test verifies the last reload cause of the device."
+    "description": "Verifies there are no core dump files."
   },
   {
     "name": "dc1-leaf1c",
@@ -468,7 +449,15 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies whether the CPU utilization is below 75%."
+    "description": "Verifies whether the CPU utilization is below 75%."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
   },
   {
     "name": "dc1-leaf1c",
@@ -476,6 +465,38 @@
     "categories": [
       "system"
     ],
-    "description": "This test verifies whether the memory utilization is below 75%."
+    "description": "Verifies whether the memory utilization is below 75%."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-leaf1c",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the device uptime."
   }
 ]

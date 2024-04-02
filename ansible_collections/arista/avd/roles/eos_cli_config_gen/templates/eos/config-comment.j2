@@ -1,0 +1,13 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - config comment #}
+{% if config_comment is arista.avd.defined %}
+!
+{%     set multiline_comment = config_comment.split('\n') %}
+{%     for comment in multiline_comment %}
+!{{ comment }}
+{%     endfor %}
+{% endif %}

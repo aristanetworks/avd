@@ -88,6 +88,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
                 port_channel_interface["ptp"] = ptp_config
 
+            # Inband ZTP Port-Channel LACP Fallback
+            if get(link, "inband_ztp_vlan"):
+                port_channel_interface["lacp_fallback_mode"] = "individual"
+                port_channel_interface["lacp_fallback_timeout"] = get(link, "inband_ztp_lacp_fallback_delay")
+
             # Structured Config
             port_channel_interface["struct_cfg"] = link.get("structured_config")
 

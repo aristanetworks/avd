@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ file-changes ]
     if: needs.file-changes.outputs.docs == 'true'
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
       - name: 'Start docker-compose stack'
@@ -113,7 +113,21 @@ jobs:
           bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)" != "200" ]]; do sleep 5; done'
       - name: Check links for 404
         run: |
-          docker run --network container:webdoc_avd raviqqe/muffet:2.9.3 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -e "www.docker.com" -e "hub.docker.com" -f --max-redirections=3 --timeout=30 --rate-limit=1 --buffer-size 8192
+          docker run --network container:webdoc_avd raviqqe/muffet:2.10.1 http://127.0.0.1:8000/ -f \
+            --buffer-size 8192 \
+            --exclude ".*fonts.googleapis.com.*" \
+            --exclude ".*fonts.gstatic.com.*" \
+            --exclude ".*tools.ietf.org.*" \
+            --exclude ".*edit.*" \
+            --exclude ".*docs.github.com.*" \
+            --exclude "twitter.com" \
+            --exclude "www.docker.com" \
+            --exclude "hub.docker.com" \
+            --exclude "tech-library.arista.com" \
+            --max-connections-per-host 30 \
+            --max-redirections 3 \
+            --rate-limit 1 \
+            --timeout 30
       - name: 'Stop docker-compose stack'
         run: |
           docker-compose -f development/docker-compose.yml down

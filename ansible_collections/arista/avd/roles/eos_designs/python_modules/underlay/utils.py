@@ -90,6 +90,10 @@ class UtilsMixin:
                         "spanning_tree_portfast": get(uplink, "peer_spanning_tree_portfast"),
                         "structured_config": get(uplink, "structured_config"),
                     }
+                    if get(peer_facts, "inband_ztp"):
+                        link["inband_ztp_vlan"] = get(peer_facts, "inband_mgmt_vlan")
+                        link["inband_ztp_lacp_fallback_delay"] = get(peer_facts, "inband_ztp_lacp_fallback_delay")
+
                     if (subinterfaces := get(uplink, "subinterfaces")) is not None:
                         link["subinterfaces"] = [
                             {
@@ -181,6 +185,8 @@ class UtilsMixin:
             "description": interface_description,
             "speed": l3_interface.get("speed"),
             "service_profile": l3_interface.get("qos_profile"),
+            "access_group_in": get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_in.name"),
+            "access_group_out": get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_out.name"),
             "eos_cli": l3_interface.get("raw_eos_cli"),
             "struct_cfg": l3_interface.get("structured_config"),
         }
@@ -188,11 +194,21 @@ class UtilsMixin:
         if iface_type == "l3dot1q":
             interface["encapsulation_dot1q_vlan"] = encapsulation
 
-        if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", False):
+        if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", True):
             interface["dhcp_client_accept_default_route"] = True
 
-        if self.shared_utils.is_cv_pathfinder_router:
-            interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+        # TODO: enable flow tracking once toggle is in place
+        # if self.shared_utils.is_cv_pathfinder_router:
+        #    interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
+        if self.shared_utils.is_wan_router and (wan_carrier_name := l3_interface.get("wan_carrier")) is not None and interface["access_group_in"] is None:
+            if not get(get_item(self.shared_utils.wan_carriers, "name", wan_carrier_name, default={}), "trusted"):
+                raise AristaAvdError(
+                    (
+                        "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
+                        f"under 'wan_carriers'. 'ipv4_acl_in' is missing on interface '{interface_name}'."
+                    )
+                )
 
         return strip_empties_from_dict(interface)
 
@@ -274,4 +290,50 @@ class UtilsMixin:
         # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
         self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
 
+        # TODO: enable flow tracking once toggle is in place
+        # Configuring flow tracking on LAN interfaces of WAN routers
+        # if self.shared_utils.is_cv_pathfinder_client:
+        #    subinterface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
         return strip_empties_from_dict(subinterface)
+
+    @cached_property
+    def _l3_interface_acls(self) -> dict[str, dict[str, dict]]:
+        """
+        Returns a dict of
+            <interface_name>: {
+                "ipv4_acl_in": <generated_ipv4_acl>,
+                "ipv4_acl_out": <generated_ipv4_acl>,
+            }
+        Only contains interfaces with ACLs and only the ACLs that are set,
+        so use `get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_in")` to get the value.
+        """
+        l3_interface_acls = {}
+        for l3_interface in self.shared_utils.l3_interfaces:
+            ipv4_acl_in = get(l3_interface, "ipv4_acl_in")
+            ipv4_acl_out = get(l3_interface, "ipv4_acl_out")
+            if ipv4_acl_in is None and ipv4_acl_out is None:
+                continue
+
+            interface_name = l3_interface["name"]
+            interface_ip: str | None = l3_interface.get("dhcp_ip") if (ip_address := l3_interface.get("ip_address")) == "dhcp" else ip_address
+            if interface_ip is not None and "/" in interface_ip:
+                interface_ip = interface_ip.split("/", maxsplit=1)[0]
+            peer_ip: str | None = get(l3_interface, "peer_ip")
+
+            if ipv4_acl_in is not None:
+                l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
+                    name=ipv4_acl_in,
+                    interface_name=interface_name,
+                    interface_ip=interface_ip,
+                    peer_ip=peer_ip,
+                )
+            if ipv4_acl_out is not None:
+                l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
+                    name=ipv4_acl_out,
+                    interface_name=interface_name,
+                    interface_ip=interface_ip,
+                    peer_ip=peer_ip,
+                )
+
+        return l3_interface_acls

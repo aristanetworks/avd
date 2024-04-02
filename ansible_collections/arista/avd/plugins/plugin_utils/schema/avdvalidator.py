@@ -5,7 +5,7 @@ from collections import ChainMap
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all, get_all_with_path, get_indices_of_duplicate_items
 
 try:
     import jsonschema
@@ -19,11 +19,42 @@ else:
     JSONSCHEMA_IMPORT_ERROR = None
 
 
+def _unique_keys_validator(validator, unique_keys: list[str], instance: list, schema: dict):
+    if not validator.is_type(unique_keys, "list"):
+        return
+
+    if not validator.is_type(instance, "list") or not instance:
+        return
+
+    if not all(validator.is_type(element, "dict") for element in instance):
+        return
+
+    for unique_key in unique_keys:
+        if not (paths_and_values := tuple(get_all_with_path(instance, unique_key))):
+            # No values matching the unique key, check the next unique_key
+            continue
+
+        # Separate all paths and values
+        paths, values = zip(*paths_and_values)
+
+        key = unique_key.split(".")[-1]
+        is_nested_key = unique_key != key
+
+        # Find any duplicate values and emit errors for each index.
+        for duplicate_value, duplicate_indices in get_indices_of_duplicate_items(values):
+            for duplicate_index in duplicate_indices:
+                yield jsonschema.ValidationError(
+                    f"The value '{duplicate_value}' is not unique between all {'nested ' if is_nested_key else ''}list items as required.",
+                    path=[*paths[duplicate_index], key],
+                    schema_path=["items"],
+                )
+
+
 def _primary_key_validator(validator, primary_key: str, instance: list, schema: dict):
     if not validator.is_type(primary_key, "str"):
         return
 
-    if not validator.is_type(instance, "list"):
+    if not validator.is_type(instance, "list") or not instance:
         return
 
     if not all(validator.is_type(element, "dict") for element in instance):
@@ -32,8 +63,9 @@ def _primary_key_validator(validator, primary_key: str, instance: list, schema: 
     if not all(element.get(primary_key) is not None for element in instance):
         yield jsonschema.ValidationError(f"Primary key '{primary_key}' is not set on all items as required.")
 
-    if len(set(element.get(primary_key) for element in instance)) < len(instance):
-        yield jsonschema.ValidationError(f"Values of Primary key '{primary_key}' are not unique as required.")
+    if not schema.get("allow_duplicate_primary_key"):
+        # Reusing the unique keys validator
+        yield from _unique_keys_validator(validator, [primary_key], instance, schema)
 
 
 def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
@@ -140,6 +172,7 @@ class AvdValidator:
                 "pattern": jsonschema._validators.pattern,
                 "items": jsonschema._validators.items,
                 "primary_key": _primary_key_validator,
+                "unique_keys": _unique_keys_validator,
                 "keys": _keys_validator,
                 "dynamic_keys": _dynamic_keys_validator,
             },

@@ -7,9 +7,9 @@
 type: dict
 keys:
   wan_path_groups:
-    description: |-
-      PREVIEW: This key is currently not supported
-      List of path-groups used for the WAN configuration.
+    documentation_options:
+      table: wan-path-groups-and-carriers
+    description: List of path-groups used for the WAN configuration.
     type: list
     primary_key: name
     items:
@@ -24,22 +24,27 @@ keys:
             - str
           description: |-
             Path-group id.
-
-            TODO: Required until an auto ID algorithm is implemented.
+            Required until an auto ID algorithm is implemented.
           required: true
         description:
           type: str
           description: Additional information about the path-group for documentation purposes.
         ipsec:
-          type: bool
+          type: dict
           description: |-
-            Flag to configure IPsec at the path-group level.
-
-            When set to `true`, IPsec is enabled for both the static and dynamic peers.
-          default: true
+            Configuration of IPSec at the path-group level.
+          keys:
+            dynamic_peers:
+              type: bool
+              description: Enable IPSec for dynamic peers.
+              default: true
+            static_peers:
+              type: bool
+              description: Enable IPSec for static peers.
+              default: true
         import_path_groups:
           type: list
-          description: List of [ath-groups to import in this path-group.
+          description: List of path-groups to import in this path-group.
           items:
             type: dict
             keys:
@@ -49,6 +54,24 @@ keys:
               local:
                 type: str
                 description: Optional, if not set, the path-group `name` is used as local.
+        default_preference:
+          type: str
+          convert_types:
+            - int
+          description: |-
+            Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when
+            the path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.
+
+            Valid values are 1-65535 | "preferred" | "alternate".
+
+            `preferred` is converted to priority 1.
+            `alternate` is converted to priority 2.
+          default: "preferred"
+        excluded_from_default_policy:
+          type: bool
+          default: false
+          description: |-
+            When set to `true`, the path-group is excluded from AVD auto generated policies.
         dps_keepalive:
           type: dict
           description: |-
