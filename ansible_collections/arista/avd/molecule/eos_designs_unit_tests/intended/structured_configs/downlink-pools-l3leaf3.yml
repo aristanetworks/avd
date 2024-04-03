@@ -1,8 +1,8 @@
-hostname: downlink-ipv4-pool-l3leaf4
+hostname: downlink-pools-l3leaf3
 is_deployed: true
 router_bgp:
-  as: '65039'
-  router_id: 192.168.1.40
+  as: '65029'
+  router_id: 192.168.1.30
   bgp:
     default:
       ipv4_unicast: false
@@ -33,35 +33,35 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   neighbors:
-  - ip_address: 10.0.1.6
+  - ip_address: 10.0.1.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: downlink-ipv4-pool-spine1
-    description: downlink-ipv4-pool-spine1_Ethernet6
-  - ip_address: 10.0.4.2
+    peer: downlink-pools-spine1
+    description: downlink-pools-spine1_Ethernet5
+  - ip_address: 10.0.4.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: downlink-ipv4-pool-spine2
-    description: downlink-ipv4-pool-spine2_Ethernet6
-  - ip_address: 10.0.3.18
+    peer: downlink-pools-spine2
+    description: downlink-pools-spine2_Ethernet5
+  - ip_address: 10.0.3.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: downlink-ipv4-pool-spine1
-    description: downlink-ipv4-pool-spine1_Ethernet16
-  - ip_address: 10.0.4.6
+    peer: downlink-pools-spine1
+    description: downlink-pools-spine1_Ethernet15
+  - ip_address: 10.0.4.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: downlink-ipv4-pool-spine2
-    description: downlink-ipv4-pool-spine2_Ethernet16
+    peer: downlink-pools-spine2
+    description: downlink-pools-spine2_Ethernet15
   - ip_address: 192.168.0.10
     peer_group: EVPN-OVERLAY-PEERS
-    peer: downlink-ipv4-pool-spine1
-    description: downlink-ipv4-pool-spine1
+    peer: downlink-pools-spine1
+    description: downlink-pools-spine1
     remote_as: '65000'
   - ip_address: 192.168.0.20
     peer_group: EVPN-OVERLAY-PEERS
-    peer: downlink-ipv4-pool-spine2
-    description: downlink-ipv4-pool-spine2
+    peer: downlink-pools-spine2
+    description: downlink-pools-spine2
     remote_as: '65000'
   address_family_evpn:
     peer_groups:
@@ -83,50 +83,50 @@ management_api_http:
   enable_https: true
 ethernet_interfaces:
 - name: Ethernet1
-  peer: downlink-ipv4-pool-spine1
-  peer_interface: Ethernet6
+  peer: downlink-pools-spine1
+  peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DOWNLINK-IPV4-POOL-SPINE1_Ethernet6
+  description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE1_Ethernet5
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 10.0.1.7/31
+  ip_address: 10.0.1.5/31
 - name: Ethernet2
-  peer: downlink-ipv4-pool-spine2
-  peer_interface: Ethernet6
+  peer: downlink-pools-spine2
+  peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DOWNLINK-IPV4-POOL-SPINE2_Ethernet6
+  description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE2_Ethernet5
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 10.0.4.3/31
+  ip_address: 10.0.4.1/31
 - name: Ethernet3
-  peer: downlink-ipv4-pool-spine1
-  peer_interface: Ethernet16
+  peer: downlink-pools-spine1
+  peer_interface: Ethernet15
   peer_type: spine
-  description: P2P_LINK_TO_DOWNLINK-IPV4-POOL-SPINE1_Ethernet16
+  description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE1_Ethernet15
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 10.0.3.19/31
+  ip_address: 10.0.3.1/31
 - name: Ethernet4
-  peer: downlink-ipv4-pool-spine2
-  peer_interface: Ethernet16
+  peer: downlink-pools-spine2
+  peer_interface: Ethernet15
   peer_type: spine
-  description: P2P_LINK_TO_DOWNLINK-IPV4-POOL-SPINE2_Ethernet16
+  description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE2_Ethernet15
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 10.0.4.7/31
+  ip_address: 10.0.4.5/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
   shutdown: false
-  ip_address: 192.168.1.40/32
+  ip_address: 192.168.1.30/32
 - name: Loopback1
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
-  ip_address: 192.168.2.40/32
+  ip_address: 192.168.2.30/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -150,7 +150,7 @@ ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
   Vxlan1:
-    description: downlink-ipv4-pool-l3leaf4_VTEP
+    description: downlink-pools-l3leaf3_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
