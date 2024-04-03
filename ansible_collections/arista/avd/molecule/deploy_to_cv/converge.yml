@@ -368,7 +368,7 @@
       vars:
         ws_name_dotted: avd-static-studio-test-dotted-{{ r }}
       ansible.builtin.uri:
-        url: '{{ configlet_url + "?key.workspaceId=" + ws_name + "&key.configlet_id=" + item }}'
+        url: '{{ configlet_url + "?key.workspaceId=" + ws_name_dotted + "&key.configlet_id=" + item }}'
         return_content: true
         validate_certs: false
         headers:
@@ -388,11 +388,11 @@
       loop: "{{ dotted_result.results | zip(configs) | list }}"
 
     # XXX: fix me!
-    # - name: Check configlets
-    #   ansible.builtin.assert:
-    #     that:
-    #       - item.key  == lookup('file', item.value)
-    #   loop: "{{ dotted_response_configlet | dict2items }}"
+    - name: Check configlets
+      ansible.builtin.assert:
+        that:
+          - item.key  == lookup('file', item.value)
+      loop: "{{ dotted_response_configlet | dict2items }}"
 
     - name: Reset Dotted hostname
       run_once: true
