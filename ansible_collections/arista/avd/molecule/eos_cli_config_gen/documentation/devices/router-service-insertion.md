@@ -5,10 +5,9 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
-- [Connections](#connections)
-  - [Connections Through Ethernet Interface](#connections-through-ethernet-interface)
-  - [Connections Through Tunnel Interface](#connections-through-tunnel-interface)
-- [Router Service-Insertion Configuration](#router-service-insertion-configuration)
+- [Router Service Insertion](#router-service-insertion)
+  - [Connections](#connections)
+  - [Router Service Insertion Configuration](#router-service-insertion-configuration)
 
 ## Management
 
@@ -40,19 +39,22 @@ interface Management1
 
 ## Routing
 
+## Router Service Insertion
+
 Router service-insertion is enabled.
 
-## Connections
+### Connections
 
-### Connections Through Ethernet Interface
+#### Connections Through Ethernet Interface
 
 | Name | Interface | Next Hop | Monitor Connectivity Host |
 | ---- | --------- | -------- | ------------------------- |
+| aconnection | Ethernet4/1 | 10.10.10.10 | host4 |
 | connection1 | Ethernet2/2.2 | 10.10.10.10 | host1 |
-| connection6 | Ethernet2/2.2 | 10.10.10.10 | - |
+| connection6 | Ethernet2 | 10.10.10.10 | - |
 | connection7 | Ethernet3/1 | 10.10.10.10 | host4 |
 
-### Connections Through Tunnel Interface
+#### Connections Through Tunnel Interface
 
 | Name | Primary Interface | Secondary Interface | Monitor Connectivity Host |
 | ---- | ----------------- | ------------------- | ------------------------- |
@@ -61,11 +63,14 @@ Router service-insertion is enabled.
 | connection4 | Tunnel4 | - | - |
 | connection5 | Tunnel5 | Tunnel6 | - |
 
-## Router Service-Insertion Configuration
+### Router Service Insertion Configuration
 
 ```eos
 !
 router service-insertion
+   connection aconnection
+      interface Ethernet4/1 next-hop 10.10.10.10
+      monitor connectivity host host4
    connection connection1
       interface Ethernet2/2.2 next-hop 10.10.10.10
       monitor connectivity host host1
@@ -82,7 +87,7 @@ router service-insertion
       interface Tunnel5 primary
       interface Tunnel6 secondary
    connection connection6
-      interface Ethernet2/2.2 next-hop 10.10.10.10
+      interface Ethernet2 next-hop 10.10.10.10
    connection connection7
       interface Ethernet3/1 next-hop 10.10.10.10
       monitor connectivity host host4
