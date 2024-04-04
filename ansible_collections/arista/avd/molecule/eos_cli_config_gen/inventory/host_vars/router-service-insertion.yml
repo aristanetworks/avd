@@ -43,4 +43,3 @@ router_service_insertion:
         primary: Tunnel11
         secondary: Tunnel12
       monitor_connectivity_host: host4
-
