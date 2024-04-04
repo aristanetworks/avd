@@ -215,7 +215,7 @@ node_type_keys:
     uplink_type: port-channel
 
   - key: custom_l2leaf
-    type: customl_2leaf
+    type: custom_l2leaf
     connected_endpoints: true
     mlag_support: true
     network_services:
