@@ -7,7 +7,7 @@
 {% if router_service_insertion.enabled is arista.avd.defined(true) %}
 !
 router service-insertion
-{%     for connection in router_service_insertion.connections | arista.avd.natural_sort('name') | arista.avd.default([]) %}
+{%     for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
    connection {{ connection.name }}
 {%         if connection.ethernet_interface is arista.avd.defined %}
 {%             if connection.ethernet_interface.name is arista.avd.defined and connection.ethernet_interface.next_hop is arista.avd.defined %}
