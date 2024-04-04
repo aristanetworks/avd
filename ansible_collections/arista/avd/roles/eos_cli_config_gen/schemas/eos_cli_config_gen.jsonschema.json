@@ -21811,6 +21811,11 @@
             "^_.+$": {}
           },
           "title": "Graceful Restart"
+        },
+        "eos_cli": {
+          "type": "string",
+          "description": "Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.",
+          "title": "EOS CLI"
         }
       },
       "required": [
