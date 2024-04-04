@@ -11,6 +11,8 @@ interface_defaults:
 vrfs:
 - name: MGMT
   ip_routing: false
+management_security:
+  entropy_source: hardware
 management_api_http:
   enable_vrfs:
   - name: MGMT

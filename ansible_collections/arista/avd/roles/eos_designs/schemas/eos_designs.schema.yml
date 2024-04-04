@@ -2609,6 +2609,8 @@ keys:
           type: str
           description: EOS CLI rendered directly on the root level of the final EOS
             configuration.
+        security_entropy_source:
+          type: str
     default:
     - platforms:
       - default

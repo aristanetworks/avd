@@ -44329,6 +44329,10 @@
             "type": "string",
             "description": "EOS CLI rendered directly on the root level of the final EOS configuration.",
             "title": "Raw EOS CLI"
+          },
+          "security_entropy_source": {
+            "type": "string",
+            "title": "Security Entropy Source"
           }
         },
         "additionalProperties": false,
