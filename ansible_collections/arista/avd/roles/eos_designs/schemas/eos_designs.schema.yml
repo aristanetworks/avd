@@ -7,7 +7,6 @@ allow_other_keys: true
 keys:
   application_classification:
     type: dict
-    description: 'PREVIEW: WAN Preview'
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
   avd_data_conversion_mode:
     documentation_options:
@@ -344,9 +343,6 @@ keys:
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
       wan_overlay_peers:
         type: dict
-        documentation_options:
-          table: wan-bgp-peer-groups
-        description: 'PREVIEW: This key is currently not supported'
         keys:
           name:
             type: str
@@ -387,6 +383,11 @@ keys:
             items:
               type: str
               description: The prefixes to use in listen_range.
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+            - str
+            default: 1
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
@@ -394,20 +395,10 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
-          ttl_maximum_hops:
-            type: int
-            convert_types:
-            - str
-            default: 1
       wan_rr_overlay_peers:
         type: dict
-        documentation_options:
-          table: wan-bgp-peer-groups
-        description: 'PREVIEW: This key is currently not supported
-
-          Configuration options for the peer-group created to peer between
-
-          AutoVPN RRs or CV-Pathfinders.'
+        description: Configuration options for the peer-group created to peer between
+          AutoVPN RRs or CV Pathfinders.
         keys:
           name:
             type: str
@@ -438,6 +429,11 @@ keys:
               multiplier:
                 type: int
                 default: 10
+          ttl_maximum_hops:
+            type: int
+            convert_types:
+            - str
+            default: 1
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
@@ -445,11 +441,6 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
-          ttl_maximum_hops:
-            type: int
-            convert_types:
-            - str
-            default: 1
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
@@ -605,15 +596,16 @@ keys:
   cv_pathfinder_regions:
     documentation_options:
       table: wan-cv-pathfinder-regions
-    description: 'PREVIEW: This key is currently not supported
-
-      Define the SDWAN hierarchy for the device.'
+    description: Define the CV Pathfinder hierarchy.
     type: list
     primary_key: name
     items:
       type: dict
       $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/region
       keys:
+        name:
+          type: str
+          description: The region name.
         description:
           type: str
         id:
@@ -628,17 +620,20 @@ keys:
             type: dict
             $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site
             keys:
+              name:
+                type: str
+                description: The site name.
               description:
                 type: str
               id:
                 type: int
-                description: 'The Site ID must be unique within a zone.
+                description: 'The site ID must be unique within a zone.
 
-                  Given that all the Sites are placed in a Zone named after the Region,
-                  the Site ID must be unique within a Region.'
+                  Given that all the sites are placed in a zone named after the region,
+                  the site ID must be unique within a region.'
               location:
                 type: str
-                description: Will be interpreted
+                description: Location as a sring is resolved on Cloudvision.
               site_contact:
                 type: str
               site_after_hours_contact:
@@ -1559,12 +1554,9 @@ keys:
   l3_interface_profiles:
     type: list
     documentation_options:
-      table: wan-interfaces-settings
-    description: 'PREVIEW: This key is currently not supported
-
-
-      Profiles to inherit common settings for l3_interfaces defined under the node
-      type key.
+      table: node-type-l3-interfaces-configuration
+    description: 'Profiles to inherit common settings for l3_interfaces defined under
+      the node type key.
 
       These profiles will *not* work for `l3_interfaces` defined under `vrfs`.'
     primary_key: profile
@@ -1881,15 +1873,11 @@ keys:
 
             '
         default_wan_role:
-          documentation_options:
-            table: node-type-key-wan-configuration
           type: str
           valid_values:
           - client
           - server
-          description: 'PREVIEW: This key is currently not supported
-
-            Set the default WAN role.
+          description: 'Set the default WAN role.
 
 
             This is used both for AutoVPN and Pathfinder designs.
@@ -3709,10 +3697,10 @@ keys:
     type: bool
     default: false
   wan_carriers:
-    description: 'PREVIEW: This key is currently not supported
-
-
-      List of carriers used for the WAN configuration and their mapping to path-groups.'
+    documentation_options:
+      table: wan-path-groups-and-carriers
+    description: List of carriers used for the WAN configuration and their mapping
+      to path-groups.
     type: list
     primary_key: name
     items:
@@ -3736,23 +3724,10 @@ keys:
 
             WAN interfaces require an inbound access-list to be set unless the carrier
             is "trusted".'
-  wan_edge:
-    documentation_options:
-      table: wan-settings
-    type: dict
-    description: 'The `wan_edge` node type was introduced and removed while the AVD
-      WAN feature was in PREVIEW MODE.
-
-      Migrate your existing edge nodes to using `wan_router` node_type.'
-    deprecation:
-      warning: true
-      new_key: wan_router
-      removed: true
-      remove_in_version: 4.6.0-dev1
   wan_ha:
     documentation_options:
       table: wan-settings
-    description: 'PREVIEW: This key is currently not supported'
+    description: 'PREVIEW: The `wan_ha` key is currently not supported'
     type: dict
     keys:
       lan_ha_path_group_name:
@@ -3765,10 +3740,7 @@ keys:
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
-    description: 'PREVIEW: This key is currently not supported
-
-
-      Define IPsec profiles parameters for WAN configuration.'
+    description: Define IPsec profiles parameters for WAN configuration.
     type: dict
     keys:
       control_plane:
@@ -3810,19 +3782,16 @@ keys:
   wan_mode:
     documentation_options:
       table: wan-settings
-    description: 'PREVIEW: This key is currently not supported
-
-
-      Select if the WAN should be run using CV Pathfinder or Auto VPN only.'
+    description: Select if the WAN should be run using CV Pathfinder or AutoVPN only.
     type: str
     default: cv-pathfinder
     valid_values:
     - autovpn
     - cv-pathfinder
   wan_path_groups:
-    description: 'PREVIEW: This key is currently not supported
-
-      List of path-groups used for the WAN configuration.'
+    documentation_options:
+      table: wan-path-groups-and-carriers
+    description: List of path-groups used for the WAN configuration.
     type: list
     primary_key: name
     items:
@@ -3837,8 +3806,7 @@ keys:
           - str
           description: 'Path-group id.
 
-
-            TODO: Required until an auto ID algorithm is implemented.'
+            Required until an auto ID algorithm is implemented.'
           required: true
         description:
           type: str
@@ -3918,14 +3886,12 @@ keys:
               convert_types:
               - str
   wan_route_servers:
-    documentation_options:
-      table: wan-settings
-    description: 'PREVIEW: This key is currently not supported
-
-
-      List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders
+    description: 'List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the
+      Pathfinders
 
       when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
+
+      This is also used to establish iBGP sessions between WAN route servers.
 
 
       When the route server is part of the same inventory as the WAN routers,
@@ -3983,12 +3949,10 @@ keys:
     documentation_options:
       table: wan-settings
     default: false
-    description: 'PREVIEW: This key is currently not supported
+    description: 'WAN STUN connections are authenticated and secured with DTLS by
+      default.
 
-
-      WAN STUN connections will be authenticated and secured with DTLS by default.
-
-      For CV-Pathfinder deployments CloudVision will automatically deploy certificates
+      For CV Pathfinder deployments CloudVision will automatically deploy certificates
       on the devices.
 
       In case of AutoVPN the certificates must be deployed manually to all devices.
@@ -4003,46 +3967,20 @@ keys:
     documentation_options:
       table: wan-settings
     default: STUN-DTLS
-    description: 'PREVIEW: This key is currently not supported
-
-
-      Name of the SSL profile used for DTLS on WAN STUN connections.
-
+    description: 'Name of the SSL profile used for DTLS on WAN STUN connections.
 
       When using automatic ceritficate deployment via CloudVision this name must be
       the same on all WAN routers.'
-  wan_transit:
-    documentation_options:
-      table: wan-settings
-    type: dict
-    description: 'The `wan_transit` node type was introduced and removed while the
-      AVD WAN feature was in PREVIEW MODE.
-
-      Migrate your existing transit nodes to using `wan_router` node_type and set
-
-      `cv_pathfinder_transit_mode: region` under node settings.'
-    deprecation:
-      warning: true
-      new_key: 'node_type `wan_router` and set `cv_pathfinder_transit_mode: region`
-        under node settings'
-      removed: true
-      remove_in_version: 4.6.0-dev1
   wan_virtual_topologies:
     type: dict
-    description: 'PREVIEW: WAN Preview
-
-
-      Configure Virtual Topologies for CV Pathfinder and AutoVPN.
-
+    description: 'Configure Virtual Topologies for CV Pathfinder and AutoVPN.
 
       Auto create a control plane profile/policy/application and enforce it being
       first in the default VRF.'
     keys:
       vrfs:
         type: list
-        description: 'Map a VRF that exists in network_services to an AVT policy.
-
-          TODO: missing default VRF behavior'
+        description: Map a VRF that exists in network_services to an AVT policy.
         primary_key: name
         items:
           type: dict
@@ -4055,6 +3993,11 @@ keys:
             policy:
               type: str
               description: 'Name of the policy to apply to this VRF.
+
+                AVD will auto generate a default policy DEFAULT-POLICY and apply it
+                to the VRF(s)
+
+                where the `policy` key is not set.
 
                 It is possible to overwrite the default policy for all VRFs using
                 it
@@ -4124,17 +4067,18 @@ keys:
           for the `default_virtual_topology`.\n  * if the policy is associated with
           the default VRF, a special control-plane rule is injected\n    in the policy
           with index `1` referring to a control-plane load-balance policy as defined
-          under\n    `control_plane_virtual_topology`.\n\nFor CV Pathfinder, each
-          item in the list creates:\n  * one policy with:\n      * one `match` entry
-          per `application_virtual_topologies` item ordered as in the model.\n      *
-          one last match entry for the `default` application-profile using `default_virtual_topology`
-          information.\n  * one profile per `application_virtual_topologies` item.\n
-          \ * one profile for the `default_virtual_topology`..\n  * one load-balance
+          under\n    `control_plane_virtual_topology` or if not set, the default one.\n\nFor
+          CV Pathfinder, each item in the list creates:\n  * one policy with:\n      *
+          one `match` entry per `application_virtual_topologies` item ordered as in
+          the data.\n      * one last match entry for the `default` application-profile
+          using `default_virtual_topology` information.\n  * one profile per `application_virtual_topologies`
+          item.\n  * one profile for the `default_virtual_topology`.\n  * one load-balance
           policy per `application_virtual_topologies`.\n  * one load_balance policy
           for the `default_virtual_topology`.\n  * if the policy is associated with
           the default VRF, a special control-plane profile is configured\n    and
           injected first in the policy assigned to the `default` VRF. This profile
-          points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`."
+          points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`
+          or if not set, the default one."
         primary_key: name
         items:
           type: dict
@@ -4153,7 +4097,7 @@ keys:
                   application_profile:
                     type: str
                     description: The application profile to use for this virtual topology.
-                      It must be a defined `application_profile`.
+                      It must be a defined `application_classification.application_profile`.
                   name:
                     type: str
                     description: Optional name, if not set `<policy_name>-<application_profile>`
@@ -4945,7 +4889,6 @@ $defs:
                   description: Used for documentation purposes.
   ipsec_profile:
     type: dict
-    description: 'PREVIEW: This key is currently not supported'
     keys:
       ike_policy_name:
         type: str
@@ -5166,7 +5109,8 @@ $defs:
             Source-Specific Multicast range.\n- Enables `redistribute igmp` on the
             router bgp MAC VRF.\n- When evpn_l2_multicast.enabled is true for a VLAN
             or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always
-            be enabled - overriding those individual settings.\n"
+            be enabled - overriding those individual settings.\n- Requires `evpn_multicast`
+            to also be set to `true`.\n"
           type: dict
           keys:
             enabled:
@@ -5196,7 +5140,8 @@ $defs:
             enables \"pim ipv4 sparse-mode\" on the SVI.\n     - If switch is standalone
             or A-A MH, enables \"ip igmp\" on the SVI.\n     - If \"ip address virtual\"
             is configured, enables \"pim ipv4 local-interface\" and uses the diagnostic
-            Loopback defined in the VRF\n"
+            Loopback defined in the VRF\n- Requires `evpn_multicast` to also be set
+            to `true`.\n"
           type: dict
           keys:
             enabled:
@@ -8051,9 +7996,7 @@ $defs:
               table: node-type-wan-configuration
             type: str
             $ref: eos_designs#/keys/node_type_keys/items/keys/default_wan_role
-            description: 'PREVIEW: This key is currently not supported
-
-              Override the default WAN role.
+            description: 'Override the default WAN role.
 
 
               This is used both for AutoVPN and Pathfinder designs.
@@ -8071,9 +8014,8 @@ $defs:
             valid_values:
             - region
             - zone
-            description: 'PREVIEW: This key is currently not supported
-
-              Configure the transit mode for a WAN client for CV Pathfinder designs
+            description: 'Configure the transit mode for a WAN client for CV Pathfinder
+              designs
 
               only when the `wan_mode` root key is set to `cv_pathfinder`.
 
@@ -8083,10 +8025,7 @@ $defs:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            description: 'PREVIEW: This key is currently not supported
-
-
-              The CV Pathfinder region name.
+            description: 'The CV Pathfinder region name.
 
               This key is required for WAN routers but optional for pathfinders.
 
@@ -8095,10 +8034,7 @@ $defs:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            description: 'PREVIEW: This key is currently not supported
-
-
-              The CV Pathfinder site name.
+            description: 'The CV Pathfinder site name.
 
               This key is required for WAN routers but ignored for pathfinders.
 
@@ -8132,20 +8068,17 @@ $defs:
               table: node-type-wan-configuration
             type: str
             $ref: eos_cli_config_gen#/keys/router_path_selection/keys/tcp_mss_ceiling/keys/ipv4_segment_size
-            description: 'PREVIEW: This key is currently not supported
-
-
-              IPv4 MSS value configured under "router path-selection" on WAN Devices.'
+            description: IPv4 MSS value configured under "router path-selection" on
+              WAN Devices.
             default: auto
           l3_interfaces:
             type: list
             $ref: eos_designs#/$defs/node_type_l3_interfaces
             documentation_options:
-              table: wan-interfaces-settings
-            description: 'PREVIEW: This key is currently not supported
+              table: node-type-l3-interfaces-configuration
+            description: 'L3 Interfaces to configure on the node.
 
-
-              L3 Interfaces currently only use for WAN interfaces.'
+              Used to define the node for WAN interfaces when `wan_carrier` is set.'
             items:
               type: dict
               keys:

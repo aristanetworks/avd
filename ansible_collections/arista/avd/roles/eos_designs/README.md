@@ -66,7 +66,8 @@ The following reference design types are included in the roles default variables
 
 - L3LS EVPN: Layer 3 Leaf Spine with VXLAN EVPN
 - L2LS: Layer 2 Leaf Spine
-- MPLS (BETA): MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
+- MPLS: MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
+- WAN: WAN AutoVPN and CV Pathfinder
 
 ### Layer 3 Leaf Spine with VXLAN EVPN
 
@@ -130,6 +131,19 @@ Across all designs, the following functionality is provided:
 
 <div style="text-align:center">
   <img src="../../media/mpls-topology.svg" />
+</div>
+
+### WAN AutoVPN / CV Pathfinder
+
+| LAN Uplinks | WAN Overlay | Topology |
+| ----------- | ----------- | -------- |
+| L3 eBGP with p2p-vrfs | iBGP | Arbitrary Mesh or leaf-spine |
+| L2 | iBGP | Arbitrary Mesh or leaf-spine |
+
+**WAN topology example:**
+
+<div style="text-align:center">
+  <img src="../../media/wan-topology.svg" />
 </div>
 
 ## Requirements

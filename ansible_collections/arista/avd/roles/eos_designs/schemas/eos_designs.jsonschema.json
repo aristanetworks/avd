@@ -3,7 +3,7 @@
   "properties": {
     "application_classification": {
       "type": "object",
-      "description": "PREVIEW: WAN Preview",
+      "description": "Application traffic recognition configuration.",
       "properties": {
         "categories": {
           "type": "array",
@@ -2917,7 +2917,6 @@
         },
         "wan_overlay_peers": {
           "type": "object",
-          "description": "PREVIEW: This key is currently not supported",
           "properties": {
             "name": {
               "type": "string",
@@ -2983,6 +2982,11 @@
               },
               "title": "Listen Range Prefixes"
             },
+            "ttl_maximum_hops": {
+              "type": "integer",
+              "default": 1,
+              "title": "TTL Maximum Hops"
+            },
             "structured_config": {
               "type": "object",
               "description": "Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.",
@@ -3302,11 +3306,6 @@
                 "^_.+$": {}
               },
               "title": "Structured Config"
-            },
-            "ttl_maximum_hops": {
-              "type": "integer",
-              "default": 1,
-              "title": "TTL Maximum Hops"
             }
           },
           "additionalProperties": false,
@@ -3317,7 +3316,7 @@
         },
         "wan_rr_overlay_peers": {
           "type": "object",
-          "description": "PREVIEW: This key is currently not supported\nConfiguration options for the peer-group created to peer between\nAutoVPN RRs or CV-Pathfinders.",
+          "description": "Configuration options for the peer-group created to peer between AutoVPN RRs or CV Pathfinders.",
           "properties": {
             "name": {
               "type": "string",
@@ -3374,6 +3373,11 @@
               },
               "title": "BFD Timers"
             },
+            "ttl_maximum_hops": {
+              "type": "integer",
+              "default": 1,
+              "title": "TTL Maximum Hops"
+            },
             "structured_config": {
               "type": "object",
               "description": "Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.",
@@ -3693,11 +3697,6 @@
                 "^_.+$": {}
               },
               "title": "Structured Config"
-            },
-            "ttl_maximum_hops": {
-              "type": "integer",
-              "default": 1,
-              "title": "TTL Maximum Hops"
             }
           },
           "additionalProperties": false,
@@ -4382,11 +4381,16 @@
       "title": "Custom Structured Configuration Prefix"
     },
     "cv_pathfinder_regions": {
-      "description": "PREVIEW: This key is currently not supported\nDefine the SDWAN hierarchy for the device.",
+      "description": "Define the CV Pathfinder hierarchy.",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "The region name.",
+            "title": "Name"
+          },
           "description": {
             "type": "string",
             "title": "Description"
@@ -4404,20 +4408,25 @@
             "items": {
               "type": "object",
               "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The site name.",
+                  "title": "Name"
+                },
                 "description": {
                   "type": "string",
                   "title": "Description"
                 },
                 "id": {
                   "type": "integer",
-                  "description": "The Site ID must be unique within a zone.\nGiven that all the Sites are placed in a Zone named after the Region, the Site ID must be unique within a Region.",
+                  "description": "The site ID must be unique within a zone.\nGiven that all the sites are placed in a zone named after the region, the site ID must be unique within a region.",
                   "minimum": 1,
                   "maximum": 10000,
                   "title": "ID"
                 },
                 "location": {
                   "type": "string",
-                  "description": "Will be interpreted",
+                  "description": "Location as a sring is resolved on Cloudvision.",
                   "title": "Location"
                 },
                 "site_contact": {
@@ -4427,15 +4436,11 @@
                 "site_after_hours_contact": {
                   "type": "string",
                   "title": "Site After Hours Contact"
-                },
-                "name": {
-                  "type": "string",
-                  "title": "Name"
                 }
               },
               "required": [
-                "id",
-                "name"
+                "name",
+                "id"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -4444,15 +4449,11 @@
               "description": "Site name and ID."
             },
             "title": "Sites"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
           }
         },
         "required": [
-          "id",
-          "name"
+          "name",
+          "id"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -6210,7 +6211,7 @@
     },
     "l3_interface_profiles": {
       "type": "array",
-      "description": "PREVIEW: This key is currently not supported\n\nProfiles to inherit common settings for l3_interfaces defined under the node type key.\nThese profiles will *not* work for `l3_interfaces` defined under `vrfs`.",
+      "description": "Profiles to inherit common settings for l3_interfaces defined under the node type key.\nThese profiles will *not* work for `l3_interfaces` defined under `vrfs`.",
       "items": {
         "type": "object",
         "properties": {
@@ -14709,7 +14710,7 @@
               "client",
               "server"
             ],
-            "description": "PREVIEW: This key is currently not supported\nSet the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
+            "description": "Set the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
             "title": "Default Wan Role"
           },
           "mlag_support": {
@@ -25574,7 +25575,7 @@
       "title": "Vtep Vvtep IP"
     },
     "wan_carriers": {
-      "description": "PREVIEW: This key is currently not supported\n\nList of carriers used for the WAN configuration and their mapping to path-groups.",
+      "description": "List of carriers used for the WAN configuration and their mapping to path-groups.",
       "type": "array",
       "items": {
         "type": "object",
@@ -25613,7 +25614,7 @@
       "title": "Wan Carriers"
     },
     "wan_ha": {
-      "description": "PREVIEW: This key is currently not supported",
+      "description": "PREVIEW: The `wan_ha` key is currently not supported",
       "type": "object",
       "properties": {
         "lan_ha_path_group_name": {
@@ -25630,7 +25631,7 @@
       "title": "Wan Ha"
     },
     "wan_ipsec_profiles": {
-      "description": "PREVIEW: This key is currently not supported\n\nDefine IPsec profiles parameters for WAN configuration.",
+      "description": "Define IPsec profiles parameters for WAN configuration.",
       "type": "object",
       "properties": {
         "control_plane": {
@@ -25667,7 +25668,6 @@
           "patternProperties": {
             "^_.+$": {}
           },
-          "description": "PREVIEW: This key is currently not supported",
           "title": "Control Plane"
         },
         "data_plane": {
@@ -25718,7 +25718,7 @@
       "title": "Wan Ipsec Profiles"
     },
     "wan_mode": {
-      "description": "PREVIEW: This key is currently not supported\n\nSelect if the WAN should be run using CV Pathfinder or Auto VPN only.",
+      "description": "Select if the WAN should be run using CV Pathfinder or AutoVPN only.",
       "type": "string",
       "default": "cv-pathfinder",
       "enum": [
@@ -25728,7 +25728,7 @@
       "title": "Wan Mode"
     },
     "wan_path_groups": {
-      "description": "PREVIEW: This key is currently not supported\nList of path-groups used for the WAN configuration.",
+      "description": "List of path-groups used for the WAN configuration.",
       "type": "array",
       "items": {
         "type": "object",
@@ -25740,7 +25740,7 @@
           },
           "id": {
             "type": "integer",
-            "description": "Path-group id.\n\nTODO: Required until an auto ID algorithm is implemented.",
+            "description": "Path-group id.\nRequired until an auto ID algorithm is implemented.",
             "title": "ID"
           },
           "description": {
@@ -25844,7 +25844,7 @@
       "title": "Wan Path Groups"
     },
     "wan_route_servers": {
-      "description": "PREVIEW: This key is currently not supported\n\nList of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders\nwhen using `wan_mode`=`cv-pathfinder`, to which the device should connect to.\n\nWhen the route server is part of the same inventory as the WAN routers,\nonly the name is required.",
+      "description": "List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders\nwhen using `wan_mode`=`cv-pathfinder`, to which the device should connect to.\nThis is also used to establish iBGP sessions between WAN route servers.\n\nWhen the route server is part of the same inventory as the WAN routers,\nonly the name is required.",
       "type": "array",
       "items": {
         "type": "object",
@@ -25923,22 +25923,22 @@
     "wan_stun_dtls_disable": {
       "type": "boolean",
       "default": false,
-      "description": "PREVIEW: This key is currently not supported\n\nWAN STUN connections will be authenticated and secured with DTLS by default.\nFor CV-Pathfinder deployments CloudVision will automatically deploy certificates on the devices.\nIn case of AutoVPN the certificates must be deployed manually to all devices.\n\nFor LAB environments this can be disabled, if there are no certificates available.\nThis should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication.",
+      "description": "WAN STUN connections are authenticated and secured with DTLS by default.\nFor CV Pathfinder deployments CloudVision will automatically deploy certificates on the devices.\nIn case of AutoVPN the certificates must be deployed manually to all devices.\n\nFor LAB environments this can be disabled, if there are no certificates available.\nThis should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication.",
       "title": "Wan STUN Dtls Disable"
     },
     "wan_stun_dtls_profile_name": {
       "type": "string",
       "default": "STUN-DTLS",
-      "description": "PREVIEW: This key is currently not supported\n\nName of the SSL profile used for DTLS on WAN STUN connections.\n\nWhen using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers.",
+      "description": "Name of the SSL profile used for DTLS on WAN STUN connections.\nWhen using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers.",
       "title": "Wan STUN Dtls Profile Name"
     },
     "wan_virtual_topologies": {
       "type": "object",
-      "description": "PREVIEW: WAN Preview\n\nConfigure Virtual Topologies for CV Pathfinder and AutoVPN.\n\nAuto create a control plane profile/policy/application and enforce it being first in the default VRF.",
+      "description": "Configure Virtual Topologies for CV Pathfinder and AutoVPN.\nAuto create a control plane profile/policy/application and enforce it being first in the default VRF.",
       "properties": {
         "vrfs": {
           "type": "array",
-          "description": "Map a VRF that exists in network_services to an AVT policy.\nTODO: missing default VRF behavior",
+          "description": "Map a VRF that exists in network_services to an AVT policy.",
           "items": {
             "type": "object",
             "properties": {
@@ -25949,7 +25949,7 @@
               },
               "policy": {
                 "type": "string",
-                "description": "Name of the policy to apply to this VRF.\nIt is possible to overwrite the default policy for all VRFs using it\nby redefining it in the `wan_virtual_topologies.policies` list using the\ndefault name `DEFAULT-POLICY`.",
+                "description": "Name of the policy to apply to this VRF.\nAVD will auto generate a default policy DEFAULT-POLICY and apply it to the VRF(s)\nwhere the `policy` key is not set.\nIt is possible to overwrite the default policy for all VRFs using it\nby redefining it in the `wan_virtual_topologies.policies` list using the\ndefault name `DEFAULT-POLICY`.",
                 "default": "DEFAULT-POLICY",
                 "title": "Policy"
               },
@@ -26077,7 +26077,7 @@
         },
         "policies": {
           "type": "array",
-          "description": "List of virtual toplogies policies.\n\nFor AutoVPN, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item\n        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane rule is injected\n    in the policy with index `1` referring to a control-plane load-balance policy as defined under\n    `control_plane_virtual_topology`.\n\nFor CV Pathfinder, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item ordered as in the model.\n      * one last match entry for the `default` application-profile using `default_virtual_topology` information.\n  * one profile per `application_virtual_topologies` item.\n  * one profile for the `default_virtual_topology`..\n  * one load-balance policy per `application_virtual_topologies`.\n  * one load_balance policy for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane profile is configured\n    and injected first in the policy assigned to the `default` VRF. This profile points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`.",
+          "description": "List of virtual toplogies policies.\n\nFor AutoVPN, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item\n        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane rule is injected\n    in the policy with index `1` referring to a control-plane load-balance policy as defined under\n    `control_plane_virtual_topology` or if not set, the default one.\n\nFor CV Pathfinder, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item ordered as in the data.\n      * one last match entry for the `default` application-profile using `default_virtual_topology` information.\n  * one profile per `application_virtual_topologies` item.\n  * one profile for the `default_virtual_topology`.\n  * one load-balance policy per `application_virtual_topologies`.\n  * one load_balance policy for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane profile is configured\n    and injected first in the policy assigned to the `default` VRF. This profile points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology` or if not set, the default one.",
           "items": {
             "type": "object",
             "properties": {
@@ -26094,7 +26094,7 @@
                   "properties": {
                     "application_profile": {
                       "type": "string",
-                      "description": "The application profile to use for this virtual topology. It must be a defined `application_profile`.",
+                      "description": "The application profile to use for this virtual topology. It must be a defined `application_classification.application_profile`.",
                       "title": "Application Profile"
                     },
                     "name": {

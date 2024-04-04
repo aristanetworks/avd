@@ -9,7 +9,7 @@ version_added: "4.0.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Generate AVD EOS Designs structured configuration
 description: |-
-  The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
+  The `arista.avd.eos_designs_structured_config` module is an Ansible Action Plugin providing the following capabilities:
 
   - Validates input variables according to eos_designs schema
   - Generates structured configuration
