@@ -11,7 +11,7 @@
 Router service-insertion is enabled.
 {%     if router_service_insertion.connections is arista.avd.defined %}
 
-## Connections
+### Connections
 {%         set ethernet_connections = [] %}
 {%         set tunnel_connections = [] %}
 {%         for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
