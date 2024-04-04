@@ -79,7 +79,7 @@ router_bgp:
     peer: dc2-leaf2a
     description: dc2-leaf2a
     remote_as: '65202'
-  - ip_address: 172.100.100.1
+  - ip_address: 172.16.100.1
     remote_as: '65202'
     peer: dc2-leaf2a
     description: dc2-leaf2a
@@ -438,7 +438,7 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
-  ip_address: 172.100.100.0/31
+  ip_address: 172.16.100.0/31
 - name: Ethernet5
   peer: dc1-leaf2-server1
   peer_interface: PCI1

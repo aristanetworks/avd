@@ -253,7 +253,7 @@ In this section, only additions to the previous example will be discussed. The o
     --8<--
 ```
 
-1. Define a new IP Pool named "DCI_IP_pool" using the prefix "172.100.100.0/24" to assign IP addresses.
+1. Define a new IP Pool named "DCI_IP_pool" using the prefix "172.16.100.0/24" to assign IP addresses.
 2. Define a new link profile called "DCI_profile" using the previously created IP pool. The ASN will be "65102" for left devices and "65202" for right devices. The interfaces will be included in the underlay routing protocol.
 3. Define a new link, with the left and right node hostname defined in AVD, along with the interface and finally assign a profile containing all required information to configure the link.
 
