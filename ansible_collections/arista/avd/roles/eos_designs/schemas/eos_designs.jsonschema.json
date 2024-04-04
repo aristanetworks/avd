@@ -15668,6 +15668,11 @@
             "type": "string",
             "description": "EOS CLI rendered directly on the root level of the final EOS configuration.",
             "title": "Raw EOS CLI"
+          },
+          "structured_config": {
+            "type": "object",
+            "description": "Custom structured config for eos_cli_config_gen.",
+            "title": "Structured Config"
           }
         },
         "additionalProperties": false,

@@ -11,6 +11,11 @@ interface_defaults:
 vrfs:
 - name: MGMT
   ip_routing: false
+platform:
+  sand:
+    lag:
+      hardware_only: true
+      mode: 512x32
 management_api_http:
   enable_vrfs:
   - name: MGMT

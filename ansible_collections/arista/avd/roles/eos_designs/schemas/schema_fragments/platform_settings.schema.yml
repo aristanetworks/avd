@@ -90,6 +90,9 @@ keys:
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the root level of the final EOS configuration.
+        structured_config:
+          type: dict
+          description: Custom structured config for eos_cli_config_gen.
     default:
       - platforms:
           - default

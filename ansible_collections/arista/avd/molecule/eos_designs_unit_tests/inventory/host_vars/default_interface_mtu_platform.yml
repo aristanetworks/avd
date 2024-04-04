@@ -9,3 +9,8 @@ default_interface_mtu: 8765 # This will not be used since platform settings take
 platform_settings:
   - platforms: [ default ]
     default_interface_mtu: 1234
+    structured_config:
+      sand:
+        lag:
+          hardware_only: true
+          mode: "512x32"
