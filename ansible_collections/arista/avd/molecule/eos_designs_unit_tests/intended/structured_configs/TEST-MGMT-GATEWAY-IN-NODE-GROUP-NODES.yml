@@ -1,9 +1,9 @@
-hostname: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B
+hostname: TEST-MGMT-GATEWAY-IN-NODE-GROUP-NODES
 is_deployed: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
+  gateway: 1.1.1.3
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending
@@ -24,8 +24,8 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.201.201/24
-  gateway: 192.168.200.5
+  ip_address: 192.168.201.202/24
+  gateway: 1.1.1.3
   type: oob
 management_api_http:
   enable_vrfs:
@@ -41,12 +41,12 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.255.252.1/31
+  ip_address: 10.255.252.4/31
   no_autostate: true
   mtu: 9214
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_PEER_UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A_Po3
+  description: MLAG_PEER_TEST-MGMT-GATEWAY-IN-NODE-GROUP1_Po3
   type: switched
   shutdown: false
   mode: trunk
@@ -59,7 +59,7 @@ port_channel_interfaces:
       level: '25'
   native_vlan_tag: true
 - name: Port-Channel1
-  description: DC1_LEAF1_Po5
+  description: DC1_LEAF1_Po4
   type: switched
   shutdown: false
   mode: trunk
@@ -73,20 +73,20 @@ port_channel_interfaces:
   native_vlan_tag: true
 ethernet_interfaces:
 - name: Ethernet3
-  peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A
+  peer: TEST-MGMT-GATEWAY-IN-NODE-GROUP1
   peer_interface: Ethernet3
   peer_type: mlag_peer
-  description: MLAG_PEER_UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A_Ethernet3
+  description: MLAG_PEER_TEST-MGMT-GATEWAY-IN-NODE-GROUP1_Ethernet3
   type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
     mode: active
 - name: Ethernet4
-  peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A
+  peer: TEST-MGMT-GATEWAY-IN-NODE-GROUP1
   peer_interface: Ethernet4
   peer_type: mlag_peer
-  description: MLAG_PEER_UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A_Ethernet4
+  description: MLAG_PEER_TEST-MGMT-GATEWAY-IN-NODE-GROUP1_Ethernet4
   type: port-channel-member
   shutdown: false
   channel_group:
@@ -94,9 +94,9 @@ ethernet_interfaces:
     mode: active
 - name: Ethernet1
   peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
-  peer_interface: Ethernet6
+  peer_interface: Ethernet4
   peer_type: l3leaf
-  description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet6
+  description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet4
   shutdown: false
   type: port-channel-member
   channel_group:
@@ -104,18 +104,18 @@ ethernet_interfaces:
     mode: active
 - name: Ethernet2
   peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
-  peer_interface: Ethernet6
+  peer_interface: Ethernet4
   peer_type: l3leaf
-  description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet6
+  description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet4
   shutdown: false
   type: port-channel-member
   channel_group:
     id: 1
     mode: active
 mlag_configuration:
-  domain_id: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1
+  domain_id: TEST-MGMT-GATEWAY-IN-NODE-GROUP
   local_interface: Vlan4094
-  peer_address: 10.255.252.0
+  peer_address: 10.255.252.5
   peer_link: Port-Channel3
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'

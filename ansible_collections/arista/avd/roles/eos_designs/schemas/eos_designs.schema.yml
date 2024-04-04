@@ -6559,6 +6559,10 @@ $defs:
             description: Node management interface IPv4 address.
             type: str
             format: cidr
+          mgmt_gateway:
+            type: str
+            description: This `mgmt_gateway` defined under node_group/node takes precedence
+              over the globally defined `mgmt_gateway`.
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
@@ -8119,9 +8123,6 @@ $defs:
               $ref: eos_designs#/$defs/node_type/keys/nodes
               description: Define variables per node.
               type: list
-            mgmt_gateway:
-              type: str
-              description: Management interface gateway in IPv4 format.
       nodes:
         description: Define variables per node.
         type: list
