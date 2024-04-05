@@ -2839,6 +2839,63 @@ keys:
             session_tracker:
               type: str
               description: Name of session tracker
+        ip_igmp_host_proxy:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            groups:
+              type: list
+              primary_key: group
+              items:
+                type: dict
+                keys:
+                  group:
+                    type: str
+                    description: Multicast Address.
+                  exclude:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+                  include:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+            report_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 31744
+              description: Time interval between unsolicited reports.
+            access_lists:
+              type: list
+              primary_key: name
+              description: Non-standard Access List name.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+            version:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 3
+              description: IGMP version on IGMP host-proxy interface.
         peer:
           type: str
           description: Key only used for documentation or validation purposes
@@ -8038,6 +8095,63 @@ keys:
             session_tracker:
               type: str
               description: Name of session tracker
+        ip_igmp_host_proxy:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            groups:
+              type: list
+              primary_key: group
+              items:
+                type: dict
+                keys:
+                  group:
+                    type: str
+                    description: Multicast Address.
+                  exclude:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+                  include:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+            report_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 31744
+              description: Time interval between unsolicited reports.
+            access_lists:
+              type: list
+              primary_key: name
+              description: Non-standard Access List name.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+            version:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 3
+              description: IGMP version on IGMP host-proxy interface.
         peer:
           type: str
           description: Key only used for documentation or validation purposes
@@ -12112,6 +12226,10 @@ keys:
               - str
               min: 1
               max: 3600
+      eos_cli:
+        type: str
+        description: Multiline EOS CLI rendered directly on the Router BGP in the
+          final EOS configuration.
   router_general:
     type: dict
     display_name: Router General configuration
@@ -15116,6 +15234,63 @@ keys:
           - str
           min: 1
           max: 3
+        ip_igmp_host_proxy:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            groups:
+              type: list
+              primary_key: group
+              items:
+                type: dict
+                keys:
+                  group:
+                    type: str
+                    description: Multicast Address.
+                  exclude:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+                  include:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+            report_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 31744
+              description: Time interval between unsolicited reports.
+            access_lists:
+              type: list
+              primary_key: name
+              description: Non-standard Access List name.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+            version:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 3
+              description: IGMP version on IGMP host-proxy interface.
         ip_helpers:
           type: list
           description: List of DHCP servers

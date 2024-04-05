@@ -89,7 +89,7 @@ The drawing below shows the physical topology used in this example. The interfac
 | rr1                                                 | 172.16.1.151                |
 | rr2                                                 | 172.16.1.152                |
 | **Point-to-point links between network nodes**      | **(Underlay)**              |
-| WAN1                                                | 100.64.48.0/24              |
+| WAN1                                                | 10.255.3.0/24              |
 | **Loopback0 interfaces for router ID (p)**          | 10.255.0.0/27               |
 | **Loopback0 interfaces for overlay peering (pe)**   | 10.255.1.0/27               |
 | **Loopback0 interfaces for overlay peering (rr)**   | 10.255.2.0/27               |
@@ -430,7 +430,7 @@ A free-standing list of `core_interfaces` dictionaries and their associated prof
 core_interfaces:
   p2p_links_ip_pools:
     - name: core_pool # (1)!
-      ipv4_pool: 100.64.48.0/24
+      ipv4_pool: 10.255.3.0/24
 
   p2p_links_profiles:
     - name: core_profile # (2)!
