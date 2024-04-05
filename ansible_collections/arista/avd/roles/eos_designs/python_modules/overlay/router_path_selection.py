@@ -134,7 +134,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 ],
             }
         )
-        if get(self.shared_utils.switch_data_combined, "wan_ha.ipsec", default=True):
+        if self.shared_utils.wan_ha_ipsec:
             ha_path_group["ipsec_profile"] = self._dp_ipsec_profile_name
 
         return ha_path_group
@@ -206,9 +206,9 @@ class RouterPathSelectionMixin(UtilsMixin):
                 ipv4_addresses = []
 
                 for interface_dict in get(path_group, "interfaces", required=True):
-                    if (ip_address := interface_dict.get("ip_address")) is not None:
+                    if (public_ip := interface_dict.get("public_ip")) is not None:
                         # TODO - removing mask using split but maybe a helper is clearer
-                        ipv4_addresses.append(ip_address.split("/")[0])
+                        ipv4_addresses.append(public_ip.split("/")[0])
                 static_peers.append(
                     {
                         "router_ip": get(wan_route_server, "vtep_ip", required=True),

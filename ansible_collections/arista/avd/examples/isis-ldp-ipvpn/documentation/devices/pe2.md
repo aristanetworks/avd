@@ -181,8 +181,8 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_p2_Ethernet1 | routed | - | 100.64.48.4/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_p1_Ethernet2 | routed | - | 100.64.48.6/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_p2_Ethernet1 | routed | - | 10.255.3.4/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_p1_Ethernet2 | routed | - | 10.255.3.6/31 | default | 1500 | False | - | - |
 | Ethernet4.10 | C1_L3_SERVICE | l3dot1q | - | 10.0.1.2/29 | C1_VRF1 | - | False | - | - |
 | Ethernet4.20 | C2_L3_SERVICE | l3dot1q | - | 10.1.1.2/29 | C2_VRF1 | - | False | - | - |
 
@@ -202,7 +202,7 @@ interface Ethernet1
    no shutdown
    mtu 1500
    no switchport
-   ip address 100.64.48.4/31
+   ip address 10.255.3.4/31
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -219,7 +219,7 @@ interface Ethernet2
    no shutdown
    mtu 1500
    no switchport
-   ip address 100.64.48.6/31
+   ip address 10.255.3.6/31
    mpls ldp igp sync
    mpls ldp interface
    mpls ip

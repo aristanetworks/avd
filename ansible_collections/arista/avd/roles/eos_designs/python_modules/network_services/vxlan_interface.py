@@ -87,6 +87,28 @@ class VxlanInterfaceMixin(UtilsMixin):
                         context_keys=["id", "vni"],
                     )
 
+        if self.shared_utils.is_wan_server:
+            # loop through wan_vrfs and add VRF VNI if not present
+            for vrf in self._filtered_wan_vrfs:
+                # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
+                # This is necessary to find duplicate VNIs across multiple object types.
+                vrf_data = {"name": vrf["name"], "vni": vrf["wan_vni"]}
+                append_if_not_duplicate(
+                    list_of_dicts=vnis,
+                    primary_key="vni",
+                    new_dict=vrf_data,
+                    context="VXLAN VNIs for VRFs",
+                    context_keys=["id", "name", "vni"],
+                )
+                # Here we append to the actual list of VRFs, so duplication check is on the VRF here.
+                append_if_not_duplicate(
+                    list_of_dicts=vrfs,
+                    primary_key="name",
+                    new_dict=vrf_data,
+                    context="VXLAN VNIs for VRFs",
+                    context_keys=["name", "vni"],
+                )
+
         if vlans:
             vxlan["vlans"] = vlans
 
@@ -205,7 +227,9 @@ class VxlanInterfaceMixin(UtilsMixin):
             mac_vrf_vni_base = int(get(tenant, "mac_vrf_vni_base", required=True, org_key=f"'mac_vrf_vni_base' for Tenant: {tenant['name']}"))
             vxlan_interface_vlan["vni"] = mac_vrf_vni_base + vlan_id
 
-        vlan_evpn_l2_multicast_enabled = default(get(vlan, "evpn_l2_multicast.enabled"), get(tenant, "evpn_l2_multicast.enabled"))
+        vlan_evpn_l2_multicast_enabled = (
+            default(get(vlan, "evpn_l2_multicast.enabled"), get(tenant, "evpn_l2_multicast.enabled")) and self.shared_utils.evpn_multicast is True
+        )
         if vlan_evpn_l2_multicast_enabled is True:
             underlay_l2_multicast_group_ipv4_pool = get(
                 tenant,

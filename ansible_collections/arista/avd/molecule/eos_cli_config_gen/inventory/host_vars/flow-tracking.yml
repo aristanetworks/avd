@@ -112,3 +112,8 @@ port_channel_interfaces:
     flow_tracker:
       sampled: T3
       hardware: T3
+
+dps_interfaces:
+  - name: Dps1
+    flow_tracker:
+      hardware: T3
