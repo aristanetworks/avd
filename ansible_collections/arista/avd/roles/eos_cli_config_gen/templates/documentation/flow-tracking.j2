@@ -7,7 +7,6 @@
 {% if flow_tracking is arista.avd.defined or flow_trackings is arista.avd.defined %}
 
 ### Flow Tracking
-{# flow_trackings only support sampled flow #}
 {%     if flow_tracking.sampled is arista.avd.defined or flow_trackings is arista.avd.defined %}
 
 #### Flow Tracking Sampled
@@ -123,9 +122,9 @@
 {%         if flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters is arista.avd.defined(true) %}
 
 Software export of IPFIX data records enabled.
-
 {%         endif %}
 {%         if flow_tracking.hardware.trackers is arista.avd.defined %}
+
 ##### Trackers Summary
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
