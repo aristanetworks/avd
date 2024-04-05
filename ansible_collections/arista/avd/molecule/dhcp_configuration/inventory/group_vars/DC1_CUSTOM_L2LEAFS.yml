@@ -1,6 +1,6 @@
 type: custom_l2leaf
 
-# Custom node types with old syntax
+# Custom node types with AVD 3.8 syntax
 node_type_keys:
 
   spine:
