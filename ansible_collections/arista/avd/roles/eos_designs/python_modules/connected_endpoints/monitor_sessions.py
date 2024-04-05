@@ -99,7 +99,6 @@ class MonitorSessionsMixin(UtilsMixin):
             if "monitor_sessions" not in network_port:
                 continue
 
-
             for ethernet_interface_name in range_expand(network_port["switch_ports"]):
                 # Monitor session on Port-channel interface
                 if get(network_port, "port_channel.mode") is not None:
