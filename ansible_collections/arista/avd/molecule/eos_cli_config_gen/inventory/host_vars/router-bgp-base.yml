@@ -98,7 +98,7 @@ router_bgp:
         prefix_list_in: PL-FOO-v4-IN
         prefix_list_out: PL-FOO-v4-OUT
       - ip_address: 10.2.3.8
-        rcf_out: Address-Family_IPV4_In
+        rcf_in: Address-Family_IPV4_In
       - ip_address: 10.2.3.9
         rcf_out: Address-Family_IPV4_Out
     redistribute_routes:

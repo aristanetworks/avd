@@ -961,10 +961,10 @@ keys:
                   description: Outbound route-map name.
                 rcf_in:
                   type: str
-                  description: Inbound rcf function name without parentheses
+                  description: Inbound rcf function name without parentheses.
                 rcf_out:
                   type: str
-                  description: Outbound rcf function name without parentheses
+                  description: Outbound rcf function name without parentheses.
                 domain_remote:
                   type: bool
                 encapsulation:
