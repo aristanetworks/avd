@@ -195,7 +195,6 @@ interface Ethernet8
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 
-
 #### Loopback Interfaces Device Configuration
 
 ```eos

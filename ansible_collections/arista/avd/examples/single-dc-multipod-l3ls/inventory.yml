@@ -10,12 +10,12 @@ all:
         ansible_httpapi_validate_certs: False
         ansible_network_os: eos
         ansible_httpapi_port: 443
-      hosts: 
-        cvp1: 
+      hosts:
+        cvp1:
           ansible_host: 192.168.0.5
-        cvp2: 
+        cvp2:
           ansible_host: 192.168.0.6
-        cvp3: 
+        cvp3:
           ansible_host: 192.168.0.7
 
     FABRIC:
@@ -37,7 +37,7 @@ all:
         SUPERSPINES:
           vars:
             type: super-spine
-          hosts:  
+          hosts:
             superspine1:
               ansible_host: 192.168.0.25
             superspine2:
@@ -53,7 +53,7 @@ all:
                 spine2:
                   ansible_host: 192.168.0.12
             POD1_LEAFS:
-              vars: 
+              vars:
                 type: l3leaf
               hosts:
                 leaf1:
