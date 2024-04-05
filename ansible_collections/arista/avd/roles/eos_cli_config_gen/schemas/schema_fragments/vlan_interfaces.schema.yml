@@ -106,6 +106,7 @@ keys:
                   exclude:
                     type: list
                     primary_key: source
+                    description: The same source must not be present both in `exclude` and `include` list.
                     items:
                       type: dict
                       keys:
@@ -114,6 +115,7 @@ keys:
                   include:
                     type: list
                     primary_key: source
+                    description: The same source must not be present both in `exclude` and `include` list.
                     items:
                       type: dict
                       keys:

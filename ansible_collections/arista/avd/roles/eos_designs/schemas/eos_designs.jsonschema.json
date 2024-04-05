@@ -8528,6 +8528,7 @@
                         },
                         "exclude": {
                           "type": "array",
+                          "description": "The same source must not be present both in `exclude` and `include` list.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -8548,6 +8549,7 @@
                         },
                         "include": {
                           "type": "array",
+                          "description": "The same source must not be present both in `exclude` and `include` list.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -11880,6 +11882,7 @@
                             },
                             "exclude": {
                               "type": "array",
+                              "description": "The same source must not be present both in `exclude` and `include` list.",
                               "items": {
                                 "type": "object",
                                 "properties": {
@@ -11900,6 +11903,7 @@
                             },
                             "include": {
                               "type": "array",
+                              "description": "The same source must not be present both in `exclude` and `include` list.",
                               "items": {
                                 "type": "object",
                                 "properties": {
@@ -14236,6 +14240,7 @@
                         },
                         "exclude": {
                           "type": "array",
+                          "description": "The same source must not be present both in `exclude` and `include` list.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -14256,6 +14261,7 @@
                         },
                         "include": {
                           "type": "array",
+                          "description": "The same source must not be present both in `exclude` and `include` list.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -18409,6 +18415,7 @@
                             },
                             "exclude": {
                               "type": "array",
+                              "description": "The same source must not be present both in `exclude` and `include` list.",
                               "items": {
                                 "type": "object",
                                 "properties": {
@@ -18429,6 +18436,7 @@
                             },
                             "include": {
                               "type": "array",
+                              "description": "The same source must not be present both in `exclude` and `include` list.",
                               "items": {
                                 "type": "object",
                                 "properties": {
@@ -20765,6 +20773,7 @@
                         },
                         "exclude": {
                           "type": "array",
+                          "description": "The same source must not be present both in `exclude` and `include` list.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -20785,6 +20794,7 @@
                         },
                         "include": {
                           "type": "array",
+                          "description": "The same source must not be present both in `exclude` and `include` list.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -23004,6 +23014,7 @@
                               },
                               "exclude": {
                                 "type": "array",
+                                "description": "The same source must not be present both in `exclude` and `include` list.",
                                 "items": {
                                   "type": "object",
                                   "properties": {
@@ -23024,6 +23035,7 @@
                               },
                               "include": {
                                 "type": "array",
+                                "description": "The same source must not be present both in `exclude` and `include` list.",
                                 "items": {
                                   "type": "object",
                                   "properties": {
@@ -24850,6 +24862,7 @@
                         },
                         "exclude": {
                           "type": "array",
+                          "description": "The same source must not be present both in `exclude` and `include` list.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -24870,6 +24883,7 @@
                         },
                         "include": {
                           "type": "array",
+                          "description": "The same source must not be present both in `exclude` and `include` list.",
                           "items": {
                             "type": "object",
                             "properties": {
