@@ -1,6 +1,9 @@
 ---
 # Testing cv-pathfinder
 wan_mode: cv-pathfinder
+# Have all the router in the examples use eBGP as underlay routing protocol -
+# the default is "none" for WAN routers"
+underlay_routing_protocol: ebgp
 
 cv_pathfinder_regions:
   - name: AVD_Land_West
@@ -94,7 +97,7 @@ wan_router:
               wan_circuit_id: AF830
               ip_address: 172.20.20.20/31
               connected_to_pathfinder: false
-        - name: cv-pathfinder-edge-no-common-path-group
+        - name: cv-pathfinder-edge1
           id: 2
           uplink_switch_interfaces: [Ethernet2]
           l3_interfaces:
@@ -109,6 +112,11 @@ wan_router:
               dhcp_accept_default_route: true
               ip_address: dhcp
               connected_to_pathfinder: false
+            - name: Ethernet3
+              wan_carrier: ATT
+              wan_circuit_id: 404
+              dhcp_accept_default_route: true
+              ip_address: dhcp
     # SITE_HA_ENABLED
     - group: Site423
       cv_pathfinder_region: AVD_Land_West
@@ -116,6 +124,8 @@ wan_router:
       uplink_type: p2p-vrfs
       uplink_switches: [ site-ha-enabled-leaf2A, site-ha-enabled-leaf2B ]
       uplink_interfaces: [ Ethernet52, Ethernet53 ]
+      wan_ha:
+        enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
       nodes:
         - name: cv-pathfinder-edge2A
           id: 2
@@ -148,6 +158,7 @@ wan_router:
       cv_pathfinder_transit_mode: region
       # Disable HA IPsec
       wan_ha:
+        enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
         ipsec: false
       nodes:
         - name: cv-pathfinder-transit1A
@@ -216,6 +227,7 @@ wan_rr:
           static_routes:
             - prefix: 0.0.0.0/0
           ip_address: 10.7.7.7/31
+          public_ip: 172.17.7.7
           peer_ip: 10.7.7.6
         - name: Ethernet2
           wan_carrier: Colt
@@ -235,6 +247,7 @@ wan_rr:
           ip_address: 10.8.8.8/31
     - name: cv-pathfinder-pathfinder2
       id: 3
+      cv_pathfinder_region: AVD_Land_East
       data_plane_cpu_allocation_max: 3
       l3_interfaces:
         - name: Ethernet1
@@ -245,6 +258,10 @@ wan_rr:
           wan_carrier: ATT-MPLS
           wan_circuit_id: 10999
           ip_address: 172.19.9.9/31
+          # public IP here will be overriden by
+          # wan_route_servers.path_groups.interfaces.ip_address
+          # in CV_PATHFINDER_MULTI_RR_TESTS groups vars.
+          public_ip: 10.37.37.7
 
 wan_path_groups:
   - name: MPLS
@@ -278,26 +295,37 @@ wan_path_groups:
 wan_carriers:
   - name: Comcast
     path_group: INET
+    trusted: true
   - name: ATT
     path_group: INET
+    trusted: true
   - name: Bouygues_Telecom
     path_group: INET
+    trusted: true
   - name: SFR
     path_group: INET
+    trusted: true
   - name: Orange
     path_group: INET
+    trusted: true
   - name: Another-ISP
     path_group: INET
+    trusted: true
   - name: Colt
     path_group: MPLS
+    trusted: true
   - name: ATT-MPLS
     path_group: MPLS
+    trusted: true
   - name: Comcast-5G
     path_group: LTE
+    trusted: true
   - name: Inmrasat
     path_group: Satellite
+    trusted: true
   - name: AWS-1
     path_group: AWS
+    trusted: true
 
 tenants:
   - name: TenantA
@@ -392,6 +420,12 @@ wan_virtual_topologies:
           constraints:
             loss_rate: 42.0
           id: 4
+        # This will not be rendered on devices without MPLS
+        - application_profile: MPLS-ONLY
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+          id: 5
     - name: DEFAULT-AVT-POLICY
       default_virtual_topology:
         path_groups:
@@ -436,6 +470,7 @@ application_classification:
         # Builtin application that should not raise
         - name: skype
     - name: IT
+    - name: MPLS-ONLY
     - name: VOICE
       applications:
         # Testing applications in application-profiles filtering

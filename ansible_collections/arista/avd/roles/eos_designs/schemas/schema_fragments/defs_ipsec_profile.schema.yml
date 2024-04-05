@@ -8,8 +8,6 @@ type: dict
 $defs:
   ipsec_profile:
     type: dict
-    description: |-
-      PREVIEW: This key is currently not supported
     keys:
       ike_policy_name:
         type: str

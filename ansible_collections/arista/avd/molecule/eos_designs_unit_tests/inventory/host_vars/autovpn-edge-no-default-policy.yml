@@ -20,7 +20,7 @@ wan_route_servers:
       - name: INET
         interfaces:
           - name: Ethernet1
-            ip_address: 10.7.7.7/31
+            public_ip: 10.7.7.7
 
 wan_ipsec_profiles:
   control_plane:
@@ -65,8 +65,10 @@ wan_path_groups:
 wan_carriers:
   - name: Comcast
     path_group: INET
+    trusted: true
   - name: ATT
     path_group: INET
+    trusted: true
 
 tenants:
   - name: TenantA

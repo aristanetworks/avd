@@ -135,6 +135,8 @@ port_channel_interfaces:
   mode: trunk
   vlans: '106'
   mlag: 26
+  lacp_fallback_mode: individual
+  lacp_fallback_timeout: 30
 - name: Port-Channel27
   description: INBAND-MGMT-IPV6-ONLY-VRF_Po1
   type: switched
@@ -142,6 +144,8 @@ port_channel_interfaces:
   mode: trunk
   vlans: '107'
   mlag: 27
+  lacp_fallback_mode: individual
+  lacp_fallback_timeout: 30
 ethernet_interfaces:
 - name: Ethernet11
   peer: inband-mgmt-parent-ipv6-2
@@ -253,6 +257,8 @@ ethernet_interfaces:
   channel_group:
     id: 26
     mode: active
+  mode: access
+  vlans: 106
 - name: Ethernet27
   peer: inband-mgmt-ipv6-only-vrf
   peer_interface: Ethernet1
@@ -263,6 +269,8 @@ ethernet_interfaces:
   channel_group:
     id: 27
     mode: active
+  mode: access
+  vlans: 107
 mlag_configuration:
   domain_id: inband-mgmt-parents-ipv6
   local_interface: Vlan4094

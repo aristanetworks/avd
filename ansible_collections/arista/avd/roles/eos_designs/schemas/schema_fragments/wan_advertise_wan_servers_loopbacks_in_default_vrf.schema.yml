@@ -10,8 +10,9 @@ keys:
     documentation_options:
       table: wan-settings
     description: |-
-      Advertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers when set to true.
+      PREVIEW: The `wan_ha` key is currently not supported
 
+      Advertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers when set to true.
       By default, this is not done to speed up convergence. The consequence is that Loopback0 IPs from
       WAN route servers are not reachable over the WAN from the WAN routers.
     type: bool

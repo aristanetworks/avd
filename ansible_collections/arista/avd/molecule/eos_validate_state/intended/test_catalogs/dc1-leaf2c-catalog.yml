@@ -58,183 +58,154 @@ anta.tests.connectivity:
       neighbor_port: Ethernet8
       port: Ethernet1
     result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet1 - remote: dc1-leaf2a_Ethernet8'
-      description: LLDP topology - validate peer and interface
+      custom_field: 'Local: Ethernet1 - Remote: dc1-leaf2a Ethernet8'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.1
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.1'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-spine1 Loopback0 (IP: 10.255.0.1)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.2
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.2'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-spine2 Loopback0 (IP: 10.255.0.2)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.3
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.3'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-leaf1a Loopback0 (IP: 10.255.0.3)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.4
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.4'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-leaf1b Loopback0 (IP: 10.255.0.4)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.5
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.0.5'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-leaf2a Loopback0 (IP: 10.255.0.5)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.2.1
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.2.1'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-wan1 Loopback0 (IP: 10.255.2.1)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.2.2
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.2.2'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc1-wan2 Loopback0 (IP: 10.255.2.2)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.11
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.11'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-spine1 Loopback0 (IP: 10.255.128.11)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.12
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.12'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-spine2 Loopback0 (IP: 10.255.128.12)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.13
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.13'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf1a Loopback0 (IP: 10.255.128.13)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.14
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.14'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf1b Loopback0 (IP: 10.255.128.14)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.15
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.15'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf2a Loopback0 (IP: 10.255.128.15)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.16
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.16'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf2b Loopback0 (IP: 10.255.128.16)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.17
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.17'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf3a.arista.com Loopback0 (IP: 10.255.128.17)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.18
       repeat: 1
-      source: Vlan4085
+      source: 172.21.110.5
       vrf: MGMT
     result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf2c - Vlan4085 Destination: 10.255.128.18'
-      description: Inband Mgmt Reachability
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination:
+        dc2-leaf3b.arista.com Loopback0 (IP: 10.255.128.18)'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null
 anta.tests.hardware:
 - VerifyEnvironmentPower:
+    result_overwrite:
+      custom_field: 'Accepted States: ''ok'''
     states:
     - ok
 - VerifyEnvironmentCooling:
+    result_overwrite:
+      custom_field: 'Accepted States: ''ok'''
     states:
     - ok
 - VerifyTemperature: null
@@ -243,6 +214,9 @@ anta.tests.hardware:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
+    result_overwrite:
+      custom_field: 'Accepted Manufacturers: ''Arista Networks'', ''Arastra, Inc.'',
+        ''Not Present'''
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Not Present
@@ -261,57 +235,39 @@ anta.tests.hardware:
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet1
-      protocol_status: up
-      state: up
+    - name: Ethernet1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet1 - DC1-LEAF2A_Ethernet8
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet1 - DC1-LEAF2A_Ethernet8 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet2
-      protocol_status: down
-      state: adminDown
+    - name: Ethernet2
+      status: adminDown
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet2 - DC1-LEAF2B_Ethernet8
-      description: Ethernet Interface & Line Protocol == 'adminDown'
+      custom_field: Interface Ethernet2 - DC1-LEAF2B_Ethernet8 = 'adminDown'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet5
-      protocol_status: up
-      state: up
+    - name: Ethernet5
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet5 - dc1-leaf2-server1_iLO
-      description: Ethernet Interface & Line Protocol == 'up'
+      custom_field: Interface Ethernet5 - dc1-leaf2-server1_iLO = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Port-Channel1
-      protocol_status: up
-      state: up
+    - name: Port-Channel1
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Port-Channel1 - DC1_L3_LEAF2_Po8
-      description: Port-Channel Interface & Line Protocol == 'up'
+      custom_field: Interface Port-Channel1 - DC1_L3_LEAF2_Po8 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Vlan4085
-      protocol_status: up
-      state: up
+    - name: Vlan4085
+      status: up
     result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Vlan4085 - L2LEAF_INBAND_MGMT
-      description: Vlan Interface & Line Protocol == 'up'
+      custom_field: Interface Vlan4085 - L2LEAF_INBAND_MGMT = 'up'
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
+    result_overwrite:
+      custom_field: 'eAPI HTTPS SSL Profile: eAPI_SSL_Profile'
 anta.tests.snmp:
 - VerifySnmpStatus:
     vrf: default
@@ -331,12 +287,7 @@ anta.tests.software:
     - v1.13.6
     - v1.8.0
 anta.tests.system:
-- VerifyNTP:
-    result_overwrite:
-      categories:
-      - NTP
-      custom_field: NTP
-      description: Synchronised with NTP server
+- VerifyNTP: null
 - VerifyUptime:
     minimum: 86400
 - VerifyReloadCause: null
