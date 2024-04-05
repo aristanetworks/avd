@@ -123,6 +123,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;t2</samp>](## "router_isis.graceful_restart.t2") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1_wait_time</samp>](## "router_isis.graceful_restart.t2.level_1_wait_time") | Integer |  |  | Min: 5<br>Max: 300 | Level-1 LSP database sync wait time in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2_wait_time</samp>](## "router_isis.graceful_restart.t2.level_2_wait_time") | Integer |  |  | Min: 5<br>Max: 300 | Level-2 LSP database sync wait time in seconds. |
+    | [<samp>&nbsp;&nbsp;eos_cli</samp>](## "router_isis.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the router isis in the final EOS configuration. |
 
 === "YAML"
 
@@ -352,4 +353,7 @@
 
           # Level-2 LSP database sync wait time in seconds.
           level_2_wait_time: <int; 5-300>
+
+      # Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.
+      eos_cli: <str>
     ```

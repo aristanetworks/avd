@@ -73,7 +73,7 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
-  ip_address: 100.64.48.1/31
+  ip_address: 10.255.3.1/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -94,7 +94,7 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
-  ip_address: 100.64.48.7/31
+  ip_address: 10.255.3.7/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -115,7 +115,7 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
-  ip_address: 100.64.48.8/31
+  ip_address: 10.255.3.8/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -136,7 +136,7 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
-  ip_address: 100.64.48.11/31
+  ip_address: 10.255.3.11/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true

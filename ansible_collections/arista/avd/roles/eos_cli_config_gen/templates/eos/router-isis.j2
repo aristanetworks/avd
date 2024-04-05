@@ -291,4 +291,7 @@ router isis {{ router_isis.instance }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     if router_isis.eos_cli is arista.avd.defined %}
+   {{ router_isis.eos_cli | indent(3, false) }}
+{%     endif %}
 {% endif %}
