@@ -24,7 +24,6 @@ Ansible playbooks are included to show the following:
 - Deploying the configuration via CloudVision to the switches, including a full change-based workflow with rollback capability etc.
 - Validating the configuration
 
-
 ## Overall design overview
 
 ### Physical topology
@@ -45,8 +44,6 @@ The following drawing shows a graphic overview of the Ansible inventory, group v
 ![Figure: Arista Leaf Spine physical topology](images/inventory.png)
 
 There is the addition of a SUPERSPINES group as well as a POD1 and POD2 groups with PODX_LEAFS and PODX_SPINES under each. The EVPN_SERVICES and ENDPOINT_CONNECT allow separation of YAML files, and putting the PODX_LEAFS under them will build the appropriate configs for those devices (VXLAN/VLAN/anycast gateways do not get instantiated on spines, of course).
-
-
 
 ### Content of the inventory.yml file
 
