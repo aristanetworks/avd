@@ -80,3 +80,8 @@ keys:
                       return true;
                       }
                     EOF
+          compile:
+            type: bool
+            required: true
+          commit:
+            type: bool

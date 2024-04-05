@@ -24,6 +24,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;code_units</samp>](## "router_general.control_functions.code_units") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.control_functions.code_units.[].name") | String | Required, Unique |  |  | Name of the code unit. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content</samp>](## "router_general.control_functions.code_units.[].content") | String |  |  |  | Content of route control function. Write 'EOF' below the content.<br>e.g.<br>function ACCEPT_ALL() {<br>  return true;<br>  }<br>EOF |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;compile</samp>](## "router_general.control_functions.compile") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;commit</samp>](## "router_general.control_functions.commit") | Boolean |  |  |  |  |
 
 === "YAML"
 
@@ -66,4 +68,6 @@
             #   }
             # EOF
             content: <str>
+        compile: <bool; required>
+        commit: <bool>
     ```
