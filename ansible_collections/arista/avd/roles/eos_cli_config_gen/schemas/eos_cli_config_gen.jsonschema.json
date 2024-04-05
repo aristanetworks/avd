@@ -18272,6 +18272,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound rcf function name without parentheses",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound rcf function name without parentheses",
+                    "title": "RCF Out"
+                  },
                   "domain_remote": {
                     "type": "boolean",
                     "title": "Domain Remote"
@@ -18596,6 +18606,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound rcf function name without parentheses.",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound rcf function name without parentheses.",
+                    "title": "RCF Out"
+                  },
                   "default_originate": {
                     "type": "object",
                     "properties": {
@@ -18694,6 +18714,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound rcf function name without parentheses.",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound rcf function name without parentheses.",
+                    "title": "RCF Out"
+                  },
                   "prefix_list_in": {
                     "type": "string",
                     "description": "Inbound prefix-list name.",
@@ -18732,6 +18762,35 @@
                 ]
               },
               "title": "Neighbors"
+            },
+            "redistribute_routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_protocol": {
+                    "type": "string",
+                    "title": "Source Protocol"
+                  },
+                  "include_leaked": {
+                    "type": "boolean",
+                    "title": "Include Leaked"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name without parentheses.",
+                    "title": "RCF"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "source_protocol"
+                ]
+              },
+              "title": "Redistribute Routes"
             }
           },
           "additionalProperties": false,
@@ -18975,6 +19034,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound rcf function name without parentheses.",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound rcf function name without parentheses.",
+                    "title": "RCF Out"
+                  },
                   "prefix_list_in": {
                     "type": "string",
                     "description": "Inbound prefix-list name.",
@@ -19019,6 +19088,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound rcf function name without parentheses.",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound rcf function name without parentheses.",
+                    "title": "RCF Out"
+                  },
                   "prefix_list_in": {
                     "type": "string",
                     "description": "Inbound prefix-list name.",
@@ -19056,6 +19135,11 @@
                   "include_leaked": {
                     "type": "boolean",
                     "title": "Include Leaked"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name without parentheses.",
+                    "title": "RCF"
                   }
                 },
                 "additionalProperties": false,

@@ -10901,6 +10901,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: Inbound rcf function name without parentheses
+                rcf_out:
+                  type: str
+                  description: Outbound rcf function name without parentheses
                 domain_remote:
                   type: bool
                 encapsulation:
@@ -11076,6 +11082,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: Inbound rcf function name without parentheses.
+                rcf_out:
+                  type: str
+                  description: Outbound rcf function name without parentheses.
                 default_originate:
                   type: dict
                   keys:
@@ -11126,6 +11138,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: Inbound rcf function name without parentheses.
+                rcf_out:
+                  type: str
+                  description: Outbound rcf function name without parentheses.
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -11139,6 +11157,21 @@ keys:
                       type: bool
                     route_map:
                       type: str
+          redistribute_routes:
+            type: list
+            primary_key: source_protocol
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                source_protocol:
+                  type: str
+                include_leaked:
+                  type: bool
+                rcf:
+                  type: str
+                  description: RCF function name without parentheses.
       address_family_ipv4_multicast:
         type: dict
         keys:
@@ -11263,6 +11296,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: Inbound rcf function name without parentheses.
+                rcf_out:
+                  type: str
+                  description: Outbound rcf function name without parentheses.
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -11287,6 +11326,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: Inbound rcf function name without parentheses.
+                rcf_out:
+                  type: str
+                  description: Outbound rcf function name without parentheses.
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -11307,6 +11352,9 @@ keys:
                   type: str
                 include_leaked:
                   type: bool
+                rcf:
+                  type: str
+                  description: RCF function name without parentheses.
       address_family_ipv6_multicast:
         type: dict
         keys:

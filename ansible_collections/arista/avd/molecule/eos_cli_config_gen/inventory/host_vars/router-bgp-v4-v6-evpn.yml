@@ -77,6 +77,9 @@ router_bgp:
         route_map_in: RM-HIDE-AS-PATH
         route_map_out: RM-HIDE-AS-PATH
         activate: true
+      - name: RCF_TEST
+        rcf_in: Address-Family_EVPN_In
+        rcf_out: Address-Family_EVPN_Out
   address_family_ipv4:
     peer_groups:
       - name: IPV4-UNDERLAY
@@ -85,6 +88,9 @@ router_bgp:
         route_map_out: RM-HIDE-AS-PATH
       - name: IPV4-UNDERLAY-MLAG
         activate: true
+      - name: TEST_RCF
+        rcf_in: Address-Family_IPV4_In
+        rcf_out: Address-Family_IPV4_Out
   address_family_ipv4_multicast:
     peer_groups:
       - name: IPV4-UNDERLAY
@@ -101,6 +107,9 @@ router_bgp:
         route_map_out: RM-HIDE-AS-PATH
       - name: IPV6-UNDERLAY-MLAG
         activate: true
+      - name: TEST_RCF
+        rcf_in: Address-Family_IPV6_in
+        rcf_out: Address-Family_IPV6_out
   vlans:
     - id: 24
       rd: "10.50.64.15:10024"
