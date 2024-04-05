@@ -313,7 +313,6 @@ interface Port-Channel7
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 
-
 #### Loopback Interfaces Device Configuration
 
 ```eos

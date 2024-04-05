@@ -38,7 +38,7 @@ l3leaf:
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # iBGP peering between MLAG peers
     virtual_router_mac_address: 00:1c:73:00:00:99 # The vMAC for the anycast gateways
     spanning_tree_mode: mstp # Spanning Tree is still enabled even in EVPN setups
-    spanning_tree_priority: 16384 
+    spanning_tree_priority: 16384
     mlag: true # By default, use MLAG
 
   node_groups:
