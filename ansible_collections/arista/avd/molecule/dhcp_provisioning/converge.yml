@@ -1,5 +1,5 @@
 ---
-- name: Converge - generate DHCP configuration offline
+- name: Converge - generate DHCP configuration offline for default node types
   hosts: TOOLS
   gather_facts: false
   connection: local
@@ -7,3 +7,57 @@
     - name: Generate intended configuration
       ansible.builtin.import_role:
         name: arista.avd.dhcp_provisioner
+      vars:
+        fabric_group: DC1_SPINES
+
+- name: Rename the generated files
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: rename the dhcp config file
+      ansible.builtin.shell: |
+        mv -f ./intended/configs/dhcpd.conf ./intended/configs/dhcpd_default_nodes.conf
+        mv -f ./intended/structured_configs/cvp/ztp_configuration.yml ./intended/structured_configs/cvp/ztp_configuration_default_nodes.yml
+
+- name: Converge - generate DHCP configuration offline for custom node types with 3.x syntax using a dict of dicts
+  hosts: TOOLS
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Generate intended configuration
+      ansible.builtin.import_role:
+        name: arista.avd.dhcp_provisioner
+      vars:
+        fabric_group: DC1_L2LEAFS
+
+- name: Rename the generated files
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: rename the dhcp config file
+      ansible.builtin.shell: |
+        mv -f ./intended/configs/dhcpd.conf ./intended/configs/dhcpd_custom_nodes_3x_syntax.conf
+        mv -f ./intended/structured_configs/cvp/ztp_configuration.yml ./intended/structured_configs/cvp/ztp_configuration_custom_nodes_3x_syntax.yml
+
+- name: Converge - generate DHCP configuration offline for custom node types with 4.x syntax using a list of dicts
+  hosts: TOOLS
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Generate intended configuration
+      ansible.builtin.import_role:
+        name: arista.avd.dhcp_provisioner
+      vars:
+        fabric_group: DC1_LEAFS
+
+- name: Rename the generated files
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: rename the dhcp config file
+      ansible.builtin.shell: |
+        mv -f ./intended/configs/dhcpd.conf ./intended/configs/dhcpd_custom_nodes_4x_syntax.conf
+        mv -f ./intended/structured_configs/cvp/ztp_configuration.yml ./intended/structured_configs/cvp/ztp_configuration_custom_nodes_4x_syntax.yml
