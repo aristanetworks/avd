@@ -5,6 +5,20 @@ fabric_name: SFLOW_TESTS
 
 mgmt_gateway: 192.168.0.1
 
+default_mgmt_method: oob
+
+sflow_settings:
+  destinations:
+    - destination: 10.10.10.10
+      vrf: use_mgmt_interface_vrf
+    - destination: 10.10.10.11
+    - destination: 10.10.10.12
+      vrf: sflowvrf
+      port: 1234
+  vrfs:
+    - name: sflowvrf
+      source_interface: Loopback321
+
 fabric_sflow:
   uplinks: true
   downlinks: true

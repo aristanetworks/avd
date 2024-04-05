@@ -9,10 +9,7 @@ keys:
   wan_mode:
     documentation_options:
       table: wan-settings
-    description: |-
-      PREVIEW: This key is currently not supported
-
-      Select if the WAN should be run using CV Pathfinder or Auto VPN only.
+    description: Select if the WAN should be run using CV Pathfinder or AutoVPN only.
     type: str
     default: cv-pathfinder
     valid_values:

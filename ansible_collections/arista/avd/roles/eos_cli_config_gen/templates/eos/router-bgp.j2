@@ -1744,4 +1744,8 @@ router bgp {{ router_bgp.as }}
       recovery delay {{ session_tracker.recovery_delay }} seconds
 {%         endif %}
 {%     endfor %}
+{%     if router_bgp.eos_cli is arista.avd.defined %}
+   !
+   {{ router_bgp.eos_cli | indent(3, false) }}
+{%     endif %}
 {% endif %}

@@ -57,34 +57,47 @@ class MergeOnSchema:
         # These will be removed from nxt before passing on to the next strategy.
         merged_nxt_indexes = []
 
-        # Nested iterations over nxt and base.
-        for nxt_index, nxt_item in enumerate(nxt):
-            # Skipping items if they are not dicts or don't have primary_key
-            if not (isinstance(nxt_item, dict) and primary_key in nxt_item):
-                continue
-
-            for base_index, base_item in enumerate(base):
+        try:
+            # Nested iterations over nxt and base.
+            for nxt_index, nxt_item in enumerate(nxt):
                 # Skipping items if they are not dicts or don't have primary_key
-                if not (isinstance(base_item, dict) and primary_key in base_item):
+                if not (isinstance(nxt_item, dict) and primary_key in nxt_item):
                     continue
 
-                # Skipping items primary_keys don't match.
-                if base_item[primary_key] != nxt_item[primary_key]:
-                    continue
+                for base_index, base_item in enumerate(base):
+                    # Skipping items if they are not dicts or don't have primary_key
+                    if not (isinstance(base_item, dict) and primary_key in base_item):
+                        continue
 
-                # Perform regular dict merge on the matching items.
-                merged_nxt_indexes.append(nxt_index)
-                base[base_index] = config.value_strategy(path, base_item, nxt_item)
+                    # Skipping items primary_keys don't match.
+                    if base_item[primary_key] != nxt_item[primary_key]:
+                        continue
+
+                    # Perform regular dict merge on the matching items.
+                    merged_nxt_indexes.append(nxt_index)
+                    base[base_index] = config.value_strategy(path, base_item, nxt_item)
+
+        except Exception as e:
+            raise AristaAvdError(
+                f"An issue occurred while trying to do schema-based deepmerge for the schema path {path} " f"using primary key '{primary_key}'"
+            ) from e
 
         # If all nxt items got merged, we can just return the updated base.
         if len(merged_nxt_indexes) == len(nxt):
             return base
 
-        # Since some nxt items were not merged, we pass along a reduced nxt to the next strategy.
-        # Reverse to avoid changing indexes when removing from nxt.
-        merged_nxt_indexes.reverse()
-        for merged_nxt_index in merged_nxt_indexes:
-            del nxt[merged_nxt_index]
+        try:
+            # Since some nxt items were not merged, we pass along a reduced nxt to the next strategy.
+            # Reverse to avoid changing indexes when removing from nxt.
+            merged_nxt_indexes.sort(reverse=True)
+            for merged_nxt_index in merged_nxt_indexes:
+                del nxt[merged_nxt_index]
+
+        except Exception as e:
+            raise AristaAvdError(
+                f"An issue occurred after schema-based deepmerge for the schema path {path} using primary key '{primary_key}', "
+                f"while preparing remaining items with to be merged with regular strategies. Merged indexes were {merged_nxt_indexes}"
+            ) from e
 
         # Since we did inplace updates of both nxt and base, we return STRATEGY_END
         # so deepmerge will run the next strategy on the remaining nxt items.

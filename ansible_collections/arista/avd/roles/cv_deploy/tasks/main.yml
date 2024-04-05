@@ -1,0 +1,43 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+---
+- name: Verify Requirements
+  tags: [always, avd_req]
+  delegate_to: localhost
+  when: avd_requirements is not defined
+  arista.avd.verify_requirements:
+    requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
+  vars:
+    requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
+  run_once: true
+  register: avd_requirements
+
+- name: Deploy device configurations and tags to CloudVision
+  run_once: true
+  delegate_to: localhost
+  arista.avd.cv_workflow:
+    cv_servers: [ "{{ cv_server }}" ]
+    cv_token: "{{ cv_token }}"
+    cv_verify_certs: "{{ cv_verify_certs }}"
+    configuration_dir: "{{ eos_config_dir }}"
+    structured_config_dir: "{{ structured_dir }}"
+    structured_config_suffix: "{{ avd_structured_config_file_format }}"
+    device_list: "{{ cv_devices }}"
+    strict_tags: "{{ cv_strict_tags }}"
+    skip_missing_devices: "{{ cv_skip_missing_devices }}"
+    configlet_name_template: "{{ cv_configlet_name_template | arista.avd.default }}"
+    workspace:
+      name: "{{ cv_workspace_name | arista.avd.default }}"
+      description: "{{ cv_workspace_description | arista.avd.default }}"
+      requested_state: "{{ 'submitted' if cv_submit_workspace else 'built' }}"
+      force: "{{ cv_submit_workspace_force }}"
+    change_control:
+      name: "{{ cv_change_control_name | arista.avd.default }}"
+      description: "{{ cv_change_control_description | arista.avd.default }}"
+      requested_state: "{{ 'completed' if cv_run_change_control else 'pending approval' }}"
+    timeouts:
+      workspace_build_timeout: "{{ cv_workspace_build_timeout }}"
+    return_details: "{{ cv_register_detailed_results }}"
+  register: cv_deploy_results

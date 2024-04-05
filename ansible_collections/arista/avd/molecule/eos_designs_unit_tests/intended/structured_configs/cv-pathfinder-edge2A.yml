@@ -196,8 +196,6 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 172.17.0.5/31
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.1000
   peer: site-ha-enabled-leaf2A
   peer_interface: Ethernet1.1000
@@ -209,8 +207,6 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.5/31
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.142
   peer: site-ha-enabled-leaf2A
   peer_interface: Ethernet1.142
@@ -222,8 +218,6 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 142
   mtu: 9214
   ip_address: 172.17.0.5/31
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet52.666
   peer: site-ha-enabled-leaf2A
   peer_interface: Ethernet1.666
@@ -235,8 +229,6 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.5/31
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet53
   peer: site-ha-enabled-leaf2B
   peer_interface: Ethernet1
@@ -246,8 +238,6 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 172.17.0.7/31
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet53.1000
   peer: site-ha-enabled-leaf2B
   peer_interface: Ethernet1.1000
@@ -259,8 +249,6 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.7/31
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet53.142
   peer: site-ha-enabled-leaf2B
   peer_interface: Ethernet1.142
@@ -272,8 +260,6 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 142
   mtu: 9214
   ip_address: 172.17.0.7/31
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet53.666
   peer: site-ha-enabled-leaf2B
   peer_interface: Ethernet1.666
@@ -285,8 +271,6 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.7/31
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet1
   peer_type: l3_interface
   ip_address: dhcp
@@ -294,8 +278,6 @@ ethernet_interfaces:
   type: routed
   description: ATT_423-01
   dhcp_client_accept_default_route: true
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -422,16 +404,16 @@ agents:
 flow_tracking:
   hardware:
     trackers:
-    - name: WAN-FLOW-TRACKER
+    - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 5000
+        on_interval: 300000
       exporters:
-      - name: DPI-EXPORTER
+      - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 5000
+        template_interval: 3600000
     shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -593,7 +575,7 @@ router_path_selection:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
-      - 10.7.7.7
+      - 172.17.7.7
       - 10.9.9.9
     ipsec_profile: CP-PROFILE
   - name: LAN_HA
@@ -612,44 +594,44 @@ router_path_selection:
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
-    - name: LAN_HA
     - name: INET
       priority: 2
+    - name: LAN_HA
     jitter: 42
     lowest_hop_count: true
   - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: INET
       priority: 2
+    - name: LAN_HA
     loss_rate: '42.0'
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
+    - name: LAN_HA
 router_traffic_engineering:
   enabled: true
 stun:
   client:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
-      ip_address: 10.7.7.7
+      ip_address: 172.17.7.7
       ssl_profile: profileA
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
@@ -712,7 +694,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 192.168.142.2/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: cv-pathfinder-edge2A_VTEP

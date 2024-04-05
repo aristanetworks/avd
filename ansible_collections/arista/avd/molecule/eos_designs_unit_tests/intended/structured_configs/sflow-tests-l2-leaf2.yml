@@ -4,6 +4,8 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.0.1
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 10.254.254.1
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending
@@ -54,12 +56,33 @@ port_channel_interfaces:
   mode: trunk
   sflow:
     enable: true
-  vlans: '11'
+  vlans: 11,4092
 vlans:
 - id: 11
   name: VLAN11
   tenant: SFLOW
+- id: 4092
+  tenant: system
+  name: INBAND_MGMT
 ip_igmp_snooping:
   globally_enabled: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.254.254.5/24
+  type: inband_mgmt
+sflow:
+  run: true
+  destinations:
+  - destination: 10.10.10.10
+  - destination: 10.10.10.11
+  source_interface: Vlan4092
+  vrfs:
+  - name: MGMT
+    destinations:
+    - destination: 10.10.10.12
+    source_interface: Management1
 metadata:
   platform: vEOS-lab
