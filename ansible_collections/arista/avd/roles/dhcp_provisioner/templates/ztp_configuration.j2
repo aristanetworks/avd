@@ -11,7 +11,7 @@
 {%     set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ip'] %}
 {% endif %}
 {% set node_types = dict() %}
-{% set node_type_keys = hostvars[groups[fabric_group][0]]['node_type_keys'] | map(attribute='key') |
+{% set node_type_keys = hostvars[groups[fabric_group][0]]['node_type_keys'] | arista.avd.convert_dicts('key') | map(attribute='key') |
         arista.avd.default(['spine', 'l3leaf', 'l2leaf', 'super_spine', 'overlay_controller']) %}
 {% for node_type_key in node_type_keys | arista.avd.natural_sort %}
 {%     for host in hostvars | arista.avd.natural_sort %}
