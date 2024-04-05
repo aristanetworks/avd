@@ -7,6 +7,7 @@
 {# context used to hide password and keys #}
 {% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(false) %}
 {% include 'eos/rancid-content-type.j2' %}
+{% include 'eos/config-comment.j2' %}
 {# System Boot Configuration #}
 {% include 'eos/boot.j2' %}
 {# Agents #}
@@ -92,6 +93,8 @@
 {% include 'eos/domain-list.j2' %}
 {# Object Tracking #}
 {% include 'eos/trackers.j2' %}
+{# switchport port-security #}
+{% include 'eos/switchport-port-security.j2' %}
 {# router adaptive-virtual-topology #}
 {% include 'eos/router-adaptive-virtual-topology.j2' %}
 {# router l2-vpn #}

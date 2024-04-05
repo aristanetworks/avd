@@ -112,24 +112,18 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Bouygues_Telecom_777
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.16.0.1/31
   shutdown: false
   type: routed
   description: Colt_10000
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 10.9.9.9/31
   shutdown: false
   type: routed
   description: Another-ISP_999
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -660,7 +654,9 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
-      - id: 4
+      - constraints:
+          lossrate: 42.0
+        id: 4
         name: PROD-AVT-POLICY-VIDEO
         pathgroups:
         - name: MPLS

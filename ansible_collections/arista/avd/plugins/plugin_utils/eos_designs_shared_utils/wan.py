@@ -249,18 +249,23 @@ class WanMixin:
         )
 
     @cached_property
-    def wan_region(self: SharedUtils) -> dict:
+    def wan_region(self: SharedUtils) -> dict | None:
         """
         WAN region for CV Pathfinder
 
         Also checking if site names are unique across all regions.
+
+        The region is required for edges, but optional for pathfinders
         """
         node_defined_region = get(
             self.switch_data_combined,
             "cv_pathfinder_region",
-            required=True,
+            required=self.is_cv_pathfinder_client,
             org_key="A node variable 'cv_pathfinder_region' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
         )
+        if node_defined_region is None:
+            return None
+
         regions = get(
             self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
         )
@@ -426,7 +431,19 @@ class WanMixin:
         """
         Only trigger HA if 2 cv_pathfinder clients are in the same group and wan_ha.enabled is true
         """
-        return self.is_cv_pathfinder_client and get(self.switch_data_combined, "wan_ha.enabled", default=True) and len(self.switch_data_node_group_nodes) == 2
+        if not (self.is_cv_pathfinder_client and len(self.switch_data_node_group_nodes) == 2):
+            return False
+
+        if (ha_enabled := get(self.switch_data_combined, "wan_ha.enabled")) is None:
+            raise AristaAvdError(
+                (
+                    "Placing two WAN routers in a common node group will trigger WAN HA in a future AVD release. "
+                    "Currently WAN HA is in preview, so it will not be automatically enabled. "
+                    "To avoid unplanned configuration changes once the feature is released, "
+                    "it is currently required to set 'wan_ha.enabled' to 'true' or 'false'."
+                )
+            )
+        return ha_enabled
 
     @cached_property
     def wan_ha_ipsec(self: SharedUtils) -> bool:

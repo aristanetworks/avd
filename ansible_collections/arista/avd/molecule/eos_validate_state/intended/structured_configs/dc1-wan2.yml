@@ -155,8 +155,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.5/31
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer: dc1-leaf1b
   peer_interface: Ethernet7
@@ -166,24 +164,18 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.7/31
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.18.4.2/24
   shutdown: false
   type: routed
   description: mpls-sp-1_DC1-MPLS-4
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet4
   peer_type: l3_interface
   ip_address: 100.64.4.2/24
   shutdown: false
   type: routed
   description: isp-1_DC1-INET-4
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -227,9 +219,9 @@ route_maps:
     - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
-  - sequence: 40
+  - sequence: 30
     type: permit
-    description: Mark prefixes originated from the LAN
+    description: Set SOO on prefixes from the site.
     set:
     - extcommunity soo 10.255.2.1:100 additive
   - sequence: 10
@@ -239,31 +231,30 @@ route_maps:
     - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
   - sequence: 20
     type: deny
-    description: Deny prefixes originated from the HA peer
-    match:
-    - extcommunity ECL-EVPN-SOO
-    set:
-    - as-path match all replacement auto auto
-  - sequence: 30
-    type: deny
-    description: Deny WAN routes from HA peer
+    description: Deny other routes from the HA peer
     match:
     - as-path ASPATH-WAN
-    set:
-    - community no-advertise
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
-  - sequence: 10
+  - sequence: 20
     type: permit
     description: Advertise local routes towards LAN
     match:
     - extcommunity ECL-EVPN-SOO
-  - sequence: 20
+  - sequence: 30
     type: permit
     description: Advertise routes received from WAN iBGP towards LAN
     match:
     - route-type internal
-  - sequence: 30
+  - sequence: 10
+    type: permit
+    description: Make tagged routes received from WAN HA peer less preferred for LAN router
+    match:
+    - tag 50
+    - route-type internal
+    set:
+    - metric 50
+  - sequence: 40
     type: permit
     description: Advertise WAN HA prefixes towards LAN
     match:
@@ -280,15 +271,22 @@ route_maps:
   sequence_numbers:
   - sequence: 10
     type: permit
-    set:
-    - extcommunity soo 10.255.2.1:100 additive
+    match:
+    - extcommunity ECL-EVPN-SOO
 - name: RM-WAN-HA-LOCAL-PREF-IN
   sequence_numbers:
   - sequence: 10
     type: permit
-    description: Set lower Local Preference for EVPN routes received from WAN HA peer
+    description: Make EVPN routes originated from WAN HA peer less preferred and tag them
+    set:
+    - local-preference 75
+    - tag 50
+  - sequence: 20
+    type: permit
+    description: Make EVPN routes received by WAN HA peer less preferred and tag them
     set:
     - local-preference 50
+    - tag 50
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10

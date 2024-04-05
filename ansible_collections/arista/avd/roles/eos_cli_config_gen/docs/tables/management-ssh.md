@@ -21,9 +21,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.key_exchange.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;mac</samp>](## "management_ssh.mac") | List, items: String |  |  |  | Cryptographic MAC algorithms for SSH to use |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.mac.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;fips_restrictions</samp>](## "management_ssh.fips_restrictions") | Boolean |  |  |  | Use FIPS compliant algorithms. |
     | [<samp>&nbsp;&nbsp;hostkey</samp>](## "management_ssh.hostkey") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;server</samp>](## "management_ssh.hostkey.server") | List, items: String |  |  |  | SSH host key settings |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;server</samp>](## "management_ssh.hostkey.server") | List, items: String |  |  |  | SSH host key settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.hostkey.server.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;server_cert</samp>](## "management_ssh.hostkey.server_cert") | String |  |  |  | Configure switch's hostkey cert file. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;client_strict_checking</samp>](## "management_ssh.hostkey.client_strict_checking") | Boolean |  |  |  | Enforce strict host key checking. |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "management_ssh.enable") | Boolean |  |  |  | Enable SSH daemon |
     | [<samp>&nbsp;&nbsp;connection</samp>](## "management_ssh.connection") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "management_ssh.connection.limit") | Integer |  |  | Min: 1<br>Max: 100 | Maximum total number of SSH sessions to device |
@@ -69,11 +72,20 @@
       # Cryptographic MAC algorithms for SSH to use
       mac:
         - <str>
+
+      # Use FIPS compliant algorithms.
+      fips_restrictions: <bool>
       hostkey:
 
-        # SSH host key settings
+        # SSH host key settings.
         server:
           - <str>
+
+        # Configure switch's hostkey cert file.
+        server_cert: <str>
+
+        # Enforce strict host key checking.
+        client_strict_checking: <bool>
 
       # Enable SSH daemon
       enable: <bool>

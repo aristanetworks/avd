@@ -1445,6 +1445,11 @@
         }
       }
     },
+    "config_comment": {
+      "type": "string",
+      "description": "Add a comment to provide information about the configuration.\nThis comment will be rendered at the top of the generated configuration.",
+      "title": "Config Comment"
+    },
     "custom_templates": {
       "type": "array",
       "title": "Extensibility with Custom Templates",
@@ -4592,6 +4597,118 @@
             },
             "title": "BGP"
           },
+          "ip_igmp_host_proxy": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "group": {
+                      "type": "string",
+                      "description": "Multicast Address.",
+                      "title": "Group"
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Exclude"
+                    },
+                    "include": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Include"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "group"
+                  ]
+                },
+                "title": "Groups"
+              },
+              "report_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 31744,
+                "description": "Time interval between unsolicited reports.",
+                "title": "Report Interval"
+              },
+              "access_lists": {
+                "type": "array",
+                "description": "Non-standard Access List name.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Access Lists"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3,
+                "description": "IGMP version on IGMP host-proxy interface.",
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP IGMP Host Proxy"
+          },
           "peer": {
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
@@ -5042,6 +5159,110 @@
             "type": "boolean",
             "description": "Set to false to disable interface validation by the `eos_validate_state` role",
             "title": "Validate State"
+          },
+          "switchport": {
+            "type": "object",
+            "properties": {
+              "port_security": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "mac_address_maximum": {
+                    "type": "object",
+                    "description": "Maximum number of MAC addresses allowed on the interface.",
+                    "properties": {
+                      "disabled": {
+                        "type": "boolean",
+                        "description": "Disable port level check for port security (only in violation 'shutdown' mode).",
+                        "title": "Disabled"
+                      },
+                      "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000,
+                        "description": "MAC address limit.",
+                        "title": "Limit"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "MAC Address Maximum"
+                  },
+                  "violation": {
+                    "type": "object",
+                    "description": "Configure violation mode (shutdown or protect), EOS default is 'shutdown'.",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "shutdown",
+                          "protect"
+                        ],
+                        "description": "Configure port security mode.",
+                        "title": "Mode"
+                      },
+                      "protect_log": {
+                        "type": "boolean",
+                        "description": "Log new addresses seen after limit is reached in protect mode.",
+                        "title": "Protect Log"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Violation"
+                  },
+                  "vlan_default_mac_address_maximum": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000,
+                    "description": "Default maximum MAC addresses for all VLANs on this interface.",
+                    "title": "VLAN Default MAC Address Maximum"
+                  },
+                  "vlans": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "range": {
+                          "type": "string",
+                          "description": "VLAN ID or range(s) of VLAN IDs, <1-4094>.\nExample:\n  - 3\n  - 1,3\n  - 1-10\n",
+                          "title": "Range"
+                        },
+                        "mac_address_maximum": {
+                          "type": "integer",
+                          "title": "MAC Address Maximum"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "range"
+                      ]
+                    },
+                    "title": "VLANs"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Port Security"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Switchport"
           },
           "eos_cli": {
             "type": "string",
@@ -5905,7 +6126,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Access-list Name",
+            "description": "Access-list Name.",
             "title": "Name"
           },
           "counters_per_entry": {
@@ -5914,18 +6135,18 @@
           },
           "entries": {
             "type": "array",
-            "description": "ACL Entries",
+            "description": "ACL Entries.",
             "items": {
               "type": "object",
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "description": "ACL entry sequence number.\n",
+                  "description": "ACL entry sequence number.",
                   "title": "Sequence"
                 },
                 "remark": {
                   "type": "string",
-                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in acl entry will be ignored.\n",
+                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in the ACL entry will be ignored.",
                   "title": "Remark"
                 },
                 "action": {
@@ -5934,17 +6155,17 @@
                     "permit",
                     "deny"
                   ],
-                  "description": "ACL action.\nRequired for standard entry.\n",
+                  "description": "ACL action.\nRequired except for remarks.",
                   "title": "Action"
                 },
                 "protocol": {
                   "type": "string",
-                  "description": "ip, tcp, udp, icmp or other protocol name or number.\nRequired for standard entry.\n",
+                  "description": "\"ip\", \"tcp\", \"udp\", \"icmp\" or other protocol name or number.\nRequired except for remarks.",
                   "title": "Protocol"
                 },
                 "source": {
                   "type": "string",
-                  "description": "any, A.B.C.D/E or A.B.C.D.\nA.B.C.D without a mask means host.\nRequired for standard entry.\n",
+                  "description": "\"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
                   "title": "Source"
                 },
                 "source_ports_match": {
@@ -5969,7 +6190,7 @@
                 },
                 "destination": {
                   "type": "string",
-                  "description": "any, A.B.C.D/E or A.B.C.D.\nA.B.C.D without a mask means host.\nRequired for standard entry.\n",
+                  "description": "\"any\", \"<ip>/<mask>\" or \"<ip>\".\n\"<ip>\" without a mask means host.\nRequired except for remarks.",
                   "title": "Destination"
                 },
                 "destination_ports_match": {
@@ -5996,7 +6217,7 @@
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "description": "TCP Flag Name"
+                    "description": "TCP Flag Name."
                   },
                   "title": "TCP Flags"
                 },
@@ -6355,6 +6576,32 @@
           "^_.+$": {}
         }
       }
+    },
+    "ip_ftp_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Ftp Client Source Interfaces"
     },
     "ip_hardware": {
       "type": "object",
@@ -7540,6 +7787,58 @@
           "^_.+$": {}
         }
       }
+    },
+    "ip_telnet_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Telnet Client Source Interfaces"
+    },
+    "ip_tftp_client_source_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface Name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Tftp Client Source Interfaces"
     },
     "ip_virtual_router_mac_address": {
       "type": "string",
@@ -10010,16 +10309,31 @@
           },
           "title": "MAC"
         },
+        "fips_restrictions": {
+          "type": "boolean",
+          "description": "Use FIPS compliant algorithms.",
+          "title": "Fips Restrictions"
+        },
         "hostkey": {
           "type": "object",
           "properties": {
             "server": {
-              "description": "SSH host key settings",
+              "description": "SSH host key settings.",
               "type": "array",
               "items": {
                 "type": "string"
               },
               "title": "Server"
+            },
+            "server_cert": {
+              "type": "string",
+              "description": "Configure switch's hostkey cert file.",
+              "title": "Server Cert"
+            },
+            "client_strict_checking": {
+              "type": "boolean",
+              "description": "Enforce strict host key checking.",
+              "title": "Client Strict Checking"
             }
           },
           "additionalProperties": false,
@@ -10189,6 +10503,68 @@
       "type": "object",
       "title": "Match Lists",
       "properties": {
+        "prefix_ipv4": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Prefix-List Name.",
+                "title": "Name"
+              },
+              "prefixes": {
+                "type": "array",
+                "minItems": 1,
+                "description": "List of IPv4 prefixes (with the subnet mask e.g. 192.0.2.0/24).",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Prefixes"
+              }
+            },
+            "required": [
+              "prefixes",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Prefix IPv4"
+        },
+        "prefix_ipv6": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Prefix-List Name.",
+                "title": "Name"
+              },
+              "prefixes": {
+                "type": "array",
+                "minItems": 1,
+                "description": "List of IPv6 prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64).",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Prefixes"
+              }
+            },
+            "required": [
+              "prefixes",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Prefix IPv6"
+        },
         "string": {
           "type": "array",
           "items": {
@@ -13464,6 +13840,118 @@
               "^_.+$": {}
             },
             "title": "BGP"
+          },
+          "ip_igmp_host_proxy": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "group": {
+                      "type": "string",
+                      "description": "Multicast Address.",
+                      "title": "Group"
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Exclude"
+                    },
+                    "include": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Include"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "group"
+                  ]
+                },
+                "title": "Groups"
+              },
+              "report_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 31744,
+                "description": "Time interval between unsolicited reports.",
+                "title": "Report Interval"
+              },
+              "access_lists": {
+                "type": "array",
+                "description": "Non-standard Access List name.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Access Lists"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3,
+                "description": "IGMP version on IGMP host-proxy interface.",
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP IGMP Host Proxy"
           },
           "peer": {
             "type": "string",
@@ -20457,6 +20945,11 @@
             ]
           },
           "title": "Session Trackers"
+        },
+        "eos_cli": {
+          "type": "string",
+          "description": "Multiline EOS CLI rendered directly on the Router BGP in the final EOS configuration.",
+          "title": "EOS CLI"
         }
       },
       "additionalProperties": false,
@@ -21547,6 +22040,11 @@
             "^_.+$": {}
           },
           "title": "Graceful Restart"
+        },
+        "eos_cli": {
+          "type": "string",
+          "description": "Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.",
+          "title": "EOS CLI"
         }
       },
       "required": [
@@ -24724,6 +25222,42 @@
       },
       "title": "Switchport Default"
     },
+    "switchport_port_security": {
+      "type": "object",
+      "properties": {
+        "mac_address": {
+          "type": "object",
+          "properties": {
+            "aging": {
+              "type": "boolean",
+              "title": "Aging"
+            },
+            "moveable": {
+              "type": "boolean",
+              "title": "Moveable"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MAC Address"
+        },
+        "persistence_disabled": {
+          "type": "boolean",
+          "title": "Persistence Disabled"
+        },
+        "violation_protect_chip_based": {
+          "type": "boolean",
+          "title": "Violation Protect Chip Based"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Switchport Port Security"
+    },
     "system": {
       "type": "object",
       "properties": {
@@ -25828,6 +26362,118 @@
             "minimum": 1,
             "maximum": 3,
             "title": "IP IGMP Version"
+          },
+          "ip_igmp_host_proxy": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "group": {
+                      "type": "string",
+                      "description": "Multicast Address.",
+                      "title": "Group"
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Exclude"
+                    },
+                    "include": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Include"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "group"
+                  ]
+                },
+                "title": "Groups"
+              },
+              "report_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 31744,
+                "description": "Time interval between unsolicited reports.",
+                "title": "Report Interval"
+              },
+              "access_lists": {
+                "type": "array",
+                "description": "Non-standard Access List name.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Access Lists"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3,
+                "description": "IGMP version on IGMP host-proxy interface.",
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP IGMP Host Proxy"
           },
           "ip_helpers": {
             "type": "array",
@@ -27204,6 +27850,11 @@
                 "udp_port": {
                   "type": "integer",
                   "title": "UDP Port"
+                },
+                "vtep_to_vtep_bridging": {
+                  "type": "boolean",
+                  "description": "Enable bridging between different VTEPs in vxlan overlay.",
+                  "title": "Vtep To Vtep Bridging"
                 },
                 "virtual_router_encapsulation_mac_address": {
                   "type": "string",

@@ -7,10 +7,9 @@
 type: dict
 keys:
   wan_carriers:
-    description: |-
-      PREVIEW: This key is currently not supported
-
-      List of carriers used for the WAN configuration and their mapping to path-groups.
+    documentation_options:
+      table: wan-path-groups-and-carriers
+    description: List of carriers used for the WAN configuration and their mapping to path-groups.
     type: list
     primary_key: name
     items:
@@ -26,3 +25,9 @@ keys:
           type: str
           description: The path-group to which this carrier belongs.
           required: true
+        trusted:
+          type: bool
+          default: false
+          description: |-
+            Set this to `true` to mark this carrier as "trusted".
+            WAN interfaces require an inbound access-list to be set unless the carrier is "trusted".
