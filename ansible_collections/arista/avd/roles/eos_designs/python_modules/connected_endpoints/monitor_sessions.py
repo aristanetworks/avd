@@ -99,6 +99,7 @@ class MonitorSessionsMixin(UtilsMixin):
             if "monitor_sessions" not in network_port:
                 continue
 
+
             for ethernet_interface_name in range_expand(network_port["switch_ports"]):
                 # Monitor session on Port-channel interface
                 if get(network_port, "port_channel.mode") is not None:
@@ -107,13 +108,13 @@ class MonitorSessionsMixin(UtilsMixin):
 
                     port_channel_interface_name = f"Port-Channel{channel_group_id}"
                     monitor_session_configs.extend(
-                        [dict(monitor_session, interface=port_channel_interface_name) for monitor_session in adapter["monitor_sessions"]],
+                        [dict(monitor_session, interface=port_channel_interface_name) for monitor_session in network_port["monitor_sessions"]],
                     )
                     continue
 
                 # Monitor session on Ethernet interface
                 monitor_session_configs.extend(
-                    [dict(monitor_session, interface=ethernet_interface_name) for monitor_session in adapter["monitor_sessions"]],
+                    [dict(monitor_session, interface=ethernet_interface_name) for monitor_session in network_port["monitor_sessions"]],
                 )
 
         return monitor_session_configs

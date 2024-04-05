@@ -69,6 +69,11 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mlag: 42
+- name: Port-Channel44
+  description: Checking monitor sessions on port-channels
+  type: switched
+  shutdown: false
+  mlag: 44
 - name: Port-Channel43
   type: switched
   shutdown: false
@@ -714,6 +719,36 @@ ethernet_interfaces:
   channel_group:
     id: 42
     mode: active
+- name: Ethernet14
+  peer: Checking monitor sessions on single interface
+  peer_type: network_port
+  description: Checking monitor sessions on single interface
+  shutdown: false
+  type: switched
+- name: Ethernet15
+  peer: Checking monitor sessions on port-channels
+  peer_type: network_port
+  description: Checking monitor sessions on port-channels
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 44
+    mode: active
+- name: Ethernet16
+  peer: Checking monitor sessions on port-channels
+  peer_type: network_port
+  description: Checking monitor sessions on port-channels
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 44
+    mode: active
+- name: Ethernet17
+  peer: monitor sessions destination
+  peer_type: network_port
+  description: monitor sessions destination
+  shutdown: false
+  type: switched
 - name: Ethernet51
   peer_type: network_port
   shutdown: false
@@ -737,3 +772,15 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 ip_igmp_snooping:
   globally_enabled: true
+monitor_sessions:
+- name: DMF
+  sources:
+  - name: Ethernet14
+    direction: both
+  - name: Port-Channel44
+    direction: both
+  - name: Port-Channel44
+    direction: both
+  destinations:
+  - Ethernet17
+  encapsulation_gre_metadata_tx: true
