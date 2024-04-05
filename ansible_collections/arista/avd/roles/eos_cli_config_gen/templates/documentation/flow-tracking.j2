@@ -110,7 +110,11 @@
 {%     if flow_tracking.hardware is arista.avd.defined %}
 
 #### Flow Tracking Hardware
+{%         if flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters is arista.avd.defined(true) %}
 
+Software export of IPFIX data records enabled.
+
+{%         endif %}
 {%         if flow_tracking.hardware.trackers is arista.avd.defined %}
 ##### Trackers Summary
 
@@ -146,16 +150,6 @@
 | {{ tracker.name }} | {{ exporter.name }} | {{ host }} | {{ port }} | {{ local_interface }} |
 {%                 endfor %}
 {%             endfor %}
-{%         endif %}
-{%     endif %}
-{%     if flow_tracking.hardware.record is arista.avd.defined %}
-
-##### Records Summary
-
-| Record | Value |
-| ------ | ----- |
-{%         if flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters is arista.avd.defined(true) %}
-| Format ipfix standard timestamps counters | {{ flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters }} |
 {%         endif %}
 {%     endif %}
 

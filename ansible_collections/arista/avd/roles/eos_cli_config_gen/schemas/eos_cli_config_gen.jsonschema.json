@@ -5209,7 +5209,7 @@
                     "properties": {
                       "mpls": {
                         "type": "boolean",
-                        "description": "Export MPLS forwarding information",
+                        "description": "Export MPLS forwarding information.",
                         "title": "MPLS"
                       },
                       "on_inactive_timeout": {
@@ -5338,6 +5338,7 @@
               "properties": {
                 "format_ipfix_standard_timestamps_counters": {
                   "type": "boolean",
+                  "description": "Enable software export of IPFIX data records.",
                   "title": "Format Ipfix Standard Timestamps Counters"
                 }
               },

@@ -68,6 +68,8 @@ interface Management1
 
 #### Flow Tracking Hardware
 
+Software export of IPFIX data records enabled.
+
 ##### Trackers Summary
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
@@ -85,12 +87,6 @@ interface Management1
 | T3 | T3-E2 | - | - | No local interface |
 | T3 | T3-E3 | - | - | Management1 |
 | T3 | T3-E4 | - | - | No local interface |
-
-##### Records Summary
-
-| Record | Value |
-| ------ | ----- |
-| Format ipfix standard timestamps counters | True |
 
 #### Flow Tracking Device Configuration
 

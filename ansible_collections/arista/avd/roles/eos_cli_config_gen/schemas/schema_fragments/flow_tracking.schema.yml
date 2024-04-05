@@ -61,7 +61,7 @@ keys:
                   keys:
                     mpls:
                       type: bool
-                      description: Export MPLS forwarding information
+                      description: Export MPLS forwarding information.
       hardware:
         type: dict
         $ref: "eos_cli_config_gen#/$defs/flow_tracking"
@@ -71,3 +71,4 @@ keys:
             keys:
               format_ipfix_standard_timestamps_counters:
                 type: bool
+                description: Enable software export of IPFIX data records.
