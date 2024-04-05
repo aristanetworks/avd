@@ -14,11 +14,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_gateway") | String |  |  |  | Management interface gateway in IPv4 format. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_gateway") | String |  |  |  | This  key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].mgmt_gateway") | String |  |  |  | This  key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.nodes.[].mgmt_gateway") | String |  |  |  | Management interface gateway in IPv4 format. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.nodes.[].mgmt_gateway") | String |  |  |  | This  key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
 
 === "YAML"
 
@@ -44,7 +44,7 @@
               # The Node Name is used as "hostname".
             - name: <str; required; unique>
 
-              # Management interface gateway in IPv4 format.
+              # This  key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
               mgmt_gateway: <str>
 
           # This  key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
@@ -56,6 +56,6 @@
           # The Node Name is used as "hostname".
         - name: <str; required; unique>
 
-          # Management interface gateway in IPv4 format.
+          # This  key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
           mgmt_gateway: <str>
     ```

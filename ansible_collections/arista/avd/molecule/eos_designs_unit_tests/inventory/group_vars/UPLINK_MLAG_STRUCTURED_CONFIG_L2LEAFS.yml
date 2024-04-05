@@ -40,9 +40,9 @@ l2leaf:
           id: 3
           mgmt_ip: 192.168.201.202/24
           uplink_switch_interfaces: [ Ethernet4, Ethernet4 ]
-          mgmt_gateway: 1.1.1.3
+          mgmt_gateway: 192.168.201.254
         - name: TEST-MGMT-GATEWAY-IN-NODE-GROUP1
           id: 4
           mgmt_ip: 192.168.201.202/24
           uplink_switch_interfaces: [ Ethernet3, Ethernet3 ]
-      mgmt_gateway: 1.1.1.2
+      mgmt_gateway: 192.168.201.253

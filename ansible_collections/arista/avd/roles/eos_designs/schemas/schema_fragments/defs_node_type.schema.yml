@@ -1340,6 +1340,3 @@ $defs:
             name:
               type: str
               description: The Node Name is used as "hostname".
-            mgmt_gateway:
-              type: str
-              description: Management interface gateway in IPv4 format.
