@@ -7,6 +7,27 @@
       ansible.builtin.import_role:
         name: arista.avd.build_output_folders
       run_once: true
-    - name: Generate intended variables
+    - name: Generate intended configuration - default node
       ansible.builtin.import_role:
         name: arista.avd.dhcp_provisioner
+      vars:
+        fabric_group: DC1_SPINES
+    - name: rename the dhcp structured config file
+      ansible.builtin.shell: |
+        mv -f ./intended/structured_configs/cvp/ztp_configuration.yml ./intended/structured_configs/cvp/ztp_configuration_default_nodes.yml
+    - name: Generate intended configuration - custom node types with 3.x syntax using a dict of dicts
+      ansible.builtin.import_role:
+        name: arista.avd.dhcp_provisioner
+      vars:
+        fabric_group: DC1_L2LEAFS
+    - name: rename the dhcp structured config file
+      ansible.builtin.shell: |
+        mv -f ./intended/structured_configs/cvp/ztp_configuration.yml ./intended/structured_configs/cvp/ztp_configuration_custom_nodes_3x_syntax.yml
+    - name: Generate intended configuration - custom node types with 4.x syntax using a list of dicts
+      ansible.builtin.import_role:
+        name: arista.avd.dhcp_provisioner
+      vars:
+        fabric_group: DC1_LEAFS
+    - name: rename the dhcp structured config file
+      ansible.builtin.shell: |
+        mv -f ./intended/structured_configs/cvp/ztp_configuration.yml ./intended/structured_configs/cvp/ztp_configuration_custom_nodes_4x_syntax.yml
