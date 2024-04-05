@@ -19,7 +19,7 @@ jobs:
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -81,9 +81,9 @@ jobs:
     needs: file-changes
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
       - name: Install Python requirements
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
@@ -111,9 +111,9 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python_version }}
       - name: 'Install Python requirements'
@@ -146,7 +146,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
@@ -181,7 +181,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
@@ -240,7 +240,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
@@ -279,7 +279,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
@@ -319,7 +319,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
@@ -346,9 +346,9 @@ jobs:
       - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: |
             3.10
@@ -370,7 +370,7 @@ jobs:
       - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Install Python requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
@@ -387,9 +387,9 @@ jobs:
       - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: |
             3.10
@@ -411,9 +411,9 @@ jobs:
       - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: |
             3.10
@@ -438,11 +438,11 @@ jobs:
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
       GALAXY_IMPORTER_CONFIG: galaxy-importer/galaxy-importer.cfg
     steps:
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: |
             3.10
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Install Python & Ansible requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
@@ -477,9 +477,9 @@ jobs:
       - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: |
             3.10
