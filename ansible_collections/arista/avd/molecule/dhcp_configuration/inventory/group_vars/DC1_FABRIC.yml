@@ -149,15 +149,6 @@ l2leaf:
           mgmt_ip: 192.168.200.112/24
           mac_address: '0c:1d:c0:1d:62:01'
           l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
-custom_l2leaf:
-  defaults:
-    platform: vEOS-LAB
-    parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
-    uplink_interfaces: [ Ethernet1, Ethernet2 ]
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 16384
-  node_groups:
     - group: DC1_L2LEAF2
       nodes:
         - name: DC1-L2LEAF2A
@@ -167,13 +158,15 @@ custom_l2leaf:
         - name: DC1-L2LEAF2B
           id: 10
           mgmt_ip: 192.168.200.114/24
-          mac_address: '0c:1d:c0:1d:62:22'
+          mac_address: '0c:1d:c0:1d:62:01'
           l3leaf_interfaces: [ Ethernet8, Ethernet8 ]
 
 spine_bgp_defaults:
+  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
 
 leaf_bgp_defaults:
+  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
 
 # Update p2p mtu 9000 -> 1500
