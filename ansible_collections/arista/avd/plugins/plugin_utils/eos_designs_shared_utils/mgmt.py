@@ -54,7 +54,7 @@ class MgmtMixin:
 
     @cached_property
     def ipv6_mgmt_gateway(self: SharedUtils) -> str | None:
-        return get(self.hostvars, "ipv6_mgmt_gateway")
+        return get(self.switch_data_combined, "ipv6_mgmt_gateway", default=get(self.hostvars, "ipv6_mgmt_gateway"))
 
     @cached_property
     def default_mgmt_method(self: SharedUtils) -> str | None:

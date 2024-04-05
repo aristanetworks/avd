@@ -65,13 +65,16 @@ $defs:
             format: cidr
           mgmt_gateway:
             type: str
-            description: This  key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+            description: This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
             description: Node management interface IPv6 address.
             type: str
             format: cidr
+          ipv6_mgmt_gateway:
+            type: str
+            description: This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
