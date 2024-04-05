@@ -1,6 +1,6 @@
 type: l2leaf
 
-# Custom node types with old syntax
+# Custom node types with AVD 3.x syntax using a dict of dicts
 node_type_keys:
 
   spine:
