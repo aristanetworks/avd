@@ -6561,8 +6561,8 @@ $defs:
             format: cidr
           mgmt_gateway:
             type: str
-            description: This `mgmt_gateway` defined under node_group/node takes precedence
-              over the globally defined `mgmt_gateway`.
+            description: This  key sets the management gateway for the device. It
+              takes precedence over the global `mgmt_gateway`.
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
