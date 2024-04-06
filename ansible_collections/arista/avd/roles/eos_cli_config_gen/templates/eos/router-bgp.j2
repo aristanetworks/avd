@@ -651,6 +651,12 @@ router bgp {{ router_bgp.as }}
 {%             elif neighbor.activate is arista.avd.defined(false) %}
       no neighbor {{ neighbor.ip_address }} activate
 {%             endif %}
+{%             if neighbor.rcf_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} rcf in {{ neighbor.rcf_in }}()
+{%             endif %}
+{%             if neighbor.rcf_out is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} rcf out {{ neighbor.rcf_out }}()
+{%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_evpn.next_hop.resolution_disabled is arista.avd.defined(true) %}
       next-hop resolution disabled

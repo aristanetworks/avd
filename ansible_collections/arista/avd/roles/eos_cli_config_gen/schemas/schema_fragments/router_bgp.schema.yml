@@ -940,6 +940,12 @@ keys:
                   type: str
                 activate:
                   type: bool
+                rcf_in:
+                  type: str
+                  description: Inbound rcf function name without parenthesis.
+                rcf_out:
+                  type: str
+                  description: Outbound rcf function name without parenthesis.
           peer_groups:
             type: list
             primary_key: name
@@ -961,10 +967,10 @@ keys:
                   description: Outbound route-map name.
                 rcf_in:
                   type: str
-                  description: Inbound rcf function name without parentheses.
+                  description: Inbound rcf function name without parenthesis.
                 rcf_out:
                   type: str
-                  description: Outbound rcf function name without parentheses.
+                  description: Outbound rcf function name without parenthesis.
                 domain_remote:
                   type: bool
                 encapsulation:
@@ -1141,10 +1147,10 @@ keys:
                   description: Outbound route-map name.
                 rcf_in:
                   type: str
-                  description: Inbound rcf function name without parentheses.
+                  description: Inbound rcf function name without parenthesis.
                 rcf_out:
                   type: str
-                  description: Outbound rcf function name without parentheses.
+                  description: Outbound rcf function name without parenthesis.
                 default_originate:
                   type: dict
                   keys:
@@ -1197,10 +1203,10 @@ keys:
                   description: Outbound route-map name.
                 rcf_in:
                   type: str
-                  description: Inbound rcf function name without parentheses.
+                  description: Inbound rcf function name without parenthesis.
                 rcf_out:
                   type: str
-                  description: Outbound rcf function name without parentheses.
+                  description: Outbound rcf function name without parenthesis.
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -1228,7 +1234,7 @@ keys:
                   type: bool
                 rcf:
                   type: str
-                  description: RCF function name without parentheses.
+                  description: RCF function name without parenthesis.
       address_family_ipv4_multicast:
         type: dict
         keys:
@@ -1355,10 +1361,10 @@ keys:
                   description: Outbound route-map name.
                 rcf_in:
                   type: str
-                  description: Inbound rcf function name without parentheses.
+                  description: Inbound rcf function name without parenthesis.
                 rcf_out:
                   type: str
-                  description: Outbound rcf function name without parentheses.
+                  description: Outbound rcf function name without parenthesis.
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -1385,10 +1391,10 @@ keys:
                   description: Outbound route-map name.
                 rcf_in:
                   type: str
-                  description: Inbound rcf function name without parentheses.
+                  description: Inbound rcf function name without parenthesis.
                 rcf_out:
                   type: str
-                  description: Outbound rcf function name without parentheses.
+                  description: Outbound rcf function name without parenthesis.
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -1411,7 +1417,7 @@ keys:
                   type: bool
                 rcf:
                   type: str
-                  description: RCF function name without parentheses.
+                  description: RCF function name without parenthesis.
       address_family_ipv6_multicast:
         type: dict
         keys:

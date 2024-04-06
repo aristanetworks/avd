@@ -98,14 +98,14 @@ router_bgp:
         prefix_list_in: PL-FOO-v4-IN
         prefix_list_out: PL-FOO-v4-OUT
       - ip_address: 10.2.3.8
-        rcf_in: Address-Family_IPV4_In
+        rcf_in: Address_Family_IPV4_In
       - ip_address: 10.2.3.9
-        rcf_out: Address-Family_IPV4_Out
+        rcf_out: Address_Family_IPV4_Out
     redistribute_routes:
       - source_protocol: connected
-        rcf: Address-Family_IPV4_Connected
+        rcf: Address_Family_IPV4_Connected
       - source_protocol: static
-        rcf: Address-Family_IPV4_Static
+        rcf: Address_Family_IPV4_Static
   address_family_ipv6:
     networks:
       - prefix: 2001:db8:100::/40
@@ -120,8 +120,8 @@ router_bgp:
         prefix_list_in: PL-FOO-v6-IN
         prefix_list_out: PL-FOO-v6-OUT
       - ip_address: 2001:db8::2
-        rcf_in: Address-Family_IPV6_in
-        rcf_out: Address-Family_IPV6_out
+        rcf_in: Address_Family_IPV6_In
+        rcf_out: Address_Family_IPV6_Out
     redistribute_routes:
       - source_protocol: static
         route_map: RM-IPV6-STATIC-TO-BGP
@@ -132,7 +132,7 @@ router_bgp:
         # this should not do anything as leaked is generated when source protocol is bgp
         include_leaked: true
       - source_protocol: connected
-        rcf: Address-Family_IPV6_Connected
+        rcf: Address_Family_IPV6_Connected
   neighbors:
     - ip_address: 192.0.3.1
       remote_as: 65432

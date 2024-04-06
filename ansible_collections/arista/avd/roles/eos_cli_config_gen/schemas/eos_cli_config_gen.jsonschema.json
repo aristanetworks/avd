@@ -18236,6 +18236,16 @@
                   "activate": {
                     "type": "boolean",
                     "title": "Activate"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound rcf function name without parenthesis.",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound rcf function name without parenthesis.",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -18274,12 +18284,12 @@
                   },
                   "rcf_in": {
                     "type": "string",
-                    "description": "Inbound rcf function name without parentheses",
+                    "description": "Inbound rcf function name without parenthesis.",
                     "title": "RCF In"
                   },
                   "rcf_out": {
                     "type": "string",
-                    "description": "Outbound rcf function name without parentheses",
+                    "description": "Outbound rcf function name without parenthesis.",
                     "title": "RCF Out"
                   },
                   "domain_remote": {
@@ -18608,12 +18618,12 @@
                   },
                   "rcf_in": {
                     "type": "string",
-                    "description": "Inbound rcf function name without parentheses.",
+                    "description": "Inbound rcf function name without parenthesis.",
                     "title": "RCF In"
                   },
                   "rcf_out": {
                     "type": "string",
-                    "description": "Outbound rcf function name without parentheses.",
+                    "description": "Outbound rcf function name without parenthesis.",
                     "title": "RCF Out"
                   },
                   "default_originate": {
@@ -18716,12 +18726,12 @@
                   },
                   "rcf_in": {
                     "type": "string",
-                    "description": "Inbound rcf function name without parentheses.",
+                    "description": "Inbound rcf function name without parenthesis.",
                     "title": "RCF In"
                   },
                   "rcf_out": {
                     "type": "string",
-                    "description": "Outbound rcf function name without parentheses.",
+                    "description": "Outbound rcf function name without parenthesis.",
                     "title": "RCF Out"
                   },
                   "prefix_list_in": {
@@ -18778,7 +18788,7 @@
                   },
                   "rcf": {
                     "type": "string",
-                    "description": "RCF function name without parentheses.",
+                    "description": "RCF function name without parenthesis.",
                     "title": "RCF"
                   }
                 },
@@ -19036,12 +19046,12 @@
                   },
                   "rcf_in": {
                     "type": "string",
-                    "description": "Inbound rcf function name without parentheses.",
+                    "description": "Inbound rcf function name without parenthesis.",
                     "title": "RCF In"
                   },
                   "rcf_out": {
                     "type": "string",
-                    "description": "Outbound rcf function name without parentheses.",
+                    "description": "Outbound rcf function name without parenthesis.",
                     "title": "RCF Out"
                   },
                   "prefix_list_in": {
@@ -19090,12 +19100,12 @@
                   },
                   "rcf_in": {
                     "type": "string",
-                    "description": "Inbound rcf function name without parentheses.",
+                    "description": "Inbound rcf function name without parenthesis.",
                     "title": "RCF In"
                   },
                   "rcf_out": {
                     "type": "string",
-                    "description": "Outbound rcf function name without parentheses.",
+                    "description": "Outbound rcf function name without parenthesis.",
                     "title": "RCF Out"
                   },
                   "prefix_list_in": {
@@ -19138,7 +19148,7 @@
                   },
                   "rcf": {
                     "type": "string",
-                    "description": "RCF function name without parentheses.",
+                    "description": "RCF function name without parenthesis.",
                     "title": "RCF"
                   }
                 },
