@@ -33,6 +33,7 @@ class CvPathfinderMixin:
                 "role": self.shared_utils.cv_pathfinder_role,
                 "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
                 "vtep_ip": self.shared_utils.vtep_ip,
+                "region": get(self.shared_utils.wan_region or {}, "name"),
                 "interfaces": self._metadata_interfaces(),
                 "pathgroups": self._metadata_pathgroups(),
                 "regions": self._metadata_regions(),
@@ -162,7 +163,7 @@ class CvPathfinderMixin:
                         "constraints": {
                             "jitter": lb_policy.get("jitter"),
                             "latency": lb_policy.get("latency"),
-                            "lossrate": float(lb_policy["lossrate"]) if "lossrate" in lb_policy else None,
+                            "lossrate": float(lb_policy["loss_rate"]) if "loss_rate" in lb_policy else None,
                         },
                         "description": "",  # TODO: Not sure we have this field anywhere
                         "id": profile["id"],

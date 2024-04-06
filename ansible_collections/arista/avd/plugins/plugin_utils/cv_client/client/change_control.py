@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from logging import getLogger
 from typing import TYPE_CHECKING, Literal
 
 from ..api.arista.changecontrol.v1 import (
@@ -19,6 +20,8 @@ from ..api.arista.changecontrol.v1 import (
     ChangeControlKey,
     ChangeControlRequest,
     ChangeControlServiceStub,
+    ChangeControlStatus,
+    ChangeControlStreamRequest,
     FlagConfig,
 )
 from .exceptions import get_cv_client_exception
@@ -27,6 +30,15 @@ if TYPE_CHECKING:
     from aristaproto import _DateTime
 
     from .cv_client import CVClient
+
+LOGGER = getLogger(__name__)
+
+CHANGE_CONTROL_STATUS_MAP = {
+    "completed": ChangeControlStatus.COMPLETED,
+    "unspecified": ChangeControlStatus.UNSPECIFIED,
+    "running": ChangeControlStatus.RUNNING,
+    "scheduled": ChangeControlStatus.SCHEDULED,
+}
 
 
 class ChangeControlMixin:
@@ -112,7 +124,7 @@ class ChangeControlMixin:
         Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API
 
         Parameters:
-            change_control_id: Unique identifier the Change Control.
+            change_control_id: Unique identifier of the Change Control.
             timestamp: Timestamp for the change control information to be approved. \
                 This must be using the aristaproto._DateTime subclass which contains nanosecond information.
             description: Description to set on the approval.
@@ -148,7 +160,7 @@ class ChangeControlMixin:
         Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API
 
         Parameters:
-            change_control_id: Unique identifier the Change Control.
+            change_control_id: Unique identifier of the Change Control.
             description: Description to add for the start request.
             timeout: Timeout in seconds.
 
@@ -169,3 +181,42 @@ class ChangeControlMixin:
 
         except Exception as e:
             raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
+
+    async def wait_for_change_control_state(
+        self: CVClient,
+        cc_id: str,
+        state: Literal["completed", "unspecified", "running", "scheduled"],
+        timeout: float = 3600.0,
+    ) -> ChangeControl:
+        """
+        Monitor a Change control using arista.changecontrol.v1.ChangeControlService.Subscribe API for a response to the given cc_id.
+        Blocks until a reponse is returned or timed out.
+
+        Parameters:
+            cc_id: Unique identifier of the change control.
+            state: Change Control state to wait for.
+            timeout: Timeout in seconds for the Change Control to reach the expected state.
+
+        Returns:
+            Full change control object
+        """
+        request = ChangeControlStreamRequest(
+            partial_eq_filter=[
+                ChangeControl(
+                    key=ChangeControlKey(id=cc_id),
+                )
+            ],
+        )
+        client = ChangeControlServiceStub(self._channel)
+        try:
+            responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+            async for response in responses:
+                LOGGER.debug("wait_for_change_control_complete: Response is '%s.'", response)
+                if hasattr(response, "value"):
+                    if response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
+                        LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)
+                        return response.value
+                LOGGER.debug("wait_for_change_control_complete: Status of change control is '%s.'", response)
+
+        except Exception as e:
+            raise get_cv_client_exception(e, f"CC ID '{cc_id}')") or e

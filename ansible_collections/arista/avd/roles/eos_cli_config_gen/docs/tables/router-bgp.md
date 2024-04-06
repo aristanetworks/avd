@@ -732,6 +732,7 @@
     | [<samp>&nbsp;&nbsp;session_trackers</samp>](## "router_bgp.session_trackers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.session_trackers.[].name") | String | Required, Unique |  |  | Name of session tracker |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "router_bgp.session_trackers.[].recovery_delay") | Integer |  |  | Min: 1<br>Max: 3600 | Recovery delay in seconds |
+    | [<samp>&nbsp;&nbsp;eos_cli</samp>](## "router_bgp.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the Router BGP in the final EOS configuration. |
 
 === "YAML"
 
@@ -1980,4 +1981,7 @@
 
           # Recovery delay in seconds
           recovery_delay: <int; 1-3600>
+
+      # Multiline EOS CLI rendered directly on the Router BGP in the final EOS configuration.
+      eos_cli: <str>
     ```

@@ -8,6 +8,8 @@ type: dict
 keys:
   flow_tracking_settings:
     description: |-
+      PREVIEW: This key is currently not supported
+
       Define the flow tracking parameters for this topology.
     type: dict
     keys:

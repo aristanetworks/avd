@@ -86,11 +86,11 @@ plugins:
       name: configlet_build_config
       namespace: ''
       version_added: 1.0.0
-    deploy_to_cv:
+    cv_workflow:
       description: Deploy various objects to CloudVision
-      name: deploy_to_cv
+      name: cv_workflow
       namespace: ''
-      version_added: 4.6.0
+      version_added: 4.7.0
     eos_designs_facts:
       description: Set eos_designs facts
       name: eos_designs_facts
@@ -155,4 +155,4 @@ plugins:
         than group_vars or host_vars
       name: global_vars
       version_added: 4.0.0
-version: 4.6.0
+version: 4.7.0
