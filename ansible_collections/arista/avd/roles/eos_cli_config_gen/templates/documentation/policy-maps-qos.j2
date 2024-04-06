@@ -13,27 +13,29 @@
 
 ##### {{ policy_map.name }}
 
-| class | Set | Value | Police |
-| ----- | --- | ----- | ------ |
+| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police |
+| ---------- | --- | -----| ------------- | --------------- | ------ |
 {%         for class in policy_map.classes | arista.avd.default([]) %}
-{%             for set in class.set | arista.avd.default([]) %}
-| {{ class.name }} | {{ set }} | {{ class.set[set] }} | - |
-{%             endfor %}
+{%             set cos = class.set.cos | arista.avd.default("-") %}
+{%             set dscp = class.set.dscp | arista.avd.default("-") %}
+{%             set traffic_class = class.set.traffic_class | arista.avd.default("-") %}
+{%             set drop_precedence = class.set.drop_precedence | arista.avd.default("-") %}
 {%             if class.police.rate is arista.avd.defined %}
-{%                 set police_cli = "| " ~ class.name ~ " | - | - | rate " %}
+{%                 set police_cli = "police rate " %}
 {%                 if class.police.rate.lower_rate is arista.avd.defined and class.police.rate.lower_rate_burst_size is arista.avd.defined %}
 {%                     set police_cli = police_cli ~ class.police.rate.lower_rate ~ " " ~ class.police.rate.lower_rate_unit | arista.avd.default('bps') ~ " burst-size " ~ class.police.rate.lower_rate_burst_size ~ " " ~ class.police.rate.lower_rate_burst_size_unit | arista.avd.default('bytes') %}
 {%                     if class.police.rate.higher_rate is arista.avd.defined and class.police.rate.higher_rate_burst_size is arista.avd.defined %}
 {%                         if class.police.rate.action is arista.avd.defined("dscp") and class.police.rate.dscp_value is arista.avd.defined %}
 {%                             set police_cli = police_cli ~ " action set dscp " ~ class.police.rate.dscp_value %}
 {%                         elif class.police.rate.action is arista.avd.defined("drop-precedence") %}
-{%                             set police_cli = police_cli ~ " action set drop-precedence" %}
+{%                             set police_cli = police_cli ~ " action set drop-precedence"  %}
 {%                         endif %}
 {%                         set police_cli = police_cli ~ " rate " ~ class.police.rate.higher_rate ~ " " ~ class.police.rate.higher_rate_unit | arista.avd.default('bps') ~ " burst-size " ~ class.police.rate.higher_rate_burst_size ~ " " ~ class.police.rate.higher_rate_burst_size_unit | arista.avd.default('bytes') %}
 {%                     endif %}
 {%                 endif %}
-{{ police_cli }} |
 {%             endif %}
+{%             set police = police_cli | arista.avd.default("-") %}
+| {{ class.name }} | {{ cos }} | {{ dscp }} | {{ traffic_class }} | {{ drop_precedence }} | {{ police }} |
 {%         endfor %}
 {%     endfor %}
 
