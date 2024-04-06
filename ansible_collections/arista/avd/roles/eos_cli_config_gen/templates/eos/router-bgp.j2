@@ -419,6 +419,10 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if redistribute_route.route_map is arista.avd.defined %}
 {%                 set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
+{%             elif redistribute_route.source_protocol in ["connected", "static", "isis", "user", "dynamic"] %}
+{%                 if redistribute_route.rcf is arista.avd.defined %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf ~ "()" %}
+{%                 endif %}
 {%             endif %}
    {{ redistribute_route_cli }}
 {%         endif %}
@@ -1134,6 +1138,12 @@ router bgp {{ router_bgp.as }}
 {%             if peer_group.route_map_out is arista.avd.defined %}
       neighbor {{ peer_group.name }} route-map {{ peer_group.route_map_out }} out
 {%             endif %}
+{%             if peer_group.rcf_in is arista.avd.defined %}
+      neighbor {{ peer_group.name }} rcf in {{ peer_group.rcf_in }}()
+{%             endif %}
+{%             if peer_group.rcf_out is arista.avd.defined %}
+      neighbor {{ peer_group.name }} rcf out {{ peer_group.rcf_out }}()
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_vpn_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -1147,6 +1157,12 @@ router bgp {{ router_bgp.as }}
 {%             if neighbor.route_map_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_out }} out
 {%             endif %}
+{%             if neighbor.rcf_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} rcf in {{ neighbor.rcf_in }}()
+{%             endif %}
+{%             if neighbor.rcf_out is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} rcf out {{ neighbor.rcf_out }}()
+{%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_vpn_ipv4.neighbor_default_encapsulation_mpls_next_hop_self.source_interface is arista.avd.defined %}
       neighbor default encapsulation mpls next-hop-self source-interface {{ router_bgp.address_family_vpn_ipv4.neighbor_default_encapsulation_mpls_next_hop_self.source_interface }}
@@ -1154,6 +1170,22 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_vpn_ipv4.route.import_match_failure_action is arista.avd.defined('discard') %}
       route import match-failure action discard
 {%         endif %}
+{%         for redistribute_route in router_bgp.address_family_vpn_ipv4.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
+{%             if redistribute_route.source_protocol is arista.avd.defined %}
+{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
+{%                 if redistribute_route.source_protocol == "bgp" %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " leaked" %}
+{%                 elif redistribute_route.include_leaked is arista.avd.defined %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
+{%                 endif %}
+{%                 if redistribute_route.source_protocol in ["connected", "static", "isis", "user", "dynamic"] %}
+{%                     if redistribute_route.rcf is arista.avd.defined %}
+{%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf ~ "()" %}
+{%                     endif %}
+{%                 endif %}
+      {{ redistribute_route_cli }}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {# address family vpn-ipv6 activation #}
 {%     if router_bgp.address_family_vpn_ipv6 is arista.avd.defined %}
@@ -1174,6 +1206,12 @@ router bgp {{ router_bgp.as }}
 {%             if peer_group.route_map_out is arista.avd.defined %}
       neighbor {{ peer_group.name }} route-map {{ peer_group.route_map_out }} out
 {%             endif %}
+{%             if peer_group.rcf_in is arista.avd.defined %}
+      neighbor {{ peer_group.name }} rcf in {{ peer_group.rcf_in }}()
+{%             endif %}
+{%             if peer_group.rcf_out is arista.avd.defined %}
+      neighbor {{ peer_group.name }} rcf out {{ peer_group.rcf_out }}()
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_vpn_ipv6.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -1187,6 +1225,12 @@ router bgp {{ router_bgp.as }}
 {%             if neighbor.route_map_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_out }} out
 {%             endif %}
+{%             if neighbor.rcf_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} rcf in {{ neighbor.rcf_in }}()
+{%             endif %}
+{%             if neighbor.rcf_out is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} rcf out {{ neighbor.rcf_out }}()
+{%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_vpn_ipv6.neighbor_default_encapsulation_mpls_next_hop_self.source_interface is arista.avd.defined %}
       neighbor default encapsulation mpls next-hop-self source-interface {{ router_bgp.address_family_vpn_ipv6.neighbor_default_encapsulation_mpls_next_hop_self.source_interface }}
@@ -1194,6 +1238,22 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_vpn_ipv6.route.import_match_failure_action is arista.avd.defined('discard') %}
       route import match-failure action discard
 {%         endif %}
+{%         for redistribute_route in router_bgp.address_family_vpn_ipv6.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
+{%             if redistribute_route.source_protocol is arista.avd.defined %}
+{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
+{%                 if redistribute_route.source_protocol == "bgp" %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " leaked" %}
+{%                 elif redistribute_route.include_leaked is arista.avd.defined %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
+{%                 endif %}
+{%                 if redistribute_route.source_protocol in ["connected", "static", "isis", "user", "dynamic"] %}
+{%                     if redistribute_route.rcf is arista.avd.defined %}
+{%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf ~ "()" %}
+{%                     endif %}
+{%                 endif %}
+      {{ redistribute_route_cli }}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {# L3VPNs - (vxlan) VRFs #}
 {%     for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}

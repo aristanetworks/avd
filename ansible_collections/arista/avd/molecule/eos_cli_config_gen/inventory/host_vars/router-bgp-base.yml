@@ -80,6 +80,10 @@ router_bgp:
       route_map: RM-REDISTRIBUTE-BGP
       # this should not do anything as leaked is generated when source protocol is bgp
       include_leaked: true
+    - source_protocol: connected
+      rcf: Router_BGP_Connected
+    - source_protocol: static
+      rcf: Router_BGP_Static
   address_family_ipv4:
     networks:
       - prefix: 10.0.0.0/8

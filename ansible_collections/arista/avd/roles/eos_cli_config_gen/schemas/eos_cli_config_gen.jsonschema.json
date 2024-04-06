@@ -17287,6 +17287,11 @@
                 "type": "string",
                 "title": "Route Map"
               },
+              "rcf": {
+                "type": "string",
+                "description": "RCF function name without parenthesis.",
+                "title": "RCF"
+              },
               "include_leaked": {
                 "type": "boolean",
                 "title": "Include Leaked"
@@ -19495,6 +19500,16 @@
                     "type": "string",
                     "description": "Outbound route-map name",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound rcf function name without parenthesis.",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound rcf function name without parenthesis.",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -19546,6 +19561,16 @@
                     "type": "string",
                     "description": "Outbound route-map name",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound rcf function name without parenthesis.",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound rcf function name without parenthesis.",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -19571,6 +19596,35 @@
                 "^_.+$": {}
               },
               "title": "Neighbor Default Encapsulation MPLS Next Hop Self"
+            },
+            "redistribute_routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_protocol": {
+                    "type": "string",
+                    "title": "Source Protocol"
+                  },
+                  "include_leaked": {
+                    "type": "boolean",
+                    "title": "Include Leaked"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name without parenthesis.",
+                    "title": "RCF"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "source_protocol"
+                ]
+              },
+              "title": "Redistribute Routes"
             }
           },
           "additionalProperties": false,
@@ -19609,6 +19663,16 @@
                     "type": "string",
                     "description": "Outbound route-map name",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound rcf function name without parenthesis.",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound rcf function name without parenthesis.",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -19660,6 +19724,16 @@
                     "type": "string",
                     "description": "Outbound route-map name",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound rcf function name without parenthesis.",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound rcf function name without parenthesis.",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -19685,6 +19759,35 @@
                 "^_.+$": {}
               },
               "title": "Neighbor Default Encapsulation MPLS Next Hop Self"
+            },
+            "redistribute_routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_protocol": {
+                    "type": "string",
+                    "title": "Source Protocol"
+                  },
+                  "include_leaked": {
+                    "type": "boolean",
+                    "title": "Include Leaked"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name without parenthesis.",
+                    "title": "RCF"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "source_protocol"
+                ]
+              },
+              "title": "Redistribute Routes"
             }
           },
           "additionalProperties": false,

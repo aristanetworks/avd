@@ -10390,6 +10390,9 @@ keys:
               type: str
             route_map:
               type: str
+            rcf:
+              type: str
+              description: RCF function name without parenthesis.
             include_leaked:
               type: bool
       vlan_aware_bundles:
@@ -11503,6 +11506,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name
+                rcf_in:
+                  type: str
+                  description: Inbound rcf function name without parenthesis.
+                rcf_out:
+                  type: str
+                  description: Outbound rcf function name without parenthesis.
           route:
             type: dict
             keys:
@@ -11528,11 +11537,32 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name
+                rcf_in:
+                  type: str
+                  description: Inbound rcf function name without parenthesis.
+                rcf_out:
+                  type: str
+                  description: Outbound rcf function name without parenthesis.
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
               source_interface:
                 type: str
+          redistribute_routes:
+            type: list
+            primary_key: source_protocol
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                source_protocol:
+                  type: str
+                include_leaked:
+                  type: bool
+                rcf:
+                  type: str
+                  description: RCF function name without parenthesis.
       address_family_vpn_ipv6:
         type: dict
         keys:
@@ -11557,6 +11587,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name
+                rcf_in:
+                  type: str
+                  description: Inbound rcf function name without parenthesis.
+                rcf_out:
+                  type: str
+                  description: Outbound rcf function name without parenthesis.
           route:
             type: dict
             keys:
@@ -11582,11 +11618,32 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name
+                rcf_in:
+                  type: str
+                  description: Inbound rcf function name without parenthesis.
+                rcf_out:
+                  type: str
+                  description: Outbound rcf function name without parenthesis.
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
               source_interface:
                 type: str
+          redistribute_routes:
+            type: list
+            primary_key: source_protocol
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                source_protocol:
+                  type: str
+                include_leaked:
+                  type: bool
+                rcf:
+                  type: str
+                  description: RCF function name without parenthesis.
       vrfs:
         type: list
         primary_key: name
