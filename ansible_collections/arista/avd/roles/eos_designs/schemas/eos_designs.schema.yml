@@ -2611,6 +2611,8 @@ keys:
             configuration.
         security_entropy_source:
           type: str
+          description: Entropy source improves the randomness of the numbers used
+            to generate MACsec's cryptographic keys.
     default:
     - platforms:
       - default

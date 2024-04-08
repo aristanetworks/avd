@@ -44332,6 +44332,7 @@
           },
           "security_entropy_source": {
             "type": "string",
+            "description": "Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.",
             "title": "Security Entropy Source"
           }
         },
