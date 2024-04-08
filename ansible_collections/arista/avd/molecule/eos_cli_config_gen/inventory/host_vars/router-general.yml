@@ -27,5 +27,3 @@ router_general:
           function DENY_ALL() {
             return true;
             }
-    commit: true
-    compile: true
