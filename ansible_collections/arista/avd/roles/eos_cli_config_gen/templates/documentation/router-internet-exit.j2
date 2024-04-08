@@ -16,7 +16,7 @@
 {%         for exit_group in router_internet_exit.exit_groups | arista.avd.natural_sort('name') %}
 {%             set local_connections = [] %}
 {%             set fib_default = exit_group.fib_default | arista.avd.default("-") %}
-{%             for local_connection in exit_group.local_connections | arista.avd.default([]) | arista.avd.natural_sort('name') %}
+{%             for local_connection in exit_group.local_connections | arista.avd.natural_sort('name') %}
 {%                 do local_connections.append(local_connection.name) %}
 {%             endfor %}
 {%             if local_connections != [] %}
@@ -34,7 +34,7 @@
 | ----------- | ----------- |
 {%         for policy in router_internet_exit.policies | arista.avd.natural_sort('name') %}
 {%             set policy_exit_groups = [] %}
-{%             for exit_group in policy.exit_groups | arista.avd.default([]) | arista.avd.natural_sort('name') %}
+{%             for exit_group in policy.exit_groups | arista.avd.natural_sort('name') %}
 {%                 if exit_group.name is arista.avd.defined %}
 {%                     do policy_exit_groups.append(exit_group.name) %}
 {%                 endif %}
