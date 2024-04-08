@@ -2194,7 +2194,7 @@
                     },
                     "apply_alternate": {
                       "type": "boolean",
-                      "description": "Apply alternate action if primary action fails.",
+                      "description": "Apply alternate action if primary action fails.\neg. aaa unresponsive action apply cached-results else traffic allow",
                       "title": "Apply Alternate"
                     },
                     "traffic_allow": {
@@ -2204,6 +2204,8 @@
                     },
                     "traffic_allow_vlan": {
                       "type": "integer",
+                      "minimum": 1,
+                      "maximum": 4094,
                       "title": "Traffic Allow VLAN"
                     }
                   },
@@ -2253,7 +2255,7 @@
                     },
                     "apply_alternate": {
                       "type": "boolean",
-                      "description": "Apply alternate action if primary action fails.",
+                      "description": "Apply alternate action if primary action fails.\neg. aaa unresponsive phone action apply cached-results else traffic allow",
                       "title": "Apply Alternate"
                     },
                     "traffic_allow": {

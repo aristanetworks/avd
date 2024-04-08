@@ -27,25 +27,29 @@ dot1x
 {%                 for action in actions %}
 {%                     if dot1x.aaa.unresponsive[action.name] is arista.avd.defined %}
 {%                         set aaa_action_config = action.config %}
-{%                         if dot1x.aaa.unresponsive[action.name].apply_cached_results is arista.avd.defined(true) %}
-{%                             set action_apply_config = "apply cached-results" %}
-{%                             if dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration is arista.avd.defined and dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration_unit is arista.avd.defined %}
-{%                                 set action_apply_config = action_apply_config ~ " timeout " ~ dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration ~ " " ~ dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration_unit %}
+{%                         if dot1x.aaa.unresponsive[action.name].apply_cached_results is arista.avd.defined(true) or
+                              dot1x.aaa.unresponsive[action.name].traffic_allow is arista.avd.defined(true) or
+                              dot1x.aaa.unresponsive[action.name].traffic_allow_vlan is arista.avd.defined %}
+{%                             if dot1x.aaa.unresponsive[action.name].apply_cached_results is arista.avd.defined(true) %}
+{%                                 set action_apply_config = "apply cached-results" %}
+{%                                 if dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration is arista.avd.defined and dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration_unit is arista.avd.defined %}
+{%                                     set action_apply_config = action_apply_config ~ " timeout " ~ dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration ~ " " ~ dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration_unit %}
+{%                                 endif %}
 {%                             endif %}
-{%                         endif %}
-{%                         if dot1x.aaa.unresponsive[action.name].traffic_allow is arista.avd.defined(true) %}
-{%                             set traffic = "traffic allow" %}
-{%                         elif dot1x.aaa.unresponsive[action.name].traffic_allow_vlan is arista.avd.defined %}
-{%                             set traffic = "traffic allow vlan " ~ dot1x.aaa.unresponsive[action.name].traffic_allow_vlan %}
-{%                         endif %}
-{%                         if dot1x.aaa.unresponsive[action.name].apply_alternate is arista.avd.defined(true) and action_apply_config is arista.avd.defined and traffic is arista.avd.defined %}
-{%                             set aaa_action_config = aaa_action_config ~ " " ~ action_apply_config ~ " else " ~ traffic %}
-{%                         elif action_apply_config is arista.avd.defined %}
-{%                             set aaa_action_config = aaa_action_config ~ " " ~ action_apply_config %}
-{%                         elif traffic is arista.avd.defined %}
-{%                             set aaa_action_config = aaa_action_config ~ " " ~ traffic %}
-{%                         endif %}
+{%                             if dot1x.aaa.unresponsive[action.name].traffic_allow is arista.avd.defined(true) %}
+{%                                 set traffic = "traffic allow" %}
+{%                             elif dot1x.aaa.unresponsive[action.name].traffic_allow_vlan is arista.avd.defined %}
+{%                                 set traffic = "traffic allow vlan " ~ dot1x.aaa.unresponsive[action.name].traffic_allow_vlan %}
+{%                             endif %}
+{%                             if dot1x.aaa.unresponsive[action.name].apply_alternate is arista.avd.defined(true) and action_apply_config is arista.avd.defined and traffic is arista.avd.defined %}
+{%                                 set aaa_action_config = aaa_action_config ~ " " ~ action_apply_config ~ " else " ~ traffic %}
+{%                             elif action_apply_config is arista.avd.defined %}
+{%                                 set aaa_action_config = aaa_action_config ~ " " ~ action_apply_config %}
+{%                             elif traffic is arista.avd.defined %}
+{%                                 set aaa_action_config = aaa_action_config ~ " " ~ traffic %}
+{%                             endif %}
    {{ aaa_action_config }}
+{%                         endif %}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}

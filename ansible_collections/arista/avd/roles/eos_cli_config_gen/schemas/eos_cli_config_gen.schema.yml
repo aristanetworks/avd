@@ -1569,7 +1569,10 @@ keys:
                         - seconds
                   apply_alternate:
                     type: bool
-                    description: Apply alternate action if primary action fails.
+                    description: 'Apply alternate action if primary action fails.
+
+                      eg. aaa unresponsive action apply cached-results else traffic
+                      allow'
                   traffic_allow:
                     type: bool
                     description: Set action for supplicant traffic when AAA times
@@ -1578,6 +1581,8 @@ keys:
                     type: int
                     convert_types:
                     - str
+                    min: 1
+                    max: 4094
               phone_action:
                 type: dict
                 description: Set action for supplicant when AAA times out.
@@ -1612,7 +1617,10 @@ keys:
                         - seconds
                   apply_alternate:
                     type: bool
-                    description: Apply alternate action if primary action fails.
+                    description: 'Apply alternate action if primary action fails.
+
+                      eg. aaa unresponsive phone action apply cached-results else
+                      traffic allow'
                   traffic_allow:
                     description: Set action for supplicant traffic when AAA times
                       out.
