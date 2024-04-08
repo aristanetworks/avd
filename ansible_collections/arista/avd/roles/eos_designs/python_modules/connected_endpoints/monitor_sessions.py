@@ -52,12 +52,12 @@ class MonitorSessionsMixin(UtilsMixin):
                         "priority": access_group.get("priority"),
                     }
                 append_if_not_duplicate(
-                        list_of_dicts=monitor_session["sources"],
-                        primary_key="name",
-                        new_dict=source,
-                        context="Monitor session defined under connected_endpoints",
-                        context_keys=["name"],
-                    )
+                    list_of_dicts=monitor_session["sources"],
+                    primary_key="name",
+                    new_dict=source,
+                    context="Monitor session defined under connected_endpoints",
+                    context_keys=["name"],
+                )
 
             if (session_settings := merged_settings.get("session_settings")) is not None:
                 monitor_session.update(session_settings)
