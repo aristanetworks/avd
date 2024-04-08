@@ -88,14 +88,8 @@ router_bgp:
           - address_family: evpn
             route_targets:
               - "11:11"
-          - address_family: evpn
-            route_targets:
-              - "11:11"
             rcf: RT_IMPORT_AF_RCF
         export:
-          - address_family: evpn
-            route_targets:
-              - "11:11"
           - address_family: evpn
             route_targets:
               - "11:11"

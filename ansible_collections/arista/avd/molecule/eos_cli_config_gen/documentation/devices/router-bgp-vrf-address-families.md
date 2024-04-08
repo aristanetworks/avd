@@ -80,6 +80,7 @@ router bgp 65001
    !
    address-family ipv6 multicast
       no neighbor FOOBAR activate
+      redistribute isis rcf Router_BGP_Isis()
    !
    vrf VRF01
       !
