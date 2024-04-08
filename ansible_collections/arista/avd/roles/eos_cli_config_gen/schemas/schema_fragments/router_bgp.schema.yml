@@ -1212,6 +1212,9 @@ keys:
                   type: str
                 route_map:
                   type: str
+                rcf:
+                  type: str
+                  description: RCF function name without parenthesis.
       address_family_ipv4_sr_te:
         type: dict
         keys:
@@ -1398,6 +1401,21 @@ keys:
                   description: IPv6 prefix "A:B:C:D:E:F:G:H/I"
                 route_map:
                   type: str
+          redistribute_routes:
+            type: list
+            primary_key: source_protocol
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                source_protocol:
+                  type: str
+                include_leaked:
+                  type: bool
+                rcf:
+                  type: str
+                  description: RCF function name without parenthesis.
       address_family_ipv6_sr_te:
         type: dict
         keys:
@@ -1887,6 +1905,9 @@ keys:
                           type: str
                       route_map:
                         type: str
+                      rcf:
+                        type: str
+                        description: RCF function name without parenthesis.
                 export:
                   type: list
                   primary_key: address_family
@@ -1904,6 +1925,9 @@ keys:
                           type: str
                       route_map:
                         type: str
+                      rcf:
+                        type: str
+                        description: RCF function name without parenthesis.
             router_id:
               description: in IP address format A.B.C.D
               type: str
@@ -2182,6 +2206,9 @@ keys:
                     type: str
                   include_leaked:
                     type: bool
+                  rcf:
+                    type: str
+                    description: RCF function name without parenthesis.
             aggregate_addresses:
               type: list
               primary_key: prefix
