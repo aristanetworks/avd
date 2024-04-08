@@ -20,11 +20,11 @@
 {%             set dscp = class.set.dscp | arista.avd.default("-") %}
 {%             set traffic_class = class.set.traffic_class | arista.avd.default("-") %}
 {%             set drop_precedence = class.set.drop_precedence | arista.avd.default("-") %}
-{%             if class.police.rate.rate is arista.avd.defined and class.police.rate.rate_burst_size is arista.avd.defined %}
-{%                 set police_rate = class.police.rate.rate ~ " " ~ class.police.rate.rate_unit | arista.avd.default('bps') ~ " (" ~ class.police.rate.rate_burst_size ~ " " ~ class.police.rate.rate_burst_size_unit | arista.avd.default('bytes') ~ ")" %}
-{%                 set police_rate = police_rate ~ " -> " ~ class.police.rate.action.type | arista.avd.default("drop") %}
-{%                 if class.police.rate.higher_rate is arista.avd.defined and class.police.rate.higher_rate_burst_size is arista.avd.defined %}
-{%                     set police_rate = police_rate ~ "<br> " ~ class.police.rate.higher_rate ~ " " ~ class.police.rate.higher_rate_unit | arista.avd.default('bps') ~ "(" ~ class.police.rate.higher_rate_burst_size ~ " " ~ class.police.rate.higher_rate_burst_size_unit | arista.avd.default('bytes') ~ ") -> drop" %}
+{%             if class.police.rate is arista.avd.defined and class.police.rate_burst_size is arista.avd.defined %}
+{%                 set police_rate = class.police.rate ~ " " ~ class.police.rate_unit | arista.avd.default('bps') ~ " (" ~ class.police.rate_burst_size ~ " " ~ class.police.rate_burst_size_unit | arista.avd.default('bytes') ~ ")" %}
+{%                 set police_rate = police_rate ~ " -> " ~ class.police.action.type | arista.avd.default("drop") %}
+{%                 if class.police.higher_rate is arista.avd.defined and class.police.higher_rate_burst_size is arista.avd.defined %}
+{%                     set police_rate = police_rate ~ "<br> " ~ class.police.higher_rate ~ " " ~ class.police.higher_rate_unit | arista.avd.default('bps') ~ "(" ~ class.police.higher_rate_burst_size ~ " " ~ class.police.higher_rate_burst_size_unit | arista.avd.default('bytes') ~ ") -> drop" %}
 {%                 endif %}
 {%             endif %}
 {%             set police = police_rate | arista.avd.default("-") %}

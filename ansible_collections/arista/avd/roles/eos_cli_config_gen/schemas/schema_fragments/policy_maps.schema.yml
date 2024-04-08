@@ -99,75 +99,72 @@ keys:
                     type: dict
                     keys:
                       rate:
+                        type: int
+                        convert_types:
+                          - str
+                        description: |-
+                          Specify rate.
+                          Range in kbps <8-200000000>.
+                      rate_unit:
+                        type: str
+                        valid_values:
+                          - "bps"
+                          - "kbps"
+                          - "mbps"
+                          - "pps"
+                        default: "bps"
+                      rate_burst_size:
+                        type: int
+                        convert_types:
+                          - str
+                        description: Range in bytes <256-128000000>.
+                      rate_burst_size_unit:
+                        type: str
+                        valid_values:
+                          - "bytes"
+                          - "kbytes"
+                          - "mbytes"
+                          - "packets"
+                        default: "bytes"
+                      action:
                         type: dict
                         keys:
-                          rate:
-                            type: int
-                            convert_types:
-                              - str
-                            description: |-
-                              Specify rate.
-                              Range in kbps <8-200000000>.
-                          rate_unit:
+                          type:
+                            description: Set action for policed traffic.
                             type: str
                             valid_values:
-                              - "bps"
-                              - "kbps"
-                              - "mbps"
-                              - "pps"
-                            default: "bps"
-                          rate_burst_size:
-                            type: int
-                            convert_types:
-                              - str
-                            description: Range in bytes <256-128000000>.
-                          rate_burst_size_unit:
+                              - "dscp"
+                              - "drop-precedence"
+                          dscp_value:
+                            description: Set when action.type is set to "dscp".
                             type: str
-                            valid_values:
-                              - "bytes"
-                              - "kbytes"
-                              - "mbytes"
-                              - "packets"
-                            default: "bytes"
-                          action:
-                            type: dict
-                            keys:
-                              type:
-                                description: Set action for policed traffic.
-                                type: str
-                                valid_values:
-                                  - "dscp"
-                                  - "drop-precedence"
-                              dscp_value:
-                                description: Set when action.type is set to "dscp".
-                                type: str
-                                convert_types:
-                                  - int
-                          higher_rate:
-                            type: int
                             convert_types:
-                              - str
-                            description: |-
-                              Specify higher rate.
-                              Range in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>.
-                          higher_rate_unit:
-                            type: str
-                            valid_values:
-                              - "bps"
-                              - "kbps"
-                              - "mbps"
-                              - "pps"
-                            default: "bps"
-                          higher_rate_burst_size:
-                            type: int
-                            convert_types:
-                              - str
-                            description: Range in bytes <256-128000000>.
-                          higher_rate_burst_size_unit:
-                            type: str
-                            valid_values:
-                              - "bytes"
-                              - "kbytes"
-                              - "mbytes"
-                              - "packets"
-                            default: "bytes"
+                              - int
+                      higher_rate:
+                        type: int
+                        convert_types:
+                          - str
+                        description: |-
+                          Specify higher rate.
+                          Range in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>.
+                      higher_rate_unit:
+                        type: str
+                        valid_values:
+                          - "bps"
+                          - "kbps"
+                          - "mbps"
+                          - "pps"
+                        default: "bps"
+                      higher_rate_burst_size:
+                        type: int
+                        convert_types:
+                          - str
+                        description: Range in bytes <256-128000000>.
+                      higher_rate_burst_size_unit:
+                        type: str
+                        valid_values:
+                          - "bytes"
+                          - "kbytes"
+                          - "mbytes"
+                          - "packets"
+                        default: "bytes"
