@@ -9,17 +9,9 @@
         name: arista.avd.dhcp_provisioner
       vars:
         fabric_group: DC1_SPINES
-
-- name: Rename the generated files
-  hosts: localhost
-  gather_facts: false
-  connection: local
-  tasks:
-    - name: Rename the dhcp config file
-      ansible.builtin.shell: |
-        mv -f ./intended/configs/dhcpd.conf ./intended/configs/dhcpd_default_nodes.conf
-        mv -f ./intended/structured_configs/cvp/ztp_configuration.yml ./intended/structured_configs/cvp/ztp_configuration_default_nodes.yml
-      changed_when: true
+        # Overwriting destination dirs .. based on the not so glorious role hack for eos_config_dir_name
+        eos_config_dir_name: "configs/default_node_types"
+        structured_cvp_dir: "{{ structured_dir }}/cvp/default_node_types/"
 
 - name: Converge - generate DHCP configuration offline for custom node types with 3.x syntax using a dict of dicts
   hosts: TOOLS
@@ -31,17 +23,9 @@
         name: arista.avd.dhcp_provisioner
       vars:
         fabric_group: DC1_L2LEAFS
-
-- name: Rename the generated files
-  hosts: localhost
-  gather_facts: false
-  connection: local
-  tasks:
-    - name: Rename the dhcp config file
-      ansible.builtin.shell: |
-        mv -f ./intended/configs/dhcpd.conf ./intended/configs/dhcpd_custom_nodes_3x_syntax.conf
-        mv -f ./intended/structured_configs/cvp/ztp_configuration.yml ./intended/structured_configs/cvp/ztp_configuration_custom_nodes_3x_syntax.yml
-      changed_when: true
+        # Overwriting destination dirs .. based on the not so glorious role hack for eos_config_dir_name
+        eos_config_dir_name: "configs/custom_avd3_node_types"
+        structured_cvp_dir: "{{ structured_dir }}/cvp/custom_avd3_node_types/"
 
 - name: Converge - generate DHCP configuration offline for custom node types with 4.x syntax using a list of dicts
   hosts: TOOLS
@@ -53,14 +37,6 @@
         name: arista.avd.dhcp_provisioner
       vars:
         fabric_group: DC1_LEAFS
-
-- name: Rename the generated files
-  hosts: localhost
-  gather_facts: false
-  connection: local
-  tasks:
-    - name: Rename the dhcp config file
-      ansible.builtin.shell: |
-        mv -f ./intended/configs/dhcpd.conf ./intended/configs/dhcpd_custom_nodes_4x_syntax.conf
-        mv -f ./intended/structured_configs/cvp/ztp_configuration.yml ./intended/structured_configs/cvp/ztp_configuration_custom_nodes_4x_syntax.yml
-      changed_when: true
+        # Overwriting destination dirs .. based on the not so glorious role hack for eos_config_dir_name
+        eos_config_dir_name: "configs/custom_avd4_node_types"
+        structured_cvp_dir: "{{ structured_dir }}/cvp/custom_avd4_node_types/"
