@@ -520,7 +520,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def management_security(self) -> dict | None:
-        """.devcontainer
+        """
         Return structured config for management_security.
         """
         if (entropy_source := get(self.shared_utils.platform_settings, "security_entropy_source")) is None:
