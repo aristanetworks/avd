@@ -20845,7 +20845,7 @@
                   },
                   "content": {
                     "type": "string",
-                    "description": "Content of route control function. Write 'EOF' below the content.\ne.g.\nfunction ACCEPT_ALL() {\n  return true;\n  }\nEOF",
+                    "description": "Content of route control function.\ne.g.\nfunction ACCEPT_ALL() {\n  return true;\n  }\nEOF",
                     "title": "Content"
                   }
                 },
@@ -20858,19 +20858,8 @@
                 ]
               },
               "title": "Code Units"
-            },
-            "compile": {
-              "type": "boolean",
-              "title": "Compile"
-            },
-            "commit": {
-              "type": "boolean",
-              "title": "Commit"
             }
           },
-          "required": [
-            "compile"
-          ],
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}

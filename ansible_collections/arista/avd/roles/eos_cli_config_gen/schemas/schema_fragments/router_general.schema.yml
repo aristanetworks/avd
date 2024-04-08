@@ -74,14 +74,9 @@ keys:
                 content:
                   type: str
                   description: |-
-                    Content of route control function. Write 'EOF' below the content.
+                    Content of route control function.
                     e.g.
                     function ACCEPT_ALL() {
                       return true;
                       }
                     EOF
-          compile:
-            type: bool
-            required: true
-          commit:
-            type: bool

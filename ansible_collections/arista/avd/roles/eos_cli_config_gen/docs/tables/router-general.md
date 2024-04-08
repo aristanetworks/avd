@@ -23,9 +23,7 @@
     | [<samp>&nbsp;&nbsp;control_functions</samp>](## "router_general.control_functions") | Dictionary |  |  |  | Configure routing control function to control which routes to filter and accept from a peer or routing protocol. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;code_units</samp>](## "router_general.control_functions.code_units") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.control_functions.code_units.[].name") | String | Required, Unique |  |  | Name of the code unit. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content</samp>](## "router_general.control_functions.code_units.[].content") | String |  |  |  | Content of route control function. Write 'EOF' below the content.<br>e.g.<br>function ACCEPT_ALL() {<br>  return true;<br>  }<br>EOF |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;compile</samp>](## "router_general.control_functions.compile") | Boolean | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;commit</samp>](## "router_general.control_functions.commit") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content</samp>](## "router_general.control_functions.code_units.[].content") | String |  |  |  | Content of route control function.<br>e.g.<br>function ACCEPT_ALL() {<br>  return true;<br>  }<br>EOF |
 
 === "YAML"
 
@@ -61,13 +59,11 @@
             # Name of the code unit.
           - name: <str; required; unique>
 
-            # Content of route control function. Write 'EOF' below the content.
+            # Content of route control function.
             # e.g.
             # function ACCEPT_ALL() {
             #   return true;
             #   }
             # EOF
             content: <str>
-        compile: <bool; required>
-        commit: <bool>
     ```

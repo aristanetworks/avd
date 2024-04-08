@@ -87,8 +87,6 @@ router general
            }
          EOF
 
-      compile
-      commit
    !
    exit
 ```

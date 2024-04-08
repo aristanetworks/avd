@@ -12180,14 +12180,8 @@ keys:
                   description: Name of the code unit.
                 content:
                   type: str
-                  description: "Content of route control function. Write 'EOF' below
-                    the content.\ne.g.\nfunction ACCEPT_ALL() {\n  return true;\n
-                    \ }\nEOF"
-          compile:
-            type: bool
-            required: true
-          commit:
-            type: bool
+                  description: "Content of route control function.\ne.g.\nfunction
+                    ACCEPT_ALL() {\n  return true;\n  }\nEOF"
   router_igmp:
     type: dict
     display_name: Router IGMP Configuration

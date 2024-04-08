@@ -50,14 +50,8 @@ router general
       code unit {{ code_unit.name }}
          {{ content | indent(width=9, first=False) }}
 {%             endfor %}
-{%             if router_general.control_functions.compile is arista.avd.defined %}
-      compile
-{%                 if router_general.control_functions.commit is arista.avd.defined %}
-      commit
-{%                 endif %}
-{%             endif %}
-   !
 {%         endif %}
+   !
 {%     endif %}
 {#    EOS issue #}
    exit
