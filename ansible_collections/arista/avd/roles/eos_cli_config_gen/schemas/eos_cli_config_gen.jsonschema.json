@@ -12358,12 +12358,12 @@
                         "rate": {
                           "type": "object",
                           "properties": {
-                            "lower_rate": {
+                            "rate": {
                               "type": "integer",
-                              "description": "Specify lower rate.\nRange in kbps <8-200000000>.",
-                              "title": "Lower Rate"
+                              "description": "Specify rate.\nRange in kbps <8-200000000>.",
+                              "title": "Rate"
                             },
-                            "lower_rate_unit": {
+                            "rate_unit": {
                               "type": "string",
                               "enum": [
                                 "bps",
@@ -12372,14 +12372,14 @@
                                 "pps"
                               ],
                               "default": "bps",
-                              "title": "Lower Rate Unit"
+                              "title": "Rate Unit"
                             },
-                            "lower_rate_burst_size": {
+                            "rate_burst_size": {
                               "type": "integer",
                               "description": "Range in bytes <256-128000000>.",
-                              "title": "Lower Rate Burst Size"
+                              "title": "Rate Burst Size"
                             },
-                            "lower_rate_burst_size_unit": {
+                            "rate_burst_size_unit": {
                               "type": "string",
                               "enum": [
                                 "bytes",
@@ -12388,20 +12388,31 @@
                                 "packets"
                               ],
                               "default": "bytes",
-                              "title": "Lower Rate Burst Size Unit"
+                              "title": "Rate Burst Size Unit"
                             },
                             "action": {
-                              "description": "Set action for policed traffic.",
-                              "type": "string",
-                              "enum": [
-                                "dscp",
-                                "drop-precedence"
-                              ],
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "description": "Set action for policed traffic.",
+                                  "type": "string",
+                                  "enum": [
+                                    "dscp",
+                                    "drop-precedence"
+                                  ],
+                                  "title": "Type"
+                                },
+                                "dscp_value": {
+                                  "description": "Set when action.type is set to \"dscp\".",
+                                  "type": "string",
+                                  "title": "DSCP Value"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
                               "title": "Action"
-                            },
-                            "dscp_value": {
-                              "type": "string",
-                              "title": "DSCP Value"
                             },
                             "higher_rate": {
                               "type": "integer",

@@ -101,14 +101,14 @@ keys:
                       rate:
                         type: dict
                         keys:
-                          lower_rate:
+                          rate:
                             type: int
                             convert_types:
                               - str
                             description: |-
-                              Specify lower rate.
+                              Specify rate.
                               Range in kbps <8-200000000>.
-                          lower_rate_unit:
+                          rate_unit:
                             type: str
                             valid_values:
                               - "bps"
@@ -116,12 +116,12 @@ keys:
                               - "mbps"
                               - "pps"
                             default: "bps"
-                          lower_rate_burst_size:
+                          rate_burst_size:
                             type: int
                             convert_types:
                               - str
                             description: Range in bytes <256-128000000>.
-                          lower_rate_burst_size_unit:
+                          rate_burst_size_unit:
                             type: str
                             valid_values:
                               - "bytes"
@@ -130,15 +130,19 @@ keys:
                               - "packets"
                             default: "bytes"
                           action:
-                            description: Set action for policed traffic.
-                            type: str
-                            valid_values:
-                              - "dscp"
-                              - "drop-precedence"
-                          dscp_value:
-                            type: str
-                            convert_types:
-                              - int
+                            type: dict
+                            keys:
+                              type:
+                                description: Set action for policed traffic.
+                                type: str
+                                valid_values:
+                                  - "dscp"
+                                  - "drop-precedence"
+                              dscp_value:
+                                description: Set when action.type is set to "dscp".
+                                type: str
+                                convert_types:
+                                  - int
                           higher_rate:
                             type: int
                             convert_types:
