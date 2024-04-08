@@ -28,7 +28,7 @@
 {%                         if class.police.rate.action is arista.avd.defined("dscp") and class.police.rate.dscp_value is arista.avd.defined %}
 {%                             set police_cli = police_cli ~ " action set dscp " ~ class.police.rate.dscp_value %}
 {%                         elif class.police.rate.action is arista.avd.defined("drop-precedence") %}
-{%                             set police_cli = police_cli ~ " action set drop-precedence"  %}
+{%                             set police_cli = police_cli ~ " action set drop-precedence" %}
 {%                         endif %}
 {%                         set police_cli = police_cli ~ " rate " ~ class.police.rate.higher_rate ~ " " ~ class.police.rate.higher_rate_unit | arista.avd.default('bps') ~ " burst-size " ~ class.police.rate.higher_rate_burst_size ~ " " ~ class.police.rate.higher_rate_burst_size_unit | arista.avd.default('bytes') %}
 {%                     endif %}

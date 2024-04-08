@@ -282,13 +282,13 @@ class-map type qos match-any cmap_tc5_v6
 
 ##### pmap_test1
 
-| class | Set | Value | Police |
-| ----- | --- | ----- | ------ |
-| cmap_tc0_v4 | traffic_class | 0 | - |
-| cmap_tc5_v4 | traffic_class | 5 | - |
-| cmap_tc5_v6 | traffic_class | 5 | - |
-| cmap_tc0_v6 | traffic_class | 0 | - |
-| class-default | traffic_class | 1 | - |
+| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police |
+| ---------- | --- | -----| ------------- | --------------- | ------ |
+| cmap_tc0_v4 | - | - | 0 | - | - |
+| cmap_tc5_v4 | - | - | 5 | - | - |
+| cmap_tc5_v6 | - | - | 5 | - | - |
+| cmap_tc0_v6 | - | - | 0 | - | - |
+| class-default | - | - | 1 | - | - |
 
 #### QOS Policy Maps Device Configuration
 
