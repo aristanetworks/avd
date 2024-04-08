@@ -45,7 +45,7 @@ router general
 {%             for code_unit in router_general.control_functions.code_units | arista.avd.natural_sort('name') %}
 {%                 set content = code_unit.content %}
 {%                 if not content.rstrip().endswith('\nEOF') %}
-{%                     set content = content.rstrip() + "\nEOF\n" %}
+{%                     set content = content.rstrip() + "\nEOF" %}
 {%                 endif %}
       code unit {{ code_unit.name }}
          {{ content | indent(width=9, first=False) }}
