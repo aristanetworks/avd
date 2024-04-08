@@ -744,9 +744,9 @@ ethernet_interfaces:
     id: 44
     mode: active
 - name: Ethernet17
-  peer: monitor sessions destination
+  peer: Monitor sessions destination
   peer_type: network_port
-  description: monitor sessions destination
+  description: Monitor sessions destination
   shutdown: false
   type: switched
 - name: Ethernet51
@@ -776,8 +776,6 @@ monitor_sessions:
 - name: DMF
   sources:
   - name: Ethernet14
-    direction: both
-  - name: Port-Channel44
     direction: both
   - name: Port-Channel44
     direction: both

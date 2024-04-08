@@ -76,7 +76,7 @@ network_ports:
       - network-ports-tests.2
     switch_ports:
       - Ethernet14
-    description: "Checking monitor sessions on single interface"
+    description: Checking monitor sessions on single interface
     monitor_sessions:
       - name: DMF
         role: "source"
@@ -88,7 +88,7 @@ network_ports:
       - network-ports-tests.2
     switch_ports:
       - Ethernet15-16
-    description: "Checking monitor sessions on port-channels"
+    description: Checking monitor sessions on port-channels
     port_channel:
       channel_id: 44
       mode: "active"
@@ -103,10 +103,10 @@ network_ports:
       - network-ports-tests.2
     switch_ports:
       - Ethernet17
-    description: "monitor sessions destination"
+    description: Monitor sessions destination
     monitor_sessions:
       - name: DMF
-        role: "destination"
+        role: destination
         session_settings:
           encapsulation_gre_metadata_tx: true
 
