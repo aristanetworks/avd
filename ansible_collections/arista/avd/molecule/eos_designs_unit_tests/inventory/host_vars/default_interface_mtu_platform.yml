@@ -10,7 +10,5 @@ platform_settings:
   - platforms: [ default ]
     default_interface_mtu: 1234
     structured_config:
-      sand:
-        lag:
-          hardware_only: true
-          mode: "512x32"
+      sfe:
+        data_plane_cpu_allocation_max: 42

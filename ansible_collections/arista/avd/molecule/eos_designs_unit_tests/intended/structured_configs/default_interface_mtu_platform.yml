@@ -12,10 +12,8 @@ vrfs:
 - name: MGMT
   ip_routing: false
 platform:
-  sand:
-    lag:
-      hardware_only: true
-      mode: 512x32
+  sfe:
+    data_plane_cpu_allocation_max: 42
 management_api_http:
   enable_vrfs:
   - name: MGMT
