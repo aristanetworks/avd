@@ -1,4 +1,4 @@
-
+---
 # Spine Switches
 spine:
   defaults:
@@ -22,7 +22,6 @@ spine:
       evpn_route_servers: [superspine1, superspine2]
 
 
-
 # Leaf switches. Most leafs will be l3leaf, not l2leaf.
 l3leaf:
   defaults:
@@ -41,15 +40,16 @@ l3leaf:
     spanning_tree_priority: 16384
     mlag: true # By default, use MLAG
 
+
   node_groups:
     - group: mlag2
       bgp_as: 65299 # Manually set for the external routed connection
       nodes:
-      - name: leaf3
-        id: 3
-        mgmt_ip: 192.168.0.23/24
-        uplink_switch_interfaces: [Ethernet5, Ethernet5]
-      - name: leaf4
-        id: 4
-        mgmt_ip: 192.168.0.24/24
-        uplink_switch_interfaces: [Ethernet6, Ethernet6]
+        - name: leaf3
+          id: 3
+          mgmt_ip: 192.168.0.23/24
+          uplink_switch_interfaces: [Ethernet5, Ethernet5]
+        - name: leaf4
+          id: 4
+          mgmt_ip: 192.168.0.24/24
+          uplink_switch_interfaces: [Ethernet6, Ethernet6]
