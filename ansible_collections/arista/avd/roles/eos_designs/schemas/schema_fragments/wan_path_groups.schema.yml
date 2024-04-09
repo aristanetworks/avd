@@ -7,9 +7,9 @@
 type: dict
 keys:
   wan_path_groups:
-    description: |-
-      PREVIEW: This key is currently not supported
-      List of path-groups used for the WAN configuration.
+    documentation_options:
+      table: wan-path-groups-and-carriers
+    description: List of path-groups used for the WAN configuration.
     type: list
     primary_key: name
     items:
@@ -24,8 +24,7 @@ keys:
             - str
           description: |-
             Path-group id.
-
-            TODO: Required until an auto ID algorithm is implemented.
+            Required until an auto ID algorithm is implemented.
           required: true
         description:
           type: str

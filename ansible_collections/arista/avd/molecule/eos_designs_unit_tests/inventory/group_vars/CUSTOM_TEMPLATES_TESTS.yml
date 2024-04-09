@@ -53,3 +53,22 @@ ip_offset_10: 10
 ip_offset_20: 20
 
 description_prefix: "TEST_CUSTOM_PREFIX"
+
+servers:
+  - name: SERVER-1
+    adapters:
+      - endpoint_ports: [ Nic1 ]
+        switch_ports: [ Ethernet11 ]
+        switches: [ CUSTOM-TEMPLATES-L3LEAF1A ]
+        mode: trunk
+        enabled: true
+  - name: SERVER-2
+    adapters:
+      - endpoint_ports: [ Nic1, Nic2 ]
+        switch_ports: [ Ethernet12, Ethernet13 ]
+        switches: [ CUSTOM-TEMPLATES-L3LEAF1B, CUSTOM-TEMPLATES-L3LEAF1B ]
+        mode: trunk
+        enabled: true
+        port_channel:
+          mode: active
+          description: portchannel

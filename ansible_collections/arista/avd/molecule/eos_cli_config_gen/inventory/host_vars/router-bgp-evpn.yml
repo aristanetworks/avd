@@ -276,3 +276,10 @@ router_bgp:
           - address_family: evpn
             route_targets:
               - "14:14"
+  eos_cli: |-
+    address-family evpn
+       evpn ethernet-segment domain all
+          identifier 0011:1111:1111:1111:1111
+          route-target import 00:01:00:01:00:01
+             !
+             layer-2 fec in-place update

@@ -376,3 +376,6 @@ keys:
                 min: 5
                 max: 300
                 description: Level-2 LSP database sync wait time in seconds.
+      eos_cli:
+        type: str
+        description: Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.

@@ -11,6 +11,7 @@ vxlan_interface:
         enabled: true
       mlag_source_interface: Loopback1
       udp_port: 4789
+      vtep_to_vtep_bridging: true
       virtual_router_encapsulation_mac_address: mlag-system-id
       qos:
         dscp_propagation_encapsulation: true

@@ -71,6 +71,45 @@ network_ports:
       channel_id: 42
       mode: "active"
 
+  # Tests for issue #3816
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet14
+    description: Checking monitor sessions on single interface
+    monitor_sessions:
+      - name: DMF
+        role: "source"
+        source_settings:
+          direction: "both"
+        session_settings:
+          encapsulation_gre_metadata_tx: true
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet15-16
+    description: Checking monitor sessions on port-channels
+    port_channel:
+      channel_id: 44
+      mode: "active"
+    monitor_sessions:
+      - name: DMF
+        role: source
+        source_settings:
+          direction: both
+        session_settings:
+          encapsulation_gre_metadata_tx: true
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet17
+    description: Monitor sessions destination
+    monitor_sessions:
+      - name: DMF
+        role: destination
+        session_settings:
+          encapsulation_gre_metadata_tx: true
+
   # The next entries are used to test the duplicate check feature together with the
   # CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT below.
   - switches:

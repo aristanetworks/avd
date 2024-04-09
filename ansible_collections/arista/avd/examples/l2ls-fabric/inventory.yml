@@ -6,19 +6,19 @@ DC1:
         DC1_SPINES:
           hosts:
             SPINE1:
-              ansible_host: 172.100.100.101
+              ansible_host: 172.16.100.101
             SPINE2:
-              ansible_host: 172.100.100.102
+              ansible_host: 172.16.100.102
         DC1_LEAFS:
           hosts:
             LEAF1:
-              ansible_host: 172.100.100.105
+              ansible_host: 172.16.100.105
             LEAF2:
-              ansible_host: 172.100.100.106
+              ansible_host: 172.16.100.106
             LEAF3:
-              ansible_host: 172.100.100.107
+              ansible_host: 172.16.100.107
             LEAF4:
-              ansible_host: 172.100.100.108
+              ansible_host: 172.16.100.108
     DC1_NETWORK_SERVICES:
       children:
         DC1_LEAFS:
