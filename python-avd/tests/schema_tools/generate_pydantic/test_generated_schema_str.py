@@ -15,7 +15,6 @@ path.insert(0, str(Path(__file__).parents[3]))
 
 import pyavd.schema.models
 import pyavd.schema.types
-
 from schema_tools.generate_pydantic.models import PydanticFileSrc
 from schema_tools.generate_pydantic.utils import generate_class_name
 from schema_tools.metaschema.meta_schema_model import AristaAvdSchema

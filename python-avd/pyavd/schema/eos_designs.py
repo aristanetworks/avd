@@ -1998,9 +1998,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Default PTP priority 1
         """
-        default_underlay_routing_protocol: Annotated[
-            Literal["ebgp", "ibgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"], StrConvert(to_lower=True)
-        ] | None = "ebgp"
+        default_underlay_routing_protocol: (
+            Annotated[Literal["ebgp", "ibgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"], StrConvert(to_lower=True)] | None
+        ) = "ebgp"
         """
         Set the default underlay routing_protocol.
         Can be overridden by setting "underlay_routing_protocol" host/group_vars.
@@ -4771,12 +4771,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     access ports.
                     """
                     spanning_tree_portfast: Literal["edge", "network"] | None = None
-                    spanning_tree_bpdufilter: Annotated[
-                        Literal["enabled", "disabled", "True", "False", "true", "false"], StrConvert(convert_types=(bool))
-                    ] | None = None
-                    spanning_tree_bpduguard: Annotated[
-                        Literal["enabled", "disabled", "True", "False", "true", "false"], StrConvert(convert_types=(bool))
-                    ] | None = None
+                    spanning_tree_bpdufilter: (
+                        Annotated[Literal["enabled", "disabled", "True", "False", "true", "false"], StrConvert(convert_types=(bool))] | None
+                    ) = None
+                    spanning_tree_bpduguard: (
+                        Annotated[Literal["enabled", "disabled", "True", "False", "true", "false"], StrConvert(convert_types=(bool))] | None
+                    ) = None
                     flowcontrol: Flowcontrol | None = None
                     qos_profile: str | None = None
                     """
@@ -11224,9 +11224,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
     Requires "underlay_routing_protocol: ebgp".
     """
-    underlay_routing_protocol: Annotated[
-        Literal["ebgp", "ospf", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"], StrConvert(to_lower=True)
-    ] | None = None
+    underlay_routing_protocol: (
+        Annotated[Literal["ebgp", "ospf", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"], StrConvert(to_lower=True)] | None
+    ) = None
     """
     - The following underlay routing protocols are supported:
       - EBGP (default for l3ls-evpn)

@@ -2681,37 +2681,40 @@ class EosCliConfigGen(BaseModel):
         class FeaturesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            name: Literal[
-                "acl",
-                "decap-group",
-                "directflow",
-                "ecn",
-                "flow-spec",
-                "gre tunnel interface",
-                "ip",
-                "mpls interface",
-                "mpls lfib",
-                "mpls tunnel",
-                "multicast",
-                "nexthop",
-                "pbr",
-                "pdp",
-                "policing interface",
-                "qos",
-                "qos dual-rate-policer",
-                "route",
-                "routed-port",
-                "subinterface",
-                "tapagg",
-                "traffic-class",
-                "traffic-policy",
-                "vlan",
-                "vlan-interface",
-                "vni decap",
-                "vni encap",
-                "vtep decap",
-                "vtep encap",
-            ] | None = None
+            name: (
+                Literal[
+                    "acl",
+                    "decap-group",
+                    "directflow",
+                    "ecn",
+                    "flow-spec",
+                    "gre tunnel interface",
+                    "ip",
+                    "mpls interface",
+                    "mpls lfib",
+                    "mpls tunnel",
+                    "multicast",
+                    "nexthop",
+                    "pbr",
+                    "pdp",
+                    "policing interface",
+                    "qos",
+                    "qos dual-rate-policer",
+                    "route",
+                    "routed-port",
+                    "subinterface",
+                    "tapagg",
+                    "traffic-class",
+                    "traffic-policy",
+                    "vlan",
+                    "vlan-interface",
+                    "vni decap",
+                    "vni encap",
+                    "vtep decap",
+                    "vtep encap",
+                ]
+                | None
+            ) = None
             direction: Literal["in", "out", "cpu"] | None = None
             """
             Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.
@@ -3802,9 +3805,9 @@ class EosCliConfigGen(BaseModel):
         class Synchronous(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            level: Literal[
-                "alerts", "all", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"
-            ] | None = "critical"
+            level: (
+                Literal["alerts", "all", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"] | None
+            ) = "critical"
             """
             Synchronous logging severity level
             """
@@ -3812,9 +3815,10 @@ class EosCliConfigGen(BaseModel):
         class Format(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            timestamp: Literal[
-                "high-resolution", "traditional", "traditional timezone", "traditional year", "traditional timezone year", "traditional year timezone"
-            ] | None = None
+            timestamp: (
+                Literal["high-resolution", "traditional", "traditional timezone", "traditional year", "traditional timezone year", "traditional year timezone"]
+                | None
+            ) = None
             """
             Timestamp format
             """
@@ -3901,40 +3905,43 @@ class EosCliConfigGen(BaseModel):
         Monitor logging severity level
         """
         buffered: Buffered | None = None
-        trap: Literal[
-            "alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"
-        ] | None = None
+        trap: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"] | None = (
+            None
+        )
         """
         Trap logging severity level
         """
         synchronous: Synchronous | None = None
         format: Format | None = None
-        facility: Literal[
-            "auth",
-            "cron",
-            "daemon",
-            "kern",
-            "local0",
-            "local1",
-            "local2",
-            "local3",
-            "local4",
-            "local5",
-            "local6",
-            "local7",
-            "lpr",
-            "mail",
-            "news",
-            "sys9",
-            "sys10",
-            "sys11",
-            "sys12",
-            "sys13",
-            "sys14",
-            "syslog",
-            "user",
-            "uucp",
-        ] | None = None
+        facility: (
+            Literal[
+                "auth",
+                "cron",
+                "daemon",
+                "kern",
+                "local0",
+                "local1",
+                "local2",
+                "local3",
+                "local4",
+                "local5",
+                "local6",
+                "local7",
+                "lpr",
+                "mail",
+                "news",
+                "sys9",
+                "sys10",
+                "sys11",
+                "sys12",
+                "sys13",
+                "sys14",
+                "syslog",
+                "user",
+                "uucp",
+            ]
+            | None
+        ) = None
         source_interface: str | None = None
         """
         Source Interface Name
