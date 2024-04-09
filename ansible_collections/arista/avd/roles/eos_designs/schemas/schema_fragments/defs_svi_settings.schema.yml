@@ -84,7 +84,6 @@ $defs:
         description: |-
           Name of the IPv4 access-list to be assigned in the ingress direction.
           The access-list must be defined under `ipv4_acls`.
-          Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.
         type: str
         convert_types:
           - int

@@ -607,7 +607,7 @@ class UtilsMixin:
                     if ipv4_acl_in is None and ipv4_acl_out is None:
                         continue
 
-                    interface_name = svi["name"]
+                    interface_name = f"Vlan{svi['id']}"
                     interface_ip: str | None = svi.get("ip_address_virtual")
                     if interface_ip is not None and "/" in interface_ip:
                         interface_ip = interface_ip.split("/", maxsplit=1)[0]
