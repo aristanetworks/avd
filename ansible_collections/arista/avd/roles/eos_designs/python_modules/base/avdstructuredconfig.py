@@ -550,9 +550,6 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             # this value is required for the solution to work.
             raise AristaAvdMissingVariableError("For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set")
 
-        if (struct_cfg := get(self.shared_utils.platform_settings, "structured_config")) is not None:
-            platform.update(struct_cfg)
-
         if platform:
             return platform
         return None
@@ -799,5 +796,12 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP HTTP Client"
         ):
             return source_interfaces
+
+        return None
+
+    @cached_property
+    def struct_cfgs(self) -> list | None:
+        if (struct_cfg := get(self.shared_utils.platform_settings, "structured_config")) is not None:
+            return [struct_cfg]
 
         return None

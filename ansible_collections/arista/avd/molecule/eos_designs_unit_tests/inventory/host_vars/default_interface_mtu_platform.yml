@@ -9,6 +9,3 @@ default_interface_mtu: 8765 # This will not be used since platform settings take
 platform_settings:
   - platforms: [ default ]
     default_interface_mtu: 1234
-    structured_config:
-      sfe:
-        data_plane_cpu_allocation_max: 42
