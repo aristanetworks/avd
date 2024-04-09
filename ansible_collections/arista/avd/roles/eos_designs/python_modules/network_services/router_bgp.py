@@ -335,32 +335,46 @@ class RouterBgpMixin(UtilsMixin):
         vlans = []
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
-                for svi in vrf["svis"]:
-                    if (vlan := self._router_bgp_vlans_vlan(svi, tenant, vrf)) is not None:
-                        vlan_id = int(svi["id"])
-                        vlan = {"id": vlan_id, **vlan}
-                        append_if_not_duplicate(
-                            list_of_dicts=vlans,
-                            primary_key="id",
-                            new_dict=vlan,
-                            context="BGP VLANs defined under network services",
-                            context_keys=["id", "tenant"],
-                            ignore_keys={"tenant"},
-                        )
+                sorted_vlan_list = sorted(vrf["svis"], key=self._get_vlan_aware_bundle_name_tuple_for_svis)
+                bundle_groups = itertools_groupby(sorted_vlan_list, self._get_vlan_aware_bundle_name_tuple_for_svis)
+
+                for vlan_aware_bundle_name_tuple, svis in bundle_groups:
+                    bundle_name, is_evpn_vlan_bundle = vlan_aware_bundle_name_tuple
+                    svis = list(svis)
+                    if not is_evpn_vlan_bundle:
+                        for svi in svis:
+                            if (vlan := self._router_bgp_vlans_vlan(svi, tenant, vrf)) is not None:
+                                vlan_id = int(svi["id"])
+                                vlan = {"id": vlan_id, **vlan}
+                                append_if_not_duplicate(
+                                    list_of_dicts=vlans,
+                                    primary_key="id",
+                                    new_dict=vlan,
+                                    context="BGP VLANs defined under network services",
+                                    context_keys=["id", "tenant"],
+                                    ignore_keys={"tenant"},
+                                )
 
             # L2 Vlans per Tenant
-            for l2vlan in tenant["l2vlans"]:
-                if (vlan := self._router_bgp_vlans_vlan(l2vlan, tenant, vrf={})) is not None:
-                    vlan_id = int(l2vlan["id"])
-                    vlan = {"id": vlan_id, **vlan}
-                    append_if_not_duplicate(
-                        list_of_dicts=vlans,
-                        primary_key="id",
-                        new_dict=vlan,
-                        context="BGP VLANs defined under network services",
-                        context_keys=["id", "tenant"],
-                        ignore_keys={"tenant"},
-                    )
+            sorted_vlan_list = sorted(tenant["l2vlans"], key=self._get_vlan_aware_bundle_name_tuple_for_l2vlans)
+            bundle_groups = itertools_groupby(sorted_vlan_list, self._get_vlan_aware_bundle_name_tuple_for_l2vlans)
+
+            for vlan_aware_bundle_name_tuple, l2vlans in bundle_groups:
+                bundle_name, is_evpn_vlan_bundle = vlan_aware_bundle_name_tuple
+                l2vlans = list(l2vlans)
+                if not is_evpn_vlan_bundle:
+                    for l2vlan in l2vlans:
+                        if (vlan := self._router_bgp_vlans_vlan(l2vlan, tenant, vrf={})) is not None:
+                            vlan_id = int(l2vlan["id"])
+                            vlan = {"id": vlan_id, **vlan}
+                            append_if_not_duplicate(
+                                list_of_dicts=vlans,
+                                primary_key="id",
+                                new_dict=vlan,
+                                context="BGP VLANs defined under network services",
+                                context_keys=["id", "tenant"],
+                                ignore_keys={"tenant"},
+                            )
 
         return vlans or None
 
@@ -469,8 +483,7 @@ class RouterBgpMixin(UtilsMixin):
         if not self.shared_utils.network_services_l2 or not self.shared_utils.overlay_evpn:
             return None
 
-        if not self._evpn_vlan_aware_bundles:
-            return None
+        evpn_vlan_aware_bundles_knob = self._evpn_vlan_aware_bundles
 
         bundles = []
         for tenant in self.shared_utils.filtered_tenants:
@@ -492,15 +505,16 @@ class RouterBgpMixin(UtilsMixin):
                             l2vlan_svi_vlan_aware_bundles[bundle_name] = {"evpn_vlan_bundle": evpn_vlan_bundle, "l2vlan_svis": svis}
 
                     else:
-                        # SVIs which don't have an evpn_vlan_bundle defined are included in the VRF vlan-aware-bundle
-                        if (bundle := self._router_bgp_vlan_aware_bundles_vrf(vrf, tenant, svis)) is not None:
-                            append_if_not_duplicate(
-                                list_of_dicts=bundles,
-                                primary_key="name",
-                                new_dict=bundle,
-                                context="BGP VLAN-Aware Bundles defined under network services",
-                                context_keys=["name"],
-                            )
+                        if evpn_vlan_aware_bundles_knob:
+                            # SVIs which don't have an evpn_vlan_bundle defined are included in the VRF vlan-aware-bundle
+                            if (bundle := self._router_bgp_vlan_aware_bundles_vrf(vrf, tenant, svis)) is not None:
+                                append_if_not_duplicate(
+                                    list_of_dicts=bundles,
+                                    primary_key="name",
+                                    new_dict=bundle,
+                                    context="BGP VLAN-Aware Bundles defined under network services",
+                                    context_keys=["name"],
+                                )
 
             # L2 Vlans per Tenant
             # If multiple L2 Vlans share the same evpn_vlan_bundle name, they will be part of the same vlan-aware-bundle else they use the vlan name as bundle
@@ -521,25 +535,26 @@ class RouterBgpMixin(UtilsMixin):
                         l2vlan_svi_vlan_aware_bundles[bundle_name] = {"evpn_vlan_bundle": evpn_vlan_bundle, "l2vlan_svis": l2vlans}
 
                 else:
-                    # Without "evpn_vlan_bundle" we fall back to per-vlan behavior
-                    if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant, vrf={})) is None:
-                        # Skip bundle since no vlans were enabled for vxlan.
-                        continue
+                    if evpn_vlan_aware_bundles_knob:
+                        # Without "evpn_vlan_bundle" we fall back to per-vlan behavior
+                        if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant, vrf={})) is None:
+                            # Skip bundle since no vlans were enabled for vxlan.
+                            continue
 
-                    # We are reusing the regular bgp vlan function so need to add vlan info
-                    bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
-                    bundle = {"name": bundle_name, **bundle}
+                        # We are reusing the regular bgp vlan function so need to add vlan info
+                        bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
+                        bundle = {"name": bundle_name, **bundle}
 
-                    append_if_not_duplicate(
-                        list_of_dicts=bundles,
-                        primary_key="name",
-                        new_dict=bundle,
-                        context=(
-                            "BGP VLAN-Aware Bundles defined under network services. A common reason is that an 'l2vlan' name overlaps with an"
-                            " 'evpn_vlan_bundle' name"
-                        ),
-                        context_keys=["name"],
-                    )
+                        append_if_not_duplicate(
+                            list_of_dicts=bundles,
+                            primary_key="name",
+                            new_dict=bundle,
+                            context=(
+                                "BGP VLAN-Aware Bundles defined under network services. A common reason is that an 'l2vlan' name overlaps with an"
+                                " 'evpn_vlan_bundle' name"
+                            ),
+                            context_keys=["name"],
+                        )
 
             # L2VLANs and SVIs which have an evpn_vlan_bundle defined
             for bundle_name, bundle_dict in l2vlan_svi_vlan_aware_bundles.items():
