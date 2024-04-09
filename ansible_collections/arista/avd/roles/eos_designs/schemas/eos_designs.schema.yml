@@ -5694,7 +5694,7 @@ $defs:
                       description: 'Name of a bundle defined under ''evpn_vlan_bundles''
                         to inherit configuration.
 
-                        The the common option "evpn_vlan_aware_bundles" is disregarded
+                        The common option "evpn_vlan_aware_bundles" is disregarded
                         for this option.
 
                         '
@@ -6320,8 +6320,8 @@ $defs:
                 description: 'Name of a bundle defined under ''evpn_vlan_bundles''
                   to inherit configuration.
 
-                  The the common option "evpn_vlan_aware_bundles" is disregarded for
-                  this option.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this
+                  option.
 
                   '
               trunk_groups:
