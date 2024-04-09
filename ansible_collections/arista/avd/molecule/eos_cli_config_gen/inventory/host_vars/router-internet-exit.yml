@@ -5,11 +5,14 @@ router_internet_exit:
         - name: po_eg_03_01
     - name: po_02
     - name: po_01
+      # Making sure these exit groups are not being reordered
+      # as the order matters inside the policy
       exit_groups:
         - name: po_eg_01_02
         - name: po_eg_01_04
         - name: po_eg_01_01
         - name: po_eg_01_03
+        - name: system-default-exit-group
   exit_groups:
     - name: eg_03
       fib_default: true

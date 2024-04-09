@@ -20,7 +20,8 @@ router internet-exit
 {%     for policy in router_internet_exit.policies | arista.avd.natural_sort('name') %}
     !
     policy {{ policy.name }}
-{%         for exit_group in policy.exit_groups | arista.avd.natural_sort('name') %}
+{# Order of exit-groups MUST be preserved #}
+{%         for exit_group in policy.exit_groups | arista.avd.default([]) %}
 {%             if exit_group.name is arista.avd.defined %}
         exit-group {{ exit_group.name }}
 {%             endif %}

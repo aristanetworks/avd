@@ -49,7 +49,7 @@ interface Management1
 
 | Policy Name | Exit Groups |
 | ----------- | ----------- |
-| po_01 | po_eg_01_01<br>po_eg_01_02<br>po_eg_01_03<br>po_eg_01_04 |
+| po_01 | po_eg_01_02<br>po_eg_01_04<br>po_eg_01_01<br>po_eg_01_03<br>system-default-exit-group |
 | po_02 | - |
 | po_03 | po_eg_03_01 |
 
@@ -75,10 +75,11 @@ router internet-exit
         local connection eg_04_lo_03
     !
     policy po_01
-        exit-group po_eg_01_01
         exit-group po_eg_01_02
-        exit-group po_eg_01_03
         exit-group po_eg_01_04
+        exit-group po_eg_01_01
+        exit-group po_eg_01_03
+        exit-group system-default-exit-group
     !
     policy po_02
     !

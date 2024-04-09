@@ -34,16 +34,12 @@
 | ----------- | ----------- |
 {%         for policy in router_internet_exit.policies | arista.avd.natural_sort('name') %}
 {%             set policy_exit_groups = [] %}
-{%             for exit_group in policy.exit_groups | arista.avd.natural_sort('name') %}
+{%             for exit_group in policy.exit_groups | arista.avd.default([{"name": "-"}]) %}
 {%                 if exit_group.name is arista.avd.defined %}
 {%                     do policy_exit_groups.append(exit_group.name) %}
 {%                 endif %}
 {%             endfor %}
-{%             if policy_exit_groups != [] %}
 | {{ policy.name }} | {{ policy_exit_groups | join("<br>") }} |
-{%             else %}
-| {{ policy.name }} | - |
-{%             endif %}
 {%         endfor %}
 {%     endif %}
 
