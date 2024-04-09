@@ -139,7 +139,7 @@ To customize or create new node types, please refer to [node type customization]
 
 ### L3LS EVPN
 
-| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default Underlay Routing Protocol | Default Overlay Routing Protocol |
+| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Default WAN Role | Default Underlay Routing Protocol | Default Overlay Routing Protocol |
 | ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | --------------------------------- | -------------------------------- |
 | super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
 | spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
@@ -1177,7 +1177,7 @@ The network services are grouped by tenants. The definition of a tenant may vary
 The filtering models defined under [Node type network services configuration](#node-type-network-services-configuration) allows
 for granular deployment of network services to the fabric leveraging the tenant name and tags applied to the service definition.
 
-- This allows for the re-use of SVI/VLAN IDs across the fabric.
+- This allows for the reuse of SVI/VLAN IDs across the fabric.
 - An error will be returned at runtime in case of duplicate or conflicting SVI/VLAN IDs or VNIs targeted towards the same device.
 
 ### Network services settings

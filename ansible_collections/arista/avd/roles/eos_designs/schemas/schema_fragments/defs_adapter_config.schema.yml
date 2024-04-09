@@ -18,7 +18,7 @@ $defs:
         type: str
         description: |
           By default the description is built leveraging `<peer>_<peer_interface>`.
-          When set this key will overide the default value on the physical ports.
+          When set this key will override the default value on the physical ports.
       profile:
         type: str
         description: Port-profile name to inherit configuration.
