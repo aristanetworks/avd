@@ -1,0 +1,21 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - switchport port-security #}
+{% if switchport_port_security is arista.avd.defined %}
+!
+{%     if switchport_port_security.mac_address.aging is arista.avd.defined(true) %}
+switchport port-security mac-address aging
+{%     endif %}
+{%     if  switchport_port_security.mac_address.moveable is arista.avd.defined(true) %}
+switchport port-security mac-address moveable
+{%     endif %}
+{%     if  switchport_port_security.persistence_disabled is arista.avd.defined(true) %}
+switchport port-security persistence disabled
+{%     endif %}
+{%     if  switchport_port_security.violation_protect_chip_based is arista.avd.defined(true) %}
+switchport port-security violation protect chip-based
+{%     endif %}
+{% endif %}

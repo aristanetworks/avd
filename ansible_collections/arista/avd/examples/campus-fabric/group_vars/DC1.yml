@@ -14,7 +14,7 @@ aaa_authorization:
     default: local
 
 # OOB Management network default gateway.
-mgmt_gateway: 172.100.100.1
+mgmt_gateway: 172.16.100.1
 mgmt_interface: Management0
 
 # dns servers.

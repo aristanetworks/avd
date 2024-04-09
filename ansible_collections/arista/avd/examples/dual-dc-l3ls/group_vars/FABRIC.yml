@@ -72,7 +72,7 @@ l3_edge:
   # Define a new IP pool that will be used to assign IP addresses to L3 Edge interfaces.
   p2p_links_ip_pools:
     - name: DCI_IP_pool
-      ipv4_pool: 172.100.100.0/24
+      ipv4_pool: 172.16.100.0/24
   # Define a new link profile which will match the IP pool, the used ASNs and include the defined interface into underlay routing
   p2p_links_profiles:
     - name: DCI_profile

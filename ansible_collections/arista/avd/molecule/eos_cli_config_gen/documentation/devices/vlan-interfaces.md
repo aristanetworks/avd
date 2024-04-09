@@ -218,6 +218,18 @@ interface Vlan41
    ip helper-address 10.10.64.150 source-interface Loopback0
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
+   ip igmp host-proxy
+   ip igmp host-proxy 239.0.0.1
+   ip igmp host-proxy 239.0.0.2 exclude 10.0.2.1
+   ip igmp host-proxy 239.0.0.3 include 10.0.3.1
+   ip igmp host-proxy 239.0.0.4 include 10.0.4.3
+   ip igmp host-proxy 239.0.0.4 include 10.0.4.4
+   ip igmp host-proxy 239.0.0.4 exclude 10.0.4.1
+   ip igmp host-proxy 239.0.0.4 exclude 10.0.4.2
+   ip igmp host-proxy access-list ACL1
+   ip igmp host-proxy access-list ACL2
+   ip igmp host-proxy report-interval 2
+   ip igmp host-proxy version 2
    ip address virtual 10.10.41.1/24
 !
 interface Vlan42

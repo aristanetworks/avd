@@ -10,7 +10,7 @@ keys:
     documentation_options:
       table: wan-settings
     description: |-
-      PREVIEW: This key is currently not supported
+      PREVIEW: The `wan_ha` key is currently not supported
     type: dict
     keys:
       lan_ha_path_group_name:

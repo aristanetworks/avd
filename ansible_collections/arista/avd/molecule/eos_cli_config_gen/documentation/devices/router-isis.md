@@ -329,4 +329,9 @@ router isis EVPN_UNDERLAY
    !
    segment-routing mpls
       no shutdown
+   address-family ipv6 unicast
+     multi-topology
+   traffic-engineering
+     no shutdown
+     is-type level-2
 ```
