@@ -25,7 +25,7 @@ keys:
               type: dict
               description: |-
                 Outgoing physical interface or subinterface to use for the connection.
-                If both ethernet interface and tunnel interface are configured, ethernet interface will be used.
+                If both `ethernet_interface` and `tunnel_interface` are configured, `ethernet_interface` will be used.
               keys:
                 name:
                   type: str
@@ -39,16 +39,16 @@ keys:
               type: dict
               description: |-
                 Outgoing tunnel interface(s) to use for this connection.
-                If both ethernet interface and tunnel interface are configured, ethernet interface will be used.
+                If both `ethernet_interface` and `tunnel_interface` are configured, `ethernet_interface` will be used.
               keys:
                 primary:
                   type: str
                   description: e.g. Tunnel2
                 secondary:
                   type: str
-                  description: e.g Tunnel3
+                  description: e.g. Tunnel3
             monitor_connectivity_host:
               type: str
               description: |-
                 Monitor connectivity host to use to derive the health of the connecion.
-                The host must be defined under `monitor_connectivity.hosts`.
+                The host must also be defined under `monitor_connectivity.hosts`.

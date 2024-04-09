@@ -23358,7 +23358,7 @@
               },
               "ethernet_interface": {
                 "type": "object",
-                "description": "Outgoing physical interface or subinterface to use for the connection.\nIf both ethernet interface and tunnel interface are configured, ethernet interface will be used.",
+                "description": "Outgoing physical interface or subinterface to use for the connection.\nIf both `ethernet_interface` and `tunnel_interface` are configured, `ethernet_interface` will be used.",
                 "properties": {
                   "name": {
                     "type": "string",
@@ -23383,7 +23383,7 @@
               },
               "tunnel_interface": {
                 "type": "object",
-                "description": "Outgoing tunnel interface(s) to use for this connection.\nIf both ethernet interface and tunnel interface are configured, ethernet interface will be used.",
+                "description": "Outgoing tunnel interface(s) to use for this connection.\nIf both `ethernet_interface` and `tunnel_interface` are configured, `ethernet_interface` will be used.",
                 "properties": {
                   "primary": {
                     "type": "string",
@@ -23392,7 +23392,7 @@
                   },
                   "secondary": {
                     "type": "string",
-                    "description": "e.g Tunnel3",
+                    "description": "e.g. Tunnel3",
                     "title": "Secondary"
                   }
                 },
@@ -23404,7 +23404,7 @@
               },
               "monitor_connectivity_host": {
                 "type": "string",
-                "description": "Monitor connectivity host to use to derive the health of the connecion.\nThe host must be defined under `monitor_connectivity.hosts`.",
+                "description": "Monitor connectivity host to use to derive the health of the connecion.\nThe host must also be defined under `monitor_connectivity.hosts`.",
                 "title": "Monitor Connectivity Host"
               }
             },
