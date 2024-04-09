@@ -11017,7 +11017,56 @@ class EosCliConfigGen(BaseModel):
     class RouterServiceInsertion(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
+        class ConnectionsItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class EthernetInterface(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str = None
+                """
+                e.g. Ethernet2 or Ethernet2/2.2
+                """
+                next_hop: str = None
+                """
+                Next-hop IPv4 address (without mask).
+                """
+
+            class TunnelInterface(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                primary: str | None = None
+                """
+                e.g. Tunnel2
+                """
+                secondary: str | None = None
+                """
+                e.g. Tunnel3
+                """
+
+            name: str = None
+            """
+            Connection name.
+            """
+            ethernet_interface: EthernetInterface | None = None
+            """
+            Outgoing physical interface or subinterface to use for the connection.
+            If both `ethernet_interface` and
+            `tunnel_interface` are configured, `ethernet_interface` will be used.
+            """
+            tunnel_interface: TunnelInterface | None = None
+            """
+            Outgoing tunnel interface(s) to use for this connection.
+            If both `ethernet_interface` and `tunnel_interface` are
+            configured, `ethernet_interface` will be used.
+            """
+            monitor_connectivity_host: str | None = None
+            """
+            Name of the host defined under `monitor_connectivity.hosts` used to derive the health of the connection.
+            """
+
         enabled: bool | None = None
+        connections: list[ConnectionsItem] | None = None
 
     class RouterTrafficEngineering(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -13218,7 +13267,7 @@ class EosCliConfigGen(BaseModel):
     router_pim_sparse_mode: RouterPimSparseMode | None = None
     router_service_insertion: RouterServiceInsertion | None = None
     """
-    Configure network services inserted to data forwarding
+    Configure network services inserted to data forwarding.
     """
     router_traffic_engineering: RouterTrafficEngineering | None = None
     service_routing_configuration_bgp: ServiceRoutingConfigurationBgp | None = None
