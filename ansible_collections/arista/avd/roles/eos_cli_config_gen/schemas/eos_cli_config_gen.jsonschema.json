@@ -5430,7 +5430,7 @@
                     "properties": {
                       "mpls": {
                         "type": "boolean",
-                        "description": "Export MPLS forwarding information",
+                        "description": "Export MPLS forwarding information.",
                         "title": "MPLS"
                       },
                       "on_inactive_timeout": {
@@ -5554,6 +5554,21 @@
         "hardware": {
           "type": "object",
           "properties": {
+            "record": {
+              "type": "object",
+              "properties": {
+                "format_ipfix_standard_timestamps_counters": {
+                  "type": "boolean",
+                  "description": "Enable software export of IPFIX data records.",
+                  "title": "Format Ipfix Standard Timestamps Counters"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Record"
+            },
             "trackers": {
               "type": "array",
               "items": {
@@ -23838,11 +23853,83 @@
     },
     "router_service_insertion": {
       "type": "object",
-      "description": "Configure network services inserted to data forwarding",
+      "description": "Configure network services inserted to data forwarding.",
       "properties": {
         "enabled": {
           "type": "boolean",
           "title": "Enabled"
+        },
+        "connections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Connection name.",
+                "title": "Name"
+              },
+              "ethernet_interface": {
+                "type": "object",
+                "description": "Outgoing physical interface or subinterface to use for the connection.\nIf both `ethernet_interface` and `tunnel_interface` are configured, `ethernet_interface` will be used.",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "e.g. Ethernet2 or Ethernet2/2.2",
+                    "title": "Name"
+                  },
+                  "next_hop": {
+                    "type": "string",
+                    "description": "Next-hop IPv4 address (without mask).",
+                    "title": "Next Hop"
+                  }
+                },
+                "required": [
+                  "name",
+                  "next_hop"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Ethernet Interface"
+              },
+              "tunnel_interface": {
+                "type": "object",
+                "description": "Outgoing tunnel interface(s) to use for this connection.\nIf both `ethernet_interface` and `tunnel_interface` are configured, `ethernet_interface` will be used.",
+                "properties": {
+                  "primary": {
+                    "type": "string",
+                    "description": "e.g. Tunnel2",
+                    "title": "Primary"
+                  },
+                  "secondary": {
+                    "type": "string",
+                    "description": "e.g. Tunnel3",
+                    "title": "Secondary"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Tunnel Interface"
+              },
+              "monitor_connectivity_host": {
+                "type": "string",
+                "description": "Name of the host defined under `monitor_connectivity.hosts` used to derive the health of the connection.",
+                "title": "Monitor Connectivity Host"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Connections"
         }
       },
       "additionalProperties": false,

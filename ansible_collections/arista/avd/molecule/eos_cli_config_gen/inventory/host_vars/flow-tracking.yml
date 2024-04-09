@@ -92,7 +92,8 @@ flow_tracking:
             collector:
               host: dead:beef::cafe
     shutdown: false
-
+    record:
+      format_ipfix_standard_timestamps_counters: true
 ethernet_interfaces:
   - name: Ethernet40
     flow_tracker:
