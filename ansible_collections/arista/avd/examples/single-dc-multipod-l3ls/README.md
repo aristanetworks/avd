@@ -8,11 +8,11 @@ title: AVD example for a single data center using multiple pods for l3ls
   ~ that can be found in the LICENSE file.
   -->
 
-# AVD example for a single data center with multipod using L3LS
+# AVD example for a single data center with Multi-Pod using L3LS
 
 ## Introduction
 
-This example shows how to create a multipod environment (also known as a 5-stage Clos) in a single DC environment. This can be used in multiple DCs of course, but this example is only for two pods in a single DC.
+This example shows how to create a multi-pod environment (also known as a 5-stage Clos) in a single DC environment. This can be used in multiple DCs of course, but this example is only for two pods in a single DC.
 
 Also included is an example of connecting an external router to a VRF/tenant.
 
@@ -47,94 +47,9 @@ There is the addition of a SUPERSPINES group as well as a POD1 and POD2 groups w
 ### Content of the inventory.yml file
 
 ```yaml title="inventory.yml"
----
-all:
-  children:
-    CVP_cluster:
-      vars:
-        ansible_user: arista
-        ansible_password: arista123
-        ansible_connection: httpapi
-        ansible_httpapi_use_ssl: True
-        ansible_httpapi_validate_certs: False
-        ansible_network_os: eos
-        ansible_httpapi_port: 443
-      hosts:
-        cvp1:
-          ansible_host: 192.168.0.5
-        cvp2:
-          ansible_host: 192.168.0.6
-        cvp3:
-          ansible_host: 192.168.0.7
-
-    FABRIC:
-      vars:
-        ansible_user: arista
-        ansible_ssh_pass: arista123 # If using SSH keys with CLI, this can be removed
-# Use this section if you want to perform testing via the eAPI
-        ansible_connection: httpapi
-        ansible_httpapi_use_ssl: True
-        ansible_httpapi_validate_certs: False
-        ansible_network_os: eos
-        ansible_httpapi_port: 443
-# Use this section if you want to perform testing via the CLI through SSH
-        # ansible_connection: network_cli
-        # ansible_network_os: eos
-        # ansible_become: yes
-        # ansible_become_method: enable
-      children:
-        SUPERSPINES:
-          vars:
-            type: super-spine
-          hosts:
-            borderleaf1:
-              ansible_host: 192.168.0.15
-            borderleaf2:
-              ansible_host: 192.168.0.16
-        POD1:
-          children:
-            POD1_SPINES:
-              vars:
-                type: spine
-              hosts:
-                spine1:
-                  ansible_host: 192.168.0.11
-                spine2:
-                  ansible_host: 192.168.0.12
-            POD1_LEAFS:
-              vars:
-                type: l3leaf
-              hosts:
-                leaf1:
-                  ansible_host: 192.168.0.21
-                leaf2:
-                  ansible_host: 192.168.0.22
-        POD2:
-          children:
-            POD2_SPINES:
-              vars:
-                type: spine
-              hosts:
-                spine3:
-                  ansible_host: 192.168.0.13
-                spine4:
-                  ansible_host: 192.168.0.14
-            POD2_LEAFS:
-              vars:
-                type: l3leaf
-              hosts:
-                leaf3:
-                  ansible_host: 192.168.0.23
-                leaf4:
-                  ansible_host: 192.168.0.24
-    EVPN_SERVICES:
-      children:
-        POD1_LEAFS:
-        POD2_LEAFS:
-    ENDPOINT_CONNECT:
-      children:
-        POD1_LEAFS:
-        POD2_LEAFS:
+--8<--
+examples/single-dc-multipod-l3ls/inventory.yml
+--8<-
 ```
 
 ## FABRIC Files
@@ -186,96 +101,17 @@ The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. N
 The leaf configurations, EVPN_SERVICES and ENDPOINT_CONNECT sections aren't affected by the multi-pod format.
 
 ```yaml title="POD1.yml"
-
-# Spine Switches
-spine:
-  defaults:
-    platform: cEOS
-    bgp_as: 65001
-    loopback_ipv4_pool: 192.168.101.0/24
-    mlag: false
-    uplink_switches: [superspine1, superspine2] # Where the leaf uplinks go
-    uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
-    uplink_interfaces: [Ethernet7, Ethernet8] # Spine uplinks
-  nodes:
-    spine1:
-      id: 11
-      mgmt_ip: 192.168.0.11/24
-      uplink_switch_interfaces: [Ethernet3, Ethernet3]
-      evpn_route_servers: [superspine1, superspine2]
-    spine2:
-      id: 12
-      mgmt_ip: 192.168.0.12/24
-      uplink_switch_interfaces: [Ethernet4, Ethernet4]
-      evpn_route_servers: [superspine1, superspine2]
-
-
-
-# Leaf switches. Most leafs will be l3leaf, not l2leaf.
-l3leaf:
-  defaults:
-    bgp_as: 65100-65199 # Gives a range which will be auto-assigned
-    platform: cEOS
-    loopback_ipv4_pool: 192.168.101.0/24 # This is loopback0 (underlay)
-    vtep_loopback_ipv4_pool: 192.168.102.0/24 # This is loopback1 (VTEP)
-    uplink_interfaces: [Ethernet3, Ethernet4] # Leaf uplinks
-    uplink_switches: [spine1, spine2] # Where the leaf uplinks go
-    uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
-    mlag_interfaces: [Ethernet1, Ethernet2] # MLAG peer link
-    mlag_peer_ipv4_pool: 10.255.252.0/24 # MLAG peer IPs
-    mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # iBGP peering between MLAG peers
-    virtual_router_mac_address: 00:1c:73:00:00:99 # The vMAC for the anycast gateways
-    bgp_defaults:
-      - 'no bgp default ipv4-unicast'
-      - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
-    spanning_tree_mode: mstp # Spanning Tree is still enabled even in EVPN setups
-    spanning_tree_priority: 16384
-    mlag: true # By default, use MLAG
-
-  node_groups:
-    mlag1:
-      nodes:
-        leaf1:
-          id: 1
-          mgmt_ip: 192.168.0.21/24
-          uplink_switch_interfaces: [Ethernet3, Ethernet3]
-        leaf2:
-          id: 2
-          mgmt_ip: 192.168.0.22/24
-          uplink_switch_interfaces: [Ethernet4, Ethernet4]
+--8<--
+examples/single-dc-multipod-l3ls/group_vars/POD1.yml
+--8<-
 ```
 
 ## Connecting an External Router
 
 In addition to multi-pod, this example also has a tenant/VRF connecting to an external network via a router (R1). This is defined in the EVPN_SERVICES.yml file. The `l3_interfaces` parameter creates an L3 interface in the VRF on a specific leaf, and the `bgp_peer` section.
 
-```YAML
----
-tenants:
-  - name: ACME
-    mac_vrf_vni_base: 10000
-    vrfs:
-      - name: VRF_A
-        vrf_vni: 10
-        svis:
-          - id: 10
-            # SVI Description
-            name: DMZ
-            enabled: true
-            ip_address_virtual: 10.1.10.1/24
-          - id: 20
-            name: Internal
-            enabled: true
-            ip_address_virtual: 10.1.20.1/24
-        l3_interfaces:
-          - interfaces: [Ethernet9]
-            ip_addresses: [10.1.5.0/31]
-            nodes: [leaf4]
-            enabled: True
-        bgp_peers:
-          - ip_address: 10.1.5.1
-            remote_as: 65534
-            nodes: [leaf4]
+```yaml
+--8<--
+examples/single-dc-multipod-l3ls/group_vars/EVPN_SERVICES.yml
+--8<--
 ```

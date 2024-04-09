@@ -1,3 +1,4 @@
+---
 - name: "Run Fabric states validation"
   hosts: FABRIC
   collections:

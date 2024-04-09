@@ -134,6 +134,7 @@ nav:
   - Examples:
       - Single DC L3LS: examples/single-dc-l3ls/README.md
       - Dual DC L3LS: examples/dual-dc-l3ls/README.md
+      - Multi-Pod L3LS: examples/single-dc-multipod-l3ls/README.md
       - L2LS Fabric: examples/l2ls-fabric/README.md
       - Campus Fabric: examples/campus-fabric/README.md
       - ISIS-LDP IPVPN: examples/isis-ldp-ipvpn/README.md
