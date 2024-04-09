@@ -206,12 +206,18 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         class WanOverlayPeers(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class BfdTimers(EosCliConfigGen.RouterBgp.PeerGroupsItem.BfdTimers, BaseModel):
+            class BfdTimers(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                interval: int | None = 1000
-                min_rx: int | None = 1000
-                multiplier: int | None = 10
+                interval: Annotated[int, IntConvert(convert_types=(str))] = Field(1000, ge=50, le=60000)
+                """
+                Interval in milliseconds.
+                """
+                min_rx: Annotated[int, IntConvert(convert_types=(str))] = Field(1000, ge=50, le=60000)
+                """
+                Rate in milliseconds.
+                """
+                multiplier: Annotated[int, IntConvert(convert_types=(str))] = Field(10, ge=3, le=50)
 
             class StructuredConfig(EosCliConfigGen.RouterBgp.PeerGroupsItem, BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -249,12 +255,18 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         class WanRrOverlayPeers(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class BfdTimers(EosCliConfigGen.RouterBgp.PeerGroupsItem.BfdTimers, BaseModel):
+            class BfdTimers(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                interval: int | None = 1000
-                min_rx: int | None = 1000
-                multiplier: int | None = 10
+                interval: Annotated[int, IntConvert(convert_types=(str))] = Field(1000, ge=50, le=60000)
+                """
+                Interval in milliseconds.
+                """
+                min_rx: Annotated[int, IntConvert(convert_types=(str))] = Field(1000, ge=50, le=60000)
+                """
+                Rate in milliseconds.
+                """
+                multiplier: Annotated[int, IntConvert(convert_types=(str))] = Field(10, ge=3, le=50)
 
             class StructuredConfig(EosCliConfigGen.RouterBgp.PeerGroupsItem, BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -616,10 +628,10 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         p2p_links_profiles: list[P2pLinksProfilesItem] | None = None
         p2p_links: list[P2pLinksItem] | None = None
 
-    class CvPathfinderRegionsItem(EosCliConfigGen.RouterAdaptiveVirtualTopology.Region, BaseModel):
+    class CvPathfinderRegionsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SitesItem(EosCliConfigGen.RouterAdaptiveVirtualTopology.Site, BaseModel):
+        class SitesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -627,7 +639,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             The site name.
             """
             description: str | None = None
-            id: int | None = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=10000)
             """
             The site ID must be unique within a zone.
             Given that all the sites are placed in a zone named after the region, the site
@@ -645,7 +657,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         The region name.
         """
         description: str | None = None
-        id: int | None = None
+        id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=255)
         """
         The region ID must be unique for the whole WAN deployment.
         """
@@ -1031,7 +1043,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         allocation: Literal["ascending", "descending"] = None
         range: Range | None = None
 
-    class Ipv4AclsItem(EosCliConfigGen.IpAccessListsItem, BaseModel):
+    class Ipv4AclsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         class EntriesItem(AvdDictBaseModel):
@@ -1053,13 +1065,80 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             "<ip>" without a mask means host.
             Required except for remarks.
             """
+            sequence: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            """
+            ACL entry sequence number.
+            """
+            remark: str | None = None
+            """
+            Comment up to 100 characters.
+            If remark is defined, other keys in the ACL entry will be ignored.
+            """
+            action: Literal["permit", "deny"] | None = None
+            """
+            ACL action.
+            Required except for remarks.
+            """
+            protocol: str | None = None
+            """
+            "ip", "tcp", "udp", "icmp" or other protocol name or number.
+            Required except for remarks.
+            """
+            source_ports_match: Literal["eq", "gt", "lt", "neq", "range"] | None = "eq"
+            source_ports: list[Annotated[str, StrConvert(convert_types=(int))]] | None = None
+            destination_ports_match: Literal["eq", "gt", "lt", "neq", "range"] | None = "eq"
+            destination_ports: list[Annotated[str, StrConvert(convert_types=(int))]] | None = None
+            tcp_flags: list[str] | None = None
+            fragments: bool | None = None
+            """
+            Match non-head fragment packets.
+            """
+            log: bool | None = None
+            """
+            Log matches against this rule.
+            """
+            ttl: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
+            """
+            TTL value
+            """
+            ttl_match: Literal["eq", "gt", "lt", "neq"] | None = "eq"
+            icmp_type: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            """
+            Message type name/number for ICMP packets.
+            """
+            icmp_code: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            """
+            Message code for ICMP packets.
+            """
+            nexthop_group: str | None = None
+            """
+            nexthop-group name.
+            """
+            tracked: bool | None = None
+            """
+            Match packets in existing ICMP/UDP/TCP connections.
+            """
+            dscp: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            """
+            DSCP value or name.
+            """
+            vlan_number: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            vlan_inner: bool | None = False
+            vlan_mask: str | None = None
+            """
+            0x000-0xFFF VLAN mask.
+            """
 
-        name: str = None
+        name: Annotated[str, StrConvert(convert_types=(int))] = None
         """
         Access-list name.
         When using substitution for any fields, the interface name will be appended to the ACL name.
         """
         entries: list[EntriesItem] = None
+        """
+        ACL Entries.
+        """
+        counters_per_entry: bool | None = None
 
     class IsisTiLfa(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -3163,14 +3242,48 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         transport: Literal["ipv4"] | None = None
 
-    class QueueMonitorLength(EosCliConfigGen.QueueMonitorLength, BaseModel):
+    class QueueMonitorLength(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        enabled: bool | None = None
+        class DefaultThresholds(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            high: Annotated[int, IntConvert(convert_types=(str))] = None
+            """
+            Default high threshold for Ethernet Interfaces.
+            """
+            low: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            """
+            Default low threshold for Ethernet Interfaces.
+            Low threshold support is platform dependent.
+            """
+
+        class Cpu(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class Thresholds(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                high: Annotated[int, IntConvert(convert_types=(str))] = None
+                low: Annotated[int, IntConvert(convert_types=(str))] | None = None
+
+            thresholds: Thresholds | None = None
+
+        enabled: bool = None
         notifying: bool | None = None
         """
         If True, `eos_designs` will configure `queue-monitor length notifying` according to the
         `platform_settings.[].feature_support.queue_monitor_length_notify` setting.
+        """
+        default_thresholds: DefaultThresholds | None = None
+        log: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        """
+        Logging interval in seconds
+        """
+        cpu: Cpu | None = None
+        tx_latency: bool | None = None
+        """
+        Enable tx-latency mode
         """
 
     class Redundancy(AvdDictBaseModel):
@@ -5290,8 +5403,80 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             class NetworkServicesKeysNameItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class BgpPeerGroupsItem(EosCliConfigGen.RouterBgp.PeerGroupsItem, BaseModel):
+                class BgpPeerGroupsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    class AsPath(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        remote_as_replace_out: bool | None = None
+                        """
+                        Replace AS number with local AS number
+                        """
+                        prepend_own_disabled: bool | None = None
+                        """
+                        Disable prepending own AS number to AS path
+                        """
+
+                    class RemovePrivateAs(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        enabled: bool | None = None
+                        all: bool | None = None
+                        replace_as: bool | None = None
+
+                    class RemovePrivateAsIngress(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        enabled: bool | None = None
+                        replace_as: bool | None = None
+
+                    class BfdTimers(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        interval: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+                        """
+                        Interval in milliseconds.
+                        """
+                        min_rx: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+                        """
+                        Rate in milliseconds.
+                        """
+                        multiplier: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=3, le=50)
+
+                    class DefaultOriginate(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        enabled: bool | None = None
+                        always: bool | None = None
+                        route_map: str | None = None
+                        """
+                        Route-map name
+                        """
+
+                    class LinkBandwidth(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        enabled: bool | None = None
+                        default: str | None = None
+                        """
+                        nn.nn(K|M|G) link speed in bits/second
+                        """
+
+                    class AllowasIn(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        enabled: bool | None = None
+                        times: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=10)
+                        """
+                        Number of local ASNs allowed in a BGP update
+                        """
+
+                    class RibInPrePolicyRetain(AvdDictBaseModel):
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        enabled: bool | None = None
+                        all: bool | None = None
 
                     name: str = None
                     """
@@ -5302,6 +5487,105 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                     If not set the peer-group
                     is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                    """
+                    type: str | None = None
+                    """
+                    Key only used for documentation or validation purposes
+                    """
+                    remote_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                    """
+                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                    For asdot notation in YAML inputs, the value
+                    must be put in quotes, to prevent it from being interpreted as a float number.
+                    """
+                    local_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                    """
+                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                    For asdot notation in YAML inputs, the value
+                    must be put in quotes, to prevent it from being interpreted as a float number.
+                    """
+                    description: str | None = None
+                    shutdown: bool | None = None
+                    as_path: AsPath | None = None
+                    """
+                    BGP AS-PATH options
+                    """
+                    remove_private_as: RemovePrivateAs | None = None
+                    """
+                    Remove private AS numbers in outbound AS path
+                    """
+                    remove_private_as_ingress: RemovePrivateAsIngress | None = None
+                    peer_filter: str | None = None
+                    """
+                    Peer-filter name
+                    note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+                    the new `listen_ranges` key
+                    above to avoid conflicts.
+                    """
+                    next_hop_unchanged: bool | None = None
+                    update_source: str | None = None
+                    """
+                    IP address or interface name
+                    """
+                    route_reflector_client: bool | None = None
+                    bfd: bool | None = None
+                    """
+                    Enable BFD.
+                    """
+                    bfd_timers: BfdTimers | None = None
+                    """
+                    Override default BFD timers. BFD must be enabled with `bfd: true`.
+                    """
+                    ebgp_multihop: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+                    """
+                    Time-to-live in range of hops
+                    """
+                    next_hop_self: bool | None = None
+                    password: str | None = None
+                    passive: bool | None = None
+                    default_originate: DefaultOriginate | None = None
+                    send_community: str | None = None
+                    """
+                    'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
+                    """
+                    maximum_routes: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967294)
+                    """
+                    Maximum number of routes (0 means unlimited)
+                    """
+                    maximum_routes_warning_limit: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                    """
+                    Maximum number of routes after which a warning is issued (0 means never warn) or
+                    Percentage of maximum number of routes
+                    at which to warn ("<1-100> percent")
+                    """
+                    maximum_routes_warning_only: bool | None = None
+                    link_bandwidth: LinkBandwidth | None = None
+                    allowas_in: AllowasIn | None = None
+                    weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
+                    timers: str | None = None
+                    """
+                    BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
+                    """
+                    rib_in_pre_policy_retain: RibInPrePolicyRetain | None = None
+                    route_map_in: str | None = None
+                    """
+                    Inbound route-map name
+                    """
+                    route_map_out: str | None = None
+                    """
+                    Outbound route-map name
+                    """
+                    bgp_listen_range_prefix: str | None = None
+                    """
+                    IP prefix range
+                    note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+                    the new `listen_ranges` key
+                    above to avoid conflicts.
+                    """
+                    session_tracker: str | None = None
+                    ttl_maximum_hops: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=254)
+                    """
+                    Maximum number of hops.
                     """
 
                 class EvpnL2Multicast(AvdDictBaseModel):
@@ -6311,8 +6595,80 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Custom structured config added under router_bgp.vrfs.[name=<vrf>] for eos_cli_config_gen.
                         """
 
-                    class BgpPeerGroupsItem(EosCliConfigGen.RouterBgp.PeerGroupsItem, BaseModel):
+                    class BgpPeerGroupsItem(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                        class AsPath(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            remote_as_replace_out: bool | None = None
+                            """
+                            Replace AS number with local AS number
+                            """
+                            prepend_own_disabled: bool | None = None
+                            """
+                            Disable prepending own AS number to AS path
+                            """
+
+                        class RemovePrivateAs(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            enabled: bool | None = None
+                            all: bool | None = None
+                            replace_as: bool | None = None
+
+                        class RemovePrivateAsIngress(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            enabled: bool | None = None
+                            replace_as: bool | None = None
+
+                        class BfdTimers(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            interval: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+                            """
+                            Interval in milliseconds.
+                            """
+                            min_rx: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+                            """
+                            Rate in milliseconds.
+                            """
+                            multiplier: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=3, le=50)
+
+                        class DefaultOriginate(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            enabled: bool | None = None
+                            always: bool | None = None
+                            route_map: str | None = None
+                            """
+                            Route-map name
+                            """
+
+                        class LinkBandwidth(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            enabled: bool | None = None
+                            default: str | None = None
+                            """
+                            nn.nn(K|M|G) link speed in bits/second
+                            """
+
+                        class AllowasIn(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            enabled: bool | None = None
+                            times: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=10)
+                            """
+                            Number of local ASNs allowed in a BGP update
+                            """
+
+                        class RibInPrePolicyRetain(AvdDictBaseModel):
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                            enabled: bool | None = None
+                            all: bool | None = None
 
                         name: str | None = None
                         """
@@ -6323,6 +6679,105 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                         If not set the peer-group
                         is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                        """
+                        type: str | None = None
+                        """
+                        Key only used for documentation or validation purposes
+                        """
+                        remote_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                        """
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value
+                        must be put in quotes, to prevent it from being interpreted as a float number.
+                        """
+                        local_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                        """
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value
+                        must be put in quotes, to prevent it from being interpreted as a float number.
+                        """
+                        description: str | None = None
+                        shutdown: bool | None = None
+                        as_path: AsPath | None = None
+                        """
+                        BGP AS-PATH options
+                        """
+                        remove_private_as: RemovePrivateAs | None = None
+                        """
+                        Remove private AS numbers in outbound AS path
+                        """
+                        remove_private_as_ingress: RemovePrivateAsIngress | None = None
+                        peer_filter: str | None = None
+                        """
+                        Peer-filter name
+                        note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+                        the new `listen_ranges` key
+                        above to avoid conflicts.
+                        """
+                        next_hop_unchanged: bool | None = None
+                        update_source: str | None = None
+                        """
+                        IP address or interface name
+                        """
+                        route_reflector_client: bool | None = None
+                        bfd: bool | None = None
+                        """
+                        Enable BFD.
+                        """
+                        bfd_timers: BfdTimers | None = None
+                        """
+                        Override default BFD timers. BFD must be enabled with `bfd: true`.
+                        """
+                        ebgp_multihop: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+                        """
+                        Time-to-live in range of hops
+                        """
+                        next_hop_self: bool | None = None
+                        password: str | None = None
+                        passive: bool | None = None
+                        default_originate: DefaultOriginate | None = None
+                        send_community: str | None = None
+                        """
+                        'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
+                        """
+                        maximum_routes: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967294)
+                        """
+                        Maximum number of routes (0 means unlimited)
+                        """
+                        maximum_routes_warning_limit: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                        """
+                        Maximum number of routes after which a warning is issued (0 means never warn) or
+                        Percentage of maximum number of routes
+                        at which to warn ("<1-100> percent")
+                        """
+                        maximum_routes_warning_only: bool | None = None
+                        link_bandwidth: LinkBandwidth | None = None
+                        allowas_in: AllowasIn | None = None
+                        weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
+                        timers: str | None = None
+                        """
+                        BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
+                        """
+                        rib_in_pre_policy_retain: RibInPrePolicyRetain | None = None
+                        route_map_in: str | None = None
+                        """
+                        Inbound route-map name
+                        """
+                        route_map_out: str | None = None
+                        """
+                        Outbound route-map name
+                        """
+                        bgp_listen_range_prefix: str | None = None
+                        """
+                        IP prefix range
+                        note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+                        the new `listen_ranges` key
+                        above to avoid conflicts.
+                        """
+                        session_tracker: str | None = None
+                        ttl_maximum_hops: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=254)
+                        """
+                        Maximum number of hops.
                         """
 
                     class AdditionalRouteTargetsItem(AvdDictBaseModel):

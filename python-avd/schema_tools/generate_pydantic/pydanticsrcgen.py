@@ -20,6 +20,7 @@ class PydanticSrcGenBase(ABC):
     # add deprecation handling
     # dynamic_valid_values
     # format
+    # unique_keys
     # Create a base model for lists so child items can be rendered by their own generators instead of trying to handle it inside lists.
 
     def generate_pydantic_src(self, schema: AvdSchemaField, class_name: str | None = None) -> PydanticFieldSrc:

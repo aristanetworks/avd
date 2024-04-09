@@ -24,8 +24,9 @@ def merge_schema_from_ref(schema: dict, only_resolve_schema: str | None = None) 
     if "$ref" not in schema:
         return schema
 
-    if schema.get("type") == "dict" and only_resolve_schema and not str(schema["$ref"]).startswith(only_resolve_schema + "#"):
+    if schema.get("type") == "dict" and not schema.get("keys") and only_resolve_schema and not str(schema["$ref"]).startswith(only_resolve_schema + "#"):
         # Do not resolve a dict ref if the ref does not match the given "only_resolve_schema"
+        # except if the model overrides keys. Then the model _must_ be fully resolved to merge the two schemas.
         return schema
 
     schema = deepcopy(schema)
