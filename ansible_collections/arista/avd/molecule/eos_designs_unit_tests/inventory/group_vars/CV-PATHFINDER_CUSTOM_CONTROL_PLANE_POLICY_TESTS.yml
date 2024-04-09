@@ -1,6 +1,6 @@
 ---
 # Testing CV pathfinder edge with custom control plane policy to make sure the correct
-# control plane policy can be overriden
+# control plane policy can be overridden
 
 # Inheriting most values from CV_PATHFINDER_TESTS
 default_node_types:
