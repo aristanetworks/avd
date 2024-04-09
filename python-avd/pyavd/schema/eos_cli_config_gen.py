@@ -833,7 +833,9 @@ class EosCliConfigGen(BaseModel):
             """
             cvsourceintf: str | None = None
             """
-            Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0
+            Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0.
+            The interface name is case
+            sensitive and has to match the interface name in the running-config, e.g.:Vlan100.
             """
             cvvrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
             """
@@ -898,7 +900,9 @@ class EosCliConfigGen(BaseModel):
         """
         cvsourceintf: str | None = None
         """
-        Set source interface in case of in-band managament
+        Set source interface in case of in-band managament.
+        The interface name is case sensitive and has to match the interface
+        name in the running-config, e.g.:Vlan100.
         """
         cvvrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
@@ -1079,6 +1083,7 @@ class EosCliConfigGen(BaseModel):
 
         system_auth_control: bool | None = None
         protocol_lldp_bypass: bool | None = None
+        protocol_bpdu_bypass: bool | None = None
         dynamic_authorization: bool | None = None
         mac_based_authentication: MacBasedAuthentication | None = None
         radius_av_pair: RadiusAvPair | None = None
@@ -1575,8 +1580,30 @@ class EosCliConfigGen(BaseModel):
             class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
+                class Hello(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    count: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
+                    """
+                    Number of missed hellos after which the neighbor expires. Range <1.5-65535>.
+                    """
+                    interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    """
+                    PIM hello interval in seconds.
+                    """
+
+                border_router: bool | None = None
+                """
+                Configure PIM border router. EOS default is false.
+                """
                 dr_priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=429467295)
                 sparse_mode: bool | None = None
+                bfd: bool | None = None
+                """
+                Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
+                """
+                bidirectional: bool | None = None
+                hello: Hello | None = None
 
             ipv4: Ipv4 | None = None
 
@@ -1759,6 +1786,9 @@ class EosCliConfigGen(BaseModel):
                 congestion_drops: bool | None = None
                 spanning_tree: bool | None = None
                 storm_control_discards: bool | None = None
+                """
+                Discards due to storm-control.
+                """
 
             event: Event | None = None
 
@@ -1980,6 +2010,55 @@ class EosCliConfigGen(BaseModel):
             Name of session tracker
             """
 
+        class IpIgmpHostProxy(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class GroupsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class ExcludeItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    source: str = None
+
+                class IncludeItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    source: str = None
+
+                group: str = None
+                """
+                Multicast Address.
+                """
+                exclude: list[ExcludeItem] | None = None
+                """
+                The same source must not be present both in `exclude` and `include` list.
+                """
+                include: list[IncludeItem] | None = None
+                """
+                The same source must not be present both in `exclude` and `include` list.
+                """
+
+            class AccessListsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str = None
+
+            enabled: bool | None = None
+            groups: list[GroupsItem] | None = None
+            report_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=31744)
+            """
+            Time interval between unsolicited reports.
+            """
+            access_lists: list[AccessListsItem] | None = None
+            """
+            Non-standard Access List name.
+            """
+            version: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=3)
+            """
+            IGMP version on IGMP host-proxy interface.
+            """
+
         class Sflow(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -2179,6 +2258,66 @@ class EosCliConfigGen(BaseModel):
             ipv4: Ipv4 | None = None
             ipv6: Ipv6 | None = None
 
+        class Switchport(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class PortSecurity(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class MacAddressMaximum(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    disabled: bool | None = None
+                    """
+                    Disable port level check for port security (only in violation 'shutdown' mode).
+                    """
+                    limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=1000)
+                    """
+                    MAC address limit.
+                    """
+
+                class Violation(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    mode: Literal["shutdown", "protect"] | None = None
+                    """
+                    Configure port security mode.
+                    """
+                    protect_log: bool | None = None
+                    """
+                    Log new addresses seen after limit is reached in protect mode.
+                    """
+
+                class VlansItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    range: Annotated[str, StrConvert(convert_types=(int))] = None
+                    """
+                    VLAN ID or range(s) of VLAN IDs, <1-4094>.
+                    Example:
+                      - 3
+                      - 1,3
+                      - 1-10
+                    """
+                    mac_address_maximum: Annotated[int, IntConvert(convert_types=(str))] | None = None
+
+                enabled: bool | None = None
+                mac_address_maximum: MacAddressMaximum | None = None
+                """
+                Maximum number of MAC addresses allowed on the interface.
+                """
+                violation: Violation | None = None
+                """
+                Configure violation mode (shutdown or protect), EOS default is 'shutdown'.
+                """
+                vlan_default_mac_address_maximum: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000)
+                """
+                Default maximum MAC addresses for all VLANs on this interface.
+                """
+                vlans: list[VlansItem] | None = None
+
+            port_security: PortSecurity | None = None
+
         name: str = None
         description: str | None = None
         shutdown: bool | None = None
@@ -2359,6 +2498,7 @@ class EosCliConfigGen(BaseModel):
         ip_proxy_arp: bool | None = None
         traffic_policy: TrafficPolicy | None = None
         bgp: Bgp | None = None
+        ip_igmp_host_proxy: IpIgmpHostProxy | None = None
         peer: str | None = None
         """
         Key only used for documentation or validation purposes
@@ -2382,6 +2522,11 @@ class EosCliConfigGen(BaseModel):
         """
         VRRP model.
         """
+        validate_state: bool | None = None
+        """
+        Set to false to disable interface validation by the `eos_validate_state` role
+        """
+        switchport: Switchport | None = None
         eos_cli: str | None = None
         """
         Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
@@ -2427,6 +2572,12 @@ class EosCliConfigGen(BaseModel):
         class Sampled(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
+            class Encapsulation(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                ipv4_ipv6: bool | None = None
+                mpls: bool | None = None
+
             class HardwareOffload(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -2451,7 +2602,7 @@ class EosCliConfigGen(BaseModel):
 
                     mpls: bool | None = None
                     """
-                    Export MPLS forwarding information
+                    Export MPLS forwarding information.
                     """
                     on_inactive_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3000, le=900000)
                     """
@@ -2508,6 +2659,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 exporters: list[ExportersItem] | None = None
 
+            encapsulation: Encapsulation | None = None
             sample: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4294967295)
             hardware_offload: HardwareOffload | None = None
             trackers: list[TrackersItem] | None = None
@@ -2515,6 +2667,14 @@ class EosCliConfigGen(BaseModel):
 
         class Hardware(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class Record(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                format_ipfix_standard_timestamps_counters: bool | None = None
+                """
+                Enable software export of IPFIX data records.
+                """
 
             class TrackersItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -2573,6 +2733,7 @@ class EosCliConfigGen(BaseModel):
                 record_export: RecordExport | None = None
                 exporters: list[ExportersItem] | None = None
 
+            record: Record | None = None
             trackers: list[TrackersItem] | None = None
             shutdown: bool | None = False
 
@@ -2841,31 +3002,31 @@ class EosCliConfigGen(BaseModel):
             remark: str | None = None
             """
             Comment up to 100 characters.
-            If remark is defined, other keys in acl entry will be ignored.
+            If remark is defined, other keys in the ACL entry will be ignored.
             """
             action: Literal["permit", "deny"] | None = None
             """
             ACL action.
-            Required for standard entry.
+            Required except for remarks.
             """
             protocol: str | None = None
             """
-            ip, tcp, udp, icmp or other protocol name or number.
-            Required for standard entry.
+            "ip", "tcp", "udp", "icmp" or other protocol name or number.
+            Required except for remarks.
             """
             source: str | None = None
             """
-            any, A.B.C.D/E or A.B.C.D.
-            A.B.C.D without a mask means host.
-            Required for standard entry.
+            "any", "<ip>/<mask>" or "<ip>".
+            "<ip>" without a mask means host.
+            Required except for remarks.
             """
             source_ports_match: Literal["eq", "gt", "lt", "neq", "range"] | None = "eq"
             source_ports: list[Annotated[str, StrConvert(convert_types=(int))]] | None = None
             destination: str | None = None
             """
-            any, A.B.C.D/E or A.B.C.D.
-            A.B.C.D without a mask means host.
-            Required for standard entry.
+            "any", "<ip>/<mask>" or "<ip>".
+            "<ip>" without a mask means host.
+            Required except for remarks.
             """
             destination_ports_match: Literal["eq", "gt", "lt", "neq", "range"] | None = "eq"
             destination_ports: list[Annotated[str, StrConvert(convert_types=(int))]] | None = None
@@ -2912,12 +3073,12 @@ class EosCliConfigGen(BaseModel):
 
         name: Annotated[str, StrConvert(convert_types=(int))] = None
         """
-        Access-list Name
+        Access-list Name.
         """
         counters_per_entry: bool | None = None
         entries: list[EntriesItem] | None = None
         """
-        ACL Entries
+        ACL Entries.
         """
 
     class IpCommunityListsItem(AvdDictBaseModel):
@@ -3041,6 +3202,18 @@ class EosCliConfigGen(BaseModel):
         Community-list Name
         """
         entries: list[EntriesItem] = None
+
+    class IpFtpClientSourceInterfacesItem(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        name: str = None
+        """
+        Interface Name
+        """
+        vrf: str | None = None
+        """
+        VRF Name
+        """
 
     class IpHardware(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -3486,6 +3659,12 @@ class EosCliConfigGen(BaseModel):
             """
             Ipsec mode type.
             """
+            flow_parallelization_encapsulation_udp: bool | None = None
+            """
+            Enable flow parallelization.
+            When enabled, multiple cores are used to parallelize the IPsec encryption and decryption
+            processing.
+            """
 
         class KeyController(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -3531,6 +3710,30 @@ class EosCliConfigGen(BaseModel):
         Interface name
         """
         vrf: Annotated[str, StrConvert(convert_types=(int))] | None = Field(None, title="VRF")
+
+    class IpTelnetClientSourceInterfacesItem(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        name: str = None
+        """
+        Interface Name
+        """
+        vrf: str | None = None
+        """
+        VRF Name
+        """
+
+    class IpTftpClientSourceInterfacesItem(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        name: str = None
+        """
+        Interface Name
+        """
+        vrf: str | None = None
+        """
+        VRF Name
+        """
 
     class Ipv6AccessListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -4643,7 +4846,15 @@ class EosCliConfigGen(BaseModel):
 
             server: list[str] | None = None
             """
-            SSH host key settings
+            SSH host key settings.
+            """
+            server_cert: str | None = None
+            """
+            Configure switch's hostkey cert file.
+            """
+            client_strict_checking: bool | None = None
+            """
+            Enforce strict host key checking.
             """
 
         class Connection(AvdDictBaseModel):
@@ -4700,6 +4911,10 @@ class EosCliConfigGen(BaseModel):
         """
         Cryptographic MAC algorithms for SSH to use
         """
+        fips_restrictions: bool | None = None
+        """
+        Use FIPS compliant algorithms.
+        """
         hostkey: Hostkey | None = None
         enable: bool | None = None
         """
@@ -4747,6 +4962,30 @@ class EosCliConfigGen(BaseModel):
     class MatchListInput(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
+        class PrefixIpv4Item(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            name: str = None
+            """
+            Prefix-List Name.
+            """
+            prefixes: list[str] = Field(None, min_length=1)
+            """
+            List of IPv4 prefixes (with the subnet mask e.g. 192.0.2.0/24).
+            """
+
+        class PrefixIpv6Item(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            name: str = None
+            """
+            Prefix-List Name.
+            """
+            prefixes: list[str] = Field(None, min_length=1)
+            """
+            List of IPv6 prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64).
+            """
+
         class StringItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -4768,6 +5007,8 @@ class EosCliConfigGen(BaseModel):
             """
             sequence_numbers: list[SequenceNumbersItem] = None
 
+        prefix_ipv4: list[PrefixIpv4Item] | None = None
+        prefix_ipv6: list[PrefixIpv6Item] | None = None
         string: list[StringItem] | None = None
 
     class McsClient(AvdDictBaseModel):
@@ -4881,7 +5122,7 @@ class EosCliConfigGen(BaseModel):
 
                         jitter: int | None = None
                         latency: int | None = None
-                        lossrate: str | None = None
+                        lossrate: Annotated[str, StrConvert(convert_types=(float))] | None = None
 
                     class PathgroupsItem(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -4912,6 +5153,7 @@ class EosCliConfigGen(BaseModel):
             vrfs: list[VrfsItem] | None = None
 
         platform: str | None = None
+        system_mac_address: str | None = None
         cv_tags: CvTags | None = None
         cv_pathfinder: CvPathfinder | None = None
         """
@@ -5034,6 +5276,34 @@ class EosCliConfigGen(BaseModel):
         local_interfaces: str | None = None
         hosts: list[HostsItem] | None = None
         vrfs: list[VrfsItem] | None = None
+
+    class MonitorLayer1(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class LoggingTransceiver(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            dom: bool | None = None
+            """
+            Enable transceiver Digital Optical Monitoring (DOM) logging.
+            """
+            communication: bool | None = None
+            """
+            Enable transceiver SMBus fail and reset logging.
+            """
+
+        enabled: bool = None
+        """
+        Enable monitor layer1
+        """
+        logging_mac_fault: bool | None = None
+        """
+        Enable MAC fault logging.
+        """
+        logging_transceiver: LoggingTransceiver | None = None
+        """
+        Configure transceiver monitoring logging.
+        """
 
     class MonitorSessionsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -5509,6 +5779,10 @@ class EosCliConfigGen(BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 link_status: bool | None = None
+                storm_control_discards: bool | None = None
+                """
+                Discards due to storm-control.
+                """
 
             event: Event | None = None
 
@@ -5950,8 +6224,30 @@ class EosCliConfigGen(BaseModel):
             class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
+                class Hello(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    count: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
+                    """
+                    Number of missed hellos after which the neighbor expires. Range <1.5-65535>.
+                    """
+                    interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    """
+                    PIM hello interval in seconds.
+                    """
+
+                border_router: bool | None = None
+                """
+                Configure PIM border router. EOS default is false.
+                """
                 dr_priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=429467295)
                 sparse_mode: bool | None = None
+                bfd: bool | None = None
+                """
+                Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
+                """
+                bidirectional: bool | None = None
+                hello: Hello | None = None
 
             ipv4: Ipv4 | None = None
 
@@ -5983,6 +6279,55 @@ class EosCliConfigGen(BaseModel):
             session_tracker: str | None = None
             """
             Name of session tracker
+            """
+
+        class IpIgmpHostProxy(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class GroupsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class ExcludeItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    source: str = None
+
+                class IncludeItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    source: str = None
+
+                group: str = None
+                """
+                Multicast Address.
+                """
+                exclude: list[ExcludeItem] | None = None
+                """
+                The same source must not be present both in `exclude` and `include` list.
+                """
+                include: list[IncludeItem] | None = None
+                """
+                The same source must not be present both in `exclude` and `include` list.
+                """
+
+            class AccessListsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str = None
+
+            enabled: bool | None = None
+            groups: list[GroupsItem] | None = None
+            report_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=31744)
+            """
+            Time interval between unsolicited reports.
+            """
+            access_lists: list[AccessListsItem] | None = None
+            """
+            Non-standard Access List name.
+            """
+            version: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=3)
+            """
+            IGMP version on IGMP host-proxy interface.
             """
 
         class Sflow(AvdDictBaseModel):
@@ -6165,6 +6510,7 @@ class EosCliConfigGen(BaseModel):
         ospf_message_digest_keys: list[OspfMessageDigestKeysItem] | None = None
         flow_tracker: FlowTracker | None = None
         bgp: Bgp | None = None
+        ip_igmp_host_proxy: IpIgmpHostProxy | None = None
         peer: str | None = None
         """
         Key only used for documentation or validation purposes
@@ -6178,6 +6524,10 @@ class EosCliConfigGen(BaseModel):
         Key only used for documentation or validation purposes
         """
         sflow: Sflow | None = None
+        validate_state: bool | None = None
+        """
+        Set to false to disable interface validation by the `eos_validate_state` role
+        """
         eos_cli: str | None = None
         """
         Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration
@@ -6318,7 +6668,8 @@ class EosCliConfigGen(BaseModel):
             threshold: Threshold | None = None
             missing_message: MissingMessage | None = None
 
-        mode: Literal["boundary", "transparent"] | None = None
+        mode: Literal["boundary", "disabled", "e2etransparent", "gptp", "ordinarymaster", "p2ptransparent"] | None = None
+        mode_one_step: bool | None = None
         forward_unicast: bool | None = None
         clock_identity: str | None = None
         """
@@ -7238,7 +7589,9 @@ class EosCliConfigGen(BaseModel):
             """
             remote_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
             """
-            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+            For asdot notation in YAML inputs, the value
+            must be put in quotes, to prevent it from being interpreted as a float number.
             """
 
         class PeerGroupsItem(AvdDictBaseModel):
@@ -7326,11 +7679,15 @@ class EosCliConfigGen(BaseModel):
             """
             remote_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
             """
-            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+            For asdot notation in YAML inputs, the value
+            must be put in quotes, to prevent it from being interpreted as a float number.
             """
             local_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
             """
-            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+            For asdot notation in YAML inputs, the value
+            must be put in quotes, to prevent it from being interpreted as a float number.
             """
             description: str | None = None
             shutdown: bool | None = None
@@ -7492,11 +7849,15 @@ class EosCliConfigGen(BaseModel):
             peer_group: str | None = None
             remote_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
             """
-            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+            For asdot notation in YAML inputs, the value
+            must be put in quotes, to prevent it from being interpreted as a float number.
             """
             local_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
             """
-            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+            For asdot notation in YAML inputs, the value
+            must be put in quotes, to prevent it from being interpreted as a float number.
             """
             as_path: AsPath | None = None
             """
@@ -7579,6 +7940,11 @@ class EosCliConfigGen(BaseModel):
             Interface name
             """
             remote_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            """
+            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+            For asdot notation in YAML inputs, the value
+            must be put in quotes, to prevent it from being interpreted as a float number.
+            """
             peer: str | None = None
             """
             Key only used for documentation or validation purposes
@@ -7811,6 +8177,24 @@ class EosCliConfigGen(BaseModel):
                 """
                 next_hop_self_received_evpn_routes: NextHopSelfReceivedEvpnRoutes | None = None
 
+            class NextHopMplsResolutionRibsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                rib_type: Literal["system-connected", "tunnel-rib-colored", "tunnel-rib"] = None
+                """
+                Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use.
+                """
+                rib_name: str | None = None
+                """
+                The name of the tunnel-rib to use when using 'tunnel-rib' type.
+                """
+
+            class NeighborsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                ip_address: str = None
+                activate: bool | None = None
+
             class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -7878,9 +8262,16 @@ class EosCliConfigGen(BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 import_match_failure_action: Literal["discard"] | None = None
+                import_ethernet_segment_ip_mass_withdraw: bool | None = None
+                export_ethernet_segment_ip_mass_withdraw: bool | None = None
 
             domain_identifier: str | None = None
             neighbor_default: NeighborDefault | None = None
+            next_hop_mpls_resolution_ribs: list[NextHopMplsResolutionRibsItem] | None = Field(None, min_length=1, max_length=3)
+            """
+            Specify the RIBs used to resolve MPLS next-hops. The order of this list determines the order of RIB lookups.
+            """
+            neighbors: list[NeighborsItem] | None = None
             peer_groups: list[PeerGroupsItem] | None = None
             evpn_hostflap_detection: EvpnHostflapDetection | None = None
             next_hop: NextHop | None = None
@@ -8660,7 +9051,9 @@ class EosCliConfigGen(BaseModel):
                 """
                 remote_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
-                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value
+                must be put in quotes, to prevent it from being interpreted as a float number.
                 """
 
             class NeighborsItem(AvdDictBaseModel):
@@ -8733,7 +9126,9 @@ class EosCliConfigGen(BaseModel):
                 """
                 remote_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
-                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value
+                must be put in quotes, to prevent it from being interpreted as a float number.
                 """
                 password: str | None = None
                 passive: bool | None = None
@@ -8745,7 +9140,9 @@ class EosCliConfigGen(BaseModel):
                 weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
                 local_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
-                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value
+                must be put in quotes, to prevent it from being interpreted as a float number.
                 """
                 as_path: AsPath | None = None
                 """
@@ -8813,7 +9210,9 @@ class EosCliConfigGen(BaseModel):
                 """
                 remote_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
-                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value
+                must be put in quotes, to prevent it from being interpreted as a float number.
                 """
                 peer_group: str | None = None
                 """
@@ -9268,7 +9667,14 @@ class EosCliConfigGen(BaseModel):
 
         field_as: Annotated[str, StrConvert(convert_types=(int))] | None = Field(None, alias="as")
         """
-        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
+        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+        For asdot notation in YAML inputs, the value
+        must be put in quotes, to prevent it from being interpreted as a float number.
+        """
+        as_notation: Literal["asdot", "asplain"] | None = Field(None, title="ASN Notation")
+        """
+        BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>". This flag indicates which
+        mode is preferred - asplain is the default.
         """
         router_id: str | None = None
         """
@@ -9316,6 +9722,10 @@ class EosCliConfigGen(BaseModel):
         address_family_vpn_ipv6: AddressFamilyVpnIpv6 | None = None
         vrfs: list[VrfsItem] | None = None
         session_trackers: list[SessionTrackersItem] | None = None
+        eos_cli: str | None = None
+        """
+        Multiline EOS CLI rendered directly on the Router BGP in the final EOS configuration.
+        """
 
     class RouterGeneral(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -9371,7 +9781,34 @@ class EosCliConfigGen(BaseModel):
     class RouterIgmp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
+        class VrfsItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            name: str = None
+            """
+            VRF name
+            """
+            host_proxy_match_mroute: Literal["all", "iif"] | None = None
+            """
+            Specify conditions for sending IGMP joins for host-proxy
+            'iif' will enable igmp host-proxy to work in iif aware
+            'all'
+            will enable igmp host-proxy to work in iif unaware mode (EOS default)
+            """
+
+        host_proxy_match_mroute: Literal["all", "iif"] | None = None
+        """
+        Specify conditions for sending IGMP joins for host-proxy
+        'iif' will enable igmp host-proxy to work in iif aware
+        'all'
+        will enable igmp host-proxy to work in iif unaware mode (EOS default)
+        """
         ssm_aware: bool | None = None
+        vrfs: list[VrfsItem] | None = None
+        """
+        Configure IGMP in a VRF.
+        VRF 'default' is not supported in EOS, please see keys directly under 'router_igmp'.
+        """
 
     class RouterIsis(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -9389,6 +9826,220 @@ class EosCliConfigGen(BaseModel):
                 """
 
             local_convergence: LocalConvergence | None = None
+
+        class SetOverloadBit(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class OnStartup(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class WaitForBgp(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    enabled: bool | None = None
+                    timeout: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                    """
+                    Number of seconds.
+                    """
+
+                delay: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                """
+                Number of seconds.
+                """
+                wait_for_bgp: WaitForBgp | None = None
+
+            enabled: bool | None = None
+            on_startup: OnStartup | None = None
+
+        class Authentication(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class Both(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class KeyIdsItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
+                    """
+                    Configure authentication key-id.
+                    """
+                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] = None
+                    key_type: Annotated[Literal["0", "7", "8a"], StrConvert(convert_types=(int))] = None
+                    """
+                    Configure authentication key type.
+                    """
+                    key: str = None
+                    """
+                    Password string.
+                    """
+                    rfc_5310: bool | None = None
+                    """
+                    SHA digest computation according to rfc5310.
+                    """
+
+                class Sha(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    key_id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
+
+                class SharedSecret(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    profile: str = None
+                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] = None
+
+                key_type: Annotated[Literal["0", "7", "8a"], StrConvert(convert_types=(int))] | None = None
+                """
+                Configure authentication key type. Default key_id is 0.
+                """
+                key: str | None = None
+                """
+                Password string.
+                """
+                key_ids: list[KeyIdsItem] | None = None
+                mode: Literal["md5", "sha", "text", "shared_secret"] | None = None
+                """
+                Authentication mode.
+                """
+                sha: Sha | None = None
+                """
+                Required settings for authentication mode 'sha'.
+                """
+                shared_secret: SharedSecret | None = None
+                """
+                Required settings for authentication mode 'shared_secret'.
+                """
+                rx_disabled: bool | None = None
+
+            class Level1(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class KeyIdsItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
+                    """
+                    Configure authentication key-id.
+                    """
+                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] = None
+                    key_type: Annotated[Literal["0", "7", "8a"], StrConvert(convert_types=(int))] = None
+                    """
+                    Configure authentication key type.
+                    """
+                    key: str = None
+                    """
+                    Password string.
+                    """
+                    rfc_5310: bool | None = None
+                    """
+                    SHA digest computation according to rfc5310.
+                    """
+
+                class Sha(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    key_id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
+
+                class SharedSecret(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    profile: str = None
+                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] = None
+
+                key_type: Annotated[Literal["0", "7", "8a"], StrConvert(convert_types=(int))] | None = None
+                """
+                Configure authentication key type. Default key_id is 0.
+                """
+                key: str | None = None
+                """
+                Password string.
+                """
+                key_ids: list[KeyIdsItem] | None = None
+                mode: Literal["md5", "sha", "text", "shared_secret"] | None = None
+                """
+                Authentication mode.
+                """
+                sha: Sha | None = None
+                """
+                Required settings for authentication mode 'sha'.
+                """
+                shared_secret: SharedSecret | None = None
+                """
+                Required settings for authentication mode 'shared_secret'.
+                """
+                rx_disabled: bool | None = None
+
+            class Level2(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class KeyIdsItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
+                    """
+                    Configure authentication key-id.
+                    """
+                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] = None
+                    key_type: Annotated[Literal["0", "7", "8a"], StrConvert(convert_types=(int))] = None
+                    """
+                    Configure authentication key type.
+                    """
+                    key: str = None
+                    """
+                    Password string.
+                    """
+                    rfc_5310: bool | None = None
+                    """
+                    SHA digest computation according to rfc5310.
+                    """
+
+                class Sha(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    key_id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
+
+                class SharedSecret(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    profile: str = None
+                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] = None
+
+                key_type: Annotated[Literal["0", "7", "8a"], StrConvert(convert_types=(int))] | None = None
+                """
+                Configure authentication key type. Default key_id is 0.
+                """
+                key: str | None = None
+                """
+                Password string.
+                """
+                key_ids: list[KeyIdsItem] | None = None
+                mode: Literal["md5", "sha", "text", "shared_secret"] | None = None
+                """
+                Authentication mode.
+                """
+                sha: Sha | None = None
+                """
+                Required settings for authentication mode 'sha'.
+                """
+                shared_secret: SharedSecret | None = None
+                """
+                Required settings for authentication mode 'shared_secret'.
+                """
+                rx_disabled: bool | None = None
+
+            both: Both | None = None
+            """
+            Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            """
+            level_1: Level1 | None = None
+            """
+            Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            """
+            level_2: Level2 | None = None
+            """
+            Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            """
 
         class Advertise(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -9539,6 +10190,8 @@ class EosCliConfigGen(BaseModel):
         log_adjacency_changes: bool | None = None
         mpls_ldp_sync_default: bool | None = None
         timers: Timers | None = None
+        set_overload_bit: SetOverloadBit | None = None
+        authentication: Authentication | None = None
         advertise: Advertise | None = None
         address_family: list[str] | None = None
         isis_af_defaults: list[str] | None = None
@@ -9548,6 +10201,10 @@ class EosCliConfigGen(BaseModel):
         segment_routing_mpls: SegmentRoutingMpls | None = None
         spf_interval: SpfInterval | None = None
         graceful_restart: GracefulRestart | None = None
+        eos_cli: str | None = None
+        """
+        Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.
+        """
 
     class RouterL2Vpn(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -10526,6 +11183,7 @@ class EosCliConfigGen(BaseModel):
 
         sample: Annotated[int, IntConvert(convert_types=(str))] | None = None
         sample_input_subinterface: bool | None = None
+        sample_output_subinterface: bool | None = None
         dangerous: bool | None = None
         polling_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
@@ -10990,6 +11648,19 @@ class EosCliConfigGen(BaseModel):
         mode: Literal["routed", "access"] | None = None
         phone: Phone | None = None
 
+    class SwitchportPortSecurity(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class MacAddress(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            aging: bool | None = None
+            moveable: bool | None = None
+
+        mac_address: MacAddress | None = None
+        persistence_disabled: bool | None = None
+        violation_protect_chip_based: bool | None = None
+
     class System(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -11446,6 +12117,65 @@ class EosCliConfigGen(BaseModel):
     class VlanInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
+        class Logging(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class Event(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                link_status: bool | None = None
+
+            event: Event | None = None
+
+        class IpIgmpHostProxy(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class GroupsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                class ExcludeItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    source: str = None
+
+                class IncludeItem(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    source: str = None
+
+                group: str = None
+                """
+                Multicast Address.
+                """
+                exclude: list[ExcludeItem] | None = None
+                """
+                The same source must not be present both in `exclude` and `include` list.
+                """
+                include: list[IncludeItem] | None = None
+                """
+                The same source must not be present both in `exclude` and `include` list.
+                """
+
+            class AccessListsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str = None
+
+            enabled: bool | None = None
+            groups: list[GroupsItem] | None = None
+            report_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=31744)
+            """
+            Time interval between unsolicited reports.
+            """
+            access_lists: list[AccessListsItem] | None = None
+            """
+            Non-standard Access List name.
+            """
+            version: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=3)
+            """
+            IGMP version on IGMP host-proxy interface.
+            """
+
         class IpHelpersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -11678,9 +12408,31 @@ class EosCliConfigGen(BaseModel):
             class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
+                class Hello(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    count: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
+                    """
+                    Number of missed hellos after which the neighbor expires. Range <1.5-65535>.
+                    """
+                    interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    """
+                    PIM hello interval in seconds.
+                    """
+
+                border_router: bool | None = None
+                """
+                Configure PIM border router. EOS default is false.
+                """
                 dr_priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=429467295)
                 sparse_mode: bool | None = None
                 local_interface: str | None = None
+                bfd: bool | None = None
+                """
+                Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
+                """
+                bidirectional: bool | None = None
+                hello: Hello | None = None
 
             ipv4: Ipv4 | None = None
 
@@ -11799,6 +12551,19 @@ class EosCliConfigGen(BaseModel):
             enabled: bool = None
             distance: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
 
+        class Ipv6AttachedHostRouteExport(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            enabled: bool = None
+            distance: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+            """
+            Administrative distance for generated routes.
+            """
+            prefix_length: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=128)
+            """
+            Prefix length for generated routes.
+            """
+
         class Bfd(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -11831,6 +12596,7 @@ class EosCliConfigGen(BaseModel):
         VLAN interface name like "Vlan123"
         """
         description: str | None = None
+        logging: Logging | None = None
         shutdown: bool | None = None
         vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
@@ -11859,6 +12625,7 @@ class EosCliConfigGen(BaseModel):
         ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None = None
         ip_igmp: bool | None = None
         ip_igmp_version: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=3)
+        ip_igmp_host_proxy: IpIgmpHostProxy | None = None
         ip_helpers: list[IpHelpersItem] | None = None
         """
         List of DHCP servers
@@ -11944,6 +12711,7 @@ class EosCliConfigGen(BaseModel):
         "vrrp" should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
         """
         ip_attached_host_route_export: IpAttachedHostRouteExport | None = None
+        ipv6_attached_host_route_export: Ipv6AttachedHostRouteExport | None = None
         bfd: Bfd | None = None
         service_policy: ServicePolicy | None = None
         pvlan_mapping: str | None = None
@@ -12120,6 +12888,10 @@ class EosCliConfigGen(BaseModel):
                 """
                 mlag_source_interface: str | None = None
                 udp_port: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                vtep_to_vtep_bridging: bool | None = None
+                """
+                Enable bridging between different VTEPs in vxlan overlay.
+                """
                 virtual_router_encapsulation_mac_address: str | None = None
                 """
                 "mlag-system-id" or ethernet_address (H.H.H)
@@ -12214,6 +12986,12 @@ class EosCliConfigGen(BaseModel):
     class_maps: ClassMaps | None = Field(None, title="QOS Class-maps")
     clock: Clock | None = None
     community_lists: list[CommunityListsItem] | None = Field(None, title="Community Lists (legacy model)")
+    config_comment: str | None = None
+    """
+    Add a comment to provide information about the configuration.
+    This comment will be rendered at the top of the generated
+    configuration.
+    """
     custom_templates: list[str] | None = Field(None, title="Extensibility with Custom Templates")
     """
     - Custom templates can be added below the playbook directory.
@@ -12324,6 +13102,7 @@ class EosCliConfigGen(BaseModel):
     ip_domain_lookup: IpDomainLookup | None = None
     ip_extcommunity_lists: list[IpExtcommunityListsItem] | None = Field(None, title="IP Extended Community Lists")
     ip_extcommunity_lists_regexp: list[IpExtcommunityListsRegexpItem] | None = Field(None, title="IP Extended Community Lists RegExp")
+    ip_ftp_client_source_interfaces: list[IpFtpClientSourceInterfacesItem] | None = None
     ip_hardware: IpHardware | None = None
     ip_http_client_source_interfaces: list[IpHttpClientSourceInterfacesItem] | None = None
     ip_icmp_redirect: bool | None = None
@@ -12336,6 +13115,8 @@ class EosCliConfigGen(BaseModel):
     ip_security: IpSecurity | None = None
     ip_ssh_client_source_interfaces: list[IpSshClientSourceInterfacesItem] | None = None
     ip_tacacs_source_interfaces: list[IpTacacsSourceInterfacesItem] | None = Field(None, title="IP Tacacs Source Interfaces")
+    ip_telnet_client_source_interfaces: list[IpTelnetClientSourceInterfacesItem] | None = None
+    ip_tftp_client_source_interfaces: list[IpTftpClientSourceInterfacesItem] | None = None
     ip_virtual_router_mac_address: str | None = None
     """
     MAC address (hh:hh:hh:hh:hh:hh)
@@ -12387,6 +13168,10 @@ class EosCliConfigGen(BaseModel):
     """
     mlag_configuration: MlagConfiguration | None = Field(None, title="Multi-Chassis Link Aggregation (MLAG) Configuration")
     monitor_connectivity: MonitorConnectivity | None = None
+    monitor_layer1: MonitorLayer1 | None = None
+    """
+    Enable SYSLOG messages on transceiver SMBus communication failures.
+    """
     monitor_sessions: list[MonitorSessionsItem] | None = None
     mpls: Mpls | None = None
     name_server: NameServer | None = None
@@ -12452,6 +13237,7 @@ class EosCliConfigGen(BaseModel):
     STUN configuration.
     """
     switchport_default: SwitchportDefault | None = None
+    switchport_port_security: SwitchportPortSecurity | None = None
     system: System | None = None
     tacacs_servers: TacacsServers | None = None
     tap_aggregation: TapAggregation | None = None
