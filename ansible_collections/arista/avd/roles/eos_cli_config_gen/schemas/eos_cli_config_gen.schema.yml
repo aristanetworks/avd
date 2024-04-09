@@ -13500,10 +13500,8 @@ keys:
                   description: e.g. Tunnel3
             monitor_connectivity_host:
               type: str
-              description: 'Monitor connectivity host to use to derive the health
-                of the connecion.
-
-                The host must also be defined under `monitor_connectivity.hosts`.'
+              description: Name of the host defined under `monitor_connectivity.hosts`
+                used to derive the health of the connection.
   router_traffic_engineering:
     type: dict
     keys:

@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface</samp>](## "router_service_insertion.connections.[].tunnel_interface") | Dictionary |  |  |  | Outgoing tunnel interface(s) to use for this connection.<br>If both `ethernet_interface` and `tunnel_interface` are configured, `ethernet_interface` will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary</samp>](## "router_service_insertion.connections.[].tunnel_interface.primary") | String |  |  |  | e.g. Tunnel2 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secondary</samp>](## "router_service_insertion.connections.[].tunnel_interface.secondary") | String |  |  |  | e.g. Tunnel3 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;monitor_connectivity_host</samp>](## "router_service_insertion.connections.[].monitor_connectivity_host") | String |  |  |  | Monitor connectivity host to use to derive the health of the connecion.<br>The host must also be defined under `monitor_connectivity.hosts`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;monitor_connectivity_host</samp>](## "router_service_insertion.connections.[].monitor_connectivity_host") | String |  |  |  | Name of the host defined under `monitor_connectivity.hosts` used to derive the health of the connection. |
 
 === "YAML"
 
@@ -50,7 +50,6 @@
             # e.g. Tunnel3
             secondary: <str>
 
-          # Monitor connectivity host to use to derive the health of the connecion.
-          # The host must also be defined under `monitor_connectivity.hosts`.
+          # Name of the host defined under `monitor_connectivity.hosts` used to derive the health of the connection.
           monitor_connectivity_host: <str>
     ```

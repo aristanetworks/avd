@@ -50,5 +50,4 @@ keys:
             monitor_connectivity_host:
               type: str
               description: |-
-                Monitor connectivity host to use to derive the health of the connecion.
-                The host must also be defined under `monitor_connectivity.hosts`.
+                Name of the host defined under `monitor_connectivity.hosts` used to derive the health of the connection.

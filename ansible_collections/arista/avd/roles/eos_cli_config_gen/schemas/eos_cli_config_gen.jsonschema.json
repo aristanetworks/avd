@@ -23404,7 +23404,7 @@
               },
               "monitor_connectivity_host": {
                 "type": "string",
-                "description": "Monitor connectivity host to use to derive the health of the connecion.\nThe host must also be defined under `monitor_connectivity.hosts`.",
+                "description": "Name of the host defined under `monitor_connectivity.hosts` used to derive the health of the connection.",
                 "title": "Monitor Connectivity Host"
               }
             },
