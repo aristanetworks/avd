@@ -489,7 +489,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Advertise Map | Supress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
+| Prefix | AS Set | Advertise Map | Suppress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
 | ------ | ------ | ------------- | ----------- | ------------ | ------------- | --------- | -------------- |
 {%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort('prefix') %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}

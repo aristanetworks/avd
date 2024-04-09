@@ -82,7 +82,7 @@ keys:
                                 convert_types:
                                   - "int"
                                 description: |
-                                  Drop Treshold. This value may also be fractions.
+                                  Drop Threshold. This value may also be fractions.
                                   Example: 7/8 or 3/4 or 1/2
                     unicast_queues:
                       type: list
@@ -129,7 +129,7 @@ keys:
                                 convert_types:
                                   - "int"
                                 description: |
-                                  Drop Treshold. This value may also be fractions.
+                                  Drop Threshold. This value may also be fractions.
                                   Example: 7/8 or 3/4 or 1/2
       sand:
         type: dict

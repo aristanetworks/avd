@@ -23,8 +23,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_file</samp>](## "daemon_terminattr.clusters.[].cvauth.key_file") | String |  |  |  | Client certificate key file path<br>e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvobscurekeyfile</samp>](## "daemon_terminattr.clusters.[].cvobscurekeyfile") | Boolean |  |  |  | Encrypt the private key used for authentication to CloudVision<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvproxy</samp>](## "daemon_terminattr.clusters.[].cvproxy") | String |  |  |  | Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.<br>The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvsourceip</samp>](## "daemon_terminattr.clusters.[].cvsourceip") | String |  |  |  | Set source IP address in case of in-band managament<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvsourceintf</samp>](## "daemon_terminattr.clusters.[].cvsourceintf") | String |  |  |  | Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0.<br>The interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvsourceip</samp>](## "daemon_terminattr.clusters.[].cvsourceip") | String |  |  |  | Set source IP address in case of in-band management<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvsourceintf</samp>](## "daemon_terminattr.clusters.[].cvsourceintf") | String |  |  |  | Set source interface in case of in-band management. Available as of TerminAttr v1.23.0.<br>The interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvvrf</samp>](## "daemon_terminattr.clusters.[].cvvrf") | String |  |  |  | The VRF to use to connect to CloudVision<br> |
     | [<samp>&nbsp;&nbsp;cvauth</samp>](## "daemon_terminattr.cvauth") | Dictionary |  |  |  | Authentication scheme used to connect to CloudVision<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;method</samp>](## "daemon_terminattr.cvauth.method") | String |  |  | Valid Values:<br>- <code>token</code><br>- <code>token-secure</code><br>- <code>key</code><br>- <code>certs</code> |  |
@@ -35,8 +35,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;key_file</samp>](## "daemon_terminattr.cvauth.key_file") | String |  |  |  | Client certificate key file path<br>e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"<br> |
     | [<samp>&nbsp;&nbsp;cvobscurekeyfile</samp>](## "daemon_terminattr.cvobscurekeyfile") | Boolean |  |  |  | Encrypt the private key used for authentication to CloudVision<br> |
     | [<samp>&nbsp;&nbsp;cvproxy</samp>](## "daemon_terminattr.cvproxy") | String |  |  |  | Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.<br>The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0<br> |
-    | [<samp>&nbsp;&nbsp;cvsourceip</samp>](## "daemon_terminattr.cvsourceip") | String |  |  |  | Set source IP address in case of in-band managament<br> |
-    | [<samp>&nbsp;&nbsp;cvsourceintf</samp>](## "daemon_terminattr.cvsourceintf") | String |  |  |  | Set source interface in case of in-band managament.<br>The interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.<br> |
+    | [<samp>&nbsp;&nbsp;cvsourceip</samp>](## "daemon_terminattr.cvsourceip") | String |  |  |  | Set source IP address in case of in-band management<br> |
+    | [<samp>&nbsp;&nbsp;cvsourceintf</samp>](## "daemon_terminattr.cvsourceintf") | String |  |  |  | Set source interface in case of in-band management.<br>The interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.<br> |
     | [<samp>&nbsp;&nbsp;cvvrf</samp>](## "daemon_terminattr.cvvrf") | String |  |  |  | The VRF to use to connect to CloudVision<br> |
     | [<samp>&nbsp;&nbsp;cvgnmi</samp>](## "daemon_terminattr.cvgnmi") | Boolean |  |  |  | Stream states from EOS gNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1<br> |
     | [<samp>&nbsp;&nbsp;disable_aaa</samp>](## "daemon_terminattr.disable_aaa") | Boolean |  |  |  | Disable AAA authorization and accounting.<br>When setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization<br> |
@@ -114,10 +114,10 @@
           # The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0
           cvproxy: <str>
 
-          # Set source IP address in case of in-band managament
+          # Set source IP address in case of in-band management
           cvsourceip: <str>
 
-          # Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0.
+          # Set source interface in case of in-band management. Available as of TerminAttr v1.23.0.
           # The interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.
           cvsourceintf: <str>
 
@@ -152,10 +152,10 @@
       # The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0
       cvproxy: <str>
 
-      # Set source IP address in case of in-band managament
+      # Set source IP address in case of in-band management
       cvsourceip: <str>
 
-      # Set source interface in case of in-band managament.
+      # Set source interface in case of in-band management.
       # The interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.
       cvsourceintf: <str>
 

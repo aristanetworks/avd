@@ -37,7 +37,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop") | Dictionary |  |  |  | Set WRED parameters |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.units") | String | Required |  | Valid Values:<br>- <code>segments</code><br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code><br>- <code>microseconds</code><br>- <code>milliseconds</code> | Units to be used for the threshold values. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_precedence</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.drop_precedence") | Integer |  |  | Min: 0<br>Max: 2 | Specify Drop Precendence value |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_precedence</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.drop_precedence") | Integer |  |  | Min: 0<br>Max: 2 | Specify Drop Precedence value |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.min") | Integer | Required |  | Min: 1 | WRED minimum-threshold |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.max") | Integer | Required |  | Min: 1 | WRED maximum-threshold |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_probability</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.drop_probability") | Integer | Required |  | Min: 1<br>Max: 100 | WRED drop probability. |
@@ -62,7 +62,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop") | Dictionary |  |  |  | Set WRED parameters |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.units") | String | Required |  | Valid Values:<br>- <code>segments</code><br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code><br>- <code>microseconds</code><br>- <code>milliseconds</code> | Units to be used for the threshold values. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_precedence</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.drop_precedence") | Integer |  |  | Min: 0<br>Max: 2 | Specify Drop Precendence value |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_precedence</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.drop_precedence") | Integer |  |  | Min: 0<br>Max: 2 | Specify Drop Precedence value |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.min") | Integer | Required |  | Min: 1 | WRED minimum-threshold |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.max") | Integer | Required |  | Min: 1 | WRED maximum-threshold |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_probability</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.drop_probability") | Integer | Required |  | Min: 1<br>Max: 100 | WRED drop probability. |
@@ -156,7 +156,7 @@
                   # Units to be used for the threshold values.
                   units: <str; "segments" | "bytes" | "kbytes" | "mbytes" | "microseconds" | "milliseconds"; required>
 
-                  # Specify Drop Precendence value
+                  # Specify Drop Precedence value
                   drop_precedence: <int; 0-2>
 
                   # WRED minimum-threshold
@@ -216,7 +216,7 @@
                   # Units to be used for the threshold values.
                   units: <str; "segments" | "bytes" | "kbytes" | "mbytes" | "microseconds" | "milliseconds"; required>
 
-                  # Specify Drop Precendence value
+                  # Specify Drop Precedence value
                   drop_precedence: <int; 0-2>
 
                   # WRED minimum-threshold

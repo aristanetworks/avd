@@ -145,7 +145,7 @@ keys:
                             required: false
                             min: 0
                             max: 2
-                            description: Specify Drop Precendence value
+                            description: Specify Drop Precedence value
                           min:
                             type: int
                             required: true
@@ -274,7 +274,7 @@ keys:
                             required: false
                             min: 0
                             max: 2
-                            description: Specify Drop Precendence value
+                            description: Specify Drop Precedence value
                           min:
                             type: int
                             required: true

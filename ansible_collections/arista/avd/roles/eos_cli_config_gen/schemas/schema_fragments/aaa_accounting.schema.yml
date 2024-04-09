@@ -70,7 +70,7 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: "Privelege level 'all' or 0-15"
+                  description: "Privilege level 'all' or 0-15"
                 type:
                   type: str
                   valid_values: ["none", "start-stop", "stop-only"]
@@ -88,7 +88,7 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: "Privelege level 'all' or 0-15"
+                  description: "Privilege level 'all' or 0-15"
                 type:
                   type: str
                   valid_values: ["none", "start-stop", "stop-only"]

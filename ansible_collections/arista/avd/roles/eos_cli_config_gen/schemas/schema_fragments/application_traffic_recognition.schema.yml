@@ -121,7 +121,7 @@ keys:
                 protocol_ranges:
                   type: list
                   description: |-
-                    Acccept protocol value(s) or range(s).
+                    Accept protocol value(s) or range(s).
                     Protocol values can be between 1 and 255.
                   items:
                     type: str

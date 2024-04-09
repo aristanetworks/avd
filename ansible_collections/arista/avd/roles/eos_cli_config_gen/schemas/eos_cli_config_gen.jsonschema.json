@@ -147,7 +147,7 @@
                 "properties": {
                   "commands": {
                     "type": "string",
-                    "description": "Privelege level 'all' or 0-15",
+                    "description": "Privilege level 'all' or 0-15",
                     "title": "Commands"
                   },
                   "type": {
@@ -183,7 +183,7 @@
                 "properties": {
                   "commands": {
                     "type": "string",
-                    "description": "Privelege level 'all' or 0-15",
+                    "description": "Privilege level 'all' or 0-15",
                     "title": "Commands"
                   },
                   "type": {
@@ -884,7 +884,7 @@
                   },
                   "protocol_ranges": {
                     "type": "array",
-                    "description": "Acccept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
+                    "description": "Accept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
                     "items": {
                       "type": "string"
                     },
@@ -1644,12 +1644,12 @@
               },
               "cvsourceip": {
                 "type": "string",
-                "description": "Set source IP address in case of in-band managament\n",
+                "description": "Set source IP address in case of in-band management\n",
                 "title": "Cvsourceip"
               },
               "cvsourceintf": {
                 "type": "string",
-                "description": "Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0.\nThe interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.\n",
+                "description": "Set source interface in case of in-band management. Available as of TerminAttr v1.23.0.\nThe interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.\n",
                 "title": "Cvsourceintf"
               },
               "cvvrf": {
@@ -1725,12 +1725,12 @@
         },
         "cvsourceip": {
           "type": "string",
-          "description": "Set source IP address in case of in-band managament\n",
+          "description": "Set source IP address in case of in-band management\n",
           "title": "Cvsourceip"
         },
         "cvsourceintf": {
           "type": "string",
-          "description": "Set source interface in case of in-band managament.\nThe interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.\n",
+          "description": "Set source interface in case of in-band management.\nThe interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.\n",
           "title": "Cvsourceintf"
         },
         "cvvrf": {
@@ -2474,7 +2474,7 @@
       "properties": {
         "hide_passwords": {
           "type": "boolean",
-          "description": "Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configruation if true\n",
+          "description": "Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configuration if true\n",
           "default": false,
           "title": "Hide Passwords"
         }
@@ -6084,7 +6084,7 @@
       "properties": {
         "features": {
           "type": "array",
-          "description": "This data model allows to configure the list of hardware counters feature\navailable on Arista platforms.\n\nThe `name` key accepts a list of valid_values which MUST be updated to support\nnew feature as they are released in EOS.\n\nThe available values of the different keys like 'direction' or 'address_type'\nare feature and hardware dependent and this model DOES NOT validate that the\ncombinations are valid. It is the responsability of the user of this data model\nto make sure that the rendered CLI is accepted by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name: ip\n          direction: out\n          layer3: true\n          units_packets: true\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature ip out layer3 units packets\n    ```\n  * Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name: route\n          address_type: ipv4\n          vrf: test\n          prefix: 192.168.0.0/24\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature route ipv4 vrf test 192.168.0.0/24\n    ```\n",
+          "description": "This data model allows to configure the list of hardware counters feature\navailable on Arista platforms.\n\nThe `name` key accepts a list of valid_values which MUST be updated to support\nnew feature as they are released in EOS.\n\nThe available values of the different keys like 'direction' or 'address_type'\nare feature and hardware dependent and this model DOES NOT validate that the\ncombinations are valid. It is the responsibility of the user of this data model\nto make sure that the rendered CLI is accepted by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name: ip\n          direction: out\n          layer3: true\n          units_packets: true\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature ip out layer3 units packets\n    ```\n  * Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name: route\n          address_type: ipv4\n          vrf: test\n          prefix: 192.168.0.0/24\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature route ipv4 vrf test 192.168.0.0/24\n    ```\n",
           "items": {
             "type": "object",
             "properties": {
@@ -12089,7 +12089,7 @@
                                 },
                                 "threshold": {
                                   "type": "string",
-                                  "description": "Drop Treshold. This value may also be fractions.\nExample: 7/8 or 3/4 or 1/2\n",
+                                  "description": "Drop Threshold. This value may also be fractions.\nExample: 7/8 or 3/4 or 1/2\n",
                                   "title": "Threshold"
                                 }
                               },
@@ -12157,7 +12157,7 @@
                                 },
                                 "threshold": {
                                   "type": "string",
-                                  "description": "Drop Treshold. This value may also be fractions.\nExample: 7/8 or 3/4 or 1/2\n",
+                                  "description": "Drop Threshold. This value may also be fractions.\nExample: 7/8 or 3/4 or 1/2\n",
                                   "title": "Threshold"
                                 }
                               },
@@ -14949,7 +14949,7 @@
                               "type": "integer",
                               "minimum": 0,
                               "maximum": 2,
-                              "description": "Specify Drop Precendence value",
+                              "description": "Specify Drop Precedence value",
                               "title": "Drop Precedence"
                             },
                             "min": {
@@ -15158,7 +15158,7 @@
                               "type": "integer",
                               "minimum": 0,
                               "maximum": 2,
-                              "description": "Specify Drop Precendence value",
+                              "description": "Specify Drop Precedence value",
                               "title": "Drop Precedence"
                             },
                             "min": {
@@ -22449,7 +22449,7 @@
           "properties": {
             "prefix_list": {
               "type": "string",
-              "description": "Prefix-list name. ND Proxying is disabled for IPv6 addresses defined in the prefix-list.",
+              "description": "Prefix-list name. Neighbor Discovery Proxying is disabled for IPv6 addresses defined in the prefix-list.",
               "title": "Prefix List"
             }
           },
@@ -23577,7 +23577,7 @@
                 "enum": [
                   "lan"
                 ],
-                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peers.",
+                "description": "Flow assignment `lan` can not be configured in a path group with dynamic peers.",
                 "title": "Flow Assignment"
               },
               "local_interfaces": {
@@ -23680,7 +23680,7 @@
               },
               "dynamic_peers": {
                 "type": "object",
-                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peers.",
+                "description": "Flow assignment `lan` can not be configured in a path group with dynamic peers.",
                 "properties": {
                   "enabled": {
                     "type": "boolean",

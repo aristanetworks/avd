@@ -80,7 +80,7 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: Privelege level 'all' or 0-15
+                  description: Privilege level 'all' or 0-15
                 type:
                   type: str
                   valid_values:
@@ -101,7 +101,7 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: Privelege level 'all' or 0-15
+                  description: Privilege level 'all' or 0-15
                 type:
                   type: str
                   valid_values:
@@ -556,7 +556,7 @@ keys:
                     - vrrp
                 protocol_ranges:
                   type: list
-                  description: 'Acccept protocol value(s) or range(s).
+                  description: 'Accept protocol value(s) or range(s).
 
                     Protocol values can be between 1 and 255.'
                   items:
@@ -1123,12 +1123,12 @@ keys:
                 '
             cvsourceip:
               type: str
-              description: 'Set source IP address in case of in-band managament
+              description: 'Set source IP address in case of in-band management
 
                 '
             cvsourceintf:
               type: str
-              description: 'Set source interface in case of in-band managament. Available
+              description: 'Set source interface in case of in-band management. Available
                 as of TerminAttr v1.23.0.
 
                 The interface name is case sensitive and has to match the interface
@@ -1201,12 +1201,12 @@ keys:
           '
       cvsourceip:
         type: str
-        description: 'Set source IP address in case of in-band managament
+        description: 'Set source IP address in case of in-band management
 
           '
       cvsourceintf:
         type: str
-        description: 'Set source interface in case of in-band managament.
+        description: 'Set source interface in case of in-band management.
 
           The interface name is case sensitive and has to match the interface name
           in the running-config, e.g.:Vlan100.
@@ -1736,7 +1736,7 @@ keys:
       hide_passwords:
         type: bool
         description: 'Replace the input data using the `hide_passwords` filter in
-          the Jinja2 templates by ''<removed>'' in the configruation if true
+          the Jinja2 templates by ''<removed>'' in the configuration if true
 
           '
         default: false
@@ -3637,7 +3637,7 @@ keys:
           of valid_values which MUST be updated to support\nnew feature as they are
           released in EOS.\n\nThe available values of the different keys like 'direction'
           or 'address_type'\nare feature and hardware dependent and this model DOES
-          NOT validate that the\ncombinations are valid. It is the responsability
+          NOT validate that the\ncombinations are valid. It is the responsibility
           of the user of this data model\nto make sure that the rendered CLI is accepted
           by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n
           \     features:\n        - name: ip\n          direction: out\n          layer3:
@@ -7172,8 +7172,8 @@ keys:
                                 required: true
                                 convert_types:
                                 - int
-                                description: 'Drop Treshold. This value may also be
-                                  fractions.
+                                description: 'Drop Threshold. This value may also
+                                  be fractions.
 
                                   Example: 7/8 or 3/4 or 1/2
 
@@ -7233,8 +7233,8 @@ keys:
                                 required: true
                                 convert_types:
                                 - int
-                                description: 'Drop Treshold. This value may also be
-                                  fractions.
+                                description: 'Drop Threshold. This value may also
+                                  be fractions.
 
                                   Example: 7/8 or 3/4 or 1/2
 
@@ -8844,7 +8844,7 @@ keys:
                             required: false
                             min: 0
                             max: 2
-                            description: Specify Drop Precendence value
+                            description: Specify Drop Precedence value
                           min:
                             type: int
                             required: true
@@ -8987,7 +8987,7 @@ keys:
                             required: false
                             min: 0
                             max: 2
-                            description: Specify Drop Precendence value
+                            description: Specify Drop Precedence value
                           min:
                             type: int
                             required: true
@@ -12970,8 +12970,8 @@ keys:
         keys:
           prefix_list:
             type: str
-            description: Prefix-list name. ND Proxying is disabled for IPv6 addresses
-              defined in the prefix-list.
+            description: Prefix-list name. Neighbor Discovery Proxying is disabled
+              for IPv6 addresses defined in the prefix-list.
       nd_rs_flooding_disabled:
         type: bool
       virtual_router_nd_ra_flooding_disabled:
@@ -13611,8 +13611,8 @@ keys:
               type: str
               valid_values:
               - lan
-              description: Flow assignement `lan` can not be configured in a path
-                group with dynamic peers.
+              description: Flow assignment `lan` can not be configured in a path group
+                with dynamic peers.
             local_interfaces:
               type: list
               primary_key: name
@@ -13661,8 +13661,8 @@ keys:
                           type: str
             dynamic_peers:
               type: dict
-              description: Flow assignement `lan` can not be configured in a path
-                group with dynamic peers.
+              description: Flow assignment `lan` can not be configured in a path group
+                with dynamic peers.
               keys:
                 enabled:
                   type: bool
