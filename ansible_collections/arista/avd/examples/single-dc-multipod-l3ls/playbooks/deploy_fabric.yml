@@ -1,6 +1,7 @@
 ---
 - name: Deploy fabric to CVP
   hosts: cvp1
+  gather_facts: false
   tasks:
     - name: provision CVP with AVD configuration
       ansible.builtin.import_role:

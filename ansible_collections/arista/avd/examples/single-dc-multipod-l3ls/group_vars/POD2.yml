@@ -10,12 +10,12 @@ spine:
     uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
     uplink_interfaces: [Ethernet7, Ethernet8] # Spine uplinks
   nodes:
-    spine3:
+    - name: spine3
       id: 13
       mgmt_ip: 192.168.0.13/24
       uplink_switch_interfaces: [Ethernet5, Ethernet5]
       evpn_route_servers: [superspine1, superspine2]
-    spine4:
+    - name: spine4
       id: 14
       mgmt_ip: 192.168.0.14/24
       uplink_switch_interfaces: [Ethernet6, Ethernet6]
