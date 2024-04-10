@@ -70,7 +70,7 @@ interface {{ tunnel_interface.name }}
 {%     if tunnel_interface.path_mtu_discovery is arista.avd.defined(true) %}
    tunnel path-mtu-discovery
 {%     endif %}
-{%     if tunnel_interface.ipsec_profile is arista.avd.defined and tunnel_interface.tunnel_mode == "ipsec" %}
+{%     if tunnel_interface.ipsec_profile is arista.avd.defined %}
    tunnel ipsec profile {{ tunnel_interface.ipsec_profile }}
 {%     endif %}
 {%     if tunnel_interface.eos_cli is arista.avd.defined %}
