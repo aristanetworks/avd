@@ -17813,6 +17813,157 @@
                       "^_.+$": {}
                     },
                     "title": "Radius Av Pair"
+                  },
+                  "aaa": {
+                    "type": "object",
+                    "description": "Configure AAA parameters.",
+                    "properties": {
+                      "unresponsive": {
+                        "type": "object",
+                        "description": "Configure AAA timeout options.",
+                        "properties": {
+                          "eap_response": {
+                            "type": "string",
+                            "description": "EAP response to send.",
+                            "enum": [
+                              "success",
+                              "disabled"
+                            ],
+                            "title": "Eap Response"
+                          },
+                          "action": {
+                            "type": "object",
+                            "description": "Set action for supplicant when AAA times out.",
+                            "properties": {
+                              "apply_cached_results": {
+                                "type": "boolean",
+                                "description": "Use results from a previous AAA response.",
+                                "title": "Apply Cached Results"
+                              },
+                              "cached_results_timeout": {
+                                "type": "object",
+                                "properties": {
+                                  "time_duration": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "description": "Enable caching for a specific duration -\n<1-10000>      duration in days\n<1-14400000>   duration in minutes\n<1-240000>     duration in hours\n<1-864000000>  duration in seconds",
+                                    "title": "Time Duration"
+                                  },
+                                  "time_duration_unit": {
+                                    "type": "string",
+                                    "enum": [
+                                      "days",
+                                      "hours",
+                                      "minutes",
+                                      "seconds"
+                                    ],
+                                    "title": "Time Duration Unit"
+                                  }
+                                },
+                                "required": [
+                                  "time_duration_unit"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Cached Results Timeout"
+                              },
+                              "apply_alternate": {
+                                "type": "boolean",
+                                "description": "Apply alternate action if primary action fails.\neg. aaa unresponsive action apply cached-results else traffic allow",
+                                "title": "Apply Alternate"
+                              },
+                              "traffic_allow": {
+                                "type": "boolean",
+                                "description": "Set action for supplicant traffic when AAA times out.",
+                                "title": "Traffic Allow"
+                              },
+                              "traffic_allow_vlan": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 4094,
+                                "title": "Traffic Allow VLAN"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Action"
+                          },
+                          "phone_action": {
+                            "type": "object",
+                            "description": "Set action for supplicant when AAA times out.",
+                            "properties": {
+                              "apply_cached_results": {
+                                "type": "boolean",
+                                "description": "Use results from a previous AAA response.",
+                                "title": "Apply Cached Results"
+                              },
+                              "cached_results_timeout": {
+                                "type": "object",
+                                "properties": {
+                                  "time_duration": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "description": "Enable caching for a specific duration -\n<1-10000>      duration in days\n<1-14400000>   duration in minutes\n<1-240000>     duration in hours\n<1-864000000>  duration in seconds",
+                                    "title": "Time Duration"
+                                  },
+                                  "time_duration_unit": {
+                                    "type": "string",
+                                    "enum": [
+                                      "days",
+                                      "hours",
+                                      "minutes",
+                                      "seconds"
+                                    ],
+                                    "title": "Time Duration Unit"
+                                  }
+                                },
+                                "required": [
+                                  "time_duration_unit"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Cached Results Timeout"
+                              },
+                              "apply_alternate": {
+                                "type": "boolean",
+                                "description": "Apply alternate action if primary action fails.\neg. aaa unresponsive phone action apply cached-results else traffic allow",
+                                "title": "Apply Alternate"
+                              },
+                              "traffic_allow": {
+                                "description": "Set action for supplicant traffic when AAA times out.",
+                                "type": "boolean",
+                                "title": "Traffic Allow"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Phone Action"
+                          },
+                          "recovery_action_reauthenticate": {
+                            "type": "boolean",
+                            "title": "Recovery Action Reauthenticate"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Unresponsive"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "AAA"
                   }
                 },
                 "additionalProperties": false,
@@ -36810,6 +36961,100 @@
                   "^_.+$": {}
                 }
               },
+              "router_internet_exit": {
+                "type": "object",
+                "description": "Internet-exit feature to configure internet bound service for virtual topologies.",
+                "properties": {
+                  "policies": {
+                    "type": "array",
+                    "description": "Internet-exit policy represent a policy which can be attached to a virtual topology profile.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "exit_groups": {
+                          "type": "array",
+                          "description": "The exit groups that are configured under a policy are strictly ordered, meaning an exit group appearing first has more priority than the exit group that follows it.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Exit Groups"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Policies"
+                  },
+                  "exit_groups": {
+                    "type": "array",
+                    "description": "Exit groups represent a group of exit options (connections).\nTraffic flows are load balanced in a round robin fashion across all the members (exits) of the exit-group.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "fib_default": {
+                          "type": "boolean",
+                          "description": "Fib default exit indicates that the flows that select this exit will follow the default route available in the VRF of the flow.",
+                          "title": "Fib Default"
+                        },
+                        "local_connections": {
+                          "type": "array",
+                          "description": "Local connections refer to connections configured under the `router_service_insertion`.\nThe service-insertion module reports the health of the connection and the exit will qualify for use only when it is healthy.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Local Connections"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Exit Groups"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Router Internet Exit"
+              },
               "router_isis": {
                 "type": "object",
                 "properties": {
@@ -41942,6 +42187,15 @@
                       },
                       "title": "TCP Mss Ceiling"
                     },
+                    "tunnel_mode": {
+                      "type": "string",
+                      "enum": [
+                        "gre",
+                        "ipsec"
+                      ],
+                      "description": "Tunnel encapsulation method.\n`gre`: Generic route encapsulation protocol,\n`ipsec`: IPsec-over-IP encapsulation.",
+                      "title": "Tunnel Mode"
+                    },
                     "source_interface": {
                       "type": "string",
                       "description": "Tunnel Source Interface Name",
@@ -41956,6 +42210,16 @@
                       "type": "boolean",
                       "description": "Enable Path MTU Discovery On Tunnel",
                       "title": "Path MTU Discovery"
+                    },
+                    "ipsec_profile": {
+                      "type": "string",
+                      "description": "Used only when `tunnel_mode` is set to `ipsec`.\nIt must target a defined IPsec profile.",
+                      "title": "Ipsec Profile"
+                    },
+                    "nat_profile": {
+                      "type": "string",
+                      "description": "NAT interface profile.",
+                      "title": "Nat Profile"
                     },
                     "eos_cli": {
                       "type": "string",
