@@ -5,5 +5,5 @@
     - arista.avd
   tasks:
     - name: deploy configuration to device
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.eos_validate_state
