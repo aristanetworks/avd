@@ -12441,6 +12441,59 @@ keys:
               valid_values:
               - all
               - iif
+  router_internet_exit:
+    type: dict
+    description: Internet-exit feature to configure internet bound service for virtual
+      topologies.
+    keys:
+      policies:
+        type: list
+        description: Internet-exit policy represent a policy which can be attached
+          to a virtual topology profile.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            exit_groups:
+              type: list
+              description: The exit groups that are configured under a policy are
+                strictly ordered, meaning an exit group appearing first has more priority
+                than the exit group that follows it.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+      exit_groups:
+        type: list
+        description: 'Exit groups represent a group of exit options (connections).
+
+          Traffic flows are load balanced in a round robin fashion across all the
+          members (exits) of the exit-group.'
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            fib_default:
+              type: bool
+              description: Fib default exit indicates that the flows that select this
+                exit will follow the default route available in the VRF of the flow.
+            local_connections:
+              type: list
+              description: 'Local connections refer to connections configured under
+                the `router_service_insertion`.
+
+                The service-insertion module reports the health of the connection
+                and the exit will qualify for use only when it is healthy.'
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
   router_isis:
     type: dict
     keys:
@@ -13826,10 +13879,52 @@ keys:
                         type: bool
   router_service_insertion:
     type: dict
-    description: Configure network services inserted to data forwarding
+    description: Configure network services inserted to data forwarding.
     keys:
       enabled:
         type: bool
+      connections:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Connection name.
+            ethernet_interface:
+              type: dict
+              description: 'Outgoing physical interface or subinterface to use for
+                the connection.
+
+                If both `ethernet_interface` and `tunnel_interface` are configured,
+                `ethernet_interface` will be used.'
+              keys:
+                name:
+                  type: str
+                  required: true
+                  description: e.g. Ethernet2 or Ethernet2/2.2
+                next_hop:
+                  type: str
+                  required: true
+                  description: Next-hop IPv4 address (without mask).
+            tunnel_interface:
+              type: dict
+              description: 'Outgoing tunnel interface(s) to use for this connection.
+
+                If both `ethernet_interface` and `tunnel_interface` are configured,
+                `ethernet_interface` will be used.'
+              keys:
+                primary:
+                  type: str
+                  description: e.g. Tunnel2
+                secondary:
+                  type: str
+                  description: e.g. Tunnel3
+            monitor_connectivity_host:
+              type: str
+              description: Name of the host defined under `monitor_connectivity.hosts`
+                used to derive the health of the connection.
   router_traffic_engineering:
     type: dict
     keys:

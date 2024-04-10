@@ -1,0 +1,35 @@
+---
+scenario:
+  converge_sequence:
+    - syntax
+    - converge
+  test_sequence:
+    - syntax
+    - create
+    - converge
+    - verify
+    - cleanup
+  cleanup_sequence:
+    - destroy
+dependency:
+  name: galaxy
+  enabled: false
+driver:
+  name: default
+  options:
+    managed: false
+platforms:
+  - name: dummy
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
+      gathering: explicit
+  playbooks:
+    converge: converge.yml
+  ansible_args:
+    - --inventory
+    - ${MOLECULE_SCENARIO_DIRECTORY}/inventory/inventory.yml
+verifier:
+  name: ansible
