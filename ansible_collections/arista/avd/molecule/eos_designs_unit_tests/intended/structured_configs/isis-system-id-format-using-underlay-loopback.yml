@@ -1,0 +1,79 @@
+hostname: isis-system-id-format-using-underlay-loopback
+is_deployed: true
+router_bgp:
+  as: '65000'
+  router_id: 172.28.4.99
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  peer_groups:
+  - name: MPLS-OVERLAY-PEERS
+    type: mpls
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+  address_family_evpn:
+    neighbor_default:
+      encapsulation: mpls
+      next_hop_self_source_interface: Loopback0
+    peer_groups:
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: MPLS-OVERLAY-PEERS
+      activate: false
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+loopback_interfaces:
+- name: Loopback0
+  description: MPLS_Overlay_peering
+  shutdown: false
+  ip_address: 172.28.4.99/32
+  isis_enable: CORE
+  isis_passive: true
+  node_segment:
+    ipv4_index: 199
+router_isis:
+  instance: CORE
+  log_adjacency_changes: true
+  net: 49.0001.1720.2800.4099.00
+  router_id: 172.28.4.99
+  is_type: level-2
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
+  advertise:
+    passive_only: false
+  segment_routing_mpls:
+    router_id: 172.28.4.99
+    enabled: true
+mpls:
+  ip: true
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:c1:00:00:00:11
