@@ -1529,6 +1529,23 @@ keys:
     type: int
     convert_types:
     - str
+  isis_system_id_format:
+    display_name: ISIS Default IS System-ID format
+    description: 'Configures source for the system-id within the ISIS net id.
+
+      By default the `id` and `isis_system_id_prefix` fields configured under the
+      node attributes are used to generate the system-id.
+
+
+      If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings
+      will be ignored and the loopback address will be used to generate the system-id.'
+    documentation_options:
+      table: isis-settings
+    type: str
+    valid_values:
+    - node_id
+    - underlay_loopback
+    default: node_id
   isis_ti_lfa:
     documentation_options:
       table: isis-settings
@@ -2582,6 +2599,12 @@ keys:
         management_interface:
           type: str
           default: Management1
+        structured_config:
+          type: dict
+          documentation_options:
+            hide_keys: true
+          description: Custom structured config for eos_cli_config_gen.
+          $ref: eos_cli_config_gen#/
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the root level of the final EOS
