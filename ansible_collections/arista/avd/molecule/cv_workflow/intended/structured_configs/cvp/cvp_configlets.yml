@@ -1,0 +1,203 @@
+cvp_configlets:
+  AVD_s1-leaf1: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
+    -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname s1-leaf1\ndns domain atd.lab\n!\nntp
+    server 192.168.0.1 iburst local-interface Management0\n!\nspanning-tree mode mstp\nno
+    spanning-tree vlan-id 4094\nspanning-tree mst 0 priority 16384\n!\naaa authorization
+    exec default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
+    15 role network-admin secret sha512 $6$rounds=656000$workshop$2J0sPzNX5gJs0tOf/ynK.X3f3fTTInXVX1wO0cmY/5ZTTg4GCFu3lvX9SggLk7W2.xD73cm5EA/R69iMBlfJt.\n!\nvlan
+    10\n   name Ten\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\ninterface
+    Port-Channel1\n   description MLAG_PEER_s1-leaf2_Po1\n   no shutdown\n   switchport\n
+    \  switchport mode trunk\n   switchport trunk group MLAG\n!\ninterface Port-Channel2\n
+    \  description SPINES_Po2\n   no shutdown\n   switchport\n   switchport trunk
+    allowed vlan 10\n   switchport mode trunk\n   mlag 2\n!\ninterface Ethernet1\n
+    \  description MLAG_PEER_s1-leaf2_Ethernet1\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Ethernet2\n   description S1-SPINE1_Ethernet2\n   no
+    shutdown\n   channel-group 2 mode active\n!\ninterface Ethernet3\n   description
+    S1-SPINE2_Ethernet2\n   no shutdown\n   channel-group 2 mode active\n!\ninterface
+    Ethernet6\n   description MLAG_PEER_s1-leaf2_Ethernet6\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Management0\n   description oob_management\n   no
+    shutdown\n   ip address 192.168.0.12/24\n!\ninterface Vlan4094\n   description
+    MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n   ip address 10.1.253.4/31\n!\nmlag
+    configuration\n   domain-id RACK1\n   local-interface Vlan4094\n   peer-address
+    10.1.253.5\n   peer-link Port-Channel1\n   reload-delay mlag 300\n   reload-delay
+    non-mlag 330\n!\nip route 0.0.0.0/0 192.168.0.1\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
+  AVD_s1-leaf2: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
+    -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname s1-leaf2\ndns domain atd.lab\n!\nntp
+    server 192.168.0.1 iburst local-interface Management0\n!\nspanning-tree mode mstp\nno
+    spanning-tree vlan-id 4094\nspanning-tree mst 0 priority 16384\n!\naaa authorization
+    exec default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
+    15 role network-admin secret sha512 $6$rounds=656000$workshop$2J0sPzNX5gJs0tOf/ynK.X3f3fTTInXVX1wO0cmY/5ZTTg4GCFu3lvX9SggLk7W2.xD73cm5EA/R69iMBlfJt.\n!\nvlan
+    10\n   name Ten\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\ninterface
+    Port-Channel1\n   description MLAG_PEER_s1-leaf1_Po1\n   no shutdown\n   switchport\n
+    \  switchport mode trunk\n   switchport trunk group MLAG\n!\ninterface Port-Channel2\n
+    \  description SPINES_Po2\n   no shutdown\n   switchport\n   switchport trunk
+    allowed vlan 10\n   switchport mode trunk\n   mlag 2\n!\ninterface Ethernet1\n
+    \  description MLAG_PEER_s1-leaf1_Ethernet1\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Ethernet2\n   description S1-SPINE1_Ethernet3\n   no
+    shutdown\n   channel-group 2 mode active\n!\ninterface Ethernet3\n   description
+    S1-SPINE2_Ethernet3\n   no shutdown\n   channel-group 2 mode active\n!\ninterface
+    Ethernet6\n   description MLAG_PEER_s1-leaf1_Ethernet6\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Management0\n   description oob_management\n   no
+    shutdown\n   ip address 192.168.0.13/24\n!\ninterface Vlan4094\n   description
+    MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n   ip address 10.1.253.5/31\n!\nmlag
+    configuration\n   domain-id RACK1\n   local-interface Vlan4094\n   peer-address
+    10.1.253.4\n   peer-link Port-Channel1\n   reload-delay mlag 300\n   reload-delay
+    non-mlag 330\n!\nip route 0.0.0.0/0 192.168.0.1\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
+  AVD_s1-leaf3: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
+    -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname s1-leaf3\ndns domain atd.lab\n!\nntp
+    server 192.168.0.1 iburst local-interface Management0\n!\nspanning-tree mode mstp\nno
+    spanning-tree vlan-id 4094\nspanning-tree mst 0 priority 16384\n!\naaa authorization
+    exec default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
+    15 role network-admin secret sha512 $6$rounds=656000$workshop$2J0sPzNX5gJs0tOf/ynK.X3f3fTTInXVX1wO0cmY/5ZTTg4GCFu3lvX9SggLk7W2.xD73cm5EA/R69iMBlfJt.\n!\nvlan
+    20\n   name Twenty\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\ninterface
+    Port-Channel1\n   description MLAG_PEER_s1-leaf4_Po1\n   no shutdown\n   switchport\n
+    \  switchport mode trunk\n   switchport trunk group MLAG\n!\ninterface Port-Channel2\n
+    \  description SPINES_Po4\n   no shutdown\n   switchport\n   switchport trunk
+    allowed vlan 20\n   switchport mode trunk\n   mlag 2\n!\ninterface Ethernet1\n
+    \  description MLAG_PEER_s1-leaf4_Ethernet1\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Ethernet2\n   description S1-SPINE1_Ethernet4\n   no
+    shutdown\n   channel-group 2 mode active\n!\ninterface Ethernet3\n   description
+    S1-SPINE2_Ethernet4\n   no shutdown\n   channel-group 2 mode active\n!\ninterface
+    Ethernet6\n   description MLAG_PEER_s1-leaf4_Ethernet6\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Management0\n   description oob_management\n   no
+    shutdown\n   ip address 192.168.0.14/24\n!\ninterface Vlan4094\n   description
+    MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n   ip address 10.1.253.8/31\n!\nmlag
+    configuration\n   domain-id RACK2\n   local-interface Vlan4094\n   peer-address
+    10.1.253.9\n   peer-link Port-Channel1\n   reload-delay mlag 300\n   reload-delay
+    non-mlag 330\n!\nip route 0.0.0.0/0 192.168.0.1\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
+  AVD_s1-leaf4: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
+    -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname s1-leaf4\ndns domain atd.lab\n!\nntp
+    server 192.168.0.1 iburst local-interface Management0\n!\nspanning-tree mode mstp\nno
+    spanning-tree vlan-id 4094\nspanning-tree mst 0 priority 16384\n!\naaa authorization
+    exec default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
+    15 role network-admin secret sha512 $6$rounds=656000$workshop$2J0sPzNX5gJs0tOf/ynK.X3f3fTTInXVX1wO0cmY/5ZTTg4GCFu3lvX9SggLk7W2.xD73cm5EA/R69iMBlfJt.\n!\nvlan
+    20\n   name Twenty\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\ninterface
+    Port-Channel1\n   description MLAG_PEER_s1-leaf3_Po1\n   no shutdown\n   switchport\n
+    \  switchport mode trunk\n   switchport trunk group MLAG\n!\ninterface Port-Channel2\n
+    \  description SPINES_Po4\n   no shutdown\n   switchport\n   switchport trunk
+    allowed vlan 20\n   switchport mode trunk\n   mlag 2\n!\ninterface Ethernet1\n
+    \  description MLAG_PEER_s1-leaf3_Ethernet1\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Ethernet2\n   description S1-SPINE1_Ethernet5\n   no
+    shutdown\n   channel-group 2 mode active\n!\ninterface Ethernet3\n   description
+    S1-SPINE2_Ethernet5\n   no shutdown\n   channel-group 2 mode active\n!\ninterface
+    Ethernet6\n   description MLAG_PEER_s1-leaf3_Ethernet6\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Management0\n   description oob_management\n   no
+    shutdown\n   ip address 192.168.0.15/24\n!\ninterface Vlan4094\n   description
+    MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n   ip address 10.1.253.9/31\n!\nmlag
+    configuration\n   domain-id RACK2\n   local-interface Vlan4094\n   peer-address
+    10.1.253.8\n   peer-link Port-Channel1\n   reload-delay mlag 300\n   reload-delay
+    non-mlag 330\n!\nip route 0.0.0.0/0 192.168.0.1\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
+  AVD_s1-spine1: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
+    -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname s1-spine1\ndns domain atd.lab\n!\nntp
+    server 192.168.0.1 iburst local-interface Management0\n!\nspanning-tree mode mstp\nno
+    spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization
+    exec default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
+    15 role network-admin secret sha512 $6$rounds=656000$workshop$2J0sPzNX5gJs0tOf/ynK.X3f3fTTInXVX1wO0cmY/5ZTTg4GCFu3lvX9SggLk7W2.xD73cm5EA/R69iMBlfJt.\n!\nvlan
+    10\n   name Ten\n!\nvlan 20\n   name Twenty\n!\nvlan 4093\n   name LEAF_PEER_L3\n
+    \  trunk group LEAF_PEER_L3\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\ninterface
+    Port-Channel1\n   description MLAG_PEER_s1-spine2_Po1\n   no shutdown\n   switchport\n
+    \  switchport mode trunk\n   switchport trunk group LEAF_PEER_L3\n   switchport
+    trunk group MLAG\n!\ninterface Port-Channel2\n   description RACK1_Po2\n   no
+    shutdown\n   switchport\n   switchport trunk allowed vlan 10\n   switchport mode
+    trunk\n   mlag 2\n!\ninterface Port-Channel4\n   description RACK2_Po2\n   no
+    shutdown\n   switchport\n   switchport trunk allowed vlan 20\n   switchport mode
+    trunk\n   mlag 4\n!\ninterface Ethernet1\n   description MLAG_PEER_s1-spine2_Ethernet1\n
+    \  no shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
+    S1-LEAF1_Ethernet2\n   no shutdown\n   channel-group 2 mode active\n!\ninterface
+    Ethernet3\n   description S1-LEAF2_Ethernet2\n   no shutdown\n   channel-group
+    2 mode active\n!\ninterface Ethernet4\n   description S1-LEAF3_Ethernet2\n   no
+    shutdown\n   channel-group 4 mode active\n!\ninterface Ethernet5\n   description
+    S1-LEAF4_Ethernet2\n   no shutdown\n   channel-group 4 mode active\n!\ninterface
+    Ethernet6\n   description MLAG_PEER_s1-spine2_Ethernet6\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Loopback0\n   description Router_ID\n   no shutdown\n
+    \  ip address 10.1.252.1/32\n   ip ospf area 0.0.0.0\n!\ninterface Management0\n
+    \  description oob_management\n   no shutdown\n   ip address 192.168.0.10/24\n!\ninterface
+    Vlan10\n   description Ten\n   no shutdown\n   ip address 10.10.10.2/24\n   ip
+    virtual-router address 10.10.10.1\n!\ninterface Vlan20\n   description Twenty\n
+    \  no shutdown\n   ip address 10.20.20.2/24\n   ip virtual-router address 10.20.20.1\n!\ninterface
+    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
+    address 10.1.254.0/31\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
+    Vlan4094\n   description MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n
+    \  ip address 10.1.253.0/31\n!\nip virtual-router mac-address 00:1c:73:00:dc:01\n!\nip
+    routing\n!\nmlag configuration\n   domain-id SPINES\n   local-interface Vlan4094\n
+    \  peer-address 10.1.253.1\n   peer-link Port-Channel1\n   reload-delay mlag 300\n
+    \  reload-delay non-mlag 330\n!\nip route 0.0.0.0/0 192.168.0.1\n!\nrouter ospf
+    100\n   router-id 10.1.252.1\n   passive-interface default\n   no passive-interface
+    Vlan4093\n   max-lsa 12000\n   redistribute connected\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
+  AVD_s1-spine2: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
+    -cvaddr=192.168.0.5:9910 -cvauth=token,/tmp/token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname s1-spine2\ndns domain atd.lab\n!\nntp
+    server 192.168.0.1 iburst local-interface Management0\n!\nspanning-tree mode mstp\nno
+    spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\naaa authorization
+    exec default local\n!\nno enable password\nno aaa root\n!\nusername arista privilege
+    15 role network-admin secret sha512 $6$rounds=656000$workshop$2J0sPzNX5gJs0tOf/ynK.X3f3fTTInXVX1wO0cmY/5ZTTg4GCFu3lvX9SggLk7W2.xD73cm5EA/R69iMBlfJt.\n!\nvlan
+    10\n   name Ten\n!\nvlan 20\n   name Twenty\n!\nvlan 4093\n   name LEAF_PEER_L3\n
+    \  trunk group LEAF_PEER_L3\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\ninterface
+    Port-Channel1\n   description MLAG_PEER_s1-spine1_Po1\n   no shutdown\n   switchport\n
+    \  switchport mode trunk\n   switchport trunk group LEAF_PEER_L3\n   switchport
+    trunk group MLAG\n!\ninterface Port-Channel2\n   description RACK1_Po2\n   no
+    shutdown\n   switchport\n   switchport trunk allowed vlan 10\n   switchport mode
+    trunk\n   mlag 2\n!\ninterface Port-Channel4\n   description RACK2_Po2\n   no
+    shutdown\n   switchport\n   switchport trunk allowed vlan 20\n   switchport mode
+    trunk\n   mlag 4\n!\ninterface Ethernet1\n   description MLAG_PEER_s1-spine1_Ethernet1\n
+    \  no shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
+    S1-LEAF1_Ethernet3\n   no shutdown\n   channel-group 2 mode active\n!\ninterface
+    Ethernet3\n   description S1-LEAF2_Ethernet3\n   no shutdown\n   channel-group
+    2 mode active\n!\ninterface Ethernet4\n   description S1-LEAF3_Ethernet3\n   no
+    shutdown\n   channel-group 4 mode active\n!\ninterface Ethernet5\n   description
+    S1-LEAF4_Ethernet3\n   no shutdown\n   channel-group 4 mode active\n!\ninterface
+    Ethernet6\n   description MLAG_PEER_s1-spine1_Ethernet6\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Loopback0\n   description Router_ID\n   no shutdown\n
+    \  ip address 10.1.252.2/32\n   ip ospf area 0.0.0.0\n!\ninterface Management0\n
+    \  description oob_management\n   no shutdown\n   ip address 192.168.0.11/24\n!\ninterface
+    Vlan10\n   description Ten\n   no shutdown\n   ip address 10.10.10.3/24\n   ip
+    virtual-router address 10.10.10.1\n!\ninterface Vlan20\n   description Twenty\n
+    \  no shutdown\n   ip address 10.20.20.3/24\n   ip virtual-router address 10.20.20.1\n!\ninterface
+    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
+    address 10.1.254.1/31\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
+    Vlan4094\n   description MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n
+    \  ip address 10.1.253.1/31\n!\nip virtual-router mac-address 00:1c:73:00:dc:01\n!\nip
+    routing\n!\nmlag configuration\n   domain-id SPINES\n   local-interface Vlan4094\n
+    \  peer-address 10.1.253.0\n   peer-link Port-Channel1\n   reload-delay mlag 300\n
+    \  reload-delay non-mlag 330\n!\nip route 0.0.0.0/0 192.168.0.1\n!\nrouter ospf
+    100\n   router-id 10.1.252.2\n   passive-interface default\n   no passive-interface
+    Vlan4093\n   max-lsa 12000\n   redistribute connected\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
+cvp_topology:
+  SITE1_FABRIC:
+    devices: []
+    parent_container: Tenant
+  SITE1_LEAFS:
+    devices:
+    - s1-leaf1
+    - s1-leaf2
+    - s1-leaf3
+    - s1-leaf4
+    parent_container: SITE1_FABRIC
+  SITE1_SPINES:
+    devices:
+    - s1-spine1
+    - s1-spine2
+    parent_container: SITE1_FABRIC
