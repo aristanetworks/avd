@@ -3,7 +3,7 @@
   hosts: cvp1
   gather_facts: false
   tasks:
-    - name: provision CVP with AVD configuration
+    - name: Provision CVP with AVD configuration
       ansible.builtin.import_role:
         name: arista.avd.eos_config_deploy_cvp
       vars:
