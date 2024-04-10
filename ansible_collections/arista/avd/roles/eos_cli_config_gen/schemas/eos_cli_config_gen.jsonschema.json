@@ -2136,6 +2136,157 @@
             "^_.+$": {}
           },
           "title": "Radius Av Pair"
+        },
+        "aaa": {
+          "type": "object",
+          "description": "Configure AAA parameters.",
+          "properties": {
+            "unresponsive": {
+              "type": "object",
+              "description": "Configure AAA timeout options.",
+              "properties": {
+                "eap_response": {
+                  "type": "string",
+                  "description": "EAP response to send.",
+                  "enum": [
+                    "success",
+                    "disabled"
+                  ],
+                  "title": "Eap Response"
+                },
+                "action": {
+                  "type": "object",
+                  "description": "Set action for supplicant when AAA times out.",
+                  "properties": {
+                    "apply_cached_results": {
+                      "type": "boolean",
+                      "description": "Use results from a previous AAA response.",
+                      "title": "Apply Cached Results"
+                    },
+                    "cached_results_timeout": {
+                      "type": "object",
+                      "properties": {
+                        "time_duration": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Enable caching for a specific duration -\n<1-10000>      duration in days\n<1-14400000>   duration in minutes\n<1-240000>     duration in hours\n<1-864000000>  duration in seconds",
+                          "title": "Time Duration"
+                        },
+                        "time_duration_unit": {
+                          "type": "string",
+                          "enum": [
+                            "days",
+                            "hours",
+                            "minutes",
+                            "seconds"
+                          ],
+                          "title": "Time Duration Unit"
+                        }
+                      },
+                      "required": [
+                        "time_duration_unit"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Cached Results Timeout"
+                    },
+                    "apply_alternate": {
+                      "type": "boolean",
+                      "description": "Apply alternate action if primary action fails.\neg. aaa unresponsive action apply cached-results else traffic allow",
+                      "title": "Apply Alternate"
+                    },
+                    "traffic_allow": {
+                      "type": "boolean",
+                      "description": "Set action for supplicant traffic when AAA times out.",
+                      "title": "Traffic Allow"
+                    },
+                    "traffic_allow_vlan": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 4094,
+                      "title": "Traffic Allow VLAN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Action"
+                },
+                "phone_action": {
+                  "type": "object",
+                  "description": "Set action for supplicant when AAA times out.",
+                  "properties": {
+                    "apply_cached_results": {
+                      "type": "boolean",
+                      "description": "Use results from a previous AAA response.",
+                      "title": "Apply Cached Results"
+                    },
+                    "cached_results_timeout": {
+                      "type": "object",
+                      "properties": {
+                        "time_duration": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Enable caching for a specific duration -\n<1-10000>      duration in days\n<1-14400000>   duration in minutes\n<1-240000>     duration in hours\n<1-864000000>  duration in seconds",
+                          "title": "Time Duration"
+                        },
+                        "time_duration_unit": {
+                          "type": "string",
+                          "enum": [
+                            "days",
+                            "hours",
+                            "minutes",
+                            "seconds"
+                          ],
+                          "title": "Time Duration Unit"
+                        }
+                      },
+                      "required": [
+                        "time_duration_unit"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Cached Results Timeout"
+                    },
+                    "apply_alternate": {
+                      "type": "boolean",
+                      "description": "Apply alternate action if primary action fails.\neg. aaa unresponsive phone action apply cached-results else traffic allow",
+                      "title": "Apply Alternate"
+                    },
+                    "traffic_allow": {
+                      "description": "Set action for supplicant traffic when AAA times out.",
+                      "type": "boolean",
+                      "title": "Traffic Allow"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Phone Action"
+                },
+                "recovery_action_reauthenticate": {
+                  "type": "boolean",
+                  "title": "Recovery Action Reauthenticate"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Unresponsive"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "AAA"
         }
       },
       "additionalProperties": false,
