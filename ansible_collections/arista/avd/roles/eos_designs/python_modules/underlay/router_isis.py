@@ -99,7 +99,7 @@ class RouterIsisMixin(UtilsMixin):
         return is_type
 
     @staticmethod
-    def ipv4_to_isis_system_id(ipv4_address):
+    def ipv4_to_isis_system_id(ipv4_address: str) -> str:
         """
         Converts an IPv4 address into an IS-IS system-id.
 
@@ -109,5 +109,4 @@ class RouterIsisMixin(UtilsMixin):
         """
         octets = ipv4_address.split(".")
         padded_addr = octets[0].zfill(3) + octets[1].zfill(3) + octets[2].zfill(3) + octets[3].zfill(3)
-        net_id = ".".join(padded_addr[i : i + 4] for i in range(0, len(padded_addr), 4))
-        return net_id
+        return ".".join(padded_addr[i : i + 4] for i in range(0, len(padded_addr), 4))
