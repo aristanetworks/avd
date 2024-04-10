@@ -61,3 +61,8 @@ $defs:
                 "alternate" is converted to priority 2.
 
                 If not set, each path-group in `names` will be attributed its `default_preference`.
+      internet_exit_policy:
+        type: str
+        description: |-
+          Internet-exit policy name associated with this virtual_topology.
+          The policy must be defined under `internet_exit_policies`.

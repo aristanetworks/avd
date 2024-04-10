@@ -1,0 +1,42 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  internet_exit_policies:
+    description: |-
+      PREVIEW: These keys are in preview mode.
+
+      List of path-groups used for the WAN configuration.
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Internet-exit policy name.
+        type:
+          type: str
+          valid_values:
+            - zscaler
+          description: |-
+            Internet-exit policy type.
+            Only Zscaler supported.
+          required: true
+        fallback_to_system_default:
+          type: bool
+          default: true
+          description: Add system default exit-group at the end of the policy.
+        zscaler:
+          type: dict
+          description: |-
+            Zscaler information. Only used if `type` is 'zscaler'.
+          keys:
+            cloud_name:
+              type: str
+              description: Zscaler Cloud
+              default: zscaler

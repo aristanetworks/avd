@@ -5387,6 +5387,60 @@
       },
       "title": "Internal VLAN Order"
     },
+    "internet_exit_policies": {
+      "description": "PREVIEW: These keys are in preview mode.\n\nList of path-groups used for the WAN configuration.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Internet-exit policy name.",
+            "title": "Name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "zscaler"
+            ],
+            "description": "Internet-exit policy type.\nOnly Zscaler supported.",
+            "title": "Type"
+          },
+          "fallback_to_system_default": {
+            "type": "boolean",
+            "default": true,
+            "description": "Add system default exit-group at the end of the policy.",
+            "title": "Fallback To System Default"
+          },
+          "zscaler": {
+            "type": "object",
+            "description": "Zscaler information. Only used if `type` is 'zscaler'.",
+            "properties": {
+              "cloud_name": {
+                "type": "string",
+                "description": "Zscaler Cloud",
+                "default": "zscaler",
+                "title": "Cloud Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Zscaler"
+          }
+        },
+        "required": [
+          "type",
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Internet Exit Policies"
+    },
     "ipv4_acls": {
       "type": "array",
       "description": "IPv4 extended access-lists supporting substitution on certain fields.\nThese access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.\n\nThe substitution is useful when assigning the same access-list on multiple interfaces,\nbut where certain fields require unique values like the \"interface_ip\" or \"peer_ip\".\nWhen using substitution, the interface name will be appended to the ACL name.",
@@ -6348,6 +6402,39 @@
             "default": true,
             "description": "For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.",
             "title": "Connected To Pathfinder"
+          },
+          "internet_exit": {
+            "description": "PREVIEW: This key is in preview mode",
+            "type": "object",
+            "properties": {
+              "policies": {
+                "type": "array",
+                "description": "List of Internet-exit policies using this interface as exit.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Internet-exit policy name.",
+                      "title": "Name"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Policies"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Internet Exit"
           },
           "raw_eos_cli": {
             "type": "string",
@@ -26861,6 +26948,11 @@
                 }
               },
               "title": "Path Groups"
+            },
+            "internet_exit_policy": {
+              "type": "string",
+              "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
+              "title": "Internet Exit Policy"
             }
           },
           "additionalProperties": false,
@@ -26983,6 +27075,11 @@
                         }
                       },
                       "title": "Path Groups"
+                    },
+                    "internet_exit_policy": {
+                      "type": "string",
+                      "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
+                      "title": "Internet Exit Policy"
                     }
                   },
                   "additionalProperties": false,
@@ -27090,6 +27187,11 @@
                       }
                     },
                     "title": "Path Groups"
+                  },
+                  "internet_exit_policy": {
+                    "type": "string",
+                    "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
+                    "title": "Internet Exit Policy"
                   }
                 },
                 "additionalProperties": false,

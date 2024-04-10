@@ -1386,6 +1386,39 @@ keys:
       range:
         beginning: 1006
         ending: 1199
+  internet_exit_policies:
+    description: 'PREVIEW: These keys are in preview mode.
+
+
+      List of path-groups used for the WAN configuration.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Internet-exit policy name.
+        type:
+          type: str
+          valid_values:
+          - zscaler
+          description: 'Internet-exit policy type.
+
+            Only Zscaler supported.'
+          required: true
+        fallback_to_system_default:
+          type: bool
+          default: true
+          description: Add system default exit-group at the end of the policy.
+        zscaler:
+          type: dict
+          description: Zscaler information. Only used if `type` is 'zscaler'.
+          keys:
+            cloud_name:
+              type: str
+              description: Zscaler Cloud
+              default: zscaler
   ipv4_acls:
     type: list
     primary_key: name
@@ -8296,6 +8329,21 @@ $defs:
           default: true
           description: For a WAN interface (`wan_carrier` is set), allow to disable
             the static tunnel towards Pathfinders.
+        internet_exit:
+          description: 'PREVIEW: This key is in preview mode'
+          type: dict
+          keys:
+            policies:
+              type: list
+              primary_key: name
+              description: List of Internet-exit policies using this interface as
+                exit.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Internet-exit policy name.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS
@@ -8899,3 +8947,8 @@ $defs:
 
 
                 If not set, each path-group in `names` will be attributed its `default_preference`.'
+      internet_exit_policy:
+        type: str
+        description: 'Internet-exit policy name associated with this virtual_topology.
+
+          The policy must be defined under `internet_exit_policies`.'
