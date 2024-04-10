@@ -28179,6 +28179,104 @@
                                   "^_.+$": {}
                                 },
                                 "title": "Set"
+                              },
+                              "police": {
+                                "type": "object",
+                                "properties": {
+                                  "rate": {
+                                    "type": "integer",
+                                    "description": "Specify rate.\nRange in kbps <8-200000000>.",
+                                    "title": "Rate"
+                                  },
+                                  "rate_unit": {
+                                    "type": "string",
+                                    "enum": [
+                                      "bps",
+                                      "kbps",
+                                      "mbps",
+                                      "pps"
+                                    ],
+                                    "default": "bps",
+                                    "title": "Rate Unit"
+                                  },
+                                  "rate_burst_size": {
+                                    "type": "integer",
+                                    "description": "Range in bytes <256-128000000>.",
+                                    "title": "Rate Burst Size"
+                                  },
+                                  "rate_burst_size_unit": {
+                                    "type": "string",
+                                    "enum": [
+                                      "bytes",
+                                      "kbytes",
+                                      "mbytes",
+                                      "packets"
+                                    ],
+                                    "default": "bytes",
+                                    "title": "Rate Burst Size Unit"
+                                  },
+                                  "action": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "description": "Set action for policed traffic.",
+                                        "type": "string",
+                                        "enum": [
+                                          "dscp",
+                                          "drop-precedence"
+                                        ],
+                                        "title": "Type"
+                                      },
+                                      "dscp_value": {
+                                        "description": "Set when action.type is set to \"dscp\".",
+                                        "type": "string",
+                                        "title": "DSCP Value"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                      "^_.+$": {}
+                                    },
+                                    "title": "Action"
+                                  },
+                                  "higher_rate": {
+                                    "type": "integer",
+                                    "description": "Specify higher rate.\nRange in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>.",
+                                    "title": "Higher Rate"
+                                  },
+                                  "higher_rate_unit": {
+                                    "type": "string",
+                                    "enum": [
+                                      "bps",
+                                      "kbps",
+                                      "mbps",
+                                      "pps"
+                                    ],
+                                    "default": "bps",
+                                    "title": "Higher Rate Unit"
+                                  },
+                                  "higher_rate_burst_size": {
+                                    "type": "integer",
+                                    "description": "Range in bytes <256-128000000>.",
+                                    "title": "Higher Rate Burst Size"
+                                  },
+                                  "higher_rate_burst_size_unit": {
+                                    "type": "string",
+                                    "enum": [
+                                      "bytes",
+                                      "kbytes",
+                                      "mbytes",
+                                      "packets"
+                                    ],
+                                    "default": "bytes",
+                                    "title": "Higher Rate Burst Size Unit"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Police"
                               }
                             },
                             "additionalProperties": false,
