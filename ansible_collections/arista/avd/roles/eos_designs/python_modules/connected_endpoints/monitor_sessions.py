@@ -9,7 +9,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, groupby
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, groupby
 
 from .utils import UtilsMixin
 
@@ -51,7 +51,13 @@ class MonitorSessionsMixin(UtilsMixin):
                         "name": access_group.get("name"),
                         "priority": access_group.get("priority"),
                     }
-                monitor_session["sources"].append(source)
+                append_if_not_duplicate(
+                    list_of_dicts=monitor_session["sources"],
+                    primary_key="name",
+                    new_dict=source,
+                    context="Monitor session defined under connected_endpoints",
+                    context_keys=["name"],
+                )
 
             if (session_settings := merged_settings.get("session_settings")) is not None:
                 monitor_session.update(session_settings)
@@ -107,13 +113,13 @@ class MonitorSessionsMixin(UtilsMixin):
 
                     port_channel_interface_name = f"Port-Channel{channel_group_id}"
                     monitor_session_configs.extend(
-                        [dict(monitor_session, interface=port_channel_interface_name) for monitor_session in adapter["monitor_sessions"]],
+                        [dict(monitor_session, interface=port_channel_interface_name) for monitor_session in network_port["monitor_sessions"]],
                     )
                     continue
 
                 # Monitor session on Ethernet interface
                 monitor_session_configs.extend(
-                    [dict(monitor_session, interface=ethernet_interface_name) for monitor_session in adapter["monitor_sessions"]],
+                    [dict(monitor_session, interface=ethernet_interface_name) for monitor_session in network_port["monitor_sessions"]],
                 )
 
         return monitor_session_configs

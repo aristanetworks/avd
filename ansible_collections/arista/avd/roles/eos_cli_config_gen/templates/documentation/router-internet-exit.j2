@@ -1,0 +1,51 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - router internet-exit #}
+{% if router_internet_exit is arista.avd.defined %}
+
+### Router Internet Exit
+{%     if router_internet_exit.exit_groups is arista.avd.defined %}
+
+#### Exit Groups
+
+| Exit Group Name | Local Connections | Fib Default |
+| --------------- | ----------------- | ----------- |
+{%         for exit_group in router_internet_exit.exit_groups | arista.avd.natural_sort('name') %}
+{%             set local_connections = [] %}
+{%             set fib_default = exit_group.fib_default | arista.avd.default("-") %}
+{%             for local_connection in exit_group.local_connections | arista.avd.natural_sort('name') %}
+{%                 do local_connections.append(local_connection.name) %}
+{%             endfor %}
+{%             if local_connections != [] %}
+| {{ exit_group.name }} | {{ local_connections | join("<br>") }} | {{ fib_default }} |
+{%             else %}
+| {{ exit_group.name }} | - | {{ fib_default }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if router_internet_exit.policies is arista.avd.defined %}
+
+#### Internet Exit Policies
+
+| Policy Name | Exit Groups |
+| ----------- | ----------- |
+{%         for policy in router_internet_exit.policies | arista.avd.natural_sort('name') %}
+{%             set policy_exit_groups = [] %}
+{%             for exit_group in policy.exit_groups | arista.avd.default([{"name": "-"}]) %}
+{%                 if exit_group.name is arista.avd.defined %}
+{%                     do policy_exit_groups.append(exit_group.name) %}
+{%                 endif %}
+{%             endfor %}
+| {{ policy.name }} | {{ policy_exit_groups | join("<br>") }} |
+{%         endfor %}
+{%     endif %}
+
+#### Router Internet Exit Device Configuration
+
+```eos
+{%     include 'eos/router-internet-exit.j2' %}
+```
+{% endif %}
