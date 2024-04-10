@@ -235,6 +235,9 @@ class UtilsMixin:
             interface_cfg["ip_address"] = ip[index]
 
         if p2p_link.get("include_in_underlay_protocol", True) is True:
+            if p2p_link.get("underlay_multicast", False) and self.shared_utils.underlay_multicast is True:
+                interface_cfg["pim"] = {"ipv4": {"sparse_mode": True}}
+
             if (self.shared_utils.underlay_rfc5549 and p2p_link.get("routing_protocol") != "ebgp") or p2p_link.get("ipv6_enable") is True:
                 interface_cfg["ipv6_enable"] = True
 
