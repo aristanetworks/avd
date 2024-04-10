@@ -30,7 +30,6 @@
 {%         set row_source_interface = tunnel_interface.source_interface | arista.avd.default("-") %}
 {%         set row_destination = tunnel_interface.destination | arista.avd.default("-") %}
 {%         set row_pmtu = tunnel_interface.path_mtu_discovery | arista.avd.default("-") %}
-{%         set ipsec_profile = "-" %}
 {%         set ipsec_profile = tunnel_interface.ipsec_profile | arista.avd.default("-") %}
 | {{ tunnel_interface.name }} | {{ description }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ nat_profile }} | {{ tunnel_mode }} | {{ row_source_interface }} | {{ row_destination }} | {{ row_pmtu }} | {{ ipsec_profile }} |
 {%     endfor %}
