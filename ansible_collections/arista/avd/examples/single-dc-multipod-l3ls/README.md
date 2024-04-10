@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: AVD example for a single data center using multiple pods for L3LS
+title: AVD example for a single data center using multiple PODs for L3LS
 ---
 <!--
   ~ Copyright (c) 2023-2024 Arista Networks, Inc.
@@ -12,11 +12,11 @@ title: AVD example for a single data center using multiple pods for L3LS
 
 ## Introduction
 
-This example shows how to create a multi-pod environment (a 5-stage Clos) in a single DC environment. Of course, this can be used in multiple DCs, but this example is only for two pods in a single DC.
+This example shows how to create a multi-pod environment (a 5-stage Clos) in a single DC environment. Of course, this can be used in multiple DCs, but this example is only for two PODs in a single DC.
 
 Also included is an example of connecting an external router to a VRF/tenant.
 
-This example only teaches some aspects of an L3LS EVPN/VXLAN build; please see the [single DC L3LS example](../single-dc-l3ls/README.md) for additional information. It supplements the single DC example, concentrating on the unique elements of multiple pods/5-stage Clos.
+This example only teaches some aspects of an L3LS EVPN/VXLAN build; please see the [single DC L3LS example](../single-dc-l3ls/README.md) for additional information. It supplements the single DC example, concentrating on the unique elements of multiple PODs/5-stage Clos.
 
 Ansible playbooks are included to show the following:
 
@@ -61,7 +61,6 @@ ansible-avd-examples/ (or wherever the playbook was run)
     ├── inventory.yml
     ├── playbooks
     ├── README.md
-    └── reports
 ```
 
 !!! info
@@ -73,7 +72,7 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
 
-![Figure: Arista Leaf Spine physical topology](images/l3ls-multipod.png)
+![Figure: Arista Leaf Spine physical topology](images/l3ls-multipod.svg)
 
 ### Fabric Design
 
@@ -83,7 +82,7 @@ The fabric is a basic l3ls EVPN/VXLAN design with a multi-pod (5-stage Clos) arc
 
 The following drawing shows a graphic overview of the Ansible inventory, group variables, and naming scheme used in this example:
 
-![Figure: Arista Leaf Spine physical topology](images/inventory.png)
+![Figure: Arista Leaf Spine physical topology](images/inventory.svg)
 
 The SUPERSPINES group has been added, as well as POD1 and POD2 groups with PODX_LEAFS and PODX_SPINES under each. The EVPN_SERVICES and ENDPOINT_CONNECT allow separation of YAML files, and putting the PODX_LEAFS under them will build the appropriate configs for those devices (VXLAN/VLAN/anycast gateways do not get instantiated on spines, of course).
 
@@ -135,11 +134,11 @@ super_spine:
       mgmt_ip: 192.168.0.26/24
 ```
 
-The pod leafs and spines are not in the FABRIC.yml file in this example (although the contents of POD1.yml and POD2.yml could be consolidated into FABRIC.yml). The super_spine section is new but works like the traditional spine section in a single pod L3LS. It will need an ASN (separate from the pod spines) and loopback pool (which can be the same pool as the pods, as long as the IDs are unique). The `evpn_role: server` makes the super-spines a router server, as the pods' routes need to be propagated to each other.
+The POD leafs and spines are not in the FABRIC.yml file in this example (although the contents of POD1.yml and POD2.yml could be consolidated into FABRIC.yml). The super_spine section is new but works like the traditional spine section in a single POD L3LS. It will need an ASN (separate from the POD spines) and loopback pool (which can be the same pool as the PODs, as long as the IDs are unique). The `evpn_role: server` makes the super-spines a router server, as the PODs' routes need to be propagated to each other.
 
 The rest of the FABRIC.yml would contain any parameters for your fabric, such as NTP servers, user accounts, and p2p MTUs.
 
-The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. Note that each pod's spines have its own unique ASN (eBGP). Also, the spines now have uplink interfaces and uplink switches specified (to the superspies) with the `uplink_switches` and `uplink_interfaces` directives. The uplink pool can overlap between the pods in a DC. If doing multi-DC, the pools should be on different subnets.
+The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. Note that each POD's spines have its own unique ASN (eBGP). Also, the spines now have uplink interfaces and uplink switches specified (to the superspies) with the `uplink_switches` and `uplink_interfaces` directives. The uplink pool can overlap between the PODs in a DC. If doing multi-DC, the pools should be on different subnets.
 
 The leaf configurations, EVPN_SERVICES, and ENDPOINT_CONNECT sections aren't affected by the multi-pod format.
 
