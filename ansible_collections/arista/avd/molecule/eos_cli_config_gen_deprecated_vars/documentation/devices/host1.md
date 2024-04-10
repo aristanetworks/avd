@@ -1778,8 +1778,8 @@ class-map type pbr match-any CM_PBR_INCLUDE
 
 ##### PM_REPLICATION_LD
 
-| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police |
-| ---------- | --- | -----| ------------- | --------------- | ------ |
+| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
+| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
 | CM_REPLICATION_LD | - | af11 | 2 | 1 | - |
 
 #### QOS Policy Maps Device Configuration
