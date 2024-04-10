@@ -3,7 +3,7 @@ is_deployed: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 172.100.100.1
+  gateway: 172.16.100.1
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.10.10.1
 service_routing_protocols_model: multi-agent
@@ -35,8 +35,8 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 172.100.100.109/24
-  gateway: 172.100.100.1
+  ip_address: 172.16.100.109/24
+  gateway: 172.16.100.1
   type: oob
 management_api_http:
   enable_vrfs:

@@ -69,6 +69,8 @@ interface Management1
 
 #### Flow Tracking Hardware
 
+Software export of IPFIX data records enabled.
+
 ##### Trackers Summary
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
@@ -136,6 +138,7 @@ flow tracking hardware
          template interval 424242
       exporter T3-E4
          collector dead:beef::cafe
+   record format ipfix standard timestamps counters
    no shutdown
 ```
 
