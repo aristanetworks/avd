@@ -282,8 +282,8 @@ class-map type qos match-any cmap_tc5_v6
 
 ##### pmap_test1
 
-| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police |
-| ---------- | --- | -----| ------------- | --------------- | ------ |
+| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
+| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
 | cmap_tc0_v4 | - | - | 0 | - | - |
 | cmap_tc5_v4 | - | - | 5 | - | - |
 | cmap_tc5_v6 | - | - | 5 | - | - |
