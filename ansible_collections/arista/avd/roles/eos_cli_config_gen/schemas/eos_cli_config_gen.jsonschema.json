@@ -26390,7 +26390,7 @@
           },
           "nat_profile": {
             "type": "string",
-            "description": "It must target a defined NAT profile.",
+            "description": "NAT interface profile.",
             "title": "Nat Profile"
           },
           "eos_cli": {

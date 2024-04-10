@@ -15252,7 +15252,7 @@ keys:
             '
         nat_profile:
           type: str
-          description: It must target a defined NAT profile.
+          description: NAT interface profile.
         eos_cli:
           type: str
           description: 'Multiline String with EOS CLI rendered directly on the Tunnel

@@ -99,7 +99,7 @@ keys:
             It must target a defined IPsec profile.
         nat_profile:
           type: str
-          description: It must target a defined NAT profile.
+          description: NAT interface profile.
         eos_cli:
           type: str
           description: |

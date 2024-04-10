@@ -29,7 +29,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "tunnel_interfaces.[].destination") | String |  |  |  | IPv4 or IPv6 Address Tunnel Destination |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_mtu_discovery</samp>](## "tunnel_interfaces.[].path_mtu_discovery") | Boolean |  |  |  | Enable Path MTU Discovery On Tunnel |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipsec_profile</samp>](## "tunnel_interfaces.[].ipsec_profile") | String |  |  |  | Used only when tunnel_mode is set to ipsec.<br>It must target a defined IPsec profile.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nat_profile</samp>](## "tunnel_interfaces.[].nat_profile") | String |  |  |  | It must target a defined NAT profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nat_profile</samp>](## "tunnel_interfaces.[].nat_profile") | String |  |  |  | NAT interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "tunnel_interfaces.[].eos_cli") | String |  |  |  | Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.<br> |
 
 === "YAML"
@@ -93,7 +93,7 @@
         # It must target a defined IPsec profile.
         ipsec_profile: <str>
 
-        # It must target a defined NAT profile.
+        # NAT interface profile.
         nat_profile: <str>
 
         # Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.
