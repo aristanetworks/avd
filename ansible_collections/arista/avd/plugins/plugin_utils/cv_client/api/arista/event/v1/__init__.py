@@ -68,7 +68,7 @@ class EventSeverity(aristaproto.Enum):
 
 class ComponentType(aristaproto.Enum):
     """
-    ComponentType describes the type of entity on which the event occured
+    ComponentType describes the type of entity on which the event occurred
     """
 
     UNSPECIFIED = 0
@@ -129,7 +129,7 @@ class ComponentType(aristaproto.Enum):
 
 @dataclass(eq=False, repr=False)
 class EventComponent(aristaproto.Message):
-    """EventComponent describes an entity on which the event occured"""
+    """EventComponent describes an entity on which the event occurred"""
 
     type: "ComponentType" = aristaproto.enum_field(1)
     """type is the type of component"""
@@ -137,15 +137,15 @@ class EventComponent(aristaproto.Message):
     components: Dict[str, str] = aristaproto.map_field(
         2, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING
     )
-    """components identifies the entity on which the event occured"""
+    """components identifies the entity on which the event occurred"""
 
 
 @dataclass(eq=False, repr=False)
 class EventComponents(aristaproto.Message):
-    """EventComponents contains entities on which an event occured"""
+    """EventComponents contains entities on which an event occurred"""
 
     components: List["EventComponent"] = aristaproto.message_field(1)
-    """components describes the components on which an event occured"""
+    """components describes the components on which an event occurred"""
 
 
 @dataclass(eq=False, repr=False)
@@ -215,7 +215,7 @@ class EventKey(aristaproto.Message):
     """key is the event data identifier"""
 
     timestamp: datetime = aristaproto.message_field(2)
-    """timestamp is the time the event occured"""
+    """timestamp is the time the event occurred"""
 
 
 @dataclass(eq=False, repr=False)
@@ -527,7 +527,7 @@ class EventAnnotationConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of EventAnnotationConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maxiumum send size of the client
+         - the maximum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.

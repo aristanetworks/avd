@@ -53,15 +53,15 @@ class SharedUtils(
     Class with commonly used methods / cached_properties to be shared between all the python_modules
     loaded in eos_designs.
 
-    This class is instatiated in 'EosDesignsFacts' class and set as 'shared_utils' property.
-    This class is also instatiated in 'eos_designs_structured_config' and the instance is given as argument to
+    This class is instantiated in 'EosDesignsFacts' class and set as 'shared_utils' property.
+    This class is also instantiated in 'eos_designs_structured_config' and the instance is given as argument to
     each python module. The base class '__init__' will set the instance as 'shared_utils' property.
 
     Since these methods / cached_properties will not be rendered automatically, we can avoid some of the
     general conditions and just return the value. We expect the logic that determines the relevancy of the
     value to be handled in calling function.
 
-    The class cannot be overriden.
+    The class cannot be overridden.
     """
 
     def __init__(self, hostvars: dict, templar) -> None:

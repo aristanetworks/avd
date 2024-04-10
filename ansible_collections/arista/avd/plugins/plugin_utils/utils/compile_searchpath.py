@@ -13,8 +13,8 @@ def compile_searchpath(searchpath: list):
 
     Example
     -------
-    compile_searchpath(["patha", "pathb", "pathc"]) ->
-    ["patha", "patha/templates", "pathb", "pathb/templates", "pathc", "pathc/templates"]
+    compile_searchpath(["patha", "pathb", "pathd"]) ->
+    ["patha", "patha/templates", "pathb", "pathb/templates", "pathd", "pathd/templates"]
 
     Parameters
     ----------

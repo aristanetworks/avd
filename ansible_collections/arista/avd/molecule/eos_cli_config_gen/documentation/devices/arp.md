@@ -46,10 +46,10 @@ Global ARP timeout: 300
 | VRF | IPv4 address | MAC address |
 | --- | ------------ | ----------- |
 | BLAH | 42.42.42.42 | DEAD.BEEF.CAFE |
+| defauls | 42.42.42.42 | DEAD.BEEF.CAFE |
 | default | 41.42.42.42 | DEAD.BEEF.CAFE |
 | default | 42.42.42.42 | DEAD.BEEF.CAFE |
 | default | 43.42.42.42 | DEAD.BEEF.CAFE |
-| defaults | 42.42.42.42 | DEAD.BEEF.CAFE |
 | defaulu | 42.42.42.42 | DEAD.BEEF.CAFE |
 
 #### ARP Device Configuration
@@ -58,9 +58,9 @@ Global ARP timeout: 300
 !
 arp aging timeout default 300
 arp vrf BLAH 42.42.42.42 DEAD.BEEF.CAFE arpa
+arp vrf defauls 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp 41.42.42.42 DEAD.BEEF.CAFE arpa
 arp 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp 43.42.42.42 DEAD.BEEF.CAFE arpa
-arp vrf defaults 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp vrf defaulu 42.42.42.42 DEAD.BEEF.CAFE arpa
 ```
