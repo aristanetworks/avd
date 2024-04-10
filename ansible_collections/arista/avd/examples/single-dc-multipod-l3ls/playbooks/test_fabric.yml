@@ -1,6 +1,7 @@
 ---
 - name: "Run Fabric states validation"
   hosts: FABRIC
+  gather_facts: false
   collections:
     - arista.avd
   tasks:

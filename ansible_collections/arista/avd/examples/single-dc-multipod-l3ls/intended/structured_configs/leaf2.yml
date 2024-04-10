@@ -1,4 +1,5 @@
 hostname: leaf2
+is_deployed: true
 router_bgp:
   as: '65100'
   router_id: 192.168.101.2
@@ -39,21 +40,26 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: leaf1
     description: leaf1
   - ip_address: 192.168.103.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
+    peer: spine1
     description: spine1_Ethernet4
   - ip_address: 192.168.103.6
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
+    peer: spine2
     description: spine2_Ethernet4
   - ip_address: 192.168.101.11
     peer_group: EVPN-OVERLAY-PEERS
+    peer: spine1
     description: spine1
     remote_as: '65001'
   - ip_address: 192.168.101.12
     peer_group: EVPN-OVERLAY-PEERS
+    peer: spine2
     description: spine2
     remote_as: '65001'
   redistribute_routes:
@@ -304,3 +310,5 @@ vxlan_interface:
       vrfs:
       - name: VRF_A
         vni: 10
+metadata:
+  platform: cEOS

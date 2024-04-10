@@ -1,4 +1,5 @@
 hostname: spine2
+is_deployed: true
 router_bgp:
   as: '65001'
   router_id: 192.168.101.12
@@ -34,33 +35,41 @@ router_bgp:
   - ip_address: 192.168.103.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
+    peer: leaf1
     description: leaf1_Ethernet4
   - ip_address: 192.168.103.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
+    peer: leaf2
     description: leaf2_Ethernet4
   - ip_address: 192.168.103.44
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
+    peer: superspine1
     description: superspine1_Ethernet4
   - ip_address: 192.168.103.46
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
+    peer: superspine2
     description: superspine2_Ethernet4
   - ip_address: 192.168.101.201
     peer_group: EVPN-OVERLAY-PEERS
+    peer: superspine1
     description: superspine1
     remote_as: '65000'
   - ip_address: 192.168.101.202
     peer_group: EVPN-OVERLAY-PEERS
+    peer: superspine2
     description: superspine2
     remote_as: '65000'
   - ip_address: 192.168.101.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: leaf1
     description: leaf1
     remote_as: '65100'
   - ip_address: 192.168.101.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: leaf2
     description: leaf2
     remote_as: '65100'
   address_family_evpn:
@@ -154,3 +163,5 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
+metadata:
+  platform: cEOS
