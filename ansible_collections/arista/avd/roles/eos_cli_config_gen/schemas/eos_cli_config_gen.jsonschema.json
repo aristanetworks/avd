@@ -26510,6 +26510,15 @@
             },
             "title": "TCP Mss Ceiling"
           },
+          "tunnel_mode": {
+            "type": "string",
+            "enum": [
+              "gre",
+              "ipsec"
+            ],
+            "description": "Tunnel encapsulation method.\n`gre`: Generic route encapsulation protocol,\n`ipsec`: IPsec-over-IP encapsulation.",
+            "title": "Tunnel Mode"
+          },
           "source_interface": {
             "type": "string",
             "description": "Tunnel Source Interface Name",
@@ -26524,6 +26533,16 @@
             "type": "boolean",
             "description": "Enable Path MTU Discovery On Tunnel",
             "title": "Path MTU Discovery"
+          },
+          "ipsec_profile": {
+            "type": "string",
+            "description": "Used only when `tunnel_mode` is set to `ipsec`.\nIt must target a defined IPsec profile.",
+            "title": "Ipsec Profile"
+          },
+          "nat_profile": {
+            "type": "string",
+            "description": "NAT interface profile.",
+            "title": "Nat Profile"
           },
           "eos_cli": {
             "type": "string",

@@ -12,6 +12,7 @@ tunnel_interfaces:
     tcp_mss_ceiling:
       ipv4: 666
       direction: ingress
+    tunnel_mode: ipsec
     source_interface: Ethernet42
     destination: 6.6.6.6
     path_mtu_discovery: true
@@ -29,9 +30,12 @@ tunnel_interfaces:
     tcp_mss_ceiling:
       ipv6: 666
       direction: egress
+    tunnel_mode: gre
     source_interface: Ethernet42
     destination: dead:beef::1
     path_mtu_discovery: false
+    ipsec_profile: Profile-2
+    nat_profile: NAT-PROFILE-NO-VRF-2
 
   - name: Tunnel3
     description: test dual stack
@@ -40,11 +44,13 @@ tunnel_interfaces:
     ipv6_enable: true
     ipv6_address: beef::64/64
     # no direction this time
+    tunnel_mode: ipsec
     tcp_mss_ceiling:
       ipv4: 666
       ipv6: 666
     source_interface: Ethernet42
     destination: 1.1.1.1
+    ipsec_profile: Profile-3
     # no PMTU
 
   - name: Tunnel4
@@ -54,5 +60,6 @@ tunnel_interfaces:
     ipv6_enable: true
     ipv6_address: beef::64/64
     # no tcp_mss_ceiling
+    nat_profile: NAT-PROFILE-NO-VRF-1
     source_interface: Ethernet42
     destination: 1.1.1.1
