@@ -26365,7 +26365,7 @@
               "gre",
               "ipsec"
             ],
-            "description": "Tunnel encapsulation method.\ngre: Generic route encapsulation protocol,\nipsec: IPsec-over-IP encapsulation.\n",
+            "description": "Tunnel encapsulation method.\n`gre`: Generic route encapsulation protocol,\n`ipsec`: IPsec-over-IP encapsulation.",
             "title": "Tunnel Mode"
           },
           "source_interface": {
@@ -26385,7 +26385,7 @@
           },
           "ipsec_profile": {
             "type": "string",
-            "description": "Used only when tunnel_mode is set to ipsec.\nIt must target a defined IPsec profile.\n",
+            "description": "Used only when `tunnel_mode` is set to `ipsec`.\nIt must target a defined IPsec profile.",
             "title": "Ipsec Profile"
           },
           "nat_profile": {

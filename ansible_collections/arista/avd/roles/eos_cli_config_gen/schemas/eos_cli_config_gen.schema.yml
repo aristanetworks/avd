@@ -15229,11 +15229,9 @@ keys:
           - ipsec
           description: 'Tunnel encapsulation method.
 
-            gre: Generic route encapsulation protocol,
+            `gre`: Generic route encapsulation protocol,
 
-            ipsec: IPsec-over-IP encapsulation.
-
-            '
+            `ipsec`: IPsec-over-IP encapsulation.'
         source_interface:
           type: str
           description: Tunnel Source Interface Name
@@ -15245,11 +15243,9 @@ keys:
           description: Enable Path MTU Discovery On Tunnel
         ipsec_profile:
           type: str
-          description: 'Used only when tunnel_mode is set to ipsec.
+          description: 'Used only when `tunnel_mode` is set to `ipsec`.
 
-            It must target a defined IPsec profile.
-
-            '
+            It must target a defined IPsec profile.'
         nat_profile:
           type: str
           description: NAT interface profile.
