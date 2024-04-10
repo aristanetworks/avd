@@ -15222,6 +15222,18 @@ keys:
                 mss ceiling
 
                 '
+        tunnel_mode:
+          type: str
+          valid_values:
+          - gre
+          - ipsec
+          description: 'Tunnel encapsulation method.
+
+            gre: Generic route encapsulation protocol,
+
+            ipsec: IPsec-over-IP encapsulation.
+
+            '
         source_interface:
           type: str
           description: Tunnel Source Interface Name
@@ -15231,6 +15243,16 @@ keys:
         path_mtu_discovery:
           type: bool
           description: Enable Path MTU Discovery On Tunnel
+        ipsec_profile:
+          type: str
+          description: 'Used only when tunnel_mode is set to ipsec.
+
+            It must target a defined IPsec profile.
+
+            '
+        nat_profile:
+          type: str
+          description: It must target a defined NAT profile.
         eos_cli:
           type: str
           description: 'Multiline String with EOS CLI rendered directly on the Tunnel

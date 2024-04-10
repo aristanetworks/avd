@@ -55,6 +55,12 @@ interface {{ tunnel_interface.name }}
 {%         endif %}
    {{ tcp_mss_ceiling_cli }}
 {%     endif %}
+{%     if tunnel_interface.nat_profile is arista.avd.defined %}
+   ip nat service-profile {{ tunnel_interface.nat_profile }}
+{%     endif %}
+{%     if tunnel_interface.tunnel_mode is arista.avd.defined %}
+   tunnel mode {{ tunnel_interface.tunnel_mode }}
+{%     endif %}
 {%     if tunnel_interface.source_interface is arista.avd.defined %}
    tunnel source interface {{ tunnel_interface.source_interface }}
 {%     endif %}
@@ -63,6 +69,9 @@ interface {{ tunnel_interface.name }}
 {%     endif %}
 {%     if tunnel_interface.path_mtu_discovery is arista.avd.defined(true) %}
    tunnel path-mtu-discovery
+{%     endif %}
+{%     if tunnel_interface.ipsec_profile is arista.avd.defined and tunnel_interface.tunnel_mode == "ipsec" %}
+   tunnel ipsec profile {{ tunnel_interface.ipsec_profile }}
 {%     endif %}
 {%     if tunnel_interface.eos_cli is arista.avd.defined %}
    {{ tunnel_interface.eos_cli | indent(3, false) }}

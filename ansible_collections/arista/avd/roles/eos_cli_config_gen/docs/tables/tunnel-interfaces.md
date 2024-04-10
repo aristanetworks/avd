@@ -24,9 +24,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "tunnel_interfaces.[].tcp_mss_ceiling.ipv4") | Integer |  |  | Min: 64<br>Max: 65495 | Segment Size for IPv4 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "tunnel_interfaces.[].tcp_mss_ceiling.ipv6") | Integer |  |  | Min: 64<br>Max: 65475 | Segment Size for IPv6 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "tunnel_interfaces.[].tcp_mss_ceiling.direction") | String |  |  | Valid Values:<br>- <code>ingress</code><br>- <code>egress</code> | Optional direction ('ingress', 'egress')  for tcp mss ceiling<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tunnel_mode</samp>](## "tunnel_interfaces.[].tunnel_mode") | String |  |  | Valid Values:<br>- <code>gre</code><br>- <code>ipsec</code> | Tunnel encapsulation method.<br>gre: Generic route encapsulation protocol,<br>ipsec: IPsec-over-IP encapsulation.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "tunnel_interfaces.[].source_interface") | String |  |  |  | Tunnel Source Interface Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "tunnel_interfaces.[].destination") | String |  |  |  | IPv4 or IPv6 Address Tunnel Destination |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_mtu_discovery</samp>](## "tunnel_interfaces.[].path_mtu_discovery") | Boolean |  |  |  | Enable Path MTU Discovery On Tunnel |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipsec_profile</samp>](## "tunnel_interfaces.[].ipsec_profile") | String |  |  |  | Used only when tunnel_mode is set to ipsec.<br>It must target a defined IPsec profile.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nat_profile</samp>](## "tunnel_interfaces.[].nat_profile") | String |  |  |  | It must target a defined NAT profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "tunnel_interfaces.[].eos_cli") | String |  |  |  | Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.<br> |
 
 === "YAML"
@@ -72,6 +75,11 @@
           # Optional direction ('ingress', 'egress')  for tcp mss ceiling
           direction: <str; "ingress" | "egress">
 
+        # Tunnel encapsulation method.
+        # gre: Generic route encapsulation protocol,
+        # ipsec: IPsec-over-IP encapsulation.
+        tunnel_mode: <str; "gre" | "ipsec">
+
         # Tunnel Source Interface Name
         source_interface: <str>
 
@@ -80,6 +88,13 @@
 
         # Enable Path MTU Discovery On Tunnel
         path_mtu_discovery: <bool>
+
+        # Used only when tunnel_mode is set to ipsec.
+        # It must target a defined IPsec profile.
+        ipsec_profile: <str>
+
+        # It must target a defined NAT profile.
+        nat_profile: <str>
 
         # Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.
         eos_cli: <str>
