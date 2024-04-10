@@ -49,6 +49,7 @@ interface Management1
 | ----------- | ------------ | ---------- | -------- | -------- |
 | IKE-1 | 24 | aes256 | 20 | 192.168.100.1 |
 | IKE-2 | - | - | - | - |
+| IKE-FQDN | - | - | - | my.awesome@fqdn.com |
 
 ### Security Association policies
 
@@ -85,6 +86,9 @@ ip security
       dh-group 20
    !
    ike policy IKE-2
+   !
+   ike policy IKE-FQDN
+      local-id fqdn my.awesome@fqdn.com
    !
    sa policy SA-1
       esp encryption aes128

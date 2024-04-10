@@ -21,9 +21,15 @@ keys:
               description: Policy name.
             local_id:
               type: str
-              description: |
+              description: |-
                 Local IKE Identification.
                 Can be an IPv4 or an IPv6 address.
+                If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
+            local_id_fqdn:
+              type: str
+              description: |-
+                Local FQDN IKE Identification.
+                If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
             ike_lifetime:
               type: int
               convert_types:
