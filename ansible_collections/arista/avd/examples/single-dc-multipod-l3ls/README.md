@@ -126,10 +126,10 @@ super_spine:
     evpn_role: server
 
   nodes:
-    superspine1:
+    - name: superspine1
       id: 201
       mgmt_ip: 192.168.0.25/24
-    superspine2:
+    - name: superspine2
       id: 202
       mgmt_ip: 192.168.0.26/24
 ```
