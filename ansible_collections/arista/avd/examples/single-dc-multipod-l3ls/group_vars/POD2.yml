@@ -6,20 +6,21 @@ spine:
     bgp_as: 65002
     loopback_ipv4_pool: 192.168.101.0/24
     mlag: false
-    uplink_switches: [superspine1, superspine2] # Where the leaf uplinks go
+    uplink_switches: [ dc1-ss1, dc1-ss2 ] # Where the leaf uplinks go
     uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
-    uplink_interfaces: [Ethernet7, Ethernet8] # Spine uplinks
+    uplink_interfaces: [ Ethernet1, Ethernet2 ] # Spine uplinks
+    evpn_route_servers: [ dc1-ss1, dc1-ss2 ]
   nodes:
-    - name: spine3
+    - name: dc1-spine3
       id: 13
       mgmt_ip: 192.168.0.13/24
-      uplink_switch_interfaces: [Ethernet5, Ethernet5]
-      evpn_route_servers: [superspine1, superspine2]
-    - name: spine4
+      uplink_switch_interfaces: [ Ethernet3, Ethernet3 ]
+      # evpn_route_servers: [ dc1-ss1, dc1-ss2 ]
+    - name: dc1-spine4
       id: 14
       mgmt_ip: 192.168.0.14/24
-      uplink_switch_interfaces: [Ethernet6, Ethernet6]
-      evpn_route_servers: [superspine1, superspine2]
+      uplink_switch_interfaces: [ Ethernet4, Ethernet4 ]
+      # evpn_route_servers: [ dc1-ss1, dc1-ss2 ]
 
 
 # Leaf switches. Most leafs will be l3leaf, not l2leaf.
@@ -29,10 +30,10 @@ l3leaf:
     platform: cEOS
     loopback_ipv4_pool: 192.168.101.0/24 # This is loopback0 (underlay)
     vtep_loopback_ipv4_pool: 192.168.102.0/24 # This is loopback1 (VTEP)
-    uplink_interfaces: [Ethernet5, Ethernet6] # Leaf uplinks
-    uplink_switches: [spine3, spine4] # Where the leaf uplinks go
+    uplink_interfaces: [ Ethernet1, Ethernet2 ] # Leaf uplinks
+    uplink_switches: [ dc1-spine3, dc1-spine4 ] # Where the leaf uplinks go
     uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
-    mlag_interfaces: [Ethernet1, Ethernet2] # MLAG peer link
+    mlag_interfaces: [ Ethernet3, Ethernet4 ] # MLAG peer link
     mlag_peer_ipv4_pool: 10.255.252.0/24 # MLAG peer IPs
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # iBGP peering between MLAG peers
     virtual_router_mac_address: 00:1c:73:00:00:99 # The vMAC for the anycast gateways
@@ -45,11 +46,11 @@ l3leaf:
     - group: mlag2
       bgp_as: 65299 # Manually set for the external routed connection
       nodes:
-        - name: leaf3
+        - name: dc1-leaf2a
           id: 3
           mgmt_ip: 192.168.0.23/24
-          uplink_switch_interfaces: [Ethernet5, Ethernet5]
-        - name: leaf4
+          uplink_switch_interfaces: [ Ethernet3, Ethernet3 ]
+        - name: dc1-leaf2b
           id: 4
           mgmt_ip: 192.168.0.24/24
-          uplink_switch_interfaces: [Ethernet6, Ethernet6]
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4 ]

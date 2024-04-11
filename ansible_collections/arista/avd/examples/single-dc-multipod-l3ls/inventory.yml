@@ -38,9 +38,9 @@ all:
           vars:
             type: super-spine
           hosts:
-            superspine1:
+            dc1-ss1:
               ansible_host: 192.168.0.25
-            superspine2:
+            dc1-ss2:
               ansible_host: 192.168.0.26
         POD1:
           children:
@@ -48,17 +48,17 @@ all:
               vars:
                 type: spine
               hosts:
-                spine1:
+                dc1-spine1:
                   ansible_host: 192.168.0.11
-                spine2:
+                dc1-spine2:
                   ansible_host: 192.168.0.12
             POD1_LEAFS:
               vars:
                 type: l3leaf
               hosts:
-                leaf1:
+                dc1-leaf1a:
                   ansible_host: 192.168.0.21
-                leaf2:
+                dc1-leaf1b:
                   ansible_host: 192.168.0.22
         POD2:
           children:
@@ -66,17 +66,17 @@ all:
               vars:
                 type: spine
               hosts:
-                spine3:
+                dc1-spine3:
                   ansible_host: 192.168.0.13
-                spine4:
+                dc1-spine4:
                   ansible_host: 192.168.0.14
             POD2_LEAFS:
               vars:
                 type: l3leaf
               hosts:
-                leaf3:
+                dc1-leaf2a:
                   ansible_host: 192.168.0.23
-                leaf4:
+                dc1-leaf2b:
                   ansible_host: 192.168.0.24
     EVPN_SERVICES:
       children:

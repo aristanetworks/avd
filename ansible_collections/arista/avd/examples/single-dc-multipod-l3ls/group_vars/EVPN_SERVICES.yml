@@ -16,11 +16,11 @@ tenants:
             enabled: true
             ip_address_virtual: 10.1.20.1/24
         l3_interfaces:
-          - interfaces: [Ethernet9]
-            ip_addresses: [10.1.5.0/31]
-            nodes: [leaf4]
+          - interfaces: [ Ethernet6 ]
+            ip_addresses: [ 10.1.5.0/31 ]
+            nodes: [ dc1-leaf2b ]
             enabled: True
         bgp_peers:
           - ip_address: 10.1.5.1
             remote_as: 65534
-            nodes: [leaf4]
+            nodes: [ dc1-leaf2b ]

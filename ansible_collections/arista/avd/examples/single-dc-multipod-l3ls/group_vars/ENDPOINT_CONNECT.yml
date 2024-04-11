@@ -2,8 +2,8 @@
 servers:
   - name: host1
     adapters:
-      - switch_ports: [ Ethernet7, Ethernet7 ]
-        switches: [ leaf1, leaf2 ]
+      - switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ dc1-leaf1a, dc1-leaf1b ]
         vlans: 10
         mode: access
         spanning_tree_portfast: edge
@@ -12,8 +12,8 @@ servers:
           mode: active
   - name: host2
     adapters:
-      - switch_ports: [ Ethernet7, Ethernet7 ]
-        switches: [ leaf3, leaf3 ]
+      - switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ dc1-leaf2a, dc1-leaf2b ]
         vlans: 20
         mode: access
         spanning_tree_portfast: edge
