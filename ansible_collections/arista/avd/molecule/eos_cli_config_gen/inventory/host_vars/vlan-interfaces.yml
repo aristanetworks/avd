@@ -126,6 +126,28 @@ vlan_interfaces:
         source_interface: Loopback0
       - ip_helper: 10.10.64.150
         source_interface: Loopback0
+    ip_igmp_host_proxy:
+      enabled: true
+      groups:
+        - group: 239.0.0.1
+        - group: 239.0.0.2
+          exclude:
+            - source: 10.0.2.1
+        - group: 239.0.0.3
+          include:
+            - source: 10.0.3.1
+        - group: 239.0.0.4
+          exclude:
+            - source: 10.0.4.1
+            - source: 10.0.4.2
+          include:
+            - source: 10.0.4.3
+            - source: 10.0.4.4
+      report_interval: 2
+      access_lists:
+        - name: ACL1
+        - name: ACL2
+      version: 2
 
   - name: Vlan42
     description: SVI Description

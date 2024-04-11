@@ -785,10 +785,10 @@ interface Loopback1
 
 #### Tunnel Interfaces Summary
 
-| Interface | Description | VRF | MTU | Shutdown | Source Interface | Destination | PMTU-Discovery |
-| --------- | ----------- | --- | --- | -------- | ---------------- | ----------- | -------------- |
-| Tunnel3 | test dual stack | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
-| Tunnel4 | test no tcp_mss | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
+| Interface | Description | VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Destination | PMTU-Discovery | IPsec Profile |
+| --------- | ----------- | --- | --- | -------- | ----------- | ---- | ---------------- | ----------- | -------------- | ------------- |
+| Tunnel3 | test dual stack | default | 1500 | - | - | - | Ethernet42 | 1.1.1.1 | - | - |
+| Tunnel4 | test no tcp_mss | default | 1500 | - | - | - | Ethernet42 | 1.1.1.1 | - | - |
 
 ##### IPv4
 
@@ -1778,11 +1778,9 @@ class-map type pbr match-any CM_PBR_INCLUDE
 
 ##### PM_REPLICATION_LD
 
-| class | Set | Value |
-| ----- | --- | ----- |
-| CM_REPLICATION_LD | dscp | af11 |
-| CM_REPLICATION_LD | traffic_class | 2 |
-| CM_REPLICATION_LD | drop_precedence | 1 |
+| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
+| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
+| CM_REPLICATION_LD | - | af11 | 2 | 1 | - |
 
 #### QOS Policy Maps Device Configuration
 

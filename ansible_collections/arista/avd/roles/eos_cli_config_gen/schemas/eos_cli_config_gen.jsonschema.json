@@ -2136,6 +2136,157 @@
             "^_.+$": {}
           },
           "title": "Radius Av Pair"
+        },
+        "aaa": {
+          "type": "object",
+          "description": "Configure AAA parameters.",
+          "properties": {
+            "unresponsive": {
+              "type": "object",
+              "description": "Configure AAA timeout options.",
+              "properties": {
+                "eap_response": {
+                  "type": "string",
+                  "description": "EAP response to send.",
+                  "enum": [
+                    "success",
+                    "disabled"
+                  ],
+                  "title": "Eap Response"
+                },
+                "action": {
+                  "type": "object",
+                  "description": "Set action for supplicant when AAA times out.",
+                  "properties": {
+                    "apply_cached_results": {
+                      "type": "boolean",
+                      "description": "Use results from a previous AAA response.",
+                      "title": "Apply Cached Results"
+                    },
+                    "cached_results_timeout": {
+                      "type": "object",
+                      "properties": {
+                        "time_duration": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Enable caching for a specific duration -\n<1-10000>      duration in days\n<1-14400000>   duration in minutes\n<1-240000>     duration in hours\n<1-864000000>  duration in seconds",
+                          "title": "Time Duration"
+                        },
+                        "time_duration_unit": {
+                          "type": "string",
+                          "enum": [
+                            "days",
+                            "hours",
+                            "minutes",
+                            "seconds"
+                          ],
+                          "title": "Time Duration Unit"
+                        }
+                      },
+                      "required": [
+                        "time_duration_unit"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Cached Results Timeout"
+                    },
+                    "apply_alternate": {
+                      "type": "boolean",
+                      "description": "Apply alternate action if primary action fails.\neg. aaa unresponsive action apply cached-results else traffic allow",
+                      "title": "Apply Alternate"
+                    },
+                    "traffic_allow": {
+                      "type": "boolean",
+                      "description": "Set action for supplicant traffic when AAA times out.",
+                      "title": "Traffic Allow"
+                    },
+                    "traffic_allow_vlan": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 4094,
+                      "title": "Traffic Allow VLAN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Action"
+                },
+                "phone_action": {
+                  "type": "object",
+                  "description": "Set action for supplicant when AAA times out.",
+                  "properties": {
+                    "apply_cached_results": {
+                      "type": "boolean",
+                      "description": "Use results from a previous AAA response.",
+                      "title": "Apply Cached Results"
+                    },
+                    "cached_results_timeout": {
+                      "type": "object",
+                      "properties": {
+                        "time_duration": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Enable caching for a specific duration -\n<1-10000>      duration in days\n<1-14400000>   duration in minutes\n<1-240000>     duration in hours\n<1-864000000>  duration in seconds",
+                          "title": "Time Duration"
+                        },
+                        "time_duration_unit": {
+                          "type": "string",
+                          "enum": [
+                            "days",
+                            "hours",
+                            "minutes",
+                            "seconds"
+                          ],
+                          "title": "Time Duration Unit"
+                        }
+                      },
+                      "required": [
+                        "time_duration_unit"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Cached Results Timeout"
+                    },
+                    "apply_alternate": {
+                      "type": "boolean",
+                      "description": "Apply alternate action if primary action fails.\neg. aaa unresponsive phone action apply cached-results else traffic allow",
+                      "title": "Apply Alternate"
+                    },
+                    "traffic_allow": {
+                      "description": "Set action for supplicant traffic when AAA times out.",
+                      "type": "boolean",
+                      "title": "Traffic Allow"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Phone Action"
+                },
+                "recovery_action_reauthenticate": {
+                  "type": "boolean",
+                  "title": "Recovery Action Reauthenticate"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Unresponsive"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "AAA"
         }
       },
       "additionalProperties": false,
@@ -4597,6 +4748,118 @@
             },
             "title": "BGP"
           },
+          "ip_igmp_host_proxy": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "group": {
+                      "type": "string",
+                      "description": "Multicast Address.",
+                      "title": "Group"
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Exclude"
+                    },
+                    "include": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Include"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "group"
+                  ]
+                },
+                "title": "Groups"
+              },
+              "report_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 31744,
+                "description": "Time interval between unsolicited reports.",
+                "title": "Report Interval"
+              },
+              "access_lists": {
+                "type": "array",
+                "description": "Non-standard Access List name.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Access Lists"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3,
+                "description": "IGMP version on IGMP host-proxy interface.",
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP IGMP Host Proxy"
+          },
           "peer": {
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
@@ -5318,7 +5581,7 @@
                     "properties": {
                       "mpls": {
                         "type": "boolean",
-                        "description": "Export MPLS forwarding information",
+                        "description": "Export MPLS forwarding information.",
                         "title": "MPLS"
                       },
                       "on_inactive_timeout": {
@@ -5442,6 +5705,21 @@
         "hardware": {
           "type": "object",
           "properties": {
+            "record": {
+              "type": "object",
+              "properties": {
+                "format_ipfix_standard_timestamps_counters": {
+                  "type": "boolean",
+                  "description": "Enable software export of IPFIX data records.",
+                  "title": "Format Ipfix Standard Timestamps Counters"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Record"
+            },
             "trackers": {
               "type": "array",
               "items": {
@@ -12224,6 +12502,104 @@
                         "^_.+$": {}
                       },
                       "title": "Set"
+                    },
+                    "police": {
+                      "type": "object",
+                      "properties": {
+                        "rate": {
+                          "type": "integer",
+                          "description": "Specify rate.\nRange in kbps <8-200000000>.",
+                          "title": "Rate"
+                        },
+                        "rate_unit": {
+                          "type": "string",
+                          "enum": [
+                            "bps",
+                            "kbps",
+                            "mbps",
+                            "pps"
+                          ],
+                          "default": "bps",
+                          "title": "Rate Unit"
+                        },
+                        "rate_burst_size": {
+                          "type": "integer",
+                          "description": "Range in bytes <256-128000000>.",
+                          "title": "Rate Burst Size"
+                        },
+                        "rate_burst_size_unit": {
+                          "type": "string",
+                          "enum": [
+                            "bytes",
+                            "kbytes",
+                            "mbytes",
+                            "packets"
+                          ],
+                          "default": "bytes",
+                          "title": "Rate Burst Size Unit"
+                        },
+                        "action": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "description": "Set action for policed traffic.",
+                              "type": "string",
+                              "enum": [
+                                "dscp",
+                                "drop-precedence"
+                              ],
+                              "title": "Type"
+                            },
+                            "dscp_value": {
+                              "description": "Set when action.type is set to \"dscp\".",
+                              "type": "string",
+                              "title": "DSCP Value"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Action"
+                        },
+                        "higher_rate": {
+                          "type": "integer",
+                          "description": "Specify higher rate.\nRange in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>.",
+                          "title": "Higher Rate"
+                        },
+                        "higher_rate_unit": {
+                          "type": "string",
+                          "enum": [
+                            "bps",
+                            "kbps",
+                            "mbps",
+                            "pps"
+                          ],
+                          "default": "bps",
+                          "title": "Higher Rate Unit"
+                        },
+                        "higher_rate_burst_size": {
+                          "type": "integer",
+                          "description": "Range in bytes <256-128000000>.",
+                          "title": "Higher Rate Burst Size"
+                        },
+                        "higher_rate_burst_size_unit": {
+                          "type": "string",
+                          "enum": [
+                            "bytes",
+                            "kbytes",
+                            "mbytes",
+                            "packets"
+                          ],
+                          "default": "bytes",
+                          "title": "Higher Rate Burst Size Unit"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Police"
                     }
                   },
                   "additionalProperties": false,
@@ -13728,6 +14104,118 @@
               "^_.+$": {}
             },
             "title": "BGP"
+          },
+          "ip_igmp_host_proxy": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "group": {
+                      "type": "string",
+                      "description": "Multicast Address.",
+                      "title": "Group"
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Exclude"
+                    },
+                    "include": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Include"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "group"
+                  ]
+                },
+                "title": "Groups"
+              },
+              "report_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 31744,
+                "description": "Time interval between unsolicited reports.",
+                "title": "Report Interval"
+              },
+              "access_lists": {
+                "type": "array",
+                "description": "Non-standard Access List name.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Access Lists"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3,
+                "description": "IGMP version on IGMP host-proxy interface.",
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP IGMP Host Proxy"
           },
           "peer": {
             "type": "string",
@@ -20721,6 +21209,11 @@
             ]
           },
           "title": "Session Trackers"
+        },
+        "eos_cli": {
+          "type": "string",
+          "description": "Multiline EOS CLI rendered directly on the Router BGP in the final EOS configuration.",
+          "title": "EOS CLI"
         }
       },
       "additionalProperties": false,
@@ -20888,6 +21381,100 @@
       "patternProperties": {
         "^_.+$": {}
       }
+    },
+    "router_internet_exit": {
+      "type": "object",
+      "description": "Internet-exit feature to configure internet bound service for virtual topologies.",
+      "properties": {
+        "policies": {
+          "type": "array",
+          "description": "Internet-exit policy represent a policy which can be attached to a virtual topology profile.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "exit_groups": {
+                "type": "array",
+                "description": "The exit groups that are configured under a policy are strictly ordered, meaning an exit group appearing first has more priority than the exit group that follows it.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Exit Groups"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Policies"
+        },
+        "exit_groups": {
+          "type": "array",
+          "description": "Exit groups represent a group of exit options (connections).\nTraffic flows are load balanced in a round robin fashion across all the members (exits) of the exit-group.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "fib_default": {
+                "type": "boolean",
+                "description": "Fib default exit indicates that the flows that select this exit will follow the default route available in the VRF of the flow.",
+                "title": "Fib Default"
+              },
+              "local_connections": {
+                "type": "array",
+                "description": "Local connections refer to connections configured under the `router_service_insertion`.\nThe service-insertion module reports the health of the connection and the exit will qualify for use only when it is healthy.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Local Connections"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Exit Groups"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Router Internet Exit"
     },
     "router_isis": {
       "type": "object",
@@ -21811,6 +22398,11 @@
             "^_.+$": {}
           },
           "title": "Graceful Restart"
+        },
+        "eos_cli": {
+          "type": "string",
+          "description": "Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.",
+          "title": "EOS CLI"
         }
       },
       "required": [
@@ -23820,11 +24412,83 @@
     },
     "router_service_insertion": {
       "type": "object",
-      "description": "Configure network services inserted to data forwarding",
+      "description": "Configure network services inserted to data forwarding.",
       "properties": {
         "enabled": {
           "type": "boolean",
           "title": "Enabled"
+        },
+        "connections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Connection name.",
+                "title": "Name"
+              },
+              "ethernet_interface": {
+                "type": "object",
+                "description": "Outgoing physical interface or subinterface to use for the connection.\nIf both `ethernet_interface` and `tunnel_interface` are configured, `ethernet_interface` will be used.",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "e.g. Ethernet2 or Ethernet2/2.2",
+                    "title": "Name"
+                  },
+                  "next_hop": {
+                    "type": "string",
+                    "description": "Next-hop IPv4 address (without mask).",
+                    "title": "Next Hop"
+                  }
+                },
+                "required": [
+                  "name",
+                  "next_hop"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Ethernet Interface"
+              },
+              "tunnel_interface": {
+                "type": "object",
+                "description": "Outgoing tunnel interface(s) to use for this connection.\nIf both `ethernet_interface` and `tunnel_interface` are configured, `ethernet_interface` will be used.",
+                "properties": {
+                  "primary": {
+                    "type": "string",
+                    "description": "e.g. Tunnel2",
+                    "title": "Primary"
+                  },
+                  "secondary": {
+                    "type": "string",
+                    "description": "e.g. Tunnel3",
+                    "title": "Secondary"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Tunnel Interface"
+              },
+              "monitor_connectivity_host": {
+                "type": "string",
+                "description": "Name of the host defined under `monitor_connectivity.hosts` used to derive the health of the connection.",
+                "title": "Monitor Connectivity Host"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Connections"
         }
       },
       "additionalProperties": false,
@@ -26160,6 +26824,15 @@
             },
             "title": "TCP Mss Ceiling"
           },
+          "tunnel_mode": {
+            "type": "string",
+            "enum": [
+              "gre",
+              "ipsec"
+            ],
+            "description": "Tunnel encapsulation method.\n`gre`: Generic route encapsulation protocol,\n`ipsec`: IPsec-over-IP encapsulation.",
+            "title": "Tunnel Mode"
+          },
           "source_interface": {
             "type": "string",
             "description": "Tunnel Source Interface Name",
@@ -26174,6 +26847,16 @@
             "type": "boolean",
             "description": "Enable Path MTU Discovery On Tunnel",
             "title": "Path MTU Discovery"
+          },
+          "ipsec_profile": {
+            "type": "string",
+            "description": "Used only when `tunnel_mode` is set to `ipsec`.\nIt must target a defined IPsec profile.",
+            "title": "Ipsec Profile"
+          },
+          "nat_profile": {
+            "type": "string",
+            "description": "NAT interface profile.",
+            "title": "Nat Profile"
           },
           "eos_cli": {
             "type": "string",
@@ -26344,6 +27027,118 @@
             "minimum": 1,
             "maximum": 3,
             "title": "IP IGMP Version"
+          },
+          "ip_igmp_host_proxy": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "group": {
+                      "type": "string",
+                      "description": "Multicast Address.",
+                      "title": "Group"
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Exclude"
+                    },
+                    "include": {
+                      "type": "array",
+                      "description": "The same source must not be present both in `exclude` and `include` list.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "title": "Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "source"
+                        ]
+                      },
+                      "title": "Include"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "group"
+                  ]
+                },
+                "title": "Groups"
+              },
+              "report_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 31744,
+                "description": "Time interval between unsolicited reports.",
+                "title": "Report Interval"
+              },
+              "access_lists": {
+                "type": "array",
+                "description": "Non-standard Access List name.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Access Lists"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3,
+                "description": "IGMP version on IGMP host-proxy interface.",
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP IGMP Host Proxy"
           },
           "ip_helpers": {
             "type": "array",
