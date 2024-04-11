@@ -1415,10 +1415,38 @@ keys:
           type: dict
           description: Zscaler information. Only used if `type` is 'zscaler'.
           keys:
+            ipsec_key:
+              type: str
+              required: true
+              description: Key used for IPsec tunnels to Zscaler
             cloud_name:
               type: str
               description: Zscaler Cloud
               default: zscaler
+            download_bandwidth:
+              type: int
+              description: Maximum allowed download bandwidth in Mbps for each device
+                using this policy.
+            upload_bandwidth:
+              type: int
+              description: Maximum allowed upload bandwidth in Mbps for each device
+                using this policy.
+            firewall:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Enforce firewall controls.
+                  default: false
+                ips:
+                  type: bool
+                  description: Enable IPS Controls for the firewall.
+                  default: false
+            acceptable_use_policy:
+              type: bool
+              description: Display an Acceptable Use Policy (AUP) and require users
+                to accept it.
+              default: false
   ipv4_acls:
     type: list
     primary_key: name

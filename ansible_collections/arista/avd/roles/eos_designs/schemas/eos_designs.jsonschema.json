@@ -5416,13 +5416,59 @@
             "type": "object",
             "description": "Zscaler information. Only used if `type` is 'zscaler'.",
             "properties": {
+              "ipsec_key": {
+                "type": "string",
+                "description": "Key used for IPsec tunnels to Zscaler",
+                "title": "Ipsec Key"
+              },
               "cloud_name": {
                 "type": "string",
                 "description": "Zscaler Cloud",
                 "default": "zscaler",
                 "title": "Cloud Name"
+              },
+              "download_bandwidth": {
+                "type": "integer",
+                "description": "Maximum allowed download bandwidth in Mbps for each device using this policy.",
+                "title": "Download Bandwidth"
+              },
+              "upload_bandwidth": {
+                "type": "integer",
+                "description": "Maximum allowed upload bandwidth in Mbps for each device using this policy.",
+                "title": "Upload Bandwidth"
+              },
+              "firewall": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enforce firewall controls.",
+                    "default": false,
+                    "title": "Enabled"
+                  },
+                  "ips": {
+                    "type": "boolean",
+                    "description": "Enable IPS Controls for the firewall.",
+                    "default": false,
+                    "title": "Ips"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Firewall"
+              },
+              "acceptable_use_policy": {
+                "type": "boolean",
+                "description": "Display an Acceptable Use Policy (AUP) and require users to accept it.",
+                "default": false,
+                "title": "Acceptable Use Policy"
               }
             },
+            "required": [
+              "ipsec_key"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
