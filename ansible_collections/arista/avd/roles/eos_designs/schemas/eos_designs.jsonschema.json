@@ -27264,6 +27264,151 @@
         "^_.+$": {}
       },
       "title": "Wan Virtual Topologies"
+    },
+    "zscaler_endpoints": {
+      "type": "object",
+      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device using the `arista.avd.zscaler_endpoints` Ansible lookup plugin.\nExample:\n```yaml\nzscaler_endpoints: \"{{ lookup('arista.avd.zscaler_endpoints', !!!!TBD!!!!) }}\"\n```",
+      "properties": {
+        "swg_key": {
+          "type": "string",
+          "title": "Swg Key"
+        },
+        "primary": {
+          "type": "object",
+          "properties": {
+            "ip_address": {
+              "type": "string",
+              "title": "IP Address"
+            },
+            "datacenter": {
+              "type": "string",
+              "title": "Datacenter"
+            },
+            "city": {
+              "type": "string",
+              "title": "City"
+            },
+            "country": {
+              "type": "string",
+              "title": "Country"
+            },
+            "latitude": {
+              "type": "string",
+              "title": "Latitude"
+            },
+            "longitude": {
+              "type": "string",
+              "title": "Longitude"
+            }
+          },
+          "required": [
+            "ip_address",
+            "datacenter",
+            "city",
+            "country",
+            "latitude",
+            "longitude"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Primary"
+        },
+        "secondary": {
+          "type": "object",
+          "properties": {
+            "ip_address": {
+              "type": "string",
+              "title": "IP Address"
+            },
+            "datacenter": {
+              "type": "string",
+              "title": "Datacenter"
+            },
+            "city": {
+              "type": "string",
+              "title": "City"
+            },
+            "country": {
+              "type": "string",
+              "title": "Country"
+            },
+            "latitude": {
+              "type": "string",
+              "title": "Latitude"
+            },
+            "longitude": {
+              "type": "string",
+              "title": "Longitude"
+            }
+          },
+          "required": [
+            "ip_address",
+            "datacenter",
+            "city",
+            "country",
+            "latitude",
+            "longitude"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Secondary"
+        },
+        "tertiary": {
+          "type": "object",
+          "properties": {
+            "ip_address": {
+              "type": "string",
+              "title": "IP Address"
+            },
+            "datacenter": {
+              "type": "string",
+              "title": "Datacenter"
+            },
+            "city": {
+              "type": "string",
+              "title": "City"
+            },
+            "country": {
+              "type": "string",
+              "title": "Country"
+            },
+            "latitude": {
+              "type": "string",
+              "title": "Latitude"
+            },
+            "longitude": {
+              "type": "string",
+              "title": "Longitude"
+            }
+          },
+          "required": [
+            "ip_address",
+            "datacenter",
+            "city",
+            "country",
+            "latitude",
+            "longitude"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Tertiary"
+        }
+      },
+      "required": [
+        "swg_key",
+        "primary"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Zscaler Endpoints"
     }
   },
   "required": [

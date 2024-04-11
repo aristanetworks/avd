@@ -4216,6 +4216,60 @@ keys:
                   description: When set, no `catch-all` match is configured for the
                     policy and unmatched traffic is dropped.
                   default: false
+  zscaler_endpoints:
+    type: dict
+    documentation_options:
+      table: wan-internet-exit-settings
+    description: 'PREVIEW: These keys are in preview mode.
+
+
+      Special data model used for WAN internet-exit integration with Zscaler.
+
+      The model is supposed to be autofilled per-device using the `arista.avd.zscaler_endpoints`
+      Ansible lookup plugin.
+
+      Example:
+
+      ```yaml
+
+      zscaler_endpoints: "{{ lookup(''arista.avd.zscaler_endpoints'', !!!!TBD!!!!)
+      }}"
+
+      ```'
+    keys:
+      swg_key:
+        type: str
+        required: true
+      primary:
+        type: dict
+        required: true
+        keys:
+          ip_address:
+            type: str
+            required: true
+          datacenter:
+            type: str
+            required: true
+          city:
+            type: str
+            required: true
+          country:
+            type: str
+            required: true
+          latitude:
+            type: str
+            required: true
+          longitude:
+            type: str
+            required: true
+      secondary:
+        type: dict
+        $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
+        required: false
+      tertiary:
+        type: dict
+        $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
+        required: false
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
