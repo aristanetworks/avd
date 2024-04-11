@@ -4446,7 +4446,7 @@ keys:
                 precedence.'
             local_id_fqdn:
               type: str
-              description: 'Local FQDN IKE Identification.
+              description: 'Local FQDN or UFQDN IKE Identification.
 
                 If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes
                 precedence.'

@@ -7515,7 +7515,7 @@
               },
               "local_id_fqdn": {
                 "type": "string",
-                "description": "Local FQDN IKE Identification.\nIf both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.",
+                "description": "Local FQDN or UFQDN IKE Identification.\nIf both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.",
                 "title": "Local ID Fqdn"
               },
               "ike_lifetime": {

@@ -28,7 +28,7 @@ keys:
             local_id_fqdn:
               type: str
               description: |-
-                Local FQDN IKE Identification.
+                Local FQDN or UFQDN IKE Identification.
                 If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
             ike_lifetime:
               type: int

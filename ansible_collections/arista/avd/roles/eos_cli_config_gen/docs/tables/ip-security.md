@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;ike_policies</samp>](## "ip_security.ike_policies") | List, items: Dictionary |  |  |  | Internet Security Association and Key Mgmt Protocol. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_security.ike_policies.[].name") | String | Required, Unique |  |  | Policy name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_id</samp>](## "ip_security.ike_policies.[].local_id") | String |  |  |  | Local IKE Identification.<br>Can be an IPv4 or an IPv6 address.<br>If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_id_fqdn</samp>](## "ip_security.ike_policies.[].local_id_fqdn") | String |  |  |  | Local FQDN IKE Identification.<br>If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_id_fqdn</samp>](## "ip_security.ike_policies.[].local_id_fqdn") | String |  |  |  | Local FQDN or UFQDN IKE Identification.<br>If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ike_lifetime</samp>](## "ip_security.ike_policies.[].ike_lifetime") | Integer |  |  | Min: 1<br>Max: 24 | IKE lifetime in hours. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryption</samp>](## "ip_security.ike_policies.[].encryption") | String |  |  | Valid Values:<br>- <code>3des</code><br>- <code>aes128</code><br>- <code>aes256</code> | IKE encryption algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dh_group</samp>](## "ip_security.ike_policies.[].dh_group") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>5</code><br>- <code>14</code><br>- <code>15</code><br>- <code>16</code><br>- <code>17</code><br>- <code>20</code><br>- <code>21</code><br>- <code>24</code> | Diffie-Hellman group for the key exchange. |
@@ -53,7 +53,7 @@
           # If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
           local_id: <str>
 
-          # Local FQDN IKE Identification.
+          # Local FQDN or UFQDN IKE Identification.
           # If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
           local_id_fqdn: <str>
 
