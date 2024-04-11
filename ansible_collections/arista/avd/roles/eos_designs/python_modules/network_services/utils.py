@@ -585,3 +585,34 @@ class UtilsMixin:
             for path_group in self.shared_utils.wan_local_path_groups
             if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
         ]
+
+    @cached_property
+    def _filtered_internet_exit_policies(self) -> list:
+        """
+        - Parse self._filtered_wan_policies looking to internet_exit_policies.
+        - Verify each internet_exit_policy is present in inputs `internet_exit_policies`.
+        - Identify wan_interfaces assigned to each policy (raise or ignore if no interfaces are found? What about HA?)
+        - get_internet_exit_connections and insert into the policy dict. (maybe add a group hierarchy?)
+        - Return the list of relevant internet_exit_policies.
+        """
+        return []
+
+    def get_internet_exit_connections(self, internet_exit_policy) -> list:
+        """
+        Useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
+
+        - Loop over _filtered_internet_exit_policies
+          - Loop over wan_interfaces set on the policy
+            - For zscaler extract info from zscaler_endpoints
+            - Build connection dict with:
+              - ie policy name
+              - source interface
+              - id? (something we can use to generate tunnel interface number)
+              - peer ip
+              - peer description
+              - type: <interface | tunnel>
+              - group: <policy_name>_PRI, _SEC, _TER
+              - ...
+        - Return a list of group dicts containing list of connections
+        """
+        return list

@@ -6,11 +6,11 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  internet_exit_policies:
+  cv_pathfinder_internet_exit_policies:
     description: |-
       PREVIEW: These keys are in preview mode.
 
-      List of path-groups used for the WAN configuration.
+      List of internet-exit policies used for the WAN configuration.
     type: list
     primary_key: name
     items:
@@ -38,7 +38,7 @@ keys:
             ipsec_key:
               type: str
               required: true
-              description: Key used for IPsec tunnels to Zscaler
+              description: Encryption key used for IPsec tunnels to Zscaler. # TBD. Should this be moved to Site?
             # cloud_name: # TBD this is already available inside CVaaS, so we should not need to provide this again.
             #   type: str
             #   description: Zscaler Cloud
