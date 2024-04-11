@@ -22,13 +22,13 @@ keys:
             local_id:
               type: str
               description: |-
-                Local IKE Identification.
+                Local IKE identification.
                 Can be an IPv4 or an IPv6 address.
                 If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
             local_id_fqdn:
               type: str
               description: |-
-                Local FQDN or UFQDN IKE Identification.
+                Local FQDN or UFQDN IKE identification.
                 If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
             ike_lifetime:
               type: int

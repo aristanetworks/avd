@@ -4438,7 +4438,7 @@ keys:
               description: Policy name.
             local_id:
               type: str
-              description: 'Local IKE Identification.
+              description: 'Local IKE identification.
 
                 Can be an IPv4 or an IPv6 address.
 
@@ -4446,7 +4446,7 @@ keys:
                 precedence.'
             local_id_fqdn:
               type: str
-              description: 'Local FQDN or UFQDN IKE Identification.
+              description: 'Local FQDN or UFQDN IKE identification.
 
                 If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes
                 precedence.'
