@@ -15,12 +15,10 @@ spine:
       id: 13
       mgmt_ip: 192.168.0.13/24
       uplink_switch_interfaces: [ Ethernet3, Ethernet3 ]
-      # evpn_route_servers: [ dc1-ss1, dc1-ss2 ]
     - name: dc1-spine4
       id: 14
       mgmt_ip: 192.168.0.14/24
       uplink_switch_interfaces: [ Ethernet4, Ethernet4 ]
-      # evpn_route_servers: [ dc1-ss1, dc1-ss2 ]
 
 
 # Leaf switches. Most leafs will be l3leaf, not l2leaf.
