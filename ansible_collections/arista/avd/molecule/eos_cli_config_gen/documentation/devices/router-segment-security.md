@@ -46,7 +46,7 @@ MSS-G is enabled.
 #### POLICY-TEST1
 
 | Sequence Number | Application Name | Action | Next-Hop | Log | Stateless |
-| --------------- | ---------------- | ------ | -------- | --- | ---------
+| --------------- | ---------------- | ------ | -------- | --- | --------- |
 | 10 | APP-TEST-1 | forward | - | - | False |
 | 20 | APP-TEST-2 | drop | - | True | - |
 | 25 | APP-TEST-3 | redirect | 198.51.100.1 | - | - |
@@ -58,7 +58,7 @@ MSS-G is enabled.
 ##### Segment SEGMENT-TEST1 Definitions
 
 | Interface | Match-List Name | Address Family | Covered |
-| --------- |------------ | -------------- | ------- |
+| --------- |---------------- | -------------- | ------- |
 | - | MATCH-LIST10 | ipv4 | False |
 | - | MATCH-LIST11 | ipv6 | False |
 
@@ -71,7 +71,7 @@ MSS-G is enabled.
 ##### Segment SEGMENT-TEST2 Definitions
 
 | Interface | Match-List Name | Address Family | Covered |
-| --------- |------------ | -------------- | ------- |
+| --------- |---------------- | -------------- | ------- |
 | - | MATCH-LIST3 | ipv6 | False |
 | - | MATCH-LIST4 | ipv4 | True |
 
@@ -88,7 +88,7 @@ MSS-G is enabled.
 ##### Segment SEGMENT-TEST1 Definitions
 
 | Interface | Match-List Name | Address Family | Covered |
-| --------- |------------ | -------------- | ------- |
+| --------- |---------------- | -------------- | ------- |
 | Ethernet1 | - | - | - |
 | Ethernet2 | - | - | - |
 | - | MATCH-LIST1 | ipv6 | False |
