@@ -83,7 +83,7 @@ pip3 install pyavd[mdtoc]
 Optional `md-toc` requirement (automatically installed with above command):
 
 ```ini
-md-toc>=8.1.8
+md-toc>=8.1.8,<9.0.0
 ```
 
 ## Reference

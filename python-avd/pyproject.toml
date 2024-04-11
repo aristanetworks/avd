@@ -30,7 +30,7 @@ requires = [
     "jinja2>=3.0",
     "jsonschema>=4.5.1,<4.18",
     "deepmerge>=1.1.0",
-    "md-toc>=8.1.8",
+    "md-toc>=8.1.8,<9.0.0",
     "pyyaml>=6.0.0",
     "mkdocstrings[python]",
     "pydantic>=2.3.0",
