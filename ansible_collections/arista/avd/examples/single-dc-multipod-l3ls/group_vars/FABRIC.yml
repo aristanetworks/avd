@@ -17,10 +17,10 @@ super_spine:
     evpn_role: server
 
   nodes:
-    - name: superspine1
+    - name: dc1-ss1
       id: 201
       mgmt_ip: 192.168.0.25/24
-    - name: superspine2
+    - name: dc1-ss2
       id: 202
       mgmt_ip: 192.168.0.26/24
 
