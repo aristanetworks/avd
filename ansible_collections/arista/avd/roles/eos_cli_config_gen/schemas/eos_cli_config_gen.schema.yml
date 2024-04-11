@@ -14039,6 +14039,8 @@ keys:
                         description: The names of the source interface e.g. Port-Channel1
                           - note that platform support is limited.
                         min_length: 1
+                        items:
+                          type: str
                       match_lists:
                         type: list
                         description: The set of match-lists that define the segment.
