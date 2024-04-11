@@ -21,7 +21,7 @@ MSS-G is disabled.
 #### {{ policy.name }}
 
 | Sequence Number | Application Name | Action | Next-Hop | Log | Stateless |
-| --------------- | ---------------- | ------ | -------- | --- | ---------
+| --------------- | ---------------- | ------ | -------- | --- | --------- |
 {%             for entry in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ entry.sequence }} | {{ entry.application }} | {{ entry.action }} | {{ entry.next_hop | arista.avd.default('-') }} | {{ entry.log | arista.avd.default('-') }} | {{ entry.stateless | arista.avd.default('-') }} |
 {%             endfor %}
@@ -38,7 +38,7 @@ MSS-G is disabled.
 ##### Segment {{ segment.name }} Definitions
 
 | Interface | Match-List Name | Address Family | Covered |
-| --------- |------------ | -------------- | ------- |
+| --------- |---------------- | -------------- | ------- |
 {%                 if segment.definition.interfaces is arista.avd.defined %}
 {%                     for entry in segment.definition.interfaces %}
 | {{ entry }} | - | - | - |
