@@ -1521,6 +1521,112 @@ keys:
             max: 9236
             convert_types:
             - str
+      aaa:
+        type: dict
+        description: Configure AAA parameters.
+        keys:
+          unresponsive:
+            type: dict
+            description: Configure AAA timeout options.
+            keys:
+              eap_response:
+                type: str
+                description: EAP response to send.
+                valid_values:
+                - success
+                - disabled
+              action:
+                type: dict
+                description: Set action for supplicant when AAA times out.
+                keys:
+                  apply_cached_results:
+                    type: bool
+                    description: Use results from a previous AAA response.
+                  cached_results_timeout:
+                    type: dict
+                    keys:
+                      time_duration:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        description: 'Enable caching for a specific duration -
+
+                          <1-10000>      duration in days
+
+                          <1-14400000>   duration in minutes
+
+                          <1-240000>     duration in hours
+
+                          <1-864000000>  duration in seconds'
+                      time_duration_unit:
+                        type: str
+                        required: true
+                        valid_values:
+                        - days
+                        - hours
+                        - minutes
+                        - seconds
+                  apply_alternate:
+                    type: bool
+                    description: 'Apply alternate action if primary action fails.
+
+                      eg. aaa unresponsive action apply cached-results else traffic
+                      allow'
+                  traffic_allow:
+                    type: bool
+                    description: Set action for supplicant traffic when AAA times
+                      out.
+                  traffic_allow_vlan:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 4094
+              phone_action:
+                type: dict
+                description: Set action for supplicant when AAA times out.
+                keys:
+                  apply_cached_results:
+                    type: bool
+                    description: Use results from a previous AAA response.
+                  cached_results_timeout:
+                    type: dict
+                    keys:
+                      time_duration:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        description: 'Enable caching for a specific duration -
+
+                          <1-10000>      duration in days
+
+                          <1-14400000>   duration in minutes
+
+                          <1-240000>     duration in hours
+
+                          <1-864000000>  duration in seconds'
+                      time_duration_unit:
+                        type: str
+                        required: true
+                        valid_values:
+                        - days
+                        - hours
+                        - minutes
+                        - seconds
+                  apply_alternate:
+                    type: bool
+                    description: 'Apply alternate action if primary action fails.
+
+                      eg. aaa unresponsive phone action apply cached-results else
+                      traffic allow'
+                  traffic_allow:
+                    description: Set action for supplicant traffic when AAA times
+                      out.
+                    type: bool
+              recovery_action_reauthenticate:
+                type: bool
   dps_interfaces:
     type: list
     primary_key: name
@@ -7319,6 +7425,80 @@ keys:
                         type: int
                         convert_types:
                         - str
+                  police:
+                    type: dict
+                    keys:
+                      rate:
+                        type: int
+                        convert_types:
+                        - str
+                        description: 'Specify rate.
+
+                          Range in kbps <8-200000000>.'
+                      rate_unit:
+                        type: str
+                        valid_values:
+                        - bps
+                        - kbps
+                        - mbps
+                        - pps
+                        default: bps
+                      rate_burst_size:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Range in bytes <256-128000000>.
+                      rate_burst_size_unit:
+                        type: str
+                        valid_values:
+                        - bytes
+                        - kbytes
+                        - mbytes
+                        - packets
+                        default: bytes
+                      action:
+                        type: dict
+                        keys:
+                          type:
+                            description: Set action for policed traffic.
+                            type: str
+                            valid_values:
+                            - dscp
+                            - drop-precedence
+                          dscp_value:
+                            description: Set when action.type is set to "dscp".
+                            type: str
+                            convert_types:
+                            - int
+                      higher_rate:
+                        type: int
+                        convert_types:
+                        - str
+                        description: 'Specify higher rate.
+
+                          Range in kbps <lower_rate in kbps + 8 - lower_rate in kbps
+                          + 200000000>.'
+                      higher_rate_unit:
+                        type: str
+                        valid_values:
+                        - bps
+                        - kbps
+                        - mbps
+                        - pps
+                        default: bps
+                      higher_rate_burst_size:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Range in bytes <256-128000000>.
+                      higher_rate_burst_size_unit:
+                        type: str
+                        valid_values:
+                        - bytes
+                        - kbytes
+                        - mbytes
+                        - packets
+                        default: bytes
   port_channel_interfaces:
     type: list
     primary_key: name
@@ -12342,6 +12522,59 @@ keys:
               valid_values:
               - all
               - iif
+  router_internet_exit:
+    type: dict
+    description: Internet-exit feature to configure internet bound service for virtual
+      topologies.
+    keys:
+      policies:
+        type: list
+        description: Internet-exit policy represent a policy which can be attached
+          to a virtual topology profile.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            exit_groups:
+              type: list
+              description: The exit groups that are configured under a policy are
+                strictly ordered, meaning an exit group appearing first has more priority
+                than the exit group that follows it.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+      exit_groups:
+        type: list
+        description: 'Exit groups represent a group of exit options (connections).
+
+          Traffic flows are load balanced in a round robin fashion across all the
+          members (exits) of the exit-group.'
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            fib_default:
+              type: bool
+              description: Fib default exit indicates that the flows that select this
+                exit will follow the default route available in the VRF of the flow.
+            local_connections:
+              type: list
+              description: 'Local connections refer to connections configured under
+                the `router_service_insertion`.
+
+                The service-insertion module reports the health of the connection
+                and the exit will qualify for use only when it is healthy.'
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
   router_isis:
     type: dict
     keys:
@@ -15176,6 +15409,16 @@ keys:
                 mss ceiling
 
                 '
+        tunnel_mode:
+          type: str
+          valid_values:
+          - gre
+          - ipsec
+          description: 'Tunnel encapsulation method.
+
+            `gre`: Generic route encapsulation protocol,
+
+            `ipsec`: IPsec-over-IP encapsulation.'
         source_interface:
           type: str
           description: Tunnel Source Interface Name
@@ -15185,6 +15428,14 @@ keys:
         path_mtu_discovery:
           type: bool
           description: Enable Path MTU Discovery On Tunnel
+        ipsec_profile:
+          type: str
+          description: 'Used only when `tunnel_mode` is set to `ipsec`.
+
+            It must target a defined IPsec profile.'
+        nat_profile:
+          type: str
+          description: NAT interface profile.
         eos_cli:
           type: str
           description: 'Multiline String with EOS CLI rendered directly on the Tunnel
