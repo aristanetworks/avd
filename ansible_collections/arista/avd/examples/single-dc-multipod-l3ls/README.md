@@ -76,7 +76,7 @@ The drawing below shows the physical topology used in this example. The interfac
 
 ### Fabric Design
 
-The fabric is a basic l3ls EVPN/VXLAN design with a multi-pod (5-stage Clos) architecture.
+The fabric is a basic L3LS EVPN/VXLAN design with a multi-pod (5-stage Clos) architecture.
 
 ## Ansible inventory, group vars, and naming scheme
 
