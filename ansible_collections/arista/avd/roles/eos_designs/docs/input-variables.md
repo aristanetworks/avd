@@ -800,8 +800,12 @@ roles/eos_designs/docs/tables/application-classification.md
 
 #### Internet Exit policies
 
+!!! note
+
+    This section is only relevant for CV Pathfinder and not for AutoVPN
+
 --8<--
-roles/eos_designs/docs/tables/internet-exit-policies.md
+roles/eos_designs/docs/tables/cv-pathfinder-internet-exit-policies.md
 --8<--
 
 ## Management settings
