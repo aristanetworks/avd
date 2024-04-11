@@ -233,8 +233,10 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY-VOICE
     load_balance_policy: LB-PROD-AVT-POLICY-VOICE
+    internet_exit_policy: ZSCALER-INTERNET-EXIT-1
   - name: PROD-AVT-POLICY-VIDEO
     load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
+    internet_exit_policy: ZSCALER-INTERNET-EXIT-2
   - name: PROD-AVT-POLICY-MPLS-ONLY
     load_balance_policy: LB-PROD-AVT-POLICY-MPLS-ONLY
   - name: PROD-AVT-POLICY-DEFAULT

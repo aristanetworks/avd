@@ -305,6 +305,7 @@ class UtilsMixin:
                 {
                     "application_profile": self._wan_control_plane_application_profile_name,
                     "avt_profile": self._wan_control_plane_profile_name,
+                    "internet_exit_policy_name": get(control_plane_virtual_topology, "internet_exit.policy"),
                     "traffic_class": get(control_plane_virtual_topology, "traffic_class"),
                     "dscp": get(control_plane_virtual_topology, "dscp"),
                     "load_balance_policy": load_balance_policy,
@@ -347,6 +348,7 @@ class UtilsMixin:
                 {
                     "application_profile": application_profile,
                     "avt_profile": name,
+                    "internet_exit_policy_name": get(application_virtual_topology, "internet_exit.policy"),
                     "traffic_class": get(application_virtual_topology, "traffic_class"),
                     "dscp": get(application_virtual_topology, "dscp"),
                     "load_balance_policy": load_balance_policy,
@@ -386,6 +388,7 @@ class UtilsMixin:
             default_match = {
                 "application_profile": application_profile,
                 "avt_profile": name,
+                "internet_exit_policy_name": get(default_virtual_topology, "internet_exit.policy"),
                 "traffic_class": get(default_virtual_topology, "traffic_class"),
                 "dscp": get(default_virtual_topology, "dscp"),
                 "load_balance_policy": load_balance_policy,
@@ -590,16 +593,61 @@ class UtilsMixin:
     def _filtered_internet_exit_policies(self) -> list:
         """
         - Parse self._filtered_wan_policies looking to internet_exit_policies.
-        - Verify each internet_exit_policy is present in inputs `internet_exit_policies`.
+        - Verify each internet_exit_policy is present in inputs `cv_pathfinder_internet_exit_policies`.
         - Identify wan_interfaces assigned to each policy (raise or ignore if no interfaces are found? What about HA?)
         - get_internet_exit_connections and insert into the policy dict. (maybe add a group hierarchy?)
         - Return the list of relevant internet_exit_policies.
         """
-        return []
+        # Only supported for CV Pathfinder
+        if not self.shared_utils.is_cv_pathfinder_router:
+            return []
 
-    def get_internet_exit_connections(self, internet_exit_policy) -> list:
+        internet_exit_policies_names = set()
+
+        # Look for internet-exit policy names
+        for policy in self._filtered_wan_policies:
+            for match in get(policy, "matches", default=[]):
+                internet_exit_policies_names.add(match.get("internet_exit_policy_name"))
+            if (default_match := policy.get("default_match")) is not None:
+                internet_exit_policies_names.add(default_match.get("internet_exit_policy_name"))
+        if not internet_exit_policies_names:
+            return []
+
+        configured_internet_exit_policies = get(self._hostvars, "cv_pathfinders_internet_exit_policies", [])
+        # TODO - maybe a fact with local_wan_interfaces to help - could be used also in _local_path_groups_connected_to_pathfinder.
+        local_wan_interfaces = [wan_interface for path_group in self.shared_utils.wan_local_path_groups for wan_interface in path_group]
+
+        internet_exit_policies = []
+
+        for internet_exit_policy_name in sorted(internet_exit_policies_names):
+            # Check the policy is configured and make a copy
+            internet_exit_policy = get_item(configured_internet_exit_policies, "name", internet_exit_policy_name, custom_error_msg="TODO").copy()
+
+            # Check if the policy has any local interface
+            policy_wan_interfaces = []
+            for wan_interface in local_wan_interfaces:
+                policy_wan_interfaces.extend(
+                    wan_interface
+                    for wan_interface_internet_exit_policy in get(wan_interface, "cv_pathfinder_internet_exit.policies")
+                    if wan_interface_internet_exit_policy["name"] == internet_exit_policy_name
+                )
+            if not policy_wan_interfaces:
+                # No local interface for this policy
+                continue
+
+            # TODO check if it is better injected here or in the next one
+            internet_exit_policy["wan_interfaces"] = policy_wan_interfaces
+            self.get_internet_exit_connections(internet_exit_policy)
+
+            internet_exit_policies.append(internet_exit_policy)
+
+        return internet_exit_policies
+
+    def get_internet_exit_connections(self, internet_exit_policy) -> None:
         """
         Useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
+
+        In-place update of `internet_exit_policy`
 
         - Loop over _filtered_internet_exit_policies
           - Loop over wan_interfaces set on the policy
@@ -615,4 +663,4 @@ class UtilsMixin:
               - ...
         - Return a list of group dicts containing list of connections
         """
-        return list
+        return

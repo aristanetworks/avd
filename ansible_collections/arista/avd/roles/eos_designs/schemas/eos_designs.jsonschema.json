@@ -26995,10 +26995,20 @@
               },
               "title": "Path Groups"
             },
-            "internet_exit_policy": {
-              "type": "string",
-              "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
-              "title": "Internet Exit Policy"
+            "internet_exit": {
+              "type": "object",
+              "properties": {
+                "policy": {
+                  "type": "string",
+                  "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
+                  "title": "Policy"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Internet Exit"
             }
           },
           "additionalProperties": false,
@@ -27122,10 +27132,20 @@
                       },
                       "title": "Path Groups"
                     },
-                    "internet_exit_policy": {
-                      "type": "string",
-                      "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
-                      "title": "Internet Exit Policy"
+                    "internet_exit": {
+                      "type": "object",
+                      "properties": {
+                        "policy": {
+                          "type": "string",
+                          "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
+                          "title": "Policy"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Internet Exit"
                     }
                   },
                   "additionalProperties": false,
@@ -27234,10 +27254,20 @@
                     },
                     "title": "Path Groups"
                   },
-                  "internet_exit_policy": {
-                    "type": "string",
-                    "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
-                    "title": "Internet Exit Policy"
+                  "internet_exit": {
+                    "type": "object",
+                    "properties": {
+                      "policy": {
+                        "type": "string",
+                        "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
+                        "title": "Policy"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Internet Exit"
                   }
                 },
                 "additionalProperties": false,
