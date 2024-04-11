@@ -39,10 +39,10 @@ keys:
               type: str
               required: true
               description: Key used for IPsec tunnels to Zscaler
-            cloud_name:
-              type: str
-              description: Zscaler Cloud
-              default: zscaler
+            # cloud_name: # TBD this is already available inside CVaaS, so we should not need to provide this again.
+            #   type: str
+            #   description: Zscaler Cloud
+            #   default: zscaler
             # country: # TBD if we should have this under the site instead.
             #   type: str
             #   description: |-

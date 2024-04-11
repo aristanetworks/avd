@@ -5421,12 +5421,6 @@
                 "description": "Key used for IPsec tunnels to Zscaler",
                 "title": "Ipsec Key"
               },
-              "cloud_name": {
-                "type": "string",
-                "description": "Zscaler Cloud",
-                "default": "zscaler",
-                "title": "Cloud Name"
-              },
               "download_bandwidth": {
                 "type": "integer",
                 "description": "Maximum allowed download bandwidth in Mbps for each device using this policy.",
@@ -27269,10 +27263,6 @@
       "type": "object",
       "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device using the `arista.avd.zscaler_endpoints` Ansible lookup plugin.\nExample:\n```yaml\nzscaler_endpoints: \"{{ lookup('arista.avd.zscaler_endpoints', !!!!TBD!!!!) }}\"\n```",
       "properties": {
-        "swg_key": {
-          "type": "string",
-          "title": "Swg Key"
-        },
         "primary": {
           "type": "object",
           "properties": {
@@ -27401,7 +27391,6 @@
         }
       },
       "required": [
-        "swg_key",
         "primary"
       ],
       "additionalProperties": false,

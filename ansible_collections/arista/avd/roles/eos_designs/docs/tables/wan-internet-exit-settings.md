@@ -8,7 +8,6 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>zscaler_endpoints</samp>](## "zscaler_endpoints") | Dictionary |  |  |  | PREVIEW: These keys are in preview mode.<br><br>Special data model used for WAN internet-exit integration with Zscaler.<br>The model is supposed to be autofilled per-device using the `arista.avd.zscaler_endpoints` Ansible lookup plugin.<br>Example:<br>```yaml<br>zscaler_endpoints: "{{ lookup('arista.avd.zscaler_endpoints', !!!!TBD!!!!) }}"<br>``` |
-    | [<samp>&nbsp;&nbsp;swg_key</samp>](## "zscaler_endpoints.swg_key") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;primary</samp>](## "zscaler_endpoints.primary") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "zscaler_endpoints.primary.ip_address") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;datacenter</samp>](## "zscaler_endpoints.primary.datacenter") | String | Required |  |  |  |
@@ -43,7 +42,6 @@
     # zscaler_endpoints: "{{ lookup('arista.avd.zscaler_endpoints', !!!!TBD!!!!) }}"
     # ```
     zscaler_endpoints:
-      swg_key: <str; required>
       primary: # required
         ip_address: <str; required>
         datacenter: <str; required>

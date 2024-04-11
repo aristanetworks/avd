@@ -1419,10 +1419,6 @@ keys:
               type: str
               required: true
               description: Key used for IPsec tunnels to Zscaler
-            cloud_name:
-              type: str
-              description: Zscaler Cloud
-              default: zscaler
             download_bandwidth:
               type: int
               description: Maximum allowed download bandwidth in Mbps for each device
@@ -4237,9 +4233,6 @@ keys:
 
       ```'
     keys:
-      swg_key:
-        type: str
-        required: true
       primary:
         type: dict
         required: true

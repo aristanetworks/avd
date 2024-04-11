@@ -13,7 +13,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fallback_to_system_default</samp>](## "internet_exit_policies.[].fallback_to_system_default") | Boolean |  | `True` |  | Add system default exit-group at the end of the policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;zscaler</samp>](## "internet_exit_policies.[].zscaler") | Dictionary |  |  |  | Zscaler information. Only used if `type` is 'zscaler'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec_key</samp>](## "internet_exit_policies.[].zscaler.ipsec_key") | String | Required |  |  | Key used for IPsec tunnels to Zscaler |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cloud_name</samp>](## "internet_exit_policies.[].zscaler.cloud_name") | String |  | `zscaler` |  | Zscaler Cloud |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;download_bandwidth</samp>](## "internet_exit_policies.[].zscaler.download_bandwidth") | Integer |  |  |  | Maximum allowed download bandwidth in Mbps for each device using this policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;upload_bandwidth</samp>](## "internet_exit_policies.[].zscaler.upload_bandwidth") | Integer |  |  |  | Maximum allowed upload bandwidth in Mbps for each device using this policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;firewall</samp>](## "internet_exit_policies.[].zscaler.firewall") | Dictionary |  |  |  |  |
@@ -44,9 +43,6 @@
 
           # Key used for IPsec tunnels to Zscaler
           ipsec_key: <str; required>
-
-          # Zscaler Cloud
-          cloud_name: <str; default="zscaler">
 
           # Maximum allowed download bandwidth in Mbps for each device using this policy.
           download_bandwidth: <int>

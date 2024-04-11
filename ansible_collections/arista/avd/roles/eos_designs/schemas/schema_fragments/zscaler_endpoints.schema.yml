@@ -20,9 +20,6 @@ keys:
       zscaler_endpoints: "{{ lookup('arista.avd.zscaler_endpoints', !!!!TBD!!!!) }}"
       ```
     keys:
-      swg_key:
-        type: str
-        required: true
       primary:
         type: dict
         required: true
