@@ -38,9 +38,13 @@ keys:
             required: true
           latitude:
             type: str
+            convert_types:
+              - int
             required: true
           longitude:
             type: str
+            convert_types:
+              - int
             required: true
       secondary:
         type: dict

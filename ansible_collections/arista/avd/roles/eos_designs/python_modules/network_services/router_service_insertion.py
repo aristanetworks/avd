@@ -25,8 +25,25 @@ class RouterServiceInsertionMixin(UtilsMixin):
             return None
 
         router_service_insertion = {}
+        connections = []
 
-        # TODO
+        for policy in self._filtered_internet_exit_policies:
+            for connection in policy.get("connections", []):
+                if connection["type"] == "tunnel":
+                    connections.append(
+                        {
+                            "name": f"ZSCALER-CONN-{connection['id']}",
+                            "tunnel_interface": {
+                                "primary": f"Tunnel{connection['id']}",
+                            },
+                            # TODO this host need to match monitor connectivity, maybe centralize name generation in utils
+                            "monitor_connectivity_host": f"ZSTunnel{connection['id']}",
+                        }
+                    )
+
+        if connections:
+            router_service_insertion["enabled"] = True
+            router_service_insertion["connections"] = connections
 
         if router_service_insertion:
             return router_service_insertion

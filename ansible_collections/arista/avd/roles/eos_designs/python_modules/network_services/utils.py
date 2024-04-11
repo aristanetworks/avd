@@ -7,6 +7,7 @@ import ipaddress
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
@@ -602,35 +603,64 @@ class UtilsMixin:
         if not self.shared_utils.is_cv_pathfinder_router:
             return []
 
-        internet_exit_policies_names = set()
+        internet_exit_policy_names = set()
+        candidate_internet_exit_policies = []
+        configured_internet_exit_policies = get(self._hostvars, "cv_pathfinder_internet_exit_policies", [])
 
         # Look for internet-exit policy names
+        # TODO maybe a sub function for clarity
         for policy in self._filtered_wan_policies:
             for match in get(policy, "matches", default=[]):
-                internet_exit_policies_names.add(match.get("internet_exit_policy_name"))
-            if (default_match := policy.get("default_match")) is not None:
-                internet_exit_policies_names.add(default_match.get("internet_exit_policy_name"))
-        if not internet_exit_policies_names:
-            return []
+                internet_exit_policy_name = match.get("internet_exit_policy_name")
+                if not internet_exit_policy_name or internet_exit_policy_name in internet_exit_policy_names:
+                    continue
+                # Maybe could use append_if_no_duplicate instead
+                internet_exit_policy = get_item(
+                    configured_internet_exit_policies,
+                    "name",
+                    internet_exit_policy_name,
+                    required=True,
+                    custom_error_msg=(
+                        f"The internet exit policy {internet_exit_policy_name} configured under "
+                        f"`wan_virtual_topologies.policies[name={policy['name']}].internet_exit.policy` "
+                        "is not defined under `cv_pathfinder_internet_exit_policies`."
+                    ),
+                ).copy()
+                internet_exit_policy_names.add(internet_exit_policy_name)
+                candidate_internet_exit_policies.append(internet_exit_policy)
 
-        configured_internet_exit_policies = get(self._hostvars, "cv_pathfinders_internet_exit_policies", [])
-        # TODO - maybe a fact with local_wan_interfaces to help - could be used also in _local_path_groups_connected_to_pathfinder.
-        local_wan_interfaces = [wan_interface for path_group in self.shared_utils.wan_local_path_groups for wan_interface in path_group]
+            if (default_match := policy.get("default_match")) is not None:
+                internet_exit_policy_name = default_match.get("internet_exit_policy_name")
+                if not internet_exit_policy_name or internet_exit_policy_name in internet_exit_policy_names:
+                    continue
+                internet_exit_policy = get_item(
+                    configured_internet_exit_policies,
+                    "name",
+                    internet_exit_policy_name,
+                    required=True,
+                    custom_error_msg=(
+                        f"The internet exit policy {internet_exit_policy_name} configured under "
+                        f"`wan_virtual_topologies.policies[name={policy['name']}].internet_exit.policy` "
+                        "is not defined under `cv_pathfinder_internet_exit_policies`."
+                    ),
+                ).copy()
+                internet_exit_policy_names.add(internet_exit_policy_name)
+                candidate_internet_exit_policies.append(internet_exit_policy)
+
+        if not internet_exit_policy_names:
+            return []
 
         internet_exit_policies = []
 
-        for internet_exit_policy_name in sorted(internet_exit_policies_names):
-            # Check the policy is configured and make a copy
-            internet_exit_policy = get_item(configured_internet_exit_policies, "name", internet_exit_policy_name, custom_error_msg="TODO").copy()
-
+        for internet_exit_policy in candidate_internet_exit_policies:
             # Check if the policy has any local interface
             policy_wan_interfaces = []
-            for wan_interface in local_wan_interfaces:
-                policy_wan_interfaces.extend(
-                    wan_interface
-                    for wan_interface_internet_exit_policy in get(wan_interface, "cv_pathfinder_internet_exit.policies")
-                    if wan_interface_internet_exit_policy["name"] == internet_exit_policy_name
-                )
+            for wan_interface in self.shared_utils.wan_interfaces:
+                if any(
+                    wan_interface_internet_exit_policy["name"] == internet_exit_policy["name"]
+                    for wan_interface_internet_exit_policy in get(wan_interface, "cv_pathfinder_internet_exit.policies", default=[])
+                ):
+                    policy_wan_interfaces.append(wan_interface)
             if not policy_wan_interfaces:
                 # No local interface for this policy
                 continue
@@ -653,7 +683,6 @@ class UtilsMixin:
           - Loop over wan_interfaces set on the policy
             - For zscaler extract info from zscaler_endpoints
             - Build connection dict with:
-              - ie policy name
               - source interface
               - id? (something we can use to generate tunnel interface number)
               - peer ip
@@ -663,4 +692,41 @@ class UtilsMixin:
               - ...
         - Return a list of group dicts containing list of connections
         """
+        # Only supporting Zscaler for now
+        if internet_exit_policy["type"] != "zscaler":
+            return
+
+        connections = []
+
+        for wan_interface in internet_exit_policy["wan_interfaces"]:
+            connection_base = {
+                "source_interface": wan_interface["name"],
+                "peer_ip": get(wan_interface, "peer_ip", required=True),  # TODO - better error message
+                # TODO should be more than peer for description
+                "peer description": get(wan_interface, "peer"),
+                "type": "tunnel",
+            }
+
+            # Configuring 3 tunnels for Zscaler - TODO fix this to be more robust
+            wan_interface_internet_exit_policies = get(wan_interface, "cv_pathfinder_internet_exit.policies")
+            # TODO maybe required True for next but if we are here it should be ok
+            interface_policy_config = get_item(wan_interface_internet_exit_policies, "name", internet_exit_policy["name"])
+            tunnel_id_range = range_expand(get(interface_policy_config, "tunnel_interface_numbers", required=True))
+            SUFFIXES = ["PRI", "SEC", "TER"]
+            for index in range(3):
+                # TODO get ip_address, ipsec_profile and destination from Zscaler info
+                connection = connection_base.copy()
+                connection.update(
+                    {
+                        "id": tunnel_id_range[index],
+                        "group": f"{internet_exit_policy['name']}_{SUFFIXES[index]}",
+                        "ip_address": "1.1.1.1/24",
+                        "destination": "42.42.42.42",
+                        "ipsec_profile": "ZSCALER-IPSEC-PROFILE",
+                    }
+                )
+                connections.append(connection)
+
+        internet_exit_policy["connections"] = connections
+
         return

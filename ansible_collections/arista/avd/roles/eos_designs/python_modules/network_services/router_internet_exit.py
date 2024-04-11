@@ -5,6 +5,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
 from .utils import UtilsMixin
 
 
@@ -25,8 +27,31 @@ class RouterInternetExitMixin(UtilsMixin):
             return None
 
         router_internet_exit = {}
+        exit_groups_dict = {}  # Used to build
+        policies = []
 
-        # TODO
+        for policy in self._filtered_internet_exit_policies:
+            policy_exit_groups = []
+            for connection in policy.get("connections", []):
+                if connection["type"] == "tunnel":
+                    exit_group_name = connection["group"]
+                    exit_groups_dict.setdefault(exit_group_name, {"local_connections": []})["local_connections"].append(
+                        {"name": f"ZSCALER-CONN-{connection['id']}"}
+                    )
+                    # Recording the exit_group in the policy
+                    policy_exit_groups.append(exit_group_name)
+
+            if get(policy, "fallback_to_system_default", default=True):
+                policy_exit_groups.append("system-default-exit-group")
+
+            policies.append({"name": policy["name"], "exit_groups": [{"name": exit_group_name for exit_group_name in policy_exit_groups}]})
+
+        if exit_groups_dict:
+            router_internet_exit["exit_groups"] = [
+                {"name": exit_group_name, **exit_group_data} for exit_group_name, exit_group_data in exit_groups_dict.items()
+            ]
+        if policies:
+            router_internet_exit["policies"] = policies
 
         if router_internet_exit:
             return router_internet_exit

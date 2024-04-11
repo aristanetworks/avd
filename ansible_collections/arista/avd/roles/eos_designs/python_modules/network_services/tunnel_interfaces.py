@@ -26,7 +26,20 @@ class TunnelInterfacesMixin(UtilsMixin):
 
         tunnel_interfaces = []
 
-        # TODO
+        for policy in self._filtered_internet_exit_policies:
+            for connection in policy.get("connections", []):
+                if connection["type"] == "tunnel":
+                    tunnel_interface = {
+                        "name": f"Tunnel{connection['id']}",
+                        "mtu": 1394,  # TODO do not hardcode
+                        "ip_address": connection["ip_address"],
+                        "tunnel_mode": "ipsec",  # TODO do not hardcode
+                        "source_interface": connection["source_interface"],
+                        "destination": connection["destination"],
+                        "ipsec_profile": connection["ipsec_profile"],
+                    }
+
+                    tunnel_interfaces.append(tunnel_interface)
 
         if tunnel_interfaces:
             return tunnel_interfaces

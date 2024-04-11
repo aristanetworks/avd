@@ -382,10 +382,10 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY-VOICE
     load_balance_policy: LB-PROD-AVT-POLICY-VOICE
-    internet_exit_policy: ZSCALER-INTERNET-EXIT-1
+    internet_exit_policy: ZSCALER-EXIT-POLICY-1
   - name: PROD-AVT-POLICY-VIDEO
     load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
-    internet_exit_policy: ZSCALER-INTERNET-EXIT-2
+    internet_exit_policy: ZSCALER-EXIT-POLICY-2
   - name: PROD-AVT-POLICY-DEFAULT
     load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-DEFAULT
@@ -585,6 +585,60 @@ application_traffic_recognition:
     - name: PFX-PATHFINDERS
       prefix_values:
       - 192.168.144.1/32
+router_service_insertion:
+  enabled: true
+  connections:
+  - name: ZSCALER-CONN-100
+    tunnel_interface:
+      primary: Tunnel100
+    monitor_connectivity_host: ZSTunnel100
+  - name: ZSCALER-CONN-101
+    tunnel_interface:
+      primary: Tunnel101
+    monitor_connectivity_host: ZSTunnel101
+  - name: ZSCALER-CONN-102
+    tunnel_interface:
+      primary: Tunnel102
+    monitor_connectivity_host: ZSTunnel102
+  - name: ZSCALER-CONN-110
+    tunnel_interface:
+      primary: Tunnel110
+    monitor_connectivity_host: ZSTunnel110
+  - name: ZSCALER-CONN-111
+    tunnel_interface:
+      primary: Tunnel111
+    monitor_connectivity_host: ZSTunnel111
+  - name: ZSCALER-CONN-112
+    tunnel_interface:
+      primary: Tunnel112
+    monitor_connectivity_host: ZSTunnel112
+router_internet_exit:
+  exit_groups:
+  - name: ZSCALER-EXIT-POLICY-1_PRI
+    local_connections:
+    - name: ZSCALER-CONN-100
+  - name: ZSCALER-EXIT-POLICY-1_SEC
+    local_connections:
+    - name: ZSCALER-CONN-101
+  - name: ZSCALER-EXIT-POLICY-1_TER
+    local_connections:
+    - name: ZSCALER-CONN-102
+  - name: ZSCALER-EXIT-POLICY-2_PRI
+    local_connections:
+    - name: ZSCALER-CONN-110
+  - name: ZSCALER-EXIT-POLICY-2_SEC
+    local_connections:
+    - name: ZSCALER-CONN-111
+  - name: ZSCALER-EXIT-POLICY-2_TER
+    local_connections:
+    - name: ZSCALER-CONN-112
+  policies:
+  - name: ZSCALER-EXIT-POLICY-1
+    exit_groups:
+    - name: system-default-exit-group
+  - name: ZSCALER-EXIT-POLICY-2
+    exit_groups:
+    - name: ZSCALER-EXIT-POLICY-2_TER
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -607,6 +661,94 @@ vxlan_interface:
         vni: 42
       - name: ATTRACTED-VRF-FROM-UPLINK
         vni: 166
+tunnel_interfaces:
+- name: Tunnel100
+  mtu: 1394
+  ip_address: 1.1.1.1/24
+  tunnel_mode: ipsec
+  source_interface: Ethernet3
+  destination: 42.42.42.42
+  ipsec_profile: ZSCALER-IPSEC-PROFILE
+- name: Tunnel101
+  mtu: 1394
+  ip_address: 1.1.1.1/24
+  tunnel_mode: ipsec
+  source_interface: Ethernet3
+  destination: 42.42.42.42
+  ipsec_profile: ZSCALER-IPSEC-PROFILE
+- name: Tunnel102
+  mtu: 1394
+  ip_address: 1.1.1.1/24
+  tunnel_mode: ipsec
+  source_interface: Ethernet3
+  destination: 42.42.42.42
+  ipsec_profile: ZSCALER-IPSEC-PROFILE
+- name: Tunnel110
+  mtu: 1394
+  ip_address: 1.1.1.1/24
+  tunnel_mode: ipsec
+  source_interface: Ethernet3
+  destination: 42.42.42.42
+  ipsec_profile: ZSCALER-IPSEC-PROFILE
+- name: Tunnel111
+  mtu: 1394
+  ip_address: 1.1.1.1/24
+  tunnel_mode: ipsec
+  source_interface: Ethernet3
+  destination: 42.42.42.42
+  ipsec_profile: ZSCALER-IPSEC-PROFILE
+- name: Tunnel112
+  mtu: 1394
+  ip_address: 1.1.1.1/24
+  tunnel_mode: ipsec
+  source_interface: Ethernet3
+  destination: 42.42.42.42
+  ipsec_profile: ZSCALER-IPSEC-PROFILE
+monitor_connectivity:
+  interface_sets:
+  - name: ZSTunnel100
+    interfaces: Tunnel100
+  - name: ZSTunnel101
+    interfaces: Tunnel101
+  - name: ZSTunnel102
+    interfaces: Tunnel102
+  - name: ZSTunnel110
+    interfaces: Tunnel110
+  - name: ZSTunnel111
+    interfaces: Tunnel111
+  - name: ZSTunnel112
+    interfaces: Tunnel112
+  hosts:
+  - name: ZSTunnel100
+    description: Zscaler tunnel
+    ip: 172.25.42.16/31
+    local_interfaces: ZSTunnel100
+    url: http://TODO
+  - name: ZSTunnel101
+    description: Zscaler tunnel
+    ip: 172.25.42.16/31
+    local_interfaces: ZSTunnel101
+    url: http://TODO
+  - name: ZSTunnel102
+    description: Zscaler tunnel
+    ip: 172.25.42.16/31
+    local_interfaces: ZSTunnel102
+    url: http://TODO
+  - name: ZSTunnel110
+    description: Zscaler tunnel
+    ip: 172.25.42.16/31
+    local_interfaces: ZSTunnel110
+    url: http://TODO
+  - name: ZSTunnel111
+    description: Zscaler tunnel
+    ip: 172.25.42.16/31
+    local_interfaces: ZSTunnel111
+    url: http://TODO
+  - name: ZSTunnel112
+    description: Zscaler tunnel
+    ip: 172.25.42.16/31
+    local_interfaces: ZSTunnel112
+    url: http://TODO
 metadata:
   cv_tags:
     device_tags:

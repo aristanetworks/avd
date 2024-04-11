@@ -97,9 +97,10 @@ wan_router:
               wan_circuit_id: AF830
               ip_address: 172.20.20.20/31
               connected_to_pathfinder: false
+              peer_ip: 172.20.20.21/31
               cv_pathfinder_internet_exit:
                 policies:
-                  - name: ZSCALER-INTERNET-EXIT-1
+                  - name: ZSCALER-EXIT-POLICY-1
                     tunnel_interface_numbers: 100-102
         - name: cv-pathfinder-edge1
           id: 2
@@ -121,11 +122,12 @@ wan_router:
               wan_circuit_id: 404
               dhcp_accept_default_route: true
               ip_address: dhcp
+              peer_ip: 172.25.42.16/31
               cv_pathfinder_internet_exit:
                 policies:
-                  - name: ZSCALER-INTERNET-EXIT-1
+                  - name: ZSCALER-EXIT-POLICY-1
                     tunnel_interface_numbers: 100-102
-                  - name: ZSCALER-INTERNET-EXIT-2
+                  - name: ZSCALER-EXIT-POLICY-2
                     tunnel_interface_numbers: 110-112
     # SITE_HA_ENABLED
     - group: Site423
@@ -421,7 +423,7 @@ wan_virtual_topologies:
           constraints:
             jitter: 42
           internet_exit:
-            policy: ZSCALER-INTERNET-EXIT-1
+            policy: ZSCALER-EXIT-POLICY-1
           id: 2
         - application_profile: VIDEO
           path_groups:
@@ -432,7 +434,7 @@ wan_virtual_topologies:
           constraints:
             loss_rate: 42.0
           internet_exit:
-            policy: ZSCALER-INTERNET-EXIT-2
+            policy: ZSCALER-EXIT-POLICY-2
           id: 4
         # This will not be rendered on devices without MPLS
         - application_profile: MPLS-ONLY
@@ -551,3 +553,27 @@ cv_pathfinder_internet_exit_policies:
   - name: ZSCALER-EXIT-POLICY-2
     fallback_to_system_default: False
     type: zscaler
+
+# TODO move to its own test as planned
+zscaler_endpoints:
+  primary:
+    city: Fremont, CA
+    datacenter: FMT1
+    country: United States
+    latitude: 37
+    longitude: -121
+    ip_address: 10.37.121.1 # Not the correct address
+  secondary:
+    city: Washington, DC
+    datacenter: WAS1
+    country: United States
+    latitude: 39
+    longitude: -77
+    ip_address: 10.39.77.1 # Not the correct address
+  tertiary:
+    city: Frankfurt
+    datacenter: FRA4
+    country: Germany
+    latitude: 50
+    longitude: 9
+    ip_address: 10.50.9.1 # Not the correct address
