@@ -1,0 +1,36 @@
+---
+# This is deploying the latest commits on devel to aristanetworks/avd-docs main branch
+name: Deploy devel documentation to aristanetworks/avd-docs main
+on:
+  push:
+    branches:
+      - devel
+  workflow_dispatch:
+
+jobs:
+  'devel_doc':
+    name: 'Update Public devel documentation'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 'Setup Python 3 on runner'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Setup Git config
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # Ninja checkout
+          git remote add avd-docs  https://github.com/aristanetworks/avd-docs
+          # No clash with branch main
+          git remote fetch main
+
+      - name: 'Build mkdocs content and deploy to aristanetworks/avd-docs on main'
+        run: |
+            pip install .[doc]
+            mike deploy --push -r avd-docs -b main devel
