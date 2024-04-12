@@ -4409,10 +4409,20 @@
             "type": "object",
             "description": "Zscaler information. Only used if `type` is 'zscaler'.",
             "properties": {
-              "ipsec_key": {
+              "ipsec_key_salt": {
                 "type": "string",
-                "description": "Encryption key used for IPsec tunnels to Zscaler.",
-                "title": "Ipsec Key"
+                "description": "\"Salt\" used for auto generation of encryption keys for IPsec tunnels to Zscaler.\nThe keys will be generated as a hash of `salt_<hostname>_<policy_name>`.",
+                "title": "Ipsec Key Salt"
+              },
+              "cloud_name": {
+                "type": "string",
+                "description": "Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.",
+                "title": "Cloud Name"
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "Domain name as configured in Zscaler for the customer. Used as UFQDN suffix for authentication.",
+                "title": "Domain Name"
               },
               "download_bandwidth": {
                 "type": "integer",
@@ -4454,7 +4464,9 @@
               }
             },
             "required": [
-              "ipsec_key"
+              "ipsec_key_salt",
+              "cloud_name",
+              "domain_name"
             ],
             "additionalProperties": false,
             "patternProperties": {
@@ -4520,8 +4532,31 @@
                 },
                 "location": {
                   "type": "string",
-                  "description": "Location as a sring is resolved on Cloudvision.",
+                  "description": "Location as a string is resolved on Cloudvision.",
                   "title": "Location"
+                },
+                "resolved_location": {
+                  "type": "object",
+                  "description": "PREVIEW: These keys are in preview mode.\n\nThe resolved location elements.\nNeeded for internet-exit Zscaler integration until we can autofill it from the lookup plugin.",
+                  "properties": {
+                    "city": {
+                      "type": "string",
+                      "title": "City"
+                    },
+                    "country": {
+                      "type": "string",
+                      "title": "Country"
+                    }
+                  },
+                  "required": [
+                    "city",
+                    "country"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Resolved Location"
                 },
                 "site_contact": {
                   "type": "string",
@@ -27297,7 +27332,7 @@
     },
     "zscaler_endpoints": {
       "type": "object",
-      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device using the `arista.avd.zscaler_endpoints` Ansible lookup plugin.\nExample:\n```yaml\nzscaler_endpoints: \"{{ lookup('arista.avd.zscaler_endpoints', !!!!TBD!!!!) }}\"\n```",
+      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints` Ansible lookup plugin.\nExample:\n```yaml\nzscaler_endpoints: \"{{ lookup('arista.avd.cv_zscaler_endpoints', cv_server=\"<optional servername>\", cv_token=\"<optional token>\") }}\"\n```\nThe cv_server and cv_token options can be set as inventory variables instead of given as arguments. (Then they will also be used for cv_deploy)",
       "properties": {
         "primary": {
           "type": "object",

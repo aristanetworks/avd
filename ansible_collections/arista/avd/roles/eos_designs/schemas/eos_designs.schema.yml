@@ -622,10 +622,22 @@ keys:
           type: dict
           description: Zscaler information. Only used if `type` is 'zscaler'.
           keys:
-            ipsec_key:
+            ipsec_key_salt:
               type: str
               required: true
-              description: Encryption key used for IPsec tunnels to Zscaler.
+              description: '"Salt" used for auto generation of encryption keys for
+                IPsec tunnels to Zscaler.
+
+                The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.'
+            cloud_name:
+              type: str
+              required: true
+              description: Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.
+            domain_name:
+              type: str
+              required: true
+              description: Domain name as configured in Zscaler for the customer.
+                Used as UFQDN suffix for authentication.
             download_bandwidth:
               type: int
               description: Maximum allowed download bandwidth in Mbps for each device
@@ -690,7 +702,23 @@ keys:
                   the site ID must be unique within a region.'
               location:
                 type: str
-                description: Location as a sring is resolved on Cloudvision.
+                description: Location as a string is resolved on Cloudvision.
+              resolved_location:
+                type: dict
+                description: 'PREVIEW: These keys are in preview mode.
+
+
+                  The resolved location elements.
+
+                  Needed for internet-exit Zscaler integration until we can autofill
+                  it from the lookup plugin.'
+                keys:
+                  city:
+                    type: str
+                    required: true
+                  country:
+                    type: str
+                    required: true
               site_contact:
                 type: str
               site_after_hours_contact:
@@ -4221,17 +4249,20 @@ keys:
 
       Special data model used for WAN internet-exit integration with Zscaler.
 
-      The model is supposed to be autofilled per-device using the `arista.avd.zscaler_endpoints`
+      The model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints`
       Ansible lookup plugin.
 
       Example:
 
       ```yaml
 
-      zscaler_endpoints: "{{ lookup(''arista.avd.zscaler_endpoints'', !!!!TBD!!!!)
-      }}"
+      zscaler_endpoints: "{{ lookup(''arista.avd.cv_zscaler_endpoints'', cv_server="<optional
+      servername>", cv_token="<optional token>") }}"
 
-      ```'
+      ```
+
+      The cv_server and cv_token options can be set as inventory variables instead
+      of given as arguments. (Then they will also be used for cv_deploy)'
     keys:
       primary:
         type: dict
@@ -4253,11 +4284,13 @@ keys:
             type: str
             convert_types:
             - int
+            - float
             required: true
           longitude:
             type: str
             convert_types:
             - int
+            - float
             required: true
       secondary:
         type: dict

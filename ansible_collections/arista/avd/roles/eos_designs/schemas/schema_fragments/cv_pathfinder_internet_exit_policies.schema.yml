@@ -35,24 +35,20 @@ keys:
           type: dict
           description: Zscaler information. Only used if `type` is 'zscaler'.
           keys:
-            ipsec_key:
+            ipsec_key_salt:
               type: str
               required: true
-              description: Encryption key used for IPsec tunnels to Zscaler. # TBD. Should this be moved to Site?
-            # cloud_name: # TBD this is already available inside CVaaS, so we should not need to provide this again.
-            #   type: str
-            #   description: Zscaler Cloud
-            #   default: zscaler
-            # country: # TBD if we should have this under the site instead.
-            #   type: str
-            #   description: |-
-            #     Country set for traffic using this internet exit policy.
-            #     The country will be used by Zscaler policy enforcement.
-            # language: # TBD if we should have this under the site instead.
-            #   type: str
-            #   description: |-
-            #     Language set for traffic using this internet exit policy.
-            #     The language will be used by Zscaler policy enforcement.
+              description: |-
+                "Salt" used for auto generation of encryption keys for IPsec tunnels to Zscaler.
+                The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.
+            cloud_name: # This will not be needed later, when we get it from the lookup plugin.
+              type: str
+              required: true
+              description: Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.
+            domain_name:
+              type: str
+              required: true
+              description: Domain name as configured in Zscaler for the customer. Used as UFQDN suffix for authentication.
             download_bandwidth:
               type: int
               description: Maximum allowed download bandwidth in Mbps for each device using this policy.
@@ -65,7 +61,7 @@ keys:
                 enabled:
                   type: bool
                   description: Enforce firewall controls.
-                  default: false # TBD: Should this be true?
+                  default: false
                 ips:
                   type: bool
                   description: Enable IPS Controls for the firewall.
