@@ -4818,21 +4818,10 @@
                 ],
                 "title": "Operation"
               },
-              "bgp": {
-                "description": "Trigger condition occurs on maintenance operation of specified BGP peer.",
-                "type": "object",
-                "properties": {
-                  "peer": {
-                    "type": "string",
-                    "description": "Ipv4/Ipv6 address or peer group name.",
-                    "title": "Peer"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "BGP"
+              "bgp_peer": {
+                "description": "Ipv4/Ipv6 address or peer group name.\nTrigger condition occurs on maintenance operation of specified BGP peer.",
+                "type": "string",
+                "title": "BGP Peer"
               },
               "action": {
                 "type": "string",
@@ -21239,21 +21228,10 @@
                           ],
                           "title": "Operation"
                         },
-                        "bgp": {
-                          "description": "Trigger condition occurs on maintenance operation of specified BGP peer.",
-                          "type": "object",
-                          "properties": {
-                            "peer": {
-                              "type": "string",
-                              "description": "Ipv4/Ipv6 address or peer group name.",
-                              "title": "Peer"
-                            }
-                          },
-                          "additionalProperties": false,
-                          "patternProperties": {
-                            "^_.+$": {}
-                          },
-                          "title": "BGP"
+                        "bgp_peer": {
+                          "description": "Ipv4/Ipv6 address or peer group name.\nTrigger condition occurs on maintenance operation of specified BGP peer.",
+                          "type": "string",
+                          "title": "BGP Peer"
                         },
                         "action": {
                           "type": "string",

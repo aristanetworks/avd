@@ -37,8 +37,7 @@ event_handlers:
     trigger: on-maintenance
     trigger_on_maintenance:
       operation: enter
-      bgp:
-        peer: 10.0.0.2
+      bgp_peer: 10.0.0.2
       vrf: vrf1
       action: all
     action_type: bash

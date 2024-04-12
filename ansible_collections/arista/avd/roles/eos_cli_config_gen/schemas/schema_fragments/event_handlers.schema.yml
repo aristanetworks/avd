@@ -53,13 +53,11 @@ keys:
               valid_values:
               - "enter"
               - "exit"
-            bgp:
-              description: Trigger condition occurs on maintenance operation of specified BGP peer.
-              type: dict
-              keys:
-                peer:
-                  type: str
-                  description: Ipv4/Ipv6 address or peer group name.
+            bgp_peer:
+              description: |-
+                Ipv4/Ipv6 address or peer group name.
+                Trigger condition occurs on maintenance operation of specified BGP peer.
+              type: str
             action:
               type: str
               required: true
