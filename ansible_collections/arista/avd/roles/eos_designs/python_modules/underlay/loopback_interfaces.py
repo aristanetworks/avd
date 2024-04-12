@@ -50,7 +50,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
             isis_config = {
                 "isis_enable": self.shared_utils.isis_instance_name,
                 "isis_passive": True,
-                "isis_bfd": get(self._hostvars, "underlay_isis_bfd_enable"),
+                "isis_bfd": get(self._hostvars, "underlay_isis_bfd"),
             }
             if self.shared_utils.underlay_sr:
                 isis_config["node_segment"] = {"ipv4_index": self._node_sid}

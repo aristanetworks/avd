@@ -6,7 +6,7 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  underlay_isis_bfd_enable:
+  underlay_isis_bfd:
     documentation_options:
       table: isis-settings
     type: bool
