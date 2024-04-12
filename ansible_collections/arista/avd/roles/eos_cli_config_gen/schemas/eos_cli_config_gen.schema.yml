@@ -4429,7 +4429,9 @@ keys:
                     type: str
                     description: 'IPv4 address.
 
-                      Required when `type` is `ip-port` and ignored otherwise.'
+                      Required when `type` is `ip-port` and ignored otherwise.
+
+                      `first_ip` and `last_ip` ip addresses should lie in same subnet.'
                   first_port:
                     type: int
                     convert_types:
@@ -4442,7 +4444,9 @@ keys:
                     - str
                     min: 1
                     max: 65535
-                    description: Required when `first_port` is set.
+                    description: 'Required when `first_port` is set.
+
+                      `last_port` must be greater than or equal to `first_port`.'
             utilization_log_threshold:
               type: int
               convert_types:

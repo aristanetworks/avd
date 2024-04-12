@@ -53,9 +53,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "ip_nat.pools.[].prefix_length") | Integer |  |  | Min: 16<br>Max: 32 | It is only used and required when `type` is `ip-port`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ranges</samp>](## "ip_nat.pools.[].ranges") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;first_ip</samp>](## "ip_nat.pools.[].ranges.[].first_ip") | String |  |  |  | IPv4 address.<br>Required when `type` is `ip-port` and ignored otherwise. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_ip</samp>](## "ip_nat.pools.[].ranges.[].last_ip") | String |  |  |  | IPv4 address.<br>Required when `type` is `ip-port` and ignored otherwise. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_ip</samp>](## "ip_nat.pools.[].ranges.[].last_ip") | String |  |  |  | IPv4 address.<br>Required when `type` is `ip-port` and ignored otherwise.<br>`first_ip` and `last_ip` ip addresses should lie in same subnet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_port</samp>](## "ip_nat.pools.[].ranges.[].first_port") | Integer |  |  | Min: 1<br>Max: 65535 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_port</samp>](## "ip_nat.pools.[].ranges.[].last_port") | Integer |  |  | Min: 1<br>Max: 65535 | Required when `first_port` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_port</samp>](## "ip_nat.pools.[].ranges.[].last_port") | Integer |  |  | Min: 1<br>Max: 65535 | Required when `first_port` is set.<br>`last_port` must be greater than or equal to `first_port`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utilization_log_threshold</samp>](## "ip_nat.pools.[].utilization_log_threshold") | Integer |  |  | Min: 1<br>Max: 100 |  |
     | [<samp>&nbsp;&nbsp;synchronization</samp>](## "ip_nat.synchronization") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "ip_nat.synchronization.description") | String |  |  |  |  |
@@ -175,10 +175,12 @@
 
               # IPv4 address.
               # Required when `type` is `ip-port` and ignored otherwise.
+              # `first_ip` and `last_ip` ip addresses should lie in same subnet.
               last_ip: <str>
               first_port: <int; 1-65535>
 
               # Required when `first_port` is set.
+              # `last_port` must be greater than or equal to `first_port`.
               last_port: <int; 1-65535>
           utilization_log_threshold: <int; 1-100>
       synchronization:

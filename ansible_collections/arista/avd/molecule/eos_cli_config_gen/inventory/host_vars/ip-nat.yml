@@ -3,18 +3,15 @@ ip_nat:
   kernel_buffer_size: 64
   pools:
     - name: prefix_16
-      type: port-only
+      type: ip-port
       prefix_length: 16
       ranges:
-        - first_port: 1023
-          last_port: 65534
+        - first_ip: 10.0.0.1
+          last_ip: 10.0.255.254
         - first_ip: 10.1.0.0
           last_ip: 10.1.255.255
           first_port: 1024
           last_port: 65535
-        - first_ip: 10.0.0.1
-          first_port: 1022
-          last_port: 65525
     - name: prefix_32
       type: ip-port
       prefix_length: 32
@@ -23,6 +20,8 @@ ip_nat:
           last_ip: 10.2.0.1
           first_port: 1024
           last_port: 65535
+        - first_ip: 10.2.0.2
+          last_ip: 10.2.0.3
     - name: prefix_24
       prefix_length: 24
       utilization_log_threshold: 100
@@ -30,6 +29,15 @@ ip_nat:
       prefix_length: 21
     - name: prefix_port_only
       type: port-only
+    - name: prefix_17
+      type: port-only
+      ranges:
+        - first_port: 10
+          last_port: 15
+        - first_ip: 10.1.0.0 # first_ip and last_ip will be ignored for port-only.
+          last_ip: 10.1.255.255
+          first_port: 1024
+          last_port: 65535
   synchronization:
     description: 'test sync config'
     expiry_interval: 60

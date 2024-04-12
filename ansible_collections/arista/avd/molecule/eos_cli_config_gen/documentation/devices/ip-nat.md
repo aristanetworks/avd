@@ -112,15 +112,15 @@ NAT profile VRF is: TEST
 
 | Setting | Value |
 | -------- | ----- |
-| Type | port-only |
+| Type | ip-port |
+| Pool Prefix Length | 16 |
 
-##### Port Ranges
+##### Pool Ranges
 
-| First Port | Last Port |
-| ---------- | --------- |
-| 1023 | 65534 |
-| 1024 | 65535 |
-| 1022 | 65525 |
+| First IP Address  | Last IP Address | First Port | Last Port |
+| ----------------- | --------------- | ---------- | --------- |
+| 10.0.0.1 | 10.0.255.254 | - | - |
+| 10.1.0.0 | 10.1.255.255 | 1024 | 65535 |
 
 #### Pool: prefix_32
 
@@ -134,6 +134,7 @@ NAT profile VRF is: TEST
 | First IP Address  | Last IP Address | First Port | Last Port |
 | ----------------- | --------------- | ---------- | --------- |
 | 10.2.0.1 | 10.2.0.1 | 1024 | 65535 |
+| 10.2.0.2 | 10.2.0.3 | - | - |
 
 #### Pool: prefix_24
 
@@ -155,6 +156,19 @@ NAT profile VRF is: TEST
 | Setting | Value |
 | -------- | ----- |
 | Type | port-only |
+
+#### Pool: prefix_17
+
+| Setting | Value |
+| -------- | ----- |
+| Type | port-only |
+
+##### Port Ranges
+
+| First Port | Last Port |
+| ---------- | --------- |
+| 10 | 15 |
+| 1024 | 65535 |
 
 ### NAT Synchronization
 
@@ -236,15 +250,18 @@ ip nat profile NAT-PROFILE-NO-VRF-2
 !
 ip nat profile NAT-PROFILE-TEST-VRF vrf NAT-PROFILE-TEST-VRF
 !
+ip nat pool prefix_16 prefix-length 16
+   range 10.0.0.1 10.0.255.254
+   range 10.1.0.0 10.1.255.255 1024 65535
 ip nat pool prefix_24 prefix-length 24
    utilization threshold 100 action log
 ip nat pool prefix_32 prefix-length 32
    range 10.2.0.1 10.2.0.1 1024 65535
+   range 10.2.0.2 10.2.0.3
 ip nat pool prefix_no_type prefix-length 21
-ip nat pool prefix_16 port-only
-   port range 1023 65534
+ip nat pool prefix_17 port-only
+   port range 10 15
    port range 1024 65535
-   port range 1022 65525
 ip nat pool prefix_port_only port-only
 ip nat synchronization
    description test sync config

@@ -7439,7 +7439,7 @@
                     },
                     "last_ip": {
                       "type": "string",
-                      "description": "IPv4 address.\nRequired when `type` is `ip-port` and ignored otherwise.",
+                      "description": "IPv4 address.\nRequired when `type` is `ip-port` and ignored otherwise.\n`first_ip` and `last_ip` ip addresses should lie in same subnet.",
                       "title": "Last IP"
                     },
                     "first_port": {
@@ -7452,7 +7452,7 @@
                       "type": "integer",
                       "minimum": 1,
                       "maximum": 65535,
-                      "description": "Required when `first_port` is set.",
+                      "description": "Required when `first_port` is set.\n`last_port` must be greater than or equal to `first_port`.",
                       "title": "Last Port"
                     }
                   },

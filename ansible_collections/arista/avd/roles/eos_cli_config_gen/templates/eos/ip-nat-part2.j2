@@ -12,8 +12,11 @@
 {%             if pool.name is arista.avd.defined and pool.prefix_length is arista.avd.defined %}
 ip nat pool {{ pool.name }} prefix-length {{ pool.prefix_length }}
 {%                 for range in pool.ranges | arista.avd.default([]) %}
-{%                     if range.first_ip is arista.avd.defined and range.last_ip is arista.avd.defined and range.first_port is arista.avd.defined and range.last_port is arista.avd.defined %}
-{%                         set range_cli = 'range ' ~ range.first_ip ~ ' ' ~ range.last_ip ~ ' ' ~ range.first_port ~ ' ' ~ range.last_port %}
+{%                     if range.first_ip is arista.avd.defined and range.last_ip is arista.avd.defined %}
+{%                         set range_cli = 'range ' ~ range.first_ip ~ ' ' ~ range.last_ip %}
+{%                         if range.first_port is arista.avd.defined and range.last_port is arista.avd.defined %}
+{%                             set range_cli = range_cli ~ ' ' ~ range.first_port ~ ' ' ~ range.last_port %}
+{%                         endif %}
    {{ range_cli }}
 {%                     endif %}
 {%                 endfor %}

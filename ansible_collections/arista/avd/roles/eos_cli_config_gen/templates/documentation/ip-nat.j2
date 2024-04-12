@@ -131,9 +131,7 @@ NAT profile VRF is: {{ profile.vrf }}
 
 ### NAT Pools
 {%         for pool in ip_nat.pools %}
-
 #### Pool: {{ pool.name }}
-
 {%             set pool_type = pool.type | arista.avd.default('ip-port') %}
 | Setting | Value |
 | -------- | ----- |
@@ -145,8 +143,8 @@ NAT profile VRF is: {{ profile.vrf }}
 {%                 if pool.utilization_log_threshold is arista.avd.defined %}
 | Pool Utilization Threshold | {{ pool.utilization_log_threshold }} % (action: log) |
 {%                 endif %}
-{%                 if pool.ranges is arista.avd.defined() %}
 
+{%                 if pool.ranges is arista.avd.defined %}
 ##### Pool Ranges
 
 | First IP Address  | Last IP Address | First Port | Last Port |
@@ -156,9 +154,9 @@ NAT profile VRF is: {{ profile.vrf }}
 {%                     endfor %}
 {%                 endif %}
 {%             endif %}
-{%             if pool_type == "port-only" %}
-{%                 if pool.ranges is arista.avd.defined() %}
 
+{%             if pool_type == "port-only" %}
+{%                 if pool.ranges is arista.avd.defined %}
 ##### Port Ranges
 
 | First Port | Last Port |
