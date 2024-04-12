@@ -123,6 +123,28 @@ repos:
       - id: j2lint
         name: Check for Linting errors on Jinja2 files
 
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.6
+    hooks:
+      - id: codespell
+        name: Check for common misspellings in text files.
+        entry: codespell
+        language: python
+        types: [text]
+        args:
+          - '--ignore-words=ignore-codespell-words.txt'  # Ignore words listed in this file
+        exclude: >  # List of regex patterns for files/directories to exclude
+          (?x)^(
+            .*\.cfg|  # Exclude all .cfg files
+            .*\.svg|  # Exclude all .svg files
+            .*\.excalidraw|  # Exclude all .excalidraw files
+            .*\.json|  # Exclude all .json files
+            .*\.rst|  # Exclude all .rst files
+            python-avd/.*|  # Exclude all files in this directory
+            ansible_collections/arista/avd/docs/release-notes/.*|  # Exclude all files in this directory
+            ansible_collections/arista/avd/changelogs/.*  # Exclude all files in this directory
+          )$
+
   - repo: local
     hooks:
 
