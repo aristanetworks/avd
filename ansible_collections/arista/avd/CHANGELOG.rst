@@ -4,6 +4,21 @@ Arista.Avd Release Notes
 
 .. contents:: Topics
 
+v4.7.1
+======
+
+Release Summary
+---------------
+
+Release 4.7.1 - See documentation on avd.arista.com for details.
+
+Bugfixes
+--------
+
+- Fix(dhcp_provisioner): Support custom `node_type_keys` as a list of dicts. (#3813) by @carlbuchmann in https://github.com/aristanetworks/avd/pull/3842
+- Fix(plugins): Handle md-toc v9 (#3837) by @carlbuchmann in https://github.com/aristanetworks/avd/pull/3845
+- Fix(pyavd): Remove accidental requirement for PyYAML (#3838) by @carlbuchmann in https://github.com/aristanetworks/avd/pull/3844
+
 v4.7.0
 ======
 
