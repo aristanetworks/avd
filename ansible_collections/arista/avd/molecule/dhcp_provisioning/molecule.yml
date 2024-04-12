@@ -1,21 +1,14 @@
 ---
 
 scenario:
-  create_sequence:
-    - dependency
-    - prepare
   converge_sequence:
-    - dependency
     - create
-    - prepare
     - converge
   test_sequence:
-    - dependency
     - cleanup
     - destroy
     - syntax
     - create
-    - prepare
     - converge
   cleanup_sequence:
     - destroy
@@ -23,7 +16,9 @@ dependency:
   name: galaxy
   enabled: false
 driver:
-  name: docker
+  name: default
+  options:
+    managed: false
 platforms:
   - name: dummy
 provisioner:
