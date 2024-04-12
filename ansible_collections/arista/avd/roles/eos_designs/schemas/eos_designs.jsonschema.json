@@ -23155,10 +23155,20 @@
                           "type": "string",
                           "title": "Name"
                         },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "ip-port",
+                            "port-only"
+                          ],
+                          "default": "ip-port",
+                          "title": "Type"
+                        },
                         "prefix_length": {
                           "type": "integer",
                           "minimum": 16,
                           "maximum": 32,
+                          "description": "It is only used and required when `type` is `ip-port`.",
                           "title": "Prefix Length"
                         },
                         "ranges": {
@@ -23168,12 +23178,12 @@
                             "properties": {
                               "first_ip": {
                                 "type": "string",
-                                "description": "IPv4 address",
+                                "description": "IPv4 address.\nRequired when `type` is `ip-port` and ignored otherwise.",
                                 "title": "First IP"
                               },
                               "last_ip": {
                                 "type": "string",
-                                "description": "IPv4 address",
+                                "description": "IPv4 address.\nRequired when `type` is `ip-port` and ignored otherwise.",
                                 "title": "Last IP"
                               },
                               "first_port": {
@@ -23186,13 +23196,10 @@
                                 "type": "integer",
                                 "minimum": 1,
                                 "maximum": 65535,
+                                "description": "Required when `first_port` is set.",
                                 "title": "Last Port"
                               }
                             },
-                            "required": [
-                              "first_ip",
-                              "last_ip"
-                            ],
                             "additionalProperties": false,
                             "patternProperties": {
                               "^_.+$": {}
@@ -23207,14 +23214,13 @@
                           "title": "Utilization Log Threshold"
                         }
                       },
-                      "required": [
-                        "prefix_length",
-                        "name"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "name"
+                      ]
                     },
                     "title": "Pools"
                   },
