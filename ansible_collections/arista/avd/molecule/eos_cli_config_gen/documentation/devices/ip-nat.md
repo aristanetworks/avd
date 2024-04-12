@@ -113,7 +113,6 @@ NAT profile VRF is: TEST
 | Setting | Value |
 | -------- | ----- |
 | Type | port-only |
-
 ##### Port Ranges
 
 | First Port | Last Port |
@@ -241,11 +240,11 @@ ip nat pool prefix_24 prefix-length 24
 ip nat pool prefix_32 prefix-length 32
    range 10.2.0.1 10.2.0.1 1024 65535
 ip nat pool prefix_no_type prefix-length 21
-ip nat pool prefix_16 port-only 
+ip nat pool prefix_16 port-only
    port range 1023 65534
    port range 1024 65535
    port range 1022 65525
-ip nat pool prefix_port_only port-only 
+ip nat pool prefix_port_only port-only
 ip nat synchronization
    description test sync config
    expiry-interval 60
