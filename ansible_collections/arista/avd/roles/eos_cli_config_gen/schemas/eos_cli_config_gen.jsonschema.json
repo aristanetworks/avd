@@ -10216,7 +10216,34 @@
       "type": "object",
       "properties": {
         "entropy_source": {
-          "type": "string",
+          "type": "object",
+          "description": "Source of entropy.",
+          "properties": {
+            "hardware": {
+              "type": "boolean",
+              "description": "Use a hardware based source.",
+              "title": "Hardware"
+            },
+            "haveged": {
+              "type": "boolean",
+              "description": "Use the HAVEGE algorithm.",
+              "title": "Haveged"
+            },
+            "cpu_jitter": {
+              "type": "boolean",
+              "description": "Use the Jitter RNG algorithm of a CPU based source.",
+              "title": "CPU Jitter"
+            },
+            "hardware_exclusive": {
+              "type": "boolean",
+              "description": "Only use entropy from the hardware source.",
+              "title": "Hardware Exclusive"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
           "title": "Entropy Source"
         },
         "password": {

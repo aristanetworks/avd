@@ -13,7 +13,13 @@
 | Settings | Value |
 | -------- | ----- |
 {%     if management_security.entropy_source is arista.avd.defined %}
-| Entropy source | {{ management_security.entropy_source }} |
+{%         set entropy_sources = [] %}
+{%         for source in ['hardware', 'haveged', 'cpu_jitter', 'hardware_exclusive'] %}
+{%             if management_security.entropy_source[source] is arista.avd.defined(true) %}
+{%                 set _ = entropy_sources.append(source.replace("_", " ")) %}
+{%             endif %}
+{%         endfor %}
+| Entropy source | {{ entropy_sources | join(", ") }} |
 {%     endif %}
 {%     if management_security.password.encryption_key_common is arista.avd.defined %}
 | Common password encryption key | {{ management_security.password.encryption_key_common }} |

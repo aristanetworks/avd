@@ -6101,7 +6101,21 @@ keys:
     type: dict
     keys:
       entropy_source:
-        type: str
+        type: dict
+        description: Source of entropy.
+        keys:
+          hardware:
+            type: bool
+            description: Use a hardware based source.
+          haveged:
+            type: bool
+            description: Use the HAVEGE algorithm.
+          cpu_jitter:
+            type: bool
+            description: Use the Jitter RNG algorithm of a CPU based source.
+          hardware_exclusive:
+            type: bool
+            description: Only use entropy from the hardware source.
       password:
         type: dict
         keys:
