@@ -4402,13 +4402,19 @@ keys:
           keys:
             name:
               type: str
+            type:
+              type: str
+              valid_values:
+              - ip-port
+              - port-only
+              default: ip-port
             prefix_length:
               type: int
-              required: true
               convert_types:
               - str
               min: 16
               max: 32
+              description: It is only used and required when `type` is `ip-port`.
             ranges:
               type: list
               items:
@@ -4416,12 +4422,14 @@ keys:
                 keys:
                   first_ip:
                     type: str
-                    required: true
-                    description: IPv4 address
+                    description: 'IPv4 address.
+
+                      Required when `type` is `ip-port` and ignored otherwise.'
                   last_ip:
                     type: str
-                    required: true
-                    description: IPv4 address
+                    description: 'IPv4 address.
+
+                      Required when `type` is `ip-port` and ignored otherwise.'
                   first_port:
                     type: int
                     convert_types:
@@ -4434,6 +4442,7 @@ keys:
                     - str
                     min: 1
                     max: 65535
+                    description: Required when `first_port` is set.
             utilization_log_threshold:
               type: int
               convert_types:

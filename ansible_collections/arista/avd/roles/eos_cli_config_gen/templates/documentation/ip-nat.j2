@@ -133,21 +133,36 @@ NAT profile VRF is: {{ profile.vrf }}
 {%         for pool in ip_nat.pools %}
 
 #### Pool: {{ pool.name }}
-
+{%             set pool_type = pool.type | arista.avd.default('ip-port') %}
 | Setting | Value |
 | -------- | ----- |
+| Type | {{ pool_type }} |
+{%             if pool_type == 'ip-port' %}
+{%                 if pool.prefix_length is arista.avd.defined %}
 | Pool Prefix Length | {{ pool.prefix_length }} |
-{%             if pool.utilization_log_threshold is arista.avd.defined %}
+{%                 endif %}
+{%                 if pool.utilization_log_threshold is arista.avd.defined %}
 | Pool Utilization Threshold | {{ pool.utilization_log_threshold }} % (action: log) |
-{%             endif %}
-
+{%                 endif %}
+{%                 if pool.ranges is arista.avd.defined() %}
 ##### Pool Ranges
-
 | First IP Address  | Last IP Address | First Port | Last Port |
 | ----------------- | --------------- | ---------- | --------- |
-{%             for range in pool.ranges | arista.avd.default([]) %}
-| {{ range.first_ip }} | {{ range.last_ip }} | {{ range.first_port | arista.avd.default('-') }} | {{ range.last_port | arista.avd.default('-') }} |
-{%             endfor %}
+{%                     for range in pool.ranges | arista.avd.default([]) %}
+| {{ range.first_ip | arista.avd.default('-') }} | {{ range.last_ip | arista.avd.default('-') }} | {{ range.first_port | arista.avd.default('-') }} | {{ range.last_port | arista.avd.default('-') }} |
+{%                     endfor %}
+{%                 endif %}
+{%             endif %}
+{%             if pool_type == "port-only" %}
+{%                 if pool.ranges is arista.avd.defined() %}
+##### Port Ranges
+| First Port | Last Port |
+| ---------- | --------- |
+{%                     for range in pool.ranges | arista.avd.default([]) %}
+| {{ range.first_port | arista.avd.default('-') }} | {{ range.last_port | arista.avd.default('-') }} |
+{%                     endfor %}
+{%                 endif %}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if ip_nat.synchronization is arista.avd.defined %}

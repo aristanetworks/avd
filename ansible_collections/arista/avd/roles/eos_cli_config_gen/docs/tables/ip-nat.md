@@ -49,12 +49,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;translated_port</samp>](## "ip_nat.profiles.[].source.static.[].translated_port") | Integer |  |  | Min: 1<br>Max: 65535 | requires 'original_port' |
     | [<samp>&nbsp;&nbsp;pools</samp>](## "ip_nat.pools") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_nat.pools.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "ip_nat.pools.[].prefix_length") | Integer | Required |  | Min: 16<br>Max: 32 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "ip_nat.pools.[].type") | String |  | `ip-port` | Valid Values:<br>- <code>ip-port</code><br>- <code>port-only</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "ip_nat.pools.[].prefix_length") | Integer |  |  | Min: 16<br>Max: 32 | It is only used and required when `type` is `ip-port`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ranges</samp>](## "ip_nat.pools.[].ranges") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;first_ip</samp>](## "ip_nat.pools.[].ranges.[].first_ip") | String | Required |  |  | IPv4 address |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_ip</samp>](## "ip_nat.pools.[].ranges.[].last_ip") | String | Required |  |  | IPv4 address |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;first_ip</samp>](## "ip_nat.pools.[].ranges.[].first_ip") | String |  |  |  | IPv4 address.<br>Required when `type` is `ip-port` and ignored otherwise. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_ip</samp>](## "ip_nat.pools.[].ranges.[].last_ip") | String |  |  |  | IPv4 address.<br>Required when `type` is `ip-port` and ignored otherwise. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_port</samp>](## "ip_nat.pools.[].ranges.[].first_port") | Integer |  |  | Min: 1<br>Max: 65535 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_port</samp>](## "ip_nat.pools.[].ranges.[].last_port") | Integer |  |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_port</samp>](## "ip_nat.pools.[].ranges.[].last_port") | Integer |  |  | Min: 1<br>Max: 65535 | Required when `first_port` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utilization_log_threshold</samp>](## "ip_nat.pools.[].utilization_log_threshold") | Integer |  |  | Min: 1<br>Max: 100 |  |
     | [<samp>&nbsp;&nbsp;synchronization</samp>](## "ip_nat.synchronization") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "ip_nat.synchronization.description") | String |  |  |  |  |
@@ -162,15 +163,22 @@
                 translated_port: <int; 1-65535>
       pools:
         - name: <str; required; unique>
-          prefix_length: <int; 16-32; required>
+          type: <str; "ip-port" | "port-only"; default="ip-port">
+
+          # It is only used and required when `type` is `ip-port`.
+          prefix_length: <int; 16-32>
           ranges:
 
-              # IPv4 address
-            - first_ip: <str; required>
+              # IPv4 address.
+              # Required when `type` is `ip-port` and ignored otherwise.
+            - first_ip: <str>
 
-              # IPv4 address
-              last_ip: <str; required>
+              # IPv4 address.
+              # Required when `type` is `ip-port` and ignored otherwise.
+              last_ip: <str>
               first_port: <int; 1-65535>
+
+              # Required when `first_port` is set.
               last_port: <int; 1-65535>
           utilization_log_threshold: <int; 1-100>
       synchronization:
