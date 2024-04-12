@@ -12,6 +12,7 @@ ip_nat:
           last_ip: 10.1.255.255
           first_port: 1024
           last_port: 65535
+      utilization_log_threshold: 91
     - name: prefix_32
       type: ip-port
       prefix_length: 32
@@ -25,11 +26,11 @@ ip_nat:
     - name: prefix_24
       prefix_length: 24
       utilization_log_threshold: 100
-    - name: prefix_no_type
+    - name: prefix_21
       prefix_length: 21
-    - name: prefix_port_only
+    - name: port_only_1
       type: port-only
-    - name: prefix_17
+    - name: port_only_2
       type: port-only
       ranges:
         - first_port: 10
