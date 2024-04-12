@@ -4411,7 +4411,7 @@
             "properties": {
               "ipsec_key_salt": {
                 "type": "string",
-                "description": "\"Salt\" used for auto generation of encryption keys for IPsec tunnels to Zscaler.\nThe keys will be generated as a hash of `salt_<hostname>_<policy_name>`.",
+                "description": "\"Salt\" used for auto generation of encryption keys for IPsec tunnels to Zscaler.\nThe keys will be generated as a hash of `salt_<hostname>_<policy_name>`.\nSince this salt can be used to deduct the encryption key, it is recommeneded to use vault.",
                 "title": "Ipsec Key Salt"
               },
               "cloud_name": {
@@ -4421,7 +4421,7 @@
               },
               "domain_name": {
                 "type": "string",
-                "description": "Domain name as configured in Zscaler for the customer. Used as UFQDN suffix for authentication.",
+                "description": "Domain name as configured in Zscaler for the tenant. Used as UFQDN suffix for authentication.",
                 "title": "Domain Name"
               },
               "download_bandwidth": {

@@ -12,9 +12,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "cv_pathfinder_internet_exit_policies.[].type") | String | Required |  | Valid Values:<br>- <code>zscaler</code> | Internet-exit policy type.<br>Only Zscaler supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fallback_to_system_default</samp>](## "cv_pathfinder_internet_exit_policies.[].fallback_to_system_default") | Boolean |  | `True` |  | Add system default exit-group at the end of the policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;zscaler</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler") | Dictionary |  |  |  | Zscaler information. Only used if `type` is 'zscaler'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec_key_salt</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.ipsec_key_salt") | String | Required |  |  | "Salt" used for auto generation of encryption keys for IPsec tunnels to Zscaler.<br>The keys will be generated as a hash of `salt_<hostname>_<policy_name>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec_key_salt</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.ipsec_key_salt") | String | Required |  |  | "Salt" used for auto generation of encryption keys for IPsec tunnels to Zscaler.<br>The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.<br>Since this salt can be used to deduct the encryption key, it is recommeneded to use vault. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cloud_name</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.cloud_name") | String | Required |  |  | Zscaler cloud name like 'zscaler1' or 'zscalerbeta'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain_name</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.domain_name") | String | Required |  |  | Domain name as configured in Zscaler for the customer. Used as UFQDN suffix for authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain_name</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.domain_name") | String | Required |  |  | Domain name as configured in Zscaler for the tenant. Used as UFQDN suffix for authentication. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;download_bandwidth</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.download_bandwidth") | Integer |  |  |  | Maximum allowed download bandwidth in Mbps for each device using this policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;upload_bandwidth</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.upload_bandwidth") | Integer |  |  |  | Maximum allowed upload bandwidth in Mbps for each device using this policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;firewall</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.firewall") | Dictionary |  |  |  |  |
@@ -45,12 +45,13 @@
 
           # "Salt" used for auto generation of encryption keys for IPsec tunnels to Zscaler.
           # The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.
+          # Since this salt can be used to deduct the encryption key, it is recommeneded to use vault.
           ipsec_key_salt: <str; required>
 
           # Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.
           cloud_name: <str; required>
 
-          # Domain name as configured in Zscaler for the customer. Used as UFQDN suffix for authentication.
+          # Domain name as configured in Zscaler for the tenant. Used as UFQDN suffix for authentication.
           domain_name: <str; required>
 
           # Maximum allowed download bandwidth in Mbps for each device using this policy.
