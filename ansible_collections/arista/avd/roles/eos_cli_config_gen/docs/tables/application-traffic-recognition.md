@@ -23,7 +23,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_values</samp>](## "application_traffic_recognition.field_sets.ipv4_prefixes.[].prefix_values") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_traffic_recognition.field_sets.ipv4_prefixes.[].prefix_values.[]") | String |  |  |  | IP prefix (ex 1.2.3.0/24). |
     | [<samp>&nbsp;&nbsp;applications</samp>](## "application_traffic_recognition.applications") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_applications</samp>](## "application_traffic_recognition.applications.ipv4_applications") | List, items: Dictionary |  |  |  | List of user defined IPv4 applications. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_applications</samp>](## "application_traffic_recognition.applications.ipv4_applications") | List, items: Dictionary |  |  |  | List of user defined IPv4 applications. The name should be unique over all defined applications (ipv4 and l4). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].name") | String | Required, Unique |  |  | Application name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src_prefix_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].src_prefix_set_name") | String |  |  |  | Source prefix set name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest_prefix_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].dest_prefix_set_name") | String |  |  |  | Destination prefix set name. |
@@ -35,7 +35,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_src_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].tcp_src_port_set_name") | String |  |  |  | Name of field set for TCP source ports.<br><br>When the `protocols` list contain both `tcp` and `udp`, this key value<br>must be the same as `udp_src_port_set_name`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_dest_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].udp_dest_port_set_name") | String |  |  |  | Name of field set for UDP destination ports.<br><br>When the `protocols` list contain both `tcp` and `udp`, this key value<br>must be the same as `tcp_dest_port_set_name`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_dest_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].tcp_dest_port_set_name") | String |  |  |  | Name of field set for TCP destination ports.<br><br>When the `protocols` list contain both `tcp` and `udp`, this key value<br>must be the same as `udp_dest_port_set_name`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l4_applications</samp>](## "application_traffic_recognition.applications.l4_applications") | List, items: Dictionary |  |  |  | List of user defined L4 applications. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l4_applications</samp>](## "application_traffic_recognition.applications.l4_applications") | List, items: Dictionary |  |  |  | List of user defined L4 applications. The name should be unique over all defined applications (ipv4 and l4). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "application_traffic_recognition.applications.l4_applications.[].name") | String | Required, Unique |  |  | Application name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "application_traffic_recognition.applications.l4_applications.[].protocols") | List, items: String |  |  |  | List of protocols to consider for this application.<br><br>To use port field-sets (source, destination or both), the list<br>must contain only one or two protocols, either `tcp` or `udp`.<br>When using both protocols, one line is rendered for each in the configuration,<br>hence the field-sets must have the same value for `tcp_src_port_set_name` and<br>`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`<br>if set in order to generate valid configuration in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_traffic_recognition.applications.l4_applications.[].protocols.[]") | String |  |  | Valid Values:<br>- <code>ahp</code><br>- <code>esp</code><br>- <code>icmp</code><br>- <code>igmp</code><br>- <code>ospf</code><br>- <code>pim</code><br>- <code>rsvp</code><br>- <code>tcp</code><br>- <code>udp</code><br>- <code>vrrp</code> |  |
@@ -103,7 +103,7 @@
               - <str>
       applications:
 
-        # List of user defined IPv4 applications.
+        # List of user defined IPv4 applications. The name should be unique over all defined applications (ipv4 and l4).
         ipv4_applications:
 
             # Application name.
@@ -155,7 +155,7 @@
             # must be the same as `udp_dest_port_set_name`.
             tcp_dest_port_set_name: <str>
 
-        # List of user defined L4 applications.
+        # List of user defined L4 applications. The name should be unique over all defined applications (ipv4 and l4).
         l4_applications:
 
             # Application name.

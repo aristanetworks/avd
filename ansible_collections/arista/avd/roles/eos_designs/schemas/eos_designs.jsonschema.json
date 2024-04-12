@@ -135,7 +135,7 @@
           "properties": {
             "ipv4_applications": {
               "type": "array",
-              "description": "List of user defined IPv4 applications.",
+              "description": "List of user defined IPv4 applications. The name should be unique over all defined applications (ipv4 and l4).",
               "items": {
                 "type": "object",
                 "properties": {
@@ -215,7 +215,7 @@
             },
             "l4_applications": {
               "type": "array",
-              "description": "List of user defined L4 applications.",
+              "description": "List of user defined L4 applications. The name should be unique over all defined applications (ipv4 and l4).",
               "items": {
                 "type": "object",
                 "properties": {
@@ -16688,7 +16688,7 @@
                     "properties": {
                       "ipv4_applications": {
                         "type": "array",
-                        "description": "List of user defined IPv4 applications.",
+                        "description": "List of user defined IPv4 applications. The name should be unique over all defined applications (ipv4 and l4).",
                         "items": {
                           "type": "object",
                           "properties": {
@@ -16768,7 +16768,7 @@
                       },
                       "l4_applications": {
                         "type": "array",
-                        "description": "List of user defined L4 applications.",
+                        "description": "List of user defined L4 applications. The name should be unique over all defined applications (ipv4 and l4).",
                         "items": {
                           "type": "object",
                           "properties": {
