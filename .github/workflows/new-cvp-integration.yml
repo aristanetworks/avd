@@ -1,5 +1,5 @@
 ---
-name: "deploy_to_cv testing"
+name: "CV integration testing"
 
 # on: pull_request
 on: workflow_dispatch
@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   # ----------------------------------- #
-  # DEPLOY_TO_CV MOLECULE
+  # CV INTEGRATION MOLECULE TEST
   # ----------------------------------- #
   molecule_cv_workflow:
     name: Run molecule test for new cvp integration
