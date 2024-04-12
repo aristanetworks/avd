@@ -39,5 +39,3 @@ l3_edge:
       ip: [192.168.0.2/31, 192.168.0.3/31]
       include_in_underlay_protocol: true
       underlay_multicast: true
-
-
