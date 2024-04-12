@@ -1077,7 +1077,16 @@ keys:
   evpn_vlan_aware_bundles:
     documentation_options:
       table: evpn-settings
-    description: Enable vlan aware bundles for EVPN MAC-VRF.
+    description: 'Enable vlan aware bundles for every EVPN MAC-VRF.
+
+      If set to "true" each EVPN MAC-VRF will be configured as vlan-aware-bundle with
+      the vlan name set as the bundle name in case no name is specified with the "evpn_vlan_bundle"
+      option.
+
+      Note: Even if set to "false" the EVPN MAC-VRFs will be configured as vlan-aware-bundle
+      if the "evpn_vlan_bundle" option is set for the l2vlan or svi.
+
+      '
     type: bool
     default: false
   evpn_vlan_bundles:
