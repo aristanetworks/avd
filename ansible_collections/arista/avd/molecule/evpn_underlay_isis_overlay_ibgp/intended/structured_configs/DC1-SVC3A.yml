@@ -137,8 +137,6 @@ port_channel_interfaces:
   mode: trunk
   vlans: none
   mlag: 7
-  isis_enable: EVPN_UNDERLAY
-  isis_bfd: true
 ethernet_interfaces:
 - name: Ethernet5
   peer: DC1-SVC3B

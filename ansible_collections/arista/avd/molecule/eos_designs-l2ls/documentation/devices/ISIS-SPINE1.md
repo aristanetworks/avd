@@ -130,13 +130,6 @@ vlan 110
 
 *Inherited from Port-Channel Interface
 
-##### ISIS
-
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | 1 | *EVPN_UNDERLAY | *- | *- | *- | *- | *- |
- *Inherited from Port-Channel Interface
-
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -164,12 +157,6 @@ interface Ethernet10
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | ISIS-LEAF1_Po1 | switched | trunk | 110 | - | - | - | - | - | - |
 
-##### ISIS
-
-| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Port-Channel1 | EVPN_UNDERLAY | - | - | - | - | - |
-
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
@@ -180,7 +167,6 @@ interface Port-Channel1
    switchport
    switchport trunk allowed vlan 110
    switchport mode trunk
-   isis enable EVPN_UNDERLAY
 ```
 
 ### Loopback Interfaces
