@@ -43,8 +43,8 @@ interface Management1
 | DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv6 DNS Domain |
 | ------------------- | --- | --------------- | --------------- |
 | True | AVRF | - | - |
+| True | defauls | - | - |
 | True | default | - | - |
-| True | defaults | - | - |
 | True | defaulu | - | - |
 | True | TEST | testv4.com | testv6.com |
 | False | VRF01 | - | - |
@@ -99,13 +99,13 @@ dhcp server vrf AVRF
    subnet 172.16.254.0/24
       default-gateway 172.16.254.1
 !
+dhcp server vrf defauls
+!
 dhcp server
    !
    subnet 2a00:2::/64
    !
    subnet 10.2.3.0/24
-!
-dhcp server vrf defaults
 !
 dhcp server vrf defaulu
 !

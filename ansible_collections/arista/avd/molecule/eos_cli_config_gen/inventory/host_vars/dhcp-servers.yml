@@ -1,5 +1,5 @@
 dhcp_servers:
-  - vrf: defaults
+  - vrf: defauls
   - vrf: defaulu
   - vrf: TEST
     ipv4_vendor_options:

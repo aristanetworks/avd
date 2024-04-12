@@ -126,7 +126,7 @@ ASN Notation: asplain
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Advertise Map | Suppress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
+| Prefix | AS Set | Advertise Map | Supress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
 | ------ | ------ | ------------- | ----------- | ------------ | ------------- | --------- | -------------- |
 | 1.1.1.0/24 | False | - | - | False | - | - | True |
 | 1.12.1.0/24 | True | ADV-MAP | SUP-MAP | True | RM-ATTRIBUTE | RM-MATCH | True |
