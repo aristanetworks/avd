@@ -11349,6 +11349,12 @@
           "type": "string",
           "title": "Local Interfaces"
         },
+        "address_only": {
+          "type": "boolean",
+          "description": "PREVIEW: This key is in preview.\nWhen address-only is configured, the source IP of the packet is set to the interface\nIP but the packet may exit the device via a different interface.\nWhen set to `false`, the probe uses the interface to exit the device.\nNot supported yet in EOS.",
+          "default": true,
+          "title": "Address Only"
+        },
         "hosts": {
           "type": "array",
           "items": {
@@ -11370,6 +11376,12 @@
               "local_interfaces": {
                 "type": "string",
                 "title": "Local Interfaces"
+              },
+              "address_only": {
+                "type": "boolean",
+                "description": "PREVIEW: This key is in preview.\nWhen address-only is configured, the source IP of the packet is set to the interface\nIP but the packet may exit the device via a different interface.\nWhen set to `false`, the probe uses the interface to exit the device.\nNot supported yet in EOS.",
+                "default": true,
+                "title": "Address Only"
               },
               "url": {
                 "type": "string",
@@ -11422,6 +11434,12 @@
                 "type": "string",
                 "title": "Local Interfaces"
               },
+              "address_only": {
+                "type": "boolean",
+                "description": "PREVIEW: This key is in preview.\nWhen address-only is configured, the source IP of the packet is set to the interface\nIP but the packet may exit the device via a different interface.\nWhen set to `false`, the probe uses the interface to exit the device.\nNot supported yet in EOS.",
+                "default": true,
+                "title": "Address Only"
+              },
               "hosts": {
                 "type": "array",
                 "items": {
@@ -11443,6 +11461,12 @@
                     "local_interfaces": {
                       "type": "string",
                       "title": "Local Interfaces"
+                    },
+                    "address_only": {
+                      "type": "boolean",
+                      "description": "PREVIEW: This key is in preview.\nWhen address-only is configured, the source IP of the packet is set to the interface\nIP but the packet may exit the device via a different interface.\nWhen set to `false`, the probe uses the interface to exit the device.\nNot supported yet in EOS.",
+                      "default": true,
+                      "title": "Address Only"
                     },
                     "url": {
                       "type": "string",
