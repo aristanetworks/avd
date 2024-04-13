@@ -3420,7 +3420,7 @@ keys:
               - ratemon
             vrf:
               type: str
-              description: VRF name. VRF can be defined for "bgp" only.
+              description: VRF name. VRF can be defined for "bgp_peer" only.
             interface:
               type: str
               description: Trigger condition occurs on maintenance operation of specified

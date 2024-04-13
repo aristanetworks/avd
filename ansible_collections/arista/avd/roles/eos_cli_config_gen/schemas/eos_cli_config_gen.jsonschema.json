@@ -5514,7 +5514,7 @@
               },
               "vrf": {
                 "type": "string",
-                "description": "VRF name. VRF can be defined for \"bgp\" only.",
+                "description": "VRF name. VRF can be defined for \"bgp_peer\" only.",
                 "title": "VRF"
               },
               "interface": {
