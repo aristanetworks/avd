@@ -15741,6 +15741,37 @@
             "default": "Management1",
             "title": "Management Interface"
           },
+          "security_entropy_sources": {
+            "description": "Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.",
+            "type": "object",
+            "properties": {
+              "hardware": {
+                "type": "boolean",
+                "description": "Use a hardware based source.",
+                "title": "Hardware"
+              },
+              "haveged": {
+                "type": "boolean",
+                "description": "Use the HAVEGE algorithm.",
+                "title": "Haveged"
+              },
+              "cpu_jitter": {
+                "type": "boolean",
+                "description": "Use the Jitter RNG algorithm of a CPU based source.",
+                "title": "CPU Jitter"
+              },
+              "hardware_exclusive": {
+                "type": "boolean",
+                "description": "Only use entropy from the hardware source.",
+                "title": "Hardware Exclusive"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Security Entropy Sources"
+          },
           "structured_config": {
             "type": "object",
             "description": "Custom structured config for eos_cli_config_gen.",
@@ -44329,11 +44360,6 @@
             "type": "string",
             "description": "EOS CLI rendered directly on the root level of the final EOS configuration.",
             "title": "Raw EOS CLI"
-          },
-          "security_entropy_source": {
-            "type": "string",
-            "description": "Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.",
-            "title": "Security Entropy Source"
           }
         },
         "additionalProperties": false,
