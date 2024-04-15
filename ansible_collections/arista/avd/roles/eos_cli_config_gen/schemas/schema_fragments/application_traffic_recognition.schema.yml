@@ -85,6 +85,7 @@ keys:
             $ref: "eos_cli_config_gen#/$defs/application_traffic_recognition_application"
             items:
               type: dict
+              $ref: "eos_cli_config_gen#/$defs/application_traffic_recognition_application"
               keys:
                 name:
                   type: str
