@@ -41,10 +41,10 @@
         cv_submit_workspace_force: true
         cv_run_change_control: true
 
-    # - name: 'Display CVP result'
-    #   run_once: true
-    #   ansible.builtin.debug:
-    #     msg: '{{ cv_deploy_results }}'
+    - name: 'Display CVP result'
+      run_once: true
+      ansible.builtin.debug:
+        msg: '{{ cv_deploy_results }}'
 
     - name: Check CVP returns
       ansible.builtin.assert:
@@ -119,11 +119,12 @@
         cv_devices: [ci-s1-leaf1, ci-s1-leaf2, ci-s1-leaf3, ci-s1-leaf4, ci-s1-spine1, ci-s1-spine2, ci-s1-core1 ]
         cv_submit_workspace_force: false
       ignore_errors: yes
+      register: CVP_errors
 
-    # - name: 'Display CVP result'
-    #   run_once: true
-    #   ansible.builtin.debug:
-    #     msg: '{{ cv_deploy_results }}'
+    - name: 'Display CVP result'
+      run_once: true
+      ansible.builtin.debug:
+        msg: '{{ cv_deploy_results }}'
 
     - name: Check CVP returns
       ansible.builtin.assert:
@@ -152,10 +153,10 @@
         cv_devices: [ci-s1-leaf1, ci-s1-leaf2, ci-s1-leaf3, ci-s1-leaf4, ci-s1-spine1, ci-s1-spine2, ci-s1-core1 ]
         cv_submit_workspace_force: true
 
-    # - name: 'Display CVP result'
-    #   run_once: true
-    #   ansible.builtin.debug:
-    #     msg: '{{ cv_deploy_results }}'
+    - name: 'Display CVP result'
+      run_once: true
+      ansible.builtin.debug:
+        msg: '{{ cv_deploy_results }}'
 
     - name: Check CVP returns
       ansible.builtin.assert:
@@ -172,10 +173,10 @@
         cv_submit_workspace: true
         cv_run_change_control: false
 
-    # - name: 'Display CVP result'
-    #   run_once: true
-    #   ansible.builtin.debug:
-    #     msg: '{{ cv_deploy_results }}'
+    - name: 'Display CVP result'
+      run_once: true
+      ansible.builtin.debug:
+        msg: '{{ cv_deploy_results }}'
 
     - name: Check CVP returns
       ansible.builtin.assert:
