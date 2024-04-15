@@ -86,6 +86,13 @@ Optional `md-toc` requirement (automatically installed with above command):
 md-toc>=8.1.8
 ```
 
+To install ansible [avd collection additional python requirements](installation/collection-installation.md#additional-python-libraries-required) install with extra `ansible`:
+
+```sh
+pip3 install pyavd[ansible]
+```
+
+
 ## Reference
 
 ::: pyavd.validate_inputs
