@@ -60,3 +60,13 @@ management_security:
       chain_certificate:
         requirement:
           include_root_ca: true
+  shared_secret_profiles:
+    - profile_name: profile1
+      secrets:
+        - name: name1
+          secret: secret1
+          lifetime: infinite
+        - name: name2
+          secret: secret2
+          receive_lifetime: 20/12/2024
+          transmit_lifetime: infinite

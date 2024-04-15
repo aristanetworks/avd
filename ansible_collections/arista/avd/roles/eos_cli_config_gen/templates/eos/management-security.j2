@@ -110,4 +110,18 @@ management security
       crl {{ crl }}
 {%         endfor %}
 {%     endfor %}
+{%     if management_security.shared_secret_profiles is arista.avd.defined %}
+{%         for profile in management_security.shared_secret_profiles | arista.avd.natural_sort("profile_name") %}
+   session shared-secret profile {{ profile.profile_name }}
+{%             if profile.secrets is arista.avd.defined %}
+{%                 for secret in profile.secrets | arista.avd.natural_sort("name") %}
+{%                     if secret.name is arista.avd.defined and secret.secret is arista.avd.defined and secret.lifetime is arista.avd.defined %}
+      secret {{ secret.name }} {{ secret.secret }} {{ secret.lifetime }}
+{%                     elif secret.name is arista.avd.defined and secret.secret is arista.avd.defined and secret.receive_lifetime is arista.avd.defined and secret.transmit_lifetime is arista.avd.defined %}
+      secret {{ secret.name }} {{ secret.secret }} receive-lifetime {{ secret.receive_lifetime }} transmit-lifetime {{ secret.transmit_lifetime }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {% endif %}

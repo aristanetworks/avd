@@ -888,6 +888,19 @@
                   "type": "string",
                   "title": "Session Tracker"
                 },
+                "shared_secret_profile_name": {
+                  "type": "string",
+                  "title": "Shared Secret Profile Name"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "aes-128-cmac-96",
+                    "hmac-sha-256",
+                    "hmac-sha1-96"
+                  ],
+                  "title": "Hash Algorithm"
+                },
                 "ttl_maximum_hops": {
                   "type": "integer",
                   "minimum": 0,
@@ -1233,6 +1246,19 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "shared_secret_profile_name": {
+                  "type": "string",
+                  "title": "Shared Secret Profile Name"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "aes-128-cmac-96",
+                    "hmac-sha-256",
+                    "hmac-sha1-96"
+                  ],
+                  "title": "Hash Algorithm"
                 },
                 "ttl_maximum_hops": {
                   "type": "integer",
@@ -1580,6 +1606,19 @@
                   "type": "string",
                   "title": "Session Tracker"
                 },
+                "shared_secret_profile_name": {
+                  "type": "string",
+                  "title": "Shared Secret Profile Name"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "aes-128-cmac-96",
+                    "hmac-sha-256",
+                    "hmac-sha1-96"
+                  ],
+                  "title": "Hash Algorithm"
+                },
                 "ttl_maximum_hops": {
                   "type": "integer",
                   "minimum": 0,
@@ -1925,6 +1964,19 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "shared_secret_profile_name": {
+                  "type": "string",
+                  "title": "Shared Secret Profile Name"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "aes-128-cmac-96",
+                    "hmac-sha-256",
+                    "hmac-sha1-96"
+                  ],
+                  "title": "Hash Algorithm"
                 },
                 "ttl_maximum_hops": {
                   "type": "integer",
@@ -2272,6 +2324,19 @@
                   "type": "string",
                   "title": "Session Tracker"
                 },
+                "shared_secret_profile_name": {
+                  "type": "string",
+                  "title": "Shared Secret Profile Name"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "aes-128-cmac-96",
+                    "hmac-sha-256",
+                    "hmac-sha1-96"
+                  ],
+                  "title": "Hash Algorithm"
+                },
                 "ttl_maximum_hops": {
                   "type": "integer",
                   "minimum": 0,
@@ -2618,6 +2683,19 @@
                   "type": "string",
                   "title": "Session Tracker"
                 },
+                "shared_secret_profile_name": {
+                  "type": "string",
+                  "title": "Shared Secret Profile Name"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "aes-128-cmac-96",
+                    "hmac-sha-256",
+                    "hmac-sha1-96"
+                  ],
+                  "title": "Hash Algorithm"
+                },
                 "ttl_maximum_hops": {
                   "type": "integer",
                   "minimum": 0,
@@ -2963,6 +3041,19 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "shared_secret_profile_name": {
+                  "type": "string",
+                  "title": "Shared Secret Profile Name"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "aes-128-cmac-96",
+                    "hmac-sha-256",
+                    "hmac-sha1-96"
+                  ],
+                  "title": "Hash Algorithm"
                 },
                 "ttl_maximum_hops": {
                   "type": "integer",
@@ -3363,6 +3454,19 @@
                   "type": "string",
                   "title": "Session Tracker"
                 },
+                "shared_secret_profile_name": {
+                  "type": "string",
+                  "title": "Shared Secret Profile Name"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "aes-128-cmac-96",
+                    "hmac-sha-256",
+                    "hmac-sha1-96"
+                  ],
+                  "title": "Hash Algorithm"
+                },
                 "ttl_maximum_hops": {
                   "type": "integer",
                   "minimum": 0,
@@ -3753,6 +3857,19 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "shared_secret_profile_name": {
+                  "type": "string",
+                  "title": "Shared Secret Profile Name"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "aes-128-cmac-96",
+                    "hmac-sha-256",
+                    "hmac-sha1-96"
+                  ],
+                  "title": "Hash Algorithm"
                 },
                 "ttl_maximum_hops": {
                   "type": "integer",
@@ -27427,6 +27544,59 @@
                       }
                     },
                     "title": "SSL Profiles"
+                  },
+                  "shared_secret_profiles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "profile_name": {
+                          "type": "string",
+                          "title": "Profile Name"
+                        },
+                        "secrets": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "secret": {
+                                "type": "string",
+                                "title": "Secret"
+                              },
+                              "lifetime": {
+                                "type": "string",
+                                "description": "Specify the lifetime of password. Below options are available,\ninfinite    -    infinite lifetime\nmm/dd/yyyy  -    date\nyyyy-mm-dd  -    date",
+                                "title": "Lifetime"
+                              },
+                              "receive_lifetime": {
+                                "type": "string",
+                                "description": "Specify the lifetime for receiving the key.\ninfinite    -     infinite lifetime\nmm/dd/yyyy  -     date\nyyyy-mm-dd  -     date",
+                                "title": "Receive Lifetime"
+                              },
+                              "transmit_lifetime": {
+                                "type": "string",
+                                "description": "Specify the lifetime for transmitting the key.\ninfinite    -     infinite lifetime\nmm/dd/yyyy  -     date\nyyyy-mm-dd  -     date",
+                                "title": "Transmit Lifetime"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Secrets"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Shared Secret Profiles"
                   }
                 },
                 "additionalProperties": false,
@@ -33974,6 +34144,19 @@
                           "type": "string",
                           "title": "Session Tracker"
                         },
+                        "shared_secret_profile_name": {
+                          "type": "string",
+                          "title": "Shared Secret Profile Name"
+                        },
+                        "hash_algorithm": {
+                          "type": "string",
+                          "enum": [
+                            "aes-128-cmac-96",
+                            "hmac-sha-256",
+                            "hmac-sha1-96"
+                          ],
+                          "title": "Hash Algorithm"
+                        },
                         "ttl_maximum_hops": {
                           "type": "integer",
                           "minimum": 0,
@@ -34284,6 +34467,19 @@
                         "session_tracker": {
                           "type": "string",
                           "title": "Session Tracker"
+                        },
+                        "shared_secret_profile_name": {
+                          "type": "string",
+                          "title": "Shared Secret Profile Name"
+                        },
+                        "hash_algorithm": {
+                          "type": "string",
+                          "enum": [
+                            "aes-128-cmac-96",
+                            "hmac-sha-256",
+                            "hmac-sha1-96"
+                          ],
+                          "title": "Hash Algorithm"
                         },
                         "ttl_maximum_hops": {
                           "type": "integer",

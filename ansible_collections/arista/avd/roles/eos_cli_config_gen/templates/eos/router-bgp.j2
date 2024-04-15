@@ -198,6 +198,9 @@ router bgp {{ router_bgp.as }}
 {%         if peer_group.passive is arista.avd.defined(true) %}
    neighbor {{ peer_group.name }} passive
 {%         endif %}
+{%         if peer_group.shared_secret_profile_name is arista.avd.defined and peer_group.hash_algorithm is arista.avd.defined %}
+   neighbor {{ peer_group.name }} password shared-secret profile {{ peer_group.shared_secret_profile_name }} algorithm {{ peer_group.hash_algorithm }}
+{%         endif %}
 {%         if peer_group.session_tracker is arista.avd.defined %}
    neighbor {{ peer_group.name }} session tracker {{ peer_group.session_tracker }}
 {%         endif %}

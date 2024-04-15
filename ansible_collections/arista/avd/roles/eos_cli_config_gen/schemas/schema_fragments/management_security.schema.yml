@@ -181,3 +181,40 @@ keys:
                 If specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.
               items:
                 type: str
+      shared_secret_profiles:
+        type: list
+        items:
+          type: dict
+          keys:
+            profile_name:
+              type: str
+            secrets:
+              type: list
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  secret:
+                    type: str
+                  lifetime:
+                    type: str
+                    description: |-
+                      Specify the lifetime of password. Below options are available,
+                      infinite    -    infinite lifetime
+                      mm/dd/yyyy  -    date
+                      yyyy-mm-dd  -    date
+                  receive_lifetime:
+                    type: str
+                    description: |-
+                      Specify the lifetime for receiving the key.
+                      infinite    -     infinite lifetime
+                      mm/dd/yyyy  -     date
+                      yyyy-mm-dd  -     date
+                  transmit_lifetime:
+                    type: str
+                    description: |-
+                      Specify the lifetime for transmitting the key.
+                      infinite    -     infinite lifetime
+                      mm/dd/yyyy  -     date
+                      yyyy-mm-dd  -     date
