@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>management_security</samp>](## "management_security") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;entropy_source</samp>](## "management_security.entropy_source") <span style="color:red">deprecated</span> | String |  |  |  | <span style="color:red">This key is deprecated. Use <samp>entropy_sources</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;entropy_source</samp>](## "management_security.entropy_source") <span style="color:red">deprecated</span> | String |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>entropy_sources</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;entropy_sources</samp>](## "management_security.entropy_sources") | Dictionary |  |  |  | Source of entropy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "management_security.entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "management_security.entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
@@ -58,6 +58,7 @@
     ```yaml
     management_security:
       # This key is deprecated.
+      # Support will be removed in AVD version v5.0.0.
       # Use <samp>entropy_sources</samp> instead.
       entropy_source: <str>
 
