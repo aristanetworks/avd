@@ -7,8 +7,6 @@
 type: dict
 $defs:
   application_traffic_recognition_application:
-    type: list
-    items:
       type: dict
       keys:
         protocols:
