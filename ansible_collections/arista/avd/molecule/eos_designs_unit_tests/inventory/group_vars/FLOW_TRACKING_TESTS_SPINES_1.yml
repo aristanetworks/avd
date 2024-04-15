@@ -1,0 +1,97 @@
+---
+# Common AVD group variables
+
+fabric_name: FLOW_TRACKING_TESTS
+
+mgmt_gateway: 192.168.0.1
+
+default_mgmt_method: oob
+
+flow_tracking_settings:
+  trackers:
+    - name: FLOW-TRACKER-1
+      sampled:
+        table_size: 4331
+        record_export:
+          mpls: true
+      record_export:
+        on_inactive_timeout: 50000
+        on_interval: 300331
+      exporters:
+        - name: ayush_exporter
+          collector:
+            host: 127.0.0.1
+          local_interface: Loopback0
+          template_interval: 40000
+    # Override default definition
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 50001
+        on_interval: 300332
+      exporters:
+        - name: ayush_exporter
+          collector:
+            host: 127.0.0.2
+          local_interface: Loopback0
+          template_interval: 40002
+
+fabric_flow_tracking:
+  uplinks:
+    enabled: true
+  downlinks:
+    enabled: true
+  endpoints:
+    enabled: true
+  l3_edge:
+    enabled: true
+  core_interfaces:
+    enabled: true
+  mlag_interfaces:
+    enabled: true
+
+# P2P links between spine switches.
+core_interfaces:
+  p2p_links:
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet9, Ethernet9 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: true
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet10, Ethernet10 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: true
+        name: FLOW-TRACKER-1
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet12, Ethernet12 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: false
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet13, Ethernet13 ]
+      include_in_underlay_protocol: false
+
+
+# Testing the same as above with l3_edge
+l3_edge:
+  p2p_links:
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet14, Ethernet14 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: true
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet15, Ethernet15 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: true
+        name: FLOW-TRACKER-1
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet17, Ethernet17 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: false
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet18, Ethernet18 ]
+      include_in_underlay_protocol: false

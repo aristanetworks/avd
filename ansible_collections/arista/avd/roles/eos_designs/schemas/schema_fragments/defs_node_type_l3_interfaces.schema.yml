@@ -148,6 +148,11 @@ $defs:
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS configuration.
+        flow_tracking:
+          type: dict
+          $ref: "eos_designs#/$defs/flow_tracking_link"
+          description: |
+            Configures flow-tracking on the interface. Overrides `fabric_flow_tracking` setting.
         structured_config:
           type: dict
           documentation_options:

@@ -1,0 +1,50 @@
+---
+# Common AVD group variables
+
+fabric_name: FLOW_TRACKING_TESTS
+
+mgmt_gateway: 192.168.0.1
+
+default_mgmt_method: oob
+
+tenants:
+  - name: FLOW_TRACKING
+    mac_vrf_vni_base: 10000
+    vrfs:
+      # VRF definitions inside the tenant.
+      - name: VRF1
+        # VRF VNI definition.
+        vrf_vni: 1
+        svis:
+          - id: 11
+            name: VLAN11
+            enabled: true
+            nodes:
+              - node: flow-tracking-tests-leaf1
+                ip_address: 172.16.11.1/24
+              - node: flow-tracking-tests-leaf2
+                ip_address: 172.17.11.1/24
+        l3_interfaces:
+          - interfaces: [Ethernet81, Ethernet81]
+            ip_addresses: [10.1.55.0/31, 10.1.55.2/31]
+            nodes: [flow-tracking-tests-leaf1, flow-tracking-tests-leaf2]
+            enabled: true
+            flow_tracking:
+              enabled: true
+              name: FLOW-TRACKER-3
+          - interfaces: [Ethernet82, Ethernet82]
+            ip_addresses: [10.1.55.0/31, 10.1.55.2/31]
+            nodes: [flow-tracking-tests-leaf1, flow-tracking-tests-leaf2]
+            enabled: true
+            flow_tracking:
+              enabled: false
+          - interfaces: [Ethernet83, Ethernet83]
+            ip_addresses: [10.1.55.0/31, 10.1.55.2/31]
+            nodes: [flow-tracking-tests-leaf1, flow-tracking-tests-leaf2]
+            enabled: true
+          - interfaces: [Ethernet84, Ethernet84]
+            ip_addresses: [10.1.55.0/31, 10.1.55.2/31]
+            nodes: [flow-tracking-tests-leaf1, flow-tracking-tests-leaf2]
+            enabled: true
+            flow_tracking:
+              enabled: true
