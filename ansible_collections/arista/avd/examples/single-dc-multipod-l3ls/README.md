@@ -74,7 +74,7 @@ The drawing below shows the physical topology used in this example. The interfac
 
 ![Figure: Arista Leaf Spine physical topology](images/l3ls-multipod.svg)
 
-### Fabric Design
+### Fabric design
 
 The fabric is a basic L3LS EVPN/VXLAN design with a multi-pod (5-stage Clos) architecture.
 
@@ -94,7 +94,7 @@ examples/single-dc-multipod-l3ls/inventory.yml
 --8<-
 ```
 
-## FABRIC Files
+## Fabric files
 
 With the topology, five YAML files are used in group_vars:
 
@@ -142,11 +142,19 @@ The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. N
 
 The leaf configurations, EVPN_SERVICES, and ENDPOINT_CONNECT sections aren't affected by the multi-pod format.
 
-```yaml title="POD1.yml"
---8<--
-examples/single-dc-multipod-l3ls/group_vars/POD1.yml
---8<-
-```
+=== "POD1"
+    ```yaml title="POD1.yml"
+    --8<--
+    examples/single-dc-multipod-l3ls/group_vars/POD1.yml
+    --8<-
+    ```
+
+=== "POD2"
+    ```yaml title="POD2.yml"
+    --8<--
+    examples/single-dc-multipod-l3ls/group_vars/POD2.yml
+    --8<-
+    ```
 
 ## Connecting an External Router
 
@@ -157,3 +165,148 @@ In addition to the multi-pod, this example has a tenant/VRF connecting to an ext
 examples/single-dc-multipod-l3ls/group_vars/EVPN_SERVICES.yml
 --8<--
 ```
+
+## Endpoint connectivity
+
+The final group variables file provides an example of connecting two servers across a leaf pair.
+
+```yaml title="ENDPOINT_CONNECT.yml"
+--8<--
+examples/single-dc-multipod-l3ls/group_vars/ENDPOINT_CONNECT.yml
+--8<--
+```
+
+## The playbooks
+
+=== "build_fabric.yml"
+
+    The build_fabric.yml playbook imports two roles from the AVD collection; `eos_designs` and `eos_cli_config_gen`. These roles will produce any relevant documentation and configuration for our fabric deployment.
+
+    ``` yaml
+    --8<--
+    examples/single-dc-multipod-l3ls/playbooks/build_fabric.yml
+    --8<--
+    ```
+
+=== "deploy_cvp.yml"
+
+    The deploy_cvp.yml file leverages the artifacts from the build playbook to provision our fabric with CVP.
+
+    ``` yaml
+    --8<--
+    examples/single-dc-multipod-l3ls/playbooks/deploy_cvp.yml
+    --8<--
+    ```
+
+=== "deploy_eapi.yml"
+
+    The deploy_eapi.yml file leverages the artifacts from the build playbook to provision our fabric but connects directly to our EOS nodes.
+
+    ``` yaml
+    --8<--
+    examples/single-dc-multipod-l3ls/playbooks/deploy_eapi.yml
+    --8<--
+    ```
+
+=== "test_fabric.yml"
+
+    The test_fabric.yml file will connect to our EOS nodes and run validation tests against our fabric.
+
+    ``` yaml
+    --8<--
+    examples/single-dc-multipod-l3ls/playbooks/test_fabric.yml
+    --8<--
+    ```
+
+### Playbook Run
+
+To build the configuration files, run the playbook called `build_fabric.yml`.
+
+``` bash
+### Build configurations
+ansible-playbook playbooks/build_fabric.yml
+```
+
+### EOS Intended Configurations
+
+Your configuration files should be similar to these.
+
+=== "dc1-ss1"
+
+    ``` shell
+    --8<--
+    examples/single-dc-multipod-l3ls/intended/configs/dc1-ss1.cfg
+    --8<--
+    ```
+
+=== "dc1-ss2"
+
+    ``` shell
+    --8<--
+    examples/single-dc-multipod-l3ls/intended/configs/dc1-ss2.cfg
+    --8<--
+    ```
+
+=== "dc1-spine1"
+
+    ``` shell
+    --8<--
+    examples/single-dc-multipod-l3ls/intended/configs/dc1-spine1.cfg
+    --8<--
+    ```
+
+=== "dc1-spine2"
+
+    ``` shell
+    --8<--
+    examples/single-dc-multipod-l3ls/intended/configs/dc1-spine2.cfg
+    --8<--
+    ```
+
+=== "dc1-spine3"
+
+    ``` shell
+    --8<--
+    examples/single-dc-multipod-l3ls/intended/configs/dc1-spine3.cfg
+    --8<--
+    ```
+
+=== "dc1-spine4"
+
+    ``` shell
+    --8<--
+    examples/single-dc-multipod-l3ls/intended/configs/dc1-spine4.cfg
+    --8<--
+    ```
+
+=== "dc1-leaf1a"
+
+    ``` shell
+    --8<--
+    examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf1a.cfg
+    --8<--
+    ```
+
+=== "dc1-leaf1b"
+
+    ``` shell
+    --8<--
+    examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf1b.cfg
+    --8<--
+    ```
+
+=== "dc1-leaf2a"
+
+    ``` shell
+    --8<--
+    examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf2a.cfg
+    --8<--
+    ```
+
+=== "dc1-leaf2b"
+
+    ``` shell
+    --8<--
+    examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf2b.cfg
+    --8<--
+    ```
