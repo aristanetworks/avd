@@ -119,7 +119,7 @@
         cv_devices: [ci-s1-leaf1, ci-s1-leaf2, ci-s1-leaf3, ci-s1-leaf4, ci-s1-spine1, ci-s1-spine2, ci-s1-core1 ]
         cv_submit_workspace_force: false
       ignore_errors: yes
-      register: CVP_errors
+      register: CVP_ERRORS
 
     - name: 'Display CVP result'
       run_once: true
