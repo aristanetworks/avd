@@ -3383,6 +3383,52 @@ keys:
           - on-boot
           - on-logging
           - on-startup-config
+          - on-maintenance
+        trigger_on_maintenance:
+          description: Settings required for trigger 'on-maintenance'.
+          type: dict
+          keys:
+            operation:
+              type: str
+              required: true
+              valid_values:
+              - enter
+              - exit
+            bgp_peer:
+              description: 'Ipv4/Ipv6 address or peer group name.
+
+                Trigger condition occurs on maintenance operation of specified BGP
+                peer.'
+              type: str
+            action:
+              type: str
+              required: true
+              description: Action for maintenance operation.
+              valid_values:
+              - after
+              - before
+              - all
+              - begin
+              - end
+            stage:
+              type: str
+              description: Action is triggered after/before specified stage.
+              valid_values:
+              - bgp
+              - linkdown
+              - mlag
+              - ratemon
+            vrf:
+              type: str
+              description: VRF name. VRF can be defined for "bgp_peer" only.
+            interface:
+              type: str
+              description: Trigger condition occurs on maintenance operation of specified
+                interface.
+            unit:
+              type: str
+              description: Name of unit. Trigger condition occurs on maintenance operation
+                of specified unit
         regex:
           type: str
           description: 'Regular expression to use for searching log messages. Required
@@ -4544,11 +4590,18 @@ keys:
               description: Policy name.
             local_id:
               type: str
-              description: 'Local IKE Identification.
+              description: 'Local IKE identification.
 
                 Can be an IPv4 or an IPv6 address.
 
-                '
+                If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes
+                precedence.'
+            local_id_fqdn:
+              type: str
+              description: 'Local FQDN or UFQDN IKE identification.
+
+                If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes
+                precedence.'
             ike_lifetime:
               type: int
               convert_types:
