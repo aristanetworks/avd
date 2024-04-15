@@ -14,12 +14,12 @@ keys:
       keys:
         name:
           type: str
-          description: Name of tracker object
+          description: Name of tracker object.
         interface:
           type: str
-          description: Name of tracked interface
+          description: Name of tracked interface.
           required: true
         tracked_property:
           type: str
           default: "line-protocol"
-          description: Property to track
+          description: Property to track.

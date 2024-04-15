@@ -24,7 +24,7 @@ keys:
         type: int
         convert_types:
           - str
-        description: Polling interval in seconds
+        description: Polling interval in seconds.
       vrfs:
         type: list
         primary_key: name
@@ -47,7 +47,7 @@ keys:
                 keys:
                   destination:
                     type: str
-                    description: Sflow Destination IP Address
+                    description: Sflow Destination IP Address.
                   port:
                     type: int
                     description: Port Number
@@ -60,7 +60,7 @@ keys:
                 "source" and "source_interface" are mutually exclusive. If both are defined, "source_interface" takes precedence.
             source_interface:
               type: str
-              description: Source Interface
+              description: Source Interface.
       destinations:
         type: list
         primary_key: destination
@@ -71,10 +71,10 @@ keys:
           keys:
             destination:
               type: str
-              description: Sflow Destination IP Address
+              description: Sflow Destination IP Address.
             port:
               type: int
-              description: Port Number
+              description: Port Number.
               convert_types:
                 - str
       source:
@@ -84,7 +84,7 @@ keys:
           "source" and "source_interface" are mutually exclusive. If both are defined, "source_interface" takes precedence.
       source_interface:
         type: str
-        description: Source Interface
+        description: Source Interface.
       extensions:
         type: list
         primary_key: name
@@ -93,10 +93,10 @@ keys:
           keys:
             name:
               type: str
-              description: Extension Name
+              description: Extension Name.
             enabled:
               type: bool
-              description: Enable or Disable Extension
+              description: Enable or Disable Extension.
               required: true
       interface:
         type: dict

@@ -90,7 +90,7 @@ keys:
             tls_versions:
               type: str
               description: |
-                List of allowed TLS versions as string
+                List of allowed TLS versions as string.
                 Examples:
                   - "1.0"
                   - "1.0 1.1"
@@ -107,7 +107,7 @@ keys:
                 certificates:
                   type: list
                   description: |
-                    List of trust certificate names
+                    List of trust certificate names.
                     Examples:
                       - test1.crt
                       - test2.crt
@@ -134,7 +134,7 @@ keys:
                 certificates:
                   type: list
                   description: |
-                    List of chain certificate names
+                    List of chain certificate names.
                     Examples:
                       - chain1.crt
                       - chain2.crt

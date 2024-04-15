@@ -13,7 +13,7 @@ keys:
         type: dict
         keys:
           timeout_default:
-            description: Timeout in seconds
+            description: Timeout in seconds.
             type: int
             min: 60
             max: 65535

@@ -116,7 +116,7 @@ keys:
             layer3:
               type: bool
               description: |
-                Supported only for the 'ip' feature
+                Supported only for the 'ip' feature.
             vrf:
               type: str
               description: |

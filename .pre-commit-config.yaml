@@ -138,11 +138,12 @@ repos:
             .*\.cfg|  # Exclude all .cfg files
             .*\.svg|  # Exclude all .svg files
             .*\.excalidraw|  # Exclude all .excalidraw files
-            .*\.json|  # Exclude all .json files
             .*\.rst|  # Exclude all .rst files
-            python-avd/.*|  # Exclude all files in this directory
-            ansible_collections/arista/avd/docs/release-notes/.*|  # Exclude all files in this directory
-            ansible_collections/arista/avd/changelogs/.*  # Exclude all files in this directory
+            python-avd/pyavd/vendor/.*|  # Exclude all files in this directory
+            ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
+            ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
+            ansible_collections/arista/avd/roles/.*/schemas/.*schema\.yml| # Exclude YAML schemas file
+            ansible_collections/arista/avd/roles/.*/schemas/.*jsonschema\.json| # Exclude JSON schemas file
           )$
 
   - repo: local

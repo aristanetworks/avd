@@ -164,7 +164,7 @@ releases:
       - Doc - Minor fixes in getting-started docs (https://github.com/aristanetworks/ansible-avd/pull/1934)
       - Doc(eos_snapshot) - fix var name in input example (https://github.com/aristanetworks/ansible-avd/pull/1960)
       - Fix - typos (https://github.com/aristanetworks/ansible-avd/pull/1957)
-      - Fix(eos_cli_config_gen) - Re-add seperator between VRF and non-VRF config
+      - Fix(eos_cli_config_gen) - Re-add separator between VRF and non-VRF config
         (https://github.com/aristanetworks/ansible-avd/pull/1961)
       - Fix(eos_cli_config_gen) - Rendering of dot1x cli (https://github.com/aristanetworks/ansible-avd/pull/1924)
       - Fix(eos_cli_config_gen) - add vlan.vni var is defined (https://github.com/aristanetworks/ansible-avd/pull/1919)

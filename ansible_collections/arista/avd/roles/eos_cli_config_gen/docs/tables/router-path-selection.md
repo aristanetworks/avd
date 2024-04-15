@@ -46,7 +46,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "router_path_selection.load_balance_policies.[].latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "router_path_selection.load_balance_policies.[].loss_rate") | String |  |  | Pattern: ^\d+(\.\d{1,2})?$ | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "router_path_selection.load_balance_policies.[].path_groups") | List, items: Dictionary |  |  |  | List of path-groups to use for this load balance policy. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.load_balance_policies.[].path_groups.[].name") | String | Required, Unique |  |  | Path-group name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.load_balance_policies.[].path_groups.[].name") | String | Required, Unique |  |  | Path-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "router_path_selection.load_balance_policies.[].path_groups.[].priority") | Integer |  |  | Min: 1<br>Max: 65535 | Priority for this path-group.<br>The EOS default value is 1. |
     | [<samp>&nbsp;&nbsp;policies</samp>](## "router_path_selection.policies") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.policies.[].name") | String | Required, Unique |  |  | DPS policy name. |
@@ -160,7 +160,7 @@
           # List of path-groups to use for this load balance policy.
           path_groups:
 
-              # Path-group name
+              # Path-group name.
             - name: <str; required; unique>
 
               # Priority for this path-group.

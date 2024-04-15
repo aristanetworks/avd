@@ -18,7 +18,7 @@ keys:
       keys:
         name:
           type: str
-          description: Community-list Name
+          description: Community-list Name.
         entries:
           type: list
           required: true
@@ -33,5 +33,5 @@ keys:
                 type: str
                 required: true
                 description: |
-                  Communities as string
+                  Communities as string.
                   Example: "65000:65000"

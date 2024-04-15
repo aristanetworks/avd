@@ -19,7 +19,7 @@ keys:
             keys:
               source_interface:
                 type: str
-                description: Source Interface Name
+                description: Source Interface Name.
               multicast:
                 type: dict
                 keys:
@@ -27,7 +27,7 @@ keys:
                     type: bool
               controller_client:
                 type: dict
-                description: Client to CVX Controllers
+                description: Client to CVX Controllers.
                 keys:
                   enabled:
                     type: bool
@@ -43,7 +43,7 @@ keys:
               virtual_router_encapsulation_mac_address:
                 type: str
                 description: |
-                  "mlag-system-id" or ethernet_address (H.H.H)
+                  "mlag-system-id" or ethernet_address (H.H.H).
               bfd_vtep_evpn:
                 type: dict
                 keys:
@@ -89,19 +89,19 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      description: VLAN ID
+                      description: VLAN ID.
                     vni:
                       type: int
                       convert_types:
                         - str
                     multicast_group:
                       type: str
-                      description: IP Multicast Group Address
+                      description: IP Multicast Group Address.
                     flood_vteps:
                       type: list
                       items:
                         type: str
-                        description: Remote VTEP IP Address
+                        description: Remote VTEP IP Address.
               vrfs:
                 type: list
                 primary_key: name
@@ -112,7 +112,7 @@ keys:
                   keys:
                     name:
                       type: str
-                      description: VRF Name
+                      description: VRF Name.
                       convert_types:
                         - int
                     vni:
@@ -121,12 +121,12 @@ keys:
                         - str
                     multicast_group:
                       type: str
-                      description: IP Multicast Group Address
+                      description: IP Multicast Group Address.
               flood_vteps:
                 type: list
                 items:
                   type: str
-                  description: Remote VTEP IP Address
+                  description: Remote VTEP IP Address.
               flood_vtep_learned_data_plane:
                 type: bool
           eos_cli:

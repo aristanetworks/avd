@@ -181,7 +181,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Path-group name
+                    description: Path-group name.
                   priority:
                     type: int
                     description: |-

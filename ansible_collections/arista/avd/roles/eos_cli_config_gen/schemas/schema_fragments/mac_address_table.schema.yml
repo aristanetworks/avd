@@ -11,7 +11,7 @@ keys:
     keys:
       aging_time:
         type: int
-        description: Aging time in seconds
+        description: Aging time in seconds.
         convert_types:
         - str
       notification_host_flap:

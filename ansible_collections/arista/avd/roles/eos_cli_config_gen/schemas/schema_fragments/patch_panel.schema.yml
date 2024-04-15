@@ -28,7 +28,7 @@ keys:
               - dict
               min_length: 2
               max_length: 2
-              description: Must have exactly two connectors to a patch of which at least one must be of type "interface"
+              description: Must have exactly two connectors to a patch of which at least one must be of type "interface".
               items:
                 type: dict
                 keys:

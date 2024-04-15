@@ -140,7 +140,7 @@ To customize or create new node types, please refer to [node type customization]
 ### L3LS EVPN
 
 | Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Default WAN Role | Default Underlay Routing Protocol | Default Overlay Routing Protocol |
-| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | --------------------------------- | -------------------------------- |
+| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | -------------------- | --------------- | --------------------------------- | -------------------------------- |
 | super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
 | spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
 | l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                  | ✅   | ✅           | ✅                  | ✘                | eBGP                             | eBGP                             |
@@ -155,7 +155,7 @@ To customize or create new node types, please refer to [node type customization]
 ### L2LS
 
 | Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
+| ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
 | l3spine            | ✅              | p2p          | none              | ✅                  | ✅                  | ✘    | ✅           | ✅                  |
 | spine              | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  |
 | leaf               | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  |
@@ -163,7 +163,7 @@ To customize or create new node types, please refer to [node type customization]
 ### MPLS
 
 | Node Type Key | Underlay Router | Uplink Type | Default Overlay Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| --------------| --------------- | ----------- | -------------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
+| -------| ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
 | p             | ✅              | p2p         | none                 | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
 | rr            | ✅              | p2p         | server               | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
 | pe            | ✅              | p2p         | client               | ✅                  | ✅                  | ✅   | ✘            | ✅                  |

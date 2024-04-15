@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "mcs_client.cvx_secondary.name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "mcs_client.cvx_secondary.shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;server_hosts</samp>](## "mcs_client.cvx_secondary.server_hosts") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mcs_client.cvx_secondary.server_hosts.[]") | String |  |  |  | IP or hostname |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mcs_client.cvx_secondary.server_hosts.[]") | String |  |  |  | IP or hostname. |
 
 === "YAML"
 
@@ -25,6 +25,6 @@
         shutdown: <bool>
         server_hosts:
 
-            # IP or hostname
+            # IP or hostname.
           - <str>
     ```
