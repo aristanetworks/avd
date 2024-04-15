@@ -82,7 +82,6 @@ keys:
             type: list
             description: List of user defined IPv4 applications. The name should be unique over all defined applications (ipv4 and l4).
             primary_key: name
-            $ref: "eos_cli_config_gen#/$defs/application_traffic_recognition_application"
             items:
               type: dict
               $ref: "eos_cli_config_gen#/$defs/application_traffic_recognition_application"
