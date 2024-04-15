@@ -92,7 +92,6 @@ To install ansible [avd collection additional python requirements](installation/
 pip3 install pyavd[ansible]
 ```
 
-
 ## Reference
 
 ::: pyavd.validate_inputs

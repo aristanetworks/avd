@@ -95,6 +95,8 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 
 	$(SCRIPTS_DIR)/compile_templates.py
 
+	grep "ansible-core" $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements-dev.txt >> requirements-ansible-avd.txt
+
 .PHONY: copy-test-data
 copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 	rm -rf $(TESTS_ARTIFACTS)
