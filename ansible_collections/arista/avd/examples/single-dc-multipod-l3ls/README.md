@@ -136,25 +136,25 @@ super_spine:
 
 The POD leafs and spines are not in the FABRIC.yml file in this example (although the contents of POD1.yml and POD2.yml could be consolidated into FABRIC.yml). The super_spine section is new but works like the traditional spine section in a single POD L3LS. It will need an ASN (separate from the POD spines) and loopback pool (which can be the same pool as the PODs, as long as the IDs are unique). The `evpn_role: server` makes the super-spines a router server, as the PODs' routes need to be propagated to each other.
 
-The rest of the FABRIC.yml would contain any parameters for your fabric, such as NTP servers, user accounts, and p2p MTUs.
-
-The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. Note that each POD's spines have its own unique ASN (eBGP). Also, the spines now have uplink interfaces and uplink switches specified (to the superspies) with the `uplink_switches` and `uplink_interfaces` directives. The uplink pool can overlap between the PODs in a DC. If doing multi-DC, the pools should be on different subnets.
-
-The leaf configurations, EVPN_SERVICES, and ENDPOINT_CONNECT sections aren't affected by the multi-pod format.
+The rest of the FABRIC.yml would contain any parameters for your fabric, such as NTP servers, user accounts, and p2p MTUs. The leaf configurations, EVPN_SERVICES, and ENDPOINT_CONNECT sections aren't affected by the multi-pod format.
 
 === "POD1"
+    The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. Note that each POD's spines have its own unique ASN (eBGP). Also, the spines now have uplink interfaces and uplink switches specified (to the superspies) with the `uplink_switches` and `uplink_interfaces` directives. The uplink pool can overlap between the PODs in a DC. If doing multi-DC, the pools should be on different subnets.
+
     ```yaml title="POD1.yml"
     --8<--
     examples/single-dc-multipod-l3ls/group_vars/POD1.yml
     --8<-
-```
+    ```
 
 === "POD2"
+    Please note the similarities between POD1 and POD2.
+
     ```yaml title="POD2.yml"
     --8<--
     examples/single-dc-multipod-l3ls/group_vars/POD2.yml
     --8<-
-```
+    ```
 
 ## Connecting an External Router
 
