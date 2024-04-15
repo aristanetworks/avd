@@ -11551,8 +11551,6 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -11632,8 +11630,6 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
