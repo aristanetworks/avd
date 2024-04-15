@@ -5467,9 +5467,76 @@
             "enum": [
               "on-boot",
               "on-logging",
-              "on-startup-config"
+              "on-startup-config",
+              "on-maintenance"
             ],
             "title": "Trigger"
+          },
+          "trigger_on_maintenance": {
+            "description": "Settings required for trigger 'on-maintenance'.",
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "enter",
+                  "exit"
+                ],
+                "title": "Operation"
+              },
+              "bgp_peer": {
+                "description": "Ipv4/Ipv6 address or peer group name.\nTrigger condition occurs on maintenance operation of specified BGP peer.",
+                "type": "string",
+                "title": "BGP Peer"
+              },
+              "action": {
+                "type": "string",
+                "description": "Action for maintenance operation.",
+                "enum": [
+                  "after",
+                  "before",
+                  "all",
+                  "begin",
+                  "end"
+                ],
+                "title": "Action"
+              },
+              "stage": {
+                "type": "string",
+                "description": "Action is triggered after/before specified stage.",
+                "enum": [
+                  "bgp",
+                  "linkdown",
+                  "mlag",
+                  "ratemon"
+                ],
+                "title": "Stage"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF name. VRF can be defined for \"bgp_peer\" only.",
+                "title": "VRF"
+              },
+              "interface": {
+                "type": "string",
+                "description": "Trigger condition occurs on maintenance operation of specified interface.",
+                "title": "Interface"
+              },
+              "unit": {
+                "type": "string",
+                "description": "Name of unit. Trigger condition occurs on maintenance operation of specified unit",
+                "title": "Unit"
+              }
+            },
+            "required": [
+              "operation",
+              "action"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Maintenance"
           },
           "regex": {
             "type": "string",

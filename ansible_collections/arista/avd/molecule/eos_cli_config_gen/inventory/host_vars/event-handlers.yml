@@ -15,3 +15,30 @@ event_handlers:
     trigger: on-boot
     action_type: bash
     action: echo "on-boot"
+  - name: trigger-on-maintenance1
+    trigger: on-maintenance
+    trigger_on_maintenance:
+      operation: enter
+      interface: Management3
+      action: after
+      stage: linkdown
+    action_type: bash
+    action: echo "on-maintenance"
+  - name: trigger-on-maintenance2
+    trigger: on-maintenance
+    trigger_on_maintenance:
+      operation: enter
+      unit: unit1
+      action: before
+      stage: bgp
+    action_type: bash
+    action: echo "on-maintenance"
+  - name: trigger-on-maintenance3
+    trigger: on-maintenance
+    trigger_on_maintenance:
+      operation: enter
+      bgp_peer: 10.0.0.2
+      vrf: vrf1
+      action: all
+    action_type: bash
+    action: echo "on-maintenance"
