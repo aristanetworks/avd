@@ -141,4 +141,7 @@ management security
       tls versions 1.1
    ssl profile tls-versions-profile
       tls versions 1.0 1.1
+   session shared-secret profile profile1
+      secret name1 secret1 infinite
+      secret name2 secret2 receive-lifetime 20/12/2024 transmit-lifetime infinite
 ```

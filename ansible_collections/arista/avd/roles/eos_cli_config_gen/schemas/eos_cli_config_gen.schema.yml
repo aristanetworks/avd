@@ -6309,6 +6309,50 @@ keys:
                 '
               items:
                 type: str
+      shared_secret_profiles:
+        type: list
+        items:
+          type: dict
+          keys:
+            profile_name:
+              type: str
+            secrets:
+              type: list
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  secret:
+                    type: str
+                  lifetime:
+                    type: str
+                    description: 'Specify the lifetime of password. Below options
+                      are available,
+
+                      infinite    -    infinite lifetime
+
+                      mm/dd/yyyy  -    date
+
+                      yyyy-mm-dd  -    date'
+                  receive_lifetime:
+                    type: str
+                    description: 'Specify the lifetime for receiving the key.
+
+                      infinite    -     infinite lifetime
+
+                      mm/dd/yyyy  -     date
+
+                      yyyy-mm-dd  -     date'
+                  transmit_lifetime:
+                    type: str
+                    description: 'Specify the lifetime for transmitting the key.
+
+                      infinite    -     infinite lifetime
+
+                      mm/dd/yyyy  -     date
+
+                      yyyy-mm-dd  -     date'
   management_ssh:
     type: dict
     keys:
@@ -10297,6 +10341,14 @@ keys:
                 new_key: listen_ranges
             session_tracker:
               type: str
+            shared_secret_profile_name:
+              type: str
+            hash_algorithm:
+              type: str
+              valid_values:
+              - aes-128-cmac-96
+              - hmac-sha-256
+              - hmac-sha1-96
             ttl_maximum_hops:
               type: int
               convert_types:
@@ -10493,6 +10545,14 @@ keys:
                   type: bool
             session_tracker:
               type: str
+            shared_secret_profile_name:
+              type: str
+            hash_algorithm:
+              type: str
+              valid_values:
+              - aes-128-cmac-96
+              - hmac-sha-256
+              - hmac-sha1-96
             ttl_maximum_hops:
               type: int
               convert_types:
