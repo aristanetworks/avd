@@ -147,14 +147,14 @@ The leaf configurations, EVPN_SERVICES, and ENDPOINT_CONNECT sections aren't aff
     --8<--
     examples/single-dc-multipod-l3ls/group_vars/POD1.yml
     --8<-
-    ```
+```
 
 === "POD2"
     ```yaml title="POD2.yml"
     --8<--
     examples/single-dc-multipod-l3ls/group_vars/POD2.yml
     --8<-
-    ```
+```
 
 ## Connecting an External Router
 
