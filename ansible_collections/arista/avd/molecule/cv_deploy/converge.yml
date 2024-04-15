@@ -1,0 +1,152 @@
+---
+- name: Converge - Configuration deployment with CVP
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    cv_server: www.cv-staging.corp.arista.io
+    # token: "{{ lookup('file', playbook_dir ~ '/token-aawg-ci.tok')}}"
+    cv_token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
+    cv_verify_certs: false
+    cv_devices: [ci-s1-leaf1, ci-s1-leaf2, ci-s1-leaf3, ci-s1-leaf4, ci-s1-spine1, ci-s1-spine2 ]
+    cv_skip_missing_devices: true
+    eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
+    structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
+
+  tasks:
+    - name: Generate random string
+      ansible.builtin.set_fact:
+        r: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
+      run_once: true
+
+    - name: Set facts
+      ansible.builtin.set_fact:
+        cv_workspace_name: avd-cv-deploy-{{ r }}
+        cv_workspace_description: sample description
+        cv_change_control_name: cc_cv_deploy-{{ r }}
+        cv_change_control_description: sample description
+        cv_register_detailed_results: true
+      run_once: true
+
+###########################
+######## cv_deploy ########
+###########################
+    - name: Test = Provision CVP with AVD configuration
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        cv_submit_workspace: true
+        cv_submit_workspace_force: true
+        cv_run_change_control: true
+
+    - name: 'Display CVP result'
+      run_once: true
+      ansible.builtin.debug:
+        msg: '{{ cv_deploy_results }}'
+
+    - name: Check CVP returns
+      ansible.builtin.assert:
+        that:
+          # workspace
+          - cv_deploy_results.workspace.name == cv_workspace_name
+          - cv_deploy_results.workspace.state == cv_deploy_results.workspace.requested_state
+          - cv_deploy_results.workspace.state
+          # errors and warnings
+          - cv_deploy_results.errors == []
+          - cv_deploy_results.warnings == []
+          # tags
+          - cv_deploy_results.deployed_device_tags != []
+          - cv_deploy_results.deployed_interface_tags != []
+          # Change control
+          # - cv_deploy_results.change_control.id == cc_id
+          - cv_deploy_results.change_control.name == cv_change_control_name
+          - cv_deploy_results.change_control.requested_state == "completed"
+          - cv_deploy_results.change_control.description == cv_change_control_description
+
+    - name: Check tags from output
+      ansible.builtin.assert:
+        that:
+          - item.0.label == item.1.label
+          - item.0.value == item.1.value
+      loop: "{{ cv_deploy_results.deployed_device_tags | zip(cv_deploy_results.device_tags) | list }}"
+
+    - name: Cleanup
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+        structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+        cv_submit_workspace: true
+        cv_submit_workspace_force: true
+        cv_run_change_control: true
+
+    - name: Test = Provision with workspace "Pending"
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        cv_submit_workspace: false
+
+    - name: Check CVP returns
+      ansible.builtin.assert:
+        that:
+          # workspace
+          - cv_deploy_results.workspace.state == cv_deploy_results.workspace.requested_state
+
+    - name: Cleanup
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+        structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+        cv_submit_workspace: true
+        cv_submit_workspace_force: true
+        cv_run_change_control: true
+
+    - name: Test = Provision with cv_submit_workspace_force = false
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        cv_devices: [ci-s1-leaf1, ci-s1-leaf2, ci-s1-leaf3, ci-s1-leaf4, ci-s1-spine1, ci-s1-spine2, ci-s1-core1 ]
+        cv_submit_workspace_force: false
+      ignore_errors: yes
+
+    - name: 'Display CVP result'
+      run_once: true
+      ansible.builtin.debug:
+        msg: '{{ cv_deploy_results }}'
+
+    - name: Check CVP returns
+      ansible.builtin.assert:
+        that:
+          # errors and warnings
+          - cv_deploy_results.errors != []
+
+    - name: Test = Provision with cv_run_change_control = false
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        cv_submit_workspace: true
+        cv_run_change_control: false
+
+    - name: 'Display CVP result'
+      run_once: true
+      ansible.builtin.debug:
+        msg: '{{ cv_deploy_results }}'
+
+    - name: Check CVP returns
+      ansible.builtin.assert:
+        that:
+          # Change control
+          - cv_deploy_results.change_control.requested_state == "pending approval"
