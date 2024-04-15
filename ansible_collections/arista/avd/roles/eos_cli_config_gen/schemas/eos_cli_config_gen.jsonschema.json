@@ -7661,8 +7661,13 @@
               },
               "local_id": {
                 "type": "string",
-                "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
+                "description": "Local IKE identification.\nCan be an IPv4 or an IPv6 address.\nIf both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.",
                 "title": "Local ID"
+              },
+              "local_id_fqdn": {
+                "type": "string",
+                "description": "Local FQDN or UFQDN IKE identification.\nIf both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.",
+                "title": "Local ID Fqdn"
               },
               "ike_lifetime": {
                 "type": "integer",
