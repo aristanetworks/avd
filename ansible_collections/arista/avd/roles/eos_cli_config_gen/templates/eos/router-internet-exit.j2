@@ -1,0 +1,30 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - router internet-exit #}
+{% if router_internet_exit is arista.avd.defined %}
+!
+router internet-exit
+{%     for exit_group in router_internet_exit.exit_groups | arista.avd.natural_sort('name') %}
+    !
+    exit-group {{ exit_group.name }}
+{%         for local_connection in exit_group.local_connections | arista.avd.natural_sort('name') %}
+        local connection {{ local_connection.name }}
+{%         endfor %}
+{%         if exit_group.fib_default is arista.avd.defined(true) %}
+        fib-default
+{%         endif %}
+{%     endfor %}
+{%     for policy in router_internet_exit.policies | arista.avd.natural_sort('name') %}
+    !
+    policy {{ policy.name }}
+{# Order of exit-groups MUST be preserved #}
+{%         for exit_group in policy.exit_groups | arista.avd.default([]) %}
+{%             if exit_group.name is arista.avd.defined %}
+        exit-group {{ exit_group.name }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

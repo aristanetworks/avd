@@ -11,16 +11,16 @@
   generated) and search/replace to make the formatting fit.
   - Check a previous fragments_backup for example.
   - In IDE use regex based search/replace
-    - Search:
+    - Search (vscode syntax):
 
       ```re
-      ^* (.*)$
+      ^\* (.*)$
       ```
 
     - Replace (vscode syntax):
 
       ```re
-      - |-\r $1
+      - |-\n $1
       ```
 
 - Copy the fragment to `changelogs/fragments_backup` *before* generating the changelog
