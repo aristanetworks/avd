@@ -144,9 +144,9 @@ NAT profile VRF is: {{ profile.vrf }}
 {%             set first_last_port = [] %}
 {%             for range in pool.ranges | arista.avd.default([]) %}
 {%                 if pool_type == 'ip-port' %}
-{%                     do first_last_ip.append( range.first_ip | arista.avd.default('') ~ ' - ' ~ range.last_ip | arista.avd.default('') ) %}
+{%                     do first_last_ip.append(range.first_ip | arista.avd.default('') ~ '-' ~ range.last_ip | arista.avd.default('')) %}
 {%                 endif %}
-{%                 do first_last_port.append( range.first_port | arista.avd.default('') ~ ' - ' ~ range.last_port | arista.avd.default('') ) %}
+{%                 do first_last_port.append(range.first_port | arista.avd.default('') ~ '-' ~ range.last_port | arista.avd.default('')) %}
 {%             endfor %}
 {%             if first_last_ip == [] %}
 {%                 set first_last_ip = '-' %}
@@ -154,7 +154,7 @@ NAT profile VRF is: {{ profile.vrf }}
 {%             if first_last_port == [] %}
 {%                 set first_last_port = '-' %}
 {%             endif %}
-| {{ pool_name }} | {{ pool_type }} | {{ prefix_length | arista.avd.default('-') }} | {{ utilization_log_threshold | arista.avd.default('-') }} | {{ first_last_ip | join(',<br>') }} | {{ first_last_port | join(',<br>') }} |
+| {{ pool_name }} | {{ pool_type }} | {{ prefix_length | arista.avd.default('-') }} | {{ utilization_log_threshold | arista.avd.default('-') }} | {{ first_last_ip | join('<br>') }} | {{ first_last_port | join('<br>') }} |
 {%         endfor %}
 
 ### NAT Synchronization

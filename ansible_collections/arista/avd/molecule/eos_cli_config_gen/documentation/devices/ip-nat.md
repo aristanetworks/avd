@@ -111,11 +111,11 @@ NAT profile VRF is: TEST
 | Pool Name | Pool Type | Prefix Length | Utilization Log Threshold | First-Last IP Addresses | First-Last Ports |
 | --------- | --------- | ------------- | ------------------------- | ----------------------- | ---------------- |
 | port_only_1 | port-only | - | - | - | - |
-| port_only_2 | port-only | - | - | - | 10 - 15,<br>1024 - 65535 |
-| prefix_16 | ip-port | 16 | 91 | 10.0.0.1 - 10.0.255.254,<br>10.1.0.0 - 10.1.255.255 |  - ,<br>1024 - 65535 |
+| port_only_2 | port-only | - | - | - | 10-15<br>1024-65535 |
+| prefix_16 | ip-port | 16 | 91 | 10.0.0.1-10.0.255.254<br>10.1.0.0-10.1.255.255 | -<br>1024-65535 |
 | prefix_21 | ip-port | 21 | - | - | - |
 | prefix_24 | ip-port | 24 | 100 | - | - |
-| prefix_32 | ip-port | 32 | - | 10.2.0.1 - 10.2.0.1,<br>10.2.0.2 - 10.2.0.3 | 1024 - 65535,<br> -  |
+| prefix_32 | ip-port | 32 | - | 10.2.0.1-10.2.0.1<br>10.2.0.2-10.2.0.3 | 1024-65535<br>- |
 
 ### NAT Synchronization
 
