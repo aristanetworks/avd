@@ -13,7 +13,7 @@ keys:
         type: str
         deprecation:
           warning: true
-          removed: false
+          remove_in_version: v5.0.0
           new_key: entropy_sources
       entropy_sources:
         type: dict

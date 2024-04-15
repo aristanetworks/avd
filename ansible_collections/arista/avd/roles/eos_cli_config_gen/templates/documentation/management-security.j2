@@ -19,7 +19,7 @@
 {%         set entropy_sources = [] %}
 {%         for source in ['hardware', 'haveged', 'cpu_jitter', 'hardware_exclusive'] %}
 {%             if management_security.entropy_sources[source] is arista.avd.defined(true) %}
-{%                 set _ = entropy_sources.append(source.replace("_", " ")) %}
+{%                 do entropy_sources.append(source.replace("_", " ")) %}
 {%             endif %}
 {%         endfor %}
 | Entropy sources | {{ entropy_sources | join(", ") }} |
