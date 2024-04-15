@@ -33,8 +33,7 @@ mac_security:
 
 ### Mgmt sec
 management_security:
-  entropy_source:
-    hardware: true
+  entropy_source: hardware
   password:
     encryption_key_common: true
   ssl_profiles:

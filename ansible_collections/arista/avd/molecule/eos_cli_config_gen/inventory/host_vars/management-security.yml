@@ -1,6 +1,6 @@
 ### Management Security ###
 management_security:
-  entropy_source:
+  entropy_sources:
     hardware: true
     haveged: true
     cpu_jitter: true

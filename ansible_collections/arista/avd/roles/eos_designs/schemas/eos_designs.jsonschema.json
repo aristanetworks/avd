@@ -25960,6 +25960,10 @@
                 "type": "object",
                 "properties": {
                   "entropy_source": {
+                    "type": "string",
+                    "title": "Entropy Source"
+                  },
+                  "entropy_sources": {
                     "type": "object",
                     "description": "Source of entropy.",
                     "properties": {
@@ -25988,7 +25992,7 @@
                     "patternProperties": {
                       "^_.+$": {}
                     },
-                    "title": "Entropy Source"
+                    "title": "Entropy Sources"
                   },
                   "password": {
                     "type": "object",

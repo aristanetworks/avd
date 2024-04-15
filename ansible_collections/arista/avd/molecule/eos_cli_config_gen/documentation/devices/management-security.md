@@ -48,7 +48,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Entropy source | hardware, haveged, cpu jitter, hardware exclusive |
+| Entropy sources | hardware, haveged, cpu jitter, hardware exclusive |
 | Common password encryption key | True |
 | Reversible password encryption | aes-256-gcm |
 | Minimum password length | 17 |

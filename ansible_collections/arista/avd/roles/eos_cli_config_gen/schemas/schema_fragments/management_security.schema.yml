@@ -10,6 +10,12 @@ keys:
     type: dict
     keys:
       entropy_source:
+        type: str
+        deprecation:
+          warning: true
+          removed: false
+          new_key: entropy_sources
+      entropy_sources:
         type: dict
         description: Source of entropy.
         keys:
