@@ -8442,6 +8442,8 @@ $defs:
           description: Enable sFlow. Overrides `fabric_sflow` setting.
         underlay_multicast:
           type: bool
+          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol`
+            and the global `underlay_multicast` to be `true`.
           default: false
         qos_profile:
           type: str

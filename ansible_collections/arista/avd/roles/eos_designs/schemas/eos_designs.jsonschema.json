@@ -4014,6 +4014,7 @@
               },
               "underlay_multicast": {
                 "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
                 "default": false,
                 "title": "Underlay Multicast"
               },
@@ -4267,6 +4268,7 @@
               },
               "underlay_multicast": {
                 "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
                 "default": false,
                 "title": "Underlay Multicast"
               },
@@ -5955,6 +5957,7 @@
               },
               "underlay_multicast": {
                 "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
                 "default": false,
                 "title": "Underlay Multicast"
               },
@@ -6208,6 +6211,7 @@
               },
               "underlay_multicast": {
                 "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
                 "default": false,
                 "title": "Underlay Multicast"
               },
