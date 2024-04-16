@@ -30,12 +30,13 @@ class TunnelInterfacesMixin(UtilsMixin):
             for connection in policy.get("connections", []):
                 if connection["type"] == "tunnel":
                     tunnel_interface = {
-                        "name": f"Tunnel{connection['id']}",
+                        "name": f"Tunnel{connection['tunnel_id']}",
+                        "description": connection["description"],
                         "mtu": 1394,  # TODO do not hardcode
-                        "ip_address": connection["ip_address"],
+                        "ip_address": connection["tunnel_ip_address"],
                         "tunnel_mode": "ipsec",  # TODO do not hardcode
                         "source_interface": connection["source_interface"],
-                        "destination": connection["destination"],
+                        "destination": connection["tunnel_destination_ip"],
                         "ipsec_profile": connection["ipsec_profile"],
                     }
 

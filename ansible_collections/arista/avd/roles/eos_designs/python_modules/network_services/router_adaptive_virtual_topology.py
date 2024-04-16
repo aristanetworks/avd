@@ -84,7 +84,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         for policy in self._filtered_wan_policies:
             pathfinder_policy = {"name": policy["name"], "matches": []}
             for match in get(policy, "matches", default=[]):
-                # popping id and load_balance_policy
+                # popping id, load_balance_and internet-exit policy
                 pathfinder_match = match.copy()
                 pathfinder_match.pop("id")
                 pathfinder_match.pop("load_balance_policy")

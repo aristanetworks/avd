@@ -32,12 +32,12 @@ class RouterServiceInsertionMixin(UtilsMixin):
                 if connection["type"] == "tunnel":
                     connections.append(
                         {
-                            "name": f"ZSCALER-CONN-{connection['id']}",
+                            "name": f"ZSCALER-CONN-{connection['tunnel_id']}",
                             "tunnel_interface": {
-                                "primary": f"Tunnel{connection['id']}",
+                                "primary": f"Tunnel{connection['tunnel_id']}",
                             },
                             # TODO this host need to match monitor connectivity, maybe centralize name generation in utils
-                            "monitor_connectivity_host": f"ZSTunnel{connection['id']}",
+                            "monitor_connectivity_host": f"ZSTunnel{connection['tunnel_id']}",
                         }
                     )
 

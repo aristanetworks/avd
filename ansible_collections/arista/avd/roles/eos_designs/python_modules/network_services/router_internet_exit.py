@@ -34,9 +34,9 @@ class RouterInternetExitMixin(UtilsMixin):
             policy_exit_groups = []
             for connection in policy.get("connections", []):
                 if connection["type"] == "tunnel":
-                    exit_group_name = connection["group"]
+                    exit_group_name = connection["exit_group"]
                     exit_groups_dict.setdefault(exit_group_name, {"local_connections": []})["local_connections"].append(
-                        {"name": f"ZSCALER-CONN-{connection['id']}"}
+                        {"name": f"ZSCALER-CONN-{connection['tunnel_id']}"}
                     )
                     # Recording the exit_group in the policy
                     policy_exit_groups.append(exit_group_name)

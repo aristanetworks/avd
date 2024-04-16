@@ -697,8 +697,8 @@ class UtilsMixin:
                 continue
 
             connection_base = {
-                "source_interface": wan_interface["name"],
                 "type": "tunnel",
+                "source_interface": wan_interface["name"],
                 "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
                 "ipsec_profile": "ZSCALER-IPSEC-PROFILE",
             }
@@ -726,7 +726,7 @@ class UtilsMixin:
                         "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
                         "tunnel_destination_ip": destination_ip,
                         "description": f"Internet Exit {internet_exit_policy['name']} {suffix}",
-                        "service_insertion_group": f"{internet_exit_policy['name']}_{suffix}",
+                        "exit_group": f"{internet_exit_policy['name']}_{suffix}",
                         "metadata": {"zscaler_endpoint": zscaler_endpoint},
                     }
                 )
