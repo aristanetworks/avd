@@ -419,7 +419,6 @@ interface Loopback0
    no shutdown
    ip address 192.168.255.11/32
    isis enable EVPN_UNDERLAY
-   isis bfd
    isis passive
 !
 interface Loopback1

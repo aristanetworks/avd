@@ -227,7 +227,6 @@ loopback_interfaces:
   ip_address: 192.168.255.4/32
   isis_enable: EVPN_UNDERLAY
   isis_passive: true
-  isis_bfd: true
 router_isis:
   instance: EVPN_UNDERLAY
   log_adjacency_changes: true
