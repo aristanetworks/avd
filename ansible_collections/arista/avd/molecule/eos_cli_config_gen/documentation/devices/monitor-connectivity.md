@@ -50,13 +50,13 @@ interface Management1
 
 #### Probing Configuration
 
-| Enabled | Interval | Default Interface Set | Addres only |
-| ------- | -------- | --------------------- | ----------- |
+| Enabled | Interval | Default Interface Set | Address Only |
+| ------- | -------- | --------------------- | ------------ |
 | True | 5 | GLOBAL_SET | True |
 
 #### Host Parameters
 
-| Host Name | Description | IPv4 Address | Probing Interface Set | Address only | URL |
+| Host Name | Description | IPv4 Address | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | --------------------- | ------------ | --- |
 | server1 | server1_connectivity_monitor | 10.10.10.1 | HOST_SET | True | https://server1.local.com |
 | server2 | server2_connectivity_monitor | 10.10.10.2 | HOST_SET | True | https://server2.local.com |
@@ -64,7 +64,7 @@ interface Management1
 
 ### VRF Configuration
 
-| Name | Description | Default Interface Set | Address only |
+| Name | Description | Default Interface Set | Address Only |
 | ---- | ----------- | --------------------- | ------------ |
 | blue | - | VRF_GLOBAL_SET | False |
 | red | vrf_connectivity_monitor | VRF_GLOBAL_SET | True |
@@ -94,7 +94,7 @@ interface Management1
 
 ##### Host Parameters
 
-| Host Name | Description | IPv4 Address | Probing Interface Set | Address only | URL |
+| Host Name | Description | IPv4 Address | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | --------------------- | ------------ | --- |
 | server2 | server2_connectivity_monitor | 10.10.20.1 | VRF_HOST_SET | True | https://server2.local.com |
 
