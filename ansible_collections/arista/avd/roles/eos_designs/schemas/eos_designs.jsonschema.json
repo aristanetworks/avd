@@ -37174,6 +37174,43 @@
                       ]
                     },
                     "title": "VRFs"
+                  },
+                  "control_functions": {
+                    "type": "object",
+                    "description": "Configure routing control function to control which routes to filter, update and accept from a peer or routing protocol.",
+                    "properties": {
+                      "code_units": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "Name of the code unit.",
+                              "title": "Name"
+                            },
+                            "content": {
+                              "type": "string",
+                              "description": "Content of route control function.\ne.g.\nfunction ACCEPT_ALL() {\n  return true;\n  }\nEOF",
+                              "title": "Content"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "title": "Code Units"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Control Functions"
                   }
                 },
                 "additionalProperties": false,
