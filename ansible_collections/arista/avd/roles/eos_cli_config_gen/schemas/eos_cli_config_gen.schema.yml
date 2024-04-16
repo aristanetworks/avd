@@ -1521,6 +1521,112 @@ keys:
             max: 9236
             convert_types:
             - str
+      aaa:
+        type: dict
+        description: Configure AAA parameters.
+        keys:
+          unresponsive:
+            type: dict
+            description: Configure AAA timeout options.
+            keys:
+              eap_response:
+                type: str
+                description: EAP response to send.
+                valid_values:
+                - success
+                - disabled
+              action:
+                type: dict
+                description: Set action for supplicant when AAA times out.
+                keys:
+                  apply_cached_results:
+                    type: bool
+                    description: Use results from a previous AAA response.
+                  cached_results_timeout:
+                    type: dict
+                    keys:
+                      time_duration:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        description: 'Enable caching for a specific duration -
+
+                          <1-10000>      duration in days
+
+                          <1-14400000>   duration in minutes
+
+                          <1-240000>     duration in hours
+
+                          <1-864000000>  duration in seconds'
+                      time_duration_unit:
+                        type: str
+                        required: true
+                        valid_values:
+                        - days
+                        - hours
+                        - minutes
+                        - seconds
+                  apply_alternate:
+                    type: bool
+                    description: 'Apply alternate action if primary action fails.
+
+                      eg. aaa unresponsive action apply cached-results else traffic
+                      allow'
+                  traffic_allow:
+                    type: bool
+                    description: Set action for supplicant traffic when AAA times
+                      out.
+                  traffic_allow_vlan:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 4094
+              phone_action:
+                type: dict
+                description: Set action for supplicant when AAA times out.
+                keys:
+                  apply_cached_results:
+                    type: bool
+                    description: Use results from a previous AAA response.
+                  cached_results_timeout:
+                    type: dict
+                    keys:
+                      time_duration:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        description: 'Enable caching for a specific duration -
+
+                          <1-10000>      duration in days
+
+                          <1-14400000>   duration in minutes
+
+                          <1-240000>     duration in hours
+
+                          <1-864000000>  duration in seconds'
+                      time_duration_unit:
+                        type: str
+                        required: true
+                        valid_values:
+                        - days
+                        - hours
+                        - minutes
+                        - seconds
+                  apply_alternate:
+                    type: bool
+                    description: 'Apply alternate action if primary action fails.
+
+                      eg. aaa unresponsive phone action apply cached-results else
+                      traffic allow'
+                  traffic_allow:
+                    description: Set action for supplicant traffic when AAA times
+                      out.
+                    type: bool
+              recovery_action_reauthenticate:
+                type: bool
   dps_interfaces:
     type: list
     primary_key: name
@@ -2839,6 +2945,63 @@ keys:
             session_tracker:
               type: str
               description: Name of session tracker
+        ip_igmp_host_proxy:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            groups:
+              type: list
+              primary_key: group
+              items:
+                type: dict
+                keys:
+                  group:
+                    type: str
+                    description: Multicast Address.
+                  exclude:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+                  include:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+            report_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 31744
+              description: Time interval between unsolicited reports.
+            access_lists:
+              type: list
+              primary_key: name
+              description: Non-standard Access List name.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+            version:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 3
+              description: IGMP version on IGMP host-proxy interface.
         peer:
           type: str
           description: Key only used for documentation or validation purposes
@@ -3220,6 +3383,52 @@ keys:
           - on-boot
           - on-logging
           - on-startup-config
+          - on-maintenance
+        trigger_on_maintenance:
+          description: Settings required for trigger 'on-maintenance'.
+          type: dict
+          keys:
+            operation:
+              type: str
+              required: true
+              valid_values:
+              - enter
+              - exit
+            bgp_peer:
+              description: 'Ipv4/Ipv6 address or peer group name.
+
+                Trigger condition occurs on maintenance operation of specified BGP
+                peer.'
+              type: str
+            action:
+              type: str
+              required: true
+              description: Action for maintenance operation.
+              valid_values:
+              - after
+              - before
+              - all
+              - begin
+              - end
+            stage:
+              type: str
+              description: Action is triggered after/before specified stage.
+              valid_values:
+              - bgp
+              - linkdown
+              - mlag
+              - ratemon
+            vrf:
+              type: str
+              description: VRF name. VRF can be defined for "bgp_peer" only.
+            interface:
+              type: str
+              description: Trigger condition occurs on maintenance operation of specified
+                interface.
+            unit:
+              type: str
+              description: Name of unit. Trigger condition occurs on maintenance operation
+                of specified unit
         regex:
           type: str
           description: 'Regular expression to use for searching log messages. Required
@@ -3293,10 +3502,17 @@ keys:
                   keys:
                     mpls:
                       type: bool
-                      description: Export MPLS forwarding information
+                      description: Export MPLS forwarding information.
       hardware:
         type: dict
         $ref: eos_cli_config_gen#/$defs/flow_tracking
+        keys:
+          record:
+            type: dict
+            keys:
+              format_ipfix_standard_timestamps_counters:
+                type: bool
+                description: Enable software export of IPFIX data records.
   flow_trackings:
     documentation_options:
       table: flow-tracking
@@ -4186,13 +4402,19 @@ keys:
           keys:
             name:
               type: str
+            type:
+              type: str
+              valid_values:
+              - ip-port
+              - port-only
+              default: ip-port
             prefix_length:
               type: int
-              required: true
               convert_types:
               - str
               min: 16
               max: 32
+              description: It is only used and required when `type` is `ip-port`.
             ranges:
               type: list
               items:
@@ -4200,12 +4422,16 @@ keys:
                 keys:
                   first_ip:
                     type: str
-                    required: true
-                    description: IPv4 address
+                    description: 'IPv4 address.
+
+                      Required when `type` is `ip-port` and ignored otherwise.'
                   last_ip:
                     type: str
-                    required: true
-                    description: IPv4 address
+                    description: 'IPv4 address.
+
+                      Required when `type` is `ip-port` and ignored otherwise.
+
+                      `first_ip` and `last_ip` ip addresses should lie in same subnet.'
                   first_port:
                     type: int
                     convert_types:
@@ -4218,6 +4444,9 @@ keys:
                     - str
                     min: 1
                     max: 65535
+                    description: 'Required when `first_port` is set.
+
+                      `last_port` must be greater than or equal to `first_port`.'
             utilization_log_threshold:
               type: int
               convert_types:
@@ -4374,11 +4603,18 @@ keys:
               description: Policy name.
             local_id:
               type: str
-              description: 'Local IKE Identification.
+              description: 'Local IKE identification.
 
                 Can be an IPv4 or an IPv6 address.
 
-                '
+                If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes
+                precedence.'
+            local_id_fqdn:
+              type: str
+              description: 'Local FQDN or UFQDN IKE identification.
+
+                If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes
+                precedence.'
             ike_lifetime:
               type: int
               convert_types:
@@ -5879,6 +6115,26 @@ keys:
     keys:
       entropy_source:
         type: str
+        deprecation:
+          warning: true
+          remove_in_version: v5.0.0
+          new_key: entropy_sources
+      entropy_sources:
+        type: dict
+        description: Source of entropy.
+        keys:
+          hardware:
+            type: bool
+            description: Use a hardware based source.
+          haveged:
+            type: bool
+            description: Use the HAVEGE algorithm.
+          cpu_jitter:
+            type: bool
+            description: Use the Jitter RNG algorithm of a CPU based source.
+          hardware_exclusive:
+            type: bool
+            description: Only use entropy from the hardware source.
       password:
         type: dict
         keys:
@@ -7248,6 +7504,80 @@ keys:
                         type: int
                         convert_types:
                         - str
+                  police:
+                    type: dict
+                    keys:
+                      rate:
+                        type: int
+                        convert_types:
+                        - str
+                        description: 'Specify rate.
+
+                          Range in kbps <8-200000000>.'
+                      rate_unit:
+                        type: str
+                        valid_values:
+                        - bps
+                        - kbps
+                        - mbps
+                        - pps
+                        default: bps
+                      rate_burst_size:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Range in bytes <256-128000000>.
+                      rate_burst_size_unit:
+                        type: str
+                        valid_values:
+                        - bytes
+                        - kbytes
+                        - mbytes
+                        - packets
+                        default: bytes
+                      action:
+                        type: dict
+                        keys:
+                          type:
+                            description: Set action for policed traffic.
+                            type: str
+                            valid_values:
+                            - dscp
+                            - drop-precedence
+                          dscp_value:
+                            description: Set when action.type is set to "dscp".
+                            type: str
+                            convert_types:
+                            - int
+                      higher_rate:
+                        type: int
+                        convert_types:
+                        - str
+                        description: 'Specify higher rate.
+
+                          Range in kbps <lower_rate in kbps + 8 - lower_rate in kbps
+                          + 200000000>.'
+                      higher_rate_unit:
+                        type: str
+                        valid_values:
+                        - bps
+                        - kbps
+                        - mbps
+                        - pps
+                        default: bps
+                      higher_rate_burst_size:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Range in bytes <256-128000000>.
+                      higher_rate_burst_size_unit:
+                        type: str
+                        valid_values:
+                        - bytes
+                        - kbytes
+                        - mbytes
+                        - packets
+                        default: bytes
   port_channel_interfaces:
     type: list
     primary_key: name
@@ -8038,6 +8368,63 @@ keys:
             session_tracker:
               type: str
               description: Name of session tracker
+        ip_igmp_host_proxy:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            groups:
+              type: list
+              primary_key: group
+              items:
+                type: dict
+                keys:
+                  group:
+                    type: str
+                    description: Multicast Address.
+                  exclude:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+                  include:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+            report_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 31744
+              description: Time interval between unsolicited reports.
+            access_lists:
+              type: list
+              primary_key: name
+              description: Non-standard Access List name.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+            version:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 3
+              description: IGMP version on IGMP host-proxy interface.
         peer:
           type: str
           description: Key only used for documentation or validation purposes
@@ -12112,6 +12499,10 @@ keys:
               - str
               min: 1
               max: 3600
+      eos_cli:
+        type: str
+        description: Multiline EOS CLI rendered directly on the Router BGP in the
+          final EOS configuration.
   router_general:
     type: dict
     display_name: Router General configuration
@@ -12228,6 +12619,59 @@ keys:
               valid_values:
               - all
               - iif
+  router_internet_exit:
+    type: dict
+    description: Internet-exit feature to configure internet bound service for virtual
+      topologies.
+    keys:
+      policies:
+        type: list
+        description: Internet-exit policy represent a policy which can be attached
+          to a virtual topology profile.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            exit_groups:
+              type: list
+              description: The exit groups that are configured under a policy are
+                strictly ordered, meaning an exit group appearing first has more priority
+                than the exit group that follows it.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+      exit_groups:
+        type: list
+        description: 'Exit groups represent a group of exit options (connections).
+
+          Traffic flows are load balanced in a round robin fashion across all the
+          members (exits) of the exit-group.'
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            fib_default:
+              type: bool
+              description: Fib default exit indicates that the flows that select this
+                exit will follow the default route available in the VRF of the flow.
+            local_connections:
+              type: list
+              description: 'Local connections refer to connections configured under
+                the `router_service_insertion`.
+
+                The service-insertion module reports the health of the connection
+                and the exit will qualify for use only when it is healthy.'
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
   router_isis:
     type: dict
     keys:
@@ -12605,6 +13049,10 @@ keys:
                 min: 5
                 max: 300
                 description: Level-2 LSP database sync wait time in seconds.
+      eos_cli:
+        type: str
+        description: Multiline EOS CLI rendered directly on the router isis in the
+          final EOS configuration.
   router_l2_vpn:
     type: dict
     keys:
@@ -13609,10 +14057,52 @@ keys:
                         type: bool
   router_service_insertion:
     type: dict
-    description: Configure network services inserted to data forwarding
+    description: Configure network services inserted to data forwarding.
     keys:
       enabled:
         type: bool
+      connections:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Connection name.
+            ethernet_interface:
+              type: dict
+              description: 'Outgoing physical interface or subinterface to use for
+                the connection.
+
+                If both `ethernet_interface` and `tunnel_interface` are configured,
+                `ethernet_interface` will be used.'
+              keys:
+                name:
+                  type: str
+                  required: true
+                  description: e.g. Ethernet2 or Ethernet2/2.2
+                next_hop:
+                  type: str
+                  required: true
+                  description: Next-hop IPv4 address (without mask).
+            tunnel_interface:
+              type: dict
+              description: 'Outgoing tunnel interface(s) to use for this connection.
+
+                If both `ethernet_interface` and `tunnel_interface` are configured,
+                `ethernet_interface` will be used.'
+              keys:
+                primary:
+                  type: str
+                  description: e.g. Tunnel2
+                secondary:
+                  type: str
+                  description: e.g. Tunnel3
+            monitor_connectivity_host:
+              type: str
+              description: Name of the host defined under `monitor_connectivity.hosts`
+                used to derive the health of the connection.
   router_traffic_engineering:
     type: dict
     keys:
@@ -15016,6 +15506,16 @@ keys:
                 mss ceiling
 
                 '
+        tunnel_mode:
+          type: str
+          valid_values:
+          - gre
+          - ipsec
+          description: 'Tunnel encapsulation method.
+
+            `gre`: Generic route encapsulation protocol,
+
+            `ipsec`: IPsec-over-IP encapsulation.'
         source_interface:
           type: str
           description: Tunnel Source Interface Name
@@ -15025,6 +15525,14 @@ keys:
         path_mtu_discovery:
           type: bool
           description: Enable Path MTU Discovery On Tunnel
+        ipsec_profile:
+          type: str
+          description: 'Used only when `tunnel_mode` is set to `ipsec`.
+
+            It must target a defined IPsec profile.'
+        nat_profile:
+          type: str
+          description: NAT interface profile.
         eos_cli:
           type: str
           description: 'Multiline String with EOS CLI rendered directly on the Tunnel
@@ -15130,6 +15638,63 @@ keys:
           - str
           min: 1
           max: 3
+        ip_igmp_host_proxy:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            groups:
+              type: list
+              primary_key: group
+              items:
+                type: dict
+                keys:
+                  group:
+                    type: str
+                    description: Multicast Address.
+                  exclude:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+                  include:
+                    type: list
+                    primary_key: source
+                    description: The same source must not be present both in `exclude`
+                      and `include` list.
+                    items:
+                      type: dict
+                      keys:
+                        source:
+                          type: str
+            report_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 31744
+              description: Time interval between unsolicited reports.
+            access_lists:
+              type: list
+              primary_key: name
+              description: Non-standard Access List name.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+            version:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 3
+              description: IGMP version on IGMP host-proxy interface.
         ip_helpers:
           type: list
           description: List of DHCP servers

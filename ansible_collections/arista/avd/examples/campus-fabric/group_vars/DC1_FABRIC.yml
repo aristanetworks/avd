@@ -39,10 +39,10 @@ l3spine:
       nodes:
         - name: SPINE1
           id: 1
-          mgmt_ip: 172.100.100.101/24
+          mgmt_ip: 172.16.100.101/24
         - name: SPINE2
           id: 2
-          mgmt_ip: 172.100.100.102/24
+          mgmt_ip: 172.16.100.102/24
 
 # IDF - Leaf Switches
 leaf:
@@ -63,12 +63,12 @@ leaf:
       nodes:
         - name: LEAF1A
           id: 3
-          mgmt_ip: 172.100.100.103/24
+          mgmt_ip: 172.16.100.103/24
           uplink_switches: [SPINE1]
           uplink_switch_interfaces: [Ethernet1]
         - name: LEAF1B
           id: 4
-          mgmt_ip: 172.100.100.104/24
+          mgmt_ip: 172.16.100.104/24
           uplink_switches: [SPINE2]
           uplink_switch_interfaces: [Ethernet1]
     - group: IDF2
@@ -79,7 +79,7 @@ leaf:
       nodes:
         - name: LEAF2A
           id: 5
-          mgmt_ip: 172.100.100.105/24
+          mgmt_ip: 172.16.100.105/24
           uplink_interfaces: [Ethernet1/1, Ethernet1/3]
           uplink_switches: [SPINE1, SPINE2]
           uplink_switch_interfaces: [Ethernet49/1, Ethernet49/1]
@@ -93,11 +93,11 @@ leaf:
       nodes:
         - name: LEAF3A
           id: 6
-          mgmt_ip: 172.100.100.106/24
+          mgmt_ip: 172.16.100.106/24
           uplink_switch_interfaces: [Ethernet50/1, Ethernet50/1]
         - name: LEAF3B
           id: 7
-          mgmt_ip: 172.100.100.107/24
+          mgmt_ip: 172.16.100.107/24
           uplink_switch_interfaces: [Ethernet51/1, Ethernet51/1]
     - group: IDF3_3C
       mlag: false
@@ -106,7 +106,7 @@ leaf:
       nodes:
         - name: LEAF3C
           id: 8
-          mgmt_ip: 172.100.100.108/24
+          mgmt_ip: 172.16.100.108/24
           uplink_switch_interfaces: [Ethernet97/3, Ethernet97/3]
     - group: IDF3_3D
       mlag: false
@@ -115,7 +115,7 @@ leaf:
       nodes:
         - name: LEAF3D
           id: 9
-          mgmt_ip: 172.100.100.109/24
+          mgmt_ip: 172.16.100.109/24
           uplink_switch_interfaces: [Ethernet97/4, Ethernet97/4]
     - group: IDF3_3E
       mlag: false
@@ -124,7 +124,7 @@ leaf:
       nodes:
         - name: LEAF3E
           id: 10
-          mgmt_ip: 172.100.100.110/24
+          mgmt_ip: 172.16.100.110/24
           uplink_switch_interfaces: [Ethernet98/1, Ethernet98/1]
 
 
