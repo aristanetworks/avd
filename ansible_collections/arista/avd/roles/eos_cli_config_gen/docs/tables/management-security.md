@@ -53,11 +53,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificate_revocation_lists</samp>](## "management_security.ssl_profiles.[].certificate_revocation_lists") | List, items: String |  |  |  | List of CRLs (Certificate Revocation List).<br>If specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.ssl_profiles.[].certificate_revocation_lists.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;shared_secret_profiles</samp>](## "management_security.shared_secret_profiles") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile_name</samp>](## "management_security.shared_secret_profiles.[].profile_name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile_name</samp>](## "management_security.shared_secret_profiles.[].profile_name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secrets</samp>](## "management_security.shared_secret_profiles.[].secrets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.shared_secret_profiles.[].secrets.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.shared_secret_profiles.[].secrets.[].secret") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime") | String |  |  |  | Specify the lifetime of password. Below options are available,<br>infinite    -    infinite lifetime<br>mm/dd/yyyy  -    date<br>yyyy-mm-dd  -    date |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime") | String |  |  |  | Specify the lifetime of password. Below options are available. This value is applicable to receive-lifetime and transmit lifetime.<br>If lifetime, receive-lifetime and transmit-lifetime are specified then AVD will apply the value of lifetime to both receive and transmit lifetime.<br>infinite    -    infinite lifetime<br>mm/dd/yyyy  -    date<br>yyyy-mm-dd  -    date |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive_lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime") | String |  |  |  | Specify the lifetime for receiving the key.<br>infinite    -     infinite lifetime<br>mm/dd/yyyy  -     date<br>yyyy-mm-dd  -     date |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transmit_lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime") | String |  |  |  | Specify the lifetime for transmitting the key.<br>infinite    -     infinite lifetime<br>mm/dd/yyyy  -     date<br>yyyy-mm-dd  -     date |
 
@@ -148,12 +148,13 @@
           certificate_revocation_lists:
             - <str>
       shared_secret_profiles:
-        - profile_name: <str>
+        - profile_name: <str; required; unique>
           secrets:
             - name: <str>
               secret: <str>
 
-              # Specify the lifetime of password. Below options are available,
+              # Specify the lifetime of password. Below options are available. This value is applicable to receive-lifetime and transmit lifetime.
+              # If lifetime, receive-lifetime and transmit-lifetime are specified then AVD will apply the value of lifetime to both receive and transmit lifetime.
               # infinite    -    infinite lifetime
               # mm/dd/yyyy  -    date
               # yyyy-mm-dd  -    date

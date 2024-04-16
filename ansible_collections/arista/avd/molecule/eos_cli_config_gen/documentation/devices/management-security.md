@@ -12,6 +12,7 @@
   - [SSL profile test2-chain-cert Certificates Summary](#ssl-profile-test2-chain-cert-certificates-summary)
   - [SSL profile test2-trust-cert Certificates Summary](#ssl-profile-test2-trust-cert-certificates-summary)
   - [Password Policies](#password-policies)
+  - [Secret Profiles](#secret-profiles)
   - [Management Security Device Configuration](#management-security-device-configuration)
 
 ## Management
@@ -97,6 +98,15 @@ interface Management1
 |-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
 | AVD_POLICY | > 1 | > 2 | > 3 | > 4 | > 5 | < 6 | < 7 |
 
+### Secret Profiles
+
+| Profile Name | Secret Name | Secret Password | Receive Lifetime | Transmit Lifetime |
+| ------------ | ----------- | --------------- | ---------------- | ----------------- |
+| profile1 | name0 | secret3 | infinite | infinite |
+|  | name1 | secret1 | infinite | infinite |
+|   | name2 | secret2 | 20/12/2024 | infinite |
+| profile2 | name3 | secret4 | infinite | infinite |
+
 ### Management Security Device Configuration
 
 ```eos
@@ -142,6 +152,9 @@ management security
    ssl profile tls-versions-profile
       tls versions 1.0 1.1
    session shared-secret profile profile1
+      secret name0 secret3 infinite
       secret name1 secret1 infinite
       secret name2 secret2 receive-lifetime 20/12/2024 transmit-lifetime infinite
+   session shared-secret profile profile2
+      secret name3 secret4 infinite
 ```

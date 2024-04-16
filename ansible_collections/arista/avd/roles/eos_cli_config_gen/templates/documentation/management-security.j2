@@ -129,6 +129,33 @@
 | {{ policy.name }} | > {{ min_digits }} | > {{ min_length }} | > {{ min_lower }} | > {{ min_special }} | > {{ min_upper }} | < {{ max_repetitive }} | < {{ max_sequential }} |
 {%         endfor %}
 {%     endif %}
+{%     if management_security.shared_secret_profiles is arista.avd.defined %}
+
+### Secret Profiles
+
+| Profile Name | Secret Name | Secret Password | Receive Lifetime | Transmit Lifetime |
+| ------------ | ----------- | --------------- | ---------------- | ----------------- |
+{%         for profile in management_security.shared_secret_profiles | arista.avd.natural_sort("profile_name") %}
+{%             if profile.secrets is arista.avd.defined %}
+{%                 set temp = [] %}
+{%                 for secret in profile.secrets | arista.avd.natural_sort("name") %}
+{%                     do temp.append(secret) %}
+{%                 endfor %}
+{%                 for secret in temp %}
+{%                     if temp.index(secret) == 0 and secret.lifetime is arista.avd.defined %}
+| {{ profile.profile_name }} | {{ secret.name }} | {{ secret.secret }} | {{ secret.lifetime }} | {{ secret.lifetime }} |
+{%                     elif temp.index(secret) == 0 and secret.receive_lifetime is arista.avd.defined and secret.transmit_lifetime is arista.avd.defined %}
+| {{ profile.profile_name }} | {{ secret.name }} | {{ secret.secret }} | {{ secret.receive_lifetime }} | {{ secret.transmit_lifetime }} |
+{%                     endif %}
+{%                     if temp.index(secret) != 0 and secret.lifetime is arista.avd.defined %}
+|  | {{ secret.name }} | {{ secret.secret }} | {{ secret.lifetime }} | {{ secret.lifetime }} |
+{%                     elif temp.index(secret) != 0 and secret.receive_lifetime is arista.avd.defined and secret.transmit_lifetime is arista.avd.defined %}
+|   | {{ secret.name }} | {{ secret.secret }} | {{ secret.receive_lifetime }} | {{ secret.transmit_lifetime }} |
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 
 ### Management Security Device Configuration
 

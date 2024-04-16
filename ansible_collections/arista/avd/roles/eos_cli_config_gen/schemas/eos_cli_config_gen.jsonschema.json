@@ -10758,7 +10758,7 @@
                     },
                     "lifetime": {
                       "type": "string",
-                      "description": "Specify the lifetime of password. Below options are available,\ninfinite    -    infinite lifetime\nmm/dd/yyyy  -    date\nyyyy-mm-dd  -    date",
+                      "description": "Specify the lifetime of password. Below options are available. This value is applicable to receive-lifetime and transmit lifetime.\nIf lifetime, receive-lifetime and transmit-lifetime are specified then AVD will apply the value of lifetime to both receive and transmit lifetime.\ninfinite    -    infinite lifetime\nmm/dd/yyyy  -    date\nyyyy-mm-dd  -    date",
                       "title": "Lifetime"
                     },
                     "receive_lifetime": {
@@ -10783,7 +10783,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "profile_name"
+            ]
           },
           "title": "Shared Secret Profiles"
         }
@@ -17335,6 +17338,7 @@
               },
               "shared_secret_profile_name": {
                 "type": "string",
+                "description": "To apply the profile name, it must be created under \"management-security\".",
                 "title": "Shared Secret Profile Name"
               },
               "hash_algorithm": {
@@ -17659,6 +17663,7 @@
               },
               "shared_secret_profile_name": {
                 "type": "string",
+                "description": "To apply a profile, it must be created under \"management-security\".",
                 "title": "Shared Secret Profile Name"
               },
               "hash_algorithm": {
