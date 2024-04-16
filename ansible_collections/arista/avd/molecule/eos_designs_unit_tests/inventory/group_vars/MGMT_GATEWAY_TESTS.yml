@@ -4,10 +4,7 @@
 default_node_types:
   - node_type: l2leaf
     match_hostnames:
-      - "MGMT-GATEWAY-IN-NODE-GROUP-NODES"
-      - "MGMT-GATEWAY-IN-NODE-GROUP"
-      - "IPV6-MGMT-GATEWAY-IN-NODE-GROUP-NODES"
-      - "IPV6-MGMT-GATEWAY-IN-NODE-GROUP"
+      - "TEST-MGMT-GATEWAY-IN-NODE-GROUP"
 
 mgmt_gateway: 192.168.201.250
 ipv6_mgmt_gateway: 2000::1
@@ -19,21 +16,9 @@ l2leaf:
   node_groups:
     - group: MGMT_GATEWAY_TESTS
       nodes:
-        - name: MGMT-GATEWAY-IN-NODE-GROUP-NODES
+        - name: TEST-MGMT-GATEWAY-IN-NODE-GROUP
           id: 3
           mgmt_ip: 192.168.201.202/24
-          mgmt_gateway: 192.168.201.254
-        - name: MGMT-GATEWAY-IN-NODE-GROUP
-          id: 4
-          mgmt_ip: 192.168.201.203/24
-      mgmt_gateway: 192.168.201.253
-    - group: IPV6-MGMT_GATEWAY_TESTS
-      nodes:
-        - name: IPV6-MGMT-GATEWAY-IN-NODE-GROUP-NODES
-          id: 3
           ipv6_mgmt_ip: 2000::105/64
-          ipv6_mgmt_gateway: 2000::2
-        - name: IPV6-MGMT-GATEWAY-IN-NODE-GROUP
-          id: 4
-          ipv6_mgmt_ip: 2000::104/64
-      ipv6_mgmt_gateway: 2000::3
+      mgmt_gateway: 192.168.201.254
+      ipv6_mgmt_gateway: 2000::2
