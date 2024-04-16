@@ -34156,6 +34156,11 @@
                             "route_map": {
                               "type": "string",
                               "title": "Route Map"
+                            },
+                            "rcf": {
+                              "type": "string",
+                              "description": "RCF function name without parenthesis.",
+                              "title": "RCF"
                             }
                           },
                           "additionalProperties": false,
@@ -34545,6 +34550,35 @@
                           ]
                         },
                         "title": "Networks"
+                      },
+                      "redistribute_routes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "source_protocol": {
+                              "type": "string",
+                              "title": "Source Protocol"
+                            },
+                            "include_leaked": {
+                              "type": "boolean",
+                              "title": "Include Leaked"
+                            },
+                            "rcf": {
+                              "type": "string",
+                              "description": "RCF function name without parenthesis.",
+                              "title": "RCF"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "source_protocol"
+                          ]
+                        },
+                        "title": "Redistribute Routes"
                       }
                     },
                     "additionalProperties": false,
@@ -35541,6 +35575,11 @@
                                   "route_map": {
                                     "type": "string",
                                     "title": "Route Map"
+                                  },
+                                  "rcf": {
+                                    "type": "string",
+                                    "description": "RCF function name without parenthesis.",
+                                    "title": "RCF"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -35572,6 +35611,11 @@
                                   "route_map": {
                                     "type": "string",
                                     "title": "Route Map"
+                                  },
+                                  "rcf": {
+                                    "type": "string",
+                                    "description": "RCF function name without parenthesis.",
+                                    "title": "RCF"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -36026,6 +36070,11 @@
                               "include_leaked": {
                                 "type": "boolean",
                                 "title": "Include Leaked"
+                              },
+                              "rcf": {
+                                "type": "string",
+                                "description": "RCF function name without parenthesis.",
+                                "title": "RCF"
                               }
                             },
                             "additionalProperties": false,
