@@ -5467,9 +5467,76 @@
             "enum": [
               "on-boot",
               "on-logging",
-              "on-startup-config"
+              "on-startup-config",
+              "on-maintenance"
             ],
             "title": "Trigger"
+          },
+          "trigger_on_maintenance": {
+            "description": "Settings required for trigger 'on-maintenance'.",
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "enter",
+                  "exit"
+                ],
+                "title": "Operation"
+              },
+              "bgp_peer": {
+                "description": "Ipv4/Ipv6 address or peer group name.\nTrigger condition occurs on maintenance operation of specified BGP peer.",
+                "type": "string",
+                "title": "BGP Peer"
+              },
+              "action": {
+                "type": "string",
+                "description": "Action for maintenance operation.",
+                "enum": [
+                  "after",
+                  "before",
+                  "all",
+                  "begin",
+                  "end"
+                ],
+                "title": "Action"
+              },
+              "stage": {
+                "type": "string",
+                "description": "Action is triggered after/before specified stage.",
+                "enum": [
+                  "bgp",
+                  "linkdown",
+                  "mlag",
+                  "ratemon"
+                ],
+                "title": "Stage"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF name. VRF can be defined for \"bgp_peer\" only.",
+                "title": "VRF"
+              },
+              "interface": {
+                "type": "string",
+                "description": "Trigger condition occurs on maintenance operation of specified interface.",
+                "title": "Interface"
+              },
+              "unit": {
+                "type": "string",
+                "description": "Name of unit. Trigger condition occurs on maintenance operation of specified unit",
+                "title": "Unit"
+              }
+            },
+            "required": [
+              "operation",
+              "action"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Maintenance"
           },
           "regex": {
             "type": "string",
@@ -7344,10 +7411,20 @@
                 "type": "string",
                 "title": "Name"
               },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "ip-port",
+                  "port-only"
+                ],
+                "default": "ip-port",
+                "title": "Type"
+              },
               "prefix_length": {
                 "type": "integer",
                 "minimum": 16,
                 "maximum": 32,
+                "description": "It is only used and required when `type` is `ip-port`.",
                 "title": "Prefix Length"
               },
               "ranges": {
@@ -7357,12 +7434,12 @@
                   "properties": {
                     "first_ip": {
                       "type": "string",
-                      "description": "IPv4 address",
+                      "description": "IPv4 address.\nRequired when `type` is `ip-port` and ignored otherwise.",
                       "title": "First IP"
                     },
                     "last_ip": {
                       "type": "string",
-                      "description": "IPv4 address",
+                      "description": "IPv4 address.\nRequired when `type` is `ip-port` and ignored otherwise.\n`first_ip` and `last_ip` ip addresses should lie in same subnet.",
                       "title": "Last IP"
                     },
                     "first_port": {
@@ -7375,13 +7452,10 @@
                       "type": "integer",
                       "minimum": 1,
                       "maximum": 65535,
+                      "description": "Required when `first_port` is set.\n`last_port` must be greater than or equal to `first_port`.",
                       "title": "Last Port"
                     }
                   },
-                  "required": [
-                    "first_ip",
-                    "last_ip"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -7396,14 +7470,13 @@
                 "title": "Utilization Log Threshold"
               }
             },
-            "required": [
-              "prefix_length",
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Pools"
         },
@@ -7661,8 +7734,13 @@
               },
               "local_id": {
                 "type": "string",
-                "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
+                "description": "Local IKE identification.\nCan be an IPv4 or an IPv6 address.\nIf both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.",
                 "title": "Local ID"
+              },
+              "local_id_fqdn": {
+                "type": "string",
+                "description": "Local FQDN or UFQDN IKE identification.\nIf both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.",
+                "title": "Local ID Fqdn"
               },
               "ike_lifetime": {
                 "type": "integer",

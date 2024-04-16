@@ -9,7 +9,7 @@ jobs:
     if: github.repository == 'aristanetworks/avd'
     steps:
       # Issue stale management
-    - uses: actions/stale@v6
+    - uses: actions/stale@v9
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         days-before-stale: 90
