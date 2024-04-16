@@ -19,6 +19,6 @@ l2leaf:
         - name: TEST-MGMT-GATEWAY-IN-NODE-GROUP
           id: 3
           mgmt_ip: 192.168.201.202/24
-          ipv6_mgmt_ip: 2000::105/64
+          ipv6_mgmt_ip: 2001:db8::105/64
       mgmt_gateway: 192.168.201.254
-      ipv6_mgmt_gateway: 2000::2
+      ipv6_mgmt_gateway: 2001:db8::2
