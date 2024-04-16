@@ -79,7 +79,7 @@ interface Management1
 
 ##### Host Parameters
 
-| Host Name | Description | IPv4 Address | Probing Interface Set | Address only | URL |
+| Host Name | Description | IPv4 Address | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | --------------------- | ------------ | --- |
 | server4 | server4_connectivity_monitor | 10.10.20.1 | VRF_HOST_SET | False | https://server2.local.com |
 
