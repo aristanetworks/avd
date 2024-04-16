@@ -6311,6 +6311,7 @@ keys:
                 type: str
       shared_secret_profiles:
         type: list
+        primary_key: profile_name
         items:
           type: dict
           keys:
@@ -6328,7 +6329,12 @@ keys:
                   lifetime:
                     type: str
                     description: 'Specify the lifetime of password. Below options
-                      are available,
+                      are available. This value is applicable to receive-lifetime
+                      and transmit lifetime.
+
+                      If lifetime, receive-lifetime and transmit-lifetime are specified
+                      then AVD will apply the value of lifetime to both receive and
+                      transmit lifetime.
 
                       infinite    -    infinite lifetime
 
@@ -10343,6 +10349,7 @@ keys:
               type: str
             shared_secret_profile_name:
               type: str
+              description: To apply the profile name, it must be created under "management-security".
             hash_algorithm:
               type: str
               valid_values:
@@ -10547,6 +10554,7 @@ keys:
               type: str
             shared_secret_profile_name:
               type: str
+              description: To apply a profile, it must be created under "management-security".
             hash_algorithm:
               type: str
               valid_values:

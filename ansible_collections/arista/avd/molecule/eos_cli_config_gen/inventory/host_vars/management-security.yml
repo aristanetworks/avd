@@ -70,3 +70,13 @@ management_security:
           secret: secret2
           receive_lifetime: 20/12/2024
           transmit_lifetime: infinite
+        - name: name0
+          secret: secret3
+          lifetime: infinite
+    - profile_name: profile2
+      secrets:
+        - name: name3
+          secret: secret4
+          lifetime: infinite
+          receive_lifetime: "2024-12-20"
+          transmit_lifetime: infinite

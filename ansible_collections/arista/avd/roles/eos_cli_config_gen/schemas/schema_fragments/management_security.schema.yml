@@ -183,6 +183,7 @@ keys:
                 type: str
       shared_secret_profiles:
         type: list
+        primary_key: profile_name
         items:
           type: dict
           keys:
@@ -200,7 +201,8 @@ keys:
                   lifetime:
                     type: str
                     description: |-
-                      Specify the lifetime of password. Below options are available,
+                      Specify the lifetime of password. Below options are available. This value is applicable to receive-lifetime and transmit lifetime.
+                      If lifetime, receive-lifetime and transmit-lifetime are specified then AVD will apply the value of lifetime to both receive and transmit lifetime.
                       infinite    -    infinite lifetime
                       mm/dd/yyyy  -    date
                       yyyy-mm-dd  -    date
