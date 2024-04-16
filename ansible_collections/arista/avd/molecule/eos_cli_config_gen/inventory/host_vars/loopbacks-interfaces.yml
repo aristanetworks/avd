@@ -10,6 +10,7 @@ loopback_interfaces:
   - name: Loopback1
     description: VTEP_VXLAN_Tunnel_Source
     ip_address: 192.168.254.3/32
+    isis_bfd: true
 
   - name: Loopback100
     description: TENANT_A_PROJECT02_VTEP_DIAGNOSTICS

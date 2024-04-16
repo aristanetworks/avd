@@ -82,6 +82,7 @@ interface Loopback0
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    ip address 192.168.254.3/32
+   isis bfd
 !
 interface Loopback99
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
