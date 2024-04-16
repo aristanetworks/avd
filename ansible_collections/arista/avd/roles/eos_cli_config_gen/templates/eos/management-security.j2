@@ -10,6 +10,20 @@ management security
 {%     if management_security.entropy_source is arista.avd.defined %}
    entropy source {{ management_security.entropy_source }}
 {%     endif %}
+{%     if management_security.entropy_sources is arista.avd.defined %}
+{%         set entropy_sources = [] %}
+{%         for source in ['hardware', 'haveged', 'cpu_jitter'] %}
+{%             if management_security.entropy_sources[source] is arista.avd.defined(true) %}
+{%                 do entropy_sources.append(source.replace("_", " ")) %}
+{%             endif %}
+{%         endfor %}
+{%         if entropy_sources %}
+   entropy source {{ entropy_sources | join(" ") }}
+{%         endif %}
+{%         if management_security.entropy_sources.hardware_exclusive is arista.avd.defined(true) %}
+   entropy source hardware exclusive
+{%         endif %}
+{%     endif %}
 {%     if management_security.password.encryption_key_common is arista.avd.defined(true) %}
    password encryption-key common
 {%     endif %}
