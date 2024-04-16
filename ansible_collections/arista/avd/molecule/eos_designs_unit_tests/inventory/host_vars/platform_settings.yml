@@ -1,0 +1,11 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: platform_settings
+
+platform_settings:
+  - platforms: [ default ]
+    structured_config:
+      ethernet_interfaces:
+        - name: Ethernet12
+          description: Interface Created from platform_settings.structured_config

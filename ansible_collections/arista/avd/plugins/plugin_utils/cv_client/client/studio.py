@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import json
-from asyncio import gather
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Literal
 
@@ -14,6 +13,7 @@ from ..api.arista.studio.v1 import (
     InputsConfig,
     InputsConfigServiceStub,
     InputsConfigSetRequest,
+    InputsConfigSetSomeRequest,
     InputsConfigStreamRequest,
     InputsKey,
     InputsRequest,
@@ -353,9 +353,9 @@ class StudioMixin:
     async def set_topology_studio_inputs(
         self: CVClient,
         workspace_id: str,
-        device_inputs: list[tuple[str, str]],
+        device_inputs: list[tuple[str, str, str]],
         timeout: float = 10.0,
-    ) -> list[InputsConfig]:
+    ) -> list[InputsKey]:
         """
         TODO: Once the topology studio inputs API is public, this function can be replaced by the _future variant.
               It will probably need some version detection to see if the API is supported.
@@ -365,35 +365,40 @@ class StudioMixin:
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             device_inputs: List of Tuples with the format (<device_id>, <hostname>, <system_mac>).
-            timeout: Base timeout in seconds. 0.5 second will be added per device.
+            timeout: Base timeout in seconds. 0.1 second will be added per device.
         """
         device_inputs_by_id = {device_id: {"hostname": hostname, "macAddress": system_mac} for device_id, hostname, system_mac in device_inputs}
 
         # We need to get all the devices to make sure we get the correct index of devices.
         studio_inputs: dict = await self.get_studio_inputs(studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={}, timeout=timeout)
 
-        coroutines = []
+        request = InputsConfigSetSomeRequest(values=[])
+
         for device_index, device_entry in enumerate(studio_inputs.get("devices", [])):
             if not isinstance(device_entry, dict):
                 continue
+
             device_id = str(device_entry.get("tags", {}).get("query", "")).removeprefix("device:")
 
             # Ignore the device if it is not one of the requested devices.
             if device_id not in device_inputs_by_id:
                 continue
 
-            # Update the given fields for the device and submit a separate set request for this device.
+            # Update the given fields for the device and add a separate SetSome entry for this device.
             device_info: dict = device_entry.get("inputs", {}).get("device", {})
             device_info.update(device_inputs_by_id.pop(device_id))
-            coroutines.append(
-                self.set_studio_inputs(
-                    studio_id=TOPOLOGY_STUDIO_ID,
-                    workspace_id=workspace_id,
-                    input_path=["devices", str(device_index), "inputs", "device"],
-                    inputs=device_info,
-                    timeout=timeout + len(device_inputs_by_id) * 0.5,
+
+            request.values.append(
+                InputsConfig(
+                    key=InputsKey(
+                        studio_id=TOPOLOGY_STUDIO_ID,
+                        workspace_id=workspace_id,
+                        path=RepeatedString(values=["devices", str(device_index), "inputs", "device"]),
+                    ),
+                    inputs=json.dumps(device_info),
                 )
             )
+
         index_offset = len(studio_inputs.get("devices", []))
         # Add any devices not part of the topology studio already.
         for index, device in enumerate(device_inputs_by_id.items()):
@@ -403,16 +408,28 @@ class StudioMixin:
                 "inputs": {"device": {**device_inputs, "modelName": "", "interfaces": []}},
                 "tags": {"query": f"device:{device_id}"},
             }
-            coroutines.append(
-                self.set_studio_inputs(
-                    studio_id=TOPOLOGY_STUDIO_ID,
-                    workspace_id=workspace_id,
-                    input_path=["devices", str(device_index)],
-                    inputs=device_entry,
-                    timeout=timeout + len(device_inputs_by_id) * 0.5,
+            request.values.append(
+                InputsConfig(
+                    key=InputsKey(
+                        studio_id=TOPOLOGY_STUDIO_ID,
+                        workspace_id=workspace_id,
+                        path=RepeatedString(values=["devices", str(device_index)]),
+                    ),
+                    inputs=json.dumps(device_entry),
                 )
             )
-        return await gather(*coroutines)
+
+        input_keys = []
+        client = InputsConfigServiceStub(self._channel)
+        try:
+            responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
+            async for response in responses:
+                input_keys.append(response.key)
+
+            return input_keys
+
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Studio ID '{TOPOLOGY_STUDIO_ID}, Workspace ID '{workspace_id}', Devices '{device_inputs}'") or e
 
     # Future versions for once topology studio API is available.
     #
