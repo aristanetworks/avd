@@ -1,18 +1,25 @@
 ---
 # This is deploying the latest commits on devel to aristanetworks/avd-docs main branch
 name: Deploy devel documentation to aristanetworks/avd-docs main
+
 on:
   push:
     branches:
       - devel
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   'devel_doc':
     name: 'Update Public devel documentation'
     runs-on: ubuntu-latest
+    if: github.repository == 'aristanetworks/avd'
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout AVD
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
