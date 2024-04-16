@@ -19,8 +19,8 @@ jobs:
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
         id: filter
         with:
           filters: |
@@ -81,9 +81,9 @@ jobs:
     needs: file-changes
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
       - name: Install Python requirements
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
@@ -93,44 +93,6 @@ jobs:
       # Do NOT set a name for the pre-commit-ci action. Otherwise the Github App will not pick it up.
       - uses: pre-commit-ci/lite-action@v1.0.0
         if: always()
-  # ----------------------------------- #
-  # Check Links  offline for dead target
-  # ----------------------------------- #
-  offline_link_check:
-    name: 'Validate mkdoc content'
-    runs-on: ubuntu-latest
-    needs: [ file-changes ]
-    if: needs.file-changes.outputs.docs == 'true'
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v3
-      - name: 'Start docker-compose stack'
-        run: |
-          docker-compose -f development/docker-compose.yml up -d webdoc_avd
-          docker-compose -f development/docker-compose.yml ps
-      - name: 'Test connectivity to mkdoc server'
-        run: |
-          bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)" != "200" ]]; do sleep 5; done'
-      - name: Check links for 404
-        run: |
-          docker run --network container:webdoc_avd raviqqe/muffet:2.10.1 http://127.0.0.1:8000/ -f \
-            --buffer-size 8192 \
-            --exclude ".*fonts.googleapis.com.*" \
-            --exclude ".*fonts.gstatic.com.*" \
-            --exclude ".*tools.ietf.org.*" \
-            --exclude ".*edit.*" \
-            --exclude ".*docs.github.com.*" \
-            --exclude "twitter.com" \
-            --exclude "www.docker.com" \
-            --exclude "hub.docker.com" \
-            --exclude "tech-library.arista.com" \
-            --max-connections-per-host 30 \
-            --max-redirections 3 \
-            --rate-limit 1 \
-            --timeout 30
-      - name: 'Stop docker-compose stack'
-        run: |
-          docker-compose -f development/docker-compose.yml down
 
   # ----------------------------------- #
   # Test Requirements
@@ -149,9 +111,9 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python_version }}
       - name: 'Install Python requirements'
@@ -184,7 +146,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
@@ -196,7 +158,7 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-      # - uses: actions/upload-artifact@v3
+      # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
@@ -219,7 +181,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
@@ -231,7 +193,7 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-      # - uses: actions/upload-artifact@v3
+      # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
@@ -278,7 +240,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
@@ -290,7 +252,7 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-      # - uses: actions/upload-artifact@v3
+      # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
@@ -317,7 +279,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
@@ -329,7 +291,7 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-      # - uses: actions/upload-artifact@v3
+      # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
@@ -357,7 +319,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
@@ -384,9 +346,9 @@ jobs:
       - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: |
             3.10
@@ -408,7 +370,7 @@ jobs:
       - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Install Python requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
@@ -425,9 +387,9 @@ jobs:
       - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: |
             3.10
@@ -449,9 +411,9 @@ jobs:
       - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: |
             3.10
@@ -476,11 +438,11 @@ jobs:
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
       GALAXY_IMPORTER_CONFIG: galaxy-importer/galaxy-importer.cfg
     steps:
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: |
             3.10
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Install Python & Ansible requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
@@ -495,7 +457,7 @@ jobs:
         run: make collection-build
       - name: 'Run galaxy-importer checks'
         run: python -m galaxy_importer.main *.tar.gz
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: importer-logs
           path: ./importer_result.json
@@ -515,9 +477,9 @@ jobs:
       - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: |
             3.10

@@ -10,7 +10,9 @@ ip security
 {%     for ike_policy in ip_security.ike_policies | arista.avd.default([]) %}
    !
    ike policy {{ ike_policy.name }}
-{%         if ike_policy.local_id is arista.avd.defined %}
+{%         if ike_policy.local_id_fqdn is arista.avd.defined %}
+      local-id fqdn {{ ike_policy.local_id_fqdn }}
+{%         elif ike_policy.local_id is arista.avd.defined %}
       local-id {{ ike_policy.local_id }}
 {%         endif %}
 {%         if ike_policy.ike_lifetime is arista.avd.defined %}

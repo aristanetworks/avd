@@ -1,0 +1,6 @@
+### Management Security
+
+management_security:
+  # Testing entropy source as string
+  # String type is deprecated. To be removed in 5.0.0
+  entropy_source: hardware

@@ -60,7 +60,7 @@ keys:
                         description: Dynamic Prefix List Name
       control_functions:
         type: dict
-        description: Configure routing control function to control which routes to filter and accept from a peer or routing protocol.
+        description: Configure routing control function to control which routes to filter, update and accept from a peer or routing protocol.
         keys:
           code_units:
             type: list

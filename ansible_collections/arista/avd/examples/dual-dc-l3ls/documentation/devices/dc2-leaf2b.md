@@ -262,7 +262,7 @@ vlan 4094
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC2-SPINE1_Ethernet4 | routed | - | 10.255.255.117/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_LINK_TO_DC2-SPINE2_Ethernet4 | routed | - | 10.255.255.119/31 | default | 1500 | False | - | - |
-| Ethernet6 | P2P_LINK_TO_dc1-leaf2b_Ethernet6 | routed | - | 172.100.100.3/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_dc1-leaf2b_Ethernet6 | routed | - | 172.16.100.3/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -302,7 +302,7 @@ interface Ethernet6
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.100.100.3/31
+   ip address 172.16.100.3/31
 !
 interface Ethernet8
    description DC2-LEAF2C_Ethernet2
@@ -671,7 +671,7 @@ ASN Notation: asplain
 | 10.255.129.120 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.255.255.116 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.255.118 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.100.100.2 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.16.100.2 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.129.120 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF10 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
 | 10.255.129.120 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF11 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
 
@@ -760,9 +760,9 @@ router bgp 65202
    neighbor 10.255.255.118 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.118 remote-as 65200
    neighbor 10.255.255.118 description dc2-spine2_Ethernet4
-   neighbor 172.100.100.2 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.100.100.2 remote-as 65102
-   neighbor 172.100.100.2 description dc1-leaf2b
+   neighbor 172.16.100.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.100.2 remote-as 65102
+   neighbor 172.16.100.2 description dc1-leaf2b
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 11
