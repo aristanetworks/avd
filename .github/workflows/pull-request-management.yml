@@ -91,7 +91,7 @@ jobs:
         run: |
           pre-commit run --all-files --color always
       # Do NOT set a name for the pre-commit-ci action. Otherwise the Github App will not pick it up.
-      - uses: pre-commit-ci/lite-action@v1.0.0
+      - uses: pre-commit-ci/lite-action@v1.0.2
         if: always()
 
   # ----------------------------------- #
