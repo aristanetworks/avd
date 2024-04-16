@@ -24,14 +24,14 @@
 
 #### Probing Configuration
 
-| Enabled | Interval | Default Interface Set | Addres only |
-| ------- | -------- | --------------------- | ----------- |
+| Enabled | Interval | Default Interface Set | Address Only |
+| ------- | -------- | --------------------- | ------------ |
 | {{ not monitor_connectivity.shutdown | arista.avd.default(true) }} | {{ monitor_connectivity.interval | arista.avd.default('-') }} | {{ monitor_connectivity.local_interfaces | arista.avd.default('-') }} | {{ monitor_connectivity.address_only | arista.avd.default(true) }} |
 {%     if monitor_connectivity.hosts is arista.avd.defined %}
 
 #### Host Parameters
 
-| Host Name | Description | IPv4 Address | Probing Interface Set | Address only | URL |
+| Host Name | Description | IPv4 Address | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | --------------------- | ------------ | --- |
 {%         for host in monitor_connectivity.hosts | arista.avd.natural_sort('name') %}
 {%             if host.name is arista.avd.defined %}
@@ -43,7 +43,7 @@
 
 ### VRF Configuration
 
-| Name | Description | Default Interface Set | Address only |
+| Name | Description | Default Interface Set | Address Only |
 | ---- | ----------- | --------------------- | ------------ |
 {%         for vrf in monitor_connectivity.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.name is arista.avd.defined %}
@@ -70,7 +70,7 @@
 
 ##### Host Parameters
 
-| Host Name | Description | IPv4 Address | Probing Interface Set | Address only | URL |
+| Host Name | Description | IPv4 Address | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | --------------------- | ------------ | --- |
 {%                     for host in vrf.hosts | arista.avd.natural_sort('name') %}
 {%                         if host.name is arista.avd.defined %}
