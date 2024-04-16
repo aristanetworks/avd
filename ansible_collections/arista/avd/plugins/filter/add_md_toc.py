@@ -118,7 +118,12 @@ def add_md_toc(md_input, skip_lines=0, toc_levels=3, toc_marker="<!-- toc -->"):
     with StringIO(md_input) as md:
         stdin = sys.stdin
         sys.stdin = md
-        toc = md_toc.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
+        try:
+            # Try using new md_toc api when md-toc>=9.0.0.
+            toc = md_toc.api.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
+        except AttributeError:
+            # If that fails, use the previous version md-toc>=7.1.0,<9.0.0
+            toc = md_toc.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
         sys.stdin = stdin
 
     # Insert TOC between markers

@@ -798,3 +798,10 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             return source_interfaces
 
         return None
+
+    @cached_property
+    def struct_cfgs(self) -> list | None:
+        if (struct_cfg := get(self.shared_utils.platform_settings, "structured_config")) is not None:
+            return [struct_cfg]
+
+        return None
