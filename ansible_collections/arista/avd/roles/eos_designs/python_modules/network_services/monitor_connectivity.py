@@ -32,23 +32,24 @@ class MonitorConnectivityMixin(UtilsMixin):
 
         # TODO mayb append if no duplicate
         for policy in self._filtered_internet_exit_policies:
-            for connection in policy.get("connections", []):
+            for connection in policy["connections"]:
                 if connection["type"] == "tunnel":
                     interface_sets.append(
                         {
-                            "name": f"ZSTunnel{connection['id']}",
-                            "interfaces": f"Tunnel{connection['id']}",
+                            "name": f"SET-Tunnel{connection['tunnel_id']}",
+                            "interfaces": f"Tunnel{connection['tunnel_id']}",
                         }
                     )
-                    hosts.append(
-                        {
-                            "name": f"ZSTunnel{connection['id']}",
-                            "description": "Zscaler tunnel",
-                            "ip": connection["peer_ip"],
-                            "local_interfaces": f"ZSTunnel{connection['id']}",
-                            "url": "http://TODO",  # TODO
-                        }
-                    )
+
+                    host = {
+                        "name": f"IE-Tunnel{connection['tunnel_id']}",
+                        "description": connection["description"],
+                        "ip": connection["tunnel_destination_ip"],
+                        "local_interfaces": f"SET-Tunnel{connection['tunnel_id']}",
+                        "address_only": False,
+                        "url": connection["monitor_url"],
+                    }
+                    hosts.append(host)
 
         monitor_connectivity["interface_sets"] = interface_sets
         monitor_connectivity["hosts"] = hosts

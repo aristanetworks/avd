@@ -653,27 +653,16 @@ class UtilsMixin:
         internet_exit_policies = []
 
         for internet_exit_policy in candidate_internet_exit_policies:
-            # Check if the policy has any local interface
-            policy_wan_interfaces = []
-            for wan_interface in self.shared_utils.wan_interfaces:
-                if any(
-                    wan_interface_internet_exit_policy["name"] == internet_exit_policy["name"]
-                    for wan_interface_internet_exit_policy in get(wan_interface, "cv_pathfinder_internet_exit.policies", default=[])
-                ):
-                    policy_wan_interfaces.append(wan_interface)
-            if not policy_wan_interfaces:
+            internet_exit_policy["connections"] = self.get_internet_exit_connections(internet_exit_policy)
+            if not internet_exit_policy["connections"]:
                 # No local interface for this policy
+                # TODO: Decide if we should raise here instead
                 continue
-
-            # TODO check if it is better injected here or in the next one
-            internet_exit_policy["wan_interfaces"] = policy_wan_interfaces
-            self.get_internet_exit_connections(internet_exit_policy)
-
             internet_exit_policies.append(internet_exit_policy)
 
         return internet_exit_policies
 
-    def get_internet_exit_connections(self, internet_exit_policy) -> None:
+    def get_internet_exit_connections(self, internet_exit_policy) -> list:
         """
         Useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
 
@@ -693,40 +682,57 @@ class UtilsMixin:
         - Return a list of group dicts containing list of connections
         """
         # Only supporting Zscaler for now
-        if internet_exit_policy["type"] != "zscaler":
-            return
+        if get(internet_exit_policy, "type") != "zscaler":
+            raise AristaAvdError(
+                f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={internet_exit_policy['name']}]."
+            )
 
+        cloud_name = get(internet_exit_policy, "zscaler.cloud_name", required=True)
         connections = []
 
-        for wan_interface in internet_exit_policy["wan_interfaces"]:
+        # Check if the policy has any local interface
+        for wan_interface in self.shared_utils.wan_interfaces:
+            wan_interface_internet_exit_policies = get(wan_interface, "cv_pathfinder_internet_exit.policies", default=[])
+            if (interface_policy_config := get_item(wan_interface_internet_exit_policies, "name", internet_exit_policy["name"])) is None:
+                continue
+
             connection_base = {
                 "source_interface": wan_interface["name"],
-                "peer_ip": get(wan_interface, "peer_ip", required=True),  # TODO - better error message
-                # TODO should be more than peer for description
-                "peer description": get(wan_interface, "peer"),
                 "type": "tunnel",
+                "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
+                "ipsec_profile": "ZSCALER-IPSEC-PROFILE",
             }
 
-            # Configuring 3 tunnels for Zscaler - TODO fix this to be more robust
-            wan_interface_internet_exit_policies = get(wan_interface, "cv_pathfinder_internet_exit.policies")
-            # TODO maybe required True for next but if we are here it should be ok
-            interface_policy_config = get_item(wan_interface_internet_exit_policies, "name", internet_exit_policy["name"])
             tunnel_id_range = range_expand(get(interface_policy_config, "tunnel_interface_numbers", required=True))
-            SUFFIXES = ["PRI", "SEC", "TER"]
-            for index in range(3):
-                # TODO get ip_address, ipsec_profile and destination from Zscaler info
-                connection = connection_base.copy()
-                connection.update(
+
+            zscaler_endpoint_keys = ("primary", "secondary", "tertiary")
+            for index in range(len(zscaler_endpoint_keys)):
+                zscaler_endpoint_key = zscaler_endpoint_keys[index]
+                if zscaler_endpoint_key not in self._zscaler_endpoints:
+                    continue
+
+                zscaler_endpoint = self._zscaler_endpoints[zscaler_endpoint_key]
+
+                # PRI, SEC, TER used for groups
+                # TODO: consider if we should use DC names as group suffix.
+                suffix = zscaler_endpoint_key[0:3].upper()
+
+                destination_ip = zscaler_endpoint["ip_address"]
+                tunnel_id = tunnel_id_range[index]
+                connections.append(
                     {
-                        "id": tunnel_id_range[index],
-                        "group": f"{internet_exit_policy['name']}_{SUFFIXES[index]}",
-                        "ip_address": "1.1.1.1/24",
-                        "destination": "42.42.42.42",
-                        "ipsec_profile": "ZSCALER-IPSEC-PROFILE",
+                        **connection_base,
+                        "tunnel_id": tunnel_id,
+                        "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
+                        "tunnel_destination_ip": destination_ip,
+                        "description": f"Internet Exit {internet_exit_policy['name']} {suffix}",
+                        "service_insertion_group": f"{internet_exit_policy['name']}_{suffix}",
+                        "metadata": {"zscaler_endpoint": zscaler_endpoint},
                     }
                 )
-                connections.append(connection)
 
-        internet_exit_policy["connections"] = connections
+        return connections
 
-        return
+    @cached_property
+    def _zscaler_endpoints(self) -> dict:
+        return get(self._hostvars, "zscaler_endpoints", default={})
