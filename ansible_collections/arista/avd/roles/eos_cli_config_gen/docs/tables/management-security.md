@@ -8,7 +8,12 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>management_security</samp>](## "management_security") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;entropy_source</samp>](## "management_security.entropy_source") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;entropy_source</samp>](## "management_security.entropy_source") <span style="color:red">deprecated</span> | String |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>entropy_sources</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;entropy_sources</samp>](## "management_security.entropy_sources") | Dictionary |  |  |  | Source of entropy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "management_security.entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "management_security.entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cpu_jitter</samp>](## "management_security.entropy_sources.cpu_jitter") | Boolean |  |  |  | Use the Jitter RNG algorithm of a CPU based source. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware_exclusive</samp>](## "management_security.entropy_sources.hardware_exclusive") | Boolean |  |  |  | Only use entropy from the hardware source. |
     | [<samp>&nbsp;&nbsp;password</samp>](## "management_security.password") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;minimum_length</samp>](## "management_security.password.minimum_length") | Integer |  |  | Min: 1<br>Max: 32 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encryption_key_common</samp>](## "management_security.password.encryption_key_common") | Boolean |  |  |  |  |
@@ -52,7 +57,25 @@
 
     ```yaml
     management_security:
+      # This key is deprecated.
+      # Support will be removed in AVD version v5.0.0.
+      # Use <samp>entropy_sources</samp> instead.
       entropy_source: <str>
+
+      # Source of entropy.
+      entropy_sources:
+
+        # Use a hardware based source.
+        hardware: <bool>
+
+        # Use the HAVEGE algorithm.
+        haveged: <bool>
+
+        # Use the Jitter RNG algorithm of a CPU based source.
+        cpu_jitter: <bool>
+
+        # Only use entropy from the hardware source.
+        hardware_exclusive: <bool>
       password:
         minimum_length: <int; 1-32>
         encryption_key_common: <bool>
