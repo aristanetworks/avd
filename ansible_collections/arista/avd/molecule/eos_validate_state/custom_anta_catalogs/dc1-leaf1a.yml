@@ -20,3 +20,6 @@ anta.tests.vxlan:
       vteps:
         - 10.1.1.5
         - 10.1.1.6
+  - VerifyVxlan1ConnSettings:
+      source_interface: Loopback1
+      udp_port: 4789
