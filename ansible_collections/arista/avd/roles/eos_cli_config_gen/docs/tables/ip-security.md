@@ -17,6 +17,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dh_group</samp>](## "ip_security.ike_policies.[].dh_group") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>5</code><br>- <code>14</code><br>- <code>15</code><br>- <code>16</code><br>- <code>17</code><br>- <code>20</code><br>- <code>21</code><br>- <code>24</code> | Diffie-Hellman group for the key exchange. |
     | [<samp>&nbsp;&nbsp;sa_policies</samp>](## "ip_security.sa_policies") | List, items: Dictionary |  |  |  | Security Association policies. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_security.sa_policies.[].name") | String | Required, Unique |  |  | Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sa_lifetime</samp>](## "ip_security.sa_policies.[].sa_lifetime") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "ip_security.sa_policies.[].sa_lifetime.value") | Integer |  |  |  | Lifetime value for this SA.<br>Valid range depends on the unit.<br><1-24>       Lifetime in hours ( default )<br><1-4000000>  Packet limit in thousands<br><1-6000>     Byte limit in GB ( 1024 MB )<br><1-6144000>  Byte limit in MB ( 1024 KB ) |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "ip_security.sa_policies.[].sa_lifetime.unit") | String |  | `hours` | Valid Values:<br>- <code>gigabytes</code><br>- <code>hours</code><br>- <code>megabytes</code><br>- <code>thousand-packets</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esp</samp>](## "ip_security.sa_policies.[].esp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;integrity</samp>](## "ip_security.sa_policies.[].esp.integrity") | String |  |  | Valid Values:<br>- <code>disabled</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>null</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryption</samp>](## "ip_security.sa_policies.[].esp.encryption") | String |  |  | Valid Values:<br>- <code>disabled</code><br>- <code>aes128</code><br>- <code>aes128gcm128</code><br>- <code>aes128gcm64</code><br>- <code>aes256</code><br>- <code>aes256gcm128</code><br>- <code>null</code> |  |
@@ -71,6 +74,16 @@
 
           # Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0
         - name: <str; required; unique>
+          sa_lifetime:
+
+            # Lifetime value for this SA.
+            # Valid range depends on the unit.
+            # <1-24>       Lifetime in hours ( default )
+            # <1-4000000>  Packet limit in thousands
+            # <1-6000>     Byte limit in GB ( 1024 MB )
+            # <1-6144000>  Byte limit in MB ( 1024 KB )
+            value: <int>
+            unit: <str; "gigabytes" | "hours" | "megabytes" | "thousand-packets"; default="hours">
           esp:
             integrity: <str; "disabled" | "sha1" | "sha256" | "null">
             encryption: <str; "disabled" | "aes128" | "aes128gcm128" | "aes128gcm64" | "aes256" | "aes256gcm128" | "null">
