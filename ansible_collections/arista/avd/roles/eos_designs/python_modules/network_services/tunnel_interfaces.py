@@ -26,19 +26,22 @@ class TunnelInterfacesMixin(UtilsMixin):
 
         tunnel_interfaces = []
 
-        for policy in self._filtered_internet_exit_policies:
-            for connection in policy.get("connections", []):
+        for internet_exit_policy in self._filtered_internet_exit_policies:
+            for connection in internet_exit_policy.get("connections", []):
                 if connection["type"] == "tunnel":
                     tunnel_interface = {
                         "name": f"Tunnel{connection['tunnel_id']}",
                         "description": connection["description"],
-                        "mtu": 1394,  # TODO do not hardcode
+                        "mtu": 1394,  # TODO: do not hardcode
                         "ip_address": connection["tunnel_ip_address"],
-                        "tunnel_mode": "ipsec",  # TODO do not hardcode
+                        "tunnel_mode": "ipsec",  # TODO: do not hardcode
                         "source_interface": connection["source_interface"],
                         "destination": connection["tunnel_destination_ip"],
                         "ipsec_profile": connection["ipsec_profile"],
                     }
+
+                    if internet_exit_policy["type"] == "zscaler":
+                        tunnel_interface["nat_profile"] = "VRF-AWARE-NAT"
 
                     tunnel_interfaces.append(tunnel_interface)
 

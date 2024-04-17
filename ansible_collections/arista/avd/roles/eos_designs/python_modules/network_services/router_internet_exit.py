@@ -27,7 +27,7 @@ class RouterInternetExitMixin(UtilsMixin):
             return None
 
         router_internet_exit = {}
-        exit_groups_dict = {}  # Used to build
+        exit_groups_dict = {}
         policies = []
 
         for policy in self._filtered_internet_exit_policies:

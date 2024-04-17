@@ -742,6 +742,7 @@ tunnel_interfaces:
   source_interface: Ethernet3
   destination: 10.37.121.1
   ipsec_profile: ZSCALER-IPSEC-PROFILE
+  nat_profile: VRF-AWARE-NAT
 - name: Tunnel101
   description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
   mtu: 1394
@@ -750,6 +751,7 @@ tunnel_interfaces:
   source_interface: Ethernet3
   destination: 10.39.77.1
   ipsec_profile: ZSCALER-IPSEC-PROFILE
+  nat_profile: VRF-AWARE-NAT
 - name: Tunnel102
   description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
   mtu: 1394
@@ -758,6 +760,7 @@ tunnel_interfaces:
   source_interface: Ethernet3
   destination: 10.50.9.1
   ipsec_profile: ZSCALER-IPSEC-PROFILE
+  nat_profile: VRF-AWARE-NAT
 monitor_connectivity:
   interface_sets:
   - name: SET-Tunnel100
