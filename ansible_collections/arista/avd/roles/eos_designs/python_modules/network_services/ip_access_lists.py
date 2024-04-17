@@ -22,7 +22,7 @@ class IpAccesslistsMixin(UtilsMixin):
         if not self.shared_utils.is_cv_pathfinder_router:
             return None
 
-        # Curently only needed for Zscaler
+        # Currently only needed for Zscaler
         if not (any(internet_exit_policy["type"] == "zscaler" for internet_exit_policy in self._filtered_internet_exit_policies)):
             return None
 

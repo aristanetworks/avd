@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
 
 from .utils import UtilsMixin
 
@@ -49,7 +50,13 @@ class MonitorConnectivityMixin(UtilsMixin):
                         "address_only": False,
                         "url": connection["monitor_url"],
                     }
-                    hosts.append(host)
+                    append_if_not_duplicate(
+                        list_of_dicts=hosts,
+                        primary_key="name",
+                        new_dict=host,
+                        context="Monitor connectivity host for Internet Exit policy",
+                        context_keys=["name"],
+                    )
 
         monitor_connectivity["interface_sets"] = interface_sets
         monitor_connectivity["hosts"] = hosts

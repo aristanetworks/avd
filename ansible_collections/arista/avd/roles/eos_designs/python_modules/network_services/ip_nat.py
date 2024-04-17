@@ -24,7 +24,7 @@ class IpNatMixin(UtilsMixin):
 
         ip_nat = {}
 
-        # Curently only needed for Zscaler
+        # Currently only needed for Zscaler
         if any(internet_exit_policy["type"] == "zscaler" for internet_exit_policy in self._filtered_internet_exit_policies):
             ip_nat["pools"] = [{"name": "PORT_ONLY_POOL", "type": "port-only", "ranges": [{"first_port": 1500, "last_port": 65535}]}]
             ip_nat["profiles"] = [

@@ -81,7 +81,7 @@ class IpSecurityMixin(UtilsMixin):
     def _generate_ipsec_key(self, name: str, salt: str) -> str:
         """
         Build a secret containing various components for this policy and device.
-        Run type-7 obfuscation using a algoritmic salt so we ensure the same key every time.
+        Run type-7 obfuscation using a algorithmic salt so we ensure the same key every time.
 
         TODO: Maybe introduce some formatting with max length of each element, since the keys can be come very very long.
         """

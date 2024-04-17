@@ -5,6 +5,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
+
 from .utils import UtilsMixin
 
 
@@ -43,7 +45,13 @@ class TunnelInterfacesMixin(UtilsMixin):
                     if internet_exit_policy["type"] == "zscaler":
                         tunnel_interface["nat_profile"] = "VRF-AWARE-NAT"
 
-                    tunnel_interfaces.append(tunnel_interface)
+                    append_if_not_duplicate(
+                        list_of_dicts=tunnel_interfaces,
+                        primary_key="name",
+                        new_dict=tunnel_interface,
+                        context="Tunnel interface for Internet Exit policy",
+                        context_keys=["name"],
+                    )
 
         if tunnel_interfaces:
             return tunnel_interfaces
