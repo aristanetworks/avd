@@ -131,7 +131,8 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         """
         anta_tests = []
 
-        if not self.validate_data(type="l3leaf"):
+        # Skip the test if the host is not a VTEP
+        if not self.is_vtep():
             return None
 
         if (loopback0_ip := self.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")) is None:

@@ -43,7 +43,7 @@
 
 | Test Category | Total Tests | Tests Passed | Tests Failed | Tests Skipped |
 | ------------- | ----------- | ------------ | ------------ | ------------- |
-| AAA | 133 | 0 | 0 | 0 |
+| AAA | 147 | 0 | 0 | 0 |
 | BFD | 6 | 0 | 0 | 0 |
 | BGP | 102 | 0 | 0 | 0 |
 | Configuration | 38 | 0 | 0 | 0 |
@@ -54,13 +54,13 @@
 | Interfaces | 286 | 0 | 0 | 0 |
 | LANZ | 19 | 0 | 0 | 0 |
 | Logging | 48 | 0 | 0 | 0 |
-| MLAG | 39 | 0 | 0 | 0 |
+| MLAG | 41 | 0 | 0 | 0 |
 | Multicast | 12 | 0 | 0 | 0 |
 | OSPF | 6 | 0 | 0 | 0 |
 | PTP | 95 | 0 | 0 | 0 |
 | Profiles | 4 | 0 | 0 | 0 |
-| Routing | 199 | 0 | 0 | 0 |
-| SNMP | 57 | 0 | 0 | 0 |
+| Routing | 274 | 0 | 0 | 0 |
+| SNMP | 63 | 0 | 0 | 0 |
 | STP | 30 | 0 | 0 | 0 |
 | STUN | 19 | 0 | 0 | 0 |
 | Security | 285 | 0 | 0 | 0 |

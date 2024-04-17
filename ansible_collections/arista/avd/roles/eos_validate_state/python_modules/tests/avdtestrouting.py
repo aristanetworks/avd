@@ -53,7 +53,8 @@ class AvdTestRoutingTable(AvdTestBase):
                     )
                     processed_ips.add(ip)
 
-        if not self.validate_data(type="l3leaf"):
+        # Skip the test if the host is not a VTEP
+        if not self.is_vtep():
             return None
 
         add_test(mapping=self.loopback0_mapping)
