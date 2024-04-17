@@ -5,6 +5,52 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
+DOCUMENTATION = r"""
+---
+name: cv_zscaler_endpoints
+author: Arista Ansible Team (@aristanetworks)
+version_added: "4.8.0"
+requirements:
+  - md_toc
+short_description: PREVIEW - Fetch Zscaler endpoints used for CV Pathfinder internet-exit integration.
+description:
+  - Use this to autofill the `zscaler_endpoints` data model.
+  - The arguments are optional. If not set the same vars must be set.
+options:
+  cv_server:
+    type: str
+    description: CV server.
+    required: true
+  cv_token:
+    type: str
+    description: CV token.
+    required: true
+  cv_verify_certs:
+    type: bool
+    description: Verify SSL certificates.
+    default: true
+  serial_number:
+    type: str
+    description: Device serial number.
+    required: true
+  inventory_hostname:
+    type: str
+    description: Device inventory hostname.
+    required: true
+"""
+
+EXAMPLES = r"""
+---
+zscaler_endpoints: "{{ lookup('arista.avd.cv_zscaler_endpoints') }}"
+"""
+
+RETURN = r"""
+---
+_value:
+  description: Dict according to the `zscaler_endpoints` data model.
+  type: dict
+"""
+
 import logging
 from asyncio import run
 from typing import TYPE_CHECKING
@@ -19,48 +65,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAn
 
 if TYPE_CHECKING:
     from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.api.arista.swg.v1 import VpnEndpoint
-
-DOCUMENTATION = r"""
----
-name: cv_zscaler_endpoints
-collection: arista.avd
-author: Arista Ansible Team (@aristanetworks)
-version_added: "4.8"
-requirements:
-  - md_toc
-short_description: PREVIEW - Fetch Zscaler endpoints used for CV Pathfinder internet-exit integration.
-description:
-  - Use this to autofill the `zscaler_endpoints` data model.
-  - The arguments are optional. If not set the same vars must be set.
-options:
-  cv_server:
-    type: str
-    required: true
-  cv_token:
-    type: str
-    required: true
-  cv_verify_certs:
-    type: bool
-    default: true
-  serial_number:
-    type: str
-    required: true
-  inventory_hostname:
-    type: str
-    required: true
-"""
-
-EXAMPLES = r"""
----
-zscaler_endpoints: "{{ lookup('arista.avd.cv_zscaler_endpoints') }}
-"""
-
-RETURN = r"""
----
-_value:
-  description: Dict according to the `zscaler_endpoints` data model.
-  type: dict
-"""
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
