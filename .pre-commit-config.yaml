@@ -132,7 +132,7 @@ repos:
         language: python
         types: [text]
         args:
-          - '--ignore-words=ignore-codespell-words.txt'  # Ignore words listed in this file
+          - '--ignore-words=.github/ignore-codespell-words'  # Ignore words listed in this file
         exclude: >  # List of regex patterns for files/directories to exclude
           (?x)^(
             .*\.cfg|  # Exclude all .cfg files
