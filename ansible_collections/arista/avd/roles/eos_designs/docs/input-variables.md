@@ -140,14 +140,14 @@ To customize or create new node types, please refer to [node type customization]
 ### L3LS EVPN
 
 | Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Default WAN Role | Default Underlay Routing Protocol | Default Overlay Routing Protocol |
-| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | -------------------- | --------------- | --------------------------------- | -------------------------------- |
-| super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
-| spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
-| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                  | ✅   | ✅           | ✅                  | ✘                | eBGP                             | eBGP                             |
-| l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  | ✘                | eBGP                             | eBGP                             |
-| overlay_controller | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
-| wan_rr             | ✅              | p2p          | server            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | server           | none                             | iBGP                             |
-| wan_router         | ✅              | p2p          | client            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | client           | none                             | iBGP                             |
+| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | ---------------- | --------------------------------- | -------------------------------- |
+| super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                              | eBGP                             |
+| spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                              | eBGP                             |
+| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                  | ✅   | ✅           | ✅                  | ✘                | eBGP                              | eBGP                             |
+| l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  | ✘                | eBGP                              | eBGP                             |
+| overlay_controller | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                              | eBGP                             |
+| wan_rr             | ✅              | p2p          | server            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | server           | none                              | iBGP                             |
+| wan_router         | ✅              | p2p          | client            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | client           | none                              | iBGP                             |
 
 - `wan_router`: Edge routers for AutoVPN or Edge and Transit routers for CV Pathfinder depending on the `wan_mode` value.
 - `wan_rr`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
@@ -155,18 +155,18 @@ To customize or create new node types, please refer to [node type customization]
 ### L2LS
 
 | Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
+| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
 | l3spine            | ✅              | p2p          | none              | ✅                  | ✅                  | ✘    | ✅           | ✅                  |
 | spine              | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  |
 | leaf               | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  |
 
 ### MPLS
 
-| Node Type Key | Underlay Router | Uplink Type | Default Overlay Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| -------| ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-| p             | ✅              | p2p         | none                 | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| rr            | ✅              | p2p         | server               | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| pe            | ✅              | p2p         | client               | ✅                  | ✅                  | ✅   | ✘            | ✅                  |
+| Node Type Key      | Underlay Router | Uplink Type  | Default Overlay Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| ------------------ | --------------- | ------------ | -------------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
+| p                  | ✅              | p2p          | none                 | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| rr                 | ✅              | p2p          | server               | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| pe                 | ✅              | p2p          | client               | ✅                  | ✅                  | ✅   | ✘            | ✅                  |
 
 ## Node type customization
 

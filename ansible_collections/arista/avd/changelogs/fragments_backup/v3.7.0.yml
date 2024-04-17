@@ -61,7 +61,7 @@ bugfixes:
 - Fix(eos_designs) - fix logic for underlay_multicast (https://github.com/aristanetworks/ansible-avd/pull/1940)
 - Fix(eos_designs) - fix the Loopback0 interface description (https://github.com/aristanetworks/ansible-avd/pull/1955)
 - Fix - typos (https://github.com/aristanetworks/ansible-avd/pull/1957)
-- Fix(eos_cli_config_gen) - Re-add separator between VRF and non-VRF config (https://github.com/aristanetworks/ansible-avd/pull/1961)
+- Fix(eos_cli_config_gen) - Re-add seperator between VRF and non-VRF config (https://github.com/aristanetworks/ansible-avd/pull/1961)
 - Fix(eos_designs) - Resolve inline jinja in fabric_name (https://github.com/aristanetworks/ansible-avd/pull/1967)
 - Fix(eos_designs) - Correct underlay routing for overlay_routing_protocol "none" (https://github.com/aristanetworks/ansible-avd/pull/1970)
 - Fix(eos_designs) - Remove unneeded mlag ibgp vlan for vrf default (https://github.com/aristanetworks/ansible-avd/pull/1968)
