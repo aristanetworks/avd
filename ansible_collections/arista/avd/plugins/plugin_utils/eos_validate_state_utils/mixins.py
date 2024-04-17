@@ -80,7 +80,7 @@ class DeviceUtilsMixin:
 
         if not wan_context and "Dps" in get(host_struct_cfg, "vxlan_interface.Vxlan1.vxlan.source_interface"):
             log_msg = (
-                f"Host '{host or self.device_name}' is a VTEP with a DPS source interface for VXLAN in a WAN context. {self.__class__.__name__} is skipped."
+                f"Host '{host or self.device_name}' is a VTEP with a DPS source interface for VXLAN in a non-WAN context. {self.__class__.__name__} is skipped."
             )
             LOGGER.info(log_msg)
             return False
