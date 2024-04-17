@@ -142,15 +142,27 @@
 {%                     do temp.append(secret) %}
 {%                 endfor %}
 {%                 for secret in temp %}
-{%                     if temp.index(secret) == 0 and secret.lifetime is arista.avd.defined %}
-| {{ profile.profile_name }} | {{ secret.name }} | {{ secret.secret }} | {{ secret.lifetime }} | {{ secret.lifetime }} |
+{%                     if temp.index(secret) == 0 and secret.lifetime.infinite is arista.avd.defined(true) %}
+| {{ profile.profile_name }} | {{ secret.name }} | {{ secret.secret }} | infinite | infinite |
 {%                     elif temp.index(secret) == 0 and secret.receive_lifetime is arista.avd.defined and secret.transmit_lifetime is arista.avd.defined %}
-| {{ profile.profile_name }} | {{ secret.name }} | {{ secret.secret }} | {{ secret.receive_lifetime }} | {{ secret.transmit_lifetime }} |
+{%                         if secret.receive_lifetime.infinite is arista.avd.defined(true) and secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
+| {{ profile.profile_name }} | {{ secret.name }} | {{ secret.secret }} | infinite | {{ secret.transmit_lifetime.start_date_time }} - {{ secret.transmit_lifetime.end_date_time }} |
+{%                         elif secret.transmit_lifetime.infinite is arista.avd.defined(true) and secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined %}
+| {{ profile.profile_name }} | {{ secret.name }} | {{ secret.secret }} | {{ secret.receive_lifetime.start_date_time }} - {{ secret.receive_lifetime.end_date_time }} | infinite |
+{%                         elif secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined and secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
+| {{ profile.profile_name }} | {{ secret.name }} | {{ secret.secret }} | {{ secret.receive_lifetime.start_date_time }} - {{ secret.receive_lifetime.end_date_time }} | {{ secret.transmit_lifetime.start_date_time }} - {{ secret.transmit_lifetime.end_date_time }} |
+{%                         endif %}
 {%                     endif %}
-{%                     if temp.index(secret) != 0 and secret.lifetime is arista.avd.defined %}
-|  | {{ secret.name }} | {{ secret.secret }} | {{ secret.lifetime }} | {{ secret.lifetime }} |
+{%                     if temp.index(secret) != 0 and secret.lifetime.infinite is arista.avd.defined(true) %}
+| | {{ secret.name }} | {{ secret.secret }} | infinite | infinite |
 {%                     elif temp.index(secret) != 0 and secret.receive_lifetime is arista.avd.defined and secret.transmit_lifetime is arista.avd.defined %}
-|   | {{ secret.name }} | {{ secret.secret }} | {{ secret.receive_lifetime }} | {{ secret.transmit_lifetime }} |
+{%                         if secret.receive_lifetime.infinite is arista.avd.defined(true) and secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
+|  | {{ secret.name }} | {{ secret.secret }} | infinite | {{ secret.transmit_lifetime.start_date_time }} - {{ secret.transmit_lifetime.end_date_time }} |
+{%                         elif secret.transmit_lifetime.infinite is arista.avd.defined(true) and secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined %}
+| | {{ secret.name }} | {{ secret.secret }} | {{ secret.receive_lifetime.start_date_time }} - {{ secret.receive_lifetime.end_date_time }} | infinite |
+{%                         elif secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined and secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
+| | {{ secret.name }} | {{ secret.secret }} | {{ secret.receive_lifetime.start_date_time }} - {{ secret.receive_lifetime.end_date_time }} | {{ secret.transmit_lifetime.start_date_time }} - {{ secret.transmit_lifetime.end_date_time }} |
+{%                         endif %}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}

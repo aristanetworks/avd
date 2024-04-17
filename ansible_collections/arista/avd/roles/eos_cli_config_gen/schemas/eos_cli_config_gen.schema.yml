@@ -6388,38 +6388,94 @@ keys:
                   secret:
                     type: str
                   lifetime:
-                    type: str
-                    description: 'Specify the lifetime of password. Below options
-                      are available. This value is applicable to receive-lifetime
-                      and transmit lifetime.
+                    type: dict
+                    description: Configure to set lifetime of the secret. This is
+                      applicable to both receive and transmit lifetime.
+                    keys:
+                      infinite:
+                        type: bool
+                      start_date_time:
+                        type: str
+                        description: 'Specify the start date and time of lifetime
+                          of the secret.
 
-                      If lifetime, receive-lifetime and transmit-lifetime are specified
-                      then AVD will apply the value of lifetime to both receive and
-                      transmit lifetime.
+                          Formats supported:
 
-                      infinite    -    infinite lifetime
+                          1. mm/dd/yyyy hh:mm:ss
 
-                      mm/dd/yyyy  -    date
+                          2. yyyy-mm-dd hh:mm:ss
 
-                      yyyy-mm-dd  -    date'
+                          e.g 2024/12/20 10:00:00'
+                      end_date_time:
+                        type: str
+                        description: 'Specify the end date and time of lifetime of
+                          the secret. End date should be greater than start date time.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024/12/20 10:00:00'
                   receive_lifetime:
-                    type: str
-                    description: 'Specify the lifetime for receiving the key.
+                    type: dict
+                    keys:
+                      infinite:
+                        type: bool
+                      start_date_time:
+                        type: str
+                        description: 'Specify the start date and time of lifetime
+                          of the secret.
 
-                      infinite    -     infinite lifetime
+                          Formats supported:
 
-                      mm/dd/yyyy  -     date
+                          1. mm/dd/yyyy hh:mm:ss
 
-                      yyyy-mm-dd  -     date'
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024/12/20 10:00:00'
+                      end_date_time:
+                        type: str
+                        description: 'Specify the end date and time of lifetime of
+                          the secret. End date should be greater than start date.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024/12/20 10:00:00'
                   transmit_lifetime:
-                    type: str
-                    description: 'Specify the lifetime for transmitting the key.
+                    type: dict
+                    keys:
+                      infinite:
+                        type: bool
+                      start_date_time:
+                        type: str
+                        description: 'Specify the start date and time of lifetime
+                          of the secret.
 
-                      infinite    -     infinite lifetime
+                          Formats supported:
 
-                      mm/dd/yyyy  -     date
+                          1. mm/dd/yyyy hh:mm:ss
 
-                      yyyy-mm-dd  -     date'
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024/12/20 10:00:00'
+                      end_date_time:
+                        type: str
+                        description: 'Specify the end date and time of lifetime of
+                          the secret.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024/12/20 10:00:00'
   management_ssh:
     type: dict
     keys:
