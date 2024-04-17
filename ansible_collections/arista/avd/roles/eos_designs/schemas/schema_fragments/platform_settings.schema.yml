@@ -87,6 +87,22 @@ keys:
         management_interface:
           type: str
           default: Management1
+        security_entropy_sources:
+          description: Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
+          type: dict
+          keys:
+            hardware:
+              type: bool
+              description: Use a hardware based source.
+            haveged:
+              type: bool
+              description: Use the HAVEGE algorithm.
+            cpu_jitter:
+              type: bool
+              description: Use the Jitter RNG algorithm of a CPU based source.
+            hardware_exclusive:
+              type: bool
+              description: Only use entropy from the hardware source.
         structured_config:
           type: dict
           documentation_options:
