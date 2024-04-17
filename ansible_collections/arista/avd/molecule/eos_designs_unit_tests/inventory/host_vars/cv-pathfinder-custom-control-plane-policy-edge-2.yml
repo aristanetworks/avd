@@ -1,6 +1,6 @@
 ---
 # Testing CV pathfinder edge with custom control plane policy to make sure the correct
-# control plane policy can be overriden.
+# control plane policy can be overridden.
 # Also override the application profile name, but don't define it, so that
 # application profile name is custom but application is still auto generated
 

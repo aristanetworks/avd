@@ -13,10 +13,10 @@ keys:
         type: bool
       ip_access_group:
         type: str
-        description: Name of IP ACL
+        description: Name of IP ACL.
       ipv6_access_group:
         type: str
-        description: Name of IPv6 ACL
+        description: Name of IPv6 ACL.
       max_connections:
         type: int
         convert_types:

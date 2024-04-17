@@ -8,4 +8,4 @@ type: dict
 keys:
   dns_domain:
     type: str
-    description: Domain Name
+    description: Domain Name.

@@ -59,7 +59,7 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0
+              description: Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0.
             sa_lifetime:
               type: dict
               keys:
@@ -154,7 +154,7 @@ keys:
                 action:
                   type: str
                   description: |
-                    Action to apply
+                    Action to apply.
 
                     * 'clear': Delete all connections
                     * 'hold': Re-negotiate connection on demand

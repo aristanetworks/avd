@@ -18,10 +18,10 @@ keys:
           type: int
           convert_types:
             - str
-          description: VLAN ID
+          description: VLAN ID.
         name:
           type: str
-          description: VLAN Name
+          description: VLAN Name.
         state:
           type: str
           valid_values: ["active", "suspend"]
@@ -29,7 +29,7 @@ keys:
           type: list
           items:
             type: str
-            description: Trunk Group Name
+            description: Trunk Group Name.
         private_vlan:
           type: dict
           keys:
@@ -40,7 +40,7 @@ keys:
               type: int
               convert_types:
                 - str
-              description: Primary VLAN ID
+              description: Primary VLAN ID.
         tenant:
           type: str
-          description: Key only used for documentation or validation purposes
+          description: Key only used for documentation or validation purposes.

@@ -14,13 +14,13 @@ keys:
       - dict
     display_name: IP Community Lists
     description: |
-      Communities and regexp entries MUST not be configured in the same community-list
+      Communities and regexp entries MUST not be configured in the same community-list.
     items:
       type: dict
       keys:
         name:
           type: str
-          description: IP Community-list Name
+          description: IP Community-list Name.
         entries:
           type: list
           required: true
@@ -48,5 +48,5 @@ keys:
               regexp:
                 type: str
                 description: |
-                  Regular Expression
-                  If defined, a regex community-list will be configured
+                  Regular Expression.
+                  If defined, a regex community-list will be configured.

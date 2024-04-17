@@ -99,7 +99,7 @@ class AvdSchema:
             self._dataconverter = AvdDataConverter(self)
             self._schemaresolver = AvdSchemaResolver(schema, self.store)
         except Exception as e:
-            raise AristaAvdError("An error occured during creation of the validator") from e
+            raise AristaAvdError("An error occurred during creation of the validator") from e
 
     def extend_schema(self, schema: dict):
         # Clear cached resolved_schema if any

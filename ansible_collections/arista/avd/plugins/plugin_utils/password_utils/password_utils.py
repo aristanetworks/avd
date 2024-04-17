@@ -224,7 +224,7 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
 def cbc_check_password(key: bytes, data: bytes) -> bool:
     """
     This function is used to verify if an encrypted password is decryptable.
-    It does not return the password but only raise an error if the passowrd cannot be decrypted
+    It does not return the password but only raise an error if the password cannot be decrypted
     """
     if not HAS_CRYPTOGRAPHY:
         raise AristaAvdError("AVD could not import the required 'cryptography' Python library")

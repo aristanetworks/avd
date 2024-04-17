@@ -14,15 +14,15 @@ keys:
       default_interface_profile:
         type: str
         description: |
-          Name of default Interface Profile
+          Name of default Interface Profile.
       default_bgp_profile:
         type: str
         description: |
-          Name of default BGP Profile
+          Name of default BGP Profile.
       default_unit_profile:
         type: str
         description: |
-          Name of default Unit Profile
+          Name of default Unit Profile.
       interface_profiles:
         type: list
         primary_key: name
@@ -41,13 +41,13 @@ keys:
                   convert_types:
                   - str
                   description: |
-                    Load Interval in Seconds
+                    Load Interval in Seconds.
                 threshold:
                   type: int
                   convert_types:
                   - str
                   description: |
-                    Threshold in kbps
+                    Threshold in kbps.
             shutdown:
               type: dict
               keys:
@@ -56,7 +56,7 @@ keys:
                   convert_types:
                   - str
                   description: |
-                    Max delay in seconds
+                    Max delay in seconds.
       bgp_profiles:
         type: list
         primary_key: name
@@ -67,13 +67,13 @@ keys:
           keys:
             name:
               type: str
-              description: BGP Profile Name
+              description: BGP Profile Name.
             initiator:
               type: dict
               keys:
                 route_map_inout:
                   type: str
-                  description: Route Map
+                  description: Route Map.
       unit_profiles:
         type: list
         primary_key: name
@@ -84,7 +84,7 @@ keys:
           keys:
             name:
               type: str
-              description: Unit Profile Name
+              description: Unit Profile Name.
             on_boot:
               type: dict
               keys:
@@ -95,7 +95,7 @@ keys:
                   min: 300
                   max: 3600
                   description: |
-                    On-boot in seconds
+                    On-boot in seconds.
       units:
         type: list
         primary_key: name
@@ -106,13 +106,13 @@ keys:
           keys:
             name:
               type: str
-              description: Unit Name
+              description: Unit Name.
             quiesce:
               type: bool
             profile:
               type: str
               description: |
-                Name of Unit Profile
+                Name of Unit Profile.
             groups:
               type: dict
               keys:
@@ -121,10 +121,10 @@ keys:
                   items:
                     type: str
                     description: |
-                      Name of BGP Group
+                      Name of BGP Group.
                 interface_groups:
                   type: list
                   items:
                     type: str
                     description: |
-                      Name of Interface Group
+                      Name of Interface Group.

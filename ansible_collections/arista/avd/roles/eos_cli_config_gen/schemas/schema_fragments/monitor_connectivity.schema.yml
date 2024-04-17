@@ -26,7 +26,7 @@ keys:
               type: str
               description: |
                 Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-                Multiple interface ranges can be specified separated by ","
+                Multiple interface ranges can be specified separated by ",".
       local_interfaces:
         type: str
       address_only:
@@ -44,7 +44,7 @@ keys:
           type: dict
           keys:
             name:
-              description: Host Name
+              description: Host Name.
               type: str
             description:
               type: str
@@ -70,7 +70,7 @@ keys:
           type: dict
           keys:
             name:
-              description: VRF Name
+              description: VRF Name.
               type: str
               convert_types:
                 - int
@@ -102,7 +102,7 @@ keys:
                 type: dict
                 keys:
                   name:
-                    description: Host name
+                    description: Host name.
                     type: str
                   description:
                     type: str

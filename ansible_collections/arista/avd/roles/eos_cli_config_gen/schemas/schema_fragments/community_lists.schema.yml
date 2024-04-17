@@ -17,10 +17,10 @@ keys:
       keys:
         name:
           type: str
-          description: Community-list Name
+          description: Community-list Name.
         action:
           type: str
           required: true
           description: |
-            Action as string
+            Action as string.
             Example: "permit GSHUT 65123:123"

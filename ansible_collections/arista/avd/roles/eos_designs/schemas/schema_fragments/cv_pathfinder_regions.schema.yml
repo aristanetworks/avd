@@ -48,7 +48,7 @@ keys:
                   Given that all the sites are placed in a zone named after the region, the site ID must be unique within a region.
               location:
                 type: str
-                description: Location as a sring is resolved on Cloudvision.
+                description: Location as a string is resolved on Cloudvision.
               site_contact:
                 type: str
               site_after_hours_contact:

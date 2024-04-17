@@ -41,4 +41,4 @@ evpn_vlan_bundles:
     id: 1
 
 expected_error_message: >-
-  The 'evpn_vlan_bundle' of the svis/l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurence seen for svi/l2vlan 1009 in Tenant 'SIT' and evpn_vlan_bundle 'bundle2'.
+  The 'evpn_vlan_bundle' of the svis/l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurrence seen for svi/l2vlan 1009 in Tenant 'SIT' and evpn_vlan_bundle 'bundle2'.
