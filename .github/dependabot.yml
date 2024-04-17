@@ -12,7 +12,7 @@ updates:
     reviewers:
       - "aristanetworks/avd-maintainers"
     labels:
-      - 'dependencies'
+      - 'type: dependencies'
     pull-request-branch-name:
       separator: "/"
     commit-message:
@@ -29,7 +29,7 @@ updates:
     reviewers:
       - "aristanetworks/avd-maintainers"
     labels:
-      - 'dependencies'
+      - 'type: dependencies'
     pull-request-branch-name:
       separator: "/"
     commit-message:
@@ -46,7 +46,7 @@ updates:
     reviewers:
       - "aristanetworks/avd-maintainers"
     labels:
-      - 'CI'
+      - 'type: dependencies'
     commit-message:
       prefix: "CI: "
     open-pull-requests-limit: 10
