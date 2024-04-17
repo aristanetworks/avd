@@ -72,7 +72,7 @@ management_security:
           receive_lifetime:
             start_date_time: 12/20/2024 10:00:00
             end_date_time: 12/20/2025 10:00:00
-          transmit_lifetime: 
+          transmit_lifetime:
             infinite: true
         - name: name0
           secret: secret3
