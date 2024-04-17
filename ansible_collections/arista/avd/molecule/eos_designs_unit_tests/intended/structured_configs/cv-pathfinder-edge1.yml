@@ -585,6 +585,28 @@ application_traffic_recognition:
     - name: PFX-PATHFINDERS
       prefix_values:
       - 192.168.144.1/32
+ip_access_lists:
+- name: ALLOW_ALL
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
+ip_nat:
+  pools:
+  - name: PORT_ONLY_POOL
+    type: port-only
+    ranges:
+    - first_port: 1500
+      last_port: 65535
+  profiles:
+  - name: VRF-AWARE-NAT
+    source:
+      dynamic:
+      - access_list: ALLOW_ALL
+        pool_name: PORT_ONLY_POOL
+        nat_type: pool
 router_service_insertion:
   enabled: true
   connections:
