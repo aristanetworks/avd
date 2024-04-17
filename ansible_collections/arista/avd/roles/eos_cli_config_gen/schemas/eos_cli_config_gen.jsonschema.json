@@ -7803,7 +7803,7 @@
                 "properties": {
                   "value": {
                     "type": "integer",
-                    "description": "Lifetime value for this SA.\nValid range depends on the unit.",
+                    "description": "Lifetime value for this SA.\nValid range depends on the unit.\n<1-24>       Lifetime in hours ( default )\n<1-4000000>  Packet limit in thousands\n<1-6000>     Byte limit in GB ( 1024 MB )\n<1-6144000>  Byte limit in MB ( 1024 KB )",
                     "title": "Value"
                   },
                   "unit": {
