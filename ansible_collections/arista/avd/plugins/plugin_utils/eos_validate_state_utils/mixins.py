@@ -60,7 +60,7 @@ class DeviceUtilsMixin:
             return False
         return True
 
-    def is_vtep(self, host: str | None = None, *, wan_context: bool = False) -> bool:
+    def is_vtep(self, host: str | None = None) -> bool:
         """Check if the host is a VTEP.
 
         A host is considered a VTEP if it has a VXLAN interface.
@@ -69,7 +69,6 @@ class DeviceUtilsMixin:
 
         Args:
             host (str): Host to verify. Defaults to the host running the test.
-            wan_context (bool): Whether the test is running in a WAN context. Defaults to False.
         """
         host_struct_cfg = self.config_manager.get_host_structured_config(host=host) if host else self.structured_config
 
@@ -78,7 +77,7 @@ class DeviceUtilsMixin:
             LOGGER.info(log_msg)
             return False
 
-        if not wan_context and "Dps" in get(host_struct_cfg, "vxlan_interface.Vxlan1.vxlan.source_interface"):
+        if "Dps" in get(host_struct_cfg, "vxlan_interface.Vxlan1.vxlan.source_interface"):
             log_msg = (
                 f"Host '{host or self.device_name}' is a VTEP with a DPS source interface for VXLAN in a non-WAN context. {self.__class__.__name__} is skipped."
             )
