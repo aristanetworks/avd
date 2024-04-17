@@ -13,16 +13,16 @@ keys:
       keys:
         name:
           type: str
-          description: Dynamic prefix-list name
+          description: Dynamic prefix-list name.
         match_map:
           type: str
-          description: Route-map name
+          description: Route-map name.
         prefix_list:
           type: dict
           keys:
             ipv4:
               type: str
-              description: Prefix-list name
+              description: Prefix-list name.
             ipv6:
               type: str
-              description: Prefix-list name
+              description: Prefix-list name.

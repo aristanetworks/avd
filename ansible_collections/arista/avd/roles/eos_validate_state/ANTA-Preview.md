@@ -98,7 +98,7 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
   ```
 
 !!! info
-    ANTA mode also supports other functionnalities. For more details, please refer to the [input variables](#input-variables) below.
+    ANTA mode also supports other functionalities. For more details, please refer to the [input variables](#input-variables) below.
 
 ## Test Categories
 

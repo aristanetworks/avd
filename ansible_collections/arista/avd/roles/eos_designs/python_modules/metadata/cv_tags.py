@@ -130,7 +130,7 @@ class CvTagsMixin:
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
                 raise AristaAvdError(
                     f"The CloudVision tag name 'generate_cv_tags.device_tags[name={generate_tag['name']}] is invalid. "
-                    "System Tags cannot be overriden. Try using a different name for this tag."
+                    "System Tags cannot be overridden. Try using a different name for this tag."
                 )
 
             # Get value from either 'value' key, structured config based on the 'data_path' key or raise.

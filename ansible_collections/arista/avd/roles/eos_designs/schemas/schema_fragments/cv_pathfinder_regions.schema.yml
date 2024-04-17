@@ -18,8 +18,6 @@ keys:
       keys:
         name:
           type: str
-          description: |-
-            The region name.
         description:
           type: str
         id:

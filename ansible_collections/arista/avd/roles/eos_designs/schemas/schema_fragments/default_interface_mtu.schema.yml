@@ -14,6 +14,6 @@ keys:
       - str
     description: |
       Default interface MTU configured on EOS under "interface defaults".
-      Can be overriden per platform under platform settings.
+      Can be overridden per platform under platform settings.
     min: 68
     max: 65535

@@ -15,14 +15,14 @@ $defs:
         name:
           type: str
           description: |-
-            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'
+            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
             For a subinterface, the parent physical interface is automatically created.
           pattern: "Ethernet[\\d/]+(.[\\d]+)?"
         description:
           type: str
           description: |-
             Interface description.
-            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'.
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
@@ -68,11 +68,11 @@ $defs:
         peer:
           type: str
           description: |-
-            The peer device name. Used for description and documentation
+            The peer device name. Used for description and documentation.
         peer_interface:
           type: str
           description: |-
-            The peer device interface. Used for description and documentation
+            The peer device interface. Used for description and documentation.
         peer_ip:
           type: str
           description: |-
@@ -102,7 +102,7 @@ $defs:
               prefix:
                 type: str
                 required: true
-                description: IPv4_network/Mask
+                description: IPv4_network/Mask.
         qos_profile:
           type: str
           description: QOS service profile.

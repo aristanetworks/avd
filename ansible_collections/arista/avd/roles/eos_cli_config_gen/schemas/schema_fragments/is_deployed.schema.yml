@@ -7,6 +7,6 @@
 type: dict
 keys:
   is_deployed:
-    description: Key only used for documentation or validation purposes
+    description: Key only used for documentation or validation purposes.
     type: bool
     default: true

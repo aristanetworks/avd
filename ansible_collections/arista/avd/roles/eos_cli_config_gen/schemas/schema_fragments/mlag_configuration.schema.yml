@@ -14,57 +14,57 @@ keys:
         type: str
       heartbeat_interval:
         type: int
-        description: Heartbeat interval in milliseconds
+        description: Heartbeat interval in milliseconds.
         convert_types:
           - str
       local_interface:
-        description: Local Interface Name
+        description: Local Interface Name.
         type: str
       peer_address:
         type: str
-        description: IPv4 Address
+        description: IPv4 Address.
       peer_address_heartbeat:
         type: dict
         keys:
           peer_ip:
             type: str
-            description: IPv4 Address
+            description: IPv4 Address.
           vrf:
-            description: VRF Name
+            description: VRF Name.
             type: str
             convert_types:
               - int
       dual_primary_detection_delay:
         type: int
-        description: Delay in seconds
+        description: Delay in seconds.
         min: 0
         max: 86400
         convert_types:
           - str
       dual_primary_recovery_delay_mlag:
         type: int
-        description: Delay in seconds
+        description: Delay in seconds.
         min: 0
         max: 86400
         convert_types:
           - str
       dual_primary_recovery_delay_non_mlag:
         type: int
-        description: Delay in seconds
+        description: Delay in seconds.
         min: 0
         max: 86400
         convert_types:
           - str
       peer_link:
-        description: Port-Channel interface name
+        description: Port-Channel interface name.
         type: str
       reload_delay_mlag:
         type: str
-        description: Delay in seconds <0-86400> or 'infinity'
+        description: Delay in seconds <0-86400> or 'infinity'.
         convert_types:
           - int
       reload_delay_non_mlag:
         type: str
-        description: Delay in seconds <0-86400> or 'infinity'
+        description: Delay in seconds <0-86400> or 'infinity'.
         convert_types:
           - int

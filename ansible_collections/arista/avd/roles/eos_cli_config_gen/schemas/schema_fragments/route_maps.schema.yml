@@ -16,7 +16,7 @@ keys:
       keys:
         name:
           type: str
-          description: Route-map Name
+          description: Route-map Name.
         sequence_numbers:
           type: list
           required: true
@@ -28,7 +28,7 @@ keys:
             keys:
               sequence:
                 type: int
-                description: Sequence ID
+                description: Sequence ID.
                 convert_types:
                   - str
               type:
@@ -39,23 +39,23 @@ keys:
                 type: str
               match:
                 type: list
-                description: List of "match" statements
+                description: List of "match" statements.
                 items:
                   type: str
                   description: |
-                    Match as string
+                    Match as string.
                     Example: "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
               set:
                 type: list
-                description: List of "set" statements
+                description: List of "set" statements.
                 items:
                   type: str
                   description: |
-                    Set as string
+                    Set as string.
                     Example: "origin incomplete"
               sub_route_map:
                 type: str
-                description: Name of Sub-Route-map
+                description: Name of Sub-Route-map.
               continue:
                 type: dict
                 keys:
