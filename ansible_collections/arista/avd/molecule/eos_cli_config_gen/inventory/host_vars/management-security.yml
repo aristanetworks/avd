@@ -65,18 +65,27 @@ management_security:
       secrets:
         - name: name1
           secret: secret1
-          lifetime: infinite
+          lifetime:
+            infinite: true
         - name: name2
           secret: secret2
-          receive_lifetime: 20/12/2024
-          transmit_lifetime: infinite
+          receive_lifetime:
+            start_date_time: 12/20/2024 10:00:00
+            end_date_time: 12/20/2025 10:00:00
+          transmit_lifetime: 
+            infinite: true
         - name: name0
           secret: secret3
-          lifetime: infinite
+          lifetime:
+            infinite: true
     - profile_name: profile2
       secrets:
         - name: name3
           secret: secret4
-          lifetime: infinite
-          receive_lifetime: "2024-12-20"
-          transmit_lifetime: infinite
+          lifetime:
+            infinite: true
+          receive_lifetime:
+            start_date_time: "2024-12-20 10:00:00"
+            end_date_time: "2025-12-20 10:00:00"
+          transmit_lifetime:
+            infinite: true

@@ -57,9 +57,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secrets</samp>](## "management_security.shared_secret_profiles.[].secrets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.shared_secret_profiles.[].secrets.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.shared_secret_profiles.[].secrets.[].secret") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime") | String |  |  |  | Specify the lifetime of password. Below options are available. This value is applicable to receive-lifetime and transmit lifetime.<br>If lifetime, receive-lifetime and transmit-lifetime are specified then AVD will apply the value of lifetime to both receive and transmit lifetime.<br>infinite    -    infinite lifetime<br>mm/dd/yyyy  -    date<br>yyyy-mm-dd  -    date |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive_lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime") | String |  |  |  | Specify the lifetime for receiving the key.<br>infinite    -     infinite lifetime<br>mm/dd/yyyy  -     date<br>yyyy-mm-dd  -     date |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transmit_lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime") | String |  |  |  | Specify the lifetime for transmitting the key.<br>infinite    -     infinite lifetime<br>mm/dd/yyyy  -     date<br>yyyy-mm-dd  -     date |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime") | Dictionary |  |  |  | Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infinite</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime.infinite") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime.start_date_time") | String |  |  |  | Specify the start date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime.end_date_time") | String |  |  |  | Specify the end date and time of lifetime of the secret. End date should be greater than start date time.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive_lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infinite</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.infinite") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.start_date_time") | String |  |  |  | Specify the start date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.end_date_time") | String |  |  |  | Specify the end date and time of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transmit_lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infinite</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.infinite") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.start_date_time") | String |  |  |  | Specify the start date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.end_date_time") | String |  |  |  | Specify the end date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
 
 === "YAML"
 
@@ -153,22 +162,53 @@
             - name: <str>
               secret: <str>
 
-              # Specify the lifetime of password. Below options are available. This value is applicable to receive-lifetime and transmit lifetime.
-              # If lifetime, receive-lifetime and transmit-lifetime are specified then AVD will apply the value of lifetime to both receive and transmit lifetime.
-              # infinite    -    infinite lifetime
-              # mm/dd/yyyy  -    date
-              # yyyy-mm-dd  -    date
-              lifetime: <str>
+              # Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime.
+              lifetime:
+                infinite: <bool>
 
-              # Specify the lifetime for receiving the key.
-              # infinite    -     infinite lifetime
-              # mm/dd/yyyy  -     date
-              # yyyy-mm-dd  -     date
-              receive_lifetime: <str>
+                # Specify the start date and time of lifetime of the secret.
+                # Formats supported:
+                # 1. mm/dd/yyyy hh:mm:ss
+                # 2. yyyy-mm-dd hh:mm:ss
+                # e.g 2024/12/20 10:00:00
+                start_date_time: <str>
 
-              # Specify the lifetime for transmitting the key.
-              # infinite    -     infinite lifetime
-              # mm/dd/yyyy  -     date
-              # yyyy-mm-dd  -     date
-              transmit_lifetime: <str>
+                # Specify the end date and time of lifetime of the secret. End date should be greater than start date time.
+                # Formats supported:
+                # 1. mm/dd/yyyy hh:mm:ss
+                # 2. yyyy-mm-dd hh:mm:ss
+                # e.g 2024/12/20 10:00:00
+                end_date_time: <str>
+              receive_lifetime:
+                infinite: <bool>
+
+                # Specify the start date and time of lifetime of the secret.
+                # Formats supported:
+                # 1. mm/dd/yyyy hh:mm:ss
+                # 2. yyyy-mm-dd hh:mm:ss
+                # e.g 2024/12/20 10:00:00
+                start_date_time: <str>
+
+                # Specify the end date and time of lifetime of the secret. End date should be greater than start date.
+                # Formats supported:
+                # 1. mm/dd/yyyy hh:mm:ss
+                # 2. yyyy-mm-dd hh:mm:ss
+                # e.g 2024/12/20 10:00:00
+                end_date_time: <str>
+              transmit_lifetime:
+                infinite: <bool>
+
+                # Specify the start date and time of lifetime of the secret.
+                # Formats supported:
+                # 1. mm/dd/yyyy hh:mm:ss
+                # 2. yyyy-mm-dd hh:mm:ss
+                # e.g 2024/12/20 10:00:00
+                start_date_time: <str>
+
+                # Specify the end date and time of lifetime of the secret.
+                # Formats supported:
+                # 1. mm/dd/yyyy hh:mm:ss
+                # 2. yyyy-mm-dd hh:mm:ss
+                # e.g 2024/12/20 10:00:00
+                end_date_time: <str>
     ```

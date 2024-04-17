@@ -10703,18 +10703,76 @@
                       "title": "Secret"
                     },
                     "lifetime": {
-                      "type": "string",
-                      "description": "Specify the lifetime of password. Below options are available. This value is applicable to receive-lifetime and transmit lifetime.\nIf lifetime, receive-lifetime and transmit-lifetime are specified then AVD will apply the value of lifetime to both receive and transmit lifetime.\ninfinite    -    infinite lifetime\nmm/dd/yyyy  -    date\nyyyy-mm-dd  -    date",
+                      "type": "object",
+                      "description": "Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime.",
+                      "properties": {
+                        "infinite": {
+                          "type": "boolean",
+                          "title": "Infinite"
+                        },
+                        "start_date_time": {
+                          "type": "string",
+                          "description": "Specify the start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                          "title": "Start Date Time"
+                        },
+                        "end_date_time": {
+                          "type": "string",
+                          "description": "Specify the end date and time of lifetime of the secret. End date should be greater than start date time.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                          "title": "End Date Time"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
                       "title": "Lifetime"
                     },
                     "receive_lifetime": {
-                      "type": "string",
-                      "description": "Specify the lifetime for receiving the key.\ninfinite    -     infinite lifetime\nmm/dd/yyyy  -     date\nyyyy-mm-dd  -     date",
+                      "type": "object",
+                      "properties": {
+                        "infinite": {
+                          "type": "boolean",
+                          "title": "Infinite"
+                        },
+                        "start_date_time": {
+                          "type": "string",
+                          "description": "Specify the start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                          "title": "Start Date Time"
+                        },
+                        "end_date_time": {
+                          "type": "string",
+                          "description": "Specify the end date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                          "title": "End Date Time"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
                       "title": "Receive Lifetime"
                     },
                     "transmit_lifetime": {
-                      "type": "string",
-                      "description": "Specify the lifetime for transmitting the key.\ninfinite    -     infinite lifetime\nmm/dd/yyyy  -     date\nyyyy-mm-dd  -     date",
+                      "type": "object",
+                      "properties": {
+                        "infinite": {
+                          "type": "boolean",
+                          "title": "Infinite"
+                        },
+                        "start_date_time": {
+                          "type": "string",
+                          "description": "Specify the start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                          "title": "Start Date Time"
+                        },
+                        "end_date_time": {
+                          "type": "string",
+                          "description": "Specify the end date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                          "title": "End Date Time"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
                       "title": "Transmit Lifetime"
                     }
                   },
