@@ -681,18 +681,18 @@ ip_nat:
 router_service_insertion:
   enabled: true
   connections:
-  - name: IE-Tunnel100
+  - name: ZSCALER-CONN-100
     tunnel_interface:
       primary: Tunnel100
-    monitor_connectivity_host: ZSTunnel100
-  - name: IE-Tunnel101
+    monitor_connectivity_host: IE-Tunnel100
+  - name: ZSCALER-CONN-101
     tunnel_interface:
       primary: Tunnel101
-    monitor_connectivity_host: ZSTunnel101
-  - name: IE-Tunnel102
+    monitor_connectivity_host: IE-Tunnel101
+  - name: ZSCALER-CONN-102
     tunnel_interface:
       primary: Tunnel102
-    monitor_connectivity_host: ZSTunnel102
+    monitor_connectivity_host: IE-Tunnel102
 router_internet_exit:
   exit_groups:
   - name: ZSCALER-EXIT-POLICY-1_PRI
