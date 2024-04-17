@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import simple_7_encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
@@ -78,5 +79,12 @@ class IpSecurityMixin(UtilsMixin):
         return strip_null_from_data(ip_security)
 
     def _generate_ipsec_key(self, name: str, salt: str) -> str:
-        # TODO: Type-7 obfuscate
-        return "_".join((self.shared_utils.hostname, name, salt))
+        """
+        Build a secret containing various components for this policy and device.
+        Run type-7 obfuscation using a algoritmic salt so we ensure the same key every time.
+
+        TODO: Maybe introduce some formatting with max length of each element, since the keys can be come very very long.
+        """
+        secret = "_".join((self.shared_utils.hostname, name, salt))
+        type_7_salt = sum(salt.encode("utf-8")) % 16
+        return simple_7_encrypt(secret, type_7_salt)
