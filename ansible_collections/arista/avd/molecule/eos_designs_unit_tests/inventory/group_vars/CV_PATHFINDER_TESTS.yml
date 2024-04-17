@@ -550,9 +550,17 @@ application_classification:
 cv_pathfinder_internet_exit_policies:
   - name: ZSCALER-EXIT-POLICY-1
     type: zscaler
+    zscaler:
+      cloud_name: zscalerbeta
+      domain_name: test.local
+      ipsec_key_salt: THIS_SHOULD_BE_VAULTED
   - name: ZSCALER-EXIT-POLICY-2
     fallback_to_system_default: False
     type: zscaler
+    zscaler:
+      cloud_name: zscalerbeta
+      domain_name: test.local
+      ipsec_key_salt: THIS_SHOULD_BE_VAULTED
 
 # TODO move to its own test as planned
 zscaler_endpoints:

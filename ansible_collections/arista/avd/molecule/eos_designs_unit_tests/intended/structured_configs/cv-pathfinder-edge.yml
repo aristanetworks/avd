@@ -690,50 +690,56 @@ vxlan_interface:
         vni: 166
 tunnel_interfaces:
 - name: Tunnel100
+  description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
   mtu: 1394
-  ip_address: 1.1.1.1/24
+  ip_address: unnumbered Ethernet3
   tunnel_mode: ipsec
   source_interface: Ethernet3
-  destination: 42.42.42.42
+  destination: 10.37.121.1
   ipsec_profile: ZSCALER-IPSEC-PROFILE
 - name: Tunnel101
+  description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
   mtu: 1394
-  ip_address: 1.1.1.1/24
+  ip_address: unnumbered Ethernet3
   tunnel_mode: ipsec
   source_interface: Ethernet3
-  destination: 42.42.42.42
+  destination: 10.39.77.1
   ipsec_profile: ZSCALER-IPSEC-PROFILE
 - name: Tunnel102
+  description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
   mtu: 1394
-  ip_address: 1.1.1.1/24
+  ip_address: unnumbered Ethernet3
   tunnel_mode: ipsec
   source_interface: Ethernet3
-  destination: 42.42.42.42
+  destination: 10.50.9.1
   ipsec_profile: ZSCALER-IPSEC-PROFILE
 monitor_connectivity:
   interface_sets:
-  - name: ZSTunnel100
+  - name: SET-Tunnel100
     interfaces: Tunnel100
-  - name: ZSTunnel101
+  - name: SET-Tunnel101
     interfaces: Tunnel101
-  - name: ZSTunnel102
+  - name: SET-Tunnel102
     interfaces: Tunnel102
   hosts:
-  - name: ZSTunnel100
-    description: Zscaler tunnel
-    ip: 172.20.20.21/31
-    local_interfaces: ZSTunnel100
-    url: http://TODO
-  - name: ZSTunnel101
-    description: Zscaler tunnel
-    ip: 172.20.20.21/31
-    local_interfaces: ZSTunnel101
-    url: http://TODO
-  - name: ZSTunnel102
-    description: Zscaler tunnel
-    ip: 172.20.20.21/31
-    local_interfaces: ZSTunnel102
-    url: http://TODO
+  - name: IE-Tunnel100
+    description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
+    ip: 10.37.121.1
+    local_interfaces: SET-Tunnel100
+    address_only: false
+    url: http://gateway.zscalerbeta.net/vpntest
+  - name: IE-Tunnel101
+    description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
+    ip: 10.39.77.1
+    local_interfaces: SET-Tunnel101
+    address_only: false
+    url: http://gateway.zscalerbeta.net/vpntest
+  - name: IE-Tunnel102
+    description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
+    ip: 10.50.9.1
+    local_interfaces: SET-Tunnel102
+    address_only: false
+    url: http://gateway.zscalerbeta.net/vpntest
 metadata:
   cv_tags:
     device_tags:
