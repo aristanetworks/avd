@@ -244,6 +244,7 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
+      bgp additional-paths send backup
       neighbor EVPN-OVERLAY-PEERS activate
       no neighbor IPv4-UNDERLAY-PEERS activate
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate

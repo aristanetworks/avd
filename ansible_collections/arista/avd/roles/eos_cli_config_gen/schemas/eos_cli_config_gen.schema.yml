@@ -10892,10 +10892,46 @@ keys:
                 - discard
               import_ethernet_segment_ip_mass_withdraw:
                 type: bool
+              import_overlay_index_gateway:
+                type: bool
               export_ethernet_segment_ip_mass_withdraw:
                 type: bool
           next_hop_unchanged:
             type: bool
+          bgp_additional_paths:
+            type: dict
+            description: BGP additional-paths commands.
+            keys:
+              receive:
+                type: bool
+                description: Receive multiple paths.
+              send:
+                type: dict
+                description: Send multiple paths.
+                keys:
+                  any:
+                    type: bool
+                    description: Any eligible path.
+                  backup:
+                    type: bool
+                    description: Best path and installed backup path.
+                  ecmp:
+                    type: bool
+                    description: All paths in best path ECMP group.
+                  ecmp_limit:
+                    type: int
+                    description: Amount of ECMP paths to send.
+                    convert_types:
+                    - str
+                    min: 2
+                    max: 64
+                  limit:
+                    type: int
+                    description: Amount of paths to send.
+                    convert_types:
+                    - str
+                    min: 2
+                    max: 64
       address_family_rtc:
         type: dict
         keys:

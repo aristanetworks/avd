@@ -169,6 +169,7 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
+      bgp additional-paths send ecmp limit 20
       host-flap detection window 10 threshold 1
       domain identifier 65101:0
       neighbor EVPN-OVERLAY-PEERS activate

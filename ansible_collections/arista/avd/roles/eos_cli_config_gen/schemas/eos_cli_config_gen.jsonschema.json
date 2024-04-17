@@ -18106,6 +18106,10 @@
                   "type": "boolean",
                   "title": "Import Ethernet Segment IP Mass Withdraw"
                 },
+                "import_overlay_index_gateway": {
+                  "type": "boolean",
+                  "title": "Import Overlay Index Gateway"
+                },
                 "export_ethernet_segment_ip_mass_withdraw": {
                   "type": "boolean",
                   "title": "Export Ethernet Segment IP Mass Withdraw"
@@ -18120,6 +18124,62 @@
             "next_hop_unchanged": {
               "type": "boolean",
               "title": "Next Hop Unchanged"
+            },
+            "bgp_additional_paths": {
+              "type": "object",
+              "description": "BGP additional-paths commands.",
+              "properties": {
+                "receive": {
+                  "type": "boolean",
+                  "description": "Receive multiple paths.",
+                  "title": "Receive"
+                },
+                "send": {
+                  "type": "object",
+                  "description": "Send multiple paths.",
+                  "properties": {
+                    "any": {
+                      "type": "boolean",
+                      "description": "Any eligible path.",
+                      "title": "Any"
+                    },
+                    "backup": {
+                      "type": "boolean",
+                      "description": "Best path and installed backup path.",
+                      "title": "Backup"
+                    },
+                    "ecmp": {
+                      "type": "boolean",
+                      "description": "All paths in best path ECMP group.",
+                      "title": "ECMP"
+                    },
+                    "ecmp_limit": {
+                      "type": "integer",
+                      "description": "Amount of ECMP paths to send.",
+                      "minimum": 2,
+                      "maximum": 64,
+                      "title": "ECMP Limit"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Amount of paths to send.",
+                      "minimum": 2,
+                      "maximum": 64,
+                      "title": "Limit"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Send"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP Additional Paths"
             }
           },
           "additionalProperties": false,
