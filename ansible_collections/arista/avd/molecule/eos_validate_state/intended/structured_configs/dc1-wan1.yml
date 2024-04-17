@@ -1,7 +1,7 @@
 hostname: dc1-wan1
 is_deployed: true
 router_bgp:
-  as: '65000'
+  as: '65101'
   router_id: 10.255.2.1
   bgp:
     default:
@@ -28,7 +28,7 @@ router_bgp:
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0
-    remote_as: '65000'
+    remote_as: '65101'
     ttl_maximum_hops: 1
     bfd_timers:
       interval: 1000
@@ -45,15 +45,15 @@ router_bgp:
     route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 10.255.255.0
-    peer_group: IPv4-UNDERLAY-PEERS
+    peer_group: WAN-OVERLAY-PEERS
     remote_as: '65101'
     peer: dc1-leaf1a
-    description: dc1-leaf1a_Ethernet6
+    description: dc1-leaf1a
   - ip_address: 10.255.255.2
-    peer_group: IPv4-UNDERLAY-PEERS
+    peer_group: WAN-OVERLAY-PEERS
     remote_as: '65101'
     peer: dc1-leaf1b
-    description: dc1-leaf1b_Ethernet6
+    description: dc1-leaf1b
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -172,7 +172,7 @@ as_path:
   - name: ASPATH-WAN
     entries:
     - type: permit
-      match: '65000'
+      match: '65101'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -382,15 +382,41 @@ router_path_selection:
     id: 101
     local_interfaces:
     - name: Ethernet3
+      stun:
+        server_profiles:
+        - mpls-dc1-leaf1a-Ethernet6
+        - mpls-dc1-leaf1b-Ethernet6
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 10.255.255.0
+      name: dc1-leaf1a
+      ipv4_addresses:
+      - 172.18.1.2
+    - router_ip: 10.255.255.2
+      name: dc1-leaf1b
+      ipv4_addresses:
+      - 172.18.2.2
     ipsec_profile: CP-PROFILE
   - name: internet
     id: 102
     local_interfaces:
     - name: Ethernet4
+      stun:
+        server_profiles:
+        - internet-dc1-leaf1a-Ethernet7
+        - internet-dc1-leaf1b-Ethernet7
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 10.255.255.0
+      name: dc1-leaf1a
+      ipv4_addresses:
+      - 100.64.1.2
+    - router_ip: 10.255.255.2
+      name: dc1-leaf1b
+      ipv4_addresses:
+      - 100.64.2.2
     ipsec_profile: CP-PROFILE
   - name: LAN_HA
     id: 65535
@@ -418,6 +444,21 @@ router_path_selection:
     - name: LAN_HA
 router_traffic_engineering:
   enabled: true
+stun:
+  client:
+    server_profiles:
+    - name: mpls-dc1-leaf1a-Ethernet6
+      ip_address: 172.18.1.2
+      ssl_profile: STUN-DTLS
+    - name: mpls-dc1-leaf1b-Ethernet6
+      ip_address: 172.18.2.2
+      ssl_profile: STUN-DTLS
+    - name: internet-dc1-leaf1a-Ethernet7
+      ip_address: 100.64.1.2
+      ssl_profile: STUN-DTLS
+    - name: internet-dc1-leaf1b-Ethernet7
+      ip_address: 100.64.2.2
+      ssl_profile: STUN-DTLS
 application_traffic_recognition:
   application_profiles:
   - name: APP-PROFILE-CONTROL-PLANE
@@ -430,6 +471,9 @@ application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
+      prefix_values:
+      - 10.255.255.0/32
+      - 10.255.255.2/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -498,4 +542,7 @@ metadata:
       carrier: isp-1
       circuit_id: DC1-INET-3
       pathgroup: internet
+    pathfinders:
+    - vtep_ip: 10.255.255.0
+    - vtep_ip: 10.255.255.2
 dns_domain: dc1.local

@@ -228,19 +228,17 @@
     "name": "dc1-leaf1c",
     "test": "VerifyFieldNotice44Resolution",
     "categories": [
-      "field notices",
-      "software"
+      "field notices"
     ],
-    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
+    "description": "Verifies that the device is using the correct Aboot version per FN0044."
   },
   {
     "name": "dc1-leaf1c",
     "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "field notices",
-      "software"
+      "field notices"
     ],
-    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+    "description": "Verifies if the device is exposed to FN0072, and if the issue has been mitigated."
   },
   {
     "name": "dc1-leaf1c",
@@ -248,7 +246,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
+    "description": "Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches."
   },
   {
     "name": "dc1-leaf1c",
@@ -417,7 +415,7 @@
     "categories": [
       "software"
     ],
-    "description": "Verifies the device is running one of the allowed EOS version."
+    "description": "Verifies the EOS version of the device."
   },
   {
     "name": "dc1-leaf1c",
@@ -425,7 +423,7 @@
     "categories": [
       "software"
     ],
-    "description": "Verifies the device is running one of the allowed TerminAttr version."
+    "description": "Verifies the TerminAttr version of the device."
   },
   {
     "name": "dc1-leaf1c",

@@ -95,10 +95,13 @@ class AvdTestBGP(AvdTestBase):
     def create_tests(self, afi: str, safi: str | None = None) -> None:
         """Create BGP tests for the given AFI and SAFI."""
         bgp_neighbors = get(self.structured_config, "router_bgp.neighbors", [])
+        formatted_afi = afi.replace("-", "_")
+        if safi == "sr-te":
+            formatted_afi += "_sr_te"
 
         # Retrieve peer groups and direct neighbors.
-        peer_groups = get(self.structured_config, f"router_bgp.address_family_{afi}.peer_groups", [])
-        direct_neighbors = get(self.structured_config, f"router_bgp.address_family_{afi}.neighbors", [])
+        peer_groups = get(self.structured_config, f"router_bgp.address_family_{formatted_afi}.peer_groups", [])
+        direct_neighbors = get(self.structured_config, f"router_bgp.address_family_{formatted_afi}.neighbors", [])
 
         # Only explicitly activated neighbors and peer groups are tested.
         filtered_peer_groups = [peer_group["name"] for peer_group in peer_groups if peer_group.get("activate")]
@@ -143,8 +146,16 @@ class AvdTestBGP(AvdTestBase):
                 },
             },
         )
-        # Create tests for IPv4, IPv6 and EVPN address families
-        for afi, safi in [("evpn", None), ("ipv4", "unicast"), ("ipv6", "unicast")]:
+        # Create tests for IPv4, IPv6, path-selection, link-state and EVPN address families
+        for afi, safi in [
+            ("evpn", None),
+            ("path-selection", None),
+            ("link-state", None),
+            ("ipv4", "unicast"),
+            ("ipv6", "unicast"),
+            ("ipv4", "sr-te"),
+            ("ipv6", "sr-te"),
+        ]:
             self.create_tests(afi=afi, safi=safi)
 
         return self.anta_tests if self.anta_tests.get(f"{self.anta_module}.bgp") else None
