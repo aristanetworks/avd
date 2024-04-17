@@ -507,7 +507,7 @@ class DashboardConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of DashboardConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.

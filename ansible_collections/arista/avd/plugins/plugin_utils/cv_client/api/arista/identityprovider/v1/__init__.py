@@ -147,7 +147,7 @@ class OAuthConfig(aristaproto.Message):
         10, wraps=aristaproto.TYPE_STRING
     )
     """
-    bearer_token_introspection_endpoint is the provider introspection endpoint used in
+    bearer_token_introspection_endpoint is the provider instrospection endpoint used in
      Bearer Token based login support for CloudVision. This endpoint will be used to verify
      the bearer token received when an external application is logging in. This is an
      optional field. CloudVision will only support this feature for a single provider per
@@ -221,7 +221,7 @@ class SamlConfig(aristaproto.Message):
         8, wraps=aristaproto.TYPE_BOOL
     )
     """
-    force_saml_authn indicates whether or not enable force authentication in SAML login.
+    force_saml_authn indicates wether or not enable force authentication in SAML login.
      This is an optional field. If not set, it defaults to false.
     """
 
@@ -371,7 +371,7 @@ class OAuthConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of OAuthConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.
@@ -547,7 +547,7 @@ class SamlConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of SAMLConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.

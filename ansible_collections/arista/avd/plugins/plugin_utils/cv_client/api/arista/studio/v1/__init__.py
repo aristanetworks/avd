@@ -1646,7 +1646,7 @@ class AssignedTagsConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of AssignedTagsConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.
@@ -1908,7 +1908,7 @@ class AutofillActionConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of AutofillActionConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.
@@ -2170,7 +2170,7 @@ class InputsConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of InputsConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.
@@ -2514,7 +2514,7 @@ class StudioConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of StudioConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.
@@ -2860,7 +2860,7 @@ class TopologyInputConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of TopologyInputConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.
@@ -3122,7 +3122,7 @@ class TopologyUpdateConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of TopologyUpdateConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.
@@ -3388,7 +3388,7 @@ class TopologyUpdateSyncConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of TopologyUpdateSyncConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.

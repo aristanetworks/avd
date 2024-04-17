@@ -307,7 +307,7 @@ class Stage(aristaproto.Message):
 
     error: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
-    error is any error that occurred during the execution
+    error is any error that occured during the execution
      of the stage.
     """
 

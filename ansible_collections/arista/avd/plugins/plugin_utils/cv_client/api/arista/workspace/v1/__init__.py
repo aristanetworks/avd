@@ -542,7 +542,7 @@ class InputValidationResults(aristaproto.Message):
 @dataclass(eq=False, repr=False)
 class TemplateError(aristaproto.Message):
     """
-    TemplateError holds details for an error that occurred while evaluating a studio
+    TemplateError holds details for an error that occured while evaluating a studio
      template against its inputs.
     """
 
@@ -584,7 +584,7 @@ class ConfigletBuildResult(aristaproto.Message):
 
     template_errors: "TemplateErrors" = aristaproto.message_field(1)
     """
-    template_errors are errors that occurred during studio template evaluation.
+    template_errors are errors that occured during studio template evaluation.
     """
 
     generated_config: Optional[str] = aristaproto.message_field(
@@ -696,7 +696,7 @@ class AuthzResult(aristaproto.Message):
         2, wraps=aristaproto.TYPE_BOOL
     )
     """
-    has_unauthorized_device_change is true when there is at least 1 device
+    has_unauthorized_device_change is true when there is atleast 1 device
      for which the subject doesn't have provision permission.
     """
 
@@ -1197,7 +1197,7 @@ class WorkspaceConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of WorkspaceConfig values to write.
      It is possible to provide more values than can fit within either:
-         - the maximum send size of the client
+         - the maxiumum send size of the client
          - the maximum receive size of the server
      If this error occurs you must reduce the number of values sent.
      See gRPC "maximum message size" documentation for more information.
