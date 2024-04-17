@@ -23542,6 +23542,32 @@
                           "description": "Name of the SA policy. The \"null\" value is deprecated and will be removed in AVD 5.0.0",
                           "title": "Name"
                         },
+                        "sa_lifetime": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "integer",
+                              "description": "Lifetime value for this SA.\nValid range depends on the unit.",
+                              "title": "Value"
+                            },
+                            "unit": {
+                              "type": "string",
+                              "enum": [
+                                "gigabytes",
+                                "hours",
+                                "megabytes",
+                                "thousand-packets"
+                              ],
+                              "default": "hours",
+                              "title": "Unit"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Sa Lifetime"
+                        },
                         "esp": {
                           "type": "object",
                           "properties": {
