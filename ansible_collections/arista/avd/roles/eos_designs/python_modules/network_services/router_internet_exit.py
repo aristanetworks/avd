@@ -44,7 +44,7 @@ class RouterInternetExitMixin(UtilsMixin):
             if get(policy, "fallback_to_system_default", default=True):
                 policy_exit_groups.append("system-default-exit-group")
 
-            policies.append({"name": policy["name"], "exit_groups": [{"name": exit_group_name for exit_group_name in policy_exit_groups}]})
+            policies.append({"name": policy["name"], "exit_groups": [{"name": exit_group_name} for exit_group_name in policy_exit_groups]})
 
         if exit_groups_dict:
             router_internet_exit["exit_groups"] = [

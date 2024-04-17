@@ -697,9 +697,14 @@ router_internet_exit:
   policies:
   - name: ZSCALER-EXIT-POLICY-1
     exit_groups:
+    - name: ZSCALER-EXIT-POLICY-1_PRI
+    - name: ZSCALER-EXIT-POLICY-1_SEC
+    - name: ZSCALER-EXIT-POLICY-1_TER
     - name: system-default-exit-group
   - name: ZSCALER-EXIT-POLICY-2
     exit_groups:
+    - name: ZSCALER-EXIT-POLICY-2_PRI
+    - name: ZSCALER-EXIT-POLICY-2_SEC
     - name: ZSCALER-EXIT-POLICY-2_TER
 dps_interfaces:
 - name: Dps1
