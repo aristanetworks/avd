@@ -10,6 +10,7 @@ from .ethernet_interfaces import EthernetInterfacesMixin
 from .ip_access_lists import IpAccesslistsMixin
 from .ip_igmp_snooping import IpIgmpSnoopingMixin
 from .ip_nat import IpNatMixin
+from .ip_security import IpSecurityMixin
 from .ip_virtual_router_mac_address import IpVirtualRouterMacAddressMixin
 from .ipv6_static_routes import Ipv6StaticRoutesMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
@@ -48,6 +49,7 @@ class AvdStructuredConfigNetworkServices(
     IpAccesslistsMixin,
     IpIgmpSnoopingMixin,
     IpNatMixin,
+    IpSecurityMixin,
     IpVirtualRouterMacAddressMixin,
     VlanInterfacesMixin,
     EthernetInterfacesMixin,
