@@ -13,7 +13,20 @@ monitor_connectivity:
       description: server1_connectivity_monitor
       ip: 10.10.10.1
       local_interfaces: HOST_SET
+      address_only: true
       url: https://server1.local.com
+    - name: server2
+      description: server2_connectivity_monitor
+      ip: 10.10.10.2
+      local_interfaces: HOST_SET
+      # This is default in AVD 4.x
+      # address_only: true
+      url: https://server2.local.com
+    - name: server3
+      description: server3_connectivity_monitor
+      ip: 10.10.10.3
+      local_interfaces: HOST_SET
+      address_only: false
   vrfs:
     - name: red
       description: vrf_connectivity_monitor
@@ -27,5 +40,18 @@ monitor_connectivity:
         - name: server2
           description: server2_connectivity_monitor
           ip: 10.10.20.1
+          local_interfaces: VRF_HOST_SET
+          url: https://server2.local.com
+    - name: blue
+      local_interfaces: VRF_GLOBAL_SET
+      address_only: false
+      interface_sets:
+        - name: VRF_GLOBAL_SET
+          interfaces: Vlan21-24, Vlan29-32
+      hosts:
+        - name: server4
+          description: server4_connectivity_monitor
+          ip: 10.10.20.1
+          address_only: false
           local_interfaces: VRF_HOST_SET
           url: https://server2.local.com
