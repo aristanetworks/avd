@@ -15741,6 +15741,37 @@
             "default": "Management1",
             "title": "Management Interface"
           },
+          "security_entropy_sources": {
+            "description": "Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.",
+            "type": "object",
+            "properties": {
+              "hardware": {
+                "type": "boolean",
+                "description": "Use a hardware based source.",
+                "title": "Hardware"
+              },
+              "haveged": {
+                "type": "boolean",
+                "description": "Use the HAVEGE algorithm.",
+                "title": "Haveged"
+              },
+              "cpu_jitter": {
+                "type": "boolean",
+                "description": "Use the Jitter RNG algorithm of a CPU based source.",
+                "title": "CPU Jitter"
+              },
+              "hardware_exclusive": {
+                "type": "boolean",
+                "description": "Only use entropy from the hardware source.",
+                "title": "Hardware Exclusive"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Security Entropy Sources"
+          },
           "structured_config": {
             "type": "object",
             "description": "Custom structured config for eos_cli_config_gen.",
@@ -23155,10 +23186,20 @@
                           "type": "string",
                           "title": "Name"
                         },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "ip-port",
+                            "port-only"
+                          ],
+                          "default": "ip-port",
+                          "title": "Type"
+                        },
                         "prefix_length": {
                           "type": "integer",
                           "minimum": 16,
                           "maximum": 32,
+                          "description": "It is only used and required when `type` is `ip-port`.",
                           "title": "Prefix Length"
                         },
                         "ranges": {
@@ -23168,12 +23209,12 @@
                             "properties": {
                               "first_ip": {
                                 "type": "string",
-                                "description": "IPv4 address.",
+                                "description": "IPv4 address.\nRequired when `type` is `ip-port` and ignored otherwise.",
                                 "title": "First IP"
                               },
                               "last_ip": {
                                 "type": "string",
-                                "description": "IPv4 address.",
+                                "description": "IPv4 address.\nRequired when `type` is `ip-port` and ignored otherwise.\n`first_ip` and `last_ip` ip addresses should lie in same subnet.",
                                 "title": "Last IP"
                               },
                               "first_port": {
@@ -23186,13 +23227,10 @@
                                 "type": "integer",
                                 "minimum": 1,
                                 "maximum": 65535,
+                                "description": "Required when `first_port` is set.\n`last_port` must be greater than or equal to `first_port`.",
                                 "title": "Last Port"
                               }
                             },
-                            "required": [
-                              "first_ip",
-                              "last_ip"
-                            ],
                             "additionalProperties": false,
                             "patternProperties": {
                               "^_.+$": {}
@@ -23207,14 +23245,13 @@
                           "title": "Utilization Log Threshold"
                         }
                       },
-                      "required": [
-                        "prefix_length",
-                        "name"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "name"
+                      ]
                     },
                     "title": "Pools"
                   },
@@ -23535,6 +23572,32 @@
                           "type": "string",
                           "description": "Name of the SA policy. The \"null\" value is deprecated and will be removed in AVD 5.0.0.",
                           "title": "Name"
+                        },
+                        "sa_lifetime": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "integer",
+                              "description": "Lifetime value for this SA.\nValid range depends on the unit.\n<1-24>       Lifetime in hours ( default )\n<1-4000000>  Packet limit in thousands\n<1-6000>     Byte limit in GB ( 1024 MB )\n<1-6144000>  Byte limit in MB ( 1024 KB )",
+                              "title": "Value"
+                            },
+                            "unit": {
+                              "type": "string",
+                              "enum": [
+                                "gigabytes",
+                                "hours",
+                                "megabytes",
+                                "thousand-packets"
+                              ],
+                              "default": "hours",
+                              "title": "Unit"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Sa Lifetime"
                         },
                         "esp": {
                           "type": "object",
@@ -25963,6 +26026,37 @@
                     "type": "string",
                     "title": "Entropy Source"
                   },
+                  "entropy_sources": {
+                    "type": "object",
+                    "description": "Source of entropy.",
+                    "properties": {
+                      "hardware": {
+                        "type": "boolean",
+                        "description": "Use a hardware based source.",
+                        "title": "Hardware"
+                      },
+                      "haveged": {
+                        "type": "boolean",
+                        "description": "Use the HAVEGE algorithm.",
+                        "title": "Haveged"
+                      },
+                      "cpu_jitter": {
+                        "type": "boolean",
+                        "description": "Use the Jitter RNG algorithm of a CPU based source.",
+                        "title": "CPU Jitter"
+                      },
+                      "hardware_exclusive": {
+                        "type": "boolean",
+                        "description": "Only use entropy from the hardware source.",
+                        "title": "Hardware Exclusive"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Entropy Sources"
+                  },
                   "password": {
                     "type": "object",
                     "properties": {
@@ -27165,6 +27259,12 @@
                     "type": "string",
                     "title": "Local Interfaces"
                   },
+                  "address_only": {
+                    "type": "boolean",
+                    "description": "PREVIEW: This key is in preview.\nWhen address-only is configured, the source IP of the packet is set to the interface\nIP but the packet may exit the device via a different interface.\nWhen set to `false`, the probe uses the interface to exit the device.\nNot supported yet in EOS.",
+                    "default": true,
+                    "title": "Address Only"
+                  },
                   "hosts": {
                     "type": "array",
                     "items": {
@@ -27186,6 +27286,12 @@
                         "local_interfaces": {
                           "type": "string",
                           "title": "Local Interfaces"
+                        },
+                        "address_only": {
+                          "type": "boolean",
+                          "description": "PREVIEW: This key is in preview.\nWhen address-only is configured, the source IP of the packet is set to the interface\nIP but the packet may exit the device via a different interface.\nWhen set to `false`, the probe uses the interface to exit the device.\nNot supported yet in EOS.",
+                          "default": true,
+                          "title": "Address Only"
                         },
                         "url": {
                           "type": "string",
@@ -27238,6 +27344,12 @@
                           "type": "string",
                           "title": "Local Interfaces"
                         },
+                        "address_only": {
+                          "type": "boolean",
+                          "description": "PREVIEW: This key is in preview.\nWhen address-only is configured, the source IP of the packet is set to the interface\nIP but the packet may exit the device via a different interface.\nWhen set to `false`, the probe uses the interface to exit the device.\nNot supported yet in EOS.",
+                          "default": true,
+                          "title": "Address Only"
+                        },
                         "hosts": {
                           "type": "array",
                           "items": {
@@ -27259,6 +27371,12 @@
                               "local_interfaces": {
                                 "type": "string",
                                 "title": "Local Interfaces"
+                              },
+                              "address_only": {
+                                "type": "boolean",
+                                "description": "PREVIEW: This key is in preview.\nWhen address-only is configured, the source IP of the packet is set to the interface\nIP but the packet may exit the device via a different interface.\nWhen set to `false`, the probe uses the interface to exit the device.\nNot supported yet in EOS.",
+                                "default": true,
+                                "title": "Address Only"
                               },
                               "url": {
                                 "type": "string",

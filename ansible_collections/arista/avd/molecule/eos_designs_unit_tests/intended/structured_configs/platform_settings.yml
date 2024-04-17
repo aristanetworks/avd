@@ -9,6 +9,12 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+management_security:
+  entropy_sources:
+    hardware: true
+    haveged: true
+    cpu_jitter: true
+    hardware_exclusive: true
 management_api_http:
   enable_vrfs:
   - name: MGMT

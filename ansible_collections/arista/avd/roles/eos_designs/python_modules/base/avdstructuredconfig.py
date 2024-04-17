@@ -519,6 +519,16 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         return None
 
     @cached_property
+    def management_security(self) -> dict | None:
+        """
+        Return structured config for management_security.
+        """
+        if (entropy_sources := get(self.shared_utils.platform_settings, "security_entropy_sources")) is not None:
+            return {"entropy_sources": entropy_sources}
+
+        return None
+
+    @cached_property
     def tcam_profile(self) -> dict | None:
         """
         tcam_profile set based on platform_settings.tcam_profile fact
