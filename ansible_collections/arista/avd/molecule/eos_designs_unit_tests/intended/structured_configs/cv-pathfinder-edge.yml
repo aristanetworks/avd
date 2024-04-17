@@ -342,6 +342,11 @@ ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
     local_id: 192.168.142.1
+  - name: IE-ZSCALER-EXIT-POLICY-1-IKE-POLICY
+    local_id_fqdn: cv-pathfinder-edge_ZSCALER-EXIT-POLICY-1@test.local
+    ike_lifetime: 24
+    encryption: aes256
+    dh_group: 24
   sa_policies:
   - name: DP-SA-POLICY
     esp:
@@ -351,6 +356,13 @@ ip_security:
     esp:
       encryption: aes256gcm128
     pfs_dh_group: 14
+  - name: IE-ZSCALER-EXIT-POLICY-1-SA-POLICY
+    pfs_dh_group: 24
+    sa_lifetime:
+      value: 8
+    esp:
+      integrity: sha256
+      encryption: disabled
   profiles:
   - name: DP-PROFILE
     sa_policy: DP-SA-POLICY
@@ -371,6 +383,14 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+  - name: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+    ike_policy: IE-ZSCALER-EXIT-POLICY-1-IKE-POLICY
+    sa_policy: IE-ZSCALER-EXIT-POLICY-1-SA-POLICY
+    shared_key: cv-pathfinder-edge_ZSCALER-EXIT-POLICY-1_THIS_SHOULD_BE_VAULTED
+    dpd:
+      interval: 10
+      time: 60
+      action: clear
   key_controller:
     profile: DP-PROFILE
 management_security:

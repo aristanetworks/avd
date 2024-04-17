@@ -54,6 +54,7 @@ class IpSecurityMixin(UtilsMixin):
                 {
                     "name": sa_policy_name,
                     "pfs_dh_group": 24,
+                    "sa_lifetime": {"value": 8},
                     "esp": {
                         "integrity": "sha256",
                         "encryption": "disabled",
@@ -67,7 +68,7 @@ class IpSecurityMixin(UtilsMixin):
                     "sa_policy": sa_policy_name,
                     "shared_key": ipsec_key,
                     "dpd": {
-                        "interface": 10,
+                        "interval": 10,
                         "time": 60,
                         "action": "clear",
                     },

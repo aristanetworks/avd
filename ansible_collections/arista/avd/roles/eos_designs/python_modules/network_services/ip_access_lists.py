@@ -22,7 +22,8 @@ class IpAccesslistsMixin(UtilsMixin):
         if not self.shared_utils.is_cv_pathfinder_router:
             return None
 
-        if not (any(connection["type"] == "tunnel" for policy in self._filtered_internet_exit_policies for connection in policy["connections"])):
+        # Curently only needed for Zscaler
+        if not (any(internet_exit_policy["type"] == "zscaler" for internet_exit_policy in self._filtered_internet_exit_policies)):
             return None
 
         return [{"name": "ALLOW_ALL", "entries": [{"sequence": 10, "action": "permit", "protocol": "ip", "source": "any", "destination": "any"}]}]
