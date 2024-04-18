@@ -26,6 +26,8 @@ router_bgp:
       maximum_routes: 0
       allowas_in:
         enabled: true
+      shared_secret_profile_name: profile2
+      hash_algorithm: aes-128-cmac-96
     - name: MLAG-IPv4-UNDERLAY-PEER
       type: ipv4
       remote_as: 65101
