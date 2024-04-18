@@ -36,12 +36,12 @@ class IpSecurityMixin(UtilsMixin):
             policy_name = internet_exit_policy["name"]
             domain_name = get(internet_exit_policy, "zscaler.domain_name", required=True)
             ipsec_key_salt = get(internet_exit_policy, "zscaler.ipsec_key_salt", required=True)
+            encrypt_traffic = get(internet_exit_policy, "zscaler.encrypt_traffic", default=True)
             ike_policy_name = f"IE-{policy_name}-IKE-POLICY"
             sa_policy_name = f"IE-{policy_name}-SA-POLICY"
             profile_name = f"IE-{policy_name}-PROFILE"
             ipsec_key = self._generate_ipsec_key(name=policy_name, salt=ipsec_key_salt)
             ufqdn = f"{self.shared_utils.hostname}_{policy_name}@{domain_name}"
-
             ip_security["ike_policies"].append(
                 {
                     "name": ike_policy_name,
@@ -58,7 +58,7 @@ class IpSecurityMixin(UtilsMixin):
                     "sa_lifetime": {"value": 8},
                     "esp": {
                         "integrity": "sha256",
-                        "encryption": "disabled",
+                        "encryption": "aes256" if encrypt_traffic else "disabled",
                     },
                 }
             )

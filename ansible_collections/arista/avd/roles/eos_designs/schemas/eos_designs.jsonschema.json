@@ -4424,6 +4424,12 @@
                 "description": "Domain name as configured in Zscaler for the tenant. Used as UFQDN suffix for authentication.",
                 "title": "Domain Name"
               },
+              "encrypt_traffic": {
+                "type": "boolean",
+                "default": true,
+                "description": "When `true` the traffic going over the tunnels will be encrypted with AES-256-GCM. Otherwise the traffic will be using NULL encryption.\nNote that encryption requires a subscription on the Zscaler account.",
+                "title": "Encrypt Traffic"
+              },
               "download_bandwidth": {
                 "type": "integer",
                 "description": "Maximum allowed download bandwidth in Mbps for each device using this policy.",

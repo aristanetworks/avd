@@ -641,6 +641,14 @@ keys:
               required: true
               description: Domain name as configured in Zscaler for the tenant. Used
                 as UFQDN suffix for authentication.
+            encrypt_traffic:
+              type: bool
+              default: true
+              description: 'When `true` the traffic going over the tunnels will be
+                encrypted with AES-256-GCM. Otherwise the traffic will be using NULL
+                encryption.
+
+                Note that encryption requires a subscription on the Zscaler account.'
             download_bandwidth:
               type: int
               description: Maximum allowed download bandwidth in Mbps for each device

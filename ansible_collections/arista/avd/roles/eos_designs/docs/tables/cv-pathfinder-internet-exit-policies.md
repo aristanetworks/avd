@@ -15,6 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec_key_salt</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.ipsec_key_salt") | String | Required |  |  | "Salt" used for auto generation of encryption keys for IPsec tunnels to Zscaler.<br>The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.<br>Since this salt can be used to deduct the encryption key, it is recommeneded to use vault. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cloud_name</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.cloud_name") | String | Required |  |  | Zscaler cloud name like 'zscaler1' or 'zscalerbeta'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain_name</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.domain_name") | String | Required |  |  | Domain name as configured in Zscaler for the tenant. Used as UFQDN suffix for authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encrypt_traffic</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.encrypt_traffic") | Boolean |  | `True` |  | When `true` the traffic going over the tunnels will be encrypted with AES-256-GCM. Otherwise the traffic will be using NULL encryption.<br>Note that encryption requires a subscription on the Zscaler account. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;download_bandwidth</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.download_bandwidth") | Integer |  |  |  | Maximum allowed download bandwidth in Mbps for each device using this policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;upload_bandwidth</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.upload_bandwidth") | Integer |  |  |  | Maximum allowed upload bandwidth in Mbps for each device using this policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;firewall</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.firewall") | Dictionary |  |  |  |  |
@@ -53,6 +54,10 @@
 
           # Domain name as configured in Zscaler for the tenant. Used as UFQDN suffix for authentication.
           domain_name: <str; required>
+
+          # When `true` the traffic going over the tunnels will be encrypted with AES-256-GCM. Otherwise the traffic will be using NULL encryption.
+          # Note that encryption requires a subscription on the Zscaler account.
+          encrypt_traffic: <bool; default=True>
 
           # Maximum allowed download bandwidth in Mbps for each device using this policy.
           download_bandwidth: <int>
