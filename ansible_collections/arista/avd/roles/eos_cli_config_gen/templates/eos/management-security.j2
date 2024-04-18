@@ -117,17 +117,17 @@ management security
 {%                 for secret in profile.secrets | arista.avd.natural_sort("name") %}
 {%                     if secret.name is arista.avd.defined and secret.secret is arista.avd.defined and secret.lifetime is arista.avd.defined %}
 {%                         if secret.lifetime.infinite is arista.avd.defined(true) %}
-      secret {{ secret.name }} {{ secret.secret }} infinite
+      secret {{ secret.name }} {{ secret.secret | arista.avd.hide_passwords(hide_passwords) }} infinite
 {%                         endif %}
 {%                     elif secret.name is arista.avd.defined and secret.secret is arista.avd.defined and secret.receive_lifetime is arista.avd.defined and secret.transmit_lifetime is arista.avd.defined %}
 {%                         if secret.receive_lifetime.infinite is arista.avd.defined(true) and secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
-      secret {{ secret.name }} {{ secret.secret }} receive-lifetime infinite transmit-lifetime {{ secret.transmit_lifetime.start_date_time }} {{ secret.transmit_lifetime.end_date_time }}
+      secret {{ secret.name }} {{ secret.secret | arista.avd.hide_passwords(hide_passwords) }} receive-lifetime infinite transmit-lifetime {{ secret.transmit_lifetime.start_date_time }} {{ secret.transmit_lifetime.end_date_time }}
 {%                         elif secret.transmit_lifetime.infinite is arista.avd.defined(true) and secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined %}
-      secret {{ secret.name }} {{ secret.secret }} receive-lifetime {{ secret.receive_lifetime.start_date_time }} {{ secret.receive_lifetime.end_date_time }} transmit-lifetime infinite
+      secret {{ secret.name }} {{ secret.secret | arista.avd.hide_passwords(hide_passwords) }} receive-lifetime {{ secret.receive_lifetime.start_date_time }} {{ secret.receive_lifetime.end_date_time }} transmit-lifetime infinite
 {%                         elif secret.receive_lifetime.infinite is arista.avd.defined(true) and secret.transmit_lifetime.infinite is arista.avd.defined(true) %}
-      secret {{ secret.name }} {{ secret.secret }} lifetime
+      secret {{ secret.name }} {{ secret.secret | arista.avd.hide_passwords(hide_passwords) }} lifetime
 {%                         elif secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined and secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
-      secret {{ secret.name }} {{ secret.secret }} {{ secret.receive_lifetime.start_date_time }} {{ secret.receive_lifetime.end_date_time }} {{ secret.transmit_lifetime.start_date_time }} {{ secret.transmit_lifetime.end_date_time }}
+      secret {{ secret.name }} {{ secret.secret | arista.avd.hide_passwords(hide_passwords) }} {{ secret.receive_lifetime.start_date_time }} {{ secret.receive_lifetime.end_date_time }} {{ secret.transmit_lifetime.start_date_time }} {{ secret.transmit_lifetime.end_date_time }}
 {%                         endif %}
 {%                     endif %}
 {%                 endfor %}
