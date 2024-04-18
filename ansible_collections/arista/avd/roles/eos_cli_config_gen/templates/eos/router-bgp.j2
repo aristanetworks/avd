@@ -342,6 +342,9 @@ router bgp {{ router_bgp.as }}
 {%         if neighbor.weight is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} weight {{ neighbor.weight }}
 {%         endif %}
+{%         if neighbor.shared_secret_profile_name is arista.avd.defined and neighbor.hash_algorithm is arista.avd.defined %}
+   neighbor {{ neighbor.ip_address }} password shared-secret profile {{ neighbor.shared_secret_profile_name }} algorithm {{ neighbor.hash_algorithm }}
+{%         endif %}
 {%         if neighbor.session_tracker is arista.avd.defined() %}
    neighbor {{ neighbor.ip_address }} session tracker {{ neighbor.session_tracker }}
 {%         endif %}
