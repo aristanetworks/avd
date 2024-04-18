@@ -29,4 +29,4 @@ keys:
               - int
             serdes:
               type: str
-              description: Serdes speed like "10g" or "25g"
+              description: Serdes speed like "10g" or "25g".

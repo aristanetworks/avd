@@ -77,7 +77,7 @@ class AvdTestBGP(AvdTestBase):
         """Add a BGP test definition with the proper input parameters."""
         formatted_afi = "IPv4" if afi.lower() == "ipv4" else "IPv6" if afi.lower() == "ipv6" else afi.upper()
         formatted_safi = f" {safi.capitalize()}" if safi else ""
-        custom_field = f"BGP {formatted_afi}{formatted_safi} Peer: {bgp_peer} (IP: {bgp_neighbor_ip})"
+        custom_field = f"BGP {formatted_afi}{formatted_safi} Peer: {bgp_peer + ' ' if bgp_peer is not None else ''}(IP: {bgp_neighbor_ip})"
 
         address_family = {"afi": afi, "peers": [bgp_neighbor_ip]}
         if safi:

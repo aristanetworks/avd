@@ -21,11 +21,17 @@ ip_security:
     - name: SA-2
       esp:
         encryption: aes128
+      sa_lifetime:
+        value: 42
+        unit: gigabytes
       pfs_dh_group: 14
     - name: SA-3
       esp:
         integrity: disabled
         encryption: disabled
+      sa_lifetime:
+        value: 8
+        # default unit is hours
       pfs_dh_group: 17
   profiles:
     - name: Profile-1

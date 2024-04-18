@@ -17,15 +17,15 @@ keys:
             - int
         destination_address_prefix:
           type: str
-          description: IPv6 Network/Mask
+          description: IPv6 Network/Mask.
         interface:
           type: str
         gateway:
           type: str
-          description: IPv6 Address
+          description: IPv6 Address.
         track_bfd:
           type: bool
-          description: Track next-hop using BFD
+          description: Track next-hop using BFD.
         distance:
           type: int
           convert_types:
@@ -40,7 +40,7 @@ keys:
           max: 4294967295
         name:
           type: str
-          description: Description
+          description: Description.
         metric:
           type: int
           convert_types:

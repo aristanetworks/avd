@@ -94,6 +94,13 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
                 "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
                 "storm_control": self._get_adapter_storm_control(adapter),
+                "dot1x": adapter.get("dot1x"),
+                "phone": self._get_adapter_phone(adapter, connected_endpoint),
+                "poe": self._get_adapter_poe(adapter),
+                "ptp": self._get_adapter_ptp(adapter),
+                "service_profile": adapter.get("qos_profile"),
+                "sflow": self._get_adapter_sflow(adapter),
+                "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
             }
         )
         return ethernet_interface
@@ -174,7 +181,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 # Verify that the referred profile exists under port_profiles
                 if not (profile := self.shared_utils.get_merged_port_profile(profile_name)):
                     raise AristaAvdMissingVariableError(
-                        "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurence seen"
+                        "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurrence seen"
                         f" of a missing profile is '{get(adapter, 'port_channel.lacp_fallback.individual.profile')}' for the connected endpoint with the"
                         f" name '{connected_endpoint['name']}'."
                     )
@@ -190,19 +197,8 @@ class EthernetInterfacesMixin(UtilsMixin):
         # NOT a port-channel member
         else:
             ethernet_interface = self._update_ethernet_interface_cfg(adapter, ethernet_interface, connected_endpoint)
-            ethernet_interface.update(
-                {
-                    "dot1x": adapter.get("dot1x"),
-                    "phone": self._get_adapter_phone(adapter, connected_endpoint),
-                    "poe": self._get_adapter_poe(adapter),
-                    "ptp": self._get_adapter_ptp(adapter),
-                    "service_profile": adapter.get("qos_profile"),
-                    "sflow": self._get_adapter_sflow(adapter),
-                    "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
-                        adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
-                    ),
-                    "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
-                }
+            ethernet_interface["evpn_ethernet_segment"] = self._get_adapter_evpn_ethernet_segment_cfg(
+                adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
             )
 
         # More common ethernet_interface settings

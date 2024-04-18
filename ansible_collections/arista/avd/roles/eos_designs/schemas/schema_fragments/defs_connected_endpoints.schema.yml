@@ -48,7 +48,7 @@ $defs:
                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
                 items:
                   type: str
-                  description: Device
+                  description: Device.
               endpoint_ports:
                 type: list
                 description: |

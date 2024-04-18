@@ -215,6 +215,22 @@
   },
   {
     "name": "dc1-wan2",
+    "test": "VerifyGreenT",
+    "categories": [
+      "greent"
+    ],
+    "description": "Verifies if a GreenT policy is created."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyGreenTCounters",
+    "categories": [
+      "greent"
+    ],
+    "description": "Verifies if the GreenT counters are incremented."
+  },
+  {
+    "name": "dc1-wan2",
     "test": "VerifyAdverseDrops",
     "categories": [
       "hardware"
@@ -369,6 +385,54 @@
   },
   {
     "name": "dc1-wan2",
+    "test": "VerifyLANZ",
+    "categories": [
+      "lanz"
+    ],
+    "description": "Verifies if LANZ is enabled."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyPtpGMStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the device is locked to a valid PTP Grandmaster."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyPtpLockStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the device was locked to the upstream PTP GM in the last minute."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyPtpModeStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the device is configured as a PTP Boundary Clock."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyPtpOffset",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the PTP timing offset is within +/- 1000ns from the master clock."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyPtpPortModeStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies the PTP interfaces state."
+  },
+  {
+    "name": "dc1-wan2",
     "test": "VerifyRoutingProtocolModel",
     "categories": [
       "routing"
@@ -382,8 +446,152 @@
     "categories": [
       "security"
     ],
+    "description": "Verifies if the eAPI has a valid SSL profile."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyAPIHttpsSSL",
+    "categories": [
+      "security"
+    ],
     "description": "Verifies if the eAPI has a valid SSL profile.",
     "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyAPIHttpStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI HTTP server is disabled globally."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyAPIIPv4Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI has the right number IPv4 ACL(s) configured for a specified VRF."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyAPIIPv6Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI has the right number IPv6 ACL(s) configured for a specified VRF."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyAPISSLCertificate",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the eAPI SSL certificate expiry, common subject name, encryption algorithm and key size."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyBannerLogin",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the login banner of a device."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyBannerMotd",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the motd banner of a device."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyIPSecConnHealth",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies all IPv4 security connections."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyIPv4ACL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the configuration of IPv4 ACLs."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySSHIPv4Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent has IPv4 ACL(s) configured."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySSHIPv6Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent has IPv6 ACL(s) configured."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySSHStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent is disabled in the default VRF."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyTelnetStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if Telnet is disabled in the default VRF."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyDNSLookup",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the DNS name to IP address resolution."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyDNSServers",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies if the DNS servers are correctly configured."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyErrdisableRecovery",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the errdisable recovery reason, status, and interval."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyHostname",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the hostname of a device."
   },
   {
     "name": "dc1-wan2",
@@ -424,6 +632,14 @@
       "software"
     ],
     "description": "Verifies the TerminAttr version of the device."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyStunClient",
+    "categories": [
+      "stun"
+    ],
+    "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided."
   },
   {
     "name": "dc1-wan2",
@@ -496,5 +712,13 @@
       "system"
     ],
     "description": "Verifies the device uptime."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyVlanInternalPolicy",
+    "categories": [
+      "vlan"
+    ],
+    "description": "Verifies the VLAN internal allocation policy and the range of VLANs."
   }
 ]

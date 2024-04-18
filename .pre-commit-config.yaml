@@ -79,7 +79,7 @@ repos:
         name: Check for changes when running isort on all python files
 
   - repo: https://github.com/psf/black
-    rev: 24.3.0
+    rev: 24.4.0
     hooks:
       - id: black
         name: Check for changes when running Black on all python files
@@ -122,6 +122,32 @@ repos:
     hooks:
       - id: j2lint
         name: Check for Linting errors on Jinja2 files
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.6
+    hooks:
+      - id: codespell
+        name: Check for common misspellings in text files.
+        entry: codespell
+        language: python
+        types: [text]
+        args:
+          - '--ignore-words=.github/ignore-codespell-words'  # Ignore words listed in this file
+        exclude: >  # List of regex patterns for files/directories to exclude
+          (?x)^(
+            .*\.cfg|  # Exclude all .cfg files
+            .*\.svg|  # Exclude all .svg files
+            .*\.excalidraw|  # Exclude all .excalidraw files
+            .*\.rst|  # Exclude all .rst files
+            python-avd/pyavd/vendor/.*|  # Exclude all files in this directory
+            ansible_collections/arista/avd/CHANGELOG.rst| # Exclude auto generated CHANGELOG.rst file
+            ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
+            ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
+            ansible_collections/arista/avd/roles/.*/schemas/.*schema\.yml| # Exclude YAML schemas file
+            ansible_collections/arista/avd/roles/.*/schemas/.*jsonschema\.json| # Exclude JSON schemas file
+            ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/.*| # Exclude auto generated files for cv API
+            ansible-avd/ansible_collections/arista/avd/docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
+          )$
 
   - repo: local
     hooks:

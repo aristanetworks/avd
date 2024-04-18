@@ -169,7 +169,7 @@ $defs:
           documentation_options:
             hide_keys: true
           description: |-
-            Custom structured config for interfaces
+            Custom structured config for interfaces.
             Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
           # Schema ref not implemented since we do not know which of the schemas to look at.
           # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
