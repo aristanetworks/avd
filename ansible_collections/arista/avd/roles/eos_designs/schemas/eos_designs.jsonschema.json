@@ -22860,6 +22860,135 @@
                 "type": "string",
                 "title": "Hostname"
               },
+              "influxdb": {
+                "type": "object",
+                "properties": {
+                  "vrf": {
+                    "type": "string",
+                    "title": "VRF"
+                  },
+                  "destinations": {
+                    "type": "array",
+                    "description": "Configure telemetry output destinations.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "InfluxDB connection name.",
+                          "title": "Name"
+                        },
+                        "database": {
+                          "type": "string",
+                          "title": "Database"
+                        },
+                        "policy": {
+                          "type": "string",
+                          "description": "Confiure data retention policy.",
+                          "title": "Policy"
+                        },
+                        "url": {
+                          "type": "string",
+                          "description": "Configure URL for the destination.",
+                          "title": "URL"
+                        },
+                        "username": {
+                          "type": "string",
+                          "description": "Configure login details with destination.",
+                          "title": "Username"
+                        },
+                        "password": {
+                          "type": "string",
+                          "description": "Assign login password",
+                          "title": "Password"
+                        },
+                        "encryption": {
+                          "type": "string",
+                          "description": "0: Indicates that keystring is not encrypted.\n7: Speciefies that HIDDEN key will follow.\n8a: Speciefies that AES-256-GCM encrypted key will follow.",
+                          "title": "Encryption"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Destinations"
+                  },
+                  "source_standard_enabled": {
+                    "type": "boolean",
+                    "description": "Enable standard set of telemetry.",
+                    "title": "Source Standard Enabled"
+                  },
+                  "source_sockets": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Label of the socket connection.",
+                          "title": "Name"
+                        },
+                        "connection_limit": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Connection Limit"
+                        },
+                        "url": {
+                          "type": "string",
+                          "description": "Configure socket URL.",
+                          "title": "URL"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Source Sockets"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "description": "Add extra tag to the telemetry output.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Specify the key of the global tag pair.",
+                          "title": "Name"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Specify the value of the global tag pair.",
+                          "title": "Value"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Tags"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Influxdb"
+              },
               "interface_defaults": {
                 "type": "object",
                 "properties": {
