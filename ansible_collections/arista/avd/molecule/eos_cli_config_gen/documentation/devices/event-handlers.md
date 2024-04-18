@@ -46,9 +46,13 @@ interface Management1
 | CONFIG_VERSIONING | bash | <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config |
 | evpn-blacklist-recovery | bash | <code>FastCli -p 15 -c "clear bgp evpn host-flap"</code> | on-logging |
 | trigger-on-boot | bash | <code>echo "on-boot"</code> | on-boot |
+| trigger-on-counters | bash | <code>echo "on-counters"</code> | on-counters |
+| trigger-on-intf | bash | <code>echo "on-intf"</code> | on-intf |
+| trigger-on-logging | bash | <code>echo "on-logging"</code> | on-logging |
 | trigger-on-maintenance1 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
 | trigger-on-maintenance2 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
 | trigger-on-maintenance3 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
+| trigger-vm-tracer | bash | <code>echo "vm-tracer vm"</code> | vm-tracer vm |
 
 #### Event Handler Device Configuration
 
@@ -70,6 +74,20 @@ event-handler trigger-on-boot
    trigger on-boot
    action bash echo "on-boot"
 !
+event-handler trigger-on-counters
+   trigger on-counters
+      poll interval 10
+   action bash echo "on-counters"
+!
+event-handler trigger-on-intf
+   trigger on-intf Ethernet4 operstatus ip ip6
+   action bash echo "on-intf"
+!
+event-handler trigger-on-logging
+   trigger on-logging
+      poll interval 10
+   action bash echo "on-logging"
+!
 event-handler trigger-on-maintenance1
    trigger on-maintenance enter interface Management3 after stage linkdown
    action bash echo "on-maintenance"
@@ -81,4 +99,8 @@ event-handler trigger-on-maintenance2
 event-handler trigger-on-maintenance3
    trigger on-maintenance enter bgp 10.0.0.2 vrf vrf1 all
    action bash echo "on-maintenance"
+!
+event-handler trigger-vm-tracer
+   trigger vm-tracer vm
+   action bash echo "vm-tracer vm"
 ```

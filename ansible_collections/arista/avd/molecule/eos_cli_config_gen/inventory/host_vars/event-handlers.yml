@@ -42,3 +42,29 @@ event_handlers:
       action: all
     action_type: bash
     action: echo "on-maintenance"
+  - name: trigger-on-logging
+    trigger: on-logging
+    trigger_on_logging:
+      poll_interval: 10
+    action_type: bash
+    action: echo "on-logging"
+  - name: trigger-on-counters
+    trigger: on-counters
+    trigger_on_counters:
+      poll_interval: 10
+    action_type: bash
+    action: echo "on-counters"
+  - name: trigger-on-intf
+    trigger: on-intf
+    trigger_on_intf:
+      interface: Ethernet4
+      ip: true
+      ip6: true
+      operstatus: true
+    action_type: bash
+    action: echo "on-intf"
+  - name: trigger-vm-tracer
+    trigger: "vm-tracer vm"
+    action_type: bash
+    action: echo "vm-tracer vm"
+  

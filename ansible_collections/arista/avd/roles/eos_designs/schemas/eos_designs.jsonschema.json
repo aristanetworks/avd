@@ -5087,11 +5087,87 @@
             "description": "Configure event trigger condition.\n",
             "enum": [
               "on-boot",
+              "on-counters",
+              "on-intf",
               "on-logging",
+              "on-maintenance",
               "on-startup-config",
-              "on-maintenance"
+              "vm-tracer vm"
             ],
             "title": "Trigger"
+          },
+          "trigger_on_counters": {
+            "type": "object",
+            "properties": {
+              "conditon": {
+                "type": "string",
+                "description": "Set the counters condition expression.",
+                "title": "Conditon"
+              },
+              "poll_interval": {
+                "type": "integer",
+                "description": "Set the polling interval in seconds.",
+                "title": "Poll Interval"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Counters"
+          },
+          "trigger_on_logging": {
+            "type": "object",
+            "properties": {
+              "poll_interval": {
+                "type": "integer",
+                "description": "Set the polling interval in seconds.",
+                "title": "Poll Interval"
+              },
+              "regex": {
+                "type": "string",
+                "description": "Regular expression to use for searching log messages.",
+                "title": "Regex"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Logging"
+          },
+          "trigger_on_intf": {
+            "type": "object",
+            "properties": {
+              "interface": {
+                "type": "string",
+                "description": "Interface name.\nExample - Ethernet4\n          Loopback4-6\n          Port-channel4,7",
+                "title": "Interface"
+              },
+              "ip": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface IP address assignment.",
+                "title": "IP"
+              },
+              "ip6": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface ip6 address assignment.",
+                "title": "Ip6"
+              },
+              "operstatus": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface operStatus.",
+                "title": "Operstatus"
+              }
+            },
+            "required": [
+              "interface"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Intf"
           },
           "trigger_on_maintenance": {
             "description": "Settings required for trigger 'on-maintenance'.",
@@ -22109,11 +22185,87 @@
                       "description": "Configure event trigger condition.\n",
                       "enum": [
                         "on-boot",
+                        "on-counters",
+                        "on-intf",
                         "on-logging",
+                        "on-maintenance",
                         "on-startup-config",
-                        "on-maintenance"
+                        "vm-tracer vm"
                       ],
                       "title": "Trigger"
+                    },
+                    "trigger_on_counters": {
+                      "type": "object",
+                      "properties": {
+                        "conditon": {
+                          "type": "string",
+                          "description": "Set the counters condition expression.",
+                          "title": "Conditon"
+                        },
+                        "poll_interval": {
+                          "type": "integer",
+                          "description": "Set the polling interval in seconds.",
+                          "title": "Poll Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Trigger On Counters"
+                    },
+                    "trigger_on_logging": {
+                      "type": "object",
+                      "properties": {
+                        "poll_interval": {
+                          "type": "integer",
+                          "description": "Set the polling interval in seconds.",
+                          "title": "Poll Interval"
+                        },
+                        "regex": {
+                          "type": "string",
+                          "description": "Regular expression to use for searching log messages.",
+                          "title": "Regex"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Trigger On Logging"
+                    },
+                    "trigger_on_intf": {
+                      "type": "object",
+                      "properties": {
+                        "interface": {
+                          "type": "string",
+                          "description": "Interface name.\nExample - Ethernet4\n          Loopback4-6\n          Port-channel4,7",
+                          "title": "Interface"
+                        },
+                        "ip": {
+                          "type": "boolean",
+                          "description": "Action is triggered upon changes to interface IP address assignment.",
+                          "title": "IP"
+                        },
+                        "ip6": {
+                          "type": "boolean",
+                          "description": "Action is triggered upon changes to interface ip6 address assignment.",
+                          "title": "Ip6"
+                        },
+                        "operstatus": {
+                          "type": "boolean",
+                          "description": "Action is triggered upon changes to interface operStatus.",
+                          "title": "Operstatus"
+                        }
+                      },
+                      "required": [
+                        "interface"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Trigger On Intf"
                     },
                     "trigger_on_maintenance": {
                       "description": "Settings required for trigger 'on-maintenance'.",

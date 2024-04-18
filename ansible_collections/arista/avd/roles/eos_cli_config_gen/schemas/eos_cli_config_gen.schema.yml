@@ -3319,9 +3319,51 @@ keys:
             '
           valid_values:
           - on-boot
+          - on-counters
+          - on-intf
           - on-logging
-          - on-startup-config
           - on-maintenance
+          - on-startup-config
+          - vm-tracer vm
+        trigger_on_counters:
+          type: dict
+          keys:
+            conditon:
+              type: str
+              description: Set the counters condition expression.
+            poll_interval:
+              type: int
+              description: Set the polling interval in seconds.
+        trigger_on_logging:
+          type: dict
+          keys:
+            poll_interval:
+              type: int
+              convert_types:
+              - str
+              description: Set the polling interval in seconds.
+            regex:
+              type: str
+              description: Regular expression to use for searching log messages.
+        trigger_on_intf:
+          type: dict
+          keys:
+            interface:
+              type: str
+              required: true
+              description: "Interface name.\nExample - Ethernet4\n          Loopback4-6\n
+                \         Port-channel4,7"
+            ip:
+              type: bool
+              description: Action is triggered upon changes to interface IP address
+                assignment.
+            ip6:
+              type: bool
+              description: Action is triggered upon changes to interface ip6 address
+                assignment.
+            operstatus:
+              type: bool
+              description: Action is triggered upon changes to interface operStatus.
         trigger_on_maintenance:
           description: Settings required for trigger 'on-maintenance'.
           type: dict
