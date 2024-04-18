@@ -53,13 +53,21 @@ class AvdTestRoutingTable(AvdTestBase):
                     )
                     processed_ips.add(ip)
 
-        # Skip the test if the host is not a VTEP
-        if not self.is_vtep():
+        # Skip the test if the host is not a VTEP (no VXLAN interface)
+        if get(self.structured_config, "vxlan_interface") is None:
+            LOGGER.info("Host is not a VTEP since it doesn't have a VXLAN interface. %s is skipped.", self.__class__.__name__)
+            return None
+
+        vtep_interface = get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface")
+
+        # For now, we exclude WAN VTEPs from testing
+        if "Dps" in vtep_interface:
+            LOGGER.info("Host is a VTEP with a DPS source interface for VXLAN. For now, WAN VTEPs are excluded. %s is skipped.", self.__class__.__name__)
             return None
 
         add_test(mapping=self.loopback0_mapping)
 
-        if get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface") is not None:
+        if vtep_interface is not None:
             add_test(mapping=self.vtep_mapping)
 
         return {self.anta_module: anta_tests} if anta_tests else None
