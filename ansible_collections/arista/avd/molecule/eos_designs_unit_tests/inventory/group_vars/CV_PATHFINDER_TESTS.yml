@@ -561,7 +561,6 @@ cv_pathfinder_internet_exit_policies:
       domain_name: test.local
       ipsec_key_salt: THIS_SHOULD_BE_VAULTED
 
-# TODO move to its own test as planned
 zscaler_endpoints:
   primary:
     city: Fremont, CA

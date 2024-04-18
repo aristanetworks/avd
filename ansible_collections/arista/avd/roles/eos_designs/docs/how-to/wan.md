@@ -46,6 +46,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
   - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default.
   - It is not yet supported to disable HA on a specific LAN interface on the device, nor is it supported to add HA configuration on a non-uplink interface.
   - HA for AutoVPN is not supported
+- Internet-exit for Zscaler is in PREVIEW
 - `flow_tracking_settings` is in PREVIEW as the model will change in the next release.
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
     These new tests are added only in the [ANTA preview](../../../eos_validate_state/ANTA-Preview.md) mode.
@@ -65,7 +66,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - HA support out of PREVIEW
 - New LAN scenarios (L2 port-channel, HA for L2 `lan` using VRRP..)
 - HA for AutoVPN
-- WAN Internet exit
+- WAN Internet exit for other type than Zscaler
 - `import path-group` functionality
 - Indirect connectivity to pathfinder
 - BGP peerings on WAN L3 interfaces and associated route filtering.
@@ -101,17 +102,18 @@ The following table list the `eos_designs` top level keys used for WAN and how t
 
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
-| `wan_mode` | ✅ |  Two possible modes, `autovpn` and `cv-pathfinder` (default) |
-| `wan_virtual_topologies` | ✅ |  to define the Policies and the VRF to policy mappings |
-| `wan_path_groups` | ✅ |  to define the list of path-groups in the network |
-| `wan_carriers` | ✅ |  to define the list of carriers in the network, each carrier is assigned to a path-group |
-| `wan_ipsec_profiles` | ✅ |  to define the shared key for the Control Plane and Data Plane IPSec profiles. |
-| `cv_pathfinder_regions` | ✅ |  to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
-| `tenants` | ✅ |  the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF information |
-| `wan_stun_dtls_disable` | ✅ |  disable dTLS for STUN for instance for lab. (**NOT** recommended in production) |
-| `application_classification` | ✅ |  to define the specific traffic classification required for the WAN if any. |
-| `wan_route_servers` | ✘|  Indicate to which WAN route servers the WAN router should connect to. This key is also used to tell every WAN Route Reflectors with which other RRs it should peer with. |
-| `ipv4_acls` | ✘|  List of IPv4 access-lists to be assigned to WAN interfaces. |
+| `wan_mode` | ✅ | Two possible modes, `autovpn` and `cv-pathfinder` (default). |
+| `wan_virtual_topologies` | ✅ | to define the Policies and the VRF to policy mappings. |
+| `wan_path_groups` | ✅ | to define the list of path-groups in the network. |
+| `wan_carriers` | ✅ | to define the list of carriers in the network, each carrier is assigned to a path-group. |
+| `wan_ipsec_profiles` | ✅ | to define the shared key for the Control Plane and Data Plane IPSec profiles. |
+| `cv_pathfinder_regions` | ✅ | to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
+| `tenants` | ✅ | the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF information. |
+| `wan_stun_dtls_disable` | ✅ | disable dTLS for STUN for instance for lab. (**NOT** recommended in production). |
+| `application_classification` | ✅ | to define the specific traffic classification required for the WAN if any. |
+| `cv_pathfinder_internet_exit_policies` | ✅ | to define the internet-exit policies. |
+| `wan_route_servers` | ✘| Indicate to which WAN route servers the WAN router should connect to. This key is also used to tell every WAN Route Reflectors with which other RRs it should peer with. |
+| `ipv4_acls` | ✘| List of IPv4 access-lists to be assigned to WAN interfaces. |
 
 Additionally, following keys must be set for the WAN route servers for the connectivity to work:
 
@@ -177,7 +179,7 @@ These values can be overwritten using `custom_structured_configuration`.
 
 This configuration requires certificates to be distributed on the WAN devices to be able to authenticate themselves:
 
-- For CV Pathinder deployments,  CloudVision will automatically deploy certificates on the devices.
+- For CV Pathinder deployments,  CloudVision will automatically generate and deploy the certificates on the devices once AVD configs and metadata have been pushed.
 - For AutoVPN, the certificates must be generated and deployed to the devices for the STUN connections to work.
 
 !!! Danger "Disabling STUN"
@@ -426,6 +428,167 @@ wan_virtual_topologies:
    the constraints is used.
 7. The `id` is used as the AVT profile ID in the configuration.
 8. The `MPLS-ONLY` application profile won't be rendered on devices not having this path-group.
+
+### Internet-exit policies
+
+!!! info "Supported internet-exit policy types"
+
+    In its current version, AVD supports only Internet-Exit policies towards Zscaler in PREVIEW mode.
+
+!!! warning "PREVIEW: Changes ahead"
+
+    This configuration currently in PREVIEW **may** change in future version of AVD.
+
+The Internet exit feature enables hosts attached to a VRF in an edge router to reach prefixes that may be reachable over the internet.
+Internet-exit can be achieved in multiple ways:
+
+- Local exit toward the ISP
+- Local exit toward an enterprise firewall
+- Local exit toward a Secure Internet Gateway
+
+#### AVD abstraction
+
+The internet-exit policies are defined as global variables for all the WAN routers under `cv_pathfinder_internet_exit_policies`.
+
+- A device would be configured with an Internet-exit policy if the internet-exit policy is configured under one of its WAN interfaces and on a policy applied on the device.
+- The internet-exit policies are not included on the Pathfinders.
+
+The policies are assigned a type, currently only `zscaler` is supported. Then additional parameters can be provided according to the type.
+
+```yaml
+cv_pathfinder_internet_exit_policies:
+  - name: ZSCALER-EXIT-POLICY-1
+    type: zscaler
+    zscaler:
+      cloud_name: zscalerbeta
+      domain_name: test.local
+      ipsec_key_salt: THIS_SHOULD_BE_VAULTED
+  - name: ZSCALER-EXIT-POLICY-2
+    fallback_to_system_default: False
+    type: zscaler
+    zscaler:
+      cloud_name: zscalerbeta
+      domain_name: test.local
+      ipsec_key_salt: THIS_SHOULD_BE_VAULTED
+      # more options available here in the model.
+```
+
+An Application Virtual Topology policy is composed of multiple profiles.  An AVT profile can be assigned an Internet-policy as follow:
+
+```yaml
+wan_virtual_topologies:
+  vrfs:
+    [...]
+  policies:
+    - name: PROD-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET]
+            preference: preferred
+          - names: [MPLS]
+            preference: alternate
+      application_virtual_topologies:
+        - application_profile: VOICE
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+            - names: [INET]
+              preference: alternate
+          internet_exit:
+            policy: ZSCALER-EXIT-POLICY-1 # (1)!
+          id: 2
+```
+
+1. Assign the `ZSCALER-EXIT-POLICY-1` internet-exit policy to the AVT profile.
+
+Then on each device, the local Internet-exit policies needs to be assigned to the exit WAN interface under the node-settings `l3_interfaces`:
+
+```yaml
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+    uplink_ipv4_pool: 172.17.0.0/16
+    bgp_as: 65000
+  nodes:
+    - name: cv-pathfinder-edge1
+      id: 2
+      uplink_switch_interfaces: [Ethernet2]
+      l3_interfaces:
+        - name: Ethernet3
+          wan_carrier: Comcast-5G
+          wan_circuit_id: AF830
+          ip_address: 172.20.20.20/31
+          connected_to_pathfinder: false
+          wan_circuit_id: 404
+          dhcp_accept_default_route: true
+          ip_address: dhcp
+          cv_pathfinder_internet_exit: # (1)!
+            policies:
+              - name: ZSCALER-EXIT-POLICY-1
+                tunnel_interface_numbers: 100-102
+              - name: ZSCALER-EXIT-POLICY-2
+                tunnel_interface_numbers: 110-112
+```
+
+1. Assign the `ZSCALER-EXIT-POLICY-1` and `ZSCALER-EXIT-POLICY-2` internet-exit policies to the Ethernet3 WAN interface.
+
+#### Local exit toward the ISP
+
+!!! Warning "Not currently supported in eos_designs."
+
+#### Local exit toward an entreprise firewall
+
+!!! Warning "Not currently supported in eos_designs."
+
+#### Local exit toward a Secure Internet Gateway
+
+!!! Warning "Only supported in PREVIEW toward Zscaler SIG"
+
+An internet-exit policy of type `zscaler` leverages the following AVD data model to generate the target configuration.
+The target is for this data to be retrieved from Cloudvision through a lookup plugin for each device to determine what are the best tunnel(s) to use for a given location.
+
+!!! TODO
+
+    Add more info / a link lookup plugin
+
+```yaml
+zscaler_endpoints:
+  primary:
+    city: Fremont, CA
+    datacenter: FMT1
+    country: United States
+    latitude: 37
+    longitude: -121
+    ip_address: 10.37.121.1
+  secondary:
+    city: Washington, DC
+    datacenter: WAS1
+    country: United States
+    latitude: 39
+    longitude: -77
+    ip_address: 10.39.77.1
+  tertiary:
+    city: Frankfurt
+    datacenter: FRA4
+    country: Germany
+    latitude: 50
+    longitude: 9
+    ip_address: 10.50.9.1
+```
+
+AVD supports up to three tunnels (primary, secondary, tertiary).
+For each `zscaler` type Internet-policies, AVD uses the `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary and the `zscaler_endpoints` in combination with the `l3_interfaces.cv_pathfinder_internet_exit.policies[name=<POLICY-NAME>].tunnel_interface_numbers` to generate the internet-exit configuration.
+
+The `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary has additonnal options to configure the policy parameters shared with Zscaler through Cloudvision.
+
+!!! tip "IPsec"
+
+    When `true` the traffic going over the tunnels will be encrypted with AES-256-GCM.
+    Otherwise the traffic will be using NULL encryption.
+    Note that encryption requires a subscription on the Zscaler account.
 
 ### LAN Designs
 
