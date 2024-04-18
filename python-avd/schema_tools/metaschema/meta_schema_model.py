@@ -17,7 +17,7 @@ from .resolvemodel import merge_schema_from_ref
 """
 This module provides Pydantic models (classes) representing the meta-schema of the AVD Schema.
 
-Each variable in the schema is called a field, and for each type of field we have a corrosponding Pydantic model:
+Each variable in the schema is called a field, and for each type of field we have a corresponding Pydantic model:
 - AvdSchemaInt
 - AvdSchemaBool
 - AvdSchemaStr
@@ -121,7 +121,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     Simple types or the first key of a dict contained in a list will be rendered with a hyphen as part of the indentation.
     """
 
-    # Signal to __init__ if the $ref in the schema should be resolved before initilizing the pydantic model.
+    # Signal to __init__ if the $ref in the schema should be resolved before initializing the pydantic model.
     _resolve_schema: ClassVar[bool] = True
 
     def __init__(self, resolve_schema: bool | None = None, **data):
@@ -423,7 +423,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
     def model_post_init(self, __context: Any) -> None:
         """
         Overrides BaseModel.model_post_init().
-        Runs after this model including all child models have been initilized.
+        Runs after this model including all child models have been initialized.
 
         Sets Internal attributes on child schema (if set):
             - _parent_schema
@@ -532,7 +532,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     def model_post_init(self, __context: Any) -> None:
         """
         Overrides BaseModel.model_post_init().
-        Runs after this model including all child models have been initilized.
+        Runs after this model including all child models have been initialized.
 
         Set Internal attributes on child schemas:
             - _key

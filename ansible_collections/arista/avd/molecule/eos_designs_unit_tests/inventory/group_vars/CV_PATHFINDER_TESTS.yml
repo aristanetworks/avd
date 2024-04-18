@@ -258,7 +258,7 @@ wan_rr:
           wan_carrier: ATT-MPLS
           wan_circuit_id: 10999
           ip_address: 172.19.9.9/31
-          # public IP here will be overriden by
+          # public IP here will be overridden by
           # wan_route_servers.path_groups.interfaces.ip_address
           # in CV_PATHFINDER_MULTI_RR_TESTS groups vars.
           public_ip: 10.37.37.7
@@ -429,7 +429,7 @@ wan_virtual_topologies:
     - name: DEFAULT-AVT-POLICY
       default_virtual_topology:
         path_groups:
-          # No prefence to check the default.
+          # No preference to check the default.
           - names: [INET, Equinix]
           - names: [MPLS]
             preference: 4223

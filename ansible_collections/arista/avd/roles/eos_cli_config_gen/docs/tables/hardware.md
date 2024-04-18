@@ -12,7 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mechanism</samp>](## "hardware.access_list.mechanism") | String |  |  | Valid Values:<br>- <code>algomatch</code><br>- <code>none</code><br>- <code>tcam</code> |  |
     | [<samp>&nbsp;&nbsp;speed_groups</samp>](## "hardware.speed_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;speed_group</samp>](## "hardware.speed_groups.[].speed_group") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serdes</samp>](## "hardware.speed_groups.[].serdes") | String |  |  |  | Serdes speed like "10g" or "25g" |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serdes</samp>](## "hardware.speed_groups.[].serdes") | String |  |  |  | Serdes speed like "10g" or "25g". |
 
 === "YAML"
 
@@ -23,6 +23,6 @@
       speed_groups:
         - speed_group: <str; required; unique>
 
-          # Serdes speed like "10g" or "25g"
+          # Serdes speed like "10g" or "25g".
           serdes: <str>
     ```

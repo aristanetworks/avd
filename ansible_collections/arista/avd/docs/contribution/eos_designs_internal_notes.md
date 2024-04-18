@@ -228,7 +228,7 @@ Each class is loaded in `get_structured_config` and rendered. All the results ar
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
 which at the time where `eos_designs_structured_config` run, is a nested `dict`. It contains the output from `EosDesignsFacts`'s `render()` method.
 
-Subclasses are typically using Mixin classes to split all the attributes/`cached_properties` into managable files.
+Subclasses are typically using Mixin classes to split all the attributes/`cached_properties` into manageable files.
 
 Source code:
 

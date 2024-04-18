@@ -21,7 +21,7 @@ keys:
             description: PoE action for interface. By default in EOS, reboot action is set to power-off.
       interface_shutdown:
         type: dict
-        description: Set the global PoE power behavior for PoE ports when ports are admin down
+        description: Set the global PoE power behavior for PoE ports when ports are admin down.
         keys:
           action:
             type: str

@@ -18,12 +18,12 @@ keys:
       keys:
         name:
           type: str
-          description: Daemon Name
+          description: Daemon Name.
         exec:
           type: str
           required: true
           description: |
-            command to run as a daemon
+            command to run as a daemon.
         enabled:
           type: bool
           default: true

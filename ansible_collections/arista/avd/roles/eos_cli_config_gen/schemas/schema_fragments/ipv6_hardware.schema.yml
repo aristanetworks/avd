@@ -20,4 +20,4 @@ keys:
                 keys:
                   profile:
                     type: str
-                    description: "Pre-defined profile 'internet' or user-defined profile name"
+                    description: "Pre-defined profile 'internet' or user-defined profile name."

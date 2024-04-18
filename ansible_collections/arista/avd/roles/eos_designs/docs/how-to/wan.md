@@ -107,7 +107,7 @@ The following table list the `eos_designs` top level keys used for WAN and how t
 | `wan_carriers` | ✅ |  to define the list of carriers in the network, each carrier is assigned to a path-group |
 | `wan_ipsec_profiles` | ✅ |  to define the shared key for the Control Plane and Data Plane IPSec profiles. |
 | `cv_pathfinder_regions` | ✅ |  to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
-| `tenants` | ✅ |  the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF informaiton |
+| `tenants` | ✅ |  the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF information |
 | `wan_stun_dtls_disable` | ✅ |  disable dTLS for STUN for instance for lab. (**NOT** recommended in production) |
 | `application_classification` | ✅ |  to define the specific traffic classification required for the WAN if any. |
 | `wan_route_servers` | ✘|  Indicate to which WAN route servers the WAN router should connect to. This key is also used to tell every WAN Route Reflectors with which other RRs it should peer with. |
@@ -163,7 +163,7 @@ However, if the WAN route servers are in a different inventory, it is then neces
 
 #### WAN STUN handling
 
-WAN STUN connections are configured by default authenticated and secured with DTLS by default. A security profile is configured with an hardcoded root certificate and matching a certifcate `<profile_name>.crt` and  key `<profile_name>.key`:
+WAN STUN connections are configured by default authenticated and secured with DTLS by default. A security profile is configured with an hardcoded root certificate and matching a certificate `<profile_name>.crt` and  key `<profile_name>.key`:
 
 ```eos
 management security
@@ -178,7 +178,7 @@ These values can be overwritten using `custom_structured_configuration`.
 This configuration requires certificates to be distributed on the WAN devices to be able to authenticate themselves:
 
 - For CV Pathinder deployments,  CloudVision will automatically deploy certificates on the devices.
-- For AutoVPN, the certficiates must be generated and deployed to the devices for the STUN connections to work.
+- For AutoVPN, the certificates must be generated and deployed to the devices for the STUN connections to work.
 
 !!! Danger "Disabling STUN"
 
@@ -362,7 +362,7 @@ The policies definition works as follow:
 - The `default_virtual_topology` is used as the default match in the policy.  To prevent configuring it, the `drop_unmatched` boolean must be set to `true` otherwise, at least one `path-group` must be configured or AVD will raise an error.
 - Policies are assigned to VRFs using the list `wan_virtual_topologies.vrfs`. A policy can be reused in multiple VRFs.
 - If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
-- For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
+- For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targeted policy name.
 - For the policy defined for VRF `default` (or the auto-generated one), an extra match statement is always injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs. The name of the injected application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targeted policy name.
 
 ```yaml
@@ -420,7 +420,7 @@ wan_virtual_topologies:
    This block of configuration will configure the Load Balance policy, the match statement in the policy (in `router path-selection` for AutoVPN or `router adaptive-virtual-topology` for CV-Pathfinder) and for CV-Pathfinder, the AVT profile.
    The application profile must be defined under `application_classification.application_profiles`.
    The Load Balance policy will favor direct path over multihop path (`lowest_hop_count`).
-   MPLS is prefered over the INET path-group.
+   MPLS is preferred over the INET path-group.
 6. The constraints are applied on the load-balance policy. If the delay, jitter or loss-rate of a given path-selection path
    exceeds the defined criteria, the path is avoided and the remaining ECMP paths are used or the next path in line meeting
    the constraints is used.
@@ -536,11 +536,11 @@ The tags will only be generated when `wan_mode` is set to `cv-pathfinder`.
 As described in the design principles, the goal is to be able to distribute the
 WAN routers in separate Ansible inventories.
 
-When leveraging multiple inventories, the arista.avd collection provide capabilites to create [global variables](../../../../docs/plugins/Vars_plugins/global_vars.md).
-The following example will be leveraging this capability to share required WAN variables accross multiple inventories.
+When leveraging multiple inventories, the arista.avd collection provide capabilities to create [global variables](../../../../docs/plugins/Vars_plugins/global_vars.md).
+The following example will be leveraging this capability to share required WAN variables across multiple inventories.
 
 This example contains contains two sites, SITE1 and SITE2 and a dedicate inventory for pathfinder nodes.
-This would still relevant for configuring AutoVPN in seperate ansible inventories.
+This would still relevant for configuring AutoVPN in separate ansible inventories.
 
 Inventory layout:
 
@@ -578,7 +578,7 @@ Inventory layout:
 ```yaml title="global_vars/cv_pathfinder.yml"
 wan_mode: cv-pathfinder
 
-# When Pathfinders are in a seperate inventory in addition to the hostname you also need to capture the `vtep_ip` and `path_groups`.
+# When Pathfinders are in a separate inventory in addition to the hostname you also need to capture the `vtep_ip` and `path_groups`.
 wan_route_servers:
   - hostname: pf1
     vtep_ip: 10.255.0.1
@@ -603,7 +603,7 @@ wan_route_servers:
           - name: Ethernet2
             public_ip: 100.64.2.2/24
 
-# Suggested variables to share in your global variables accross inventories.
+# Suggested variables to share in your global variables across inventories.
 
 cv_pathfinder_regions:
   - name: Global

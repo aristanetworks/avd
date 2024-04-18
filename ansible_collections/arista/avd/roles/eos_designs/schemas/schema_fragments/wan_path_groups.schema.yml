@@ -82,7 +82,7 @@ keys:
               convert_types:
                 - int
               description: |-
-                Interval in milliseconds. Valid values are 50-60000 | "auto"
+                Interval in milliseconds. Valid values are 50-60000 | "auto".
 
                 When auto, the interval and failure_threshold are automatically determined based on
                 path state.

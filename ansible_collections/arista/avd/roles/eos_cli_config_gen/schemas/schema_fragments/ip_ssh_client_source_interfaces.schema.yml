@@ -12,7 +12,7 @@ keys:
       type: dict
       keys:
         name:
-          description: Interface Name
+          description: Interface Name.
           type: str
         vrf:
           type: str

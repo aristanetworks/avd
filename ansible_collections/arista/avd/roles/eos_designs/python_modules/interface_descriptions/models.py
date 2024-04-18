@@ -19,7 +19,7 @@ class InterfaceDescriptionData:
 
     Other attributes are "stable" and changes follow semver practices:
     - Existing attributes will not be changed in terms of type and value, but the underlying code for cached_properties may change.
-    - New attributes may be added in minor relases.
+    - New attributes may be added in minor releases.
     - The __init__ method may change between minor versions as the data may need to be consumed from other sources.
     - Breaking changes may happen between major releases.
     """

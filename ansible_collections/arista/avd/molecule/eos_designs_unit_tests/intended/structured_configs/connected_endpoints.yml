@@ -13,6 +13,9 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+link_tracking_groups:
+- name: LT_GROUP1
+  recovery_delay: 300
 ip_igmp_snooping:
   globally_enabled: true
 ethernet_interfaces:
@@ -97,6 +100,25 @@ ethernet_interfaces:
   native_vlan: 123
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
+  dot1x:
+    unauthorized:
+      access_vlan_membership_egress: true
+      native_vlan_membership_egress: true
+  poe:
+    disabled: true
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+    role: master
+  service_profile: MYQOS
+  sflow:
+    enable: false
 - name: Ethernet13
   peer: INDIVIDUAL_1
   peer_type: server
@@ -112,6 +134,25 @@ ethernet_interfaces:
   native_vlan: 123
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
+  dot1x:
+    unauthorized:
+      access_vlan_membership_egress: true
+      native_vlan_membership_egress: true
+  poe:
+    disabled: true
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+    role: master
+  service_profile: MYQOS
+  sflow:
+    enable: false
 - name: Ethernet14
   peer: DOT1X_UNAUTHORIZED
   peer_type: server
@@ -129,6 +170,53 @@ ethernet_interfaces:
     unauthorized:
       access_vlan_membership_egress: true
       native_vlan_membership_egress: true
+  poe:
+    disabled: true
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+    role: master
+  service_profile: MYQOS
+  sflow:
+    enable: false
+- name: Ethernet15
+  peer: INDIVIDUAL_2_TRUNK_PHONE
+  peer_type: server
+  description: INDIVIDUAL_2_TRUNK_PHONE
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 15
+    mode: active
+  mode: trunk phone
+  native_vlan: 123
+  phone:
+    vlan: 321
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
+- name: Ethernet16
+  peer: INDIVIDUAL_2_TRUNK_PHONE
+  peer_type: server
+  description: INDIVIDUAL_2_TRUNK_PHONE
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 15
+    mode: active
+  mode: trunk phone
+  native_vlan: 123
+  phone:
+    vlan: 321
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
 port_channel_interfaces:
 - name: Port-Channel5
   description: OLD_SW-1/5_PORT_CHANNEL_DESCRIPTION
@@ -148,3 +236,11 @@ port_channel_interfaces:
   shutdown: false
   lacp_fallback_mode: individual
   lacp_fallback_timeout: 90
+- name: Port-Channel15
+  description: INDIVIDUAL_2_TRUNK_PHONE
+  type: switched
+  shutdown: false
+  lacp_fallback_mode: individual
+  lacp_fallback_timeout: 90
+metadata:
+  platform: 720XP

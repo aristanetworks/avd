@@ -17,11 +17,11 @@ keys:
       keys:
         host:
           type: str
-          description: Host IP address or name
+          description: Host IP address or name.
         vrf:
           type: str
           convert_types:
             - int
         key:
           type: str
-          description: Encrypted key
+          description: Encrypted key.

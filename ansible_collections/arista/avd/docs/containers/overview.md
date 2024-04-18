@@ -45,7 +45,7 @@ To start using the containers for running AVD:
 
 - Install [VScode Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/tutorial)
 - Add `.devcontainer/devcontainer.json` to your repository containing the AVD inventory (check examples below for possible dev container definitions).
-- Open VSCode command pallette and pick `Dev Containers: Rebuild and Reopen in Container`.
+- Open VSCode command palette and pick `Dev Containers: Rebuild and Reopen in Container`.
 - Wait until the build finish and enjoy running AVD in a container.
 
 If you want to use a specific AVD release, use the following `devcontainer.json`:
