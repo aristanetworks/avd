@@ -346,14 +346,14 @@ ip_security:
       value: 8
     esp:
       integrity: sha256
-      encryption: disabled
+      encryption: aes256
   - name: IE-ZSCALER-EXIT-POLICY-2-SA-POLICY
     pfs_dh_group: 24
     sa_lifetime:
       value: 8
     esp:
       integrity: sha256
-      encryption: disabled
+      encryption: aes256
   profiles:
   - name: DP-PROFILE
     sa_policy: DP-SA-POLICY

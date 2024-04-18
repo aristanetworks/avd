@@ -111,12 +111,15 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         profiles = []
         for policy in self._filtered_wan_policies:
             for match in policy.get("matches", []):
-                # TODO need to not include internet_exit_policy_name if there is no local interface
                 profile = {
                     "name": match["avt_profile"],
                     "load_balance_policy": match["load_balance_policy"]["name"],
-                    "internet_exit_policy": match["internet_exit_policy_name"],
                 }
+                if (internet_exit_policy_name := match["internet_exit_policy_name"]) is not None and get_item(
+                    self._filtered_internet_exit_policies, "name", internet_exit_policy_name
+                ) is not None:
+                    profile["internet_exit_policy"] = internet_exit_policy_name
+
                 append_if_not_duplicate(
                     list_of_dicts=profiles,
                     primary_key="name",
