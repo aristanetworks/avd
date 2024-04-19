@@ -593,6 +593,86 @@ keys:
       existing keys will be replaced.\n"
     default:
     - custom_structured_configuration_
+  cv_pathfinder_internet_exit_policies:
+    description: 'PREVIEW: These keys are in preview mode.
+
+
+      List of internet-exit policies used for the WAN configuration.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Internet-exit policy name.
+        type:
+          type: str
+          valid_values:
+          - zscaler
+          description: 'Internet-exit policy type.
+
+            Only Zscaler supported.'
+          required: true
+        fallback_to_system_default:
+          type: bool
+          default: true
+          description: Add system default exit-group at the end of the policy.
+        zscaler:
+          type: dict
+          description: Zscaler information. Only used if `type` is 'zscaler'.
+          keys:
+            ipsec_key_salt:
+              type: str
+              required: true
+              description: '"Salt" used for auto generation of encryption keys for
+                IPsec tunnels to Zscaler.
+
+                The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.
+
+                Since this salt can be used to deduct the encryption key, it is recommeneded
+                to use vault.'
+            cloud_name:
+              type: str
+              required: true
+              description: Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.
+            domain_name:
+              type: str
+              required: true
+              description: Domain name as configured in Zscaler for the tenant. Used
+                as UFQDN suffix for authentication.
+            encrypt_traffic:
+              type: bool
+              default: true
+              description: 'When `true` the traffic going over the tunnels will be
+                encrypted with AES-256-GCM. Otherwise the traffic will be using NULL
+                encryption.
+
+                Note that encryption requires a subscription on the Zscaler account.'
+            download_bandwidth:
+              type: int
+              description: Maximum allowed download bandwidth in Mbps for each device
+                using this policy.
+            upload_bandwidth:
+              type: int
+              description: Maximum allowed upload bandwidth in Mbps for each device
+                using this policy.
+            firewall:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Enforce firewall controls.
+                  default: false
+                ips:
+                  type: bool
+                  description: Enable IPS Controls for the firewall.
+                  default: false
+            acceptable_use_policy:
+              type: bool
+              description: Display an Acceptable Use Policy (AUP) and require users
+                to accept it.
+              default: false
   cv_pathfinder_regions:
     documentation_options:
       table: wan-cv-pathfinder-regions
@@ -605,7 +685,6 @@ keys:
       keys:
         name:
           type: str
-          description: The region name.
         description:
           type: str
         id:
@@ -634,6 +713,22 @@ keys:
               location:
                 type: str
                 description: Location as a string is resolved on Cloudvision.
+              resolved_location:
+                type: dict
+                description: 'PREVIEW: These keys are in preview mode.
+
+
+                  The resolved location elements.
+
+                  Needed for internet-exit Zscaler integration until we can autofill
+                  it from the lookup plugin.'
+                keys:
+                  city:
+                    type: str
+                    required: true
+                  country:
+                    type: str
+                    required: true
               site_contact:
                 type: str
               site_after_hours_contact:
@@ -4178,6 +4273,64 @@ keys:
                   description: When set, no `catch-all` match is configured for the
                     policy and unmatched traffic is dropped.
                   default: false
+  zscaler_endpoints:
+    type: dict
+    description: 'PREVIEW: These keys are in preview mode.
+
+
+      Special data model used for WAN internet-exit integration with Zscaler.
+
+      The model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints`
+      Ansible lookup plugin.
+
+      Example:
+
+      ```yaml
+
+      zscaler_endpoints: "{{ lookup(''arista.avd.cv_zscaler_endpoints'', cv_server="<optional
+      servername>", cv_token="<optional token>") }}"
+
+      ```
+
+      The cv_server and cv_token options can be set as inventory variables instead
+      of given as arguments. (Then they will also be used for cv_deploy)'
+    keys:
+      primary:
+        type: dict
+        required: true
+        keys:
+          ip_address:
+            type: str
+            required: true
+          datacenter:
+            type: str
+            required: true
+          city:
+            type: str
+            required: true
+          country:
+            type: str
+            required: true
+          latitude:
+            type: str
+            convert_types:
+            - int
+            - float
+            required: true
+          longitude:
+            type: str
+            convert_types:
+            - int
+            - float
+            required: true
+      secondary:
+        type: dict
+        $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
+        required: false
+      tertiary:
+        type: dict
+        $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
+        required: false
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -8319,6 +8472,28 @@ $defs:
           default: true
           description: For a WAN interface (`wan_carrier` is set), allow to disable
             the static tunnel towards Pathfinders.
+        cv_pathfinder_internet_exit:
+          description: 'PREVIEW: This key is in preview mode'
+          type: dict
+          keys:
+            policies:
+              type: list
+              primary_key: name
+              description: List of Internet-exit policies using this interface as
+                exit.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Internet-exit policy name.
+                  tunnel_interface_numbers:
+                    type: str
+                    required: true
+                    description: 'Number range to use for Tunnel interfaces to an
+                      internet-exit service provider using this local interface.
+
+                      Examples: ''1-3'' or ''100,200,300'''
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS
@@ -8922,3 +9097,14 @@ $defs:
 
 
                 If not set, each path-group in `names` will be attributed its `default_preference`.'
+      internet_exit:
+        type: dict
+        keys:
+          policy:
+            type: str
+            description: 'PREVIEW: This key is in preview mode.
+
+
+              Internet-exit policy name associated with this virtual_topology.
+
+              The policy must be defined under `cv_pathfinder_internet_exit_policies`.'
