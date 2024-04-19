@@ -132,8 +132,12 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 profile = {
                     "name": default_match["avt_profile"],
                     "load_balance_policy": default_match["load_balance_policy"]["name"],
-                    "internet_exit_policy": default_match["internet_exit_policy_name"],
                 }
+                if (internet_exit_policy_name := default_match["internet_exit_policy_name"]) is not None and get_item(
+                    self._filtered_internet_exit_policies, "name", internet_exit_policy_name
+                ) is not None:
+                    profile["internet_exit_policy"] = internet_exit_policy_name
+
                 append_if_not_duplicate(
                     list_of_dicts=profiles,
                     primary_key="name",
