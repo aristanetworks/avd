@@ -26,9 +26,31 @@ class IpNatMixin(UtilsMixin):
 
         # Currently only needed for Zscaler
         if any(internet_exit_policy["type"] == "zscaler" for internet_exit_policy in self._filtered_internet_exit_policies):
-            ip_nat["pools"] = [{"name": "PORT-ONLY-POOL", "type": "port-only", "ranges": [{"first_port": 1500, "last_port": 65535}]}]
+            ip_nat["pools"] = [
+                {
+                    "name": "PORT-ONLY-POOL",
+                    "type": "port-only",
+                    "ranges": [
+                        {
+                            "first_port": 1500,
+                            "last_port": 65535,
+                        }
+                    ],
+                }
+            ]
             ip_nat["profiles"] = [
-                {"name": "VRF-AWARE-NAT", "source": {"dynamic": [{"access_list": "ALLOW-ALL", "pool_name": "PORT-ONLY-POOL", "nat_type": "pool"}]}}
+                {
+                    "name": "VRF-AWARE-NAT",
+                    "source": {
+                        "dynamic": [
+                            {
+                                "access_list": "ALLOW-ALL",
+                                "pool_name": "PORT-ONLY-POOL",
+                                "nat_type": "pool",
+                            }
+                        ]
+                    },
+                }
             ]
 
         if ip_nat:
