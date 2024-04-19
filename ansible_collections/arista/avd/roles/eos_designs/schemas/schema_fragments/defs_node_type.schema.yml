@@ -753,14 +753,32 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: str
+          mlag_peer_address_family:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: |
+              Toggle to override the default (ipv4) address family used to establish MLAG Peer Link (control link).
+              Required when using IPv6 or other non-default values for MLAG leafs present in topology.
+              Requires minimum EOS version of 4.31.1f or higher.
+            type: str
+            valid_values:
+              - ipv4
+              - ipv6
+            default: ipv4
           mlag_peer_ipv4_pool:
             documentation_options:
               table: node-type-l2-mlag-configuration
             description: |
-              IP address pool used for MLAG Peer Link (control link). IP is derived from the node id.
+              IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
               Required when MLAG leafs present in topology.
             type: str
-            format: ipv4_cidr
+          mlag_peer_ipv6_pool:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: |
+              IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
+              Required when MLAG leafs present in topology.
+            type: str
           mlag_port_channel_id:
             documentation_options:
               table: node-type-l2-mlag-configuration

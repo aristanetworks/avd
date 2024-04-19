@@ -4995,6 +4995,14 @@
               "maximum": 31,
               "description": "IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.",
               "title": "IPv4 Prefix Length"
+            },
+            "ipv6_prefix_length": {
+              "type": "integer",
+              "default": 64,
+              "minimum": 1,
+              "maximum": 127,
+              "description": "IPv6 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.",
+              "title": "IPv6 Prefix Length"
             }
           },
           "additionalProperties": false,
