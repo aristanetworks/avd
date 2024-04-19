@@ -143,16 +143,12 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: SFR_999
-  flow_tracker:
-    hardware: FLOW-TRACKER
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.19.9.9/31
   shutdown: false
   type: routed
   description: ATT-MPLS_10999
-  flow_tracker:
-    hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -540,6 +536,8 @@ metadata:
     device_tags:
     - name: Role
       value: pathfinder
+    - name: Region
+      value: AVD_Land_East
     - name: PathfinderSet
       value: PATHFINDERS
     interface_tags:
@@ -563,6 +561,7 @@ metadata:
     role: pathfinder
     ssl_profile: profileB
     vtep_ip: 192.168.144.3
+    region: AVD_Land_East
     interfaces:
     - name: Ethernet1
       carrier: SFR
@@ -675,7 +674,9 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
-      - id: 4
+      - constraints:
+          lossrate: 42.0
+        id: 4
         name: PROD-AVT-POLICY-VIDEO
         pathgroups:
         - name: MPLS

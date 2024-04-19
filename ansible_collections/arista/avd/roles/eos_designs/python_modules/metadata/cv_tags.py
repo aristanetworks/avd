@@ -92,7 +92,7 @@ class CvTagsMixin:
         """
         Return list of device_tags for cv_pathfinder solution
         Example: [
-            {"name": "Region", "value": <value copied from cv_pathfinder_region for pathfinder clients>},
+            {"name": "Region", "value": <value copied from cv_pathfinder_region>},
             {"name": "Zone", "value": <"<region-name>-ZONE" for pathfinder clients>},
             {"name": "Site", "value": <value copied from cv_pathfinder_site for pathfinder clients>},
             {"name": "PathfinderSet", "value": <value copied from node group or default "PATHFINDERS" for pathfinder servers>},
@@ -104,13 +104,13 @@ class CvTagsMixin:
 
         device_tags = [
             self._tag_dict("Role", self.shared_utils.cv_pathfinder_role),
+            self._tag_dict("Region", get(self.shared_utils.wan_region or {}, "name")),
         ]
         if self.shared_utils.is_cv_pathfinder_server:
             device_tags.append(self._tag_dict("PathfinderSet", self.shared_utils.group or "PATHFINDERS"))
         else:
             device_tags.extend(
                 [
-                    self._tag_dict("Region", self.shared_utils.wan_region["name"]),
                     self._tag_dict("Zone", self.shared_utils.wan_zone["name"]),
                     self._tag_dict("Site", self.shared_utils.wan_site["name"]),
                 ]
@@ -130,7 +130,7 @@ class CvTagsMixin:
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
                 raise AristaAvdError(
                     f"The CloudVision tag name 'generate_cv_tags.device_tags[name={generate_tag['name']}] is invalid. "
-                    "System Tags cannot be overriden. Try using a different name for this tag."
+                    "System Tags cannot be overridden. Try using a different name for this tag."
                 )
 
             # Get value from either 'value' key, structured config based on the 'data_path' key or raise.

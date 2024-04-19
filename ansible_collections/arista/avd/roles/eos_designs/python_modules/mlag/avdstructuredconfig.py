@@ -182,6 +182,10 @@ class AvdStructuredConfigMlag(AvdFacts):
             # Apply ptp config to port-channel
             port_channel_interface["ptp"] = ptp_config
 
+        if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
+            port_channel_interface["lacp_fallback_mode"] = "individual"
+            port_channel_interface["lacp_fallback_timeout"] = self.shared_utils.get_mlag_peer_fact("inband_ztp_lacp_fallback_delay")
+
         return [strip_empties_from_dict(port_channel_interface)]
 
     @cached_property
@@ -211,6 +215,8 @@ class AvdStructuredConfigMlag(AvdFacts):
                 },
                 "speed": self.shared_utils.mlag_interfaces_speed,
             }
+            if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
+                ethernet_interface.update({"mode": "access", "vlans": self.shared_utils.get_mlag_peer_fact("inband_mgmt_vlan")})
             ethernet_interfaces.append(strip_empties_from_dict(ethernet_interface))
 
         return ethernet_interfaces

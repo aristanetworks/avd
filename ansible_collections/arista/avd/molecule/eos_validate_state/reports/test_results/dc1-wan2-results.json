@@ -1,30 +1,6 @@
 [
   {
     "name": "dc1-wan2",
-    "test": "VerifyTacacsServerGroups",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies if the provided TACACS server group(s) are configured."
-  },
-  {
-    "name": "dc1-wan2",
-    "test": "VerifyTacacsServers",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS servers are configured for a specified VRF."
-  },
-  {
-    "name": "dc1-wan2",
-    "test": "VerifyTacacsSourceIntf",
-    "categories": [
-      "aaa"
-    ],
-    "description": "Verifies TACACS source-interface for a specified VRF."
-  },
-  {
-    "name": "dc1-wan2",
     "test": "VerifyAcctConsoleMethods",
     "categories": [
       "aaa"
@@ -57,30 +33,45 @@
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyRoutingProtocolModel",
+    "test": "VerifyTacacsServerGroups",
     "categories": [
-      "BGP"
+      "aaa"
     ],
-    "description": "Verifies the configured routing protocol model.",
-    "custom_field": "Routing protocol model: multi-agent"
+    "description": "Verifies if the provided TACACS server group(s) are configured."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyTacacsServers",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS servers are configured for a specified VRF."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyTacacsSourceIntf",
+    "categories": [
+      "aaa"
+    ],
+    "description": "Verifies TACACS source-interface for a specified VRF."
   },
   {
     "name": "dc1-wan2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.4"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1a (IP: 10.255.255.4)"
   },
   {
     "name": "dc1-wan2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
-    "custom_field": "BGP IPv4 Unicast Peer: 10.255.255.6"
+    "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1b (IP: 10.255.255.6)"
   },
   {
     "name": "dc1-wan2",
@@ -100,69 +91,79 @@
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyFieldNotice72Resolution",
+    "test": "VerifyLLDPNeighbors",
     "categories": [
-      "field notices",
-      "software"
+      "connectivity"
     ],
-    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet1 - Remote: dc1-leaf1a Ethernet7"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet2 - Remote: dc1-leaf1b Ethernet7"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet1 (IP: 10.255.255.5) - Destination: dc1-leaf1a Ethernet7 (IP: 10.255.255.4)"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet2 (IP: 10.255.255.7) - Destination: dc1-leaf1b Ethernet7 (IP: 10.255.255.6)"
   },
   {
     "name": "dc1-wan2",
     "test": "VerifyFieldNotice44Resolution",
     "categories": [
-      "field notices",
-      "software"
+      "field notices"
     ],
-    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
+    "description": "Verifies that the device is using the correct Aboot version per FN0044."
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "hardware"
+      "field notices"
     ],
-    "description": "Verifies if all transceivers come from approved manufacturers."
+    "description": "Verifies if the device is exposed to FN0072, and if the issue has been mitigated."
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyTransceiversManufacturers",
+    "test": "VerifyGreenT",
     "categories": [
-      "hardware"
+      "greent"
     ],
-    "description": "Verifies if all transceivers come from approved manufacturers."
+    "description": "Verifies if a GreenT policy is created."
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyTemperature",
+    "test": "VerifyGreenTCounters",
     "categories": [
-      "hardware"
+      "greent"
     ],
-    "description": "Verifies the device temperature."
+    "description": "Verifies if the GreenT counters are incremented."
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyTemperature",
+    "test": "VerifyAdverseDrops",
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the device temperature."
-  },
-  {
-    "name": "dc1-wan2",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the power supplies status."
-  },
-  {
-    "name": "dc1-wan2",
-    "test": "VerifyEnvironmentPower",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies the power supplies status."
+    "description": "Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches."
   },
   {
     "name": "dc1-wan2",
@@ -178,7 +179,25 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the status of power supply fans and all fan trays."
+    "description": "Verifies the status of power supply fans and all fan trays.",
+    "custom_field": "Accepted States: 'ok'"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the power supplies status.",
+    "custom_field": "Accepted States: 'ok'"
   },
   {
     "name": "dc1-wan2",
@@ -190,19 +209,44 @@
   },
   {
     "name": "dc1-wan2",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the device temperature."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if all transceivers come from approved manufacturers.",
+    "custom_field": "Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present'"
+  },
+  {
+    "name": "dc1-wan2",
     "test": "VerifyTransceiversTemperature",
     "categories": [
       "hardware"
     ],
     "description": "Verifies the transceivers temperature."
-  },
-  {
-    "name": "dc1-wan2",
-    "test": "VerifyAdverseDrops",
-    "categories": [
-      "hardware"
-    ],
-    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
   },
   {
     "name": "dc1-wan2",
@@ -269,48 +313,60 @@
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyReachability",
+    "test": "VerifyLANZ",
     "categories": [
-      "IP Reachability"
+      "lanz"
     ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-wan2_Ethernet1 - Destination: dc1-leaf1a_Ethernet7"
+    "description": "Verifies if LANZ is enabled."
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyReachability",
+    "test": "VerifyPtpGMStatus",
     "categories": [
-      "IP Reachability"
+      "ptp"
     ],
-    "description": "ip reachability test p2p links",
-    "custom_field": "Source: dc1-wan2_Ethernet2 - Destination: dc1-leaf1b_Ethernet7"
+    "description": "Verifies that the device is locked to a valid PTP Grandmaster."
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyLLDPNeighbors",
+    "test": "VerifyPtpLockStatus",
     "categories": [
-      "LLDP Topology"
+      "ptp"
     ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet1 - remote: dc1-leaf1a_Ethernet7"
+    "description": "Verifies that the device was locked to the upstream PTP GM in the last minute."
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyLLDPNeighbors",
+    "test": "VerifyPtpModeStatus",
     "categories": [
-      "LLDP Topology"
+      "ptp"
     ],
-    "description": "LLDP topology - validate peer and interface",
-    "custom_field": "local: Ethernet2 - remote: dc1-leaf1b_Ethernet7"
+    "description": "Verifies that the device is configured as a PTP Boundary Clock."
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyNTP",
+    "test": "VerifyPtpOffset",
     "categories": [
-      "NTP"
+      "ptp"
     ],
-    "description": "Synchronised with NTP server",
-    "custom_field": "NTP"
+    "description": "Verifies that the PTP timing offset is within +/- 1000ns from the master clock."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyPtpPortModeStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies the PTP interfaces state."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyRoutingProtocolModel",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies the configured routing protocol model.",
+    "custom_field": "Routing protocol model: multi-agent"
   },
   {
     "name": "dc1-wan2",
@@ -319,6 +375,151 @@
       "security"
     ],
     "description": "Verifies if the eAPI has a valid SSL profile."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyAPIHttpsSSL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the eAPI has a valid SSL profile.",
+    "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyAPIHttpStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI HTTP server is disabled globally."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyAPIIPv4Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI has the right number IPv4 ACL(s) configured for a specified VRF."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyAPIIPv6Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI has the right number IPv6 ACL(s) configured for a specified VRF."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyAPISSLCertificate",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the eAPI SSL certificate expiry, common subject name, encryption algorithm and key size."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyBannerLogin",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the login banner of a device."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyBannerMotd",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the motd banner of a device."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyIPSecConnHealth",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies all IPv4 security connections."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyIPv4ACL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the configuration of IPv4 ACLs."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySSHIPv4Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent has IPv4 ACL(s) configured."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySSHIPv6Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent has IPv6 ACL(s) configured."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySSHStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent is disabled in the default VRF."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyTelnetStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if Telnet is disabled in the default VRF."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyDNSLookup",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the DNS name to IP address resolution."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyDNSServers",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies if the DNS servers are correctly configured."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyErrdisableRecovery",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the errdisable recovery reason, status, and interval."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyHostname",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the hostname of a device."
   },
   {
     "name": "dc1-wan2",
@@ -350,7 +551,7 @@
     "categories": [
       "software"
     ],
-    "description": "Verifies the device is running one of the allowed EOS version."
+    "description": "Verifies the EOS version of the device."
   },
   {
     "name": "dc1-wan2",
@@ -358,39 +559,15 @@
     "categories": [
       "software"
     ],
-    "description": "Verifies the device is running one of the allowed TerminAttr version."
+    "description": "Verifies the TerminAttr version of the device."
   },
   {
     "name": "dc1-wan2",
-    "test": "VerifyNTP",
+    "test": "VerifyStunClient",
     "categories": [
-      "system"
+      "stun"
     ],
-    "description": "Verifies if NTP is synchronised."
-  },
-  {
-    "name": "dc1-wan2",
-    "test": "VerifyFileSystemUtilization",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
-  },
-  {
-    "name": "dc1-wan2",
-    "test": "VerifyUptime",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies the device uptime."
-  },
-  {
-    "name": "dc1-wan2",
-    "test": "VerifyReloadCause",
-    "categories": [
-      "system"
-    ],
-    "description": "Verifies the last reload cause of the device."
+    "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided."
   },
   {
     "name": "dc1-wan2",
@@ -418,10 +595,58 @@
   },
   {
     "name": "dc1-wan2",
+    "test": "VerifyFileSystemUtilization",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies that no partition is utilizing more than 75% of its disk space."
+  },
+  {
+    "name": "dc1-wan2",
     "test": "VerifyMemoryUtilization",
     "categories": [
       "system"
     ],
     "description": "Verifies whether the memory utilization is below 75%."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyNTP",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyUptime",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the device uptime."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyVlanInternalPolicy",
+    "categories": [
+      "vlan"
+    ],
+    "description": "Verifies the VLAN internal allocation policy and the range of VLANs."
   }
 ]

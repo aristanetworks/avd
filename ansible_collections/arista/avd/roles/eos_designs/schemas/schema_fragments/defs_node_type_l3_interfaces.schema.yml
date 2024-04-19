@@ -15,23 +15,24 @@ $defs:
         name:
           type: str
           description: |-
-            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'
+            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
             For a subinterface, the parent physical interface is automatically created.
           pattern: "Ethernet[\\d/]+(.[\\d]+)?"
         description:
           type: str
           description: |-
             Interface description.
-            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'.
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        dhcp_ip_address:
+        dhcp_ip:
           type: str
           description: |-
             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
-            IPv4 address/Mask to be allocated on the interface if known.
-            This is not rendered in the configuration but can be used in ACLs in certain scenarios.
+            IPv4 address (without mask) to be allocated on the interface if known.
+            This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list
+            set under `ipv4_acl_in` and `ipv4_acl_out`.
         public_ip:
           type: str
           description: |-
@@ -67,15 +68,30 @@ $defs:
         peer:
           type: str
           description: |-
-            The peer device name. Used for description and documentation
+            The peer device name. Used for description and documentation.
         peer_interface:
           type: str
           description: |-
-            The peer device interface. Used for description and documentation
+            The peer device interface. Used for description and documentation.
         peer_ip:
           type: str
           description: |-
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
+        ipv4_acl_in:
+          description: |-
+            Name of the IPv4 access-list to be assigned in the ingress direction.
+            The access-list must be defined under `ipv4_acls`.
+            Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.
+          type: str
+          convert_types:
+            - int
+        ipv4_acl_out:
+          description: |-
+            Name of the IPv4 Access-list to be assigned in the egress direction.
+            The access-list must be defined under `ipv4_acls`.
+          type: str
+          convert_types:
+            - int
         static_routes:
           description: Configure IPv4 static routes pointing to `peer_ip`.
           type: list
@@ -86,27 +102,28 @@ $defs:
               prefix:
                 type: str
                 required: true
-                description: IPv4_network/Mask
+                description: IPv4_network/Mask.
         qos_profile:
           type: str
           description: QOS service profile.
         wan_carrier:
           type: str
           description: |-
-            The WAN Carrier this interface is connected to.
+            The WAN carrier this interface is connected to.
             This is used to infer the path-groups in which this interface should be configured.
+            Unless the carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.
         wan_circuit_id:
           type: str
           convert_types:
             - int
           description: |-
-            The WAN Circuit ID for this interface.
+            The WAN circuit ID for this interface.
             This is not rendered in the configuration but used for WAN designs.
         connected_to_pathfinder:
           type: bool
           default: true
           description: |-
-            For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
+            For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS configuration.

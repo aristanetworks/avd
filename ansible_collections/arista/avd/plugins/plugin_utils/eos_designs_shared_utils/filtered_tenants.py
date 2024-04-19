@@ -71,7 +71,7 @@ class FilteredTenantsMixin:
                 }
             )
         elif self.is_wan_router:
-            # It is enough to check only the first occurence of default VRF as some other piece of code
+            # It is enough to check only the first occurrence of default VRF as some other piece of code
             # checks that if the VRF is in multiple tenants, the configuration is consistent.
             for tenant in filtered_tenants:
                 if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
@@ -225,11 +225,6 @@ class FilteredTenantsMixin:
 
             if self.vtep is True:
                 evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
-                if evpn_l3_multicast_enabled is True and not self.evpn_multicast:
-                    raise AristaAvdError(
-                        f"'evpn_l3_multicast: true' under VRF {vrf['name']} or Tenant {tenant['name']}; this requires 'evpn_multicast' to also be set to true."
-                    )
-
                 if self.evpn_multicast:
                     vrf["_evpn_l3_multicast_enabled"] = evpn_l3_multicast_enabled
 

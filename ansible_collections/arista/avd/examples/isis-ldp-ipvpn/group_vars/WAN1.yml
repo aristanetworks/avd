@@ -101,7 +101,7 @@ core_interfaces:
   # First, an IP-pool for the underlay p2p links is defined
   p2p_links_ip_pools:
     - name: core_pool
-      ipv4_pool: 100.64.48.0/24
+      ipv4_pool: 10.255.3.0/24
   p2p_links_profiles:
     - name: core_profile
       # speed: 100gfull

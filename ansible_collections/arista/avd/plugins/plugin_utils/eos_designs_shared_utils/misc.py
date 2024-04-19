@@ -3,14 +3,19 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from copy import deepcopy
 from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 if TYPE_CHECKING:
+    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts.eos_designs_facts import EosDesignsFacts
+
     from .shared_utils import SharedUtils
 
 
@@ -108,6 +113,55 @@ class MiscMixin:
             get(self.cv_topology_config, "uplink_switches"),
             [],
         )
+
+    @cached_property
+    def uplink_interfaces(self: SharedUtils) -> list:
+        return range_expand(
+            default(
+                get(self.switch_data_combined, "uplink_interfaces"),
+                get(self.cv_topology_config, "uplink_interfaces"),
+                get(self.default_interfaces, "uplink_interfaces"),
+                [],
+            )
+        )
+
+    @cached_property
+    def uplink_switch_interfaces(self: SharedUtils) -> list:
+        uplink_switch_interfaces = default(
+            get(self.switch_data_combined, "uplink_switch_interfaces"),
+            get(self.cv_topology_config, "uplink_switch_interfaces"),
+        )
+        if uplink_switch_interfaces is not None:
+            return range_expand(uplink_switch_interfaces)
+
+        if not self.uplink_switches:
+            return []
+
+        if self.id is None:
+            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}'")
+
+        uplink_switch_interfaces = []
+        uplink_switch_counter = {}
+        for uplink_switch in self.uplink_switches:
+            uplink_switch_facts: EosDesignsFacts = self.get_peer_facts(uplink_switch, required=True)
+
+            # Count the number of instances the current switch was processed
+            uplink_switch_counter[uplink_switch] = uplink_switch_counter.get(uplink_switch, 0) + 1
+            index_of_parallel_uplinks = uplink_switch_counter[uplink_switch] - 1
+
+            # Add uplink_switch_interface based on this switch's ID (-1 for 0-based) * max_parallel_uplinks + index_of_parallel_uplinks.
+            # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
+            # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
+            downlink_index = (self.id - 1) * self.max_parallel_uplinks + index_of_parallel_uplinks
+            if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
+                uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
+            else:
+                raise AristaAvdError(
+                    f"'uplink_switch_interfaces' is not set on '{self.hostname}' and 'uplink_switch' '{uplink_switch}' "
+                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
+                )
+
+        return uplink_switch_interfaces
 
     @cached_property
     def virtual_router_mac_address(self: SharedUtils) -> str | None:
@@ -311,3 +365,58 @@ class MiscMixin:
         else:
             default_value = False
         return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
+
+    @cached_property
+    def ipv4_acls(self: SharedUtils) -> list:
+        return get(self.hostvars, "ipv4_acls", default=[])
+
+    def get_ipv4_acl(self: SharedUtils, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None):
+        """
+        Get one IPv4 ACL from "ipv4_acls" where fields have been substituted.
+        If any substitution is done, the ACL name will get "_<interface_name>" appended.
+        """
+        org_ipv4_acl = get_item(self.ipv4_acls, "name", name, required=True, var_name=f"ipv4_acls[name={name}]")
+        # deepcopy to avoid inplace updates below from modifying the original.
+        ipv4_acl = deepcopy(org_ipv4_acl)
+        ip_replacements = {
+            "interface_ip": interface_ip,
+            "peer_ip": peer_ip,
+        }
+        for index, entry in enumerate(get(ipv4_acl, "entries", default=[])):
+            if entry.get("remark") is not None:
+                continue
+
+            err_context = f"ipv4_acls[name={name}].entries[{index}]"
+            source_field = get(entry, "source", required=True, org_key=f"{err_context}.source")
+            destination_field = get(entry, "destination", required=True, org_key=f"{err_context}.destination")
+            entry["source"] = self._get_ipv4_acl_field_with_substitution(source_field, ip_replacements, f"{err_context}.source", interface_name)
+            entry["destination"] = self._get_ipv4_acl_field_with_substitution(destination_field, ip_replacements, f"{err_context}.destination", interface_name)
+
+        if ipv4_acl != org_ipv4_acl:
+            ipv4_acl["name"] += f"_{interface_name}"
+        return ipv4_acl
+
+    @staticmethod
+    def _get_ipv4_acl_field_with_substitution(field_value: str, replacements: dict[str, str], field_context: str, interface_name: str) -> str:
+        """
+        Checks one field if the value can be substituted.
+        The given "replacements" dict will be parsed as:
+          key: substitution field to look for
+          value: replacement value to set
+
+        If a replacement is done, but the value is None, an error will be raised.
+        """
+        for key, value in replacements.items():
+            if field_value != key:
+                continue
+
+            if value is None:
+                raise AristaAvdError(
+                    f"Unable to perform substitution of the value '{key}' defined under '{field_context}', "
+                    f"since no substitution value was found for interface '{interface_name}'. "
+                    "Make sure to set the appropriate fields on the interface."
+                )
+
+            return value
+
+        return field_value

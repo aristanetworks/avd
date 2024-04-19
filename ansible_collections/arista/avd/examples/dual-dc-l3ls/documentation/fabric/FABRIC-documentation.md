@@ -99,10 +99,10 @@
 | dc1-leaf1b | Ethernet2 | 10.255.255.7/31 | dc1-spine2 | Ethernet2 | 10.255.255.6/31 |
 | dc1-leaf2a | Ethernet1 | 10.255.255.9/31 | dc1-spine1 | Ethernet3 | 10.255.255.8/31 |
 | dc1-leaf2a | Ethernet2 | 10.255.255.11/31 | dc1-spine2 | Ethernet3 | 10.255.255.10/31 |
-| dc1-leaf2a | Ethernet6 | 172.100.100.0/31 | dc2-leaf2a | Ethernet6 | 172.100.100.1/31 |
+| dc1-leaf2a | Ethernet6 | 172.16.100.0/31 | dc2-leaf2a | Ethernet6 | 172.16.100.1/31 |
 | dc1-leaf2b | Ethernet1 | 10.255.255.13/31 | dc1-spine1 | Ethernet4 | 10.255.255.12/31 |
 | dc1-leaf2b | Ethernet2 | 10.255.255.15/31 | dc1-spine2 | Ethernet4 | 10.255.255.14/31 |
-| dc1-leaf2b | Ethernet6 | 172.100.100.2/31 | dc2-leaf2b | Ethernet6 | 172.100.100.3/31 |
+| dc1-leaf2b | Ethernet6 | 172.16.100.2/31 | dc2-leaf2b | Ethernet6 | 172.16.100.3/31 |
 | dc2-leaf1a | Ethernet1 | 10.255.255.105/31 | dc2-spine1 | Ethernet1 | 10.255.255.104/31 |
 | dc2-leaf1a | Ethernet2 | 10.255.255.107/31 | dc2-spine2 | Ethernet1 | 10.255.255.106/31 |
 | dc2-leaf1b | Ethernet1 | 10.255.255.109/31 | dc2-spine1 | Ethernet2 | 10.255.255.108/31 |

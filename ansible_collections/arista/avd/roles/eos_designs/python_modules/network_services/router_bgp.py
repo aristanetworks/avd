@@ -10,7 +10,7 @@ from re import fullmatch as re_fullmatch
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item
@@ -390,11 +390,6 @@ class RouterBgpMixin(UtilsMixin):
             bgp_vlan["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": vlan_rt}]
 
         vlan_evpn_l2_multicast_enabled = default(get(vlan, "evpn_l2_multicast.enabled"), get(tenant, "evpn_l2_multicast.enabled"))
-        if vlan_evpn_l2_multicast_enabled is True and not self.shared_utils.evpn_multicast:
-            raise AristaAvdError(
-                f"'evpn_l2_multicast: true' under VLAN {vlan['id']}({vlan['name']}) or Tenant {tenant['name']}; this requires 'evpn_multicast' to also be set"
-                " to true."
-            )
         if vlan_evpn_l2_multicast_enabled is True:
             bgp_vlan["redistribute_routes"].append("igmp")
 
@@ -434,7 +429,7 @@ class RouterBgpMixin(UtilsMixin):
         """
         if (evpn_vlan_bundle := get_item(self._evpn_vlan_bundles, "name", bundle_name)) is None:
             raise AristaAvdMissingVariableError(
-                "The 'evpn_vlan_bundle' of the svis/l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurence seen for svi/l2vlan"
+                "The 'evpn_vlan_bundle' of the svis/l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurrence seen for svi/l2vlan"
                 f" {vlan['id']} in Tenant '{vlan['tenant']}' and evpn_vlan_bundle '{vlan['evpn_vlan_bundle']}'."
             )
         return evpn_vlan_bundle

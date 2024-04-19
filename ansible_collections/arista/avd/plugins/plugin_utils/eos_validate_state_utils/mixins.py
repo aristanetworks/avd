@@ -66,7 +66,7 @@ class DeviceUtilsMixin:
         Args:
         ----
             interface_model (str): Interface model in the structured config (e.g., ethernet_interfaces).
-            interface_name (str): Interface name to retrive the IP.
+            interface_name (str): Interface name to retrieve the IP.
             host (str): Host to verify. Defaults to the host running the test.
 
         Returns:

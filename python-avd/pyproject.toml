@@ -92,7 +92,7 @@ exclude_also = [
     "@(abc\\.)?abstractmethod",
     # Don't complain about TYPE_CHECKING blocks
     "if TYPE_CHECKING:",
-    # Dont' complain about Jinja2 internalcode
+    # Don't complain about Jinja2 internalcode
     # Note that except KeyError is a bit sad but this is the pattern
     "except KeyError:",
     "@internalcode",

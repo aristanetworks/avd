@@ -115,14 +115,14 @@ def get_anta_results(
         run(anta_runner(manager, inventory, anta_catalog)) if len(anta_catalog.tests) > 0 else LOGGER.warning("Test catalog is empty!")
 
     # Convert the ANTA TestResult models to dictionaries, excluding default values
-    results = [result.model_dump(exclude_defaults=True) for result in manager.get_results()]
+    results = [result.model_dump(exclude_defaults=True) for result in manager.results]
 
     # Return sorted results
     return sorted(
         results,
         key=lambda result: (
             result.get("categories", [""])[0].lower(),
-            result.get("description", "").lower(),
+            result.get("test", "").lower(),
             result.get("custom_field", "").lower(),
         ),
     )
@@ -198,7 +198,7 @@ def get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]
 
 
 def generate_tests(config_manager: ConfigManager, skipped_tests: list[dict], custom_catalog: dict | None = None) -> RawCatalogInput:
-    """Create the test catalog in a dictionnary format generated from the AVD test classes.
+    """Create the test catalog in a dictionary format generated from the AVD test classes.
 
     Test definitions are generated from the AVD structured_config for each AVD test classes and are merged together
     with an optional custom_catalog to create the final catalog.
@@ -264,7 +264,7 @@ def create_dry_run_report(device_name: str, catalog: AntaCatalog, manager: Resul
         description = res_ow.description if res_ow and res_ow.description else test_definition.test.description
         custom_field = res_ow.custom_field if res_ow else None
 
-        manager.add_test_result(
+        manager.add(
             TestResult(
                 name=device_name,
                 test=test_definition.test.name,

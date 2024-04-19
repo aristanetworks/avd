@@ -96,14 +96,11 @@ keys:
           description: |
             Set the default evpn encapsulation.
         default_wan_role:
-          documentation_options:
-            table: node-type-key-wan-configuration
           type: str
           valid_values:
             - "client"
             - "server"
           description: |
-            PREVIEW: This key is currently not supported
             Set the default WAN role.
 
             This is used both for AutoVPN and Pathfinder designs.
@@ -217,7 +214,7 @@ keys:
         interface_descriptions:
           type: dict
           description: |
-            Override interface_descriptions templates
+            Override interface_descriptions templates.
             If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.
           keys:
             python_module:
