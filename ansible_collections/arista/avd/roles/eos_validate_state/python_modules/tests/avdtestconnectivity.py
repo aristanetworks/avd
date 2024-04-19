@@ -136,7 +136,7 @@ class AvdTestLoopback0Reachability(AvdTestBase):
             LOGGER.info("Host is not a VTEP since it doesn't have a VXLAN interface. %s is skipped.", self.__class__.__name__)
             return None
 
-        # For now, we exclude WAN VTEPs from testing
+        # TODO: For now, we exclude WAN VTEPs from testing
         if "Dps" in get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"):
             LOGGER.info("Host is a VTEP with a DPS source interface for VXLAN. For now, WAN VTEPs are excluded. %s is skipped.", self.__class__.__name__)
             return None

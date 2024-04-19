@@ -60,7 +60,7 @@ class AvdTestRoutingTable(AvdTestBase):
 
         vtep_interface = get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface")
 
-        # For now, we exclude WAN VTEPs from testing
+        # TODO: For now, we exclude WAN VTEPs from testing
         if "Dps" in vtep_interface:
             LOGGER.info("Host is a VTEP with a DPS source interface for VXLAN. For now, WAN VTEPs are excluded. %s is skipped.", self.__class__.__name__)
             return None
