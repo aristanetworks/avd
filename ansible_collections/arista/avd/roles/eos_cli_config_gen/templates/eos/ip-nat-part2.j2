@@ -6,18 +6,37 @@
 {# eos - ip nat part 2 (pools, synchronization) #}
 {% if ip_nat is arista.avd.defined %}
 !
-{%     for pool in ip_nat.pools | arista.avd.default([]) %}
-{%         if pool.name is arista.avd.defined and pool.prefix_length is arista.avd.defined %}
+{%     for pool in ip_nat.pools | arista.avd.natural_sort('name') %}
+{%         set pool_type = pool.type | arista.avd.default('ip-port') %}
+{%         if pool_type == 'ip-port' %}
+{%             if pool.name is arista.avd.defined and pool.prefix_length is arista.avd.defined %}
 ip nat pool {{ pool.name }} prefix-length {{ pool.prefix_length }}
-{%             for range in pool.ranges | arista.avd.default([]) %}
-{%                 set range_cli = 'range ' ~ range.first_ip ~ ' ' ~ range.last_ip %}
-{%                 if range.first_port is arista.avd.defined and range.last_port is arista.avd.defined %}
-{%                     set range_cli = range_cli ~ ' ' ~ range.first_port ~ ' ' ~ range.last_port %}
-{%                 endif %}
+{%                 for range in pool.ranges | arista.avd.default([]) %}
+{%                     if range.first_ip is arista.avd.defined and range.last_ip is arista.avd.defined %}
+{%                         set range_cli = 'range ' ~ range.first_ip ~ ' ' ~ range.last_ip %}
+{%                         if range.first_port is arista.avd.defined and range.last_port is arista.avd.defined %}
+{%                             set range_cli = range_cli ~ ' ' ~ range.first_port ~ ' ' ~ range.last_port %}
+{%                         endif %}
    {{ range_cli }}
-{%             endfor %}
-{%             if pool.utilization_log_threshold is arista.avd.defined %}
+{%                     endif %}
+{%                 endfor %}
+{%                 if pool.utilization_log_threshold is arista.avd.defined %}
    utilization threshold {{ pool.utilization_log_threshold }} action log
+{%                 endif %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{%     for pool in ip_nat.pools | arista.avd.natural_sort('name') %}
+{%         set pool_type = pool.type | arista.avd.default('ip-port') %}
+{%         if pool_type == 'port-only' %}
+{%             if pool.name is arista.avd.defined %}
+ip nat pool {{ pool.name }} port-only
+{%                 for range in pool.ranges | arista.avd.default([]) %}
+{%                     if range.first_port is arista.avd.defined and range.last_port is arista.avd.defined %}
+{%                         set range_cli = 'port range ' ~ range.first_port ~ ' ' ~ range.last_port %}
+   {{ range_cli }}
+{%                     endif %}
+{%                 endfor %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}

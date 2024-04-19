@@ -221,7 +221,7 @@ tenants:
 
           # Set nodes[inventory_hostname].structured_config on parent_profile
           # Expected results:
-          # - descripton: "set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config"
+          # - description: "set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config"
           - id: 112
             name: svi_profile_tests_112_description
             enabled: true

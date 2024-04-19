@@ -98,7 +98,7 @@ Repository implements the following hooks:
 - `check-merge-conflict`: Validate there is no `MERGE` syntax related to an invalid merge process.
 - `pylint`: Run Python linting with settings defined in [pylintrc](https://github.com/aristanetworks/avd/blob/devel/pylintrc).
 - `yamllint`: Validate all YAML files using configuration from [yamllintrc](https://github.com/aristanetworks/avd/blob/devel/.github/yamllintrc).
-- `ansible-lint`: Validate YAML files with Ansible proven practices, patters, and behaviors.
+- `ansible-lint`: Validate YAML files with Ansible proven practices, patterns, and behaviors.
 - `Flake8`: Style guide enforcement for Python code base.
 - `markdownlint-cli`: Validates markdown files for common errors as referenced [here](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md).
 

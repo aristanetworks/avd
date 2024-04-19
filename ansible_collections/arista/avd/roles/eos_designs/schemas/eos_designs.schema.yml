@@ -42,7 +42,7 @@ keys:
 
       "debug" will produce hidden debug messages viewable with -v.
 
-      "quiet" will not produce any messages
+      "quiet" will not produce any messages.
 
       '
   avd_data_validation_mode:
@@ -506,40 +506,40 @@ keys:
     default:
     - key: servers
       type: server
-      description: Server
+      description: Server.
     - key: firewalls
       type: firewall
-      description: Firewall
+      description: Firewall.
     - key: routers
       type: router
-      description: Router
+      description: Router.
     - key: load_balancers
       type: load_balancer
-      description: Load Balancer
+      description: Load Balancer.
     - key: storage_arrays
       type: storage_array
-      description: Storage Array
+      description: Storage Array.
     - key: cpes
       type: cpe
-      description: CPE
+      description: CPE.
     - key: workstations
       type: workstation
-      description: Workstation
+      description: Workstation.
     - key: access_points
       type: access_point
-      description: Access Point
+      description: Access Point.
     - key: phones
       type: phone
-      description: Phone
+      description: Phone.
     - key: printers
       type: printer
-      description: Printer
+      description: Printer.
     - key: cameras
       type: camera
-      description: Camera
+      description: Camera.
     - key: generic_devices
       type: generic_device
-      description: Generic Device
+      description: Generic Device.
   core_interfaces:
     type: dict
     $ref: eos_designs#/$defs/l3_edge
@@ -633,7 +633,7 @@ keys:
                   the site ID must be unique within a region.'
               location:
                 type: str
-                description: Location as a sring is resolved on Cloudvision.
+                description: Location as a string is resolved on Cloudvision.
               site_contact:
                 type: str
               site_after_hours_contact:
@@ -730,7 +730,7 @@ keys:
       '
     items:
       type: str
-      description: IPv4 address or DNS name for CloudVision
+      description: IPv4 address or DNS name for CloudVision.
   cvp_token_file:
     documentation_options:
       table: cloudvision-settings
@@ -770,7 +770,7 @@ keys:
     - str
     description: 'Default interface MTU configured on EOS under "interface defaults".
 
-      Can be overriden per platform under platform settings.
+      Can be overridden per platform under platform settings.
 
       '
     min: 68
@@ -1117,7 +1117,7 @@ keys:
             define it.\nrt_override will default to vni_override if set.\n\nrt_override
             supports two formats:\n  - A single number which will be used in the RT
             fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).\n
-            \ - A full RT string with colon seperator which will override the full
+            \ - A full RT string with colon separator which will override the full
             RT.\n"
         rd_override:
           type: str
@@ -1129,7 +1129,7 @@ keys:
             set.\n\nrd_override supports two formats:\n  - A single number which will
             be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni
             (see 'overlay_rd_type' for details).\n  - A full RD string with colon
-            seperator which will override the full RD.\n"
+            separator which will override the full RD.\n"
         evpn_l2_multi_domain:
           type: bool
           description: 'Explicitly extend VLAN-Aware Bundle to remote EVPN domains.
@@ -1721,7 +1721,7 @@ keys:
     description: List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     items:
       type: str
-      description: IPv4 address
+      description: IPv4 address.
   network_ports:
     type: list
     items:
@@ -2029,7 +2029,7 @@ keys:
               description: Path to Custom J2 template.
         interface_descriptions:
           type: dict
-          description: 'Override interface_descriptions templates
+          description: 'Override interface_descriptions templates.
 
             If description templates use Jinja2, they have to strip whitespaces using
             {%- -%} on any code blocks.
@@ -2163,7 +2163,7 @@ keys:
     type: list
     items:
       type: str
-      description: '''inventory_hostname'' of CVX server
+      description: '''inventory_hostname'' of CVX server.
 
         '
   overlay_her_flood_list_per_vni:
@@ -2599,6 +2599,23 @@ keys:
         management_interface:
           type: str
           default: Management1
+        security_entropy_sources:
+          description: Entropy source improves the randomness of the numbers used
+            to generate MACsec's cryptographic keys.
+          type: dict
+          keys:
+            hardware:
+              type: bool
+              description: Use a hardware based source.
+            haveged:
+              type: bool
+              description: Use the HAVEGE algorithm.
+            cpu_jitter:
+              type: bool
+              description: Use the Jitter RNG algorithm of a CPU based source.
+            hardware_exclusive:
+              type: bool
+              description: Only use entropy from the hardware source.
         structured_config:
           type: dict
           documentation_options:
@@ -3052,9 +3069,9 @@ keys:
     documentation_options:
       table: management-snmp-settings
     type: dict
-    description: 'SNMP settings
+    description: 'SNMP settings.
 
-      For SNMP local-interfaces see "source_interfaces.snmp"
+      For SNMP local-interfaces see "source_interfaces.snmp".
 
       Configuration of remote SNMP engine IDs are currently only possible using `structured_config`.'
     keys:
@@ -3127,10 +3144,10 @@ keys:
           keys:
             name:
               type: str
-              description: Username
+              description: Username.
             group:
               type: str
-              description: Group name
+              description: Group name.
             version:
               type: str
               valid_values:
@@ -3370,7 +3387,7 @@ keys:
       keys:
         profile:
           type: str
-          description: Profile name
+          description: Profile name.
         parent_profile:
           type: str
           description: 'Parent SVI profile name to apply.
@@ -3750,7 +3767,7 @@ keys:
   wan_ha:
     documentation_options:
       table: wan-settings
-    description: 'PREVIEW: The `wan_ha` key is currently not supported'
+    description: 'PREVIEW: The `wan_ha` key is currently not supported.'
     type: dict
     keys:
       lan_ha_path_group_name:
@@ -3893,7 +3910,7 @@ keys:
               convert_types:
               - int
               description: 'Interval in milliseconds. Valid values are 50-60000 |
-                "auto"
+                "auto".
 
 
                 When auto, the interval and failure_threshold are automatically determined
@@ -4195,7 +4212,7 @@ $defs:
         type: str
         description: 'By default the description is built leveraging `<peer>_<peer_interface>`.
 
-          When set this key will overide the default value on the physical ports.
+          When set this key will override the default value on the physical ports.
 
           '
       profile:
@@ -4318,7 +4335,7 @@ $defs:
             - 'on'
       qos_profile:
         type: str
-        description: QOS profile name
+        description: QOS profile name.
       ptp:
         type: dict
         description: 'The global PTP profile parameters will be applied to all connected
@@ -4592,7 +4609,7 @@ $defs:
                       type: bool
                     size:
                       type: int
-                      description: Size in bytes
+                      description: Size in bytes.
                       convert_types:
                       - str
       ethernet_segment:
@@ -4767,12 +4784,12 @@ $defs:
                   type: int
                   convert_types:
                   - str
-                  description: Subinterface number
+                  description: Subinterface number.
                 short_esi:
                   type: str
-                  description: 'In format xxxx:xxxx:xxxx or "auto"
+                  description: 'In format xxxx:xxxx:xxxx or "auto".
 
-                    Required for multihomed port-channels with subinterfaces
+                    Required for multihomed port-channels with subinterfaces.
 
                     '
                 vlan_id:
@@ -4879,7 +4896,7 @@ $defs:
                   '
                 items:
                   type: str
-                  description: Device
+                  description: Device.
               endpoint_ports:
                 type: list
                 description: 'Endpoint ports is used for description, required unless
@@ -5140,7 +5157,7 @@ $defs:
               type: bool
             underlay_l2_multicast_group_ipv4_pool:
               type: str
-              description: IPv4_address/Mask
+              description: IPv4_address/Mask.
             underlay_l2_multicast_group_ipv4_pool_offset:
               type: int
               convert_types:
@@ -5171,7 +5188,7 @@ $defs:
               type: bool
             evpn_underlay_l3_multicast_group_ipv4_pool:
               type: str
-              description: IPv4_address/Mask
+              description: IPv4_address/Mask.
               required: true
             evpn_underlay_l3_multicast_group_ipv4_pool_offset:
               type: int
@@ -5262,7 +5279,7 @@ $defs:
             source_address:
               type: str
               format: ipv4
-              description: Default IP address of Loopback0
+              description: Default IP address of Loopback0.
             version:
               type: int
               convert_types:
@@ -5368,7 +5385,7 @@ $defs:
                   this value and statically define it.\n\nrd_override supports two
                   formats:\n  - A single number will be used in the RD assigned number
                   subfield (second part of the RD).\n  - A full RD string with colon
-                  seperator which will override the full RD.\n"
+                  separator which will override the full RD.\n"
               rt_override:
                 type: str
                 convert_types:
@@ -5378,7 +5395,7 @@ $defs:
                   this value and statically define it.\n\nrt_override supports two
                   formats:\n  - A single number will be used in the RT assigned number
                   subfield (second part of the RT).\n  - A full RT string with colon
-                  seperator which will override the full RT.\n"
+                  separator which will override the full RT.\n"
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: 'IPv4_address/Mask
@@ -5855,7 +5872,7 @@ $defs:
                     pim:
                       type: dict
                       description: 'Enable PIM sparse-mode on the interface; requires
-                        "evpn_l3_multicast" to be enabled on the VRF/Tenant
+                        "evpn_l3_multicast" to be enabled on the VRF/Tenant.
 
                         Enabling this implicitly makes the device a PIM External Gateway
                         (PEG) in EVPN designs only.
@@ -6272,7 +6289,7 @@ $defs:
                 - str
                 min: 1
                 max: 4094
-                description: VLAN ID
+                description: VLAN ID.
               vni_override:
                 type: int
                 convert_types:
@@ -6295,7 +6312,7 @@ $defs:
                   if set.\n\nrt_override supports two formats:\n  - A single number
                   which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni
                   (see 'overlay_rt_type' for details).\n  - A full RT string with
-                  colon seperator which will override the full RT.\n"
+                  colon separator which will override the full RT.\n"
               rd_override:
                 type: str
                 convert_types:
@@ -6306,12 +6323,12 @@ $defs:
                   vni_override if set.\n\nrd_override supports two formats:\n  - A
                   single number which will be used in the RD assigned number field
                   instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).\n
-                  \ - A full RD string with colon seperator which will override the
+                  \ - A full RD string with colon separator which will override the
                   full RD.\n"
               name:
                 type: str
                 required: true
-                description: VLAN name
+                description: VLAN name.
               tags:
                 type: list
                 description: 'Tags leveraged for networks services filtering.
@@ -6450,7 +6467,7 @@ $defs:
             keys:
               name:
                 type: str
-                description: Pseudowire name
+                description: Pseudowire name.
               type:
                 type: str
                 default: vpws-pseudowire
@@ -6466,7 +6483,7 @@ $defs:
                   keys:
                     number:
                       type: int
-                      description: Subinterface number
+                      description: Subinterface number.
                       convert_types:
                       - str
               endpoints:
@@ -6487,7 +6504,7 @@ $defs:
                     nodes:
                       type: list
                       description: Usually one node. With ESI multihoming we support
-                        two nodes per pseudowire endpoint
+                        two nodes per pseudowire endpoint.
                       required: true
                       min_length: 1
                       items:
@@ -6717,7 +6734,7 @@ $defs:
           uplink_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
-            description: 'Local uplink interfaces
+            description: 'Local uplink interfaces.
 
               Each list item supports range syntax that can be expanded into a list
               of interfaces.
@@ -8186,7 +8203,7 @@ $defs:
         name:
           type: str
           description: 'Ethernet interface name like ''Ethernet2'' or subinterface
-            name like ''Ethernet2.42''
+            name like ''Ethernet2.42''.
 
             For a subinterface, the parent physical interface is automatically created.'
           pattern: Ethernet[\d/]+(.[\d]+)?
@@ -8194,7 +8211,7 @@ $defs:
           type: str
           description: 'Interface description.
 
-            If not set a default description will be configured with ''[<peer>[ <peer_interface>]]'''
+            If not set a default description will be configured with ''[<peer>[ <peer_interface>]]''.'
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
@@ -8240,10 +8257,10 @@ $defs:
             <interface_speed>` or `auto <interface_speed>`.
         peer:
           type: str
-          description: The peer device name. Used for description and documentation
+          description: The peer device name. Used for description and documentation.
         peer_interface:
           type: str
-          description: The peer device interface. Used for description and documentation
+          description: The peer device interface. Used for description and documentation.
         peer_ip:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
@@ -8277,7 +8294,7 @@ $defs:
               prefix:
                 type: str
                 required: true
-                description: IPv4_network/Mask
+                description: IPv4_network/Mask.
         qos_profile:
           type: str
           description: QOS service profile.
@@ -8492,7 +8509,7 @@ $defs:
           type: dict
           documentation_options:
             hide_keys: true
-          description: 'Custom structured config for interfaces
+          description: 'Custom structured config for interfaces.
 
             Note! The content of this dictionary is _not_ validated by the schema,
             since it can be either ethernet_interfaces or port_channel_interfaces.'
@@ -8517,16 +8534,16 @@ $defs:
           keys:
             node:
               type: str
-              description: l3_leaf inventory hostname
+              description: l3_leaf inventory hostname.
   svi_settings:
     type: dict
     keys:
       name:
         type: str
-        description: VLAN name
+        description: VLAN name.
       enabled:
         type: bool
-        description: Enable or disable interface
+        description: Enable or disable interface.
       description:
         type: str
         description: 'SVI description. By default set to VLAN name.
@@ -8545,9 +8562,9 @@ $defs:
         description: Explicitly enable/disable link-local IPv6 addressing.
       ip_address_virtual:
         type: str
-        description: 'IPv4_address/Mask
+        description: 'IPv4_address/Mask.
 
-          IPv4 VXLAN Anycast IP address
+          IPv4 VXLAN Anycast IP address.
 
           Conserves IP addresses in VXLAN deployments as it doesn''t require unique
           IP addresses on each node.
@@ -8555,12 +8572,12 @@ $defs:
           '
       ipv6_address_virtual:
         type: str
-        description: 'IPv6_address/Mask
+        description: 'IPv6_address/Mask.
 
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional)
+          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
 
           If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all
-          addresses will be configured
+          addresses will be configured.
 
           '
         deprecation:
@@ -8569,7 +8586,7 @@ $defs:
           new_key: ipv6_address_virtuals
       ipv6_address_virtuals:
         type: list
-        description: 'IPv6 VXLAN Anycast IP addresses
+        description: 'IPv6 VXLAN Anycast IP addresses.
 
           Conserves IPv6 addresses in VXLAN deployments as it doesn''t require unique
           IPv6 addresses on each node.
@@ -8577,13 +8594,13 @@ $defs:
           '
         items:
           type: str
-          description: IPv6_address/Mask
+          description: IPv6_address/Mask.
       ip_address_virtual_secondaries:
         type: list
-        description: Secondary IPv4 VXLAN Anycast IP addresses
+        description: Secondary IPv4 VXLAN Anycast IP addresses.
         items:
           type: str
-          description: IPv4_address/Mask
+          description: IPv4_address/Mask.
       ip_virtual_router_addresses:
         type: list
         description: 'IPv4 VARP addresses.
@@ -8598,7 +8615,7 @@ $defs:
           '
         items:
           type: str
-          description: 'IPv4_address/Mask or IPv4_address
+          description: 'IPv4_address/Mask or IPv4_address.
 
             IPv4_address/Mask will also configure a static route to the SVI per best
             practice.
@@ -8618,19 +8635,19 @@ $defs:
           '
         items:
           type: str
-          description: IPv6_address
+          description: IPv6_address.
       ip_helpers:
         type: list
         primary_key: ip_helper
         convert_types:
         - dict
-        description: IP helper for DHCP relay
+        description: IP helper for DHCP relay.
         items:
           type: dict
           keys:
             ip_helper:
               type: str
-              description: IPv4 DHCP server IP
+              description: IPv4 DHCP server IP.
             source_interface:
               type: str
               description: Interface name to originate DHCP relay packets to DHCP
@@ -8662,7 +8679,7 @@ $defs:
           define it.\nrt_override will default to vni_override if set.\n\nrt_override
           supports two formats:\n  - A single number which will be used in the RT
           fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).\n
-          \ - A full RT string with colon seperator which will override the full RT.\n"
+          \ - A full RT string with colon separator which will override the full RT.\n"
       rd_override:
         type: str
         convert_types:
@@ -8672,7 +8689,7 @@ $defs:
           define it.\nrd_override will default to rt_override or vni_override if set.\n\nrd_override
           supports two formats:\n  - A single number which will be used in the RD
           assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type'
-          for details).\n  - A full RD string with colon seperator which will override
+          for details).\n  - A full RD string with colon separator which will override
           the full RD.\n"
       trunk_groups:
         type: list
@@ -8819,9 +8836,9 @@ $defs:
           structured_config:
             type: dict
             description: 'Structured configuration and EOS CLI commands rendered on
-              router_bgp.vlans.[id=<vlan>]
+              router_bgp.vlans.[id=<vlan>].
 
-              This configuration will not be applied to vlan aware bundles
+              This configuration will not be applied to vlan aware bundles.
 
               '
             documentation_options:

@@ -52,7 +52,7 @@ async def verify_devices_in_cloudvision_inventory(
     LOGGER.info("verify_devices_in_cloudvision_inventory: %s unique devices.", len(device_tuples))
 
     found_devices = await cv_client.get_inventory_devices(devices=device_tuples)
-    LOGGER.info("verify_devices_in_cloudvision_inventory: got %s maching devices on CV.", len(found_devices))
+    LOGGER.info("verify_devices_in_cloudvision_inventory: got %s matching devices on CV.", len(found_devices))
     found_device_dict_by_serial = {found_device.key.device_id: found_device for found_device in found_devices}
     found_device_dict_by_system_mac = {found_device.system_mac_address: found_device for found_device in found_devices}
     found_device_dict_by_hostname = {found_device.hostname: found_device for found_device in found_devices}
