@@ -57,10 +57,10 @@ MSS-G is enabled.
 
 ##### Segment SEGMENT-TEST1 Definitions
 
-| Interface | Match-List Name | Address Family | Covered |
-| --------- |---------------- | -------------- | ------- |
-| - | MATCH-LIST10 | ipv4 | False |
-| - | MATCH-LIST11 | ipv6 | False |
+| Interface | Match-List Name | Covered Prefix-List Name | Address Family |
+| --------- |---------------- | ------------------------ | -------------- |
+| - | MATCH-LIST10 | - | ipv4 |
+| - | MATCH-LIST11 | - | ipv6 |
 
 ##### Segment SEGMENT-TEST1 Policies
 
@@ -70,10 +70,10 @@ MSS-G is enabled.
 
 ##### Segment SEGMENT-TEST2 Definitions
 
-| Interface | Match-List Name | Address Family | Covered |
-| --------- |---------------- | -------------- | ------- |
-| - | MATCH-LIST3 | ipv6 | False |
-| - | MATCH-LIST4 | ipv4 | True |
+| Interface | Match-List Name | Covered Prefix-List Name | Address Family |
+| --------- |---------------- | ------------------------ | -------------- |
+| - | MATCH-LIST4 | - | ipv4 |
+| - | MATCH-LIST3 | - | ipv6 |
 
 ##### Segment SEGMENT-TEST2 Policies
 
@@ -87,12 +87,12 @@ MSS-G is enabled.
 
 ##### Segment SEGMENT-TEST1 Definitions
 
-| Interface | Match-List Name | Address Family | Covered |
-| --------- |---------------- | -------------- | ------- |
+| Interface | Match-List Name | Covered Prefix-List Name | Address Family |
+| --------- |---------------- | ------------------------ | -------------- |
 | Ethernet1 | - | - | - |
 | Ethernet2 | - | - | - |
-| - | MATCH-LIST1 | ipv6 | False |
-| - | MATCH-LIST10 | ipv4 | False |
+| - | - | PREFIX-LIST10 | ipv4 |
+| - | - | PREFIX-LIST1 | ipv6 |
 
 ##### Segment SEGMENT-TEST1 Policies
 
@@ -123,8 +123,8 @@ router segment-security
             from MATCH-LIST22 policy POLICY-TEST1
       segment SEGMENT-TEST2
          definition
+            match prefix-ipv4 MATCH-LIST4
             match prefix-ipv6 MATCH-LIST3
-            match covered prefix-list ipv4 MATCH-LIST4
          !
          policies
             from MATCH-LIST20 policy policy-forward-all
@@ -136,8 +136,8 @@ router segment-security
          definition
             match interface Ethernet1
             match interface Ethernet2
-            match prefix-ipv6 MATCH-LIST1
-            match prefix-ipv4 MATCH-LIST10
+            match covered prefix-list ipv4 PREFIX-LIST10
+            match covered prefix-list ipv6 PREFIX-LIST1
          !
          policies
             from MATCH-LIST20 policy policy-forward-all

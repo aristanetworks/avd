@@ -89,15 +89,13 @@ keys:
                           type: str
                       match_lists:
                         type: list
-                        description: The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.
+                        description: The set of lists that define the segment. These can be a mix of IPv4 and IPv6 prefix or match lists.
                         max_length: 2
+                        min_length: 1
                         primary_key: address_family
                         items:
                           type: dict
                           keys:
-                            name:
-                              type: str
-                              description: The name of the prefix match-list. You can have a maximum of one per address-family.
                             address_family:
                               type: str
                               required: true
@@ -105,9 +103,12 @@ keys:
                               valid_values:
                                 - "ipv4"
                                 - "ipv6"
-                            covered:
-                              type: bool
-                              default: false
+                            covered_prefix_list:
+                              type: str
+                              description: The name of the prefix-list. You can have a maximum of one per address-family. Mutually exclusive to the use of match_list.  If both are configured prefix takes precedence.
+                            prefix:
+                              type: str
+                              description: The name of the match-list. You can have a maximum of one per address-family. Mutually exclusive to the use of covered_prefix_list. If both are configured prefix takes precedence.
                   policies:
                     type: list
                     required: true

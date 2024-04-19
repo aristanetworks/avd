@@ -24471,16 +24471,12 @@
                         },
                         "match_lists": {
                           "type": "array",
-                          "description": "The set of match-lists that define the segment. These can be a mix of IPv4 and IPv6 lists.",
+                          "description": "The set of lists that define the segment. These can be a mix of IPv4 and IPv6 prefix or match lists.",
                           "maxItems": 2,
+                          "minItems": 1,
                           "items": {
                             "type": "object",
                             "properties": {
-                              "name": {
-                                "type": "string",
-                                "description": "The name of the prefix match-list. You can have a maximum of one per address-family.",
-                                "title": "Name"
-                              },
                               "address_family": {
                                 "type": "string",
                                 "description": "Indicate which address-family the match list belongs to e.g. ipv4 or ipv6.",
@@ -24490,10 +24486,15 @@
                                 ],
                                 "title": "Address Family"
                               },
-                              "covered": {
-                                "type": "boolean",
-                                "default": false,
-                                "title": "Covered"
+                              "covered_prefix_list": {
+                                "type": "string",
+                                "description": "The name of the prefix-list. You can have a maximum of one per address-family. Mutually exclusive to the use of match_list.  If both are configured prefix takes precedence.",
+                                "title": "Covered Prefix List"
+                              },
+                              "prefix": {
+                                "type": "string",
+                                "description": "The name of the match-list. You can have a maximum of one per address-family. Mutually exclusive to the use of covered_prefix_list. If both are configured prefix takes precedence.",
+                                "title": "Prefix"
                               }
                             },
                             "required": [

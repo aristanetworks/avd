@@ -23,9 +23,9 @@ router_segment_security:
         - name: SEGMENT-TEST1
           definition:
             match_lists:
-              - name: MATCH-LIST10
+              - prefix: MATCH-LIST10
                 address_family: ipv4
-              - name: MATCH-LIST11
+              - prefix: MATCH-LIST11
                 address_family: ipv6
           policies:
             - source: MATCH-LIST22
@@ -33,10 +33,9 @@ router_segment_security:
         - name: SEGMENT-TEST2
           definition:
             match_lists:
-              - name: MATCH-LIST4
+              - prefix: MATCH-LIST4
                 address_family: ipv4
-                covered: true
-              - name: MATCH-LIST3
+              - prefix: MATCH-LIST3
                 address_family: ipv6
           policies:
             - source: MATCH-LIST20
@@ -50,9 +49,9 @@ router_segment_security:
         - name: SEGMENT-TEST1
           definition:
             match_lists:
-              - name: MATCH-LIST10
+              - covered_prefix_list: PREFIX-LIST10
                 address_family: ipv4
-              - name: MATCH-LIST1
+              - covered_prefix_list: PREFIX-LIST1
                 address_family: ipv6
             interfaces:
               - Ethernet1

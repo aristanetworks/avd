@@ -37,16 +37,16 @@ MSS-G is disabled.
 
 ##### Segment {{ segment.name }} Definitions
 
-| Interface | Match-List Name | Address Family | Covered |
-| --------- |---------------- | -------------- | ------- |
+| Interface | Match-List Name | Covered Prefix-List Name | Address Family |
+| --------- |---------------- | ------------------------ | -------------- |
 {%                 if segment.definition.interfaces is arista.avd.defined %}
 {%                     for entry in segment.definition.interfaces %}
 | {{ entry }} | - | - | - |
 {%                     endfor %}
 {%                 endif %}
 {%                 if segment.definition.match_lists is arista.avd.defined %}
-{%                     for entry in segment.definition.match_lists | arista.avd.natural_sort('name') %}
-| - | {{ entry.name }} | {{ entry.address_family }} | {{ entry.covered | arista.avd.default('False') }} |
+{%                     for entry in segment.definition.match_lists %}
+| - | {{ entry.prefix | arista.avd.default('-') }} | {{ entry.covered_prefix_list | arista.avd.default('-') }} | {{ entry.address_family }} |
 {%                     endfor %}
 {%                 endif %}
 
