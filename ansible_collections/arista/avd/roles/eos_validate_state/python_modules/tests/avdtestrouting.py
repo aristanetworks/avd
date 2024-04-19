@@ -73,22 +73,20 @@ class AvdTestBGP(AvdTestBase):
     anta_module = "anta.tests.routing"
     anta_tests = {}
 
+    def format_afi(self, afi: str) -> str:
+        """Format the AFI based on its value."""
+        afi_mapping = {"ipv4": "IPv4", "ipv6": "IPv6", "evpn": "EVPN", "link-state": "Link-State", "path-selection": "Path-Selection"}
+        return afi_mapping.get(afi.lower(), afi.upper())
+
+    def format_safi(self, safi: str) -> str:
+        """Format the SAFI based on its value."""
+        safi_mapping = {"unicast": " Unicast", "sr-te": " SR-TE"}
+        return safi_mapping.get(safi.lower(), "") if safi else ""
+
     def add_test(self, afi: str, bgp_neighbor_ip: str, bgp_peer: str, safi: str | None = None) -> dict:
         """Add a BGP test definition with the proper input parameters."""
-        formatted_afi = (
-            "IPv4"
-            if afi.lower() == "ipv4"
-            else (
-                "IPv6"
-                if afi.lower() == "ipv6"
-                else (
-                    "EVPN"
-                    if afi.lower() == "evpn"
-                    else "Link-State" if afi.lower() == "link-state" else "Path-Selection" if afi.lower() == "path-selection" else afi.upper()
-                )
-            )
-        )
-        formatted_safi = " Unicast" if safi and safi.lower() == "unicast" else " SR-TE" if safi and safi.lower() == "sr-te" else ""
+        formatted_afi = self.format_afi(afi)
+        formatted_safi = self.format_safi(safi)
         custom_field = (
             f"BGP {formatted_afi}{formatted_safi} Peer: "
             f"{bgp_peer + ' ' if bgp_peer is not None else ''}"
