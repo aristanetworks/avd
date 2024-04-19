@@ -128,7 +128,6 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                     context_keys=["name"],
                 )
             if (default_match := policy.get("default_match")) is not None:
-                # TODO need to not include internet_exit_policy_name if there is no local interface
                 profile = {
                     "name": default_match["avt_profile"],
                     "load_balance_policy": default_match["load_balance_policy"]["name"],
