@@ -57,6 +57,7 @@ interface Management1
 | Name | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set |
 | ---- | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ |
 | l4-app-1 | tcp, udp | - | src_port_set1 | dest_port_set1 | src_port_set1 | dest_port_set1 |
+| l4-app-2 | tcp | 27, 41-44 | - | - | - | - |
 
 ### Application Profiles
 
@@ -143,6 +144,10 @@ application traffic recognition
    application l4 l4-app-1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp source port field-set src_port_set1 destination port field-set dest_port_set1
+   !
+   application l4 l4-app-2
+      protocol tcp
+      protocol 27, 41-44
    !
    category best-effort
       application aimini service peer-to-peer
