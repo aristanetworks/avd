@@ -54,11 +54,11 @@ router_bgp:
     remote_as: '65101'
     peer: dc1-leaf1b
     description: dc1-leaf1b_Ethernet7
-  - ip_address: 10.255.255.0
+  - ip_address: 10.255.255.10
     peer_group: WAN-OVERLAY-PEERS
     peer: dc1-leaf1a
     description: dc1-leaf1a
-  - ip_address: 10.255.255.2
+  - ip_address: 10.255.255.20
     peer_group: WAN-OVERLAY-PEERS
     peer: dc1-leaf1b
     description: dc1-leaf1b
@@ -397,11 +397,11 @@ router_path_selection:
     dynamic_peers:
       enabled: true
     static_peers:
-    - router_ip: 10.255.255.0
+    - router_ip: 10.255.255.10
       name: dc1-leaf1a
       ipv4_addresses:
       - 172.18.1.2
-    - router_ip: 10.255.255.2
+    - router_ip: 10.255.255.20
       name: dc1-leaf1b
       ipv4_addresses:
       - 172.18.2.2
@@ -417,11 +417,11 @@ router_path_selection:
     dynamic_peers:
       enabled: true
     static_peers:
-    - router_ip: 10.255.255.0
+    - router_ip: 10.255.255.10
       name: dc1-leaf1a
       ipv4_addresses:
       - 100.64.1.2
-    - router_ip: 10.255.255.2
+    - router_ip: 10.255.255.20
       name: dc1-leaf1b
       ipv4_addresses:
       - 100.64.2.2
@@ -480,8 +480,8 @@ application_traffic_recognition:
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
       prefix_values:
-      - 10.255.255.0/32
-      - 10.255.255.2/32
+      - 10.255.255.10/32
+      - 10.255.255.20/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -551,6 +551,6 @@ metadata:
       circuit_id: DC1-INET-4
       pathgroup: internet
     pathfinders:
-    - vtep_ip: 10.255.255.0
-    - vtep_ip: 10.255.255.2
+    - vtep_ip: 10.255.255.10
+    - vtep_ip: 10.255.255.20
 dns_domain: dc1.local

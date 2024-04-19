@@ -502,7 +502,7 @@ anta.tests.routing.bgp:
       peers:
       - 10.1.1.1
     result_overwrite:
-      custom_field: 'BGP EVPN Peer: (IP: 10.1.1.1)'
+      custom_field: 'BGP EVPN Peer: 10.1.1.1'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4

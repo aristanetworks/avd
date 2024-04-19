@@ -182,44 +182,44 @@ anta.tests.routing.bgp:
     address_families:
     - afi: evpn
       peers:
-      - 10.255.255.0
+      - 10.255.255.10
     result_overwrite:
-      custom_field: 'BGP EVPN Peer: dc1-leaf1a (IP: 10.255.255.0)'
+      custom_field: 'BGP EVPN Peer: dc1-leaf1a (IP: 10.255.255.10)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: evpn
       peers:
-      - 10.255.255.2
+      - 10.255.255.20
     result_overwrite:
-      custom_field: 'BGP EVPN Peer: dc1-leaf1b (IP: 10.255.255.2)'
+      custom_field: 'BGP EVPN Peer: dc1-leaf1b (IP: 10.255.255.20)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: path-selection
       peers:
-      - 10.255.255.0
+      - 10.255.255.10
     result_overwrite:
-      custom_field: 'BGP PATH-SELECTION Peer: dc1-leaf1a (IP: 10.255.255.0)'
+      custom_field: 'BGP Path-Selection Peer: dc1-leaf1a (IP: 10.255.255.10)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: path-selection
       peers:
-      - 10.255.255.2
+      - 10.255.255.20
     result_overwrite:
-      custom_field: 'BGP PATH-SELECTION Peer: dc1-leaf1b (IP: 10.255.255.2)'
+      custom_field: 'BGP Path-Selection Peer: dc1-leaf1b (IP: 10.255.255.20)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: link-state
       peers:
-      - 10.255.255.0
+      - 10.255.255.10
     result_overwrite:
-      custom_field: 'BGP LINK-STATE Peer: dc1-leaf1a (IP: 10.255.255.0)'
+      custom_field: 'BGP Link-State Peer: dc1-leaf1a (IP: 10.255.255.10)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: link-state
       peers:
-      - 10.255.255.2
+      - 10.255.255.20
     result_overwrite:
-      custom_field: 'BGP LINK-STATE Peer: dc1-leaf1b (IP: 10.255.255.2)'
+      custom_field: 'BGP Link-State Peer: dc1-leaf1b (IP: 10.255.255.20)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -240,18 +240,18 @@ anta.tests.routing.bgp:
     address_families:
     - afi: ipv4
       peers:
-      - 10.255.255.0
+      - 10.255.255.10
       safi: sr-te
     result_overwrite:
-      custom_field: 'BGP IPv4 Sr-te Peer: dc1-leaf1a (IP: 10.255.255.0)'
+      custom_field: 'BGP IPv4 SR-TE Peer: dc1-leaf1a (IP: 10.255.255.10)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
       peers:
-      - 10.255.255.2
+      - 10.255.255.20
       safi: sr-te
     result_overwrite:
-      custom_field: 'BGP IPv4 Sr-te Peer: dc1-leaf1b (IP: 10.255.255.2)'
+      custom_field: 'BGP IPv4 SR-TE Peer: dc1-leaf1b (IP: 10.255.255.20)'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent

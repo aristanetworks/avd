@@ -67,7 +67,7 @@ class AvdTestRoutingTable(AvdTestBase):
 class AvdTestBGP(AvdTestBase):
     """AvdTestBGP class for BGP tests.
 
-    Supports IPv4, IPv6 and EVPN address families.
+    Supports IPv4, IPv6, Path-Selection, Link-State and EVPN address families.
     """
 
     anta_module = "anta.tests.routing"
@@ -75,9 +75,25 @@ class AvdTestBGP(AvdTestBase):
 
     def add_test(self, afi: str, bgp_neighbor_ip: str, bgp_peer: str, safi: str | None = None) -> dict:
         """Add a BGP test definition with the proper input parameters."""
-        formatted_afi = "IPv4" if afi.lower() == "ipv4" else "IPv6" if afi.lower() == "ipv6" else afi.upper()
-        formatted_safi = f" {safi.capitalize()}" if safi else ""
-        custom_field = f"BGP {formatted_afi}{formatted_safi} Peer: {bgp_peer + ' ' if bgp_peer is not None else ''}(IP: {bgp_neighbor_ip})"
+        formatted_afi = (
+            "IPv4"
+            if afi.lower() == "ipv4"
+            else (
+                "IPv6"
+                if afi.lower() == "ipv6"
+                else (
+                    "EVPN"
+                    if afi.lower() == "evpn"
+                    else "Link-State" if afi.lower() == "link-state" else "Path-Selection" if afi.lower() == "path-selection" else afi.upper()
+                )
+            )
+        )
+        formatted_safi = " Unicast" if safi and safi.lower() == "unicast" else " SR-TE" if safi and safi.lower() == "sr-te" else ""
+        custom_field = (
+            f"BGP {formatted_afi}{formatted_safi} Peer: "
+            f"{bgp_peer + ' ' if bgp_peer is not None else ''}"
+            f"{'(IP: ' + bgp_neighbor_ip + ')' if bgp_peer is not None else bgp_neighbor_ip}"
+        )
 
         address_family = {"afi": afi, "peers": [bgp_neighbor_ip]}
         if safi:
@@ -146,7 +162,7 @@ class AvdTestBGP(AvdTestBase):
                 },
             },
         )
-        # Create tests for IPv4, IPv6, path-selection, link-state and EVPN address families
+        # Create tests for IPv4, IPv6, Path-Selection, Link-State and EVPN address families
         for afi, safi in [
             ("evpn", None),
             ("path-selection", None),

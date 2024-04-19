@@ -381,7 +381,7 @@ anta.tests.routing.bgp:
       peers:
       - 142.112.41.2
     result_overwrite:
-      custom_field: 'BGP EVPN Peer: (IP: 142.112.41.2)'
+      custom_field: 'BGP EVPN Peer: 142.112.41.2'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
@@ -413,7 +413,7 @@ anta.tests.routing.bgp:
       - 142.112.39.2
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv4 Unicast Peer: (IP: 142.112.39.2)'
+      custom_field: 'BGP IPv4 Unicast Peer: 142.112.39.2'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv6
@@ -421,7 +421,7 @@ anta.tests.routing.bgp:
       - 2001:db8:1::2
       safi: unicast
     result_overwrite:
-      custom_field: 'BGP IPv6 Unicast Peer: (IP: 2001:db8:1::2)'
+      custom_field: 'BGP IPv6 Unicast Peer: 2001:db8:1::2'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
