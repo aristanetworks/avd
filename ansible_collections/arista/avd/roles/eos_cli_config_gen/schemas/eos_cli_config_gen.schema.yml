@@ -10403,15 +10403,19 @@ keys:
                 new_key: listen_ranges
             session_tracker:
               type: str
-            shared_secret_profile_name:
-              type: str
-              description: To apply the profile name, it must be created under "management-security".
-            hash_algorithm:
-              type: str
-              valid_values:
-              - aes-128-cmac-96
-              - hmac-sha-256
-              - hmac-sha1-96
+            shared_secret:
+              type: dict
+              keys:
+                shared_secret_profile_name:
+                  type: str
+                  description: To apply the profile name, it must be created under
+                    "management-security".
+                hash_algorithm:
+                  type: str
+                  valid_values:
+                  - aes-128-cmac-96
+                  - hmac-sha-256
+                  - hmac-sha1-96
             ttl_maximum_hops:
               type: int
               convert_types:
@@ -10608,15 +10612,18 @@ keys:
                   type: bool
             session_tracker:
               type: str
-            shared_secret_profile_name:
-              type: str
-              description: To apply a profile, it must be created under "management-security".
-            hash_algorithm:
-              type: str
-              valid_values:
-              - aes-128-cmac-96
-              - hmac-sha-256
-              - hmac-sha1-96
+            shared_secret:
+              type: dict
+              keys:
+                shared_secret_profile_name:
+                  type: str
+                  description: To apply a profile, it must be created under "management-security".
+                hash_algorithm:
+                  type: str
+                  valid_values:
+                  - aes-128-cmac-96
+                  - hmac-sha-256
+                  - hmac-sha1-96
             ttl_maximum_hops:
               type: int
               convert_types:

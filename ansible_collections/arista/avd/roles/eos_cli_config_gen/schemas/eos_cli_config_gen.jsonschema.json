@@ -17335,19 +17335,29 @@
                 "type": "string",
                 "title": "Session Tracker"
               },
-              "shared_secret_profile_name": {
-                "type": "string",
-                "description": "To apply the profile name, it must be created under \"management-security\".",
-                "title": "Shared Secret Profile Name"
-              },
-              "hash_algorithm": {
-                "type": "string",
-                "enum": [
-                  "aes-128-cmac-96",
-                  "hmac-sha-256",
-                  "hmac-sha1-96"
-                ],
-                "title": "Hash Algorithm"
+              "shared_secret": {
+                "type": "object",
+                "properties": {
+                  "shared_secret_profile_name": {
+                    "type": "string",
+                    "description": "To apply the profile name, it must be created under \"management-security\".",
+                    "title": "Shared Secret Profile Name"
+                  },
+                  "hash_algorithm": {
+                    "type": "string",
+                    "enum": [
+                      "aes-128-cmac-96",
+                      "hmac-sha-256",
+                      "hmac-sha1-96"
+                    ],
+                    "title": "Hash Algorithm"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Shared Secret"
               },
               "ttl_maximum_hops": {
                 "type": "integer",
@@ -17660,19 +17670,29 @@
                 "type": "string",
                 "title": "Session Tracker"
               },
-              "shared_secret_profile_name": {
-                "type": "string",
-                "description": "To apply a profile, it must be created under \"management-security\".",
-                "title": "Shared Secret Profile Name"
-              },
-              "hash_algorithm": {
-                "type": "string",
-                "enum": [
-                  "aes-128-cmac-96",
-                  "hmac-sha-256",
-                  "hmac-sha1-96"
-                ],
-                "title": "Hash Algorithm"
+              "shared_secret": {
+                "type": "object",
+                "properties": {
+                  "shared_secret_profile_name": {
+                    "type": "string",
+                    "description": "To apply a profile, it must be created under \"management-security\".",
+                    "title": "Shared Secret Profile Name"
+                  },
+                  "hash_algorithm": {
+                    "type": "string",
+                    "enum": [
+                      "aes-128-cmac-96",
+                      "hmac-sha-256",
+                      "hmac-sha1-96"
+                    ],
+                    "title": "Hash Algorithm"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Shared Secret"
               },
               "ttl_maximum_hops": {
                 "type": "integer",
