@@ -26,4 +26,17 @@ class IpAccesslistsMixin(UtilsMixin):
         if not (any(internet_exit_policy["type"] == "zscaler" for internet_exit_policy in self._filtered_internet_exit_policies)):
             return None
 
-        return [{"name": "ALLOW-ALL", "entries": [{"sequence": 10, "action": "permit", "protocol": "ip", "source": "any", "destination": "any"}]}]
+        return [
+            {
+                "name": "ALLOW-ALL",
+                "entries": [
+                    {
+                        "sequence": 10,
+                        "action": "permit",
+                        "protocol": "ip",
+                        "source": "any",
+                        "destination": "any",
+                    }
+                ],
+            }
+        ]
