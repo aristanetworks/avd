@@ -180,3 +180,48 @@ keys:
                               type: str
                             preference:
                               type: str
+          internet_exit_policies:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                type:
+                  type: str
+                city:
+                  type: str
+                country:
+                  type: str
+                upload_bandwidth:
+                  type: int
+                download_bandwidth:
+                  type: int
+                firewall:
+                  type: bool
+                ips_control:
+                  type: bool
+                acceptable_use_policy:
+                  type: bool
+                vpn_credentials:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      fqdn:
+                        type: str
+                      vpn_type:
+                        type: str
+                      pre_shared_key:
+                        type: str
+                tunnels:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                      destination_ip:
+                        type: str
+                      preference:
+                        type: str
