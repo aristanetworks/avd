@@ -4275,8 +4275,6 @@ keys:
                   default: false
   zscaler_endpoints:
     type: dict
-    documentation_options:
-      table: wan-internet-exit-settings
     description: 'PREVIEW: These keys are in preview mode.
 
 
@@ -9104,6 +9102,9 @@ $defs:
         keys:
           policy:
             type: str
-            description: 'Internet-exit policy name associated with this virtual_topology.
+            description: 'PREVIEW: This key is in preview mode.
 
-              The policy must be defined under `internet_exit_policies`.'
+
+              Internet-exit policy name associated with this virtual_topology.
+
+              The policy must be defined under `cv_pathfinder_internet_exit_policies`.'

@@ -32,11 +32,13 @@ class RouterInternetExitMixin(UtilsMixin):
 
         for policy in self._filtered_internet_exit_policies:
             policy_exit_groups = []
+            # TODO: Today we use the order of the connection list to order the exit-groups inside the policy.
+            #       This works for zscaler but later we may need to use some sorting intelligence as order matters.
             for connection in policy.get("connections", []):
                 if connection["type"] == "tunnel":
                     exit_group_name = connection["exit_group"]
                     exit_groups_dict.setdefault(exit_group_name, {"local_connections": []})["local_connections"].append(
-                        {"name": f"ZSCALER-CONN-{connection['tunnel_id']}"}
+                        {"name": f"IE-Tunnel{connection['tunnel_id']}"}
                     )
                     # Recording the exit_group in the policy
                     policy_exit_groups.append(exit_group_name)

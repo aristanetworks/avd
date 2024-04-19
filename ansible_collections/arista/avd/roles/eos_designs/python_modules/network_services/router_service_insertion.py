@@ -32,7 +32,7 @@ class RouterServiceInsertionMixin(UtilsMixin):
                 if connection["type"] == "tunnel":
                     connections.append(
                         {
-                            "name": f"ZSCALER-CONN-{connection['tunnel_id']}",
+                            "name": f"IE-Tunnel{connection['tunnel_id']}",
                             "tunnel_interface": {
                                 "primary": f"Tunnel{connection['tunnel_id']}",
                             },

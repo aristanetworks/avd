@@ -97,7 +97,6 @@ wan_router:
               wan_circuit_id: AF830
               ip_address: 172.20.20.20/31
               connected_to_pathfinder: false
-              peer_ip: 172.20.20.21/31
               cv_pathfinder_internet_exit:
                 policies:
                   - name: ZSCALER-EXIT-POLICY-1

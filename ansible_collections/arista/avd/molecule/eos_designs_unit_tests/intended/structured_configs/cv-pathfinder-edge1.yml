@@ -626,7 +626,7 @@ application_traffic_recognition:
       prefix_values:
       - 192.168.144.1/32
 ip_access_lists:
-- name: ALLOW_ALL
+- name: ALLOW-ALL
   entries:
   - sequence: 10
     action: permit
@@ -635,7 +635,7 @@ ip_access_lists:
     destination: any
 ip_nat:
   pools:
-  - name: PORT_ONLY_POOL
+  - name: PORT-ONLY-POOL
     type: port-only
     ranges:
     - first_port: 1500
@@ -644,33 +644,33 @@ ip_nat:
   - name: VRF-AWARE-NAT
     source:
       dynamic:
-      - access_list: ALLOW_ALL
-        pool_name: PORT_ONLY_POOL
+      - access_list: ALLOW-ALL
+        pool_name: PORT-ONLY-POOL
         nat_type: pool
 router_service_insertion:
   enabled: true
   connections:
-  - name: ZSCALER-CONN-100
+  - name: IE-Tunnel100
     tunnel_interface:
       primary: Tunnel100
     monitor_connectivity_host: IE-Tunnel100
-  - name: ZSCALER-CONN-101
+  - name: IE-Tunnel101
     tunnel_interface:
       primary: Tunnel101
     monitor_connectivity_host: IE-Tunnel101
-  - name: ZSCALER-CONN-102
+  - name: IE-Tunnel102
     tunnel_interface:
       primary: Tunnel102
     monitor_connectivity_host: IE-Tunnel102
-  - name: ZSCALER-CONN-110
+  - name: IE-Tunnel110
     tunnel_interface:
       primary: Tunnel110
     monitor_connectivity_host: IE-Tunnel110
-  - name: ZSCALER-CONN-111
+  - name: IE-Tunnel111
     tunnel_interface:
       primary: Tunnel111
     monitor_connectivity_host: IE-Tunnel111
-  - name: ZSCALER-CONN-112
+  - name: IE-Tunnel112
     tunnel_interface:
       primary: Tunnel112
     monitor_connectivity_host: IE-Tunnel112
@@ -678,22 +678,22 @@ router_internet_exit:
   exit_groups:
   - name: ZSCALER-EXIT-POLICY-1_PRI
     local_connections:
-    - name: ZSCALER-CONN-100
+    - name: IE-Tunnel100
   - name: ZSCALER-EXIT-POLICY-1_SEC
     local_connections:
-    - name: ZSCALER-CONN-101
+    - name: IE-Tunnel101
   - name: ZSCALER-EXIT-POLICY-1_TER
     local_connections:
-    - name: ZSCALER-CONN-102
+    - name: IE-Tunnel102
   - name: ZSCALER-EXIT-POLICY-2_PRI
     local_connections:
-    - name: ZSCALER-CONN-110
+    - name: IE-Tunnel110
   - name: ZSCALER-EXIT-POLICY-2_SEC
     local_connections:
-    - name: ZSCALER-CONN-111
+    - name: IE-Tunnel111
   - name: ZSCALER-EXIT-POLICY-2_TER
     local_connections:
-    - name: ZSCALER-CONN-112
+    - name: IE-Tunnel112
   policies:
   - name: ZSCALER-EXIT-POLICY-1
     exit_groups:

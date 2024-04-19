@@ -607,14 +607,11 @@ class UtilsMixin:
         candidate_internet_exit_policies = []
         configured_internet_exit_policies = get(self._hostvars, "cv_pathfinder_internet_exit_policies", [])
 
-        # Look for internet-exit policy names
-        # TODO maybe a sub function for clarity
         for policy in self._filtered_wan_policies:
             for match in get(policy, "matches", default=[]):
                 internet_exit_policy_name = match.get("internet_exit_policy_name")
                 if not internet_exit_policy_name or internet_exit_policy_name in internet_exit_policy_names:
                     continue
-                # Maybe could use append_if_no_duplicate instead
                 internet_exit_policy = get_item(
                     configured_internet_exit_policies,
                     "name",
@@ -662,24 +659,11 @@ class UtilsMixin:
 
         return internet_exit_policies
 
-    def get_internet_exit_connections(self, internet_exit_policy) -> list:
+    def get_internet_exit_connections(self, internet_exit_policy: dict) -> list:
         """
         Useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
 
-        In-place update of `internet_exit_policy`
-
-        - Loop over _filtered_internet_exit_policies
-          - Loop over wan_interfaces set on the policy
-            - For zscaler extract info from zscaler_endpoints
-            - Build connection dict with:
-              - source interface
-              - id? (something we can use to generate tunnel interface number)
-              - peer ip
-              - peer description
-              - type: <interface | tunnel>
-              - group: <policy_name>_PRI, _SEC, _TER
-              - ...
-        - Return a list of group dicts containing list of connections
+        Return a list of group dicts containing list of connections
         """
         # Only supporting Zscaler for now
         if get(internet_exit_policy, "type") != "zscaler":

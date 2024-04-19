@@ -31,7 +31,6 @@ class MonitorConnectivityMixin(UtilsMixin):
         interface_sets = []
         hosts = []
 
-        # TODO mayb append if no duplicate
         for policy in self._filtered_internet_exit_policies:
             for connection in policy["connections"]:
                 if connection["type"] == "tunnel":

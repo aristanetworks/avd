@@ -450,7 +450,7 @@ Internet-exit can be achieved in multiple ways:
 
 The internet-exit policies are defined as global variables for all the WAN routers under `cv_pathfinder_internet_exit_policies`.
 
-- A device would be configured with an Internet-exit policy if the internet-exit policy is configured under one of its WAN interfaces and on a policy applied on the device.
+- A device is configured with an Internet-exit policy if the internet-exit policy is configured **both** under one of its WAN interfaces and under a WAN virtual topology applied on the device.
 - The internet-exit policies are not included on the Pathfinders.
 
 The policies are assigned a type, currently only `zscaler` is supported. Then additional parameters can be provided according to the type.
@@ -459,18 +459,11 @@ The policies are assigned a type, currently only `zscaler` is supported. Then ad
 cv_pathfinder_internet_exit_policies:
   - name: ZSCALER-EXIT-POLICY-1
     type: zscaler
-    zscaler:
-      cloud_name: zscalerbeta
-      domain_name: test.local
-      ipsec_key_salt: THIS_SHOULD_BE_VAULTED
+    # [...] type specific options
   - name: ZSCALER-EXIT-POLICY-2
     fallback_to_system_default: False
     type: zscaler
-    zscaler:
-      cloud_name: zscalerbeta
-      domain_name: test.local
-      ipsec_key_salt: THIS_SHOULD_BE_VAULTED
-      # more options available here in the model.
+    # [...] type specific options
 ```
 
 An Application Virtual Topology policy is composed of multiple profiles.  An AVT profile can be assigned an Internet-policy as follow:
@@ -548,45 +541,64 @@ wan_router:
 !!! Warning "Only supported in PREVIEW toward Zscaler SIG"
 
 An internet-exit policy of type `zscaler` leverages the following AVD data model to generate the target configuration.
-The target is for this data to be retrieved from Cloudvision through a lookup plugin for each device to determine what are the best tunnel(s) to use for a given location.
-
-!!! TODO
-
-    Add more info / a link lookup plugin
-
-```yaml
-zscaler_endpoints:
-  primary:
-    city: Fremont, CA
-    datacenter: FMT1
-    country: United States
-    latitude: 37
-    longitude: -121
-    ip_address: 10.37.121.1
-  secondary:
-    city: Washington, DC
-    datacenter: WAS1
-    country: United States
-    latitude: 39
-    longitude: -77
-    ip_address: 10.39.77.1
-  tertiary:
-    city: Frankfurt
-    datacenter: FRA4
-    country: Germany
-    latitude: 50
-    longitude: 9
-    ip_address: 10.50.9.1
-```
 
 AVD supports up to three tunnels (primary, secondary, tertiary).
+
+The target is for this data to be retrieved from Cloudvision through a lookup plugin for each device to determine what are the best tunnel(s) to use for a given location.
+
+```yaml
+# Variables used by the lookup plugin to connect to Cloudvision
+cv_server: <cloudvision_ip>
+cv_token: <cloudvision_token>
+
+# Lookup plugin usage
+zscaler_endpoints: "{{ lookup('arista.avd.cv_zscaler_endpoints') }}"
+```
+
 For each `zscaler` type Internet-policies, AVD uses the `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary and the `zscaler_endpoints` in combination with the `l3_interfaces.cv_pathfinder_internet_exit.policies[name=<POLICY-NAME>].tunnel_interface_numbers` to generate the internet-exit configuration.
+
+In its current implementation, AVD also required some additional data under `cv_pathfinder_regions.resolved_location` to identify the location of each site on Cloudvision:
+
+```yaml
+cv_pathfinder_regions:
+  - name: <str; required; unique>
+    description: <str>
+        # Location as a string is resolved on Cloudvision.
+        location: <str>
+
+        # PREVIEW: These keys are in preview mode.
+        #
+        # The resolved location elements.
+        # Needed for internet-exit Zscaler integration until we can autofill it from the lookup plugin.
+        resolved_location:
+          city: <str; required>
+          country: <str; required>
+```
 
 The `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary has additonnal options to configure the policy parameters shared with Zscaler through Cloudvision.
 
+```yaml
+    # PREVIEW: These keys are in preview mode.
+    cv_pathfinder_internet_exit_policies:
+      - name: <str; required; unique>
+        type: <str; "zscaler"; required>
+        fallback_to_system_default: <bool; default=True>
+        zscaler:
+          ipsec_key_salt: <str; required>
+          cloud_name: <str; required>
+          domain_name: <str; required>
+          encrypt_traffic: <bool; default=True>
+          download_bandwidth: <int>
+          upload_bandwidth: <int>
+          firewall:
+            enabled: <bool; default=False>
+            ips: <bool; default=False>
+          acceptable_use_policy: <bool; default=False>
+    ```
+
 !!! tip "IPsec"
 
-    When `true` the traffic going over the tunnels will be encrypted with AES-256-GCM.
+    When `encrypt_traffic: true` the traffic going over the tunnels will be encrypted with AES-256-GCM.
     Otherwise the traffic will be using NULL encryption.
     Note that encryption requires a subscription on the Zscaler account.
 

@@ -55772,7 +55772,7 @@
               "properties": {
                 "policy": {
                   "type": "string",
-                  "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
+                  "description": "PREVIEW: This key is in preview mode.\n\nInternet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `cv_pathfinder_internet_exit_policies`.",
                   "title": "Policy"
                 }
               },
@@ -55909,7 +55909,7 @@
                       "properties": {
                         "policy": {
                           "type": "string",
-                          "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
+                          "description": "PREVIEW: This key is in preview mode.\n\nInternet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `cv_pathfinder_internet_exit_policies`.",
                           "title": "Policy"
                         }
                       },
@@ -56031,7 +56031,7 @@
                     "properties": {
                       "policy": {
                         "type": "string",
-                        "description": "Internet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `internet_exit_policies`.",
+                        "description": "PREVIEW: This key is in preview mode.\n\nInternet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `cv_pathfinder_internet_exit_policies`.",
                         "title": "Policy"
                       }
                     },

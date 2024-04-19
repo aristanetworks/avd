@@ -8,8 +8,6 @@ type: dict
 keys:
   zscaler_endpoints:
     type: dict
-    documentation_options:
-      table: wan-internet-exit-settings
     description: |-
       PREVIEW: These keys are in preview mode.
 

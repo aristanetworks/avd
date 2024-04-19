@@ -67,5 +67,7 @@ $defs:
           policy:
             type: str
             description: |-
+              PREVIEW: This key is in preview mode.
+
               Internet-exit policy name associated with this virtual_topology.
-              The policy must be defined under `internet_exit_policies`.
+              The policy must be defined under `cv_pathfinder_internet_exit_policies`.
