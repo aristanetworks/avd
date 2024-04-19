@@ -117,7 +117,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         Default pool is "mlag_peer_ipv4_pool"
         """
         if self.shared_utils.mlag_peer_address_family == "ipv6":
-            if template_path := self.shared_utils.ip_addressing_templates.get("mlag_ip_primary"):
+            if template_path := self.shared_utils.ip_addressing_templates.get("mlag_ip_secondary"):
                 return self._template(
                     template_path,
                     mlag_primary_id=self._mlag_primary_id,
@@ -128,7 +128,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             return self._mlag_ip(self._mlag_peer_ipv6_pool, 1, self.shared_utils.mlag_peer_address_family)
 
         else:
-            if template_path := self.shared_utils.ip_addressing_templates.get("mlag_ip_primary"):
+            if template_path := self.shared_utils.ip_addressing_templates.get("mlag_ip_secondary"):
                 return self._template(
                     template_path,
                     mlag_primary_id=self._mlag_primary_id,
