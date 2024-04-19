@@ -5517,6 +5517,22 @@ $defs:
                   mapped to the corresponding peer_group.
 
                   '
+              address_family_ipv4:
+                type: dict
+                keys:
+                  peer_groups:
+                    type: list
+                    items:
+                      $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/
+                      type: dict
+              address_family_ipv6:
+                type: dict
+                keys:
+                  peer_groups:
+                    type: list
+                    items:
+                      $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv6/keys/peer_groups/items/
+                      type: dict
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -6622,6 +6638,22 @@ $defs:
                         a bgp_peer mapped to the corresponding peer_group.
 
                         '
+                    address_family_ipv4:
+                      type: dict
+                      keys:
+                        peer_groups:
+                          type: list
+                          items:
+                            $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/address_family_ipv4/keys/peer_groups/items/
+                            type: dict
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        peer_groups:
+                          type: list
+                          items:
+                            $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/address_family_ipv6/keys/peer_groups/items/
+                            type: dict
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings

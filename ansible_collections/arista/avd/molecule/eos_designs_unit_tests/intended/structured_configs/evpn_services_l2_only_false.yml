@@ -31,6 +31,16 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+    - name: Tenant_C_AFIPv4_PG_1
+      activate: true
+    - name: Tenant_C_AFIPv4_PG_2
+      activate: true
+      prefix_list_in: PL_In_Test_1
+      prefix_list_out: PL_Out_Test_1
+    - name: Tenant_C_AFIPv4_PG_3
+      activate: true
+      route_map_in: TEST_IN
+      route_map_out: TEST_OUT
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -172,6 +182,18 @@ router_bgp:
         - '31:31'
     redistribute_routes:
     - source_protocol: connected
+    address_family_ipv4:
+      peer_groups:
+      - name: VRF_Tenant_C_AFIPv4_PG_1
+        activate: true
+      - name: VRF_Tenant_C_AFIPv4_PG_2
+        activate: false
+    address_family_ipv6:
+      peer_groups:
+      - name: VRF_Tenant_C_AFIPv6_PG_1
+        activate: true
+      - name: VRF_Tenant_C_AFIPv6_PG_2
+        activate: false
   - name: '12345678'
     router_id: 192.168.255.109
     rd: 192.168.255.109:41
@@ -325,6 +347,12 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: 410-413
+  address_family_ipv6:
+    peer_groups:
+    - name: Tenant_C_AFPv6_PG_1
+      activate: true
+    - name: Tenant_C_AFPv6_PG_2
+      activate: false
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

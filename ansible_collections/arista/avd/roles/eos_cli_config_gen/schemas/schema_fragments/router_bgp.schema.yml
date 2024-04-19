@@ -2248,6 +2248,57 @@ keys:
             address_family_ipv4:
               type: dict
               keys:
+                peer_groups:
+                  type: list
+                  primary_key: name
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Peer-group name.
+                      activate:
+                        type: bool
+                      route_map_in:
+                        type: str
+                        description: Inbound route-map name.
+                      route_map_out:
+                        type: str
+                        description: Outbound route-map name.
+                      default_originate:
+                        type: dict
+                        keys:
+                          always:
+                            type: bool
+                          route_map:
+                            description: Route-map name.
+                            type: str
+                      next_hop:
+                        type: dict
+                        keys:
+                          address_family_ipv6:
+                            type: dict
+                            keys:
+                              enabled:
+                                type: bool
+                                required: true
+                              originate:
+                                type: bool
+                          address_family_ipv6_originate:
+                            type: bool
+                            deprecation:
+                              warning: true
+                              removed: false
+                              new_key: address_family_ipv6.
+                              remove_in_version: 5.0.0
+                      prefix_list_in:
+                        type: str
+                        description: Inbound prefix-list name.
+                      prefix_list_out:
+                        type: str
+                        description: Outbound prefix-list name.
                 bgp:
                   type: dict
                   keys:
@@ -2349,6 +2400,31 @@ keys:
             address_family_ipv6:
               type: dict
               keys:
+                peer_groups:
+                  type: list
+                  primary_key: name
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Peer-group name.
+                      activate:
+                        type: bool
+                      route_map_in:
+                        type: str
+                        description: Inbound route-map name.
+                      route_map_out:
+                        type: str
+                        description: Outbound route-map name.
+                      prefix_list_in:
+                        type: str
+                        description: Inbound prefix-list name.
+                      prefix_list_out:
+                        type: str
+                        description: Outbound prefix-list name.
                 bgp:
                   type: dict
                   keys:

@@ -51,6 +51,11 @@ class RouterBgpMixin(UtilsMixin):
         if self._configure_bgp_mlag_peer_group:
             merge(router_bgp, self._router_bgp_mlag_peer_group())
 
+        # Configure address family ipv4/ipv6 peer-group
+        for tenant in self.shared_utils.filtered_tenants:
+            self._address_family_peer_groups(router_bgp, tenant.get("bgp_peer_groups", []), "address_family_ipv4")
+            self._address_family_peer_groups(router_bgp, tenant.get("bgp_peer_groups", []), "address_family_ipv6")
+
         # Strip None values from vlan before returning
         router_bgp = {key: value for key, value in router_bgp.items() if value is not None}
         return router_bgp
@@ -98,6 +103,8 @@ class RouterBgpMixin(UtilsMixin):
         if peer_groups:
             for peer_group in peer_groups:
                 peer_group.pop("nodes", None)
+                peer_group.pop("address_family_ipv4", None)
+                peer_group.pop("address_family_ipv6", None)
                 append_if_not_duplicate(
                     list_of_dicts=bgp_peer_groups,
                     primary_key="name",
@@ -169,6 +176,9 @@ class RouterBgpMixin(UtilsMixin):
                     # MLAG IBGP Peering VLANs per VRF (except VRF default)
                     if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                         self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
+
+                self._address_family_peer_groups(bgp_vrf, vrf.get("bgp_peer_groups", []), "address_family_ipv4")
+                self._address_family_peer_groups(bgp_vrf, vrf.get("bgp_peer_groups", []), "address_family_ipv6")
 
                 for bgp_peer in vrf["bgp_peers"]:
                     # Below we pop various keys that are not supported by the eos_cli_config_gen schema.
@@ -947,3 +957,33 @@ class RouterBgpMixin(UtilsMixin):
 
         router_bgp["address_family_ipv4"] = {"peer_groups": [address_family_ipv4_peer_group]}
         return strip_empties_from_dict(router_bgp)
+
+    def _address_family_peer_groups(self, router_bgp: dict, bgp_peer_groups: list, address_family: str = "address_family_ipv4") -> None:
+        """
+        Creates bgp address_family_ipv4 and address_family_ipv6 peer_groups
+        """
+
+        if not self.shared_utils.network_services_l3:
+            return None
+
+        af_peer_groups = []
+        for bgp_peer_group in bgp_peer_groups:
+            for address_family_key in bgp_peer_group.get(address_family, {}):
+                if address_family_key == "peer_groups":
+                    for peer_group in bgp_peer_group[address_family]["peer_groups"]:
+                        af_peer_groups.append(peer_group)
+        # To fetch existing address_family_ipv4/ipv6 peer_groups data
+        peer_groups = router_bgp.get(address_family, {}).get("peer_groups", [])
+
+        if af_peer_groups:
+            for peer_group in af_peer_groups:
+                append_if_not_duplicate(
+                    primary_key="name",
+                    list_of_dicts=peer_groups,
+                    new_dict=peer_group,
+                    context="Address Family Peer Groups defined under network services",
+                    context_keys=["name"],
+                )
+            router_bgp[address_family] = strip_empties_from_dict({"peer_groups": peer_groups})
+
+        return
