@@ -15,6 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger</samp>](## "event_handlers.[].trigger") | String |  |  | Valid Values:<br>- <code>on-boot</code><br>- <code>on-counters</code><br>- <code>on-intf</code><br>- <code>on-logging</code><br>- <code>on-maintenance</code><br>- <code>on-startup-config</code><br>- <code>vm-tracer vm</code> | Configure event trigger condition.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger_on_counters</samp>](## "event_handlers.[].trigger_on_counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;condition</samp>](## "event_handlers.[].trigger_on_counters.condition") | String |  |  |  | Set the counters condition expression. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;granularity_per_source</samp>](## "event_handlers.[].trigger_on_counters.granularity_per_source") | Boolean |  |  |  | Set the granularity of event counting for a wildcarded condition.<br>Example -<br>  condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )<br>  [* wildcard is used here] |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poll_interval</samp>](## "event_handlers.[].trigger_on_counters.poll_interval") | Integer |  |  |  | Set the polling interval in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger_on_logging</samp>](## "event_handlers.[].trigger_on_logging") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poll_interval</samp>](## "event_handlers.[].trigger_on_logging.poll_interval") | Integer |  |  |  | Set the polling interval in seconds. |
@@ -59,6 +60,12 @@
 
           # Set the counters condition expression.
           condition: <str>
+
+          # Set the granularity of event counting for a wildcarded condition.
+          # Example -
+          #   condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )
+          #   [* wildcard is used here]
+          granularity_per_source: <bool>
 
           # Set the polling interval in seconds.
           poll_interval: <int>

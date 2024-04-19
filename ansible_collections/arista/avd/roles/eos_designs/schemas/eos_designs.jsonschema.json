@@ -5104,6 +5104,11 @@
                 "description": "Set the counters condition expression.",
                 "title": "Condition"
               },
+              "granularity_per_source": {
+                "type": "boolean",
+                "description": "Set the granularity of event counting for a wildcarded condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used here]",
+                "title": "Granularity Per Source"
+              },
               "poll_interval": {
                 "type": "integer",
                 "description": "Set the polling interval in seconds.",
@@ -22201,6 +22206,11 @@
                           "type": "string",
                           "description": "Set the counters condition expression.",
                           "title": "Condition"
+                        },
+                        "granularity_per_source": {
+                          "type": "boolean",
+                          "description": "Set the granularity of event counting for a wildcarded condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used here]",
+                          "title": "Granularity Per Source"
                         },
                         "poll_interval": {
                           "type": "integer",

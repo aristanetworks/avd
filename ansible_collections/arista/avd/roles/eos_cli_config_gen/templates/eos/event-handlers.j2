@@ -41,6 +41,9 @@ event-handler {{ handler.name }}
 {%                 if handler.trigger_on_counters.condition is arista.avd.defined %}
       condition {{ handler.trigger_on_counters.condition }}
 {%                 endif %}
+{%                 if handler.trigger_on_counters.granularity_per_source is arista.avd.defined(true) %}
+      granularity per-source
+{%                 endif %}
 {%             elif handler.trigger is arista.avd.defined("on-logging") %}
    trigger on-logging
 {%                 if handler.trigger_on_logging.poll_interval is arista.avd.defined %}

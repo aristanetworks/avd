@@ -53,7 +53,8 @@ event_handlers:
     trigger: on-counters
     trigger_on_counters:
       poll_interval: 10
-      condition: bashCmd."FastCli -c 'show interface counters rates'"
+      condition: ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )
+      granularity_per_source: true
     action_type: bash
     action: echo "on-counters"
   - name: trigger-on-intf
@@ -69,4 +70,3 @@ event_handlers:
     trigger: "vm-tracer vm"
     action_type: bash
     action: echo "vm-tracer vm"
-  

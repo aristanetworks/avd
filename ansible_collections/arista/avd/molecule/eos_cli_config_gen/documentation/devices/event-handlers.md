@@ -77,7 +77,8 @@ event-handler trigger-on-boot
 event-handler trigger-on-counters
    trigger on-counters
       poll interval 10
-      condition bashCmd."FastCli -c 'show interface counters rates'"
+      condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )
+      granularity per-source
    action bash echo "on-counters"
 !
 event-handler trigger-on-intf

@@ -3331,6 +3331,12 @@ keys:
             condition:
               type: str
               description: Set the counters condition expression.
+            granularity_per_source:
+              type: bool
+              description: "Set the granularity of event counting for a wildcarded
+                condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100
+                ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used
+                here]"
             poll_interval:
               type: int
               description: Set the polling interval in seconds.
