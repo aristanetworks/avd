@@ -3328,7 +3328,7 @@ keys:
         trigger_on_counters:
           type: dict
           keys:
-            conditon:
+            condition:
               type: str
               description: Set the counters condition expression.
             poll_interval:

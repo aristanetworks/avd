@@ -39,7 +39,7 @@ event-handler {{ handler.name }}
       poll interval {{ handler.trigger_on_counters.poll_interval }}
 {%                 endif %}
 {%                 if handler.trigger_on_counters.condition is arista.avd.defined %}
-      condition {{ handler.trigger_on_counters.regex }}
+      condition {{ handler.trigger_on_counters.condition }}
 {%                 endif %}
 {%             elif handler.trigger is arista.avd.defined("on-logging") %}
    trigger on-logging

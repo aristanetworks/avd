@@ -49,7 +49,7 @@ keys:
         trigger_on_counters:
           type: dict
           keys:
-            conditon:
+            condition:
               type: str
               description: Set the counters condition expression.
             # granularity_per_source:

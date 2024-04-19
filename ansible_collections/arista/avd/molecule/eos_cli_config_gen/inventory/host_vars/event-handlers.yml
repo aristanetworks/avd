@@ -46,12 +46,14 @@ event_handlers:
     trigger: on-logging
     trigger_on_logging:
       poll_interval: 10
+      regex: "ab*"
     action_type: bash
     action: echo "on-logging"
   - name: trigger-on-counters
     trigger: on-counters
     trigger_on_counters:
       poll_interval: 10
+      condition: bashCmd."FastCli -c 'show interface counters rates'"
     action_type: bash
     action: echo "on-counters"
   - name: trigger-on-intf

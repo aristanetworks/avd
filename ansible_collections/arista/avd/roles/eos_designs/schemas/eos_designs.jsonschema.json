@@ -5099,10 +5099,10 @@
           "trigger_on_counters": {
             "type": "object",
             "properties": {
-              "conditon": {
+              "condition": {
                 "type": "string",
                 "description": "Set the counters condition expression.",
-                "title": "Conditon"
+                "title": "Condition"
               },
               "poll_interval": {
                 "type": "integer",
@@ -22197,10 +22197,10 @@
                     "trigger_on_counters": {
                       "type": "object",
                       "properties": {
-                        "conditon": {
+                        "condition": {
                           "type": "string",
                           "description": "Set the counters condition expression.",
-                          "title": "Conditon"
+                          "title": "Condition"
                         },
                         "poll_interval": {
                           "type": "integer",

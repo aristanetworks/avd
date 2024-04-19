@@ -77,6 +77,7 @@ event-handler trigger-on-boot
 event-handler trigger-on-counters
    trigger on-counters
       poll interval 10
+      condition bashCmd."FastCli -c 'show interface counters rates'"
    action bash echo "on-counters"
 !
 event-handler trigger-on-intf
@@ -86,6 +87,7 @@ event-handler trigger-on-intf
 event-handler trigger-on-logging
    trigger on-logging
       poll interval 10
+      regex ab*
    action bash echo "on-logging"
 !
 event-handler trigger-on-maintenance1
