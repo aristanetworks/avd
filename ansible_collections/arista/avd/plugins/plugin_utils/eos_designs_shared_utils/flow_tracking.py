@@ -78,9 +78,8 @@ class FlowTrackingMixin:
         """
         link_tracker_enabled, link_tracker_name = None, None
         if link_settings is not None:
-            link_tracker_settings = get(link_settings, "flow_tracking", default={})
-            link_tracker_enabled = link_tracker_settings.get("enabled")
-            link_tracker_name = link_tracker_settings.get("name")
+            link_tracker_enabled = get(link_settings, "flow_tracking.enabled")
+            link_tracker_name = get(link_settings, "flow_tracking.name")
 
         fabric_flow = self.fabric_flow_tracking[data_model]
 

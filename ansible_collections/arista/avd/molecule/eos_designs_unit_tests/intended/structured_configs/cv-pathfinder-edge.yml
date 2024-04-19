@@ -788,6 +788,7 @@ flow_tracking:
           host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
+    shutdown: false
 metadata:
   cv_tags:
     device_tags:

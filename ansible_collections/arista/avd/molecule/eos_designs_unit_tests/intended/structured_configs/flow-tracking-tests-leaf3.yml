@@ -216,15 +216,15 @@ port_channel_interfaces:
     hardware: FLOW-TRACKER
   vlans: 11,4092
   mlag: 32
-- name: Port-Channel15
+- name: Port-Channel14
   description: port-channel-interface-true
   type: switched
   shutdown: false
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge
-  mlag: 15
-- name: Port-Channel16
+  mlag: 14
+- name: Port-Channel15
   description: port-channel-interface-false
   type: switched
   shutdown: false
@@ -233,15 +233,15 @@ port_channel_interfaces:
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge
-  mlag: 16
-- name: Port-Channel17
+  mlag: 15
+- name: Port-Channel16
   description: port-channel-interface-no-definition
   type: switched
   shutdown: false
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge
-  mlag: 17
+  mlag: 16
 ethernet_interfaces:
 - name: Ethernet21
   peer: flow-tracking-tests-leaf4
@@ -305,7 +305,7 @@ ethernet_interfaces:
   channel_group:
     id: 32
     mode: active
-- name: Ethernet15
+- name: Ethernet14
   peer: port-channel-interface-true
   peer_interface: PCI1
   peer_type: server
@@ -313,9 +313,9 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 15
+    id: 14
     mode: 'on'
-- name: Ethernet16
+- name: Ethernet15
   peer: port-channel-interface-false
   peer_interface: PCI11
   peer_type: server
@@ -323,9 +323,9 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 16
+    id: 15
     mode: 'on'
-- name: Ethernet17
+- name: Ethernet16
   peer: port-channel-interface-no-definition
   peer_interface: PCI13
   peer_type: server
@@ -333,7 +333,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 17
+    id: 16
     mode: 'on'
 mlag_configuration:
   domain_id: flow-tracking-tests-leaf-mlag
@@ -424,5 +424,6 @@ flow_tracking:
           host: 127.0.0.2
         local_interface: Loopback0
         template_interval: 40002
+    shutdown: false
 metadata:
   platform: vEOS-lab

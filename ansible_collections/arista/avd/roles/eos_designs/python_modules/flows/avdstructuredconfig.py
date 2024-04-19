@@ -127,6 +127,19 @@ class AvdStructuredConfigFlows(AvdFacts):
 
     @cached_property
     def _default_flow_tracker(self) -> dict:
+        """
+        Following configuration will be rendered based on the inputs:
+        tracker FLOW-TRACKER
+            record export on inactive timeout 70000
+            record export on interval 300000
+            exporter ayush_exporter
+                collector 127.0.0.1
+                local interface Loopback0
+                template interval 3600000
+
+        Depending on the flow tracker type, some other default values like sample, no shutdown
+        will be added in further method
+        """
         return {
             "name": self.shared_utils.default_flow_tracker_name,
             "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000},
@@ -144,8 +157,6 @@ class AvdStructuredConfigFlows(AvdFacts):
             if (table_size := sampled_settings.get("table_size")) is not None:
                 tracker["table_size"] = table_size
             if (mpls := get(sampled_settings, "record_export.mpls")) is not None:
-                if tracker["record_export"] is None:
-                    tracker["record_export"] = {}
                 tracker["record_export"]["mpls"] = mpls
 
         return tracker
@@ -171,8 +182,11 @@ class AvdStructuredConfigFlows(AvdFacts):
         all_trackers = get(flow_tracking_settings, "trackers", default=[])
 
         filtered_trackers = []
-
         for tracker_name in configured_trackers:
+            """
+            We allow overriding the default flow tracker name, so if user has configured a tracker
+            with the default tracker name, then we just use that, if not, we create a default config
+            """
             default_tracker = tracker_name == self.shared_utils.default_flow_tracker_name
             tracker = get_item(
                 all_trackers,
@@ -187,6 +201,7 @@ class AvdStructuredConfigFlows(AvdFacts):
             filtered_trackers.append(self.resolve_flow_tracker_by_type(tracker))
 
         flow_tracking[tracker_type]["trackers"] = filtered_trackers
+        flow_tracking[tracker_type]["shutdown"] = False
 
         return flow_tracking
 
@@ -201,25 +216,10 @@ class AvdStructuredConfigFlows(AvdFacts):
             "hardware": {},
         }
 
-        for interface in get(self._hostvars, "ethernet_interfaces", default=[]):
-            if tracker := get(interface, "flow_tracker"):
-                for trackerType, trackerName in tracker.items():
-                    trackers[trackerType][trackerName] = True
+        for interface_type in ["ethernet_interfaces", "port_channel_interfaces", "dps_interfaces"]:
+            for interface in get(self._hostvars, interface_type, default=[]):
+                if tracker := get(interface, "flow_tracker"):
+                    for trackerType, trackerName in tracker.items():
+                        trackers[trackerType][trackerName] = True
 
-        for interface in get(self._hostvars, "port_channel_interfaces", default=[]):
-            if tracker := get(interface, "flow_tracker"):
-                for trackerType, trackerName in tracker.items():
-                    trackers[trackerType][trackerName] = True
-
-        for interface in get(self._hostvars, "dps_interfaces", default=[]):
-            if tracker := get(interface, "flow_tracker"):
-                for trackerType, trackerName in tracker.items():
-                    trackers[trackerType][trackerName] = True
-
-        # only one type should be present either sampled or hardware
-        if self.shared_utils.flow_tracking_type == "sampled":
-            assert not trackers["hardware"]
-            return trackers["sampled"]
-        else:
-            assert not trackers["sampled"]
-            return trackers["hardware"]
+        return trackers[self.shared_utils.flow_tracking_type]

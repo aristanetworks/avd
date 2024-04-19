@@ -189,7 +189,7 @@ ethernet_interfaces:
   vlans: '11'
   flow_tracker:
     sampled: FLOW-TRACKER-3
-- name: Ethernet14
+- name: Ethernet13
   peer: single-interface-true4
   peer_interface: eth1
   peer_type: server
@@ -282,5 +282,6 @@ flow_tracking:
           host: 127.0.2.1
         local_interface: Loopback0
         template_interval: 40020
+    shutdown: false
 metadata:
   platform: vEOS-lab

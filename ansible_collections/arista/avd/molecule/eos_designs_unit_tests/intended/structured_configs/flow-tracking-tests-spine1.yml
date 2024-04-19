@@ -171,6 +171,14 @@ ethernet_interfaces:
   mtu: 9214
   flow_tracker:
     sampled: FLOW-TRACKER-1
+- name: Ethernet11
+  peer: flow-tracking-tests-spine2
+  peer_interface: Ethernet11
+  peer_type: spine
+  description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet11
+  type: routed
+  shutdown: false
+  mtu: 9214
 - name: Ethernet12
   peer: flow-tracking-tests-spine2
   peer_interface: Ethernet12
@@ -179,6 +187,8 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 9214
+  flow_tracker:
+    sampled: FLOW-TRACKER
 - name: Ethernet13
   peer: flow-tracking-tests-spine2
   peer_interface: Ethernet13
@@ -198,7 +208,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   flow_tracker:
-    sampled: FLOW-TRACKER
+    sampled: FLOW-TRACKER-1
 - name: Ethernet15
   peer: flow-tracking-tests-spine2
   peer_interface: Ethernet15
@@ -207,21 +217,11 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 9214
-  flow_tracker:
-    sampled: FLOW-TRACKER-1
-- name: Ethernet17
+- name: Ethernet16
   peer: flow-tracking-tests-spine2
-  peer_interface: Ethernet17
+  peer_interface: Ethernet16
   peer_type: spine
-  description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet17
-  type: routed
-  shutdown: false
-  mtu: 9214
-- name: Ethernet18
-  peer: flow-tracking-tests-spine2
-  peer_interface: Ethernet18
-  peer_type: spine
-  description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet18
+  description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet16
   type: routed
   shutdown: false
   mtu: 9214
@@ -275,5 +275,6 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 40000
       table_size: 4331
+    shutdown: false
 metadata:
   platform: vEOS-LAB
