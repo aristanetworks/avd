@@ -595,8 +595,7 @@ class UtilsMixin:
         """
         - Parse self._filtered_wan_policies looking to internet_exit_policies.
         - Verify each internet_exit_policy is present in inputs `cv_pathfinder_internet_exit_policies`.
-        - Identify wan_interfaces assigned to each policy (raise or ignore if no interfaces are found? What about HA?)
-        - get_internet_exit_connections and insert into the policy dict. (maybe add a group hierarchy?)
+        - get_internet_exit_connections and insert into the policy dict.
         - Return the list of relevant internet_exit_policies.
         """
         # Only supported for CV Pathfinder
@@ -661,9 +660,9 @@ class UtilsMixin:
 
     def get_internet_exit_connections(self, internet_exit_policy: dict) -> list:
         """
-        Useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
+        Return a list of connections (dicts) for the given internet_exit_policy.
 
-        Return a list of group dicts containing list of connections
+        These are useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
         """
         # Only supporting Zscaler for now
         if get(internet_exit_policy, "type") != "zscaler":
