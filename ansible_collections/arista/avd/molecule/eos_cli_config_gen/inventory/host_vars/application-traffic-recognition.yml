@@ -89,6 +89,21 @@ application_traffic_recognition:
         dest_prefix_set_name: dest_prefix_set1
         tcp_src_port_set_name: src_port_set1
         tcp_dest_port_set_name: dest_port_set1
+    l4_applications:
+      - name: l4-app-1
+        protocols:
+          - tcp
+          - udp
+        tcp_src_port_set_name: src_port_set1
+        tcp_dest_port_set_name: dest_port_set1
+        udp_src_port_set_name: src_port_set1
+        udp_dest_port_set_name: dest_port_set1
+      - name: l4-app-2
+        protocols:
+          - tcp
+        protocol_ranges:
+          - "27"
+          - "41-44"
   application_profiles:
     - name: app_profile_2
       applications:
