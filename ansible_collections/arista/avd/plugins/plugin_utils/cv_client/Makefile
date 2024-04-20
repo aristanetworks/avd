@@ -1,8 +1,10 @@
 # Example to add experimental protos:
-# EXTRA_DIRS="-I ~/go/src/arista/resources" EXTRA_PROTOS="~/go/src/arista/resources/arista/configlet.v1/configlet.proto ~/go/src/arista/resources/arista/configlet.v1/services.gen.proto" make
+# EXTRA_EXTRA_DIRS="-I ~/go/src/arista/resources" EXTRA_EXTRA_PROTOS="~/go/src/arista/resources/arista/configlet.v1/configlet.proto ~/go/src/arista/resources/arista/configlet.v1/services.gen.proto" make
 VENDORPATH=cloudvision-apis
-EXTRA_PROTOS?=
-EXTRA_DIRS?=
+EXTRA_PROTOS=${PWD}/extra_cv_protos/arista/swg.v1/swg.proto ${PWD}/extra_cv_protos/arista/swg.v1/services.gen.proto
+EXTRA_DIRS=-I ${PWD}/extra_cv_protos
+EXTRA_EXTRA_DIRS?=
+EXTRA_EXTRA_PROTOS?=
 DUMMY := $(shell \
   rm -rf $(VENDORPATH); \
   git clone --single-branch --branch trunk https://github.com/aristanetworks/cloudvision-apis.git $(VENDORPATH); \
@@ -30,7 +32,7 @@ api-dir:
 	rm -rf ./api/*
 
 api-models: api-dir
-	$(PYTHON) -m grpc_tools.protoc -I $(VENDORPATH) $(EXTRA_DIRS) --python_aristaproto_out=$(APIPATH) $(ALL_PROTOS) $(EXTRA_PROTOS)
+	$(PYTHON) -m grpc_tools.protoc -I $(VENDORPATH) $(EXTRA_DIRS) $(EXTRA_EXTRA_DIRS) --python_aristaproto_out=$(APIPATH) $(ALL_PROTOS) $(EXTRA_PROTOS) $(EXTRA_EXTRA_PROTOS)
 
 api-ansible-sanity-import: api-models
 # For most arista protos
