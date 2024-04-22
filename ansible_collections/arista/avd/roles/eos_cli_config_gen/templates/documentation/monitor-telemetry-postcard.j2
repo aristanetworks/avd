@@ -1,0 +1,14 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - monitor telemetry postcard #}
+{% if monitor_telemetry_postcard is arista.avd.defined %}
+
+### Monitor Telemetry Postcard Configuration
+
+```eos
+{%     include 'eos/monitor-telemetry-postcard.j2' %}
+```
+{% endif %}

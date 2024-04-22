@@ -4,6 +4,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Monitoring](#monitoring)
+  - [Monitor Telemetry Postcard Configuration](#monitor-telemetry-postcard-configuration)
 
 ## Management
 
@@ -31,4 +33,41 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+## Monitoring
+
+### Monitor Telemetry Postcard Configuration
+
+```eos
+!
+monitor telemetry postcard policy
+   no disabled
+   ingress collection gre source 10.3.3.3 destination 10.3.3.4 version 2
+   ingress sample rate 16384
+   ingress sample tcp-udp-checksum 2343223
+   profile profile1
+      ingress sample policy ingresspo1
+   profile profile2
+      ingress sample policy ingresspo1
+   sample policy samplepo1
+      match rule rule1 ipv4
+         destination prefix 10.3.3.0/24
+         source prefix 3.4.5.0/24
+         protocol tcp destination port www
+         protocol tcp destination port 78-80
+         protocol tcp destination port 77
+      match rule rule2 ipv6
+         destination prefix 10.3.4.0/24
+         source prefix 3.4.4.0/24
+         protocol udp destination port ssh
+         protocol udp destination port 748-800
+         protocol udp destination port 747
+   sample policy samplepo2
+      match rule rule1 ipv4
+         destination prefix 10.3.3.0/24
+         source prefix 3.4.5.0/24
+         protocol udp source port www
+         protocol udp source port 78-80
+         protocol udp source port 77
 ```
