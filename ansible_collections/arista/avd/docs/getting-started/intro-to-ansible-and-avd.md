@@ -363,7 +363,7 @@ In a legacy network where configuration is not administered centrally, you have 
 
 Since operating many networking devices also typically results in having many networking engineers, there is even more room for error. Different people do things differently, and repetitive tasks are not always executed in the same manner.
 
-With AVD, you define not only the topology of your network centrally, but also which services are used where in a central repository of text files. Furthermore, because this data is stored in text files, it is possible to apply version control (for example, using tools like git, subversion, or mercurial) to this source of truth, giving you visibility of when the intended configuration was changed and by who.
+With AVD, you define not only the topology of your network centrally, but also which services are used where in a central repository of text files. Furthermore, because this data is stored in text files, it is possible to apply version control (for example, using tools like git, subversion, or mercurial) to this system of record, giving you visibility of when the intended configuration was changed and by whom.
 
 This System of Record means you have a complete overview of your designed network configuration without looking at individual network devices. An additional benefit of AVD is that by design, you always have a network configuration backup. Including automated documentation in markdown format, you no longer have to remember to update documentation about which interface is connected to which device, etc., whenever you change something on a device. Instead, it's all done automatically based on the configuration built and applied to the network devices by Ansible every time you execute the playbooks.
 
