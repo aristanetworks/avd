@@ -23,8 +23,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.defaults.mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.defaults.mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.defaults.mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Toggle to override the default (ipv4) address family used to establish MLAG Peer Link (control link).<br>Required when using IPv6 or other non-default values for MLAG leafs present in topology.<br>Requires minimum EOS version of 4.31.1f or higher.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.mlag_peer_ipv4_pool") | String |  |  |  | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required when MLAG leafs present in topology.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.defaults.mlag_peer_ipv6_pool") | String |  |  |  | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required when MLAG leafs present in topology.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.mlag_peer_ipv4_pool") | String |  |  |  | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.defaults.mlag_peer_ipv6_pool") | String |  |  |  | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.defaults.mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.defaults.mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.defaults.spanning_tree_mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
@@ -49,8 +49,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Toggle to override the default (ipv4) address family used to establish MLAG Peer Link (control link).<br>Required when using IPv6 or other non-default values for MLAG leafs present in topology.<br>Requires minimum EOS version of 4.31.1f or higher.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_ipv4_pool") | String |  |  |  | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required when MLAG leafs present in topology.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_ipv6_pool") | String |  |  |  | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required when MLAG leafs present in topology.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_ipv4_pool") | String |  |  |  | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_ipv6_pool") | String |  |  |  | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
@@ -71,8 +71,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Toggle to override the default (ipv4) address family used to establish MLAG Peer Link (control link).<br>Required when using IPv6 or other non-default values for MLAG leafs present in topology.<br>Requires minimum EOS version of 4.31.1f or higher.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_ipv4_pool") | String |  |  |  | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required when MLAG leafs present in topology.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_ipv6_pool") | String |  |  |  | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required when MLAG leafs present in topology.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_ipv4_pool") | String |  |  |  | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_ipv6_pool") | String |  |  |  | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
@@ -95,8 +95,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Toggle to override the default (ipv4) address family used to establish MLAG Peer Link (control link).<br>Required when using IPv6 or other non-default values for MLAG leafs present in topology.<br>Requires minimum EOS version of 4.31.1f or higher.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_ipv4_pool") | String |  |  |  | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required when MLAG leafs present in topology.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_ipv6_pool") | String |  |  |  | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required when MLAG leafs present in topology.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_ipv4_pool") | String |  |  |  | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_ipv6_pool") | String |  |  |  | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.nodes.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.nodes.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
@@ -168,11 +168,11 @@
         mlag_peer_address_family: <str; "ipv4" | "ipv6"; default="ipv4">
 
         # IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-        # Required when MLAG leafs present in topology.
+        # Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
         mlag_peer_ipv4_pool: <str>
 
         # IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-        # Required when MLAG leafs present in topology.
+        # Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
         mlag_peer_ipv6_pool: <str>
 
         # If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.
@@ -260,11 +260,11 @@
               mlag_peer_address_family: <str; "ipv4" | "ipv6"; default="ipv4">
 
               # IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-              # Required when MLAG leafs present in topology.
+              # Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
               mlag_peer_ipv4_pool: <str>
 
               # IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-              # Required when MLAG leafs present in topology.
+              # Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
               mlag_peer_ipv6_pool: <str>
 
               # If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.
@@ -339,11 +339,11 @@
           mlag_peer_address_family: <str; "ipv4" | "ipv6"; default="ipv4">
 
           # IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-          # Required when MLAG leafs present in topology.
+          # Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
           mlag_peer_ipv4_pool: <str>
 
           # IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-          # Required when MLAG leafs present in topology.
+          # Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
           mlag_peer_ipv6_pool: <str>
 
           # If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.
@@ -424,11 +424,11 @@
           mlag_peer_address_family: <str; "ipv4" | "ipv6"; default="ipv4">
 
           # IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-          # Required when MLAG leafs present in topology.
+          # Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
           mlag_peer_ipv4_pool: <str>
 
           # IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-          # Required when MLAG leafs present in topology.
+          # Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
           mlag_peer_ipv6_pool: <str>
 
           # If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.
