@@ -7,6 +7,7 @@ from .avdtestinterfaces import AvdTestInterfacesState
 from .avdtestmlag import AvdTestMLAG
 from .avdtestrouting import AvdTestBGP, AvdTestRoutingTable
 from .avdtestsecurity import AvdTestAPIHttpsSSL
+from .avdteststun import AvdTestStun
 from .avdtestsystem import AvdTestNTP, AvdTestReloadCause
 
 __all__ = [
@@ -22,4 +23,5 @@ __all__ = [
     "AvdTestRoutingTable",
     "AvdTestBGP",
     "AvdTestAPIHttpsSSL",
+    "AvdTestStun",
 ]
