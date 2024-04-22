@@ -15,6 +15,7 @@
     | [<samp>&nbsp;&nbsp;core_interfaces</samp>](## "fabric_sflow.core_interfaces") | Boolean |  |  |  | Enable sFlow on all p2p_links defined under core_interfaces. |
     | [<samp>&nbsp;&nbsp;mlag_interfaces</samp>](## "fabric_sflow.mlag_interfaces") | Boolean |  |  |  | Enable sFlow on all MLAG peer interfaces. |
     | [<samp>sflow_settings</samp>](## "sflow_settings") | Dictionary |  |  |  | sFlow settings.<br>The sFlow process will only be configured if any interface is enabled for sFlow.<br>For default enabling of sFlow for various interface types across the fabric see `fabric_sflow`. |
+    | [<samp>&nbsp;&nbsp;sample</samp>](## "sflow_settings.sample") | Integer |  |  | Min: 1<br>Max: 4294967295 | Sample rate. |
     | [<samp>&nbsp;&nbsp;destinations</samp>](## "sflow_settings.destinations") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;destination</samp>](## "sflow_settings.destinations.[].destination") | String | Required |  |  | sFlow destination name or IP address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "sflow_settings.destinations.[].port") | Integer |  |  | Min: 1<br>Max: 65535 | UDP Port number. The default port number for sFlow is 6343. |
@@ -53,6 +54,9 @@
     # The sFlow process will only be configured if any interface is enabled for sFlow.
     # For default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.
     sflow_settings:
+
+      # Sample rate.
+      sample: <int; 1-4294967295>
       destinations:
 
           # sFlow destination name or IP address.

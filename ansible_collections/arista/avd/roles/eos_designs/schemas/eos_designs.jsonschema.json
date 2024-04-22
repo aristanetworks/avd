@@ -51549,6 +51549,13 @@
       "type": "object",
       "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.",
       "properties": {
+        "sample": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295,
+          "description": "Sample rate.",
+          "title": "Sample"
+        },
         "destinations": {
           "type": "array",
           "items": {
