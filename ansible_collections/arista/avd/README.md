@@ -22,7 +22,7 @@ Arista Validated Designs (AVD) is an extensible data model that defines Arista's
 
 ## AVD Ansible Collection
 
-[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System® (EOS®)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
+[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
 
 Full documentation for the collection:
 
