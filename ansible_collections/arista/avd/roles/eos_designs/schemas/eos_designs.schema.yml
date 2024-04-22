@@ -8684,7 +8684,7 @@ $defs:
         flow_tracking:
           type: dict
           $ref: eos_designs#/$defs/flow_tracking_link
-          description: 'Configures flow-tracking on the interface. Overrides `fabric_flow_tracking`
+          description: 'Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces`
             setting.
 
             '

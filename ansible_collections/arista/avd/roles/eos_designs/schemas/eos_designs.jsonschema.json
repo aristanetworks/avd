@@ -7116,7 +7116,7 @@
           },
           "flow_tracking": {
             "type": "object",
-            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking` setting.\n",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.\n",
             "properties": {
               "enabled": {
                 "type": "boolean",
