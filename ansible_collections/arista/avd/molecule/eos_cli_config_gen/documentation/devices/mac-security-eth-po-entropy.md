@@ -49,7 +49,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Entropy source | hardware |
+| Entropy sources | hardware |
 | Common password encryption key | True |
 
 ### Management Security SSL Profiles

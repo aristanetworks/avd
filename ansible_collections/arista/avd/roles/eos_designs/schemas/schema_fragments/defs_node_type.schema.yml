@@ -177,7 +177,7 @@ $defs:
             documentation_options:
               table: node-type-uplink-configuration
             description: |
-              Local uplink interfaces
+              Local uplink interfaces.
               Each list item supports range syntax that can be expanded into a list of interfaces.
               If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
               Please note that default_interfaces are not defined by default, you should define these yourself.

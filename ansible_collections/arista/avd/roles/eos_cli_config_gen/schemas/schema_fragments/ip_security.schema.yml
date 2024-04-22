@@ -59,7 +59,27 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0
+              description: Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0.
+            sa_lifetime:
+              type: dict
+              keys:
+                value:
+                  type: int
+                  description: |-
+                    Lifetime value for this SA.
+                    Valid range depends on the unit.
+                    <1-24>       Lifetime in hours ( default )
+                    <1-4000000>  Packet limit in thousands
+                    <1-6000>     Byte limit in GB ( 1024 MB )
+                    <1-6144000>  Byte limit in MB ( 1024 KB )
+                unit:
+                  type: str
+                  valid_values:
+                    - gigabytes
+                    - hours
+                    - megabytes
+                    - thousand-packets
+                  default: hours
             esp:
               type: dict
               keys:
@@ -134,7 +154,7 @@ keys:
                 action:
                   type: str
                   description: |
-                    Action to apply
+                    Action to apply.
 
                     * 'clear': Delete all connections
                     * 'hold': Re-negotiate connection on demand

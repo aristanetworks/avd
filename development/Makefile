@@ -1,5 +1,5 @@
 # Force BASH as default Makefile shell
-# Required to use soruce
+# Required to use source
 SHELL := /bin/bash
 # AVD Shell container information
 CONTAINER_NAME = avdteam/base

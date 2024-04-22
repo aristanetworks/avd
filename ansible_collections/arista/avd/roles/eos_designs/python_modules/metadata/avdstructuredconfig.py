@@ -14,7 +14,7 @@ from .cv_tags import CvTagsMixin
 
 class AvdStructuredConfigMetadata(AvdFacts, CvTagsMixin, CvPathfinderMixin):
     """
-    This returns the metadata data strucutre as per the below example
+    This returns the metadata data structure as per the below example
     {
         "metadata": {
             "platform": "7050X3",

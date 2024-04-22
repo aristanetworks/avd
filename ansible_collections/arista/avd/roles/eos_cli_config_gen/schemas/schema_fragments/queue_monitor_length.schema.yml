@@ -33,10 +33,10 @@ keys:
         type: int
         convert_types:
           - str
-        description: "Logging interval in seconds"
+        description: "Logging interval in seconds."
       notifying:
         type: bool
-        description: Should only be used for platforms supporting the "queue-monitor length notifying" CLI
+        description: Should only be used for platforms supporting the "queue-monitor length notifying" CLI.
       cpu:
         type: dict
         keys:
@@ -54,4 +54,4 @@ keys:
                   - str
       tx_latency:
         type: bool
-        description: "Enable tx-latency mode"
+        description: "Enable tx-latency mode."

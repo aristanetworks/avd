@@ -41,6 +41,33 @@ application traffic recognition
       protocol {{ application.protocol_ranges | arista.avd.natural_sort('name') | join(", ") }}
 {%             endif %}
 {%         endfor %}
+{%         for application in application_traffic_recognition.applications.l4_applications | arista.avd.natural_sort('name') %}
+   !
+   application l4 {{ application.name }}
+{%             for protocol in application.protocols | arista.avd.natural_sort() %}
+{%                 set config = [protocol] %}
+{%                 if protocol == "tcp" %}
+{%                     if application.tcp_src_port_set_name is arista.avd.defined %}
+{%                         do config.append("source port field-set " + application.tcp_src_port_set_name) %}
+{%                     endif %}
+{%                     if application.tcp_dest_port_set_name is arista.avd.defined %}
+{%                         do config.append("destination port field-set " + application.tcp_dest_port_set_name) %}
+{%                     endif %}
+{%                 endif %}
+{%                 if protocol == "udp" %}
+{%                     if application.udp_src_port_set_name is arista.avd.defined %}
+{%                         do config.append("source port field-set " + application.udp_src_port_set_name) %}
+{%                     endif %}
+{%                     if application.udp_dest_port_set_name is arista.avd.defined %}
+{%                         do config.append("destination port field-set " + application.udp_dest_port_set_name) %}
+{%                     endif %}
+{%                 endif %}
+      protocol {{ config | join(" ") }}
+{%             endfor %}
+{%             if application.protocol_ranges is arista.avd.defined %}
+      protocol {{ application.protocol_ranges | arista.avd.natural_sort('name') | join(", ") }}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {# categories #}
 {%     for category in application_traffic_recognition.categories | arista.avd.natural_sort('name') %}

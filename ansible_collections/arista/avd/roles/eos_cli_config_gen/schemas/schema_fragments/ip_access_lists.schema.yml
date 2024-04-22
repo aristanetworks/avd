@@ -108,7 +108,7 @@ keys:
                 description: Log matches against this rule.
               ttl:
                 type: int
-                description: TTL value
+                description: TTL value.
                 convert_types:
                   - str
                 min: 0

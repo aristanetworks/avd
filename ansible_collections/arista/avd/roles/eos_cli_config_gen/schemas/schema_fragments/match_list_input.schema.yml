@@ -52,7 +52,7 @@ keys:
           keys:
             name:
               type: str
-              description: Match-list Name
+              description: Match-list Name.
             sequence_numbers:
               type: list
               required: true
@@ -64,10 +64,10 @@ keys:
                 keys:
                   sequence:
                     type: int
-                    description: Sequence ID
+                    description: Sequence ID.
                     convert_types:
                       - str
                   match_regex:
                     type: str
                     required: true
-                    description: Regular Expression
+                    description: Regular Expression.

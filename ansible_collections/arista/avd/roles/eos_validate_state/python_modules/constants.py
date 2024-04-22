@@ -18,7 +18,7 @@ from .tests import (
     AvdTestRoutingTable,
 )
 
-ACRONYM_CATEGORIES: set[str] = {"aaa", "mlag", "snmp", "bgp", "ospf", "vxlan", "stp", "igmp", "ip", "lldp", "ntp", "bfd"}
+ACRONYM_CATEGORIES: set[str] = {"aaa", "mlag", "snmp", "bgp", "ospf", "vxlan", "stp", "igmp", "ip", "lldp", "ntp", "bfd", "ptp", "lanz", "stun", "vlan"}
 """
 A set of network protocol or feature acronyms that should be represented in uppercase in the eos_validate_state report.
 """
