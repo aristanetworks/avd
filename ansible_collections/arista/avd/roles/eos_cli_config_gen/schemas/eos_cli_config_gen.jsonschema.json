@@ -17446,7 +17446,7 @@
               },
               "rcf": {
                 "type": "string",
-                "description": "RCF function name without parenthesis.",
+                "description": "RCF function name without parenthesis.\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
                 "title": "RCF"
               },
               "include_leaked": {
@@ -19769,7 +19769,7 @@
                   },
                   "rcf": {
                     "type": "string",
-                    "description": "RCF function name without parenthesis.",
+                    "description": "RCF function name without parenthesis.\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
                     "title": "RCF"
                   }
                 },
@@ -19932,7 +19932,7 @@
                   },
                   "rcf": {
                     "type": "string",
-                    "description": "RCF function name without parenthesis.",
+                    "description": "RCF function name without parenthesis.\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
                     "title": "RCF"
                   }
                 },

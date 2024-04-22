@@ -650,7 +650,9 @@ keys:
               type: str
             rcf:
               type: str
-              description: RCF function name without parenthesis.
+              description: |-
+                RCF function name without parenthesis.
+                Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
             include_leaked:
               type: bool
       vlan_aware_bundles:
@@ -1812,7 +1814,9 @@ keys:
                   type: bool
                 rcf:
                   type: str
-                  description: RCF function name without parenthesis.
+                  description: |-
+                    RCF function name without parenthesis.
+                    Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
       address_family_vpn_ipv6:
         type: dict
         keys:
@@ -1891,7 +1895,9 @@ keys:
                   type: bool
                 rcf:
                   type: str
-                  description: RCF function name without parenthesis.
+                  description: |-
+                    RCF function name without parenthesis.
+                    Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
       vrfs:
         type: list
         primary_key: name
