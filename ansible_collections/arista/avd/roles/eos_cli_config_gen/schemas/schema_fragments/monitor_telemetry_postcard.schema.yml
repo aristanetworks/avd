@@ -86,19 +86,24 @@ keys:
                   source_prefix:
                     type: str
                     description: IPv4 Network/Mask or IPv6 Network/Mask.
-                  protocol:
-                    type: str
-                    description: Select TCP/UDP.
-                    valid_values: [ tcp, udp ]
-                  destination_port:
+                  ports:
                     type: list
-                    description: |-
-                      Enter the port name or range or  port numbers in a list.
-                      Example:
-                        ["12","14-20", "www"]
-                  source_port:
-                    type: list
-                    description: |-
-                      Enter the port name or range or  port numbers in a list.
-                      Example:
-                        ["12","14-20", "www"]
+                    items:
+                      type: dict
+                      keys:
+                        protocol:
+                          type: str
+                          description: Select TCP/UDP.
+                          valid_values: [ tcp, udp ]
+                        destination_port:
+                          type: list
+                          description: |-
+                            Enter the port name or range or  port numbers in a list.
+                            Example:
+                              ["12","14-20", "www"]
+                        source_port:
+                          type: list
+                          description: |-
+                            Enter the port name or range or  port numbers in a list.
+                            Example:
+                              ["12","14-20", "www"]

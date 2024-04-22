@@ -26,16 +26,6 @@ monitor telemetry postcard policy
 {%     if monitor_telemetry_postcard.ingress.sample.tcp_udp_checksum is arista.avd.defined %}
    ingress sample tcp-udp-checksum {{ monitor_telemetry_postcard.ingress.sample.tcp_udp_checksum }}
 {%     endif %}
-{%     if monitor_telemetry_postcard.profiles is arista.avd.defined %}
-{%         for profile in monitor_telemetry_postcard.profiles | arista.avd.natural_sort("name") %}
-{%             if profile.name is arista.avd.defined %}
-   profile {{ profile.name }}
-{%                 if profile.ingress_sample_policy is arista.avd.defined %}
-      ingress sample policy {{ profile.ingress_sample_policy }}
-{%                 endif %}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
 {%     if monitor_telemetry_postcard.sample_policies is arista.avd.defined %}
 {%         for policy in monitor_telemetry_postcard.sample_policies | arista.avd.natural_sort("name") %}
 {%             if policy.name is arista.avd.defined %}
@@ -43,28 +33,42 @@ monitor telemetry postcard policy
 {%                 if policy.match_rules is arista.avd.defined %}
 {%                     for rule in policy.match_rules | arista.avd.natural_sort("rule_name") %}
 {%                         if rule.type is arista.avd.defined and rule.rule_name is arista.avd.defined %}
-      match rule {{ rule.rule_name }} {{ rule.type }}
-{%                         endif %}
-{%                         if rule.destination_prefix is arista.avd.defined %}
+      match {{ rule.rule_name }} {{ rule.type }}
+{%                             if rule.destination_prefix is arista.avd.defined %}
          destination prefix {{ rule.destination_prefix }}
-{%                         endif %}
-{%                         if rule.source_prefix is arista.avd.defined %}
-         source prefix {{ rule.source_prefix }}
-{%                         endif %}
-{%                         if rule.protocol is arista.avd.defined %}
-{%                             set rule_cli = "protocol " ~ rule.protocol %}
-{%                             if rule.destination_port is arista.avd.defined %}
-{%                                 for port in rule.destination_port | sort(reverse = True) %}
-         {{ rule_cli }} destination port {{ port }}
-{%                                 endfor %}
 {%                             endif %}
-{%                             if rule.source_port is arista.avd.defined %}
-{%                                 for port in rule.source_port | sort(reverse = True) %}
-         {{ rule_cli }} source port {{ port }}
+{%                             if rule.source_prefix is arista.avd.defined %}
+         source prefix {{ rule.source_prefix }}
+{%                             endif %}
+{%                             if rule.ports is arista.avd.defined %}
+{%                                 for port in rule.ports | arista.avd.natural_sort('protocol') %}
+{%                                     if port.protocol is arista.avd.defined %}
+{%                                         set rule_cli = "protocol " ~ port.protocol %}
+{%                                         if port.destination_port is arista.avd.defined %}
+{%                                             for dest_port in port.destination_port | sort(reverse = True) %}
+         {{ rule_cli }} destination port {{ dest_port }}
+{%                                             endfor %}
+{%                                         endif %}
+{%                                         if port.source_port is arista.avd.defined %}
+{%                                             for src_port in port.source_port | sort(reverse = True) %}
+         {{ rule_cli }} source port {{ src_port }}
+{%                                             endfor %}
+{%                                         endif %}
+{%                                     endif %}
 {%                                 endfor %}
 {%                             endif %}
 {%                         endif %}
 {%                     endfor %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if monitor_telemetry_postcard.profiles is arista.avd.defined %}
+{%         for profile in monitor_telemetry_postcard.profiles | arista.avd.natural_sort("name") %}
+{%             if profile.name is arista.avd.defined %}
+   profile {{ profile.name }}
+{%                 if profile.ingress_sample_policy is arista.avd.defined %}
+      ingress sample policy {{ profile.ingress_sample_policy }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

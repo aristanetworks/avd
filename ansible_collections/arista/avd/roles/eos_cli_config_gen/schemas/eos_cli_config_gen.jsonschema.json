@@ -11233,24 +11233,37 @@
                       "description": "IPv4 Network/Mask or IPv6 Network/Mask.",
                       "title": "Source Prefix"
                     },
-                    "protocol": {
-                      "type": "string",
-                      "description": "Select TCP/UDP.",
-                      "enum": [
-                        "tcp",
-                        "udp"
-                      ],
-                      "title": "Protocol"
-                    },
-                    "destination_port": {
+                    "ports": {
                       "type": "array",
-                      "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
-                      "title": "Destination Port"
-                    },
-                    "source_port": {
-                      "type": "array",
-                      "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
-                      "title": "Source Port"
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "protocol": {
+                            "type": "string",
+                            "description": "Select TCP/UDP.",
+                            "enum": [
+                              "tcp",
+                              "udp"
+                            ],
+                            "title": "Protocol"
+                          },
+                          "destination_port": {
+                            "type": "array",
+                            "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                            "title": "Destination Port"
+                          },
+                          "source_port": {
+                            "type": "array",
+                            "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                            "title": "Source Port"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        }
+                      },
+                      "title": "Ports"
                     }
                   },
                   "additionalProperties": false,
