@@ -18535,7 +18535,7 @@
                   },
                   "rcf": {
                     "type": "string",
-                    "description": "RCF function name without parenthesis.",
+                    "description": "RCF function name without parenthesis.\nOnly used if `source_protocol` is `isis`.",
                     "title": "RCF"
                   }
                 },
@@ -18942,7 +18942,7 @@
                   },
                   "rcf": {
                     "type": "string",
-                    "description": "RCF function name without parenthesis.",
+                    "description": "RCF function name without parenthesis.\nOnly used if `source_protocol` is `isis`.",
                     "title": "RCF"
                   }
                 },

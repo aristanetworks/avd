@@ -1214,7 +1214,9 @@ keys:
                   type: str
                 rcf:
                   type: str
-                  description: RCF function name without parenthesis.
+                  description: |-
+                    RCF function name without parenthesis.
+                    Only used if `source_protocol` is `isis`.
       address_family_ipv4_sr_te:
         type: dict
         keys:
@@ -1415,7 +1417,9 @@ keys:
                   type: bool
                 rcf:
                   type: str
-                  description: RCF function name without parenthesis.
+                  description: |-
+                    RCF function name without parenthesis.
+                    Only used if `source_protocol` is `isis`.
       address_family_ipv6_sr_te:
         type: dict
         keys:
