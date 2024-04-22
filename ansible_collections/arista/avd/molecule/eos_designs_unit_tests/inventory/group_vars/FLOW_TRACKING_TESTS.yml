@@ -14,16 +14,16 @@
 # default setting, enabled: off, enabled: on, enabled:on override flow tracker name
 
 # We also test downlinks which come from the leaf[1-4] on the spine nodes, spine 1 downlinks should
-# have default flow tracker, whereas spine 2 downlinks should have custom flow tracker ( overriden in global settings ).
+# have default flow tracker, whereas spine 2 downlinks should have custom flow tracker ( overridden in global settings ).
 
-# Default Flow Tracker definition is also overriden in spine1. Extra trackers are provided in spine2 to check filtering
+# Default Flow Tracker definition is also overridden in spine1. Extra trackers are provided in spine2 to check filtering
 
 # Similarly for leafs:
 # leaf1: has tracking enabled by default, leaf2: has tracking disabled by default
 # and we configure their endpoints with varying configuration as before.
 # leaf1, leaf2 are used for testing: uplinks, l3_interfaces (tenants), endpoints
 
-# leaf3, leaf4 are used for testing: mlag_interfaces, uplinks( with overriden name in fabric setting ), downlinks
+# leaf3, leaf4 are used for testing: mlag_interfaces, uplinks( with overridden name in fabric setting ), downlinks
 
 # l2-leaf1, l2-leaf2 are used for testing l2 ports uplinks i.e port-channels
 
