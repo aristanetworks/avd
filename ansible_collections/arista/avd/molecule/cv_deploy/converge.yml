@@ -11,6 +11,8 @@
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
+    intended_tag_device: ci-s1-leaf1
+    intended_tags: "{{ lookup('file', structured_dir ~ '/' ~ intended_tag_device ~ '.yml')| from_yaml }}"
 
   tasks:
     - name: Generate random string
@@ -50,7 +52,7 @@
         that:
           # workspace
           - cv_deploy_results.workspace.name == cv_workspace_name
-          - cv_deploy_results.workspace.state == cv_deploy_results.workspace.requested_state
+          - cv_deploy_results.workspace.state == "submitted"
           - cv_deploy_results.workspace.state
           # errors and warnings
           - cv_deploy_results.errors == []
@@ -70,6 +72,48 @@
           - item.0.label == item.1.label
           - item.0.value == item.1.value
       loop: "{{ cv_deploy_results.deployed_device_tags | zip(cv_deploy_results.device_tags) | list }}"
+
+    - name: Extract all device tags from structured configs
+      ansible.builtin.set_fact:
+        expected_device_tags: "{{ intended_tags.metadata.cv_tags.device_tags }}"
+        output_device_tags: "{{ cv_deploy_results.deployed_device_tags }}"
+
+    - name: Check output device tags == intended device tags
+      ansible.builtin.assert:
+        that:
+          - item.0.name == item.1.label
+          - item.0.value == item.1.value
+      loop: "{{ expected_device_tags | zip(output_device_tags) | list }}"
+
+    # XXX: interface tags check
+    # - name: Extract all interface tags from structured configs
+    #   ansible.builtin.set_fact:
+    #     expected_interface_tags: "{{ intended_tags.metadata.cv_tags.interface_tags }}"
+    #     output_interface_tags: "{{ cv_deploy_results.deployed_interface_tags }}"
+
+    # - name: Check output interface tags == intended interface tags
+    #   ansible.builtin.assert:
+    #     that:
+    #       - item.0.name == item.1.label
+    #       - item.0.value == item.1.value
+    #   loop: "{{ expected_interface_tags.tags | zip(output_interface_tags) | list }}"
+
+    - name: convert unstructed data into yaml
+      ansible.builtin.set_fact:
+        deivces_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
+        output_devices: []
+
+    - name: Extract devices from output
+      ansible.builtin.set_fact:
+        output_devices: "{{ output_devices + [item.device.hostname] }}"
+      loop: "{{ deivces_structure }}"
+      loop_control:
+        label: "{{ item.configlet_name }}"
+
+    - name: Check output devices == intended devices
+      ansible.builtin.assert:
+        that:
+          - output_devices == cv_devices
 
     - name: Cleanup
       run_once: true
