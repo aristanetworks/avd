@@ -12,7 +12,7 @@ l3leaf:
     mlag_interfaces: [Ethernet5, Ethernet6]
   node_groups:
     - group: MLAG_IPV6
-      bgp_as: 923
+      bgp_as: 65001
       nodes:
         - name: MLAG_IPV6_L3LEAF1A
           id: 3
