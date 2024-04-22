@@ -770,7 +770,7 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: |-
               IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-              Required when MLAG leafs present in topology.
+              Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
             type: str
           mlag_peer_ipv6_pool:
             documentation_options:
