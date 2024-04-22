@@ -36,7 +36,7 @@ flow tracking sampled
    hardware offload threshold minimum {{ flow_tracking.sampled.hardware_offload.threshold_minimum }} samples
 {%         endif %}
 {%     endif %}
-{%     for tracker in flow_tracking.sampled.trackers %}
+{%     for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort %}
    tracker {{ tracker.name }}
 {%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
       record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
@@ -80,7 +80,7 @@ flow tracking sampled
 {% if flow_tracking.hardware is arista.avd.defined %}
 !
 flow tracking hardware
-{%     for tracker in flow_tracking.hardware.trackers %}
+{%     for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort %}
    tracker {{ tracker.name }}
 {%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
       record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
