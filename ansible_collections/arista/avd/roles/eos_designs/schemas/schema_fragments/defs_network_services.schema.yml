@@ -123,7 +123,7 @@ $defs:
               type: bool
             underlay_l2_multicast_group_ipv4_pool:
               type: str
-              description: IPv4_address/Mask
+              description: IPv4_address/Mask.
             underlay_l2_multicast_group_ipv4_pool_offset:
               type: int
               convert_types:
@@ -151,7 +151,7 @@ $defs:
               type: bool
             evpn_underlay_l3_multicast_group_ipv4_pool:
               type: str
-              description: IPv4_address/Mask
+              description: IPv4_address/Mask.
               required: true
             evpn_underlay_l3_multicast_group_ipv4_pool_offset:
               type: int
@@ -222,7 +222,7 @@ $defs:
             source_address:
               type: str
               format: ipv4
-              description: Default IP address of Loopback0
+              description: Default IP address of Loopback0.
             version:
               type: int
               convert_types:
@@ -301,7 +301,7 @@ $defs:
 
                   rd_override supports two formats:
                     - A single number will be used in the RD assigned number subfield (second part of the RD).
-                    - A full RD string with colon seperator which will override the full RD.
+                    - A full RD string with colon separator which will override the full RD.
               rt_override:
                 type: str
                 convert_types:
@@ -312,7 +312,7 @@ $defs:
 
                   rt_override supports two formats:
                     - A single number will be used in the RT assigned number subfield (second part of the RT).
-                    - A full RT string with colon seperator which will override the full RT.
+                    - A full RT string with colon separator which will override the full RT.
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: |
@@ -695,7 +695,7 @@ $defs:
                     pim:
                       type: dict
                       description: |
-                        Enable PIM sparse-mode on the interface; requires "evpn_l3_multicast" to be enabled on the VRF/Tenant
+                        Enable PIM sparse-mode on the interface; requires "evpn_l3_multicast" to be enabled on the VRF/Tenant.
                         Enabling this implicitly makes the device a PIM External Gateway (PEG) in EVPN designs only.
                         At least one RP address must be configured for EVPN PEG to be configured.
                       keys:
@@ -1045,7 +1045,7 @@ $defs:
                   - str
                 min: 1
                 max: 4094
-                description: VLAN ID
+                description: VLAN ID.
               vni_override:
                 type: int
                 convert_types:
@@ -1066,7 +1066,7 @@ $defs:
 
                   rt_override supports two formats:
                     - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
-                    - A full RT string with colon seperator which will override the full RT.
+                    - A full RT string with colon separator which will override the full RT.
               rd_override:
                 type: str
                 convert_types:
@@ -1078,11 +1078,11 @@ $defs:
 
                   rd_override supports two formats:
                     - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-                    - A full RD string with colon seperator which will override the full RD.
+                    - A full RD string with colon separator which will override the full RD.
               name:
                 type: str
                 required: true
-                description: VLAN name
+                description: VLAN name.
               tags:
                 type: list
                 description: |
@@ -1187,7 +1187,7 @@ $defs:
             keys:
               name:
                 type: str
-                description: Pseudowire name
+                description: Pseudowire name.
               type:
                 type: str
                 default: vpws-pseudowire
@@ -1202,7 +1202,7 @@ $defs:
                   keys:
                     number:
                       type: int
-                      description: Subinterface number
+                      description: Subinterface number.
                       convert_types:
                         - str
               endpoints:
@@ -1221,7 +1221,7 @@ $defs:
                       description: Pseudowire ID on this endpoint.
                     nodes:
                       type: list
-                      description: Usually one node. With ESI multihoming we support two nodes per pseudowire endpoint
+                      description: Usually one node. With ESI multihoming we support two nodes per pseudowire endpoint.
                       required: true
                       min_length: 1
                       items:

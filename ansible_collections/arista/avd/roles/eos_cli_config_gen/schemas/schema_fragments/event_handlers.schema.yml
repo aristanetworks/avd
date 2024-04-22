@@ -20,20 +20,20 @@ keys:
       keys:
         name:
           type: str
-          description: Event Handler Name
+          description: Event Handler Name.
         action_type:
           type: str
           valid_values: ["bash", "increment", "log"]
         action:
           type: str
           description: |
-            Command to execute
+            Command to execute.
         delay:
           type: int
           convert_types:
           - str
           description: |
-            Event-handler delay in seconds
+            Event-handler delay in seconds.
         trigger:
           type: str
           description: |
@@ -88,7 +88,7 @@ keys:
         regex:
           type: str
           description: |
-            Regular expression to use for searching log messages. Required for on-logging trigger
+            Regular expression to use for searching log messages. Required for on-logging trigger.
         asynchronous:
           type: bool
           default: False

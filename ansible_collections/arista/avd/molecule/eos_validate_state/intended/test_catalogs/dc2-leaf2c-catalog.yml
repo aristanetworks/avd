@@ -69,6 +69,9 @@ anta.tests.connectivity:
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null
+anta.tests.greent:
+- VerifyGreenT: null
+- VerifyGreenTCounters: null
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     result_overwrite:
@@ -129,11 +132,114 @@ anta.tests.interfaces:
       status: up
     result_overwrite:
       custom_field: Interface Port-Channel1 - DC2_L3_LEAF2_Po8 = 'up'
+anta.tests.lanz:
+- VerifyLANZ: null
+anta.tests.ptp:
+- VerifyPtpModeStatus: null
+- VerifyPtpGMStatus:
+    gmid: 0xec:46:70:ff:fe:00:ff:a9
+- VerifyPtpLockStatus: null
+- VerifyPtpOffset: null
+- VerifyPtpPortModeStatus: null
 anta.tests.security:
 - VerifyAPIHttpsSSL:
     profile: eAPI_SSL_Profile
     result_overwrite:
       custom_field: 'eAPI HTTPS SSL Profile: eAPI_SSL_Profile'
+- VerifySSHStatus: null
+- VerifySSHIPv4Acl:
+    number: 3
+    vrf: default
+- VerifySSHIPv6Acl:
+    number: 3
+    vrf: default
+- VerifyTelnetStatus: null
+- VerifyAPIHttpStatus: null
+- VerifyAPIHttpsSSL:
+    profile: default
+- VerifyAPIIPv4Acl:
+    number: 3
+    vrf: default
+- VerifyAPIIPv6Acl:
+    number: 3
+    vrf: default
+- VerifyAPISSLCertificate:
+    certificates:
+    - certificate_name: ARISTA_SIGNING_CA.crt
+      common_name: AristaIT-ICA ECDSA Issuing Cert Authority
+      encryption_algorithm: ECDSA
+      expiry_threshold: 30
+      key_size: 256
+    - certificate_name: ARISTA_ROOT_CA.crt
+      common_name: Arista Networks Internal IT Root Cert Authority
+      encryption_algorithm: RSA
+      expiry_threshold: 30
+      key_size: 4096
+- VerifyBannerLogin:
+    login_banner: '# Copyright (c) 2023-2024 Arista Networks, Inc.
+
+      # Use of this source code is governed by the Apache License 2.0
+
+      # that can be found in the LICENSE file.
+
+      '
+- VerifyBannerMotd:
+    motd_banner: '# Copyright (c) 2023-2024 Arista Networks, Inc.
+
+      # Use of this source code is governed by the Apache License 2.0
+
+      # that can be found in the LICENSE file.
+
+      '
+- VerifyIPv4ACL:
+    ipv4_access_lists:
+    - entries:
+      - action: permit icmp any any
+        sequence: 10
+      - action: permit ip any any tracked
+        sequence: 20
+      - action: permit udp any any eq bfd ttl eq 255
+        sequence: 30
+      name: default-control-plane-acl
+    - entries:
+      - action: permit icmp any any
+        sequence: 10
+      - action: permit tcp any any range 5900 5910
+        sequence: 20
+      name: LabTest
+- VerifyIPSecConnHealth: null
+- VerifySpecificIPSecConn:
+    ip_security_connections:
+    - peer: 10.255.0.1
+    - connections:
+      - destination_address: 100.64.2.2
+        source_address: 100.64.3.2
+      - destination_address: 172.18.2.2
+        source_address: 172.18.3.2
+      peer: 10.255.0.2
+      vrf: default
+anta.tests.services:
+- VerifyHostname:
+    hostname: s1-spine1
+- VerifyDNSLookup:
+    domain_names:
+    - arista.com
+    - www.google.com
+    - arista.ca
+- VerifyDNSServers:
+    dns_servers:
+    - priority: 1
+      server_address: 10.14.0.1
+      vrf: default
+    - priority: 0
+      server_address: 10.14.0.11
+      vrf: MGMT
+- VerifyErrdisableRecovery:
+    reasons:
+    - interval: 30
+      reason: acl
+    - interval: 30
+      reason: bpduguard
 anta.tests.snmp:
 - VerifySnmpStatus:
     vrf: default
@@ -152,6 +258,17 @@ anta.tests.software:
     versions:
     - v1.13.6
     - v1.8.0
+anta.tests.stun:
+- VerifyStunClient:
+    stun_clients:
+    - public_address: 172.18.3.21
+      public_port: 6006
+      source_address: 172.18.3.2
+      source_port: 4500
+    - public_address: 100.64.3.21
+      public_port: 6006
+      source_address: 100.64.3.2
+      source_port: 4500
 anta.tests.system:
 - VerifyNTP: null
 - VerifyUptime:
@@ -163,3 +280,8 @@ anta.tests.system:
 - VerifyMemoryUtilization: null
 - VerifyFileSystemUtilization: null
 - VerifyNTP: null
+anta.tests.vlan:
+- VerifyVlanInternalPolicy:
+    end_vlan_id: 4094
+    policy: ascending
+    start_vlan_id: 1006

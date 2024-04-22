@@ -214,7 +214,7 @@ keys:
         interface_descriptions:
           type: dict
           description: |
-            Override interface_descriptions templates
+            Override interface_descriptions templates.
             If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.
           keys:
             python_module:

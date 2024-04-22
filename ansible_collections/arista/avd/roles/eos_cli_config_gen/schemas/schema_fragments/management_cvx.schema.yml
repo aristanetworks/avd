@@ -15,12 +15,12 @@ keys:
         type: list
         items:
           type: str
-          description: IP or hostname
+          description: IP or hostname.
       source_interface:
         type: str
-        description: Interface name
+        description: Interface name.
       vrf:
         type: str
-        description: VRF Name
+        description: VRF Name.
         convert_types:
           - int

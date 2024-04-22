@@ -14,7 +14,7 @@ keys:
         name:
           type: str
           required: true
-          description: Interface Name
+          description: Interface Name.
         vrf:
           type: str
-          description: VRF Name
+          description: VRF Name.

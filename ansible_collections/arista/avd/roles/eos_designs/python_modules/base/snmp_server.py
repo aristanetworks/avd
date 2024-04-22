@@ -42,7 +42,7 @@ class SnmpServerMixin(UtilsMixin):
         # Set here so we can reuse it.
         engine_ids = self._snmp_engine_ids(snmp_settings)
 
-        # Pass through most settings with no abstration.
+        # Pass through most settings with no abstraction.
         # Use other functions for abstraction.
         return strip_null_from_data(
             {

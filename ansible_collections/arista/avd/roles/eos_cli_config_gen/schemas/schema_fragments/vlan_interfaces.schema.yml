@@ -16,7 +16,7 @@ keys:
       keys:
         name:
           type: str
-          description: VLAN interface name like "Vlan123"
+          description: VLAN interface name like "Vlan123".
         description:
           type: str
         logging:
@@ -31,14 +31,14 @@ keys:
           type: bool
         vrf:
           type: str
-          description: VRF name
+          description: VRF name.
           convert_types:
             - int
         arp_aging_timeout:
           type: int
           convert_types:
             - str
-          description: In seconds
+          description: In seconds.
           min: 1
           max: 65535
         arp_cache_dynamic_capacity:
@@ -57,25 +57,25 @@ keys:
           type: bool
         ip_address:
           type: str
-          description: IPv4_address/Mask
+          description: IPv4_address/Mask.
         ip_address_secondaries:
           type: list
           items:
             type: str
-            description: IPv4_address/Mask
+            description: IPv4_address/Mask.
         ip_virtual_router_addresses:
           type: list
           items:
             type: str
-            description: IPv4 address or IPv4_address/Mask
+            description: IPv4 address or IPv4_address/Mask.
         ip_address_virtual:
           type: str
-          description: IPv4_address/Mask
+          description: IPv4_address/Mask.
         ip_address_virtual_secondaries:
           type: list
           items:
             type: str
-            description: IPv4_address/Mask
+            description: IPv4_address/Mask.
         ip_verify_unicast_source_reachable_via:
           type: str
           valid_values:
@@ -146,7 +146,7 @@ keys:
               description: IGMP version on IGMP host-proxy interface.
         ip_helpers:
           type: list
-          description: List of DHCP servers
+          description: List of DHCP servers.
           convert_types:
             - dict
           primary_key: ip_helper
@@ -155,13 +155,13 @@ keys:
             keys:
               ip_helper:
                 type: str
-                description: IP address or hostname of DHCP server
+                description: IP address or hostname of DHCP server.
               source_interface:
                 type: str
-                description: Interface used as source for forwarded DHCP packets
+                description: Interface used as source for forwarded DHCP packets.
               vrf:
                 type: str
-                description: VRF where DHCP server can be reached
+                description: VRF where DHCP server can be reached.
                 convert_types:
                   - int
         ip_nat:
@@ -171,12 +171,12 @@ keys:
           type: bool
         ipv6_address:
           type: str
-          description: IPv6_address/Mask
+          description: IPv6_address/Mask.
         ipv6_address_virtual:
           type: str
           description: |
-            IPv6_address/Mask
-            If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
+            IPv6_address/Mask.
+            If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured.
           deprecation:
             warning: true
             new_key: ipv6_address_virtuals
@@ -186,10 +186,10 @@ keys:
           description: The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
           items:
             type: str
-            description: IPv6_address/Mask
+            description: IPv6_address/Mask.
         ipv6_address_link_local:
           type: str
-          description: IPv6_address/Mask
+          description: IPv6_address/Mask.
         ipv6_virtual_router_address:
           type: str
           description: |
@@ -204,7 +204,7 @@ keys:
           description: Improved "VARPv6" data model to support multiple VARPv6 addresses.
           items:
             type: str
-            description: IPv6 address or IPv6_address/Mask
+            description: IPv6 address or IPv6_address/Mask.
         ipv6_nd_ra_disabled:
           type: bool
         ipv6_nd_managed_config_flag:
@@ -219,15 +219,15 @@ keys:
             keys:
               ipv6_prefix:
                 type: str
-                description: IPv6_address/Mask
+                description: IPv6_address/Mask.
               valid_lifetime:
                 type: str
-                description: In seconds <0-4294967295> or infinite
+                description: In seconds <0-4294967295> or infinite.
                 convert_types:
                   - int
               preferred_lifetime:
                 type: str
-                description: In seconds <0-4294967295> or infinite
+                description: In seconds <0-4294967295> or infinite.
                 convert_types:
                   - int
               no_autoconfig_flag:
@@ -240,35 +240,35 @@ keys:
             keys:
               address:
                 type: str
-                description: DHCP server's IPv6 address
+                description: DHCP server's IPv6 address.
               vrf:
                 type: str
                 convert_types:
                   - int
               local_interface:
                 type: str
-                description: Local interface to communicate with DHCP server - mutually exclusive to source_address
+                description: Local interface to communicate with DHCP server - mutually exclusive to source_address.
               source_address:
                 type: str
-                description: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface
+                description: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
               link_address:
                 type: str
-                description: Override the default link address specified in the relayed DHCP packet
+                description: Override the default link address specified in the relayed DHCP packet.
         access_group_in:
           type: str
-          description: IPv4 access-list name
+          description: IPv4 access-list name.
           convert_types: [ int ]
         access_group_out:
           type: str
-          description: IPv4 access-list name
+          description: IPv4 access-list name.
           convert_types: [ int ]
         ipv6_access_group_in:
           type: str
-          description: IPv6 access-list name
+          description: IPv6 access-list name.
           convert_types: [ int ]
         ipv6_access_group_out:
           type: str
-          description: IPv6 access-list name
+          description: IPv6 access-list name.
           convert_types: [ int ]
         multicast:
           type: dict
@@ -278,14 +278,14 @@ keys:
               keys:
                 boundaries:
                   type: list
-                  description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
+                  description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both.
                   primary_key: boundary
                   items:
                     type: dict
                     keys:
                       boundary:
                         type: str
-                        description: IPv4 access-list name or IPv4 multicast group prefix with mask
+                        description: IPv4 access-list name or IPv4 multicast group prefix with mask.
                         convert_types: [ int ]
                       out:
                         type: bool
@@ -308,14 +308,14 @@ keys:
               keys:
                 boundaries:
                   type: list
-                  description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
+                  description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both.
                   primary_key: boundary
                   items:
                     type: dict
                     keys:
                       boundary:
                         type: str
-                        description: IPv6 access-list name or IPv6 multicast group prefix with mask
+                        description: IPv6 access-list name or IPv6 multicast group prefix with mask.
                         convert_types: [ int ]
                 source_route_export:
                   type: dict
@@ -349,10 +349,10 @@ keys:
             - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password used for simple authentication
+          description: Encrypted password used for simple authentication.
         ospf_message_digest_keys:
           type: list
-          description: Keys used for message-digest authentication
+          description: Keys used for message-digest authentication.
           convert_types:
             - dict
           primary_key: id
@@ -373,7 +373,7 @@ keys:
                   - sha512
               key:
                 type: str
-                description: Encrypted password
+                description: Encrypted password.
         pim:
           type: dict
           keys:
@@ -416,7 +416,7 @@ keys:
                       description: PIM hello interval in seconds.
         isis_enable:
           type: str
-          description: ISIS instance name
+          description: ISIS instance name.
         isis_passive:
           type: bool
         isis_metric:
@@ -433,7 +433,7 @@ keys:
           type: bool
         vrrp_ids:
           type: list
-          description: Improved "vrrp" data model to support multiple VRRP IDs
+          description: Improved "vrrp" data model to support multiple VRRP IDs.
           primary_key: id
           items:
             type: dict
@@ -442,12 +442,12 @@ keys:
                 type: int
                 convert_types:
                   - str
-                description: VRID
+                description: VRID.
               priority_level:
                 type: int
                 convert_types:
                   - str
-                description: Instance priority
+                description: Instance priority.
                 min: 1
                 max: 254
               advertisement:
@@ -457,7 +457,7 @@ keys:
                     type: int
                     convert_types:
                       - str
-                    description: Interval in seconds
+                    description: Interval in seconds.
                     min: 1
                     max: 255
               preempt:
@@ -473,14 +473,14 @@ keys:
                         type: int
                         convert_types:
                           - str
-                        description: Minimum preempt delay in seconds
+                        description: Minimum preempt delay in seconds.
                         min: 0
                         max: 3600
                       reload:
                         type: int
                         convert_types:
                           - str
-                        description: Reload preempt delay in seconds
+                        description: Reload preempt delay in seconds.
                         min: 0
                         max: 3600
               timers:
@@ -504,14 +504,14 @@ keys:
                   keys:
                     name:
                       type: str
-                      description: Tracked object name
+                      description: Tracked object name.
                     decrement:
                       type: int
                       convert_types:
                         - str
                       min: 1
                       max: 254
-                      description: Decrement VRRP priority by 1-254
+                      description: Decrement VRRP priority by 1-254.
                     shutdown:
                       type: bool
               ipv4:
@@ -520,7 +520,7 @@ keys:
                   address:
                     type: str
                     required: true
-                    description: Virtual IPv4 address
+                    description: Virtual IPv4 address.
                   version:
                     type: int
                     convert_types:
@@ -534,7 +534,7 @@ keys:
                   address:
                     type: str
                     required: true
-                    description: Virtual IPv6 address
+                    description: Virtual IPv6 address.
         vrrp:
           type: dict
           description: |
@@ -546,12 +546,12 @@ keys:
           keys:
             virtual_router:
               type: str
-              description: Virtual Router ID
+              description: Virtual Router ID.
             priority:
               type: int
               convert_types:
                 - str
-              description: Instance priority
+              description: Instance priority.
             advertisement_interval:
               type: int
               convert_types:
@@ -562,10 +562,10 @@ keys:
                 - str
             ipv4:
               type: str
-              description: Virtual IPv4 address
+              description: Virtual IPv4 address.
             ipv6:
               type: str
-              description: Virtual IPv6 address
+              description: Virtual IPv6 address.
         ip_attached_host_route_export:
           type: dict
           keys:
@@ -607,12 +607,12 @@ keys:
               type: int
               convert_types:
                 - str
-              description: Rate in milliseconds
+              description: Rate in milliseconds.
             min_rx:
               type: int
               convert_types:
                 - str
-              description: Minimum RX hold time in milliseconds
+              description: Minimum RX hold time in milliseconds.
             multiplier:
               type: int
               convert_types:
@@ -627,21 +627,21 @@ keys:
               keys:
                 input:
                   type: str
-                  description: Name of policy-map used for policy based routing
+                  description: Name of policy-map used for policy based routing.
         pvlan_mapping:
           type: str
-          description: List of VLANs as string
+          description: List of VLANs as string.
         tenant:
           type: str
-          description: Key only used for documentation or validation purposes
+          description: Key only used for documentation or validation purposes.
         tags:
           type: list
           items:
             type: str
-          description: Key only used for documentation or validation purposes
+          description: Key only used for documentation or validation purposes.
         type:
           type: str
-          description: Key only used for documentation or validation purposes
+          description: Key only used for documentation or validation purposes.
         eos_cli:
           type: str
-          description: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration
+          description: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration.

@@ -26,7 +26,7 @@ keys:
         keys:
           prefix_list:
             type: str
-            description: Prefix-list name. ND Proxying is disabled for IPv6 addresses defined in the prefix-list.
+            description: Prefix-list name. Neighbor Discovery Proxying is disabled for IPv6 addresses defined in the prefix-list.
       nd_rs_flooding_disabled:
         type: bool
       virtual_router_nd_ra_flooding_disabled:
