@@ -71,7 +71,7 @@ class FilteredTenantsMixin:
                 }
             )
         elif self.is_wan_router:
-            # It is enough to check only the first occurence of default VRF as some other piece of code
+            # It is enough to check only the first occurrence of default VRF as some other piece of code
             # checks that if the VRF is in multiple tenants, the configuration is consistent.
             for tenant in filtered_tenants:
                 if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
@@ -157,18 +157,51 @@ class FilteredTenantsMixin:
 
         return accepted_vlans
 
+    def is_accepted_vrf(self: SharedUtils, vrf: dict) -> bool:
+        """
+        Returns True if
+
+        - filter.allow_vrfs == ["all"] OR VRF is included in filter.allow_vrfs.
+
+        AND
+
+        - filter.not_vrfs == [] OR VRF is NOT in filter.deny_vrfs
+        """
+        return ("all" in self.filter_allow_vrfs or vrf["name"] in self.filter_allow_vrfs) and (
+            not self.filter_deny_vrfs or vrf["name"] not in self.filter_deny_vrfs
+        )
+
+    def is_forced_vrf(self: SharedUtils, vrf: dict) -> bool:
+        """
+        Returns True if the given VRF name should be configured even without any loopbacks or SVIs etc.
+
+        There can be various causes for this:
+        - The VRF is part of a tenant set under 'always_include_vrfs_in_tenants'
+        - 'always_include_vrfs_in_tenants' is set to ['all']
+        - This is a WAN router and the VRF present on the uplink switch.
+          Note that if the attracted VRF does not have a wan_vni configured, the code for interface Vxlan1 will raise an error.
+        """
+        if "all" in self.always_include_vrfs_in_tenants or vrf["tenant"] in self.always_include_vrfs_in_tenants:
+            return True
+
+        if self.is_wan_client and vrf["name"] in (self.get_switch_fact("wan_router_uplink_vrfs", required=False) or []):
+            return True
+
+        return False
+
     def filtered_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
         """
         Return sorted and filtered vrf list from given tenant.
-        Filtering based on svi tags, l3interfaces and filter.always_include_vrfs_in_tenants.
+        Filtering based on svi tags, l3interfaces, loopbacks or self.is_forced_vrf() check.
         Keys of VRF data model will be converted to lists.
         """
         filtered_vrfs = []
 
-        always_include_vrfs_in_tenants = get(self.switch_data_combined, "filter.always_include_vrfs_in_tenants", default=[])
-
         vrfs: list[dict] = natural_sort(convert_dicts(tenant.get("vrfs", []), "name"), "name")
         for original_vrf in vrfs:
+            if not self.is_accepted_vrf(original_vrf):
+                continue
+
             # Copying original_vrf and setting "tenant" for use by child objects like SVIs
             vrf = {**original_vrf, "tenant": tenant["name"]}
 
@@ -192,11 +225,6 @@ class FilteredTenantsMixin:
 
             if self.vtep is True:
                 evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
-                if evpn_l3_multicast_enabled is True and not self.evpn_multicast:
-                    raise AristaAvdError(
-                        f"'evpn_l3_multicast: true' under VRF {vrf['name']} or Tenant {tenant['name']}; this requires 'evpn_multicast' to also be set to true."
-                    )
-
                 if self.evpn_multicast:
                     vrf["_evpn_l3_multicast_enabled"] = evpn_l3_multicast_enabled
 
@@ -237,13 +265,7 @@ class FilteredTenantsMixin:
                 )
             ]
 
-            if (
-                vrf["svis"]
-                or vrf["l3_interfaces"]
-                or vrf["loopbacks"]
-                or "all" in always_include_vrfs_in_tenants
-                or tenant["name"] in always_include_vrfs_in_tenants
-            ):
+            if vrf["svis"] or vrf["l3_interfaces"] or vrf["loopbacks"] or self.is_forced_vrf(vrf):
                 filtered_vrfs.append(vrf)
 
         return filtered_vrfs
@@ -333,7 +355,7 @@ class FilteredTenantsMixin:
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
         """
-        if not self.network_services_l2:
+        if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return []
 
         svis: list[dict] = natural_sort(convert_dicts(vrf.get("svis", []), "id"), "id")
@@ -390,3 +412,41 @@ class FilteredTenantsMixin:
                 vrfs.add(vrf["name"])
 
         return natural_sort(vrfs)
+
+    @staticmethod
+    def get_additional_svi_config(svi_config: dict, svi: dict, vrf: dict) -> None:
+        """
+        Adding IP helpers and OSPF for SVIs via a common function.
+        Used for SVIs and for subinterfaces when uplink_type: lan.
+
+        The given svi_config is updated in-place.
+        """
+        svi_ip_helpers: list[dict] = convert_dicts(default(svi.get("ip_helpers"), vrf.get("ip_helpers"), []), "ip_helper")
+        if svi_ip_helpers:
+            svi_config["ip_helpers"] = [
+                {"ip_helper": svi_ip_helper["ip_helper"], "source_interface": svi_ip_helper.get("source_interface"), "vrf": svi_ip_helper.get("source_vrf")}
+                for svi_ip_helper in svi_ip_helpers
+            ]
+
+        if get(svi, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
+            svi_config.update(
+                {
+                    "ospf_area": svi["ospf"].get("area", "0"),
+                    "ospf_network_point_to_point": svi["ospf"].get("point_to_point", False),
+                    "ospf_cost": svi["ospf"].get("cost"),
+                }
+            )
+            ospf_authentication = svi["ospf"].get("authentication")
+            if ospf_authentication == "simple" and (ospf_simple_auth_key := svi["ospf"].get("simple_auth_key")) is not None:
+                svi_config.update({"ospf_authentication": ospf_authentication, "ospf_authentication_key": ospf_simple_auth_key})
+            elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := svi["ospf"].get("message_digest_keys")) is not None:
+                ospf_keys = []
+                for ospf_key in ospf_message_digest_keys:
+                    if not ("id" in ospf_key and "key" in ospf_key):
+                        continue
+
+                    ospf_keys.append({"id": ospf_key["id"], "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]})
+                if ospf_keys:
+                    svi_config.update({"ospf_authentication": ospf_authentication, "ospf_message_digest_keys": ospf_keys})
+
+        return None

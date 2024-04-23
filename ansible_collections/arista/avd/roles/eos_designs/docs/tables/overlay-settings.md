@@ -11,7 +11,7 @@
     | [<samp>mlag_ibgp_peering_vrfs</samp>](## "mlag_ibgp_peering_vrfs") | Dictionary |  |  |  | On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology).<br>The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1.<br>Depending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.<br>The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.<br> |
     | [<samp>&nbsp;&nbsp;base_vlan</samp>](## "mlag_ibgp_peering_vrfs.base_vlan") | Integer |  | `3000` | Min: 1<br>Max: 4093 |  |
     | [<samp>overlay_cvx_servers</samp>](## "overlay_cvx_servers") | List, items: String |  |  |  | List of CVX vxlan overlay controllers.<br>Required if overlay_routing_protocol == CVX.<br>CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.<br> |
-    | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "overlay_cvx_servers.[]") | String |  |  |  | 'inventory_hostname' of CVX server<br> |
+    | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "overlay_cvx_servers.[]") | String |  |  |  | 'inventory_hostname' of CVX server.<br> |
     | [<samp>overlay_her_flood_list_per_vni</samp>](## "overlay_her_flood_list_per_vni") | Boolean |  | `False` |  | When using Head-End Replication, configure flood-lists per VNI.<br>By default HER will be configured with a common flood-list containing all VTEPs.<br>This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.<br>This will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.<br> |
     | [<samp>overlay_her_flood_list_scope</samp>](## "overlay_her_flood_list_scope") | String |  | `fabric` | Valid Values:<br>- <code>fabric</code><br>- <code>dc</code> | When using Head-End Replication, set the scope of flood-lists to Fabric or DC.<br>By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added to the flood-lists.<br>This can be changed to all VTEPs in the DC (sharing the same "dc_name" value).<br>This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.<br> |
     | [<samp>overlay_loopback_description</samp>](## "overlay_loopback_description") | String |  |  |  | Customize the description on overlay interface Loopback0. |
@@ -49,7 +49,7 @@
     # CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.
     overlay_cvx_servers:
 
-        # 'inventory_hostname' of CVX server
+        # 'inventory_hostname' of CVX server.
       - <str>
 
     # When using Head-End Replication, configure flood-lists per VNI.
@@ -72,13 +72,13 @@
     overlay_mlag_rfc5549: <bool; default=False>
 
     # Configuration options for the Administrator subfield (first part of RD) and the Assigned Number subfield (second part of RD).
-
+    #
     # By default Route Distinguishers (RD) are set to:
     # - `<overlay_loopback>:<mac_vrf_id_base + vlan_id or mac_vrf_vni_base + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.
     # - `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.
     # - `<overlay_loopback>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.
     # - `<overlay_loopback>:<vrf_id>` for VRFs.
-
+    #
     # Note:
     # RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
     # When using loopback or 32-bit ASN/number the assigned number can only be a 16-bit number. This may be a problem with large VNIs.
@@ -107,7 +107,7 @@
       # - Any <IPv4 Address> without mask.
       # - Integer between <0-65535>.
       # - Integer between <0-4294967295>.
-
+      #
       # 'vrf_admin_subfield' takes precedence for VRF RDs if set. Otherwise the 'admin_subfield' value will be used.
       vrf_admin_subfield: <str>
 
@@ -119,7 +119,7 @@
       # - 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.
       # - 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.
       # - 'vlan_id' will only use the 'vlan_id' and ignores all base values.
-
+      #
       # These methods can be overridden per VLAN if either 'rd_override', 'rt_override' or 'vni_override' is set (preferred in this order).
       vlan_assigned_number_subfield: <str; "mac_vrf_id" | "mac_vrf_vni" | "vlan_id"; default="mac_vrf_id">
 
@@ -136,13 +136,13 @@
     overlay_routing_protocol_address_family: <str; "ipv4" | "ipv6"; default="ipv4">
 
     # Configuration options for the Administrator subfield (first part of RT) and the Assigned Number subfield (second part of RT).
-
+    #
     # By default Route Targets (RT) are set to:
     # - `<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>:<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.
     # - `<vlan_aware_bundle_number_base + vrf_id>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.
     # - `<vlan_aware_bundle_number_base + id>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.
     # - `<vrf_id>:<vrf_id>` for VRFs.
-
+    #
     # Notes:
     # RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
     # When using 32-bit ASN/number the VNI can only be a 16-bit number. Alternatively use vlan_id/vrf_id as assigned number.
@@ -156,7 +156,7 @@
       # - 'bgp_as' means the AS number of the device.
       # - Integer between <0-65535>.
       # - Integer between <0-4294967295>.
-
+      #
       # The 'vrf_id' and 'vrf_vni' methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).
       # The 'vrf_id', 'vrf_vni' and 'id' methods can be overridden per bundle defined under `evpn_vlan_bundles` using 'rt_override'.
       admin_subfield: <str; default="vrf_id">
@@ -168,7 +168,7 @@
       # - 'bgp_as' means the AS number of the device.
       # - Integer between <0-65535>.
       # - Integer between <0-4294967295>.
-
+      #
       # 'vrf_admin_subfield' takes precedence for VRF RDs if set. Otherwise the 'admin_subfield' value will be used.
       vrf_admin_subfield: <str; default="vrf_id">
 
@@ -176,7 +176,7 @@
       # - 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.
       # - 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.
       # - 'vlan_id' will only use the 'vlan_id' and ignores all base values.
-
+      #
       # These methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).
       vlan_assigned_number_subfield: <str; "mac_vrf_id" | "mac_vrf_vni" | "vlan_id"; default="mac_vrf_id">
 

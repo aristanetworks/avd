@@ -73,15 +73,22 @@ class RouterIsisMixin(UtilsMixin):
 
     @cached_property
     def _isis_net(self) -> str | None:
-        isis_system_id_prefix = get(self.shared_utils.switch_data_combined, "isis_system_id_prefix")
-        if isis_system_id_prefix is not None:
-            isis_area_id = get(self._hostvars, "isis_area_id", default="49.0001")
+        if get(self._hostvars, "isis_system_id_format", default="node_id") == "node_id":
+            isis_system_id_prefix = get(self.shared_utils.switch_data_combined, "isis_system_id_prefix")
+            if isis_system_id_prefix is None:
+                # TODO: Raise for this situation if underlay is ISIS.
+                return None
+
             if self.shared_utils.id is None:
-                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using prefix")
+                raise AristaAvdMissingVariableError(
+                    f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using the node ID"
+                )
+            system_id = f"{isis_system_id_prefix}.{self.shared_utils.id:04d}"
+        else:
+            system_id = self.ipv4_to_isis_system_id(self.shared_utils.router_id)
 
-            return f"{isis_area_id}.{isis_system_id_prefix}.{self.shared_utils.id:04d}.00"
-
-        return None
+        isis_area_id = get(self._hostvars, "isis_area_id", default="49.0001")
+        return f"{isis_area_id}.{system_id}.00"
 
     @cached_property
     def _is_type(self) -> str:
@@ -90,3 +97,16 @@ class RouterIsisMixin(UtilsMixin):
         if is_type not in ["level-1", "level-2", "level-1-2"]:
             is_type = "level-2"
         return is_type
+
+    @staticmethod
+    def ipv4_to_isis_system_id(ipv4_address: str) -> str:
+        """
+        Converts an IPv4 address into an IS-IS system-id.
+
+        Examples:
+        192.168.0.1 -> 1921.6800.0001
+        10.0.0.3 -> 0100.0000.0003
+        """
+        octets = str(ipv4_address).split(".")
+        padded_addr = octets[0].zfill(3) + octets[1].zfill(3) + octets[2].zfill(3) + octets[3].zfill(3)
+        return ".".join(padded_addr[i : i + 4] for i in range(0, len(padded_addr), 4))

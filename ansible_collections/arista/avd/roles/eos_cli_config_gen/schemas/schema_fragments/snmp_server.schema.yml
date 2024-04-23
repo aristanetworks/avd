@@ -8,7 +8,7 @@ type: dict
 keys:
   snmp_server:
     type: dict
-    description: SNMP settings
+    description: SNMP settings.
     keys:
       engine_ids:
         type: dict
@@ -18,7 +18,7 @@ keys:
             convert_types:
               - int
             description: |
-              Engine ID in hexadecimal
+              Engine ID in hexadecimal.
           remotes:
             type: list
             items:
@@ -29,21 +29,21 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Remote engine ID in hexadecimal
+                    Remote engine ID in hexadecimal.
                 address:
                   type: str
                   description: |
-                    Hostname or IP of remote engine
+                    Hostname or IP of remote engine.
                 udp_port:
                   type: int
                   convert_types:
                     - str
       contact:
         type: str
-        description: SNMP contact
+        description: SNMP contact.
       location:
         type: str
-        description: SNMP location
+        description: SNMP location.
       communities:
         type: list
         primary_key: name
@@ -54,7 +54,7 @@ keys:
           keys:
             name:
               type: str
-              description: Community name
+              description: Community name.
             access:
               type: str
               valid_values: ["ro", "rw"]
@@ -63,13 +63,13 @@ keys:
               keys:
                 name:
                   type: str
-                  description: IPv4 access list name
+                  description: IPv4 access list name.
             access_list_ipv6:
               type: dict
               keys:
                 name:
                   type: str
-                  description: IPv6 access list name
+                  description: IPv6 access list name.
             view:
               type: str
       ipv4_acls:
@@ -79,7 +79,7 @@ keys:
           keys:
             name:
               type: str
-              description: IPv4 access list name
+              description: IPv4 access list name.
             vrf:
               type: str
               convert_types:
@@ -91,7 +91,7 @@ keys:
           keys:
             name:
               type: str
-              description: IPv6 access list name
+              description: IPv6 access list name.
             vrf:
               type: str
               convert_types:
@@ -106,7 +106,7 @@ keys:
           keys:
             name:
               type: str
-              description: Interface name
+              description: Interface name.
             vrf:
               type: str
               convert_types:
@@ -118,7 +118,7 @@ keys:
           keys:
             name:
               type: str
-              description: SNMP view name
+              description: SNMP view name.
             mib_family_name:
               type: str
             included:
@@ -136,7 +136,7 @@ keys:
           keys:
             name:
               type: str
-              description: Group name
+              description: Group name.
             version:
               type: str
               valid_values: ["v1", "v2c", "v3"]
@@ -145,13 +145,13 @@ keys:
               valid_values: ["auth", "noauth", "priv"]
             read:
               type: str
-              description: Read view
+              description: Read view.
             write:
               type: str
-              description: Write view
+              description: Write view.
             notify:
               type: str
-              description: Notify view
+              description: Notify view.
       users:
         type: list
         items:
@@ -159,21 +159,21 @@ keys:
           keys:
             name:
               type: str
-              description: Username
+              description: Username.
             group:
               type: str
-              description: Group name
+              description: Group name.
             remote_address:
               type: str
               description: |
-                Hostname or ip of remote engine
-                The remote_address and udp_port are used for remote users
+                Hostname or ip of remote engine.
+                The remote_address and udp_port are used for remote users.
             udp_port:
               type: int
               convert_types:
                 - str
               description: |
-                udp_port will not be used if no remote_address is configured
+                udp_port will not be used if no remote_address is configured.
             version:
               type: str
               valid_values: ["v1", "v2c", "v3"]
@@ -182,23 +182,23 @@ keys:
               convert_types:
                 - int
               description: |
-                Engine ID in hexadecimal for localizing auth and/or priv
+                Engine ID in hexadecimal for localizing auth and/or priv.
             auth:
               type: str
               description: |
-                Hash algorithm
+                Hash algorithm.
             auth_passphrase:
               type: str
               description: |
-                Hashed authentication passphrase if localized is used else cleartext authentication passphrase
+                Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
             priv:
               type: str
               description: |
-                Encryption algorithm
+                Encryption algorithm.
             priv_passphrase:
               type: str
               description: |
-                Hashed privacy passphrase if localized is used else cleartext privacy passphrase
+                Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
       hosts:
         type: list
         items:
@@ -206,7 +206,7 @@ keys:
           keys:
             host:
               type: str
-              description: Host IP address or name
+              description: Host IP address or name.
             vrf:
               type: str
               convert_types:
@@ -218,7 +218,7 @@ keys:
               valid_values: ["1", "2c", "3"]
             community:
               type: str
-              description: Community name
+              description: Community name.
             users:
               type: list
               items:
@@ -236,7 +236,7 @@ keys:
             type: bool
             default: false
             description: |
-              Enable or disable all snmp-traps
+              Enable or disable all snmp-traps.
           snmp_traps:
             type: list
             items:
@@ -245,7 +245,7 @@ keys:
                 name:
                   type: str
                   description: |
-                    Enable or disable specific snmp-traps and their sub_traps
+                    Enable or disable specific snmp-traps and their sub_traps.
                     Examples:
                     - "bgp"
                     - "bgp established"
@@ -260,7 +260,7 @@ keys:
           keys:
             name:
               type: str
-              description: VRF name
+              description: VRF name.
               convert_types:
                 - int
             enable:

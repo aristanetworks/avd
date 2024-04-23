@@ -80,6 +80,8 @@ ethernet_interfaces:
   channel_group:
     id: 21
     mode: active
+  mode: access
+  vlans: 101
 - name: Ethernet22
   peer: inband-mgmt-subnet-vrf
   peer_interface: Ethernet1
@@ -90,6 +92,8 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
+  mode: access
+  vlans: 102
 - name: Ethernet23
   peer: inband-mgmt-ip
   peer_interface: Ethernet1
@@ -107,12 +111,16 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: '101'
+  lacp_fallback_mode: individual
+  lacp_fallback_timeout: 30
 - name: Port-Channel22
   description: INBAND-MGMT-SUBNET-VRF_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: '102'
+  lacp_fallback_mode: individual
+  lacp_fallback_timeout: 90
 - name: Port-Channel23
   description: INBAND-MGMT-IP_Po1
   type: switched
@@ -181,22 +189,22 @@ vlan_interfaces:
   description: Inband Management
   shutdown: false
   mtu: 1500
-  ip_address: 192.168.101.2/24
-  ip_virtual_router_addresses:
-  - 192.168.101.1
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ip_address: 192.168.101.2/24
+  ip_virtual_router_addresses:
+  - 192.168.101.1
 - name: Vlan102
   description: Inband Management
   shutdown: false
   mtu: 1500
-  ip_address: 192.168.102.2/24
-  ip_virtual_router_addresses:
-  - 192.168.102.1
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  ip_address: 192.168.102.2/24
+  ip_virtual_router_addresses:
+  - 192.168.102.1
 vxlan_interface:
   Vxlan1:
     description: inband-mgmt-parent_VTEP

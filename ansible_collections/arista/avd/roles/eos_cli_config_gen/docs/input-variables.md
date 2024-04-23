@@ -555,6 +555,12 @@ roles/eos_cli_config_gen/docs/tables/virtual-source-nat-vrfs.md
 
 ## Miscellaneous
 
+### Config comment
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/config-comment.md
+--8<--
+
 ### CVX
 
 --8<--
@@ -855,6 +861,12 @@ roles/eos_cli_config_gen/docs/tables/router-bgp.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/router-general.md
+--8<--
+
+### Router internet-exit
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-internet-exit.md
 --8<--
 
 ### Router ISIS

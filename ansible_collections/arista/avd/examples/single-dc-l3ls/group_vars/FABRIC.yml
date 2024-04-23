@@ -76,7 +76,7 @@ terminattr_disable_aaa: true
 name_servers:
   - 192.168.1.1
 
-# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Management VRF
+# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
 ntp_settings:
   server_vrf: use_mgmt_interface_vrf
   servers:

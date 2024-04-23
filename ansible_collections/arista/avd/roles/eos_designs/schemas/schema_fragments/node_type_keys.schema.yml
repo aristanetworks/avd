@@ -96,14 +96,11 @@ keys:
           description: |
             Set the default evpn encapsulation.
         default_wan_role:
-          documentation_options:
-            table: node-type-key-wan-configuration
           type: str
           valid_values:
             - "client"
             - "server"
           description: |
-            PREVIEW: This key is currently not supported
             Set the default WAN role.
 
             This is used both for AutoVPN and Pathfinder designs.
@@ -111,23 +108,6 @@ keys:
             `server` indicates that the router is a route-reflector.
 
             Only supported if `overlay_routing_protocol` is set to `ibgp`.
-        default_cv_pathfinder_role:
-          documentation_options:
-            table: node-type-key-wan-configuration
-          type: str
-          valid_values:
-            - "edge"
-            - "transit region"
-            - "pathfinder"
-          description: |
-            PREVIEW: This key is currently not supported
-            Set the default CV Pathfinder role.
-
-            This key is used for Pathfinder designs only when the `wan_mode` root
-            key is set to `cv-pathfinder`.
-
-            `pathfinder` is only a valid if `wan_role` is `server`.
-            `edge` and `transit` are only valid if `wan_role` is `client`.
         mlag_support:
           type: bool
           default: false
@@ -160,9 +140,10 @@ keys:
             - p2p
             - port-channel
             - p2p-vrfs
+            - lan
           default: p2p
           description: |-
-            `uplink_type` must be `p2p` or `p2p-vrfs` if `vtep` or `underlay_router` is true.
+            `uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep` or `underlay_router` is true.
 
             For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF
             in `network_services` present on both the uplink and the downlink switch.
@@ -172,6 +153,10 @@ keys:
             All subinterfaces use the same IP address as the physical interface.
             Multicast is not supported.
             Only BGP is supported for subinterfaces.
+
+            For `lan`, a single uplink interface is supported and will be configured as an L3 Interface with
+            subinterfaces for each SVI defined under the VRFs in `network_services` as long as the uplink switch also
+            has the VLAN permitted by tag/tenant filtering.
         vtep:
           type: bool
           default: false
@@ -229,7 +214,7 @@ keys:
         interface_descriptions:
           type: dict
           description: |
-            Override interface_descriptions templates
+            Override interface_descriptions templates.
             If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.
           keys:
             python_module:

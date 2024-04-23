@@ -360,6 +360,39 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.dhcp_server_ipv6 is arista.avd.defined(true) %}
    dhcp server ipv6
 {%     endif %}
+{%     if ethernet_interface.ip_igmp_host_proxy.enabled is arista.avd.defined(true) %}
+{%         set host_proxy_cli =  "ip igmp host-proxy" %}
+   {{ host_proxy_cli }}
+{%         if ethernet_interface.ip_igmp_host_proxy.groups is arista.avd.defined %}
+{%             for proxy_group in ethernet_interface.ip_igmp_host_proxy.groups %}
+{%                 if proxy_group.exclude is arista.avd.defined or proxy_group.include is arista.avd.defined %}
+{%                     if proxy_group.include is arista.avd.defined %}
+{%                         for include_source in proxy_group.include %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} include {{ include_source.source }}
+{%                         endfor %}
+{%                     endif %}
+{%                     if proxy_group.exclude is arista.avd.defined %}
+{%                         for exclude_source in proxy_group.exclude %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} exclude {{ exclude_source.source }}
+{%                         endfor %}
+{%                     endif %}
+{%                 elif proxy_group.group is arista.avd.defined %}
+   {{ host_proxy_cli }} {{ proxy_group.group }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.ip_igmp_host_proxy.access_lists is arista.avd.defined %}
+{%             for access_list in ethernet_interface.ip_igmp_host_proxy.access_lists %}
+   {{ host_proxy_cli }} access-list {{ access_list.name }}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.ip_igmp_host_proxy.report_interval is arista.avd.defined %}
+   {{ host_proxy_cli }} report-interval {{ ethernet_interface.ip_igmp_host_proxy.report_interval }}
+{%         endif %}
+{%         if ethernet_interface.ip_igmp_host_proxy.version is arista.avd.defined %}
+   {{ host_proxy_cli }} version {{ ethernet_interface.ip_igmp_host_proxy.version }}
+{%         endif %}
+{%     endif %}
 {%     if ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
@@ -511,11 +544,23 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
    pim ipv4 sparse-mode
 {%     endif %}
+{%     if ethernet_interface.pim.ipv4.bidirectional is arista.avd.defined(true) %}
+   pim ipv4 bidirectional
+{%     endif %}
 {%     if ethernet_interface.pim.ipv4.border_router is arista.avd.defined(true) %}
    pim ipv4 border-router
 {%     endif %}
+{%     if ethernet_interface.pim.ipv4.hello.interval is arista.avd.defined %}
+   pim ipv4 hello interval {{ ethernet_interface.pim.ipv4.hello.interval }}
+{%     endif %}
+{%     if ethernet_interface.pim.ipv4.hello.count is arista.avd.defined %}
+   pim ipv4 hello count {{ ethernet_interface.pim.ipv4.hello.count }}
+{%     endif %}
 {%     if ethernet_interface.pim.ipv4.dr_priority is arista.avd.defined %}
    pim ipv4 dr-priority {{ ethernet_interface.pim.ipv4.dr_priority }}
+{%     endif %}
+{%     if ethernet_interface.pim.ipv4.bfd is arista.avd.defined(true) %}
+   pim ipv4 bfd
 {%     endif %}
 {%     if ethernet_interface.poe.priority is arista.avd.defined %}
    poe priority {{ ethernet_interface.poe.priority }}
@@ -552,6 +597,38 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.poe.legacy_detect is arista.avd.defined(true) %}
    poe legacy detect
+{%     endif %}
+{%     if ethernet_interface.switchport.port_security is arista.avd.defined %}
+{%         if ethernet_interface.switchport.port_security.enabled is arista.avd.defined(true) or ethernet_interface.switchport.port_security.violation.mode is arista.avd.defined('shutdown') %}
+   switchport port-security
+{%         elif ethernet_interface.switchport.port_security.violation.mode is arista.avd.defined('protect') %}
+{%             if ethernet_interface.switchport.port_security.violation.protect_log is arista.avd.defined(true) %}
+   switchport port-security violation protect log
+{%             else %}
+   switchport port-security violation protect
+{%             endif %}
+{%         endif %}
+{%         if ethernet_interface.switchport.port_security.mac_address_maximum.disabled is arista.avd.defined(true) %}
+   switchport port-security mac-address maximum disabled
+{%         elif ethernet_interface.switchport.port_security.mac_address_maximum.disabled is arista.avd.defined(false) %}
+   no switchport port-security mac-address maximum disabled
+{%         elif ethernet_interface.switchport.port_security.mac_address_maximum.limit is arista.avd.defined %}
+   switchport port-security mac-address maximum {{ ethernet_interface.switchport.port_security.mac_address_maximum.limit }}
+{%         endif %}
+{%         if ethernet_interface.switchport.port_security.violation.mode is not arista.avd.defined('protect')  %}
+{%             if ethernet_interface.switchport.port_security.vlans is arista.avd.defined %}
+{%                 for vlan in ethernet_interface.switchport.port_security.vlans %}
+{%                     if vlan.range is arista.avd.defined and vlan.mac_address_maximum is arista.avd.defined %}
+{%                         for id in vlan.range | arista.avd.range_expand %}
+   switchport port-security vlan {{ id }} mac-address maximum {{ vlan.mac_address_maximum }}
+{%                         endfor %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%             if ethernet_interface.switchport.port_security.vlan_default_mac_address_maximum is arista.avd.defined %}
+   switchport port-security vlan default mac-address maximum {{ ethernet_interface.switchport.port_security.vlan_default_mac_address_maximum }}
+{%             endif %}
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interface.qos.trust is arista.avd.defined %}
 {%         if ethernet_interface.qos.trust == 'disabled' %}

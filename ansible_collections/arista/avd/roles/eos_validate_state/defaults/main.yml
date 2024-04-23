@@ -28,6 +28,10 @@ test_results_dir: "{{ eos_validate_state_dir }}/{{ test_results_dir_name }}"
 eos_validate_state_md_report_path: "{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md"
 eos_validate_state_csv_report_path: "{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv"
 
+# Input directory for custom ANTA catalogs:
+custom_anta_catalogs_dir_name: "custom_anta_catalogs"
+custom_anta_catalogs_dir: "{{ root_dir }}/{{ custom_anta_catalogs_dir_name }}"
+
 # Markdown flavor to support non-text rendering
 # Only support default and github
 validate_state_markdown_flavor: "default"

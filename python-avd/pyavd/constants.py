@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from pathlib import Path
 
+RUNNING_FROM_SRC = Path(__file__).parent.joinpath("running_from_src.txt").exists()
 EOS_CLI_CONFIG_GEN_SCHEMA_ID = "eos_cli_config_gen"
 EOS_DESIGNS_SCHEMA_ID = "eos_designs"
 JINJA2_CONFIG_TEMPLATE = "eos-intended-config.j2"

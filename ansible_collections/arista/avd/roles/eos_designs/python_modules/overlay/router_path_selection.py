@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
@@ -67,33 +68,94 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         for path_group in path_groups_to_configure:
             pg_name = path_group.get("name")
+            ipsec = path_group.get("ipsec", {})
+            is_local_pg = pg_name in local_path_groups_names
+            disable_dynamic_peer_ipsec = is_local_pg and not ipsec.get("dynamic_peers", True)
 
             path_group_data = {
                 "name": pg_name,
                 "id": self._get_path_group_id(pg_name, path_group.get("id")),
                 "local_interfaces": self._get_local_interfaces_for_path_group(pg_name),
-                "dynamic_peers": self._get_dynamic_peers(),
+                "dynamic_peers": self._get_dynamic_peers(disable_dynamic_peer_ipsec),
                 "static_peers": self._get_static_peers_for_path_group(pg_name),
             }
 
-            # On pathfinder IPsec profile is not required for non local path_groups
-            if pg_name in local_path_groups_names and path_group.get("ipsec", True):
-                path_group_data["ipsec_profile"] = self._cp_ipsec_profile_name
+            if is_local_pg:
+                # On pathfinder IPsec profile is not required for non local path_groups
+                if ipsec.get("static_peers", True):
+                    path_group_data["ipsec_profile"] = self._cp_ipsec_profile_name
+
+                # KeepAlive config is not required for non local path_groups
+                keepalive = path_group.get("dps_keepalive", {})
+                if (interval := keepalive.get("interval")) is not None:
+                    if interval == "auto":
+                        path_group_data["keepalive"] = {"auto": True}
+                    else:
+                        if not (interval.isdigit() and 50 <= int(interval) <= 60000):
+                            raise AristaAvdError(
+                                f"Invalid value '{interval}' for dps_keepalive.interval - "
+                                f"should be either 'auto', or an integer[50-60000] for wan_path_groups[{pg_name}]"
+                            )
+                        path_group_data["keepalive"] = {
+                            "interval": int(interval),
+                            "failure_threshold": get(keepalive, "failure_threshold", default=5),
+                        }
 
             path_groups.append(path_group_data)
 
-        if self.shared_utils.cv_pathfinder_role:
-            pass
-            # implement LAN_HA here
+        if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
+            path_groups.append(self._generate_ha_path_group())
 
         return path_groups
 
+    def _generate_ha_path_group(self) -> dict:
+        """
+        Called only when self.shared_utils.wan_ha is True or on Pathfinders
+        """
+        ha_path_group = {
+            "name": self.shared_utils.wan_ha_path_group_name,
+            "id": self._get_path_group_id(self.shared_utils.wan_ha_path_group_name),
+            "flow_assignment": "lan",
+        }
+        if self.shared_utils.is_cv_pathfinder_server:
+            return ha_path_group
+
+        # not a pathfinder device
+        ha_path_group.update(
+            {
+                # This should be the LAN interface over which a DPS tunnel is built
+                "local_interfaces": [{"name": interface["interface"]} for interface in self._wan_ha_interfaces()],
+                "static_peers": [
+                    {
+                        "router_ip": self._wan_ha_peer_vtep_ip(),
+                        "name": self.shared_utils.wan_ha_peer,
+                        "ipv4_addresses": [ip_address.split("/")[0] for ip_address in self.shared_utils.wan_ha_peer_ip_addresses],
+                    }
+                ],
+            }
+        )
+        if self.shared_utils.wan_ha_ipsec:
+            ha_path_group["ipsec_profile"] = self._dp_ipsec_profile_name
+
+        return ha_path_group
+
+    def _wan_ha_interfaces(self) -> list:
+        """
+        Return list of interfaces for HA
+        """
+        return [uplink for uplink in self.shared_utils.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+
+    def _wan_ha_peer_vtep_ip(self) -> str:
+        """ """
+        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer, required=True)
+        return get(peer_facts, "vtep_ip", required=True)
+
     def _get_path_group_id(self, path_group_name: str, config_id: int | None = None) -> int:
         """
-        TODO - implement algorithm to auto assign IDs - cf internal documenation
+        TODO - implement algorithm to auto assign IDs - cf internal documentation
         TODO - also implement algorithm for cross connects on public path_groups
         """
-        if path_group_name == "LAN_HA":
+        if path_group_name == self.shared_utils.wan_ha_path_group_name:
             return 65535
         if config_id is not None:
             return config_id
@@ -119,13 +181,17 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         return local_interfaces
 
-    def _get_dynamic_peers(self) -> dict | None:
+    def _get_dynamic_peers(self, disable_ipsec: bool) -> dict | None:
         """
-        TODO support ip_local and ipsec ?
+        TODO support ip_local ?
         """
         if not self.shared_utils.is_wan_client:
             return None
-        return {"enabled": True}
+
+        dynamic_peers = {"enabled": True}
+        if disable_ipsec:
+            dynamic_peers["ipsec"] = False
+        return dynamic_peers
 
     def _get_static_peers_for_path_group(self, path_group_name: str) -> list | None:
         """
@@ -140,9 +206,9 @@ class RouterPathSelectionMixin(UtilsMixin):
                 ipv4_addresses = []
 
                 for interface_dict in get(path_group, "interfaces", required=True):
-                    if (ip_address := interface_dict.get("ip_address")) is not None:
+                    if (public_ip := interface_dict.get("public_ip")) is not None:
                         # TODO - removing mask using split but maybe a helper is clearer
-                        ipv4_addresses.append(ip_address.split("/")[0])
+                        ipv4_addresses.append(public_ip.split("/")[0])
                 static_peers.append(
                     {
                         "router_ip": get(wan_route_server, "vtep_ip", required=True),

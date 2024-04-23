@@ -6,9 +6,11 @@ from __future__ import annotations
 import ipaddress
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 
 class UtilsMixin:
@@ -120,7 +122,7 @@ class UtilsMixin:
             redistribute_in_overlay = False
 
         return {
-            "static_routes": list(vrf_default_ipv4_static_routes),
+            "static_routes": natural_sort(vrf_default_ipv4_static_routes),
             "redistribute_in_underlay": redistribute_in_underlay,
             "redistribute_in_overlay": redistribute_in_overlay,
         }
@@ -188,61 +190,269 @@ class UtilsMixin:
         return False
 
     @cached_property
-    def _wan_control_plane_profile(self) -> str:
+    def _filtered_wan_vrfs(self) -> list:
         """
-        Control plane profile name
+        Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of mode
         """
-        control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
-        return get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE")
+        wan_vrfs = []
+
+        for vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
+            vrf_name = vrf["name"]
+            if vrf_name in self.shared_utils.vrfs or self.shared_utils.is_wan_server:
+                wan_vrf = {
+                    "name": vrf_name,
+                    "policy": get(vrf, "policy", default=self._default_wan_policy_name),
+                    "wan_vni": get(
+                        vrf, "wan_vni", required=True, org_key=f"Required `wan_vni` is missing for VRF {vrf_name} under `wan_virtual_topologies.vrfs`."
+                    ),
+                }
+
+                wan_vrfs.append(wan_vrf)
+
+        # Check that default is in the list as it is required everywhere
+        if (vrf_default := get_item(wan_vrfs, "name", "default")) is None:
+            wan_vrfs.append(
+                {
+                    "name": "default",
+                    "policy": f"{self._default_wan_policy_name}-WITH-CP",
+                    "wan_vni": 1,
+                    "original_policy": self._default_wan_policy_name,
+                }
+            )
+        else:
+            vrf_default["original_policy"] = vrf_default["policy"]
+            vrf_default["policy"] = f"{vrf_default['policy']}-WITH-CP"
+
+        return wan_vrfs
 
     @cached_property
-    def _wan_control_plane_application_profile(self) -> str:
+    def _wan_virtual_topologies_policies(self) -> list:
         """
-        Control plane application profile name
+        This function parses the input data and append the default-policy if not already present
+        """
+        policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
+        # If not overwritten, inject the default policy in case it is required for one of the VRFs
+        if get_item(policies, "name", self._default_wan_policy_name) is None:
+            policies.append(self._default_wan_policy)
 
-        TODO: make this configurable
-        """
-        return "CONTROL-PLANE-APPLICATION-PROFILE"
+        return policies
 
     @cached_property
-    def _wan_policy_key(self) -> str:
+    def _filtered_wan_policies(self) -> list:
         """
-        The key for policies is different for AutoVPN and CV Pathfinder
-        """
-        return "policy" if self.shared_utils.wan_mode == "cv-pathfinder" else "path_selection_policy"
+        Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of policies to configure on this device.
 
-    def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, context_path: str) -> dict:
+        This returns a structure where every policy contains a list of match statement and a default_match statement if any is required by inputs.
+        Inside each match and default_match statetement, the fully resolved load_balancing policy is present (it guarantees that the load-balance policy
+        is not empty).
+
+        The default VRF is marked as non default.
+        """
+        # to track the names already injected
+        filtered_policy_names = []
+        filtered_policies = []
+
+        for vrf in self._filtered_wan_vrfs:
+            # Need to handle VRF default differently and lookup for the original policy
+            lookup_name = get(vrf, "original_policy", default=vrf["policy"])
+            vrf_policy = get_item(
+                self._wan_virtual_topologies_policies,
+                "name",
+                lookup_name,
+                required=True,
+                custom_error_msg=(
+                    f"The policy {lookup_name} applied to vrf {vrf['name']} under `wan_virtual_topologies.vrfs` is not "
+                    "defined under `wan_virtual_topologies.policies`."
+                ),
+            ).copy()
+
+            vrf_policy["profile_prefix"] = lookup_name
+
+            if vrf["name"] == "default":
+                vrf_policy["is_default"] = True
+                vrf_policy["name"] = f"{vrf_policy['name']}-WITH-CP"
+
+            if vrf_policy["name"] in filtered_policy_names:
+                continue
+
+            self._update_policy_match_statements(vrf_policy)
+
+            filtered_policy_names.append(vrf_policy["name"])
+            filtered_policies.append(vrf_policy)
+
+        return filtered_policies
+
+    def _update_policy_match_statements(self, policy: dict) -> None:
+        """
+        Update the policy dict with two keys: `matches` and `default_match`
+        For each match (or default_match), the load_balancing policy is resolved and if it is empty
+        the match statement is not included.
+        """
+        matches = []
+
+        if get(policy, "is_default", default=False):
+            control_plane_virtual_topology = self._wan_control_plane_virtual_topology
+            load_balance_policy_name = self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile_name)
+
+            if (
+                load_balance_policy := self._generate_wan_load_balance_policy(
+                    load_balance_policy_name,
+                    control_plane_virtual_topology,
+                    policy["name"],
+                )
+            ) is None:
+                raise AristaAvdError("The WAN control-plane load-balance policy is empty. Make sure at least one path-group can be used in the policy")
+            matches.append(
+                {
+                    "application_profile": self._wan_control_plane_application_profile_name,
+                    "avt_profile": self._wan_control_plane_profile_name,
+                    "internet_exit_policy_name": get(control_plane_virtual_topology, "internet_exit.policy"),
+                    "traffic_class": get(control_plane_virtual_topology, "traffic_class"),
+                    "dscp": get(control_plane_virtual_topology, "dscp"),
+                    "load_balance_policy": load_balance_policy,
+                    "id": 254,
+                }
+            )
+
+        for application_virtual_topology in get(policy, "application_virtual_topologies", []):
+            name = get(
+                application_virtual_topology,
+                "name",
+                default=self._default_profile_name(policy["profile_prefix"], application_virtual_topology["application_profile"]),
+            )
+
+            load_balance_policy_name = self.shared_utils.generate_lb_policy_name(name)
+            context_path = (
+                f"wan_virtual_topologies.policies[{policy['profile_prefix']}]."
+                f"application_virtual_topologies[{application_virtual_topology['application_profile']}]"
+            )
+            load_balance_policy = self._generate_wan_load_balance_policy(load_balance_policy_name, application_virtual_topology, context_path)
+            if not load_balance_policy:
+                # Empty load balance policy so skipping
+                # TODO: Add "nodes" or similar under the profile and raise here
+                # if the node is set and there are no matching path groups.
+                continue
+
+            application_profile = get(application_virtual_topology, "application_profile", required=True)
+            profile_id = get(
+                application_virtual_topology,
+                "id",
+                required=self.shared_utils.is_cv_pathfinder_router,
+                org_key=(
+                    f"Missing mandatory `id` in "
+                    f"`wan_virtual_topologies.policies[{policy['name']}].application_virtual_topologies[{application_profile}]` "
+                    "when `wan_mode` is 'cv-pathfinder"
+                ),
+            )
+
+            matches.append(
+                {
+                    "application_profile": application_profile,
+                    "avt_profile": name,
+                    "internet_exit_policy_name": get(application_virtual_topology, "internet_exit.policy"),
+                    "traffic_class": get(application_virtual_topology, "traffic_class"),
+                    "dscp": get(application_virtual_topology, "dscp"),
+                    "load_balance_policy": load_balance_policy,
+                    "id": profile_id,
+                }
+            )
+
+        default_virtual_topology = get(
+            policy, "default_virtual_topology", required=True, org_key=f"wan_virtual_topologies.policies[{policy['profile_prefix']}].default_virtual_toplogy"
+        )
+        # Separating default_match as it is used differently
+        default_match = None
+        if not get(default_virtual_topology, "drop_unmatched", default=False):
+            name = get(
+                default_virtual_topology,
+                "name",
+                default=self._default_profile_name(policy["profile_prefix"], "DEFAULT"),
+            )
+            context_path = f"wan_virtual_topologies.policies[{policy['profile_prefix']}].default_virtual_topology"
+            # Verify that path_groups are set or raise
+            get(
+                default_virtual_topology,
+                "path_groups",
+                required=True,
+                org_key=f"Either 'drop_unmatched' or 'path_groups' must be set under '{context_path}'.",
+            )
+            load_balance_policy_name = self.shared_utils.generate_lb_policy_name(name)
+            load_balance_policy = self._generate_wan_load_balance_policy(load_balance_policy_name, default_virtual_topology, context_path)
+            if not load_balance_policy:
+                raise AristaAvdError(
+                    f"The `default_virtual_topology` path-groups configuration for `wan_virtual_toplogies.policies[{policy['name']}]` produces "
+                    "an empty load-balancing policy. Make sure at least one path-group present on the device is allowed in the "
+                    "`default_virtual_topology` path-groups."
+                )
+            application_profile = get(default_virtual_topology, "application_profile", default="default")
+
+            default_match = {
+                "application_profile": application_profile,
+                "avt_profile": name,
+                "internet_exit_policy_name": get(default_virtual_topology, "internet_exit.policy"),
+                "traffic_class": get(default_virtual_topology, "traffic_class"),
+                "dscp": get(default_virtual_topology, "dscp"),
+                "load_balance_policy": load_balance_policy,
+                "id": 1,
+            }
+
+        if not matches and not default_match:
+            # The policy is empty but should be assigned to a VRF
+            raise AristaAvdError(
+                f"The policy `wan_virtual_toplogies.policies[{policy['name']}]` cannot match any traffic but is assigned to a VRF. "
+                "Make sure at least one path-group present on the device is used in the policy."
+            )
+
+        policy["matches"] = matches
+        policy["default_match"] = default_match
+
+        return
+
+    def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, context_path: str) -> dict | None:
         """
         Generate and return a router path-selection load-balance policy.
+        If HA is enabled, inject the HA path-group with priority 1.
 
         Attrs:
         ------
         name (str): The name of the load balance policy
         input_dict (dict): The dictionary containing the list of path-groups and their preference.
         context_path (str): Key used for context for error messages.
-
-        TODO:
-        * add LAN_HA with prio 1 when HA is implemented
         """
-        wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
-        wan_load_balance_policy = {"name": name, "path_groups": [], **get(input_dict, "constraints", default={})}
+        wan_load_balance_policy = {
+            "name": name,
+            "path_groups": [],
+            **get(input_dict, "constraints", default={}),
+        }
+
+        if self.shared_utils.wan_mode == "cv-pathfinder":
+            wan_load_balance_policy["lowest_hop_count"] = get(input_dict, "lowest_hop_count")
 
         # An entry is composed of a list of path-groups in `names` and a `priority`
         policy_entries = get(input_dict, "path_groups", [])
 
-        at_least_one_priority_1_found = False
         for policy_entry in policy_entries:
-            # TODO check if it cannot be optimized further in shared_utils or validated in a global fashion - maybe
-            # schema? check that the LB policy has at least one prio 1 / preferred EVEN if the path group is not configured.
-            if (
-                priority := self._path_group_preference_to_eos_priority(
-                    get(policy_entry, "preference", default=1), f"{context_path}[{policy_entry.get('names')}]"
-                )
-            ) == 1:
-                at_least_one_priority_1_found = True
+            policy_entry_priority = None
+            if preference := get(policy_entry, "preference"):
+                policy_entry_priority = self._path_group_preference_to_eos_priority(preference, f"{context_path}[{policy_entry.get('names')}]")
+
             for path_group_name in policy_entry.get("names"):
+                if (priority := policy_entry_priority) is None:
+                    # No preference defined at the policy level, need to retrieve the default preference
+                    wan_path_group = get_item(
+                        self.shared_utils.wan_path_groups,
+                        "name",
+                        path_group_name,
+                        required=True,
+                        custom_error_msg=(
+                            f"Failed to retrieve path-group {path_group_name} from `wan_path_groups` when generating load balance policy {name}. "
+                            f"Verify the path-groups defined under {context_path}."
+                        ),
+                    )
+                    priority = self._path_group_preference_to_eos_priority(wan_path_group["default_preference"], f"wan_path_groups[{wan_path_group['name']}]")
+
                 # Skip path-group on this device if not present on the router except for pathfinders
-                if path_group_name not in wan_local_path_group_names and not self.shared_utils.is_wan_server:
+                if self.shared_utils.is_wan_client and path_group_name not in self.shared_utils.wan_local_path_group_names:
                     continue
 
                 path_group = {
@@ -252,21 +462,17 @@ class UtilsMixin:
 
                 wan_load_balance_policy["path_groups"].append(path_group)
 
-        if not at_least_one_priority_1_found:
-            raise AristaAvdError(f"At least one path-group must be configured with preference '1' or 'preferred' for {context_path}'.")
+        if len(wan_load_balance_policy["path_groups"]) == 0:
+            # The policy is empty
+            return None
+
+        # TODO for now adding LAN_HA only if the path-groups list is not empty
+        # then need to add the logic to check HA peer path-group and maybe return a policy with LAN_HA only.
+        if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
+            # Adding HA path-group with priority 1 - it does not count as an entry with priority 1
+            wan_load_balance_policy["path_groups"].append({"name": self.shared_utils.wan_ha_path_group_name})
 
         return wan_load_balance_policy
-
-    @cached_property
-    def _local_path_groups_connected_to_pathfinder(self) -> list:
-        """
-        Return list of names of local path_groups connected to pathfinder
-        """
-        return [
-            path_group["name"]
-            for path_group in self.shared_utils.wan_local_path_groups
-            if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
-        ]
 
     def _path_group_preference_to_eos_priority(self, path_group_preference: int | str, context_path: str) -> int:
         """
@@ -281,157 +487,235 @@ class UtilsMixin:
             return 1
         if path_group_preference == "alternate":
             return 2
+
+        failed_conversion = False
         try:
-            return int(path_group_preference)
-        except ValueError as e:
+            priority = int(path_group_preference)
+        except ValueError:
+            failed_conversion = True
+
+        if failed_conversion or not (1 <= priority <= 65535):
             raise AristaAvdError(
                 f"Invalid value '{path_group_preference}' for Path-Group preference - should be either 'preferred', "
-                f"'alternate' or an integer for {context_path}."
-            ) from e
+                f"'alternate' or an integer[1-65535] for {context_path}."
+            )
+
+        return priority
 
     @cached_property
-    def _wan_load_balance_policies(self) -> list:
+    def _default_wan_policy_name(self) -> str:
         """
-        Return a list of WAN router path-selection load-balance policies based on the local path-groups.
+        TODO make this configurable
         """
-        if not self.shared_utils.is_wan_router:
+        return "DEFAULT-POLICY"
+
+    @cached_property
+    def _default_policy_path_group_names(self) -> list:
+        """
+        Return the list of path-groups to consider when generating a default policy with AVD
+        whether for the default policy or the special Control-plane policy.
+        """
+        path_group_names = {
+            path_group["name"] for path_group in self.shared_utils.wan_path_groups if not get(path_group, "excluded_from_default_policy", default=False)
+        }
+        if not path_group_names.intersection(self.shared_utils.wan_local_path_group_names):
+            # No common path-group between this device local path-groups and the available path-group for the default policy
+            raise AristaAvdError(
+                f"Unable to generate the default WAN policy as none of the device local path-groups {self.shared_utils.wan_local_path_group_names} "
+                "is eligible to be included. Make sure that at least one path-group for the device is not configured with "
+                "`excluded_from_default_policy: true` under `wan_path_groups`."
+            )
+        return natural_sort(path_group_names)
+
+    @cached_property
+    def _default_wan_policy(self) -> dict:
+        """
+        If no policy is defined for a VRF under 'wan_virtual_topologies.vrfs', a default policy named DEFAULT-POLICY is used
+        where all traffic is matched in the default category and distributed amongst all path-groups.
+
+        Returning policy containing all path groups not excluded from default policy.
+        """
+
+        return {
+            "name": self._default_wan_policy_name,
+            "default_virtual_topology": {"path_groups": [{"names": self._default_policy_path_group_names}]},
+        }
+
+    def _default_profile_name(self, profile_name: str, application_profile: str) -> str:
+        """
+        Helper function to consistently return the default name of a profile
+
+        Returns {profile_name}-{application_profile}
+        """
+        return f"{profile_name}-{application_profile}"
+
+    @cached_property
+    def _wan_control_plane_virtual_topology(self) -> dict:
+        """
+        Return the Control plane virtual topology or the default one.
+
+        The default control_plane_virtual_topology, excluding path_groups with excluded_from_default_policy
+        """
+        if (control_plane_virtual_topology := get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology")) is None:
+            path_groups = self._default_policy_path_group_names
+            if self.shared_utils.is_wan_client:
+                # Filter only the path-groups connected to pathfinder
+                path_groups = [path_group for path_group in path_groups if path_group in self._local_path_groups_connected_to_pathfinder]
+            control_plane_virtual_topology = {"path_groups": [{"names": path_groups}]}
+        return control_plane_virtual_topology
+
+    @cached_property
+    def _wan_control_plane_profile_name(self) -> str:
+        """
+        Control plane profile name
+        """
+        vrf_default_policy_name = get(get_item(self._filtered_wan_vrfs, "name", "default"), "original_policy")
+        return get(self._wan_control_plane_virtual_topology, "name", default=f"{vrf_default_policy_name}-CONTROL-PLANE")
+
+    @cached_property
+    def _wan_control_plane_application_profile_name(self) -> str:
+        """
+        Control plane application profile name
+        """
+        return get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology.application_profile", default="APP-PROFILE-CONTROL-PLANE")
+
+    @cached_property
+    def _local_path_groups_connected_to_pathfinder(self) -> list:
+        """
+        Return list of names of local path_groups connected to pathfinder
+        """
+        return [
+            path_group["name"]
+            for path_group in self.shared_utils.wan_local_path_groups
+            if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
+        ]
+
+    @cached_property
+    def _filtered_internet_exit_policies(self) -> list:
+        """
+        - Parse self._filtered_wan_policies looking to internet_exit_policies.
+        - Verify each internet_exit_policy is present in inputs `cv_pathfinder_internet_exit_policies`.
+        - get_internet_exit_connections and insert into the policy dict.
+        - Return the list of relevant internet_exit_policies.
+        """
+        # Only supported for CV Pathfinder
+        if not self.shared_utils.is_cv_pathfinder_router:
             return []
 
-        # Control plane Load Balancing policy - if not configured, render the default one.
-        control_plane_virtual_topology = get(
-            self._hostvars,
-            "wan_virtual_topologies.control_plane_virtual_topology",
-            default={"path_groups": [{"names": self._local_path_groups_connected_to_pathfinder}]},
-        )
+        internet_exit_policy_names = set()
+        candidate_internet_exit_policies = []
+        configured_internet_exit_policies = get(self._hostvars, "cv_pathfinder_internet_exit_policies", [])
 
-        wan_load_balance_policies = [
-            self._generate_wan_load_balance_policy(f"LB-{self._wan_control_plane_profile}", control_plane_virtual_topology, self._default_vrf_policy["name"])
-        ]
         for policy in self._filtered_wan_policies:
-            for application_virtual_topology in get(policy, "application_virtual_topologies", []):
-                # TODO add internet exit once supported
-                name = get(application_virtual_topology, "name", default=f"{policy['name']}-{application_virtual_topology['application_profile']}")
-                context_path = (
-                    f"wan_virtual_topologies.policies[{policy['name']}].application_virtual_topologies[{application_virtual_topology['application_profile']}]"
-                )
-                append_if_not_duplicate(
-                    list_of_dicts=wan_load_balance_policies,
-                    primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", application_virtual_topology, context_path),
-                    context="Router Path-Selection Load-Balance policies.",
-                    context_keys=["name"],
-                )
-
-            default_virtual_topology = get(
-                policy, "default_virtual_topology", required=True, org_key=f"wan_virtual_topologies.policies[{policy['name']}].default_virtual_toplogy"
-            )
-            if not get(default_virtual_topology, "drop_unmatched", default=False):
-                name = get(default_virtual_topology, "name", default=f"{policy['name']}-DEFAULT")
-                context_path = f"wan_virtual_topologies.policies[{policy['name']}].default_virtual_topology"
-
-                # Verify that path_groups are set or raise
-                get(
-                    default_virtual_topology,
-                    "path_groups",
+            for match in get(policy, "matches", default=[]):
+                internet_exit_policy_name = match.get("internet_exit_policy_name")
+                if not internet_exit_policy_name or internet_exit_policy_name in internet_exit_policy_names:
+                    continue
+                internet_exit_policy = get_item(
+                    configured_internet_exit_policies,
+                    "name",
+                    internet_exit_policy_name,
                     required=True,
-                    org_key=f"Either 'drop_unmatched' or 'path_groups' must be set under '{context_path}'.",
+                    custom_error_msg=(
+                        f"The internet exit policy {internet_exit_policy_name} configured under "
+                        f"`wan_virtual_topologies.policies[name={policy['name']}].internet_exit.policy` "
+                        "is not defined under `cv_pathfinder_internet_exit_policies`."
+                    ),
+                ).copy()
+                internet_exit_policy_names.add(internet_exit_policy_name)
+                candidate_internet_exit_policies.append(internet_exit_policy)
+
+            if (default_match := policy.get("default_match")) is not None:
+                internet_exit_policy_name = default_match.get("internet_exit_policy_name")
+                if not internet_exit_policy_name or internet_exit_policy_name in internet_exit_policy_names:
+                    continue
+                internet_exit_policy = get_item(
+                    configured_internet_exit_policies,
+                    "name",
+                    internet_exit_policy_name,
+                    required=True,
+                    custom_error_msg=(
+                        f"The internet exit policy {internet_exit_policy_name} configured under "
+                        f"`wan_virtual_topologies.policies[name={policy['name']}].internet_exit.policy` "
+                        "is not defined under `cv_pathfinder_internet_exit_policies`."
+                    ),
+                ).copy()
+                internet_exit_policy_names.add(internet_exit_policy_name)
+                candidate_internet_exit_policies.append(internet_exit_policy)
+
+        if not internet_exit_policy_names:
+            return []
+
+        internet_exit_policies = []
+
+        for internet_exit_policy in candidate_internet_exit_policies:
+            internet_exit_policy["connections"] = self.get_internet_exit_connections(internet_exit_policy)
+            if not internet_exit_policy["connections"]:
+                # No local interface for this policy
+                # TODO: Decide if we should raise here instead
+                continue
+            internet_exit_policies.append(internet_exit_policy)
+
+        return internet_exit_policies
+
+    def get_internet_exit_connections(self, internet_exit_policy: dict) -> list:
+        """
+        Return a list of connections (dicts) for the given internet_exit_policy.
+
+        These are useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
+        """
+        # Only supporting Zscaler for now
+        if get(internet_exit_policy, "type") != "zscaler":
+            raise AristaAvdError(
+                f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={internet_exit_policy['name']}]."
+            )
+
+        cloud_name = get(internet_exit_policy, "zscaler.cloud_name", required=True)
+        connections = []
+
+        # Check if the policy has any local interface
+        for wan_interface in self.shared_utils.wan_interfaces:
+            wan_interface_internet_exit_policies = get(wan_interface, "cv_pathfinder_internet_exit.policies", default=[])
+            if (interface_policy_config := get_item(wan_interface_internet_exit_policies, "name", internet_exit_policy["name"])) is None:
+                continue
+
+            connection_base = {
+                "type": "tunnel",
+                "source_interface": wan_interface["name"],
+                "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
+                "ipsec_profile": "ZSCALER-IPSEC-PROFILE",
+            }
+
+            tunnel_id_range = range_expand(get(interface_policy_config, "tunnel_interface_numbers", required=True))
+
+            zscaler_endpoint_keys = ("primary", "secondary", "tertiary")
+            for index in range(len(zscaler_endpoint_keys)):
+                zscaler_endpoint_key = zscaler_endpoint_keys[index]
+                if zscaler_endpoint_key not in self._zscaler_endpoints:
+                    continue
+
+                zscaler_endpoint = self._zscaler_endpoints[zscaler_endpoint_key]
+
+                # PRI, SEC, TER used for groups
+                # TODO: consider if we should use DC names as group suffix.
+                suffix = zscaler_endpoint_key[0:3].upper()
+
+                destination_ip = zscaler_endpoint["ip_address"]
+                tunnel_id = tunnel_id_range[index]
+                connections.append(
+                    {
+                        **connection_base,
+                        "tunnel_id": tunnel_id,
+                        "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
+                        "tunnel_destination_ip": destination_ip,
+                        "description": f"Internet Exit {internet_exit_policy['name']} {suffix}",
+                        "exit_group": f"{internet_exit_policy['name']}_{suffix}",
+                        "metadata": {"zscaler_endpoint": zscaler_endpoint},
+                    }
                 )
 
-                append_if_not_duplicate(
-                    list_of_dicts=wan_load_balance_policies,
-                    primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", default_virtual_topology, context_path),
-                    context="Router Path-Selection Load-Balance policies.",
-                    context_keys=["name"],
-                )
-
-        return wan_load_balance_policies
+        return connections
 
     @cached_property
-    def _filtered_wan_vrfs(self) -> list:
-        """
-        Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of mode
-        """
-        wan_vrfs = []
-
-        for avt_vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
-            vrf_name = avt_vrf["name"]
-            if vrf_name in self.shared_utils.vrfs or self.shared_utils.is_wan_server:
-                # TODO check that the policy exists or raise
-                wan_vrf = {
-                    "name": vrf_name,
-                    self._wan_policy_key: get(avt_vrf, "policy", required=True),
-                }
-
-                wan_vrfs.append(wan_vrf)
-
-        # Check that default is in the list as it is required everywhere
-        if (vrf_default := get_item(wan_vrfs, "name", "default")) is None:
-            wan_vrfs.append(
-                {
-                    "name": "default",
-                    self._wan_policy_key: f"{self._default_vrf_policy['name']}-WITH-CP",
-                }
-            )
-        else:
-            vrf_default[self._wan_policy_key] = f"{vrf_default[self._wan_policy_key]}-WITH-CP"
-
-        return wan_vrfs
-
-    @cached_property
-    def _filtered_wan_policies(self) -> list:
-        """
-        Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of policies to configure on this device.
-
-        inject the default_vrf_policy
-        """
-        policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
-        # Need to handle VRF default differently
-        filtered_policies = [
-            get_item(
-                policies,
-                "name",
-                wan_vrf[self._wan_policy_key],
-                required=True,
-                custom_error_msg=(
-                    f"The policy {wan_vrf[self._wan_policy_key]} applied to vrf {wan_vrf['name']} under `wan_virtual_topologies.vrfs` is not "
-                    "defined under `wan_virtual_topologies.policies`."
-                ),
-            )
-            for wan_vrf in self._filtered_wan_vrfs
-            if wan_vrf["name"] != "default"
-        ]
-        filtered_policies.append(self._default_vrf_policy)
-        return filtered_policies
-
-    @cached_property
-    def _default_vrf_policy(self) -> dict:
-        """
-        Retrieves the name of the policy used for the default VRF and appending -WITH-CP to its name.
-
-        If not policy is defined for VRF default under 'wan_virtual_topologies.vrfs', use a default policy named DEFAULT-AVT-POLICY-WITH-CP where all
-        traffic is matched in the default category and distributed amongst all path-groups.
-        """
-        vrfs = get(self._hostvars, "wan_virtual_topologies.vrfs", [])
-        default_vrf = get_item(vrfs, "name", "default", default={})
-
-        if (vrf_default_policy := get(default_vrf, "policy")) is not None:
-            policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
-            # copy is safe here as we change only the name
-            default_policy = get_item(
-                policies,
-                "name",
-                vrf_default_policy,
-                required=True,
-                custom_error_msg=(
-                    f"The policy {vrf_default_policy} defined for vrf default under 'wan_virtual_topologies.vrfs' "
-                    "is not defined under 'wan_virtual_topologies.policies'."
-                ),
-            ).copy()
-        else:
-            wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
-            default_policy = {"name": "DEFAULT-AVT-POLICY", "default_virtual_topology": {"path_groups": [{"names": wan_local_path_group_names}]}}
-
-        default_policy["is_default"] = True
-
-        return default_policy
+    def _zscaler_endpoints(self) -> dict:
+        return get(self._hostvars, "zscaler_endpoints", default={})

@@ -177,7 +177,7 @@ $defs:
             documentation_options:
               table: node-type-uplink-configuration
             description: |
-              Local uplink interfaces
+              Local uplink interfaces.
               Each list item supports range syntax that can be expanded into a list of interfaces.
               If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
               Please note that default_interfaces are not defined by default, you should define these yourself.
@@ -507,14 +507,40 @@ $defs:
             keys:
               tenants:
                 type: list
+                description: |-
+                  Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all Tenants (default).
+                  This list also limits Tenants included by `always_include_vrfs_in_tenants`.
                 items:
                   type: str
                 default:
                   - all
               tags:
                 type: list
+                description: Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default).
                 items:
                   type: str
+                default:
+                  - all
+              allow_vrfs:
+                type: list
+                description: |-
+                  Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).
+                  This list also limits VRFs included by `always_include_vrfs_in_tenants`.
+                items:
+                  type: str
+                  convert_types:
+                    - int
+                default:
+                  - all
+              deny_vrfs:
+                type: list
+                description: |-
+                  Prevent configuration of Network Services defined under these VRFs.
+                  This list prevents the given VRFs to be included by any other filtering mechanism.
+                items:
+                  type: str
+                  convert_types:
+                    - int
                 default:
                   - all
               always_include_vrfs_in_tenants:
@@ -842,6 +868,50 @@ $defs:
               This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
             type: str
             format: ipv4
+          inband_mgmt_ipv6_address:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |
+              IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+              This overrides 'inband_mgmt_ipv6_subnet', hence the configuration of 'inband_mgmt_ipv6_subnet' is ignored.
+
+              If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+              The VLAN and SVI on the parent switches must be created using network services data models.
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv6
+          inband_mgmt_ipv6_subnet:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |
+              Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+              Parent l3leafs will have SVI with "ipv6 virtual-router" and host-route injection based on ARP.
+              This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+              SVI IP address will be assigned as follows:
+              virtual-router: <subnet> + 1
+              l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+              l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+              l2leafs       : <subnet> + 3 + <l2leaf id>
+              GW on l2leafs : <subnet> + 1
+              Assign range larger than total l2leafs + 5
+
+              Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv6_cidr
+          inband_mgmt_ipv6_gateway:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |
+              Default gateway configured in the 'inband_mgmt_vrf'.
+              Used when `inband_mgmt_ipv6_address` is set.
+              Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv6
           inband_mgmt_description:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -878,6 +948,24 @@ $defs:
               This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
             type: int
             default: 1500
+          inband_ztp:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |-
+              Enable to configure upstream device with proper configuration to allow downstream devices to ZTP inband.
+              This setting also requires that the `inband_mgmt_vlan` is set for the node.
+            type: bool
+            default: false
+          inband_ztp_lacp_fallback_delay:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |-
+              Set the LACP fallback timeout of the upstream device's port-channel towards the downstream inband ZTP node.
+              This setting also requires that `inband_ztp` is set for the node.
+            type: int
+            min: 0
+            max: 300
+            default: 30
           inband_management_subnet:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -1001,6 +1089,14 @@ $defs:
                 description: |
                   By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
                   This can be set manually if required, for example, to a value of "10.1.2.3".
+              mode:
+                type: str
+                valid_values:
+                  - boundary
+                default: boundary
+              mode_one_step:
+                type: bool
+                default: false
               ttl:
                 type: int
                 convert_types:
@@ -1123,7 +1219,6 @@ $defs:
             type: str
             $ref: "eos_designs#/keys/node_type_keys/items/keys/default_wan_role"
             description: |-
-              PREVIEW: This key is currently not supported
               Override the default WAN role.
 
               This is used both for AutoVPN and Pathfinder designs.
@@ -1131,55 +1226,70 @@ $defs:
               `server` indicates that the router is a route-reflector.
 
               Only supported if `overlay_routing_protocol` is set to `ibgp`.
-          cv_pathfinder_role:
+          cv_pathfinder_transit_mode:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            $ref: "eos_designs#/keys/node_type_keys/items/keys/default_cv_pathfinder_role"
+            valid_values:
+              - region
+              - zone
             description: |-
-              PREVIEW: This key is currently not supported
-              Override the default CV Pathfinder role.
+              Configure the transit mode for a WAN client for CV Pathfinder designs
+              only when the `wan_mode` root key is set to `cv_pathfinder`.
 
-              This key is used for Pathfinder designs only when the `wan_mode` root
-              key is set to `cv_pathfinder`.
-
-              `pathfinder` is only a valid if `wan_role` is `server`.
-              `edge` and `transit region` are only valid if `wan_role` is `client`.
+              'zone' is currently not supported.
           cv_pathfinder_region:
             documentation_options:
               table: node-type-wan-configuration
             type: str
             description: |-
-              PREVIEW: This key is currently not supported
-
               The CV Pathfinder region name.
+              This key is required for WAN routers but optional for pathfinders.
+              The region name must be defined under 'cv_pathfinder_regions'.
           cv_pathfinder_site:
             documentation_options:
               table: node-type-wan-configuration
             type: str
             description: |-
+              The CV Pathfinder site name.
+              This key is required for WAN routers but ignored for pathfinders.
+              The site name must be defined for the relevant region under 'cv_pathfinder_regions'.
+          wan_ha:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: dict
+            description: |-
               PREVIEW: This key is currently not supported
 
-              The CV Pathfinder site name.
+              The key is supported only if `wan_mode` == `cv-pathfinder`.
+              AutoVPN support is still to be determined.
+
+              Maximum 2 devices supported by group for HA.
+
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group.
+              ipsec:
+                type: bool
+                default: true
+                description: Enable / Disable IPsec over HA path-group when HA is enabled.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration
             type: str
             $ref: "eos_cli_config_gen#/keys/router_path_selection/keys/tcp_mss_ceiling/keys/ipv4_segment_size"
-            description: |-
-              PREVIEW: This key is currently not supported
-
-              IPv4 MSS value configured under "router path-selection" on WAN Devices.
+            description: IPv4 MSS value configured under "router path-selection" on WAN Devices.
             default: "auto"
           l3_interfaces:
             type: list
             $ref: "eos_designs#/$defs/node_type_l3_interfaces"
             documentation_options:
-              table: wan-interfaces-settings
+              table: node-type-l3-interfaces-configuration
             description: |-
-              PREVIEW: This key is currently not supported
-
-              L3 Interfaces currently only use for WAN interfaces.
+              L3 Interfaces to configure on the node.
+              Used to define the node for WAN interfaces when `wan_carrier` is set.
             items:
               type: dict
               keys:
@@ -1227,3 +1337,20 @@ $defs:
             name:
               type: str
               description: The Node Name is used as "hostname".
+            downlink_pools:
+              documentation_options:
+                table: node-type-uplink-configuration
+              description: IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch.
+              type: list
+              items:
+                type: dict
+                keys:
+                  ipv4_pool:
+                    type: str
+                    format: ipv4_cidr
+                    description: IPv4 pool from which subnets will be allocated for links to downlink switches.
+                  downlink_interfaces:
+                    type: list
+                    description: List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.
+                    items:
+                      type: str

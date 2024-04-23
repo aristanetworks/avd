@@ -120,7 +120,7 @@ class YamlLineGenBase(ABC):
         Renders YamlLines for this field including description.
         """
 
-        # Build semicolon seperated list of field properties.
+        # Build semicolon separated list of field properties.
         value_fields = [
             self.schema.type,
             self.render_restrictions(),
@@ -147,6 +147,8 @@ class YamlLineGenBase(ABC):
         if self.schema.description:
             indentation = self.get_indentation(honor_first_list_key=False)
             description = indent(self.schema.description.strip(), f"{indentation}# ")
+            # Insert # with no extra whitespace for blank lines.
+            description = indent(description, f"{indentation}#", lambda line: line == "\n")
             yield YamlLine(line=f"\n{description}")
 
     def render_deprecation_description(self) -> Generator[YamlLine]:
@@ -292,7 +294,7 @@ class YamlLineGenList(YamlLineGenBase):
         Renders YamlLine for this field.
         """
 
-        # Build semicolon seperated list of field properties.
+        # Build semicolon separated list of field properties.
         properties_fields = [
             self.render_restrictions(),
             self.get_default(),
@@ -355,7 +357,7 @@ class YamlLineGenDict(YamlLineGenBase):
         Renders YamlLine for this field.
         """
 
-        # Build semicolon seperated list of field properties.
+        # Build semicolon separated list of field properties.
         properties_fields = [
             self.render_restrictions(),
             self.get_default(),

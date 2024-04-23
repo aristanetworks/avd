@@ -14,6 +14,8 @@ keys:
     keys:
       platform:
         type: str
+      system_mac_address:
+        type: str
       cv_tags:
         type: dict
         keys:
@@ -49,7 +51,7 @@ keys:
                         required: true
       cv_pathfinder:
         type: dict
-        description: Metadata used for CV Pathfinder visualization on CloudVision
+        description: Metadata used for CV Pathfinder visualization on CloudVision.
         keys:
           role:
             type: str
@@ -161,6 +163,8 @@ keys:
                             type: int
                           lossrate:
                             type: str
+                            convert_types:
+                              - float
                       description:
                         type: str
                       id:

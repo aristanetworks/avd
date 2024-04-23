@@ -13,7 +13,7 @@ keys:
       enabled:
         type: bool
         required: true
-        description: "Enable monitor layer1"
+        description: "Enable monitor layer1."
       logging_mac_fault:
         type: bool
         description: "Enable MAC fault logging."

@@ -6,9 +6,13 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
+
+from ..interface_descriptions import InterfaceDescriptionData
 
 
 class UtilsMixin:
@@ -83,8 +87,13 @@ class UtilsMixin:
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
+                        "spanning_tree_portfast": get(uplink, "peer_spanning_tree_portfast"),
                         "structured_config": get(uplink, "structured_config"),
                     }
+                    if get(peer_facts, "inband_ztp"):
+                        link["inband_ztp_vlan"] = get(peer_facts, "inband_mgmt_vlan")
+                        link["inband_ztp_lacp_fallback_delay"] = get(peer_facts, "inband_ztp_lacp_fallback_delay")
+
                     if (subinterfaces := get(uplink, "subinterfaces")) is not None:
                         link["subinterfaces"] = [
                             {
@@ -144,12 +153,18 @@ class UtilsMixin:
         else:
             iface_type = "routed"
 
-        # TODO move this to description module?
-        interface_description = (
-            l3_interface.get("description")
-            or "_".join([elem for elem in [l3_interface.get("peer"), l3_interface.get("peer_interface")] if elem is not None])
-            or None
-        )
+        interface_description = l3_interface.get("description")
+        if not interface_description:
+            interface_description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=interface_name,
+                    peer=l3_interface.get("peer"),
+                    peer_interface=l3_interface.get("peer_interface"),
+                    wan_carrier=l3_interface.get("wan_carrier"),
+                    wan_circuit_id=l3_interface.get("wan_circuit_id"),
+                )
+            )
 
         # TODO catch if ip_address is not valid or not dhcp
         ip_address = get(
@@ -170,6 +185,8 @@ class UtilsMixin:
             "description": interface_description,
             "speed": l3_interface.get("speed"),
             "service_profile": l3_interface.get("qos_profile"),
+            "access_group_in": get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_in.name"),
+            "access_group_out": get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_out.name"),
             "eos_cli": l3_interface.get("raw_eos_cli"),
             "struct_cfg": l3_interface.get("structured_config"),
         }
@@ -177,10 +194,146 @@ class UtilsMixin:
         if iface_type == "l3dot1q":
             interface["encapsulation_dot1q_vlan"] = encapsulation
 
-        if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", False):
+        if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", True):
             interface["dhcp_client_accept_default_route"] = True
 
-        if self.shared_utils.cv_pathfinder_role:
-            interface["flow_tracker"] = {"hardware": self.shared_utils.wan_ha_flow_tracker_name}
+        # TODO: enable flow tracking once toggle is in place
+        # if self.shared_utils.is_cv_pathfinder_router:
+        #    interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
+        if self.shared_utils.is_wan_router and (wan_carrier_name := l3_interface.get("wan_carrier")) is not None and interface["access_group_in"] is None:
+            if not get(get_item(self.shared_utils.wan_carriers, "name", wan_carrier_name, default={}), "trusted"):
+                raise AristaAvdError(
+                    (
+                        "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
+                        f"under 'wan_carriers'. 'ipv4_acl_in' is missing on interface '{interface_name}'."
+                    )
+                )
 
         return strip_empties_from_dict(interface)
+
+    def _get_l3_uplink_with_l2_as_subint(self, link: dict) -> tuple[dict, list[dict]]:
+        """
+        Return a tuple with main uplink interface, list of subinterfaces representing each SVI.
+        """
+        vlans = [int(vlan) for vlan in range_expand(link["vlans"])]
+
+        # Main interface
+        # Routed interface with no config unless there is an SVI matching the native-vlan, then it will contain the config for that SVI
+
+        interfaces = []
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                for svi in vrf["svis"]:
+                    svi_id = int(svi["id"])
+                    # Skip any vlans not part of the link
+                    if svi_id not in vlans:
+                        continue
+
+                    interfaces.append(self._get_l2_as_subint(link, svi, vrf))
+
+        # If we have the main interface covered, we can just exclude it from the list and return as main interface.
+        # Otherwise we return an almost empty dict as the main interface since it was already covered by the calling function.
+        main_interface = get_item(interfaces, "name", link["interface"], default={"type": "routed", "mtu": self.shared_utils.p2p_uplinks_mtu})
+        main_interface.pop("description", None)
+
+        if (mtu := main_interface.get("mtu", 1500)) != self.shared_utils.p2p_uplinks_mtu:
+            raise AristaAvdError(
+                f"MTU '{self.shared_utils.p2p_uplinks_mtu}' set for 'p2p_uplinks_mtu' conflicts with MTU '{mtu}' "
+                f"set on SVI for uplink_native_vlan '{link['native_vlan']}'."
+                "Either adjust the MTU on the SVI or p2p_uplinks_mtu or change/remove the uplink_native_vlan setting."
+            )
+        return main_interface, [interface for interface in interfaces if interface["name"] != link["interface"]]
+
+    def _get_l2_as_subint(self, link: dict, svi: dict, vrf: dict) -> dict:
+        """
+        Return structured config for one subinterface representing the given SVI.
+        Only supports static IPs or VRRP.
+        """
+        svi_id = int(svi["id"])
+        is_native = svi_id == link.get("native_vlan")
+        interface_name = link["interface"] if is_native else f"{link['interface']}.{svi_id}"
+        subinterface = {
+            "name": interface_name,
+            "peer": link["peer"],
+            "peer_interface": f"{link['peer_interface']} VLAN {svi_id}",
+            "peer_type": link["peer_type"],
+            "description": default(svi.get("description"), svi["name"]),
+            "shutdown": not (svi.get("enabled", False)),
+            "type": "routed" if is_native else "l3dot1q",
+            "encapsulation_dot1q_vlan": None if is_native else svi_id,
+            "vrf": vrf["name"] if vrf["name"] != "default" else None,
+            "ip_address": svi.get("ip_address"),
+            "ipv6_address": svi.get("ipv6_address"),
+            "ipv6_enable": svi.get("ipv6_enable"),
+            "mtu": svi.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
+            "eos_cli": svi.get("raw_eos_cli"),
+            "struct_cfg": svi.get("structured_config"),
+        }
+        if (mtu := subinterface["mtu"]) is not None and subinterface["mtu"] > self.shared_utils.p2p_uplinks_mtu:
+            raise AristaAvdError(
+                f"MTU '{self.shared_utils.p2p_uplinks_mtu}' set for 'p2p_uplinks_mtu' must be larger or equal to MTU '{mtu}' "
+                f"set on the SVI '{svi_id}'."
+                "Either adjust the MTU on the SVI or p2p_uplinks_mtu."
+            )
+
+        # Only set VRRPv4 if ip_address is set
+        if subinterface["ip_address"] is not None:
+            # TODO in separate PR adding VRRP support for SVIs
+            pass
+
+        # Only set VRRPv6 if ipv6_address is set
+        if subinterface["ipv6_address"] is not None:
+            # TODO in separate PR adding VRRP support for SVIs
+            pass
+
+        # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
+        self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
+
+        # TODO: enable flow tracking once toggle is in place
+        # Configuring flow tracking on LAN interfaces of WAN routers
+        # if self.shared_utils.is_cv_pathfinder_client:
+        #    subinterface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+
+        return strip_empties_from_dict(subinterface)
+
+    @cached_property
+    def _l3_interface_acls(self) -> dict[str, dict[str, dict]]:
+        """
+        Returns a dict of
+            <interface_name>: {
+                "ipv4_acl_in": <generated_ipv4_acl>,
+                "ipv4_acl_out": <generated_ipv4_acl>,
+            }
+        Only contains interfaces with ACLs and only the ACLs that are set,
+        so use `get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_in")` to get the value.
+        """
+        l3_interface_acls = {}
+        for l3_interface in self.shared_utils.l3_interfaces:
+            ipv4_acl_in = get(l3_interface, "ipv4_acl_in")
+            ipv4_acl_out = get(l3_interface, "ipv4_acl_out")
+            if ipv4_acl_in is None and ipv4_acl_out is None:
+                continue
+
+            interface_name = l3_interface["name"]
+            interface_ip: str | None = l3_interface.get("dhcp_ip") if (ip_address := l3_interface.get("ip_address")) == "dhcp" else ip_address
+            if interface_ip is not None and "/" in interface_ip:
+                interface_ip = interface_ip.split("/", maxsplit=1)[0]
+            peer_ip: str | None = get(l3_interface, "peer_ip")
+
+            if ipv4_acl_in is not None:
+                l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
+                    name=ipv4_acl_in,
+                    interface_name=interface_name,
+                    interface_ip=interface_ip,
+                    peer_ip=peer_ip,
+                )
+            if ipv4_acl_out is not None:
+                l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
+                    name=ipv4_acl_out,
+                    interface_name=interface_name,
+                    interface_ip=interface_ip,
+                    peer_ip=peer_ip,
+                )
+
+        return l3_interface_acls

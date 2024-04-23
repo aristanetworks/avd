@@ -58,8 +58,8 @@ $defs:
                 pool_name:
                   type: str
                   description: |
-                    required if 'nat_type' is pool, pool-address-only or pool-full-cone
-                    ignored if 'nat_type' is overload
+                    required if 'nat_type' is pool, pool-address-only or pool-full-cone.
+                    ignored if 'nat_type' is overload.
                 priority:
                   type: int
                   convert_types:

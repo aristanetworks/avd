@@ -1,0 +1,43 @@
+---
+loopback_ipv4_pool: 192.168.0.0/24
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: connected-endpoints-monitor-sessions-mismatch-direction
+
+servers:
+  # conflicting direction for monitor-session for port-channel 44
+  - name: INDIVIDUAL_1
+    adapters:
+      - switches: [connected-endpoints-monitor-sessions-mismatch-direction]
+        switch_ports: [Ethernet14]
+        description: Monitor port-channel 44
+        port_channel:
+          channel_id: 44
+          mode: active
+        monitor_sessions:
+          - name: DMF
+            role: source
+            source_settings:
+              direction: rx
+      - switches: [connected-endpoints-monitor-sessions-mismatch-direction]
+        switch_ports: [Ethernet15]
+        description: Monitor port-channel 44
+        port_channel:
+          channel_id: 44
+          mode: active
+        monitor_sessions:
+          - name: DMF
+            role: source
+            source_settings:
+              direction: both
+      - switches: [connected-endpoints-monitor-sessions-mismatch-direction]
+        switch_ports: [Ethernet16]
+        description: Destination
+        monitor_sessions:
+          - name: DMF
+            role: destination
+
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for Monitor session defined under connected_endpoints. {'name': 'Port-Channel44', 'direction': 'both'} conflicts with {'name': 'Port-Channel44', 'direction': 'rx'}."

@@ -238,7 +238,7 @@ class UtilsMixin:
 
     def _append_peer(self, peers_dict: dict, peer_name: str, peer_facts: dict) -> None:
         """
-        Retieve bgp_as and "overlay.peering_address" from peer_facts and append
+        Retrieve bgp_as and "overlay.peering_address" from peer_facts and append
         a new peer to peers_dict
         {
             peer_name: {
@@ -279,7 +279,8 @@ class UtilsMixin:
                 stun_server_profiles.setdefault(path_group["name"], []).extend(
                     {
                         "name": self._stun_server_profile_name(wan_route_server, path_group["name"], get(interface_dict, "name", required=True)),
-                        "ip_address": get(interface_dict, "ip_address", required=True).split("/")[0],
+                        "ip_address": get(interface_dict, "public_ip", required=True),
+                        "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
                     }
                     for interface_dict in get(path_group, "interfaces", required=True)
                 )

@@ -17,7 +17,7 @@ from .resolvemodel import merge_schema_from_ref
 """
 This module provides Pydantic models (classes) representing the meta-schema of the AVD Schema.
 
-Each variable in the schema is called a field, and for each type of field we have a corrosponding Pydantic model:
+Each variable in the schema is called a field, and for each type of field we have a corresponding Pydantic model:
 - AvdSchemaInt
 - AvdSchemaBool
 - AvdSchemaStr
@@ -112,12 +112,16 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     """
     Primary keys are always included in the documentation tables if any other key of the same dict is present.
     """
+    _is_unique: bool = False
+    """
+    Key values must be unique. This is set on ancestor list schemas
+    """
     _is_first_list_key: bool = False
     """
     Simple types or the first key of a dict contained in a list will be rendered with a hyphen as part of the indentation.
     """
 
-    # Signal to __init__ if the $ref in the schema should be resolved before initilizing the pydantic model.
+    # Signal to __init__ if the $ref in the schema should be resolved before initializing the pydantic model.
     _resolve_schema: ClassVar[bool] = True
 
     def __init__(self, resolve_schema: bool | None = None, **data):
@@ -383,6 +387,18 @@ class AvdSchemaList(AvdSchemaBaseModel):
     """
     secondary_key: str | None = Field(None, pattern=KEY_PATTERN)
     """Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."""
+    unique_keys: list[str] | None = None
+    """
+    Name of a key in a list of dictionaries.
+    The configured key must have unique values between the list elements.
+    This can also be a variable path using dot-notation like 'parent_key.child_key' in case of nested lists of dictionaries.
+    """
+    allow_duplicate_primary_key: bool | None = None
+    """
+    Set to True to allow duplicate primary_key values for a list of dicts.
+    Useful when primary key is only used for convert_dicts.
+    NOTE! Should only be used in eos_designs inputs since we cannot merge on primary key if there are duplicate entries.
+    """
 
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenList
@@ -407,7 +423,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
     def model_post_init(self, __context: Any) -> None:
         """
         Overrides BaseModel.model_post_init().
-        Runs after this model including all child models have been initilized.
+        Runs after this model including all child models have been initialized.
 
         Sets Internal attributes on child schema (if set):
             - _parent_schema
@@ -415,6 +431,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
 
         Sets Internal attributes on grandchild schemas if child schema is a dict:
             - _is_primary_key
+            - _is_unique
             - _is_first_list_key
         """
         if self.items:
@@ -428,6 +445,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
 
                     if self.primary_key and self.primary_key == key:
                         grandchildschema._is_primary_key = True
+                        grandchildschema._is_unique = self.allow_duplicate_primary_key is not True
                         # No need to look any further if we found the primary key.
                         break
             else:
@@ -514,7 +532,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     def model_post_init(self, __context: Any) -> None:
         """
         Overrides BaseModel.model_post_init().
-        Runs after this model including all child models have been initilized.
+        Runs after this model including all child models have been initialized.
 
         Set Internal attributes on child schemas:
             - _key

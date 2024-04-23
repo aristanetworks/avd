@@ -1,0 +1,97 @@
+---
+# Testing missing id for a policy
+wan_mode: cv-pathfinder
+# Disabling underlay for tests
+underlay_routing_protocol: none
+
+bgp_as: 65000
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+        location: Somewhere
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
+
+wan_route_servers:
+  - hostname: cv-pathfinder-pathfinder
+    vtep_ip: 10.10.10.10
+    path_groups:
+      - name: INET
+        interfaces:
+          - name: Ethernet1
+            public_ip: 192.168.55.55
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+default_node_types:
+  - node_type: wan_router
+    match_hostnames:
+      - "missing-avt-id-cv-pathfinder"
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+  nodes:
+    - name: missing-avt-id-cv-pathfinder
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site422
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ATT
+          wan_circuit_id: 666
+          dhcp_accept_default_route: true
+          ip_address: dhcp
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
+
+tenants:
+  - name: TenantA
+    vrfs:
+      - name: default
+        vrf_id: 1
+      - name: PROD
+        vrf_id: 42
+
+wan_virtual_topologies:
+  vrfs:
+    - name: PROD
+      wan_vni: 42
+  policies:
+    - name: DEFAULT-POLICY
+      default_virtual_topology:
+        drop_unmatched: true
+      application_virtual_topologies:
+        - application_profile: TEST
+          path_groups:
+            - names: [ INET ]
+          # no id
+
+application_classification:
+  application_profiles:
+    - name: TEST
+
+expected_error_message: "Missing mandatory `id` in `wan_virtual_topologies.policies[DEFAULT-POLICY].application_virtual_topologies[TEST]` when `wan_mode` is 'cv-pathfinder"

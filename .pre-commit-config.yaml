@@ -79,7 +79,7 @@ repos:
         name: Check for changes when running isort on all python files
 
   - repo: https://github.com/psf/black
-    rev: 23.12.1
+    rev: 24.4.0
     hooks:
       - id: black
         name: Check for changes when running Black on all python files
@@ -123,6 +123,33 @@ repos:
       - id: j2lint
         name: Check for Linting errors on Jinja2 files
 
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.6
+    hooks:
+      - id: codespell
+        name: Check for common misspellings in text files.
+        entry: codespell
+        language: python
+        types: [text]
+        args:
+          - '--ignore-words=.github/ignore-codespell-words'  # Ignore words listed in this file
+        exclude: >  # List of regex patterns for files/directories to exclude
+          (?x)^(
+            .*\.cfg|  # Exclude all .cfg files
+            .*\.svg|  # Exclude all .svg files
+            .*\.excalidraw|  # Exclude all .excalidraw files
+            .*\.rst|  # Exclude all .rst files
+            python-avd/pyavd/vendor/.*|  # Exclude all files in this directory
+            ansible_collections/arista/avd/CHANGELOG.rst| # Exclude auto generated CHANGELOG.rst file
+            ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
+            ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
+            ansible_collections/arista/avd/roles/.*/schemas/.*schema\.yml| # Exclude YAML schemas file
+            ansible_collections/arista/avd/roles/.*/schemas/.*jsonschema\.json| # Exclude JSON schemas file
+            ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/.*| # Exclude auto generated files for CV API
+            ansible_collections/arista/avd/plugins/plugin_utils/cv_client/extra_cv_protos/.*| # Exclude extra CV proto files
+            ansible-avd/ansible_collections/arista/avd/docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
+          )$
+
   - repo: local
     hooks:
 
@@ -139,6 +166,13 @@ repos:
         language: system
         types: [python]
         files: ansible_collections/arista/avd/plugins/filter/
+
+      - id: docs-plugin-lookup
+        name: Build documentation for collection lookup plugins
+        entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Lookup_plugins/"
+        language: system
+        types: [python]
+        files: ansible_collections/arista/avd/plugins/lookup/
 
       - id: docs-plugin-test
         name: Build documentation for collection test plugins
