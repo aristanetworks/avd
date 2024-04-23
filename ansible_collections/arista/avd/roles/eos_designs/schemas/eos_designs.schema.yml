@@ -2155,6 +2155,7 @@ keys:
           - sampled
           - hardware
           description: Set the default flow tracker type.
+          default: sampled
         mlag_support:
           type: bool
           default: false
@@ -8463,7 +8464,12 @@ $defs:
             valid_values:
             - sampled
             - hardware
-            description: Set the flow tracker type
+            description: 'Set the flow tracker type.
+
+              Override the `default_flow_tracker_type`` set at the `node_type_key`
+              level.
+
+              `default_flow_tracker_type` default value is `sampled`.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

@@ -114,6 +114,7 @@ keys:
             - "sampled"
             - "hardware"
           description: Set the default flow tracker type.
+          default: "sampled"
         mlag_support:
           type: bool
           default: false

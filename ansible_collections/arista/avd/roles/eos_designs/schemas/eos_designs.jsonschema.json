@@ -15866,6 +15866,7 @@
               "hardware"
             ],
             "description": "Set the default flow tracker type.",
+            "default": "sampled",
             "title": "Default Flow Tracker Type"
           },
           "mlag_support": {
