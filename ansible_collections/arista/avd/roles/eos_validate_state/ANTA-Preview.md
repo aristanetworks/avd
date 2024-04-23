@@ -15,7 +15,7 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
 !!! warning
-    ANTA version has been bumped to **0.13.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode).
+    ANTA version has been bumped to **0.14.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode).
 
 # Overview
 
@@ -98,7 +98,7 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
   ```
 
 !!! info
-    ANTA mode also supports other functionnalities. For more details, please refer to the [input variables](#input-variables) below.
+    ANTA mode also supports other functionalities. For more details, please refer to the [input variables](#input-variables) below.
 
 ## Test Categories
 

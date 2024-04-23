@@ -28,6 +28,22 @@
 | {{ application.name }} | {{ src_prefix }} | {{ dest_prefix }} | {{ protocol }} | {{ protocol_ranges }} | {{ tcp_src_port }} | {{ tcp_dest_port }} | {{ udp_src_port }} | {{ udp_dest_port }} |
 {%             endfor %}
 {%         endif %}
+{%         if application_traffic_recognition.applications.l4_applications is arista.avd.defined %}
+
+#### Layer 4 Applications
+
+| Name | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set |
+| ---- | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ |
+{%             for application in application_traffic_recognition.applications.l4_applications | arista.avd.natural_sort('name') %}
+{%                 set tcp_src_port = application.tcp_src_port_set_name | arista.avd.default("-") %}
+{%                 set tcp_dest_port = application.tcp_dest_port_set_name | arista.avd.default("-") %}
+{%                 set udp_src_port = application.udp_src_port_set_name | arista.avd.default("-") %}
+{%                 set udp_dest_port = application.udp_dest_port_set_name | arista.avd.default("-") %}
+{%                 set protocol_ranges = ", ".join(application.protocol_ranges | arista.avd.default(["-"])) %}
+{%                 set protocol = ", ".join(application.protocols | arista.avd.default(["-"])) %}
+| {{ application.name }} | {{ protocol }} | {{ protocol_ranges }} | {{ tcp_src_port }} | {{ tcp_dest_port }} | {{ udp_src_port }} | {{ udp_dest_port }} |
+{%             endfor %}
+{%         endif %}
 {%     endif %}
 {%     if application_traffic_recognition.application_profiles is arista.avd.defined %}
 

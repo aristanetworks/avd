@@ -15,10 +15,10 @@ keys:
         keys:
           ipv4:
             type: str
-            description: IPv4 Address
+            description: IPv4 Address.
           ipv6:
             type: str
-            description: IPv6 Address
+            description: IPv6 Address.
       nexthop_fast_failover:
         type: bool
         default: false
@@ -32,7 +32,7 @@ keys:
           keys:
             name:
               type: str
-              description: Destination-VRF
+              description: Destination-VRF.
               convert_types:
                 - int
             leak_routes:
@@ -46,7 +46,7 @@ keys:
                       - int
                   subscribe_policy:
                     type: str
-                    description: Route-Map Policy
+                    description: Route-Map Policy.
             routes:
               type: dict
               keys:
@@ -57,4 +57,4 @@ keys:
                     keys:
                       name:
                         type: str
-                        description: Dynamic Prefix List Name
+                        description: Dynamic Prefix List Name.

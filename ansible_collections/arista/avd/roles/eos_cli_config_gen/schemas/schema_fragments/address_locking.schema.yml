@@ -13,10 +13,10 @@ keys:
         type: list
         items:
           type: str
-          description: DHCP server IPv4 address
+          description: DHCP server IPv4 address.
       disabled:
         type: bool
-        description: Disable IP locking on configured ports
+        description: Disable IP locking on configured ports.
       leases:
         type: list
         items:
@@ -25,11 +25,11 @@ keys:
             ip:
               type: str
               required: true
-              description: IP address
+              description: IP address.
             mac:
               type: str
               required: true
-              description: MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)
+              description: MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh).
       local_interface:
         type: str
       locked_address:
@@ -37,10 +37,10 @@ keys:
         keys:
           expiration_mac_disabled:
             type: bool
-            description: Configure deauthorizing locked addresses upon MAC aging out
+            description: Configure deauthorizing locked addresses upon MAC aging out.
           ipv4_enforcement_disabled:
             type: bool
-            description: Configure enforcement for locked IPv4 addresses
+            description: Configure enforcement for locked IPv4 addresses.
           ipv6_enforcement_disabled:
             type: bool
-            description: Configure enforcement for locked IPv6 addresses
+            description: Configure enforcement for locked IPv6 addresses.

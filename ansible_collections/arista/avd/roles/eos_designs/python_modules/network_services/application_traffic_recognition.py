@@ -146,7 +146,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         def _append_object_to_list_of_dicts(path: str, obj_name: str, list_of_dicts: list, message: str | None = None, required=True) -> None:
             """
             Helper function
-            Technically impossible to get a duplicate, just reusing the methode when the same applicaiton is used in multiple places
+            Technically impossible to get a duplicate, just reusing the method when the same application is used in multiple places
             """
             if (
                 obj := get_item(

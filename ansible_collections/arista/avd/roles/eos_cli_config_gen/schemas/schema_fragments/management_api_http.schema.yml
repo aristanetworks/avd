@@ -14,11 +14,11 @@ keys:
       enable_https:
         type: bool
       https_ssl_profile:
-        description: SSL Profile Name
+        description: SSL Profile Name.
         type: str
       default_services:
         type: bool
-        description: "Enable default services: capi-doc and tapagg"
+        description: "Enable default services: capi-doc and tapagg."
       enable_vrfs:
         type: list
         primary_key: name
@@ -28,22 +28,22 @@ keys:
           type: dict
           keys:
             name:
-              description: VRF Name
+              description: VRF Name.
               type: str
               convert_types:
                 - int
             access_group:
-              description: Standard IPv4 ACL name
+              description: Standard IPv4 ACL name.
               type: str
             ipv6_access_group:
-              description: Standard IPv6 ACL name
+              description: Standard IPv6 ACL name.
               type: str
       protocol_https_certificate:
         type: dict
         keys:
           certificate:
             type: str
-            description: Name of certificate; private key must also be specified
+            description: Name of certificate; private key must also be specified.
           private_key:
             type: str
-            description: Name of private key; certificate must also be specified
+            description: Name of private key; certificate must also be specified.

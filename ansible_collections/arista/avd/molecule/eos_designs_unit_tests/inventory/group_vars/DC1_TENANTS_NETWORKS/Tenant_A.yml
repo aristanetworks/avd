@@ -253,7 +253,7 @@ tenant_a:
             enabled: True
             description: "Single description"
             descriptions: ["DC1-BL1A descriptions preferred over single description", "DC1-BL1B descriptions preferred over single description"]
-            # no description nor desciptions is tested in Tenant_OSPF below
+            # no description nor descriptions is tested in Tenant_OSPF below
       - name: Tenant_A_OSPF
         vrf_id: 16
         ospf:

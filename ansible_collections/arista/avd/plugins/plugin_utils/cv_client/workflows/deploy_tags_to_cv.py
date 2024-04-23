@@ -112,7 +112,7 @@ async def deploy_tags_to_cv(
     devices_by_serial_number = {tag.device.serial_number: tag.device for tag in deployed_tags if tag.device is not None}
 
     # If strict, we remove any assignments not specified in the inputs.
-    # If not strict, we remove any assignments with the same labels but not sepcified in the inputs.
+    # If not strict, we remove any assignments with the same labels but not specified in the inputs.
     if strict:
         assignments_to_unassign = [
             (label, value, device_serial_number, interface)

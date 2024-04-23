@@ -12,7 +12,7 @@ keys:
       type: dict
       keys:
         name:
-          description: Group name
+          description: Group name.
           type: str
         type:
           type: str
@@ -24,9 +24,9 @@ keys:
             keys:
               server:
                 type: str
-                description: Hostname or IP address
+                description: Hostname or IP address.
               vrf:
                 type: str
-                description: VRF name
+                description: VRF name.
                 convert_types:
                   - int
