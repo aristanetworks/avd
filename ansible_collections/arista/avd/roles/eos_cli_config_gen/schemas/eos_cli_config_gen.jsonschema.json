@@ -11493,10 +11493,6 @@
                           "type": "string",
                           "title": "Name"
                         },
-                        "destination_ip": {
-                          "type": "string",
-                          "title": "Destination IP"
-                        },
                         "preference": {
                           "type": "string",
                           "title": "Preference"

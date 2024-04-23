@@ -200,11 +200,11 @@ class CvPathfinderMixin:
 
         return wan_vni
 
-    def _metadata_internet_exit_policies(self: AvdStructuredConfigMetadata) -> None:
+    def _metadata_internet_exit_policies(self: AvdStructuredConfigMetadata):
         """
         No-op.
 
         This metadata is generated in the network services module,
         since all the required data was readily available in there.
         """
-        raise NotImplementedError
+        return NotImplemented

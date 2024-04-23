@@ -310,7 +310,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> list:
             continue
 
         policy_name = internet_exit_policy["name"]
-        services_dict.setdefault("zscaler", {"locations": [], "tunnels": []})
+        services_dict.setdefault("zscaler", {"locations": []})
         services_dict["zscaler"]["locations"].append(
             {
                 "name": f"{device.hostname}_{policy_name}",
@@ -333,10 +333,9 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> list:
                 ],
             }
         )
-        services_dict["zscaler"]["tunnels"].extend(
+        services_dict.setdefault("tunnels", []).extend(
             {
                 "name": tunnel["name"],
-                "destinationIp": tunnel["destination_ip"],
                 "preference": tunnel["preference"],
             }
             for tunnel in internet_exit_policy["tunnels"]

@@ -81,7 +81,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pre_shared_key</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].vpn_credentials.[].pre_shared_key") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnels</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].tunnels") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].tunnels.[].name") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_ip</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].tunnels.[].destination_ip") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].tunnels.[].preference") | String |  |  |  |  |
 
 === "YAML"
@@ -165,6 +164,5 @@
                 pre_shared_key: <str>
             tunnels:
               - name: <str>
-                destination_ip: <str>
                 preference: <str>
     ```

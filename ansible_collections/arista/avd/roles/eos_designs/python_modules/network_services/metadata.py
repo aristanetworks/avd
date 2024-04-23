@@ -63,8 +63,7 @@ class MetadataMixin(UtilsMixin):
                     "tunnels": [
                         {
                             "name": f"Tunnel{connection['tunnel_id']}",
-                            "destination_ip": connection["tunnel_destination_ip"],
-                            "preference": "preferred" if connection["preference"] == "primary" else "alternate",
+                            "preference": "Preferred" if connection["preference"] == "primary" else "Alternate",
                         }
                         for connection in internet_exit_policy["connections"]
                     ],

@@ -805,14 +805,11 @@ metadata:
         pre_shared_key: 0007054B145A1F0E0928424A0C0B4812160C093B101807091F10105E222E2A351B69777F7D2D3A5547666C7F7A616A672374332B7C68263639327A3E2A3B0468
       tunnels:
       - name: Tunnel100
-        destination_ip: 10.37.121.1
-        preference: preferred
+        preference: Preferred
       - name: Tunnel101
-        destination_ip: 10.39.77.1
-        preference: alternate
+        preference: Alternate
       - name: Tunnel102
-        destination_ip: 10.50.9.1
-        preference: alternate
+        preference: Alternate
     role: edge
     ssl_profile: profileA
     vtep_ip: 192.168.142.1

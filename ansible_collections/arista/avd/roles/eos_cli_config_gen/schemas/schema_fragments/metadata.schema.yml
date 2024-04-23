@@ -221,7 +221,5 @@ keys:
                     keys:
                       name:
                         type: str
-                      destination_ip:
-                        type: str
                       preference:
                         type: str
