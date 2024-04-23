@@ -143,12 +143,12 @@ $defs:
               - "smpte2059-2"
       sflow:
         type: bool
-        description: |
+        description: |-
           Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.
       flow_tracking:
         type: dict
         $ref: "eos_designs#/$defs/flow_tracking_link"
-        description: |
+        description: |-
           Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
       link_tracking:
         type: dict

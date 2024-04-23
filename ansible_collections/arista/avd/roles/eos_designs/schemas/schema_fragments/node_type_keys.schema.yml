@@ -113,8 +113,7 @@ keys:
           valid_values:
             - "sampled"
             - "hardware"
-          description: |
-            Set the default flow tracker type.
+          description: Set the default flow tracker type.
         mlag_support:
           type: bool
           default: false
