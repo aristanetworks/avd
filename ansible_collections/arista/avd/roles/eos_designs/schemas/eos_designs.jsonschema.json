@@ -34933,12 +34933,12 @@
                             },
                             "rcf_in": {
                               "type": "string",
-                              "description": "Inbound rcf function name without parenthesis.",
+                              "description": "Inbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF In"
                             },
                             "rcf_out": {
                               "type": "string",
-                              "description": "Outbound rcf function name without parenthesis.",
+                              "description": "Outbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
                             }
                           },
@@ -34978,12 +34978,12 @@
                             },
                             "rcf_in": {
                               "type": "string",
-                              "description": "Inbound rcf function name without parenthesis.",
+                              "description": "Inbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF In"
                             },
                             "rcf_out": {
                               "type": "string",
-                              "description": "Outbound rcf function name without parenthesis.",
+                              "description": "Outbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
                             },
                             "domain_remote": {
@@ -35312,12 +35312,12 @@
                             },
                             "rcf_in": {
                               "type": "string",
-                              "description": "Inbound rcf function name without parenthesis.",
+                              "description": "Inbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF In"
                             },
                             "rcf_out": {
                               "type": "string",
-                              "description": "Outbound rcf function name without parenthesis.",
+                              "description": "Outbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
                             },
                             "default_originate": {
@@ -35420,12 +35420,12 @@
                             },
                             "rcf_in": {
                               "type": "string",
-                              "description": "Inbound rcf function name without parenthesis.",
+                              "description": "Inbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF In"
                             },
                             "rcf_out": {
                               "type": "string",
-                              "description": "Outbound rcf function name without parenthesis.",
+                              "description": "Outbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
                             },
                             "prefix_list_in": {
@@ -35482,7 +35482,7 @@
                             },
                             "rcf": {
                               "type": "string",
-                              "description": "RCF function name without parenthesis.",
+                              "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF"
                             }
                           },
@@ -35740,12 +35740,12 @@
                             },
                             "rcf_in": {
                               "type": "string",
-                              "description": "Inbound rcf function name without parenthesis.",
+                              "description": "Inbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF In"
                             },
                             "rcf_out": {
                               "type": "string",
-                              "description": "Outbound rcf function name without parenthesis.",
+                              "description": "Outbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
                             },
                             "prefix_list_in": {
@@ -35794,12 +35794,12 @@
                             },
                             "rcf_in": {
                               "type": "string",
-                              "description": "Inbound rcf function name without parenthesis.",
+                              "description": "Inbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF In"
                             },
                             "rcf_out": {
                               "type": "string",
-                              "description": "Outbound rcf function name without parenthesis.",
+                              "description": "Outbound rcf function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
                             },
                             "prefix_list_in": {
@@ -35842,7 +35842,7 @@
                             },
                             "rcf": {
                               "type": "string",
-                              "description": "RCF function name without parenthesis.",
+                              "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF"
                             }
                           },
