@@ -1,7 +1,7 @@
 hostname: MLAG_IPV6_L3LEAF1A
 is_deployed: true
 router_bgp:
-  as: '923'
+  as: '65001'
   router_id: 192.168.255.35
   bgp:
     default:
@@ -14,7 +14,7 @@ router_bgp:
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
-    remote_as: '923'
+    remote_as: '65001'
     next_hop_self: true
     description: MLAG_IPV6_L3LEAF1B
     maximum_routes: 12000
@@ -97,7 +97,7 @@ vlan_interfaces:
   shutdown: false
   no_autostate: true
   mtu: 9214
-  ipv6_address: 2001:db7:0:2::1/64
+  ipv6_address: 2001:db8:0:2::1/64
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_MLAG_IPV6_L3LEAF1B_Po5
@@ -131,7 +131,7 @@ ethernet_interfaces:
 mlag_configuration:
   domain_id: MLAG_IPV6
   local_interface: Vlan4094
-  peer_address: 2001:db7:0:2::2
+  peer_address: 2001:db8:0:2::2
   peer_link: Port-Channel5
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'

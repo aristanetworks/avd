@@ -7617,15 +7617,13 @@ $defs:
           mlag_peer_address_family:
             documentation_options:
               table: node-type-l2-mlag-configuration
-            description: 'Toggle to override the default (ipv4) address family used
-              to establish MLAG Peer Link (control link).
+            description: 'IP address family used to establish MLAG Peer Link (control
+              link).
 
-              Required when using IPv6 or other non-default values for MLAG leafs
-              present in topology.
+              `ipv6` requires EOS version 4.31.1F or higher.
 
-              Requires minimum EOS version of 4.31.1f or higher.
-
-              '
+              Note: `ipv6` is not supported in combination with a common MLAG peer
+              link VLAN (ex. `mlag_l3_peer_vlan` set to 4094).'
             type: str
             valid_values:
             - ipv4
