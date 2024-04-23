@@ -1,13 +1,17 @@
-import glob
+# Copyright (c) 2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 import argparse
+import glob
 import sys
+
 """
 Help on find_missing_tables.py:
 
 DESCRIPTION
     Script to catch schema tables not covered in docs.
     ==================================================
-    
+
     Checks if table files are added as snips in relevant role docs. Uses argparse to call in CLI with 3 arguments:
         - Glob for table files -> glob
         - Glob for md files, ie. the role docs -> glob
@@ -19,8 +23,8 @@ DESCRIPTION
         Can take any number of table_files and any number of role docs, and checks all md_files for all of the table files.
 
         Adds all table_files to a set, uses the function "make_path_relative" with the argument p__path_root to match the format of the paths from the table files
-        to the format of the table files in the role docs. The .find() returns the first instance of the argument in the path string, 
-        so this solution even works for strings containing the directory name multiple times 
+        to the format of the table files in the role docs. The .find() returns the first instance of the argument in the path string,
+        so this solution even works for strings containing the directory name multiple times
 
         checks role docs for the snip string, and adds the table_files to the md_file_set, containing all the table files from the role docs already, and then returns the difference set
         containing the table files in the table_files set but not in the md_file_set.
@@ -28,9 +32,7 @@ DESCRIPTION
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument(
-    "-t" "table_file_glob", type=glob.glob, nargs="*", help="The glob for the table file"
-)
+parser.add_argument("-t" "table_file_glob", type=glob.glob, nargs="*", help="The glob for the table file")
 parser.add_argument(
     "-m" "--md_file_glob",
     type=glob.glob,
@@ -81,7 +83,7 @@ def check_files_in_markdown(table_files: set, md_files: list):
 
 print(check_files_in_markdown(table_files, md_files))
 
-if len(check_files_in_markdown(table_files,md_files)) == 0:
+if len(check_files_in_markdown(table_files, md_files)) == 0:
     sys.exit(0)
 else:
     sys.exit(1)
