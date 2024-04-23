@@ -123,6 +123,7 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.255.251.11/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
 - name: Vlan4094

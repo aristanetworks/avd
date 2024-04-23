@@ -370,6 +370,7 @@ interface Ethernet8
    no switchport
    ip address 100.64.0.0/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis hello padding
@@ -475,6 +476,7 @@ interface Vlan4093
    mtu 1500
    ip address 10.255.251.10/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis metric 50
    isis network point-to-point
 !

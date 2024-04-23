@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from .utils import UtilsMixin
 
@@ -28,6 +28,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                 # Ethernet interface
                 ethernet_interface = self._get_common_interface_cfg(p2p_link)
                 ethernet_interface.update(self._get_ethernet_cfg(p2p_link))
+
+                if self.shared_utils.underlay_isis is True:
+                    ethernet_interface.update({"isis_enable": self.shared_utils.isis_instance_name, "isis_bfd": get(self._hostvars, "underlay_isis_bfd")})
 
                 # Remove None values
                 ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}

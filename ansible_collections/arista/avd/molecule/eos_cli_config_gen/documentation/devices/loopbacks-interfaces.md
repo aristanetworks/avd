@@ -82,7 +82,6 @@ interface Loopback0
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    ip address 192.168.254.3/32
-   isis bfd
 !
 interface Loopback99
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
@@ -95,6 +94,7 @@ interface Loopback99
    ipv6 enable
    ipv6 address 2002::CAFE/64
    isis enable ISIS_TEST
+   isis bfd
    isis passive
    isis metric 100
    isis network point-to-point

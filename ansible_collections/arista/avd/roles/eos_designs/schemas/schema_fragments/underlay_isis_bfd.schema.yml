@@ -11,3 +11,4 @@ keys:
       table: isis-settings
     type: bool
     default: false
+    description: Enable BFD for ISIS on all underlay links.

@@ -18,7 +18,7 @@
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "isis_ti_lfa.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;protection</samp>](## "isis_ti_lfa.protection") | String |  |  | Valid Values:<br>- <code>link</code><br>- <code>node</code> |  |
     | [<samp>&nbsp;&nbsp;local_convergence_delay</samp>](## "isis_ti_lfa.local_convergence_delay") | Integer |  | `10000` |  | Local convergence delay in milliseconds. |
-    | [<samp>underlay_isis_bfd</samp>](## "underlay_isis_bfd") | Boolean |  | `False` |  |  |
+    | [<samp>underlay_isis_bfd</samp>](## "underlay_isis_bfd") | Boolean |  | `False` |  | Enable BFD for ISIS on all underlay links. |
     | [<samp>underlay_isis_instance_name</samp>](## "underlay_isis_instance_name") | String |  |  |  | Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls. |
 
 === "YAML"
@@ -48,6 +48,8 @@
 
       # Local convergence delay in milliseconds.
       local_convergence_delay: <int; default=10000>
+
+    # Enable BFD for ISIS on all underlay links.
     underlay_isis_bfd: <bool; default=False>
 
     # Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls.

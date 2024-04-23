@@ -476,6 +476,7 @@ interface Vlan4094
    no autostate
    ip address 10.255.252.6/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis metric 50
    isis network point-to-point
 ```

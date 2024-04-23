@@ -56365,6 +56365,7 @@
     "underlay_isis_bfd": {
       "type": "boolean",
       "default": false,
+      "description": "Enable BFD for ISIS on all underlay links.",
       "title": "Underlay ISIS BFD"
     },
     "underlay_isis_instance_name": {
