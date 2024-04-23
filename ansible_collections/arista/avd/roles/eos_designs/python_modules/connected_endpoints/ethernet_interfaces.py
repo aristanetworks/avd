@@ -100,6 +100,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "ptp": self._get_adapter_ptp(adapter),
                 "service_profile": adapter.get("qos_profile"),
                 "sflow": self._get_adapter_sflow(adapter),
+                "flow_tracker": self._get_adapter_flow_tracking(adapter),
                 "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
             }
         )
