@@ -85,18 +85,23 @@
           - item.0.value == item.1.value
       loop: "{{ expected_device_tags | zip(output_device_tags) | list }}"
 
-    # XXX: interface tags check
-    # - name: Extract all interface tags from structured configs
-    #   ansible.builtin.set_fact:
-    #     expected_interface_tags: "{{ intended_tags.metadata.cv_tags.interface_tags }}"
-    #     output_interface_tags: "{{ cv_deploy_results.deployed_interface_tags }}"
+    - name: Extract all interface tags from role output
+      ansible.builtin.set_fact:
+        output_interface_tags: "{{ cv_deploy_results.deployed_interface_tags }}"
 
-    # - name: Check output interface tags == intended interface tags
-    #   ansible.builtin.assert:
-    #     that:
-    #       - item.0.name == item.1.label
-    #       - item.0.value == item.1.value
-    #   loop: "{{ expected_interface_tags.tags | zip(output_interface_tags) | list }}"
+    - name: Extract all interface tags from structured configs
+      ansible.builtin.set_fact:
+        expected_interface_tags: "{{ expected_interface_tags | default([]) + [item.tags | list | first | combine({'interface': item.interface})] }}"
+      loop: "{{ intended_tags.metadata.cv_tags.interface_tags }}"
+      loop_control:
+        label: "{{ item.interface }}"
+
+    - name: Check output interface tags == intended interface tags
+      ansible.builtin.assert:
+        that:
+          - item.0.name == item.1.label
+          - item.0.value == item.1.value
+      loop: "{{ expected_interface_tags | zip(output_interface_tags) | list }}"
 
     - name: convert unstructed data into yaml
       ansible.builtin.set_fact:
@@ -173,7 +178,7 @@
       ansible.builtin.assert:
         that:
           # errors and warnings
-          - cv_deploy_results.errors != []
+          - "'Failed to submit workspace' in cv_deploy_results.errors[0]"
 
     - name: Cleanup
       run_once: true
