@@ -1,0 +1,30 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - policy map copp #}
+{% if policy_maps.copp is arista.avd.defined %}
+
+## COPP Policy Maps
+
+### COPP Policy Maps Summary
+
+#### {{ policy_maps.copp.name }}
+{%     if policy_maps.copp.classes is arista.avd.defined %}
+
+| Class | Shape(pps) |
+| ----- | ----- |
+{%         for class in policy_maps.copp.classes | arista.avd.natural_sort('name') %}
+{%             if class.name is arista.avd.defined and class.shape is arista.avd.defined %}
+| {{ class.name }} | {{ class.shape }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+### COPP Policy Maps Device Configuration %}
+
+```eos
+{%     include 'eos/policy-maps-copp.j2' %}
+```
+{% endif %}
