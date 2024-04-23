@@ -651,7 +651,8 @@ keys:
             rcf:
               type: str
               description: |-
-                RCF function name without parenthesis.
+                RCF function name with parenthesis.
+                Example: MyFunction(myarg).
                 Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
             include_leaked:
               type: bool
@@ -1762,10 +1763,14 @@ keys:
                   description: Outbound route-map name.
                 rcf_in:
                   type: str
-                  description: Inbound rcf function name without parenthesis.
+                  description: |-
+                    Inbound rcf function name with parenthesis.
+                    Example: MyFunction(myarg).
                 rcf_out:
                   type: str
-                  description: Outbound rcf function name without parenthesis.
+                  description: |-
+                    Outbound rcf function name with parenthesis.
+                    Example: MyFunction(myarg).
           route:
             type: dict
             keys:
@@ -1793,10 +1798,14 @@ keys:
                   description: Outbound route-map name.
                 rcf_in:
                   type: str
-                  description: Inbound rcf function name without parenthesis.
+                  description: |-
+                    Inbound rcf function name with parenthesis.
+                    Example: MyFunction(myarg).
                 rcf_out:
                   type: str
-                  description: Outbound rcf function name without parenthesis.
+                  description: |-
+                    Outbound rcf function name with parenthesis.
+                    Example: MyFunction(myarg).
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
@@ -1815,7 +1824,8 @@ keys:
                 rcf:
                   type: str
                   description: |-
-                    RCF function name without parenthesis.
+                    RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
                     Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
       address_family_vpn_ipv6:
         type: dict
@@ -1843,10 +1853,14 @@ keys:
                   description: Outbound route-map name.
                 rcf_in:
                   type: str
-                  description: Inbound rcf function name without parenthesis.
+                  description: |-
+                    Inbound rcf function name with parenthesis.
+                    Example: MyFunction(myarg).
                 rcf_out:
                   type: str
-                  description: Outbound rcf function name without parenthesis.
+                  description: |-
+                    Outbound rcf function name with parenthesis.
+                    Example: MyFunction(myarg).
           route:
             type: dict
             keys:
@@ -1874,10 +1888,14 @@ keys:
                   description: Outbound route-map name.
                 rcf_in:
                   type: str
-                  description: Inbound rcf function name without parenthesis.
+                  description: |-
+                    Inbound rcf function name with parenthesis.
+                    Example: MyFunction(myarg).
                 rcf_out:
                   type: str
-                  description: Outbound rcf function name without parenthesis.
+                  description: |-
+                    Outbound rcf function name with parenthesis.
+                    Example: MyFunction(myarg).
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
@@ -1896,7 +1914,8 @@ keys:
                 rcf:
                   type: str
                   description: |-
-                    RCF function name without parenthesis.
+                    RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
                     Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
       vrfs:
         type: list

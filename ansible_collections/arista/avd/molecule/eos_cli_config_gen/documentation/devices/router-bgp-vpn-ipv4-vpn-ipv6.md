@@ -85,14 +85,14 @@ ASN Notation: asplain
 | Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
 | -------- | -------- | ------------ | ------------- | ------ | ------- |
 | 192.168.255.4 | True | RM-NEIGHBOR-PEER-IN4 | RM-NEIGHBOR-PEER-OUT4 | - | - |
-| 192.168.255.5 | False | - | - | Address_Family_VPN_IPV4_In | Address_Family_VPN_IPV4_Out |
+| 192.168.255.5 | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() |
 
 ##### VPN-IPv4 Peer Groups
 
 | Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
 | ---------- | -------- | ------------ | ------------- | ------ | ------- |
 | MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN4 | RM-IBGP-PEER-OUT4 | - | - |
-| Test_RCF | False | - | - | Address_Family_VPN_IPV4_In | Address_Family_VPN_IPV4_Out |
+| Test_RCF | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() |
 
 #### Router BGP VPN-IPv6 Address Family
 
@@ -103,14 +103,14 @@ ASN Notation: asplain
 | Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
 | -------- | -------- | ------------ | ------------- | ------ | ------- |
 | 2001:cafe:192:168::4 | True | RM-NEIGHBOR-PEER-IN6 | RM-NEIGHBOR-PEER-OUT6 | - | - |
-| 2001:cafe:192:168::5 | False | - | - | Address_Family_VPN_IPV6_In | Address_Family_VPN_IPV6_Out |
+| 2001:cafe:192:168::5 | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() |
 
 ##### VPN-IPv6 Peer Groups
 
 | Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
 | ---------- | -------- | ------------ | ------------- | ------ | ------- |
 | MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN6 | RM-IBGP-PEER-OUT6 | - | - |
-| Test_RCF | False | - | - | Address_Family_VPN_IPV6_In | Address_Family_VPN_IPV6_Out |
+| Test_RCF | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() |
 
 #### Router BGP Device Configuration
 

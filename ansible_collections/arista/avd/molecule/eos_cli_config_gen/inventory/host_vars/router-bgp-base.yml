@@ -81,9 +81,9 @@ router_bgp:
       # this should not do anything as leaked is generated when source protocol is bgp
       include_leaked: true
     - source_protocol: connected
-      rcf: Router_BGP_Connected
+      rcf: Router_BGP_Connected()
     - source_protocol: static
-      rcf: Router_BGP_Static
+      rcf: Router_BGP_Static()
   address_family_ipv4:
     networks:
       - prefix: 10.0.0.0/8
