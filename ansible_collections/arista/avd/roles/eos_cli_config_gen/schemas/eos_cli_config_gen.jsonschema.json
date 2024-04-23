@@ -18535,7 +18535,7 @@
                   },
                   "rcf": {
                     "type": "string",
-                    "description": "RCF function name without parenthesis.\nOnly used if `source_protocol` is `isis`.",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\nOnly used if `source_protocol` is `isis`.",
                     "title": "RCF"
                   }
                 },
@@ -18942,7 +18942,7 @@
                   },
                   "rcf": {
                     "type": "string",
-                    "description": "RCF function name without parenthesis.\nOnly used if `source_protocol` is `isis`.",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\nOnly used if `source_protocol` is `isis`.",
                     "title": "RCF"
                   }
                 },
@@ -19954,7 +19954,7 @@
                         },
                         "rcf": {
                           "type": "string",
-                          "description": "RCF function name without parenthesis.",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                           "title": "RCF"
                         }
                       },
@@ -19990,7 +19990,7 @@
                         },
                         "rcf": {
                           "type": "string",
-                          "description": "RCF function name without parenthesis.",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                           "title": "RCF"
                         }
                       },
@@ -20449,7 +20449,7 @@
                     },
                     "rcf": {
                       "type": "string",
-                      "description": "RCF function name without parenthesis.",
+                      "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                       "title": "RCF"
                     }
                   },

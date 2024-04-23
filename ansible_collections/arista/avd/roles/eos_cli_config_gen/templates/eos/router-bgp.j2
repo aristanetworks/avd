@@ -836,7 +836,7 @@ router bgp {{ router_bgp.as }}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
 {%                 elif redistribute_route.source_protocol == "isis" %}
 {%                     if redistribute_route.rcf is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf ~ "()" %}
+{%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
 {%                     endif %}
 {%                 endif %}
       {{ redistribute_route_cli }}
@@ -986,7 +986,7 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%                 if redistribute_route.source_protocol == "isis" %}
 {%                     if redistribute_route.rcf is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf ~ "()" %}
+{%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
 {%                     endif %}
 {%                 endif %}
       {{ redistribute_route_cli }}
@@ -1241,7 +1241,7 @@ router bgp {{ router_bgp.as }}
       route-target import {{ address_family.address_family }} route-map {{ address_family.route_map }}
 {%                 endif %}
 {%                 if address_family.rcf is arista.avd.defined %}
-      route-target import {{ address_family.address_family }} rcf {{ address_family.rcf }}()
+      route-target import {{ address_family.address_family }} rcf {{ address_family.rcf }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
@@ -1254,7 +1254,7 @@ router bgp {{ router_bgp.as }}
       route-target export {{ address_family.address_family }} route-map {{ address_family.route_map }}
 {%                 endif %}
 {%                 if address_family.rcf is arista.avd.defined %}
-      route-target export {{ address_family.address_family }} rcf {{ address_family.rcf }}()
+      route-target export {{ address_family.address_family }} rcf {{ address_family.rcf }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
@@ -1485,7 +1485,7 @@ router bgp {{ router_bgp.as }}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
 {%                 elif redistribute_route.source_protocol in ["connected", "static", "isis", "user", "dynamic"] %}
 {%                     if redistribute_route.rcf is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf ~ "()" %}
+{%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
 {%                     endif %}
 {%                 endif %}
       {{ redistribute_route_cli }}

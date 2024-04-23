@@ -94,7 +94,7 @@ router_bgp:
     redistribute_routes:
       - source_protocol: attached-host
       - source_protocol: isis
-        rcf: Router_BGP_Isis
+        rcf: Router_BGP_Isis()
   address_family_ipv6:
     peer_groups:
       - name: IPV6-UNDERLAY

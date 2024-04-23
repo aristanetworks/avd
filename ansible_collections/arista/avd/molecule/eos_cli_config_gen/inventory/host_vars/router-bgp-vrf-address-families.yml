@@ -23,7 +23,7 @@ router_bgp:
         activate: false
     redistribute_routes:
       - source_protocol: isis
-        rcf: Router_BGP_Isis
+        rcf: Router_BGP_Isis()
   address_family_flow_spec_ipv4:
     peer_groups:
       - name: FOOBAR

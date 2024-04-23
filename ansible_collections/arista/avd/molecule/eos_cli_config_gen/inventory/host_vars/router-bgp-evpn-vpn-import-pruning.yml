@@ -88,12 +88,12 @@ router_bgp:
           - address_family: evpn
             route_targets:
               - "11:11"
-            rcf: RT_IMPORT_AF_RCF
+            rcf: RT_IMPORT_AF_RCF()
         export:
           - address_family: evpn
             route_targets:
               - "11:11"
-            rcf: RT_EXPORT_AF_RCF
+            rcf: RT_EXPORT_AF_RCF()
       neighbors:
         - ip_address: 10.255.251.1
           peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -103,7 +103,7 @@ router_bgp:
       redistribute_routes:
         - source_protocol: connected
         - source_protocol: static
-          rcf: Router_BGP_Static
+          rcf: Router_BGP_Static()
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       rd: "192.168.255.3:12"
