@@ -772,6 +772,7 @@ $defs:
               IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
               Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
             type: str
+            format: ipv4_cidr
           mlag_peer_ipv6_pool:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -779,6 +780,7 @@ $defs:
               IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
               Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
             type: str
+            format: ipv6_cidr
           mlag_port_channel_id:
             documentation_options:
               table: node-type-l2-mlag-configuration
