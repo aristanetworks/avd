@@ -1,0 +1,50 @@
+---
+# Common AVD group variables
+
+fabric_name: FLOW_TRACKING_TESTS
+
+mgmt_gateway: 192.168.0.1
+
+default_mgmt_method: oob
+
+flow_tracking_settings:
+  trackers:
+    - name: FLOW-TRACKER-1
+      sampled:
+        table_size: 4331
+        record_export:
+          mpls: true
+      record_export:
+        on_inactive_timeout: 50000
+        on_interval: 300331
+      exporters:
+        - name: ayush_exporter
+          collector:
+            host: 127.0.0.1
+          local_interface: Loopback0
+          template_interval: 40000
+    # Override default definition
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 50001
+        on_interval: 300332
+      exporters:
+        - name: ayush_exporter
+          collector:
+            host: 127.0.0.2
+          local_interface: Loopback0
+          template_interval: 40002
+
+fabric_flow_tracking:
+  uplinks:
+    enabled: true
+  downlinks:
+    enabled: true
+  endpoints:
+    enabled: true
+  l3_edge:
+    enabled: true
+  core_interfaces:
+    enabled: true
+  mlag_interfaces:
+    enabled: true

@@ -842,7 +842,7 @@ roles/eos_designs/docs/tables/management-sflow-settings.md
 ### Flow Tracking Settings
 
 --8<--
-roles/eos_designs/docs/tables/flow-tracking-settings.md
+roles/eos_designs/docs/tables/management-flow-tracking-settings.md
 --8<--
 
 ### SNMP settings
