@@ -57,3 +57,12 @@ policy_maps:
             nexthop:
               ip_address: 192.168.4.2
               recursive: true
+  copp:
+    name: copp-system-policy
+    classes:
+      - name: cls1
+        shape: 1000
+      - name: cls2
+        shape: 2000
+      - name: a_class
+        shape: 3000

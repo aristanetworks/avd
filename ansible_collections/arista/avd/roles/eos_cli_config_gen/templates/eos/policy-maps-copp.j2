@@ -1,0 +1,22 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - policy map copp #}
+{% if policy_maps.copp is arista.avd.defined %}
+{%     if policy_maps.copp.name is arista.avd.defined %}
+!
+policy-map type copp {{ policy_maps.copp.name }}
+{%         if policy_maps.copp.classes is arista.avd.defined %}
+{%             for class in policy_maps.copp.classes | arista.avd.natural_sort("name") %}
+{%                 if class.name is arista.avd.defined %}
+   class {{ class.name }}
+{%                 endif %}
+{%                 if class.shape is arista.avd.defined %}
+      shape pps {{ class.shape }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{% endif %}

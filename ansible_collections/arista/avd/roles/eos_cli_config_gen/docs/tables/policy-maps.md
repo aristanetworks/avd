@@ -39,6 +39,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate_unit</samp>](## "policy_maps.qos.[].classes.[].police.higher_rate_unit") | String |  | `bps` | Valid Values:<br>- <code>bps</code><br>- <code>kbps</code><br>- <code>mbps</code><br>- <code>pps</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate_burst_size</samp>](## "policy_maps.qos.[].classes.[].police.higher_rate_burst_size") | Integer |  |  |  | Range in bytes <256-128000000>. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate_burst_size_unit</samp>](## "policy_maps.qos.[].classes.[].police.higher_rate_burst_size_unit") | String |  | `bytes` | Valid Values:<br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code><br>- <code>packets</code> |  |
+    | [<samp>&nbsp;&nbsp;copp</samp>](## "policy_maps.copp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "policy_maps.copp.name") | String |  |  |  | Name of control-plane poilcy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;classes</samp>](## "policy_maps.copp.classes") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "policy_maps.copp.classes.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shape</samp>](## "policy_maps.copp.classes.[].shape") | Integer |  |  |  | Shape value in pps. |
 
 === "YAML"
 
@@ -108,4 +113,13 @@
                 # Range in bytes <256-128000000>.
                 higher_rate_burst_size: <int>
                 higher_rate_burst_size_unit: <str; "bytes" | "kbytes" | "mbytes" | "packets"; default="bytes">
+      copp:
+
+        # Name of control-plane poilcy.
+        name: <str>
+        classes:
+          - name: <str; required; unique>
+
+            # Shape value in pps.
+            shape: <int>
     ```

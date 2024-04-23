@@ -13321,6 +13321,46 @@
             ]
           },
           "title": "QOS"
+        },
+        "copp": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of control-plane poilcy.",
+              "title": "Name"
+            },
+            "classes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "shape": {
+                    "type": "integer",
+                    "description": "Shape value in pps.",
+                    "title": "Shape"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Classes"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Copp"
         }
       },
       "additionalProperties": false,
