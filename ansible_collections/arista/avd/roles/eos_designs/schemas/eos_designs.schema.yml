@@ -2154,9 +2154,7 @@ keys:
           valid_values:
           - sampled
           - hardware
-          description: 'Set the default flow tracker type.
-
-            '
+          description: Set the default flow tracker type.
         mlag_support:
           type: bool
           default: false
@@ -4672,17 +4670,13 @@ $defs:
             - smpte2059-2
       sflow:
         type: bool
-        description: 'Configures sFlow on the interface. Overrides `fabric_sflow.endpoints`
+        description: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints`
           setting.
-
-          '
       flow_tracking:
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
-        description: 'Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints`
+        description: Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints`
           setting.
-
-          '
       link_tracking:
         type: dict
         description: 'Configure the downstream interfaces of a respective Link Tracking
@@ -6210,10 +6204,8 @@ $defs:
                     flow_tracking:
                       type: dict
                       $ref: eos_designs#/$defs/flow_tracking_link
-                      description: 'Configures flow-tracking on the interface. Overrides
+                      description: Configures flow-tracking on the interface. Overrides
                         `fabric_flow_tracking.l3_interfaces` setting.
-
-                        '
                     structured_config:
                       type: dict
                       description: Custom structured config added under ethernet_interfaces.[name=<interface>]
@@ -8684,10 +8676,8 @@ $defs:
         flow_tracking:
           type: dict
           $ref: eos_designs#/$defs/flow_tracking_link
-          description: 'Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces`
+          description: Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces`
             setting.
-
-            '
         structured_config:
           type: dict
           documentation_options:

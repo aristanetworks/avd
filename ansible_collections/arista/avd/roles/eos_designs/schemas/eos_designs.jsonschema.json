@@ -7116,7 +7116,7 @@
           },
           "flow_tracking": {
             "type": "object",
-            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.\n",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.",
             "properties": {
               "enabled": {
                 "type": "boolean",
@@ -10380,12 +10380,12 @@
           },
           "sflow": {
             "type": "boolean",
-            "description": "Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.\n",
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.",
             "title": "Sflow"
           },
           "flow_tracking": {
             "type": "object",
-            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.\n",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.",
             "properties": {
               "enabled": {
                 "type": "boolean",
@@ -15865,7 +15865,7 @@
               "sampled",
               "hardware"
             ],
-            "description": "Set the default flow tracker type.\n",
+            "description": "Set the default flow tracker type.",
             "title": "Default Flow Tracker Type"
           },
           "mlag_support": {
@@ -45677,12 +45677,12 @@
           },
           "sflow": {
             "type": "boolean",
-            "description": "Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.\n",
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.",
             "title": "Sflow"
           },
           "flow_tracking": {
             "type": "object",
-            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.\n",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.",
             "properties": {
               "enabled": {
                 "type": "boolean",
