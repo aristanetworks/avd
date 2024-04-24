@@ -4082,6 +4082,12 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
               "flow_tracking": {
                 "type": "object",
                 "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
@@ -4349,6 +4355,12 @@
                 "type": "boolean",
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
+              },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
               },
               "flow_tracking": {
                 "type": "object",
@@ -5218,7 +5230,7 @@
       "title": "EVPN Short Esi Prefix"
     },
     "evpn_vlan_aware_bundles": {
-      "description": "Enable vlan aware bundles for EVPN MAC-VRF.",
+      "description": "Enable VLAN aware bundles for every EVPN MAC-VRF.\nIf set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles using the VLAN name as the bundle name.\n\nThe `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.",
       "type": "boolean",
       "default": false,
       "title": "EVPN VLAN Aware Bundles"
@@ -6557,6 +6569,12 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
               "flow_tracking": {
                 "type": "object",
                 "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
@@ -6824,6 +6842,12 @@
                 "type": "boolean",
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
+              },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
               },
               "flow_tracking": {
                 "type": "object",
