@@ -11161,6 +11161,9 @@
                     "title": "Vtep IP"
                   }
                 },
+                "required": [
+                  "vtep_ip"
+                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
@@ -11245,6 +11248,9 @@
                     "title": "Imported Carriers"
                   }
                 },
+                "required": [
+                  "name"
+                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
@@ -11477,6 +11483,11 @@
                           "title": "Pre Shared Key"
                         }
                       },
+                      "required": [
+                        "fqdn",
+                        "vpn_type",
+                        "pre_shared_key"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -11498,6 +11509,10 @@
                           "title": "Preference"
                         }
                       },
+                      "required": [
+                        "name",
+                        "preference"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -11506,6 +11521,17 @@
                     "title": "Tunnels"
                   }
                 },
+                "required": [
+                  "name",
+                  "type",
+                  "city",
+                  "country",
+                  "firewall",
+                  "ips_control",
+                  "acceptable_use_policy",
+                  "vpn_credentials",
+                  "tunnels"
+                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
