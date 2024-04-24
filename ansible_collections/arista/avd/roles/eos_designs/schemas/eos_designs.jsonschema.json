@@ -4082,6 +4082,12 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
               "flow_tracking": {
                 "type": "object",
                 "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
@@ -4349,6 +4355,12 @@
                 "type": "boolean",
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
+              },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
               },
               "flow_tracking": {
                 "type": "object",
@@ -6557,6 +6569,12 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
               "flow_tracking": {
                 "type": "object",
                 "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
@@ -6824,6 +6842,12 @@
                 "type": "boolean",
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
+              },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
               },
               "flow_tracking": {
                 "type": "object",
