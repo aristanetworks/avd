@@ -8,7 +8,6 @@ type: dict
 $defs:
   interface_ip_nat_static:
     type: list
-    primary_key: original_ip
     items:
       type: dict
       keys:
@@ -35,6 +34,7 @@ $defs:
           description: IPv4 address.
         original_port:
           type: int
+          description: The combination of original_ip and original_port must be unique.
           convert_types:
             - str
           min: 1

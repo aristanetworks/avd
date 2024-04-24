@@ -3248,6 +3248,7 @@
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "The combination of original_ip and original_port must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -3280,8 +3281,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -3383,6 +3383,7 @@
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "The combination of original_ip and original_port must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -3415,8 +3416,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -7277,6 +7277,7 @@
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "The combination of original_ip and original_port must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -7309,8 +7310,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -7412,6 +7412,7 @@
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "The combination of original_ip and original_port must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -7444,8 +7445,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -13889,6 +13889,7 @@
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "The combination of original_ip and original_port must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -13921,8 +13922,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -14024,6 +14024,7 @@
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "The combination of original_ip and original_port must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -14056,8 +14057,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -27263,6 +27263,7 @@
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "The combination of original_ip and original_port must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -27295,8 +27296,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -27398,6 +27398,7 @@
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "The combination of original_ip and original_port must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -27430,8 +27431,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
