@@ -70,6 +70,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "description": interface_description,
                                 "eos_cli": l3_interface.get("raw_eos_cli"),
                                 "struct_cfg": l3_interface.get("structured_config"),
+                                "flow_tracker": self.shared_utils.get_flow_tracker(l3_interface, "l3_interfaces"),
                             }
 
                             if "." in interface_name:

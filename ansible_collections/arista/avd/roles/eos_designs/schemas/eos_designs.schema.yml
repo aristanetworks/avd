@@ -593,6 +593,86 @@ keys:
       existing keys will be replaced.\n"
     default:
     - custom_structured_configuration_
+  cv_pathfinder_internet_exit_policies:
+    description: 'PREVIEW: These keys are in preview mode.
+
+
+      List of internet-exit policies used for the WAN configuration.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Internet-exit policy name.
+        type:
+          type: str
+          valid_values:
+          - zscaler
+          description: 'Internet-exit policy type.
+
+            Only Zscaler supported.'
+          required: true
+        fallback_to_system_default:
+          type: bool
+          default: true
+          description: Add system default exit-group at the end of the policy.
+        zscaler:
+          type: dict
+          description: Zscaler information. Only used if `type` is 'zscaler'.
+          keys:
+            ipsec_key_salt:
+              type: str
+              required: true
+              description: '"Salt" used for auto generation of encryption keys for
+                IPsec tunnels to Zscaler.
+
+                The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.
+
+                Since this salt can be used to deduct the encryption key, it is recommeneded
+                to use vault.'
+            cloud_name:
+              type: str
+              required: true
+              description: Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.
+            domain_name:
+              type: str
+              required: true
+              description: Domain name as configured in Zscaler for the tenant. Used
+                as UFQDN suffix for authentication.
+            encrypt_traffic:
+              type: bool
+              default: true
+              description: 'When `true` the traffic going over the tunnels will be
+                encrypted with AES-256-GCM. Otherwise the traffic will be using NULL
+                encryption.
+
+                Note that encryption requires a subscription on the Zscaler account.'
+            download_bandwidth:
+              type: int
+              description: Maximum allowed download bandwidth in Mbps for each device
+                using this policy.
+            upload_bandwidth:
+              type: int
+              description: Maximum allowed upload bandwidth in Mbps for each device
+                using this policy.
+            firewall:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Enforce firewall controls.
+                  default: false
+                ips:
+                  type: bool
+                  description: Enable IPS Controls for the firewall.
+                  default: false
+            acceptable_use_policy:
+              type: bool
+              description: Display an Acceptable Use Policy (AUP) and require users
+                to accept it.
+              default: false
   cv_pathfinder_regions:
     documentation_options:
       table: wan-cv-pathfinder-regions
@@ -605,7 +685,6 @@ keys:
       keys:
         name:
           type: str
-          description: The region name.
         description:
           type: str
         id:
@@ -634,6 +713,22 @@ keys:
               location:
                 type: str
                 description: Location as a string is resolved on Cloudvision.
+              resolved_location:
+                type: dict
+                description: 'PREVIEW: These keys are in preview mode.
+
+
+                  The resolved location elements.
+
+                  Needed for internet-exit Zscaler integration until we can autofill
+                  it from the lookup plugin.'
+                keys:
+                  city:
+                    type: str
+                    required: true
+                  country:
+                    type: str
+                    required: true
               site_contact:
                 type: str
               site_after_hours_contact:
@@ -1154,6 +1249,49 @@ keys:
     - mpls
     default: vxlan
     type: str
+  fabric_flow_tracking:
+    documentation_options:
+      table: management-flow-tracking-settings
+    type: dict
+    description: 'Default enabling of flow-tracking(IPFIX) for various interface types
+      across the fabric.
+
+      Flow Tracking can also be enabled/disabled under each of the specific data models.
+
+      For general flow-tracking settings see `flow_tracking_settings`.'
+    keys:
+      uplinks:
+        description: Enable flow-tracking on all fabric uplinks.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      downlinks:
+        description: Enable flow-tracking on all fabric downlinks.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      endpoints:
+        description: Enable flow-tracking on all endpoints ports.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      l3_edge:
+        description: Enable flow-tracking on all p2p_links defined under l3_edge.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      core_interfaces:
+        description: Enable flow-tracking on all p2p_links defined under core_interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      mlag_interfaces:
+        description: Enable flow-tracking on all MLAG peer interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      l3_interfaces:
+        description: Enable flow-tracking on all node.l3_interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      dps_interfaces:
+        description: Enable flow-tracking on all dps_interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
   fabric_ip_addressing:
     type: dict
     keys:
@@ -1236,50 +1374,154 @@ keys:
         description: Enable sFlow on all MLAG peer interfaces.
         type: bool
   flow_tracking_settings:
+    documentation_options:
+      table: management-flow-tracking-settings
     description: 'PREVIEW: This key is currently not supported
 
 
       Define the flow tracking parameters for this topology.'
     type: dict
     keys:
-      flow_tracker_name:
-        type: str
-        default: FLOW-TRACKER
-        description: Flow Tracker Name.
-      record_export:
+      sampled:
         type: dict
+        description: The options relevant only for flow tracker type sampled.
         keys:
-          on_inactive_timeout:
-            description: Flow record inactive export timeout in milliseconds.
+          encapsulation:
+            type: dict
+            keys:
+              ipv4_ipv6:
+                type: bool
+              mpls:
+                type: bool
+          sample:
             type: int
             convert_types:
             - str
-            min: 3000
-            max: 900000
-            default: 70000
-          on_interval:
-            type: int
-            convert_types:
-            - str
-            min: 1000
-            max: 36000000
-            default: 300000
-            description: Flow record export interval in milliseconds.
-      exporter:
+            min: 1
+            max: 4294967295
+            default: 10000
+          hardware_offload:
+            type: dict
+            keys:
+              ipv4:
+                type: bool
+                description: Configure hardware offload for IPv4 traffic.
+              ipv6:
+                type: bool
+                description: Configure hardware offload for IPv6 traffic.
+              threshold_minimum:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 4294967295
+                description: Minimum number of samples.
+      hardware:
         type: dict
+        description: The options relevant only for flow tracker type hardware.
         keys:
-          name:
-            type: str
-            default: CV-TELEMETRY
-            description: Exporter Name.
-          template_interval:
-            description: Template interval in milliseconds.
-            type: int
-            convert_types:
-            - str
-            min: 5000
-            max: 3600000
-            default: 3600000
+          record:
+            type: dict
+            keys:
+              format_ipfix_standard_timestamps_counters:
+                type: bool
+                description: Enable software export of IPFIX data records.
+      trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Tracker Name
+            sampled:
+              type: dict
+              description: The options relevant only for flow tracker type sampled.
+              keys:
+                table_size:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 614400
+                  description: 'Maximum number of entries in flow table.
+
+                    '
+                record_export:
+                  type: dict
+                  keys:
+                    mpls:
+                      type: bool
+                      description: Export MPLS forwarding information.
+            record_export:
+              type: dict
+              keys:
+                on_inactive_timeout:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 3000
+                  max: 900000
+                  description: Flow record inactive export timeout in milliseconds
+                on_interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1000
+                  max: 36000000
+                  description: Flow record export interval in milliseconds
+            exporters:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Exporter Name
+                  collector:
+                    type: dict
+                    keys:
+                      host:
+                        type: str
+                        description: Collector IPv4 address or IPv6 address or fully
+                          qualified domain name
+                      port:
+                        type: int
+                        description: Collector Port Number
+                        min: 1
+                        max: 65535
+                        convert_types:
+                        - str
+                  format:
+                    type: dict
+                    keys:
+                      ipfix_version:
+                        type: int
+                        convert_types:
+                        - str
+                  local_interface:
+                    type: str
+                    description: Local Source Interface
+                  template_interval:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 5000
+                    max: 3600000
+                    description: Template interval in milliseconds
+        default:
+        - name: FLOW-TRACKER
+          record_export:
+            on_inactive_timeout: 70000
+            on_interval: 300000
+          exporters:
+          - name: CV-TELEMETRY
+            collector:
+              host: 127.0.0.1
+            local_interface: Loopback0
+            template_interval: 3600000
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
@@ -1907,6 +2149,13 @@ keys:
             Only supported if `overlay_routing_protocol` is set to `ibgp`.
 
             '
+        default_flow_tracker_type:
+          type: str
+          valid_values:
+          - sampled
+          - hardware
+          description: Set the default flow tracker type.
+          default: sampled
         mlag_support:
           type: bool
           default: false
@@ -4178,6 +4427,64 @@ keys:
                   description: When set, no `catch-all` match is configured for the
                     policy and unmatched traffic is dropped.
                   default: false
+  zscaler_endpoints:
+    type: dict
+    description: 'PREVIEW: These keys are in preview mode.
+
+
+      Special data model used for WAN internet-exit integration with Zscaler.
+
+      The model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints`
+      Ansible lookup plugin.
+
+      Example:
+
+      ```yaml
+
+      zscaler_endpoints: "{{ lookup(''arista.avd.cv_zscaler_endpoints'', cv_server="<optional
+      servername>", cv_token="<optional token>") }}"
+
+      ```
+
+      The cv_server and cv_token options can be set as inventory variables instead
+      of given as arguments. (Then they will also be used for cv_deploy)'
+    keys:
+      primary:
+        type: dict
+        required: true
+        keys:
+          ip_address:
+            type: str
+            required: true
+          datacenter:
+            type: str
+            required: true
+          city:
+            type: str
+            required: true
+          country:
+            type: str
+            required: true
+          latitude:
+            type: str
+            convert_types:
+            - int
+            - float
+            required: true
+          longitude:
+            type: str
+            convert_types:
+            - int
+            - float
+            required: true
+      secondary:
+        type: dict
+        $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
+        required: false
+      tertiary:
+        type: dict
+        $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
+        required: false
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -4364,10 +4671,13 @@ $defs:
             - smpte2059-2
       sflow:
         type: bool
-        description: 'Configures sFlow on the interface. Overrides `fabric_sflow`
+        description: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints`
           setting.
-
-          '
+      flow_tracking:
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+        description: Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints`
+          setting.
       link_tracking:
         type: dict
         description: 'Configure the downstream interfaces of a respective Link Tracking
@@ -4927,6 +5237,14 @@ $defs:
                 items:
                   type: str
                   description: Used for documentation purposes.
+  flow_tracking_link:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      name:
+        type: str
+        description: Flow tracker name as defined in flow_tracking_settings.
   ipsec_profile:
     type: dict
     keys:
@@ -5884,6 +6202,11 @@ $defs:
                       keys:
                         enabled:
                           type: bool
+                    flow_tracking:
+                      type: dict
+                      $ref: eos_designs#/$defs/flow_tracking_link
+                      description: Configures flow-tracking on the interface. Overrides
+                        `fabric_flow_tracking.l3_interfaces` setting.
                     structured_config:
                       type: dict
                       description: Custom structured config added under ethernet_interfaces.[name=<interface>]
@@ -8136,6 +8459,17 @@ $defs:
 
               This setting is useful on virtual Route Reflectors and Pathfinders where
               more CPU cores should be allocated for control plane.'
+          flow_tracker_type:
+            type: str
+            valid_values:
+            - sampled
+            - hardware
+            description: 'Set the flow tracker type.
+
+              Override the `default_flow_tracker_type`` set at the `node_type_key`
+              level.
+
+              `default_flow_tracker_type` default value is `sampled`.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -8319,10 +8653,37 @@ $defs:
           default: true
           description: For a WAN interface (`wan_carrier` is set), allow to disable
             the static tunnel towards Pathfinders.
+        cv_pathfinder_internet_exit:
+          description: 'PREVIEW: This key is in preview mode'
+          type: dict
+          keys:
+            policies:
+              type: list
+              primary_key: name
+              description: List of Internet-exit policies using this interface as
+                exit.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Internet-exit policy name.
+                  tunnel_interface_numbers:
+                    type: str
+                    required: true
+                    description: 'Number range to use for Tunnel interfaces to an
+                      internet-exit service provider using this local interface.
+
+                      Examples: ''1-3'' or ''100,200,300'''
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS
             configuration.
+        flow_tracking:
+          type: dict
+          $ref: eos_designs#/$defs/flow_tracking_link
+          description: Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces`
+            setting.
         structured_config:
           type: dict
           documentation_options:
@@ -8457,6 +8818,15 @@ $defs:
         sflow:
           type: bool
           description: Enable sFlow. Overrides `fabric_sflow` setting.
+        underlay_multicast:
+          type: bool
+          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol`
+            and the global `underlay_multicast` to be `true`.
+          default: false
+        flow_tracking:
+          type: dict
+          $ref: eos_designs#/$defs/flow_tracking_link
+          description: Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
         qos_profile:
           type: str
           description: QOS service profile.
@@ -8922,3 +9292,14 @@ $defs:
 
 
                 If not set, each path-group in `names` will be attributed its `default_preference`.'
+      internet_exit:
+        type: dict
+        keys:
+          policy:
+            type: str
+            description: 'PREVIEW: This key is in preview mode.
+
+
+              Internet-exit policy name associated with this virtual_topology.
+
+              The policy must be defined under `cv_pathfinder_internet_exit_policies`.'
