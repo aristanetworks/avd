@@ -124,6 +124,10 @@ $defs:
           type: bool
           description: Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
           default: false
+        flow_tracking:
+          type: dict
+          $ref: "eos_designs#/$defs/flow_tracking_link"
+          description: Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
         qos_profile:
           type: str
           description: QOS service profile.

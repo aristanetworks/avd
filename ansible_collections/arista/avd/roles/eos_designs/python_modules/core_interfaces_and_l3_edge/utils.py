@@ -270,6 +270,9 @@ class UtilsMixin:
         if (p2p_link_sflow := get(p2p_link, "sflow", default=self._p2p_links_sflow)) is not None:
             interface_cfg["sflow"] = {"enable": p2p_link_sflow}
 
+        if (p2p_link_flow_tracking := self.shared_utils.get_flow_tracker(p2p_link, self.data_model)) is not None:
+            interface_cfg["flow_tracker"] = p2p_link_flow_tracking
+
         if self.shared_utils.mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}
             if p2p_link.get("include_in_underlay_protocol", True) is True and self.shared_utils.underlay_ldp and p2p_link.get("mpls_ldp", True) is True:
