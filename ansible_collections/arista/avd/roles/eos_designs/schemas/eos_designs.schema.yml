@@ -1172,7 +1172,16 @@ keys:
   evpn_vlan_aware_bundles:
     documentation_options:
       table: evpn-settings
-    description: Enable vlan aware bundles for EVPN MAC-VRF.
+    description: 'Enable VLAN aware bundles for every EVPN MAC-VRF.
+
+      If set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using
+      the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles
+      using the VLAN name as the bundle name.
+
+
+      The `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and
+      overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this
+      setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.'
     type: bool
     default: false
   evpn_vlan_bundles:
@@ -1249,6 +1258,49 @@ keys:
     - mpls
     default: vxlan
     type: str
+  fabric_flow_tracking:
+    documentation_options:
+      table: management-flow-tracking-settings
+    type: dict
+    description: 'Default enabling of flow-tracking(IPFIX) for various interface types
+      across the fabric.
+
+      Flow Tracking can also be enabled/disabled under each of the specific data models.
+
+      For general flow-tracking settings see `flow_tracking_settings`.'
+    keys:
+      uplinks:
+        description: Enable flow-tracking on all fabric uplinks.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      downlinks:
+        description: Enable flow-tracking on all fabric downlinks.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      endpoints:
+        description: Enable flow-tracking on all endpoints ports.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      l3_edge:
+        description: Enable flow-tracking on all p2p_links defined under l3_edge.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      core_interfaces:
+        description: Enable flow-tracking on all p2p_links defined under core_interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      mlag_interfaces:
+        description: Enable flow-tracking on all MLAG peer interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      l3_interfaces:
+        description: Enable flow-tracking on all node.l3_interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      dps_interfaces:
+        description: Enable flow-tracking on all dps_interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
   fabric_ip_addressing:
     type: dict
     keys:
@@ -1331,50 +1383,154 @@ keys:
         description: Enable sFlow on all MLAG peer interfaces.
         type: bool
   flow_tracking_settings:
+    documentation_options:
+      table: management-flow-tracking-settings
     description: 'PREVIEW: This key is currently not supported
 
 
       Define the flow tracking parameters for this topology.'
     type: dict
     keys:
-      flow_tracker_name:
-        type: str
-        default: FLOW-TRACKER
-        description: Flow Tracker Name.
-      record_export:
+      sampled:
         type: dict
+        description: The options relevant only for flow tracker type sampled.
         keys:
-          on_inactive_timeout:
-            description: Flow record inactive export timeout in milliseconds.
+          encapsulation:
+            type: dict
+            keys:
+              ipv4_ipv6:
+                type: bool
+              mpls:
+                type: bool
+          sample:
             type: int
             convert_types:
             - str
-            min: 3000
-            max: 900000
-            default: 70000
-          on_interval:
-            type: int
-            convert_types:
-            - str
-            min: 1000
-            max: 36000000
-            default: 300000
-            description: Flow record export interval in milliseconds.
-      exporter:
+            min: 1
+            max: 4294967295
+            default: 10000
+          hardware_offload:
+            type: dict
+            keys:
+              ipv4:
+                type: bool
+                description: Configure hardware offload for IPv4 traffic.
+              ipv6:
+                type: bool
+                description: Configure hardware offload for IPv6 traffic.
+              threshold_minimum:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 4294967295
+                description: Minimum number of samples.
+      hardware:
         type: dict
+        description: The options relevant only for flow tracker type hardware.
         keys:
-          name:
-            type: str
-            default: CV-TELEMETRY
-            description: Exporter Name.
-          template_interval:
-            description: Template interval in milliseconds.
-            type: int
-            convert_types:
-            - str
-            min: 5000
-            max: 3600000
-            default: 3600000
+          record:
+            type: dict
+            keys:
+              format_ipfix_standard_timestamps_counters:
+                type: bool
+                description: Enable software export of IPFIX data records.
+      trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Tracker Name
+            sampled:
+              type: dict
+              description: The options relevant only for flow tracker type sampled.
+              keys:
+                table_size:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 614400
+                  description: 'Maximum number of entries in flow table.
+
+                    '
+                record_export:
+                  type: dict
+                  keys:
+                    mpls:
+                      type: bool
+                      description: Export MPLS forwarding information.
+            record_export:
+              type: dict
+              keys:
+                on_inactive_timeout:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 3000
+                  max: 900000
+                  description: Flow record inactive export timeout in milliseconds
+                on_interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1000
+                  max: 36000000
+                  description: Flow record export interval in milliseconds
+            exporters:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Exporter Name
+                  collector:
+                    type: dict
+                    keys:
+                      host:
+                        type: str
+                        description: Collector IPv4 address or IPv6 address or fully
+                          qualified domain name
+                      port:
+                        type: int
+                        description: Collector Port Number
+                        min: 1
+                        max: 65535
+                        convert_types:
+                        - str
+                  format:
+                    type: dict
+                    keys:
+                      ipfix_version:
+                        type: int
+                        convert_types:
+                        - str
+                  local_interface:
+                    type: str
+                    description: Local Source Interface
+                  template_interval:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 5000
+                    max: 3600000
+                    description: Template interval in milliseconds
+        default:
+        - name: FLOW-TRACKER
+          record_export:
+            on_inactive_timeout: 70000
+            on_interval: 300000
+          exporters:
+          - name: CV-TELEMETRY
+            collector:
+              host: 127.0.0.1
+            local_interface: Loopback0
+            template_interval: 3600000
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
@@ -2002,6 +2158,13 @@ keys:
             Only supported if `overlay_routing_protocol` is set to `ibgp`.
 
             '
+        default_flow_tracker_type:
+          type: str
+          valid_values:
+          - sampled
+          - hardware
+          description: Set the default flow tracker type.
+          default: sampled
         mlag_support:
           type: bool
           default: false
@@ -4517,10 +4680,13 @@ $defs:
             - smpte2059-2
       sflow:
         type: bool
-        description: 'Configures sFlow on the interface. Overrides `fabric_sflow`
+        description: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints`
           setting.
-
-          '
+      flow_tracking:
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+        description: Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints`
+          setting.
       link_tracking:
         type: dict
         description: 'Configure the downstream interfaces of a respective Link Tracking
@@ -5080,6 +5246,14 @@ $defs:
                 items:
                   type: str
                   description: Used for documentation purposes.
+  flow_tracking_link:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      name:
+        type: str
+        description: Flow tracker name as defined in flow_tracking_settings.
   ipsec_profile:
     type: dict
     keys:
@@ -5887,8 +6061,8 @@ $defs:
                       description: 'Name of a bundle defined under ''evpn_vlan_bundles''
                         to inherit configuration.
 
-                        To use this option the common "evpn_vlan_aware_bundles" option
-                        must be set to true.
+                        The common option "evpn_vlan_aware_bundles" is disregarded
+                        for this option.
 
                         '
                     nodes:
@@ -6037,6 +6211,11 @@ $defs:
                       keys:
                         enabled:
                           type: bool
+                    flow_tracking:
+                      type: dict
+                      $ref: eos_designs#/$defs/flow_tracking_link
+                      description: Configures flow-tracking on the interface. Overrides
+                        `fabric_flow_tracking.l3_interfaces` setting.
                     structured_config:
                       type: dict
                       description: Custom structured config added under ethernet_interfaces.[name=<interface>]
@@ -6513,8 +6692,8 @@ $defs:
                 description: 'Name of a bundle defined under ''evpn_vlan_bundles''
                   to inherit configuration.
 
-                  To use this option the common "evpn_vlan_aware_bundles" option must
-                  be set to true.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this
+                  option.
 
                   '
               trunk_groups:
@@ -8289,6 +8468,17 @@ $defs:
 
               This setting is useful on virtual Route Reflectors and Pathfinders where
               more CPU cores should be allocated for control plane.'
+          flow_tracker_type:
+            type: str
+            valid_values:
+            - sampled
+            - hardware
+            description: 'Set the flow tracker type.
+
+              Override the `default_flow_tracker_type`` set at the `node_type_key`
+              level.
+
+              `default_flow_tracker_type` default value is `sampled`.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -8498,6 +8688,11 @@ $defs:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS
             configuration.
+        flow_tracking:
+          type: dict
+          $ref: eos_designs#/$defs/flow_tracking_link
+          description: Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces`
+            setting.
         structured_config:
           type: dict
           documentation_options:
@@ -8632,6 +8827,15 @@ $defs:
         sflow:
           type: bool
           description: Enable sFlow. Overrides `fabric_sflow` setting.
+        underlay_multicast:
+          type: bool
+          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol`
+            and the global `underlay_multicast` to be `true`.
+          default: false
+        flow_tracking:
+          type: dict
+          $ref: eos_designs#/$defs/flow_tracking_link
+          description: Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
         qos_profile:
           type: str
           description: QOS service profile.
