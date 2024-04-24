@@ -11,7 +11,7 @@ keys:
     keys:
       login:
         type: str
-        description: Multiline string ending with EOF on the last line
+        description: Multiline string ending with EOF on the last line.
       motd:
         type: str
-        description: Multiline string ending with EOF on the last line
+        description: Multiline string ending with EOF on the last line.

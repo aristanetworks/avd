@@ -51,7 +51,7 @@ keys:
                         required: true
       cv_pathfinder:
         type: dict
-        description: Metadata used for CV Pathfinder visualization on CloudVision
+        description: Metadata used for CV Pathfinder visualization on CloudVision.
         keys:
           role:
             type: str

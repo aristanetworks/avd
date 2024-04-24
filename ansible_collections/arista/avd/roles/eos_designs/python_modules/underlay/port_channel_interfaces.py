@@ -56,6 +56,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "link_tracking_groups": link.get("link_tracking_groups"),
                 "native_vlan": link.get("native_vlan"),
                 "sflow": link.get("sflow"),
+                "flow_tracker": link.get("flow_tracker"),
                 "spanning_tree_portfast": link.get("spanning_tree_portfast"),
             }
 

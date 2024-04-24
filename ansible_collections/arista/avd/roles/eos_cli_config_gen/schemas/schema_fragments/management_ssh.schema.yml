@@ -17,10 +17,10 @@ keys:
           keys:
             name:
               type: str
-              description: Standard ACL Name
+              description: Standard ACL Name.
             vrf:
               type: str
-              description: VRF Name
+              description: VRF Name.
               convert_types:
                 - int
       ipv6_access_groups:
@@ -30,10 +30,10 @@ keys:
           keys:
             name:
               type: str
-              description: Standard ACL Name
+              description: Standard ACL Name.
             vrf:
               type: str
-              description: VRF Name
+              description: VRF Name.
               convert_types:
                 - int
       idle_timeout:
@@ -42,19 +42,19 @@ keys:
           - str
         min: 0
         max: 86400
-        description: Idle timeout in minutes
+        description: Idle timeout in minutes.
       cipher:
-        description: Cryptographic ciphers for SSH to use
+        description: Cryptographic ciphers for SSH to use.
         type: list
         items:
           type: str
       key_exchange:
-        description: Cryptographic key exchange methods for SSH to use
+        description: Cryptographic key exchange methods for SSH to use.
         type: list
         items:
           type: str
       mac:
-        description: Cryptographic MAC algorithms for SSH to use
+        description: Cryptographic MAC algorithms for SSH to use.
         type: list
         items:
           type: str
@@ -76,7 +76,7 @@ keys:
             type: bool
             description: Enforce strict host key checking.
       enable:
-        description: Enable SSH daemon
+        description: Enable SSH daemon.
         type: bool
       connection:
         type: dict
@@ -87,14 +87,14 @@ keys:
               - str
             min: 1
             max: 100
-            description: Maximum total number of SSH sessions to device
+            description: Maximum total number of SSH sessions to device.
           per_host:
             type: int
             convert_types:
               - str
             min: 1
             max: 20
-            description: Maximum number of SSH sessions to device from a single host
+            description: Maximum number of SSH sessions to device from a single host.
       vrfs:
         type: list
         primary_key: name
@@ -105,15 +105,15 @@ keys:
           keys:
             name:
               type: str
-              description: VRF Name
+              description: VRF Name.
               convert_types:
                 - int
             enable:
-              description: Enable SSH in VRF
+              description: Enable SSH in VRF.
               type: bool
       log_level:
         type: str
-        description: SSH daemon log level
+        description: SSH daemon log level.
       client_alive:
         type: dict
         keys:

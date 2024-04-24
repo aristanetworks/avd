@@ -1,0 +1,67 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  application_traffic_recognition_application:
+    type: dict
+    keys:
+      protocols:
+        type: list
+        description: |-
+          List of protocols to consider for this application.
+          To use port field-sets (source, destination or both), the list
+          must contain only one or two protocols, either `tcp` or `udp`.
+          When using both protocols, one line is rendered for each in the configuration,
+          hence the field-sets must have the same value for `tcp_src_port_set_name` and
+          `udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`
+          if set in order to generate valid configuration in EOS.
+        items:
+          type: str
+          valid_values:
+            - ahp
+            - esp
+            - icmp
+            - igmp
+            - ospf
+            - pim
+            - rsvp
+            - tcp
+            - udp
+            - vrrp
+      protocol_ranges:
+        type: list
+        description: |-
+          Accept protocol value(s) or range(s).
+          Protocol values can be between 1 and 255.
+        items:
+          type: str
+          convert_types:
+            - int
+      udp_src_port_set_name:
+        type: str
+        description: |-
+          Name of field set for UDP source ports.
+          When the `protocols` list contain both `tcp` and `udp`, this key value
+          must be the same as `tcp_src_port_set_name`.
+      tcp_src_port_set_name:
+        type: str
+        description: |-
+          Name of field set for TCP source ports.
+          When the `protocols` list contain both `tcp` and `udp`, this key value
+          must be the same as `udp_src_port_set_name`.
+      udp_dest_port_set_name:
+        type: str
+        description: |-
+          Name of field set for UDP destination ports.
+          When the `protocols` list contain both `tcp` and `udp`, this key value
+          must be the same as `tcp_dest_port_set_name`.
+      tcp_dest_port_set_name:
+        type: str
+        description: |-
+          Name of field set for TCP destination ports.
+          When the `protocols` list contain both `tcp` and `udp`, this key value
+          must be the same as `udp_dest_port_set_name`.

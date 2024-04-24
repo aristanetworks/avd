@@ -23,7 +23,7 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -
         Device Structured Configuration as a dictionary
     """
 
-    # Set 'inventory_hostname' on the input hostvars, to keep compatability with Ansible focused code.
+    # Set 'inventory_hostname' on the input hostvars, to keep compatibility with Ansible focused code.
     # Also map in avd_facts without touching the hostvars
     mapped_hostvars = ChainMap(
         {
