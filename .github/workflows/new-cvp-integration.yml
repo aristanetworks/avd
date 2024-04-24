@@ -25,7 +25,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         env:
           CVAAS_AAWG_CI: ${{ secrets.CVAAS_AAWG_CI }}
@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run molecule action
         env:
           CVAAS_AAWG_CI: ${{ secrets.CVAAS_AAWG_CI }}
