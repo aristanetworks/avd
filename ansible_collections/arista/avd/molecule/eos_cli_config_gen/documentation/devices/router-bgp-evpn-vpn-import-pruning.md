@@ -117,7 +117,7 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static<br>isis |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
 
 #### Router BGP Device Configuration
@@ -188,6 +188,7 @@ router bgp 65101
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.1 rib-in pre-policy retain
       redistribute connected
+      redistribute isis route-map Router_BGP_Isis
       redistribute static rcf Router_BGP_Static()
    !
    vrf TENANT_A_PROJECT02

@@ -104,6 +104,8 @@ router_bgp:
         - source_protocol: connected
         - source_protocol: static
           rcf: Router_BGP_Static()
+        - source_protocol: isis
+          route_map: Router_BGP_Isis
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       rd: "192.168.255.3:12"
