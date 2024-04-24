@@ -62,6 +62,24 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: dc1-leaf1a (IP: 10.255.255.10)"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: dc1-leaf1b (IP: 10.255.255.20)"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1a (IP: 10.255.255.0)"
   },
   {
@@ -456,6 +474,33 @@
       "security"
     ],
     "description": "Verifies IPv4 security connections for a peer."
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "Peer: 10.255.1.2 VRF: default"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "Peer: 10.255.255.10 VRF: default"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "Peer: 10.255.255.20 VRF: default"
   },
   {
     "name": "dc1-wan1",

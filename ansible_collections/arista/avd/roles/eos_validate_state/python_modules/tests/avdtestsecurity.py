@@ -36,3 +36,45 @@ class AvdTestAPIHttpsSSL(AvdTestBase):
         anta_tests.append({"VerifyAPIHttpsSSL": {"profile": profile, "result_overwrite": {"custom_field": f"eAPI HTTPS SSL Profile: {profile}"}}})
 
         return {self.anta_module: anta_tests}
+
+
+class AvdTestIPSecurity(AvdTestBase):
+    """
+    AvdTestIPSecurity class for IP security connection tests.
+    """
+
+    anta_module = "anta.tests.security"
+
+    @cached_property
+    def test_definition(self) -> dict | None:
+        """
+        Generates the proper ANTA test definition for all IP security connection tests.
+
+        Returns:
+            test_definition (dict): ANTA test definition.
+        """
+        anta_tests = []
+
+        # Check if there are any path groups with static peers
+        if (path_groups := get(self.structured_config, "router_path_selection.path_groups")) is None:
+            LOGGER.info("No router path-group configured to collect the static peer. %s is skipped.", self.__class__.__name__)
+            return None
+
+        added_peers = set()
+        for path_group in path_groups:
+            static_peers = path_group.get("static_peers", [])
+            for peer in static_peers:
+                peer_address = peer.get("router_ip")
+                vrf = "default"  # TODO: Keeping the vrf name static for now. We may need to change later on.
+                if (peer_address, vrf) not in added_peers:
+                    anta_tests.append(
+                        {
+                            "VerifySpecificIPSecConn": {
+                                "ip_security_connections": [{"peer": peer_address, "vrf": vrf}],
+                                "result_overwrite": {"custom_field": f"Peer: {peer_address} VRF: {vrf}"},
+                            }
+                        }
+                    )
+                    added_peers.add((peer_address, vrf))
+
+        return {self.anta_module: anta_tests} if anta_tests else None
