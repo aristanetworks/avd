@@ -5230,7 +5230,7 @@
       "title": "EVPN Short Esi Prefix"
     },
     "evpn_vlan_aware_bundles": {
-      "description": "Enable VLAN aware bundles for every EVPN MAC-VRF.\nIf set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. Each `l2vlans` is configured as a separate vlan-aware-bundle with the VLAN name as the bundle name.\n\nThe `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.",
+      "description": "Enable VLAN aware bundles for every EVPN MAC-VRF.\nIf set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles using the VLAN name as the bundle name.\n\nThe `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.",
       "type": "boolean",
       "default": false,
       "title": "EVPN VLAN Aware Bundles"
