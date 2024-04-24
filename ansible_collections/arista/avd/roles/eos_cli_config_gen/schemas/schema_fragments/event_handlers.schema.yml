@@ -51,7 +51,7 @@ keys:
           keys:
             condition:
               type: str
-              description: Set the counters condition expression.
+              description: Set the logical expression to evaluate.
             granularity_per_source:
               type: bool
               description: |-
@@ -61,6 +61,10 @@ keys:
                   [* wildcard is used here]
             poll_interval:
               type: int
+              convert_types:
+              - str
+              min: 1
+              max: 1000000
               description: Set the polling interval in seconds.
         trigger_on_logging:
           type: dict
@@ -68,13 +72,18 @@ keys:
             poll_interval:
               type: int
               convert_types:
-              - "str"
+              - str
+              min: 1
+              max: 1000000
               description: Set the polling interval in seconds.
             regex:
               type: str
               description: Regular expression to use for searching log messages.
         trigger_on_intf:
           type: dict
+          description: |-
+            Trigger condition occurs on specified interface changes.
+            Note: Any one of the `ip`, `ip6` and `operstatus` key needs to be defined with the `interface`
           keys:
             interface:
               type: str

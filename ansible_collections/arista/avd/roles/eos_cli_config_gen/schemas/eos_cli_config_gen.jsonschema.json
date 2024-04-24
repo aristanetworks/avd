@@ -5550,7 +5550,7 @@
             "properties": {
               "condition": {
                 "type": "string",
-                "description": "Set the counters condition expression.",
+                "description": "Set the logical expression to evaluate.",
                 "title": "Condition"
               },
               "granularity_per_source": {
@@ -5560,6 +5560,8 @@
               },
               "poll_interval": {
                 "type": "integer",
+                "minimum": 1,
+                "maximum": 1000000,
                 "description": "Set the polling interval in seconds.",
                 "title": "Poll Interval"
               }
@@ -5575,6 +5577,8 @@
             "properties": {
               "poll_interval": {
                 "type": "integer",
+                "minimum": 1,
+                "maximum": 1000000,
                 "description": "Set the polling interval in seconds.",
                 "title": "Poll Interval"
               },
@@ -5592,6 +5596,7 @@
           },
           "trigger_on_intf": {
             "type": "object",
+            "description": "Trigger condition occurs on specified interface changes.\nNote: Any one of the `ip`, `ip6` and `operstatus` key needs to be defined with the `interface`",
             "properties": {
               "interface": {
                 "type": "string",
