@@ -820,20 +820,6 @@ monitor_connectivity:
     local_interfaces: SET-Tunnel112
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 metadata:
   cv_pathfinder:
     internet_exit_policies:
@@ -945,3 +931,17 @@ metadata:
         value: ATT
       - name: Circuit
         value: '404'
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
