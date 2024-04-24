@@ -3243,7 +3243,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -3269,14 +3269,14 @@
                         },
                         "translated_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated IP"
                         },
                         "translated_port": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 65535,
-                          "description": "requires 'original_port'.",
+                          "description": "requires 'original_port'. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated Port"
                         }
                       },
@@ -3378,7 +3378,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -3404,14 +3404,14 @@
                         },
                         "translated_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated IP"
                         },
                         "translated_port": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 65535,
-                          "description": "requires 'original_port'.",
+                          "description": "requires 'original_port'. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated Port"
                         }
                       },
@@ -7272,7 +7272,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -7298,14 +7298,14 @@
                         },
                         "translated_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated IP"
                         },
                         "translated_port": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 65535,
-                          "description": "requires 'original_port'.",
+                          "description": "requires 'original_port'. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated Port"
                         }
                       },
@@ -7407,7 +7407,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -7433,14 +7433,14 @@
                         },
                         "translated_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated IP"
                         },
                         "translated_port": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 65535,
-                          "description": "requires 'original_port'.",
+                          "description": "requires 'original_port'. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated Port"
                         }
                       },
@@ -13884,7 +13884,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -13910,14 +13910,14 @@
                         },
                         "translated_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated IP"
                         },
                         "translated_port": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 65535,
-                          "description": "requires 'original_port'.",
+                          "description": "requires 'original_port'. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated Port"
                         }
                       },
@@ -14019,7 +14019,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -14045,14 +14045,14 @@
                         },
                         "translated_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated IP"
                         },
                         "translated_port": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 65535,
-                          "description": "requires 'original_port'.",
+                          "description": "requires 'original_port'. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated Port"
                         }
                       },
@@ -27258,7 +27258,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -27284,14 +27284,14 @@
                         },
                         "translated_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated IP"
                         },
                         "translated_port": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 65535,
-                          "description": "requires 'original_port'.",
+                          "description": "requires 'original_port'. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated Port"
                         }
                       },
@@ -27393,7 +27393,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -27419,14 +27419,14 @@
                         },
                         "translated_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated IP"
                         },
                         "translated_port": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 65535,
-                          "description": "requires 'original_port'.",
+                          "description": "requires 'original_port'. The combination of translated_ip and translated_ports must be unique.",
                           "title": "Translated Port"
                         }
                       },

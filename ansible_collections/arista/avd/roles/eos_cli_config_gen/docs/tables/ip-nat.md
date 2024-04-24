@@ -23,12 +23,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comment</samp>](## "ip_nat.profiles.[].destination.static.[].comment") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "ip_nat.profiles.[].destination.static.[].direction") | String |  |  | Valid Values:<br>- <code>egress</code><br>- <code>ingress</code> | Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.<br>EOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "ip_nat.profiles.[].destination.static.[].group") | Integer |  |  | Min: 1<br>Max: 65535 | 'access_list' and 'group' are mutual exclusive. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;original_ip</samp>](## "ip_nat.profiles.[].destination.static.[].original_ip") | String |  |  |  | IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;original_ip</samp>](## "ip_nat.profiles.[].destination.static.[].original_ip") | String |  |  |  | IPv4 address. The combination of original_ip and original_port must be unique. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;original_port</samp>](## "ip_nat.profiles.[].destination.static.[].original_port") | Integer |  |  | Min: 1<br>Max: 65535 | The combination of original_ip and original_port must be unique. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ip_nat.profiles.[].destination.static.[].priority") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ip_nat.profiles.[].destination.static.[].protocol") | String |  |  | Valid Values:<br>- <code>udp</code><br>- <code>tcp</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;translated_ip</samp>](## "ip_nat.profiles.[].destination.static.[].translated_ip") | String | Required |  |  | IPv4 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;translated_port</samp>](## "ip_nat.profiles.[].destination.static.[].translated_port") | Integer |  |  | Min: 1<br>Max: 65535 | requires 'original_port'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;translated_ip</samp>](## "ip_nat.profiles.[].destination.static.[].translated_ip") | String | Required |  |  | IPv4 address. The combination of translated_ip and translated_ports must be unique. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;translated_port</samp>](## "ip_nat.profiles.[].destination.static.[].translated_port") | Integer |  |  | Min: 1<br>Max: 65535 | requires 'original_port'. The combination of translated_ip and translated_ports must be unique. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "ip_nat.profiles.[].source") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "ip_nat.profiles.[].source.dynamic") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;access_list</samp>](## "ip_nat.profiles.[].source.dynamic.[].access_list") | String | Required, Unique |  |  |  |
@@ -41,12 +41,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comment</samp>](## "ip_nat.profiles.[].source.static.[].comment") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "ip_nat.profiles.[].source.static.[].direction") | String |  |  | Valid Values:<br>- <code>egress</code><br>- <code>ingress</code> | Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.<br>EOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "ip_nat.profiles.[].source.static.[].group") | Integer |  |  | Min: 1<br>Max: 65535 | 'access_list' and 'group' are mutual exclusive. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;original_ip</samp>](## "ip_nat.profiles.[].source.static.[].original_ip") | String |  |  |  | IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;original_ip</samp>](## "ip_nat.profiles.[].source.static.[].original_ip") | String |  |  |  | IPv4 address. The combination of original_ip and original_port must be unique. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;original_port</samp>](## "ip_nat.profiles.[].source.static.[].original_port") | Integer |  |  | Min: 1<br>Max: 65535 | The combination of original_ip and original_port must be unique. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ip_nat.profiles.[].source.static.[].priority") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ip_nat.profiles.[].source.static.[].protocol") | String |  |  | Valid Values:<br>- <code>udp</code><br>- <code>tcp</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;translated_ip</samp>](## "ip_nat.profiles.[].source.static.[].translated_ip") | String | Required |  |  | IPv4 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;translated_port</samp>](## "ip_nat.profiles.[].source.static.[].translated_port") | Integer |  |  | Min: 1<br>Max: 65535 | requires 'original_port'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;translated_ip</samp>](## "ip_nat.profiles.[].source.static.[].translated_ip") | String | Required |  |  | IPv4 address. The combination of translated_ip and translated_ports must be unique. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;translated_port</samp>](## "ip_nat.profiles.[].source.static.[].translated_port") | Integer |  |  | Min: 1<br>Max: 65535 | requires 'original_port'. The combination of translated_ip and translated_ports must be unique. |
     | [<samp>&nbsp;&nbsp;pools</samp>](## "ip_nat.pools") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_nat.pools.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "ip_nat.pools.[].type") | String |  | `ip-port` | Valid Values:<br>- <code>ip-port</code><br>- <code>port-only</code> |  |
@@ -116,7 +116,7 @@
                 # 'access_list' and 'group' are mutual exclusive.
                 group: <int; 1-65535>
 
-                # IPv4 address.
+                # IPv4 address. The combination of original_ip and original_port must be unique.
                 original_ip: <str>
 
                 # The combination of original_ip and original_port must be unique.
@@ -124,10 +124,10 @@
                 priority: <int; 0-4294967295>
                 protocol: <str; "udp" | "tcp">
 
-                # IPv4 address.
+                # IPv4 address. The combination of translated_ip and translated_ports must be unique.
                 translated_ip: <str; required>
 
-                # requires 'original_port'.
+                # requires 'original_port'. The combination of translated_ip and translated_ports must be unique.
                 translated_port: <int; 1-65535>
           source:
             dynamic:
@@ -152,7 +152,7 @@
                 # 'access_list' and 'group' are mutual exclusive.
                 group: <int; 1-65535>
 
-                # IPv4 address.
+                # IPv4 address. The combination of original_ip and original_port must be unique.
                 original_ip: <str>
 
                 # The combination of original_ip and original_port must be unique.
@@ -160,10 +160,10 @@
                 priority: <int; 0-4294967295>
                 protocol: <str; "udp" | "tcp">
 
-                # IPv4 address.
+                # IPv4 address. The combination of translated_ip and translated_ports must be unique.
                 translated_ip: <str; required>
 
-                # requires 'original_port'.
+                # requires 'original_port'. The combination of translated_ip and translated_ports must be unique.
                 translated_port: <int; 1-65535>
       pools:
         - name: <str; required; unique>
