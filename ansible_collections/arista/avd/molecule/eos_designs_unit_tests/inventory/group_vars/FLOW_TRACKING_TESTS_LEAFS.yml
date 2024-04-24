@@ -1,0 +1,185 @@
+---
+type: l3leaf
+
+fabric_flow_tracking:
+  uplinks:
+    enabled: true
+  endpoints:
+    enabled: true
+  mlag_interfaces:
+    enabled: true
+  l3_interfaces:
+    enabled: true
+
+flow_tracking_settings:
+  sampled:
+    encapsulation:
+      mpls: true
+    sample: 50000
+    hardware_offload:
+      ipv4: true
+      ipv6: true
+      threshold_minimum: 1332
+  trackers:
+    - name: FLOW-TRACKER-4
+      record_export:
+        on_inactive_timeout: 50020
+        on_interval: 300321
+      exporters:
+        - name: ayush_exporter
+          collector:
+            host: 127.0.2.1
+          local_interface: Loopback0
+          template_interval: 40020
+    - name: FLOW-TRACKER-3
+      record_export:
+        on_inactive_timeout: 50000
+        on_interval: 300331
+      exporters:
+        - name: ayush_exporter
+          collector:
+            host: 127.0.0.1
+          local_interface: Loopback0
+          template_interval: 40000
+    # Override default definition
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 50001
+        on_interval: 300332
+      exporters:
+        - name: ayush_exporter
+          collector:
+            host: 127.0.0.2
+          local_interface: Loopback0
+          template_interval: 40002
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.254.1.0/27
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['flow-tracking-tests-spine1', 'flow-tracking-tests-spine2']
+    uplink_ipv4_pool: 10.254.2.0/24
+    vtep_loopback_ipv4_pool: 10.254.11.0/27
+    mlag_interfaces: ['Ethernet21', 'Ethernet22']
+    mlag_peer_ipv4_pool: 10.254.1.64/27
+    mlag_peer_l3_ipv4_pool: 10.254.1.96/27
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+    virtual_router_mac_address: 00:11:22:33:44:55
+    flow_tracker_type: hardware
+
+  nodes:
+    - name: flow-tracking-tests-leaf1
+      id: 1
+      bgp_as: 65101
+      mgmt_ip: 192.168.0.101/24
+      uplink_switch_interfaces:
+        - Ethernet1
+        - Ethernet2
+
+    - name: flow-tracking-tests-leaf2
+      id: 2
+      bgp_as: 65102
+      mgmt_ip: 192.168.0.102/24
+      uplink_switch_interfaces:
+        - Ethernet3
+        - Ethernet4
+      flow_tracker_type: sampled
+
+  node_groups:
+    - group: flow-tracking-tests-leaf-mlag
+      bgp_as: 65105
+      nodes:
+        - name: flow-tracking-tests-leaf3
+          id: 5
+          mgmt_ip: 192.168.0.103/24
+          uplink_switch_interfaces:
+            - Ethernet5
+            - Ethernet6
+        - name: flow-tracking-tests-leaf4
+          id: 6
+          mgmt_ip: 192.168.0.104/24
+          uplink_switch_interfaces:
+            - Ethernet7
+            - Ethernet8
+          flow_tracker_type: hardware
+
+
+servers:
+  - name: single-interface-true
+    adapters:
+      - endpoint_ports: [ eth1, eth2 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ flow-tracking-tests-leaf1, flow-tracking-tests-leaf2 ]
+        vlans: 11
+        mode: access
+        flow_tracking:
+          name: FLOW-TRACKER-3
+
+  - name: single-interface-false
+    adapters:
+      - endpoint_ports: [ eth11, eth12 ]
+        switch_ports: [ Ethernet11, Ethernet11 ]
+        switches: [ flow-tracking-tests-leaf1, flow-tracking-tests-leaf2 ]
+        vlans: 11
+        mode: access
+        flow_tracking:
+          enabled: false
+
+  - name: single-interface-no-definition
+    adapters:
+      - endpoint_ports: [ eth12, eth13 ]
+        switch_ports: [ Ethernet12, Ethernet12 ]
+        switches: [ flow-tracking-tests-leaf1, flow-tracking-tests-leaf2 ]
+        vlans: 11
+        mode: access
+        flow_tracking:
+          enabled: true
+
+  - name: single-interface-true4
+    adapters:
+      - endpoint_ports: [ eth1, eth1 ]
+        switch_ports: [ Ethernet13, Ethernet13 ]
+        switches: [ flow-tracking-tests-leaf1, flow-tracking-tests-leaf2 ]
+        vlans: 11
+        mode: access
+
+  - name: port-channel-interface-true
+    adapters:
+      - endpoint_ports: [ PCI1, PCI2 ]
+        switch_ports: [ Ethernet14, Ethernet14 ]
+        switches: [ flow-tracking-tests-leaf3, flow-tracking-tests-leaf4 ]
+        vlans: 11
+        mode: access
+        spanning_tree_portfast: edge
+        flow_tracking:
+          name: FLOW-TRACKER-4
+        port_channel:
+          mode: "on"
+
+  - name: port-channel-interface-false
+    adapters:
+      - endpoint_ports: [ PCI11, PCI12 ]
+        switch_ports: [ Ethernet15, Ethernet15 ]
+        switches: [ flow-tracking-tests-leaf3, flow-tracking-tests-leaf4 ]
+        vlans: 11
+        mode: access
+        spanning_tree_portfast: edge
+        flow_tracking:
+          enabled: true
+        port_channel:
+          mode: "on"
+
+  - name: port-channel-interface-no-definition
+    adapters:
+      - endpoint_ports: [ PCI13, PCI14 ]
+        switch_ports: [ Ethernet16, Ethernet16 ]
+        switches: [ flow-tracking-tests-leaf3, flow-tracking-tests-leaf4 ]
+        vlans: 11
+        mode: access
+        spanning_tree_portfast: edge
+        port_channel:
+          mode: "on"
+        flow_tracking:
+          enabled: false
