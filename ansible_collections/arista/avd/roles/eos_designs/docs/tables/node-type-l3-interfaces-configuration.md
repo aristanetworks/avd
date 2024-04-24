@@ -31,7 +31,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>Unless the carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_internet_exit</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].cv_pathfinder_internet_exit") | Dictionary |  |  |  | PREVIEW: This key is in preview mode |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].cv_pathfinder_internet_exit.policies") | List, items: Dictionary |  |  |  | List of Internet-exit policies using this interface as exit. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String | Required |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].flow_tracking.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
@@ -59,7 +66,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>Unless the carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_internet_exit</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit") | Dictionary |  |  |  | PREVIEW: This key is in preview mode |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies") | List, items: Dictionary |  |  |  | List of Internet-exit policies using this interface as exit. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String | Required |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].flow_tracking.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node.<br>Used to define the node for WAN interfaces when `wan_carrier` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
@@ -83,7 +97,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>Unless the carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_internet_exit</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].cv_pathfinder_internet_exit") | Dictionary |  |  |  | PREVIEW: This key is in preview mode |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies") | List, items: Dictionary |  |  |  | List of Internet-exit policies using this interface as exit. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String | Required |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].flow_tracking.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
@@ -109,7 +130,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].wan_carrier") | String |  |  |  | The WAN carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>Unless the carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].wan_circuit_id") | String |  |  |  | The WAN circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_internet_exit</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit") | Dictionary |  |  |  | PREVIEW: This key is in preview mode |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies") | List, items: Dictionary |  |  |  | List of Internet-exit policies using this interface as exit. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String | Required |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].flow_tracking.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>l3_interface_profiles</samp>](## "l3_interface_profiles") | List, items: Dictionary |  |  |  | Profiles to inherit common settings for l3_interfaces defined under the node type key.<br>These profiles will *not* work for `l3_interfaces` defined under `vrfs`. |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "l3_interface_profiles.[].profile") | String | Required, Unique |  |  | L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile. |
@@ -133,7 +161,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_carrier</samp>](## "l3_interface_profiles.[].wan_carrier") | String |  |  |  | The WAN carrier this interface is connected to.<br>This is used to infer the path-groups in which this interface should be configured.<br>Unless the carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_circuit_id</samp>](## "l3_interface_profiles.[].wan_circuit_id") | String |  |  |  | The WAN circuit ID for this interface.<br>This is not rendered in the configuration but used for WAN designs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;connected_to_pathfinder</samp>](## "l3_interface_profiles.[].connected_to_pathfinder") | Boolean |  | `True` |  | For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_internet_exit</samp>](## "l3_interface_profiles.[].cv_pathfinder_internet_exit") | Dictionary |  |  |  | PREVIEW: This key is in preview mode |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "l3_interface_profiles.[].cv_pathfinder_internet_exit.policies") | List, items: Dictionary |  |  |  | List of Internet-exit policies using this interface as exit. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "l3_interface_profiles.[].cv_pathfinder_internet_exit.policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "l3_interface_profiles.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String | Required |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_interface_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "l3_interface_profiles.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_interface_profiles.[].flow_tracking.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_interface_profiles.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_interface_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
 
 === "YAML"
@@ -231,8 +266,28 @@
             # For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
             connected_to_pathfinder: <bool; default=True>
 
+            # PREVIEW: This key is in preview mode
+            cv_pathfinder_internet_exit:
+
+              # List of Internet-exit policies using this interface as exit.
+              policies:
+
+                  # Internet-exit policy name.
+                - name: <str; required; unique>
+
+                  # Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
+                  # Examples: '1-3' or '100,200,300'
+                  tunnel_interface_numbers: <str; required>
+
             # EOS CLI rendered directly on the interface in the final EOS configuration.
             raw_eos_cli: <str>
+
+            # Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+            flow_tracking:
+              enabled: <bool>
+
+              # Flow tracker name as defined in flow_tracking_settings.
+              name: <str>
 
             # Custom structured config for the Ethernet interface.
             structured_config: <dict>
@@ -337,8 +392,28 @@
                   # For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
                   connected_to_pathfinder: <bool; default=True>
 
+                  # PREVIEW: This key is in preview mode
+                  cv_pathfinder_internet_exit:
+
+                    # List of Internet-exit policies using this interface as exit.
+                    policies:
+
+                        # Internet-exit policy name.
+                      - name: <str; required; unique>
+
+                        # Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
+                        # Examples: '1-3' or '100,200,300'
+                        tunnel_interface_numbers: <str; required>
+
                   # EOS CLI rendered directly on the interface in the final EOS configuration.
                   raw_eos_cli: <str>
+
+                  # Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                  flow_tracking:
+                    enabled: <bool>
+
+                    # Flow tracker name as defined in flow_tracking_settings.
+                    name: <str>
 
                   # Custom structured config for the Ethernet interface.
                   structured_config: <dict>
@@ -430,8 +505,28 @@
               # For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
               connected_to_pathfinder: <bool; default=True>
 
+              # PREVIEW: This key is in preview mode
+              cv_pathfinder_internet_exit:
+
+                # List of Internet-exit policies using this interface as exit.
+                policies:
+
+                    # Internet-exit policy name.
+                  - name: <str; required; unique>
+
+                    # Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
+                    # Examples: '1-3' or '100,200,300'
+                    tunnel_interface_numbers: <str; required>
+
               # EOS CLI rendered directly on the interface in the final EOS configuration.
               raw_eos_cli: <str>
+
+              # Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+              flow_tracking:
+                enabled: <bool>
+
+                # Flow tracker name as defined in flow_tracking_settings.
+                name: <str>
 
               # Custom structured config for the Ethernet interface.
               structured_config: <dict>
@@ -529,8 +624,28 @@
               # For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
               connected_to_pathfinder: <bool; default=True>
 
+              # PREVIEW: This key is in preview mode
+              cv_pathfinder_internet_exit:
+
+                # List of Internet-exit policies using this interface as exit.
+                policies:
+
+                    # Internet-exit policy name.
+                  - name: <str; required; unique>
+
+                    # Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
+                    # Examples: '1-3' or '100,200,300'
+                    tunnel_interface_numbers: <str; required>
+
               # EOS CLI rendered directly on the interface in the final EOS configuration.
               raw_eos_cli: <str>
+
+              # Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+              flow_tracking:
+                enabled: <bool>
+
+                # Flow tracker name as defined in flow_tracking_settings.
+                name: <str>
 
               # Custom structured config for the Ethernet interface.
               structured_config: <dict>
@@ -622,8 +737,28 @@
         # For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
         connected_to_pathfinder: <bool; default=True>
 
+        # PREVIEW: This key is in preview mode
+        cv_pathfinder_internet_exit:
+
+          # List of Internet-exit policies using this interface as exit.
+          policies:
+
+              # Internet-exit policy name.
+            - name: <str; required; unique>
+
+              # Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
+              # Examples: '1-3' or '100,200,300'
+              tunnel_interface_numbers: <str; required>
+
         # EOS CLI rendered directly on the interface in the final EOS configuration.
         raw_eos_cli: <str>
+
+        # Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+        flow_tracking:
+          enabled: <bool>
+
+          # Flow tracker name as defined in flow_tracking_settings.
+          name: <str>
 
         # Custom structured config for the Ethernet interface.
         structured_config: <dict>

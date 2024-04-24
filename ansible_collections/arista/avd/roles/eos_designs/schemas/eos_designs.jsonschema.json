@@ -135,7 +135,7 @@
           "properties": {
             "ipv4_applications": {
               "type": "array",
-              "description": "List of user defined IPv4 applications.",
+              "description": "List of user defined IPv4 applications. The name should be unique over all defined applications (ipv4 and l4).",
               "items": {
                 "type": "object",
                 "properties": {
@@ -156,7 +156,7 @@
                   },
                   "protocols": {
                     "type": "array",
-                    "description": "List of protocols to consider for this application.\n\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
+                    "description": "List of protocols to consider for this application.\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
                     "items": {
                       "type": "string",
                       "enum": [
@@ -184,22 +184,22 @@
                   },
                   "udp_src_port_set_name": {
                     "type": "string",
-                    "description": "Name of field set for UDP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
+                    "description": "Name of field set for UDP source ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
                     "title": "UDP Src Port Set Name"
                   },
                   "tcp_src_port_set_name": {
                     "type": "string",
-                    "description": "Name of field set for TCP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
+                    "description": "Name of field set for TCP source ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
                     "title": "TCP Src Port Set Name"
                   },
                   "udp_dest_port_set_name": {
                     "type": "string",
-                    "description": "Name of field set for UDP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
+                    "description": "Name of field set for UDP destination ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
                     "title": "UDP Dest Port Set Name"
                   },
                   "tcp_dest_port_set_name": {
                     "type": "string",
-                    "description": "Name of field set for TCP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
+                    "description": "Name of field set for TCP destination ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
                     "title": "TCP Dest Port Set Name"
                   }
                 },
@@ -212,6 +212,76 @@
                 ]
               },
               "title": "IPv4 Applications"
+            },
+            "l4_applications": {
+              "type": "array",
+              "description": "List of user defined L4 applications. The name should be unique over all defined applications (ipv4 and l4).",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Application name.",
+                    "title": "Name"
+                  },
+                  "protocols": {
+                    "type": "array",
+                    "description": "List of protocols to consider for this application.\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "ahp",
+                        "esp",
+                        "icmp",
+                        "igmp",
+                        "ospf",
+                        "pim",
+                        "rsvp",
+                        "tcp",
+                        "udp",
+                        "vrrp"
+                      ]
+                    },
+                    "title": "Protocols"
+                  },
+                  "protocol_ranges": {
+                    "type": "array",
+                    "description": "Accept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Protocol Ranges"
+                  },
+                  "udp_src_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for UDP source ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
+                    "title": "UDP Src Port Set Name"
+                  },
+                  "tcp_src_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for TCP source ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
+                    "title": "TCP Src Port Set Name"
+                  },
+                  "udp_dest_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for UDP destination ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
+                    "title": "UDP Dest Port Set Name"
+                  },
+                  "tcp_dest_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for TCP destination ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
+                    "title": "TCP Dest Port Set Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "L4 Applications"
             }
           },
           "additionalProperties": false,
@@ -4012,6 +4082,32 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -4260,6 +4356,32 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -4380,6 +4502,118 @@
       ],
       "title": "Custom Structured Configuration Prefix"
     },
+    "cv_pathfinder_internet_exit_policies": {
+      "description": "PREVIEW: These keys are in preview mode.\n\nList of internet-exit policies used for the WAN configuration.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Internet-exit policy name.",
+            "title": "Name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "zscaler"
+            ],
+            "description": "Internet-exit policy type.\nOnly Zscaler supported.",
+            "title": "Type"
+          },
+          "fallback_to_system_default": {
+            "type": "boolean",
+            "default": true,
+            "description": "Add system default exit-group at the end of the policy.",
+            "title": "Fallback To System Default"
+          },
+          "zscaler": {
+            "type": "object",
+            "description": "Zscaler information. Only used if `type` is 'zscaler'.",
+            "properties": {
+              "ipsec_key_salt": {
+                "type": "string",
+                "description": "\"Salt\" used for auto generation of encryption keys for IPsec tunnels to Zscaler.\nThe keys will be generated as a hash of `salt_<hostname>_<policy_name>`.\nSince this salt can be used to deduct the encryption key, it is recommeneded to use vault.",
+                "title": "Ipsec Key Salt"
+              },
+              "cloud_name": {
+                "type": "string",
+                "description": "Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.",
+                "title": "Cloud Name"
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "Domain name as configured in Zscaler for the tenant. Used as UFQDN suffix for authentication.",
+                "title": "Domain Name"
+              },
+              "encrypt_traffic": {
+                "type": "boolean",
+                "default": true,
+                "description": "When `true` the traffic going over the tunnels will be encrypted with AES-256-GCM. Otherwise the traffic will be using NULL encryption.\nNote that encryption requires a subscription on the Zscaler account.",
+                "title": "Encrypt Traffic"
+              },
+              "download_bandwidth": {
+                "type": "integer",
+                "description": "Maximum allowed download bandwidth in Mbps for each device using this policy.",
+                "title": "Download Bandwidth"
+              },
+              "upload_bandwidth": {
+                "type": "integer",
+                "description": "Maximum allowed upload bandwidth in Mbps for each device using this policy.",
+                "title": "Upload Bandwidth"
+              },
+              "firewall": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enforce firewall controls.",
+                    "default": false,
+                    "title": "Enabled"
+                  },
+                  "ips": {
+                    "type": "boolean",
+                    "description": "Enable IPS Controls for the firewall.",
+                    "default": false,
+                    "title": "Ips"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Firewall"
+              },
+              "acceptable_use_policy": {
+                "type": "boolean",
+                "description": "Display an Acceptable Use Policy (AUP) and require users to accept it.",
+                "default": false,
+                "title": "Acceptable Use Policy"
+              }
+            },
+            "required": [
+              "ipsec_key_salt",
+              "cloud_name",
+              "domain_name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Zscaler"
+          }
+        },
+        "required": [
+          "type",
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Cv Pathfinder Internet Exit Policies"
+    },
     "cv_pathfinder_regions": {
       "description": "Define the CV Pathfinder hierarchy.",
       "type": "array",
@@ -4388,7 +4622,6 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The region name.",
             "title": "Name"
           },
           "description": {
@@ -4428,6 +4661,29 @@
                   "type": "string",
                   "description": "Location as a string is resolved on Cloudvision.",
                   "title": "Location"
+                },
+                "resolved_location": {
+                  "type": "object",
+                  "description": "PREVIEW: These keys are in preview mode.\n\nThe resolved location elements.\nNeeded for internet-exit Zscaler integration until we can autofill it from the lookup plugin.",
+                  "properties": {
+                    "city": {
+                      "type": "string",
+                      "title": "City"
+                    },
+                    "country": {
+                      "type": "string",
+                      "title": "Country"
+                    }
+                  },
+                  "required": [
+                    "city",
+                    "country"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Resolved Location"
                 },
                 "site_contact": {
                   "type": "string",
@@ -4974,7 +5230,7 @@
       "title": "EVPN Short Esi Prefix"
     },
     "evpn_vlan_aware_bundles": {
-      "description": "Enable vlan aware bundles for EVPN MAC-VRF.",
+      "description": "Enable VLAN aware bundles for every EVPN MAC-VRF.\nIf set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles using the VLAN name as the bundle name.\n\nThe `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.",
       "type": "boolean",
       "default": false,
       "title": "EVPN VLAN Aware Bundles"
@@ -5045,6 +5301,177 @@
       "default": "vxlan",
       "type": "string",
       "title": "Fabric EVPN Encapsulation"
+    },
+    "fabric_flow_tracking": {
+      "type": "object",
+      "description": "Default enabling of flow-tracking(IPFIX) for various interface types across the fabric.\nFlow Tracking can also be enabled/disabled under each of the specific data models.\nFor general flow-tracking settings see `flow_tracking_settings`.",
+      "properties": {
+        "uplinks": {
+          "description": "Enable flow-tracking on all fabric uplinks.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Uplinks"
+        },
+        "downlinks": {
+          "description": "Enable flow-tracking on all fabric downlinks.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Downlinks"
+        },
+        "endpoints": {
+          "description": "Enable flow-tracking on all endpoints ports.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Endpoints"
+        },
+        "l3_edge": {
+          "description": "Enable flow-tracking on all p2p_links defined under l3_edge.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "L3 Edge"
+        },
+        "core_interfaces": {
+          "description": "Enable flow-tracking on all p2p_links defined under core_interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Core Interfaces"
+        },
+        "mlag_interfaces": {
+          "description": "Enable flow-tracking on all MLAG peer interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MLAG Interfaces"
+        },
+        "l3_interfaces": {
+          "description": "Enable flow-tracking on all node.l3_interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "L3 Interfaces"
+        },
+        "dps_interfaces": {
+          "description": "Enable flow-tracking on all dps_interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "DPS Interfaces"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Fabric Flow Tracking"
     },
     "fabric_ip_addressing": {
       "type": "object",
@@ -5153,61 +5580,260 @@
       "description": "PREVIEW: This key is currently not supported\n\nDefine the flow tracking parameters for this topology.",
       "type": "object",
       "properties": {
-        "flow_tracker_name": {
-          "type": "string",
-          "default": "FLOW-TRACKER",
-          "description": "Flow Tracker Name.",
-          "title": "Flow Tracker Name"
-        },
-        "record_export": {
+        "sampled": {
           "type": "object",
+          "description": "The options relevant only for flow tracker type sampled.",
           "properties": {
-            "on_inactive_timeout": {
-              "description": "Flow record inactive export timeout in milliseconds.",
-              "type": "integer",
-              "minimum": 3000,
-              "maximum": 900000,
-              "default": 70000,
-              "title": "On Inactive Timeout"
+            "encapsulation": {
+              "type": "object",
+              "properties": {
+                "ipv4_ipv6": {
+                  "type": "boolean",
+                  "title": "IPv4 IPv6"
+                },
+                "mpls": {
+                  "type": "boolean",
+                  "title": "MPLS"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Encapsulation"
             },
-            "on_interval": {
+            "sample": {
               "type": "integer",
-              "minimum": 1000,
-              "maximum": 36000000,
-              "default": 300000,
-              "description": "Flow record export interval in milliseconds.",
-              "title": "On Interval"
+              "minimum": 1,
+              "maximum": 4294967295,
+              "default": 10000,
+              "title": "Sample"
+            },
+            "hardware_offload": {
+              "type": "object",
+              "properties": {
+                "ipv4": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv4 traffic.",
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv6 traffic.",
+                  "title": "IPv6"
+                },
+                "threshold_minimum": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4294967295,
+                  "description": "Minimum number of samples.",
+                  "title": "Threshold Minimum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Hardware Offload"
             }
           },
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "Record Export"
+          "title": "Sampled"
         },
-        "exporter": {
+        "hardware": {
           "type": "object",
+          "description": "The options relevant only for flow tracker type hardware.",
           "properties": {
-            "name": {
-              "type": "string",
-              "default": "CV-TELEMETRY",
-              "description": "Exporter Name.",
-              "title": "Name"
-            },
-            "template_interval": {
-              "description": "Template interval in milliseconds.",
-              "type": "integer",
-              "minimum": 5000,
-              "maximum": 3600000,
-              "default": 3600000,
-              "title": "Template Interval"
+            "record": {
+              "type": "object",
+              "properties": {
+                "format_ipfix_standard_timestamps_counters": {
+                  "type": "boolean",
+                  "description": "Enable software export of IPFIX data records.",
+                  "title": "Format Ipfix Standard Timestamps Counters"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Record"
             }
           },
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "Exporter"
+          "title": "Hardware"
+        },
+        "trackers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Tracker Name",
+                "title": "Name"
+              },
+              "sampled": {
+                "type": "object",
+                "description": "The options relevant only for flow tracker type sampled.",
+                "properties": {
+                  "table_size": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 614400,
+                    "description": "Maximum number of entries in flow table.\n",
+                    "title": "Table Size"
+                  },
+                  "record_export": {
+                    "type": "object",
+                    "properties": {
+                      "mpls": {
+                        "type": "boolean",
+                        "description": "Export MPLS forwarding information.",
+                        "title": "MPLS"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Record Export"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sampled"
+              },
+              "record_export": {
+                "type": "object",
+                "properties": {
+                  "on_inactive_timeout": {
+                    "type": "integer",
+                    "minimum": 3000,
+                    "maximum": 900000,
+                    "description": "Flow record inactive export timeout in milliseconds",
+                    "title": "On Inactive Timeout"
+                  },
+                  "on_interval": {
+                    "type": "integer",
+                    "minimum": 1000,
+                    "maximum": 36000000,
+                    "description": "Flow record export interval in milliseconds",
+                    "title": "On Interval"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Record Export"
+              },
+              "exporters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Exporter Name",
+                      "title": "Name"
+                    },
+                    "collector": {
+                      "type": "object",
+                      "properties": {
+                        "host": {
+                          "type": "string",
+                          "description": "Collector IPv4 address or IPv6 address or fully qualified domain name",
+                          "title": "Host"
+                        },
+                        "port": {
+                          "type": "integer",
+                          "description": "Collector Port Number",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Port"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Collector"
+                    },
+                    "format": {
+                      "type": "object",
+                      "properties": {
+                        "ipfix_version": {
+                          "type": "integer",
+                          "title": "Ipfix Version"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Format"
+                    },
+                    "local_interface": {
+                      "type": "string",
+                      "description": "Local Source Interface",
+                      "title": "Local Interface"
+                    },
+                    "template_interval": {
+                      "type": "integer",
+                      "minimum": 5000,
+                      "maximum": 3600000,
+                      "description": "Template interval in milliseconds",
+                      "title": "Template Interval"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Exporters"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "default": [
+            {
+              "name": "FLOW-TRACKER",
+              "record_export": {
+                "on_inactive_timeout": 70000,
+                "on_interval": 300000
+              },
+              "exporters": [
+                {
+                  "name": "CV-TELEMETRY",
+                  "collector": {
+                    "host": "127.0.0.1"
+                  },
+                  "local_interface": "Loopback0",
+                  "template_interval": 3600000
+                }
+              ]
+            }
+          ],
+          "title": "Trackers"
         }
       },
       "additionalProperties": false,
@@ -5943,6 +6569,32 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -6191,6 +6843,32 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -6416,10 +7094,69 @@
             "description": "For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.",
             "title": "Connected To Pathfinder"
           },
+          "cv_pathfinder_internet_exit": {
+            "description": "PREVIEW: This key is in preview mode",
+            "type": "object",
+            "properties": {
+              "policies": {
+                "type": "array",
+                "description": "List of Internet-exit policies using this interface as exit.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Internet-exit policy name.",
+                      "title": "Name"
+                    },
+                    "tunnel_interface_numbers": {
+                      "type": "string",
+                      "description": "Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.\nExamples: '1-3' or '100,200,300'",
+                      "title": "Tunnel Interface Numbers"
+                    }
+                  },
+                  "required": [
+                    "tunnel_interface_numbers",
+                    "name"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Policies"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Cv Pathfinder Internet Exit"
+          },
           "raw_eos_cli": {
             "type": "string",
             "description": "EOS CLI rendered directly on the interface in the final EOS configuration.",
             "title": "Raw EOS CLI"
+          },
+          "flow_tracking": {
+            "type": "object",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Flow tracker name as defined in flow_tracking_settings.",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracking"
           },
           "structured_config": {
             "type": "object",
@@ -9667,8 +10404,28 @@
           },
           "sflow": {
             "type": "boolean",
-            "description": "Configures sFlow on the interface. Overrides `fabric_sflow` setting.\n",
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.",
             "title": "Sflow"
+          },
+          "flow_tracking": {
+            "type": "object",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Flow tracker name as defined in flow_tracking_settings.",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracking"
           },
           "link_tracking": {
             "type": "object",
@@ -15126,6 +15883,16 @@
             "description": "Set the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
             "title": "Default Wan Role"
           },
+          "default_flow_tracker_type": {
+            "type": "string",
+            "enum": [
+              "sampled",
+              "hardware"
+            ],
+            "description": "Set the default flow tracker type.",
+            "default": "sampled",
+            "title": "Default Flow Tracker Type"
+          },
           "mlag_support": {
             "type": "boolean",
             "default": false,
@@ -16618,7 +17385,7 @@
                     "properties": {
                       "ipv4_applications": {
                         "type": "array",
-                        "description": "List of user defined IPv4 applications.",
+                        "description": "List of user defined IPv4 applications. The name should be unique over all defined applications (ipv4 and l4).",
                         "items": {
                           "type": "object",
                           "properties": {
@@ -16639,7 +17406,7 @@
                             },
                             "protocols": {
                               "type": "array",
-                              "description": "List of protocols to consider for this application.\n\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
+                              "description": "List of protocols to consider for this application.\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
                               "items": {
                                 "type": "string",
                                 "enum": [
@@ -16667,22 +17434,22 @@
                             },
                             "udp_src_port_set_name": {
                               "type": "string",
-                              "description": "Name of field set for UDP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
+                              "description": "Name of field set for UDP source ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
                               "title": "UDP Src Port Set Name"
                             },
                             "tcp_src_port_set_name": {
                               "type": "string",
-                              "description": "Name of field set for TCP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
+                              "description": "Name of field set for TCP source ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
                               "title": "TCP Src Port Set Name"
                             },
                             "udp_dest_port_set_name": {
                               "type": "string",
-                              "description": "Name of field set for UDP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
+                              "description": "Name of field set for UDP destination ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
                               "title": "UDP Dest Port Set Name"
                             },
                             "tcp_dest_port_set_name": {
                               "type": "string",
-                              "description": "Name of field set for TCP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
+                              "description": "Name of field set for TCP destination ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
                               "title": "TCP Dest Port Set Name"
                             }
                           },
@@ -16695,6 +17462,76 @@
                           ]
                         },
                         "title": "IPv4 Applications"
+                      },
+                      "l4_applications": {
+                        "type": "array",
+                        "description": "List of user defined L4 applications. The name should be unique over all defined applications (ipv4 and l4).",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "Application name.",
+                              "title": "Name"
+                            },
+                            "protocols": {
+                              "type": "array",
+                              "description": "List of protocols to consider for this application.\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
+                              "items": {
+                                "type": "string",
+                                "enum": [
+                                  "ahp",
+                                  "esp",
+                                  "icmp",
+                                  "igmp",
+                                  "ospf",
+                                  "pim",
+                                  "rsvp",
+                                  "tcp",
+                                  "udp",
+                                  "vrrp"
+                                ]
+                              },
+                              "title": "Protocols"
+                            },
+                            "protocol_ranges": {
+                              "type": "array",
+                              "description": "Accept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
+                              "items": {
+                                "type": "string"
+                              },
+                              "title": "Protocol Ranges"
+                            },
+                            "udp_src_port_set_name": {
+                              "type": "string",
+                              "description": "Name of field set for UDP source ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
+                              "title": "UDP Src Port Set Name"
+                            },
+                            "tcp_src_port_set_name": {
+                              "type": "string",
+                              "description": "Name of field set for TCP source ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
+                              "title": "TCP Src Port Set Name"
+                            },
+                            "udp_dest_port_set_name": {
+                              "type": "string",
+                              "description": "Name of field set for UDP destination ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
+                              "title": "UDP Dest Port Set Name"
+                            },
+                            "tcp_dest_port_set_name": {
+                              "type": "string",
+                              "description": "Name of field set for TCP destination ports.\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
+                              "title": "TCP Dest Port Set Name"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "title": "L4 Applications"
                       }
                     },
                     "additionalProperties": false,
@@ -44902,8 +45739,28 @@
           },
           "sflow": {
             "type": "boolean",
-            "description": "Configures sFlow on the interface. Overrides `fabric_sflow` setting.\n",
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.",
             "title": "Sflow"
+          },
+          "flow_tracking": {
+            "type": "object",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Flow tracker name as defined in flow_tracking_settings.",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracking"
           },
           "link_tracking": {
             "type": "object",
@@ -55630,6 +56487,21 @@
                 }
               },
               "title": "Path Groups"
+            },
+            "internet_exit": {
+              "type": "object",
+              "properties": {
+                "policy": {
+                  "type": "string",
+                  "description": "PREVIEW: This key is in preview mode.\n\nInternet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `cv_pathfinder_internet_exit_policies`.",
+                  "title": "Policy"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Internet Exit"
             }
           },
           "additionalProperties": false,
@@ -55752,6 +56624,21 @@
                         }
                       },
                       "title": "Path Groups"
+                    },
+                    "internet_exit": {
+                      "type": "object",
+                      "properties": {
+                        "policy": {
+                          "type": "string",
+                          "description": "PREVIEW: This key is in preview mode.\n\nInternet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `cv_pathfinder_internet_exit_policies`.",
+                          "title": "Policy"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Internet Exit"
                     }
                   },
                   "additionalProperties": false,
@@ -55859,6 +56746,21 @@
                       }
                     },
                     "title": "Path Groups"
+                  },
+                  "internet_exit": {
+                    "type": "object",
+                    "properties": {
+                      "policy": {
+                        "type": "string",
+                        "description": "PREVIEW: This key is in preview mode.\n\nInternet-exit policy name associated with this virtual_topology.\nThe policy must be defined under `cv_pathfinder_internet_exit_policies`.",
+                        "title": "Policy"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Internet Exit"
                   }
                 },
                 "additionalProperties": false,
@@ -55885,6 +56787,146 @@
         "^_.+$": {}
       },
       "title": "Wan Virtual Topologies"
+    },
+    "zscaler_endpoints": {
+      "type": "object",
+      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints` Ansible lookup plugin.\nExample:\n```yaml\nzscaler_endpoints: \"{{ lookup('arista.avd.cv_zscaler_endpoints', cv_server=\"<optional servername>\", cv_token=\"<optional token>\") }}\"\n```\nThe cv_server and cv_token options can be set as inventory variables instead of given as arguments. (Then they will also be used for cv_deploy)",
+      "properties": {
+        "primary": {
+          "type": "object",
+          "properties": {
+            "ip_address": {
+              "type": "string",
+              "title": "IP Address"
+            },
+            "datacenter": {
+              "type": "string",
+              "title": "Datacenter"
+            },
+            "city": {
+              "type": "string",
+              "title": "City"
+            },
+            "country": {
+              "type": "string",
+              "title": "Country"
+            },
+            "latitude": {
+              "type": "string",
+              "title": "Latitude"
+            },
+            "longitude": {
+              "type": "string",
+              "title": "Longitude"
+            }
+          },
+          "required": [
+            "ip_address",
+            "datacenter",
+            "city",
+            "country",
+            "latitude",
+            "longitude"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Primary"
+        },
+        "secondary": {
+          "type": "object",
+          "properties": {
+            "ip_address": {
+              "type": "string",
+              "title": "IP Address"
+            },
+            "datacenter": {
+              "type": "string",
+              "title": "Datacenter"
+            },
+            "city": {
+              "type": "string",
+              "title": "City"
+            },
+            "country": {
+              "type": "string",
+              "title": "Country"
+            },
+            "latitude": {
+              "type": "string",
+              "title": "Latitude"
+            },
+            "longitude": {
+              "type": "string",
+              "title": "Longitude"
+            }
+          },
+          "required": [
+            "ip_address",
+            "datacenter",
+            "city",
+            "country",
+            "latitude",
+            "longitude"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Secondary"
+        },
+        "tertiary": {
+          "type": "object",
+          "properties": {
+            "ip_address": {
+              "type": "string",
+              "title": "IP Address"
+            },
+            "datacenter": {
+              "type": "string",
+              "title": "Datacenter"
+            },
+            "city": {
+              "type": "string",
+              "title": "City"
+            },
+            "country": {
+              "type": "string",
+              "title": "Country"
+            },
+            "latitude": {
+              "type": "string",
+              "title": "Latitude"
+            },
+            "longitude": {
+              "type": "string",
+              "title": "Longitude"
+            }
+          },
+          "required": [
+            "ip_address",
+            "datacenter",
+            "city",
+            "country",
+            "latitude",
+            "longitude"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Tertiary"
+        }
+      },
+      "required": [
+        "primary"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Zscaler Endpoints"
     }
   },
   "required": [

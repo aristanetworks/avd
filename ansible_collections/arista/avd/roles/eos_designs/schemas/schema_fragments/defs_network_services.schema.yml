@@ -571,7 +571,7 @@ $defs:
                       type: str
                       description: |
                         Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                        To use this option the common "evpn_vlan_aware_bundles" option must be set to true.
+                        The common option "evpn_vlan_aware_bundles" is disregarded for this option.
                     nodes:
                       type: list
                       primary_key: node
@@ -701,6 +701,11 @@ $defs:
                       keys:
                         enabled:
                           type: bool
+                    flow_tracking:
+                      type: dict
+                      $ref: "eos_designs#/$defs/flow_tracking_link"
+                      description: |-
+                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                     structured_config:
                       type: dict
                       description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
@@ -1107,7 +1112,7 @@ $defs:
                 type: str
                 description: |
                   Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                  To use this option the common "evpn_vlan_aware_bundles" option must be set to true.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this option.
               trunk_groups:
                 type: list
                 items:
