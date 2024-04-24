@@ -18,8 +18,6 @@ keys:
       keys:
         name:
           type: str
-          description: |-
-            The region name.
         description:
           type: str
         id:
@@ -49,6 +47,20 @@ keys:
               location:
                 type: str
                 description: Location as a string is resolved on Cloudvision.
+              resolved_location:
+                type: dict
+                description: |-
+                  PREVIEW: These keys are in preview mode.
+
+                  The resolved location elements.
+                  Needed for internet-exit Zscaler integration until we can autofill it from the lookup plugin.
+                keys:
+                  city:
+                    type: str
+                    required: true
+                  country:
+                    type: str
+                    required: true
               site_contact:
                 type: str
               site_after_hours_contact:

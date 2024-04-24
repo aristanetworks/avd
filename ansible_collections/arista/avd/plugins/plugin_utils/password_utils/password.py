@@ -4,6 +4,8 @@
 """
 Used by Encrypt / Decrypt filters
 """
+import random
+
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 
 from .password_utils import cbc_decrypt, cbc_encrypt
@@ -236,3 +238,39 @@ def isis_decrypt(password: str, key: str, mode: str) -> str:
         return cbc_decrypt(_get_isis_key(key, mode), data).decode()
     except Exception as exc:
         raise AristaAvdError("ISIS password decryption failed - check the input parameters") from exc
+
+
+###############
+# Simple type 7
+###############
+SIMPLE_7_SEED = b"dsfd;kfoA,.iyewrkldJKDHSUBsgvca69834ncxv9873254k;fg87"
+
+
+def simple_7_decrypt(data: str) -> str:
+    """
+    Decrypt (deobfuscate) a password from insecure type-7.
+
+    Args:
+        data: The encrypted password
+
+    Returns the decrypted password as a string.
+    """
+    salt = int(data[0:2])
+    secret = bytearray.fromhex(data[2:])
+    return bytes(char ^ (SIMPLE_7_SEED[salt + i % 53]) for i, char in enumerate(secret)).decode("UTF-8")
+
+
+def simple_7_encrypt(data: str, salt: int | None = None) -> str:
+    """
+    Encrypt (obfuscate) a password with insecure type-7.
+
+    Args:
+        data: The clear text password
+        salt: Optionally a number within the range 0-15. If not set, a random salt will be used.
+
+    Returns the encrypted password as a string.
+    """
+    if salt is None:
+        salt = random.randint(0, 15)
+    cleartext = data.encode("UTF-8")
+    return f"{salt:02}" + bytearray(char ^ (SIMPLE_7_SEED[salt + i % 53]) for i, char in enumerate(cleartext)).hex().upper()
