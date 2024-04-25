@@ -1172,7 +1172,16 @@ keys:
   evpn_vlan_aware_bundles:
     documentation_options:
       table: evpn-settings
-    description: Enable vlan aware bundles for EVPN MAC-VRF.
+    description: 'Enable VLAN aware bundles for every EVPN MAC-VRF.
+
+      If set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using
+      the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles
+      using the VLAN name as the bundle name.
+
+
+      The `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and
+      overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this
+      setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.'
     type: bool
     default: false
   evpn_vlan_bundles:
@@ -6052,8 +6061,8 @@ $defs:
                       description: 'Name of a bundle defined under ''evpn_vlan_bundles''
                         to inherit configuration.
 
-                        To use this option the common "evpn_vlan_aware_bundles" option
-                        must be set to true.
+                        The common option "evpn_vlan_aware_bundles" is disregarded
+                        for this option.
 
                         '
                     nodes:
@@ -6683,8 +6692,8 @@ $defs:
                 description: 'Name of a bundle defined under ''evpn_vlan_bundles''
                   to inherit configuration.
 
-                  To use this option the common "evpn_vlan_aware_bundles" option must
-                  be set to true.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this
+                  option.
 
                   '
               trunk_groups:
@@ -8818,6 +8827,11 @@ $defs:
         sflow:
           type: bool
           description: Enable sFlow. Overrides `fabric_sflow` setting.
+        underlay_multicast:
+          type: bool
+          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol`
+            and the global `underlay_multicast` to be `true`.
+          default: false
         flow_tracking:
           type: dict
           $ref: eos_designs#/$defs/flow_tracking_link
