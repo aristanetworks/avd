@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import simple_7_encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
@@ -34,14 +33,12 @@ class IpSecurityMixin(UtilsMixin):
                 continue
 
             policy_name = internet_exit_policy["name"]
-            domain_name = get(internet_exit_policy, "zscaler.domain_name", required=True)
-            ipsec_key_salt = get(internet_exit_policy, "zscaler.ipsec_key_salt", required=True)
             encrypt_traffic = get(internet_exit_policy, "zscaler.encrypt_traffic", default=True)
             ike_policy_name = f"IE-{policy_name}-IKE-POLICY"
             sa_policy_name = f"IE-{policy_name}-SA-POLICY"
             profile_name = f"IE-{policy_name}-PROFILE"
-            ipsec_key = self._generate_ipsec_key(name=policy_name, salt=ipsec_key_salt)
-            ufqdn = f"{self.shared_utils.hostname}_{policy_name}@{domain_name}"
+            ufqdn, ipsec_key = self._get_ipsec_credentials(internet_exit_policy)
+
             ip_security["ike_policies"].append(
                 {
                     "name": ike_policy_name,
@@ -77,14 +74,3 @@ class IpSecurityMixin(UtilsMixin):
             )
 
         return strip_null_from_data(ip_security)
-
-    def _generate_ipsec_key(self, name: str, salt: str) -> str:
-        """
-        Build a secret containing various components for this policy and device.
-        Run type-7 obfuscation using a algorithmic salt so we ensure the same key every time.
-
-        TODO: Maybe introduce some formatting with max length of each element, since the keys can be come very very long.
-        """
-        secret = "_".join((self.shared_utils.hostname, name, salt))
-        type_7_salt = sum(salt.encode("utf-8")) % 16
-        return simple_7_encrypt(secret, type_7_salt)
