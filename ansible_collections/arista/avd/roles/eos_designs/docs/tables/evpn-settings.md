@@ -22,7 +22,7 @@
     | [<samp>evpn_rd_type</samp>](## "evpn_rd_type") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>overlay_rd_type</samp> instead.</span> |
     | [<samp>evpn_rt_type</samp>](## "evpn_rt_type") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>overlay_rt_type</samp> instead.</span> |
     | [<samp>evpn_short_esi_prefix</samp>](## "evpn_short_esi_prefix") | String |  | `0000:0000:` |  | Configure prefix for "short_esi" values. |
-    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | `False` |  | Enable vlan aware bundles for EVPN MAC-VRF. |
+    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | `False` |  | Enable VLAN aware bundles for every EVPN MAC-VRF.<br>If set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles using the VLAN name as the bundle name.<br><br>The `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs. |
     | [<samp>fabric_evpn_encapsulation</samp>](## "fabric_evpn_encapsulation") | String |  | `vxlan` | Valid Values:<br>- <code>vxlan</code><br>- <code>mpls</code> | Should be set to mpls for evpn-mpls scenario. |
     | [<samp>vxlan_vlan_aware_bundles</samp>](## "vxlan_vlan_aware_bundles") <span style="color:red">removed</span> | Boolean |  | `False` |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>evpn_vlan_aware_bundles</samp> instead.</span> |
 
@@ -79,7 +79,10 @@
     # Configure prefix for "short_esi" values.
     evpn_short_esi_prefix: <str; default="0000:0000:">
 
-    # Enable vlan aware bundles for EVPN MAC-VRF.
+    # Enable VLAN aware bundles for every EVPN MAC-VRF.
+    # If set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles using the VLAN name as the bundle name.
+    #
+    # The `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.
     evpn_vlan_aware_bundles: <bool; default=False>
 
     # Should be set to mpls for evpn-mpls scenario.
