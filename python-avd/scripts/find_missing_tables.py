@@ -2,6 +2,7 @@ import argparse
 import glob
 import sys
 from pathlib import Path
+
 """
 Help on find_missing_tables.py:
 
@@ -52,13 +53,7 @@ parser.add_argument(
     type=Path,
     help="The start of the relative path of the md files, ie. the place in the table path from where to cut down to match",
 )
-parser.add_argument(
-    "--ignore_files",
-    dest="ignore_files",
-    nargs="*",
-    type=Path,
-    help="The table files to be ignored, when checking for missing table files"
-)
+parser.add_argument("--ignore_files", dest="ignore_files", nargs="*", type=Path, help="The table files to be ignored, when checking for missing table files")
 args = parser.parse_args()
 
 ignored_files = list((args.ignore_files))
@@ -68,6 +63,7 @@ root_path = Path(*args.root_path)
 md_files = list(*args.markdown_files)
 
 table_files = set(*args.table_files)
+
 
 def check_files_in_markdown(table_files: set, md_files: list):
     md_file_set = set()
@@ -87,6 +83,7 @@ def check_files_in_markdown(table_files: set, md_files: list):
         table_paths_set.discard(ignored_file)
 
     return table_paths_set.difference(md_file_set)
+
 
 missing_files = check_files_in_markdown(table_files, md_files)
 if len(missing_files) == 0:

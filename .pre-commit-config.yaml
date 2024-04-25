@@ -194,6 +194,12 @@ repos:
         language: system
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false
+        
+      - id: check-missing-schema-tables
+        name: Catch schema tables not covered in docs
+        entry: find_missing_tables.py --table_files_glob "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md" --markdown_files_glob "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md" --root_path "ansible_collections/arista/avd" --ignore_files "roles\eos_cli_config_gen\docs\tables\ip-tftp-client-source-interfaces.md"
+        language: system
+        files: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs+/tables
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.32.1
