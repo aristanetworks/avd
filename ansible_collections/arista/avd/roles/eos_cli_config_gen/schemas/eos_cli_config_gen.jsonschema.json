@@ -21553,7 +21553,7 @@
         },
         "control_functions": {
           "type": "object",
-          "description": "Configure routing control function to control which routes to filter, update and accept from a peer or routing protocol.",
+          "description": "Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.\nWarning:\nThis configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.\nThe configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.",
           "properties": {
             "code_units": {
               "type": "array",
@@ -21571,13 +21571,14 @@
                     "title": "Content"
                   }
                 },
+                "required": [
+                  "content",
+                  "name"
+                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
-                },
-                "required": [
-                  "name"
-                ]
+                }
               },
               "title": "Code Units"
             }

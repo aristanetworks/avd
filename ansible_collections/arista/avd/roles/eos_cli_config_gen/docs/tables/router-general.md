@@ -20,10 +20,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routes</samp>](## "router_general.vrfs.[].routes") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_prefix_lists</samp>](## "router_general.vrfs.[].routes.dynamic_prefix_lists") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.vrfs.[].routes.dynamic_prefix_lists.[].name") | String |  |  |  | Dynamic Prefix List Name. |
-    | [<samp>&nbsp;&nbsp;control_functions</samp>](## "router_general.control_functions") | Dictionary |  |  |  | Configure routing control function to control which routes to filter, update and accept from a peer or routing protocol. |
+    | [<samp>&nbsp;&nbsp;control_functions</samp>](## "router_general.control_functions") | Dictionary |  |  |  | Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.<br>Warning:<br>This configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.<br>The configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;code_units</samp>](## "router_general.control_functions.code_units") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.control_functions.code_units.[].name") | String | Required, Unique |  |  | Name of the code unit. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content</samp>](## "router_general.control_functions.code_units.[].content") | String |  |  |  | Content of route control function.<br>e.g.<br>function ACCEPT_ALL() {<br>  return true;<br>  }<br>EOF |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content</samp>](## "router_general.control_functions.code_units.[].content") | String | Required |  |  | Content of route control function.<br>e.g.<br>function ACCEPT_ALL() {<br>  return true;<br>  }<br>EOF |
 
 === "YAML"
 
@@ -52,7 +52,10 @@
                 # Dynamic Prefix List Name.
               - name: <str>
 
-      # Configure routing control function to control which routes to filter, update and accept from a peer or routing protocol.
+      # Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.
+      # Warning:
+      # This configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.
+      # The configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.
       control_functions:
         code_units:
 
@@ -65,5 +68,5 @@
             #   return true;
             #   }
             # EOF
-            content: <str>
+            content: <str; required>
     ```
