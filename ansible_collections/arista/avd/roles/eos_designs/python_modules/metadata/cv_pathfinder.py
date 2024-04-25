@@ -201,3 +201,12 @@ class CvPathfinderMixin:
             raise AristaAvdError(f"Unable to find the WAN VNI for VRF {vrf_name} during generation of cv_pathfinder metadata.")
 
         return wan_vni
+
+    def _metadata_internet_exit_policies(self: AvdStructuredConfigMetadata):
+        """
+        No-op.
+
+        This metadata is generated in the network services module,
+        since all the required data was readily available in there.
+        """
+        return NotImplemented
