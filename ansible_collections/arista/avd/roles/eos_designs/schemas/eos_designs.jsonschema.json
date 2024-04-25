@@ -4502,6 +4502,37 @@
       ],
       "title": "Custom Structured Configuration Prefix"
     },
+    "cv_pathfinder_global_sites": {
+      "description": "Define sites that are outside of the CV Pathfinder hierarchy.\nThis is used to arrange pathfinders in the CloudVision topology layout.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The site name.",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location as a string is resolved on Cloudvision.",
+            "title": "Location"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Cv Pathfinder Global Sites"
+    },
     "cv_pathfinder_internet_exit_policies": {
       "description": "PREVIEW: These keys are in preview mode.\n\nList of internet-exit policies used for the WAN configuration.",
       "type": "array",
@@ -27692,6 +27723,10 @@
                       "ssl_profile": {
                         "type": "string",
                         "title": "SSL Profile"
+                      },
+                      "address": {
+                        "type": "string",
+                        "title": "Address"
                       },
                       "pathfinders": {
                         "type": "array",

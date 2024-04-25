@@ -65,6 +65,9 @@ keys:
             type: str
           ssl_profile:
             type: str
+          address:
+            # Only used by pathfinders and only if 'cv_pathfinder_site' is set.
+            type: str
           pathfinders:
             type: list
             items:

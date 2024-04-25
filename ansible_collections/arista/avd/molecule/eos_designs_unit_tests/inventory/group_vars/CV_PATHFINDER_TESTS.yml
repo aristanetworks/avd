@@ -232,6 +232,7 @@ wan_rr:
   nodes:
     - name: cv-pathfinder-pathfinder
       id: 1
+      cv_pathfinder_site: Global-pathfinder-site
       l3_interfaces:
         - name: Ethernet1
           wan_carrier: Bouygues_Telecom
@@ -251,6 +252,8 @@ wan_rr:
           ip_address: 10.9.9.9/31
     - name: cv-pathfinder-pathfinder1
       id: 2
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site423
       data_plane_cpu_allocation_max: 3
       l3_interfaces:
         - name: Ethernet1
@@ -584,3 +587,7 @@ zscaler_endpoints:
     latitude: 50
     longitude: 9
     ip_address: 10.50.9.1 # Not the correct address
+
+cv_pathfinder_global_sites:
+  - name: Global-pathfinder-site
+    location: Somewhere under the rainbow

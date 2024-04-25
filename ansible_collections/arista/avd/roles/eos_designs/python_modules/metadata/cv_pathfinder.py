@@ -34,6 +34,8 @@ class CvPathfinderMixin:
                 "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
                 "vtep_ip": self.shared_utils.vtep_ip,
                 "region": get(self.shared_utils.wan_region or {}, "name"),
+                "site": get(self.shared_utils.wan_site or {}, "name"),
+                "address": get(self.shared_utils.wan_site or {}, "location"),
                 "interfaces": self._metadata_interfaces(),
                 "pathgroups": self._metadata_pathgroups(),
                 "regions": self._metadata_regions(),
