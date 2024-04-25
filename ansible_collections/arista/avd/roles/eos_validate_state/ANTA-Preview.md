@@ -260,3 +260,7 @@ When specifying a group, it must be a group from the Ansible inventory. The cust
         # To save catalogs
         save_catalog: true
 ```
+
+## Known issues
+
+- `[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.` This issue affects OSX users only and is covered in Ansible documentation: https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#running-on-macos-as-a-control-node.

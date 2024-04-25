@@ -170,6 +170,24 @@ anta.tests.connectivity:
         Loopback0 (IP: 10.255.2.2)'
 - VerifyReachability:
     hosts:
+    - destination: 10.33.0.5
+      repeat: 1
+      source: 10.255.128.13
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.255.128.13) - Destination: dc1-svc-leaf1a
+        Loopback0 (IP: 10.33.0.5)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.33.0.6
+      repeat: 1
+      source: 10.255.128.13
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.255.128.13) - Destination: dc1-svc-leaf1b
+        Loopback0 (IP: 10.33.0.6)'
+- VerifyReachability:
+    hosts:
     - destination: 10.255.128.11
       repeat: 1
       source: 10.255.128.13
@@ -540,6 +558,16 @@ anta.tests.routing.generic:
     - 10.255.2.2
 - VerifyRoutingTableEntry:
     result_overwrite:
+      custom_field: 'Route: 10.33.0.5 - Peer: dc1-svc-leaf1a'
+    routes:
+    - 10.33.0.5
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.33.0.6 - Peer: dc1-svc-leaf1b'
+    routes:
+    - 10.33.0.6
+- VerifyRoutingTableEntry:
+    result_overwrite:
       custom_field: 'Route: 10.255.128.11 - Peer: dc2-spine1'
     routes:
     - 10.255.128.11
@@ -588,6 +616,11 @@ anta.tests.routing.generic:
       custom_field: 'Route: 10.255.1.5 - Peer: dc1-leaf2a'
     routes:
     - 10.255.1.5
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.33.1.5 - Peer: dc1-svc-leaf1a'
+    routes:
+    - 10.33.1.5
 - VerifyRoutingTableEntry:
     result_overwrite:
       custom_field: 'Route: 10.255.129.13 - Peer: dc2-leaf1a'

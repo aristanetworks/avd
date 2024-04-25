@@ -14,6 +14,7 @@ from .ip_security import IpSecurityMixin
 from .ip_virtual_router_mac_address import IpVirtualRouterMacAddressMixin
 from .ipv6_static_routes import Ipv6StaticRoutesMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
+from .metadata import MetadataMixin
 from .monitor_connectivity import MonitorConnectivityMixin
 from .patch_panel import PatchPanelMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
@@ -77,6 +78,7 @@ class AvdStructuredConfigNetworkServices(
     StandardAccessListsMixin,
     TunnelInterfacesMixin,
     MonitorConnectivityMixin,
+    MetadataMixin,
 ):
     """
     The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.
