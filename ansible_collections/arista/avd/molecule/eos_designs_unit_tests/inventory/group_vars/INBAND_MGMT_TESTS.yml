@@ -101,11 +101,6 @@ l2leaf:
       inband_mgmt_ipv6_subnet: 2a00:107::/64
       inband_mgmt_vrf: INBANDMGMT
       id: 7
-    - name: inband-mgmt-ip-plus-inband-ztp
-      inband_mgmt_vlan: 108
-      inband_mgmt_ip: 192.168.108.22/24
-      inband_mgmt_gateway: 192.168.108.1
-      id: 8
   node_groups:
     - group: inband-mgmt-mlag-test
       mlag: true
