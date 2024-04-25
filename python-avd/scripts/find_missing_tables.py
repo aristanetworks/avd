@@ -1,10 +1,7 @@
-# Copyright (c) 2024 Arista Networks, Inc.
-# Use of this source code is governed by the Apache License 2.0
-# that can be found in the LICENSE file.
 import argparse
 import glob
 import sys
-
+import pathlib
 """
 Help on find_missing_tables.py:
 
@@ -12,12 +9,13 @@ DESCRIPTION
     Script to catch schema tables not covered in docs.
     ==================================================
 
-    Checks if table files are added as snips in relevant role docs. Uses argparse to call in CLI with 3 arguments:
+    Checks if table files are added as snips in relevant role docs. Uses argparse to call arguments in CLI with 4 arguments:
         - Glob for table files -> glob
         - Glob for md files, ie. the role docs -> glob
         - Start of relative path to role doc -> Default datatype of argparse arguments: str. For the use in the avd system, the argument: "roles", should be used as standard
+        - Ignored files. The list of table files that is to be ignored in the search -> list
 
-        Using these 3 arguments the script calls the functions check_files_in_markdown(table_files, md_files)
+        Using these 4 arguments the script calls the functions check_files_in_markdown(table_files, md_files)
         and returns the set with the table_files not covered in the role docs
 
         Can take any number of table_files and any number of role docs, and checks all md_files for all of the table files.
@@ -26,22 +24,29 @@ DESCRIPTION
         to the format of the table files in the role docs. The .find() returns the first instance of the argument in the path string,
         so this solution even works for strings containing the directory name multiple times
 
-        checks role docs for the snip string, and adds the table_files to the md_file_set, containing all the table files from the role docs already, and then returns the difference set
-        containing the table files in the table_files set but not in the md_file_set.
+        checks role docs for the snip string, and adds the table_files to the md_file_set, containing all the table files from the role docs already, and then returns the missing table files
 """
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-t" "table_file_glob", type=glob.glob, nargs="*", help="The glob for the table file")
 parser.add_argument(
-    "-m" "--md_file_glob",
+    "--table_files_glob",
+    dest="table_files",
+    type=glob.glob,
+    nargs="*",
+    help="The glob for the table file",
+)
+parser.add_argument(
+    "--markdown_files_glob",
     type=glob.glob,
     nargs="*",
     help="The glob for the markdown file",
 )
 parser.add_argument(
-    "-p" "--path_root",
+    "--root-path",
+    dest="root_path",
     nargs="*",
+    type=pathlib.Path,
     help="The start of the relative path of the md files, ie. the place in the table path from where to cut down to match",
 )
 
@@ -49,10 +54,8 @@ args = parser.parse_args()
 
 root_path = args.p__path_root[0]
 
-md_files = list(*args.n__md_file_glob)
-
-table_files = set(*args.table_file_glob)
-
+md_files = list(*args.m__md_file_glob)
+table_files = set(*args.table_files)
 
 def make_path_relative(path: str):
     index = path.find(f"{root_path}")
@@ -81,7 +84,7 @@ def check_files_in_markdown(table_files: set, md_files: list):
     return table_files.difference(md_file_set)
 
 
-print(check_files_in_markdown(table_files, md_files))
+print("\n".join(check_files_in_markdown(table_files, md_files)))
 
 if len(check_files_in_markdown(table_files, md_files)) == 0:
     sys.exit(0)
