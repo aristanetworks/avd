@@ -16736,13 +16736,11 @@ $defs:
         translated_ip:
           type: str
           required: true
-          description: IPv4 address. The combination of translated_ip and translated_ports
-            must be unique.
+          description: IPv4 address.
         translated_port:
           type: int
           convert_types:
           - str
           min: 1
           max: 65535
-          description: requires 'original_port'. The combination of translated_ip
-            and translated_ports must be unique.
+          description: requires 'original_port'.
