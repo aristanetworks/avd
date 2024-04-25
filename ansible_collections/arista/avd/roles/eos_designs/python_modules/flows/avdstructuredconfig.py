@@ -45,10 +45,10 @@ class AvdStructuredConfigFlows(AvdFacts):
 
         # At this point we have at least one interface with sFlow enabled
         # and at least one destination.
-        sflow = {"run": True}
-
-        # Add the packet sampling rate.
-        sflow["sample"] = get(self._hostvars, "sflow_settings.sample", default=None)
+        sflow = {
+            "run": True,
+            "sample": get(self._hostvars, "sflow_settings.sample.rate"),
+        }
 
         # Using a temporary dict for VRFs
         sflow_vrfs = {}

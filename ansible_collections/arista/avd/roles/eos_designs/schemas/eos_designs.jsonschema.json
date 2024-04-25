@@ -51550,10 +51550,20 @@
       "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.",
       "properties": {
         "sample": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 4294967295,
-          "description": "Sample rate.",
+          "type": "object",
+          "properties": {
+            "rate": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4294967295,
+              "description": "Packet sampling rate that defines the average number of ingress packets that pass through an interface for every packet that is sampled.\nA rate of 16384 corresponds to an average sample of one per 16384 packets.",
+              "title": "Rate"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
           "title": "Sample"
         },
         "destinations": {
