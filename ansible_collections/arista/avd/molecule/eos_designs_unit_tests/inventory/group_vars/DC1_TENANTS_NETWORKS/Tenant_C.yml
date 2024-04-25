@@ -10,19 +10,13 @@ tenant_c:
         next_hop_self: true
         maximum_routes: 1000
         address_family_ipv4:
-          peer_groups:
-            - name: Tenant_C_AFIPv4_PG_1
-              activate: True
-            - name: Tenant_C_AFIPv4_PG_2
-              activate: True
-              prefix_list_in: PL_In_Test_1
-              prefix_list_out: PL_Out_Test_1
+          name: Tenant_C_AFIPv4_PG_2
+          activate: True
+          prefix_list_in: PL_In_Test_1
+          prefix_list_out: PL_Out_Test_1
         address_family_ipv6:
-          peer_groups:
-            - name: Tenant_C_AFPv6_PG_1
-              activate: True
-            - name: Tenant_C_AFPv6_PG_2
-              activate: False
+          name: Tenant_C_AFPv6_PG_2
+          activate: False
         default_originate:
           enabled: true
           always: true
@@ -37,13 +31,10 @@ tenant_c:
         description: "Tenant C peer group2"
         update_source: lo0
         address_family_ipv4:
-          peer_groups:
-            - name: Tenant_C_AFIPv4_PG_1
-              activate: True
-            - name: Tenant_C_AFIPv4_PG_3
-              activate: True
-              route_map_in: TEST_IN
-              route_map_out: TEST_OUT
+          name: Tenant_C_AFIPv4_PG_3
+          activate: True
+          route_map_in: TEST_IN
+          route_map_out: TEST_OUT
     vrfs:
       - name: Tenant_C_OP_Zone
         vrf_vni: 30
@@ -79,17 +70,11 @@ tenant_c:
               enabled: true
               always: true
             address_family_ipv4:
-              peer_groups:
-                - name: VRF_Tenant_C_AFIPv4_PG_1
-                  activate: True
-                - name: VRF_Tenant_C_AFIPv4_PG_2
-                  activate: False
+              name: VRF_Tenant_C_AFIPv4_PG_1
+              activate: True
             address_family_ipv6:
-              peer_groups:
-                - name: VRF_Tenant_C_AFIPv6_PG_1
-                  activate: True
-                - name: VRF_Tenant_C_AFIPv6_PG_2
-                  activate: False
+              name: VRF_Tenant_C_AFIPv6_PG_1
+              activate: True
             nodes: [ DC1-BL2B ]
             update_source: lo0
             bfd: false

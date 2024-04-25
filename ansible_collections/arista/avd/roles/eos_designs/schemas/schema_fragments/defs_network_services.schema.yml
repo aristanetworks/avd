@@ -107,20 +107,10 @@ $defs:
                   If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
               address_family_ipv4:
                 type: dict
-                keys:
-                  peer_groups:
-                    type: list
-                    items:
-                      $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/"
-                      type: dict
+                $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/"
               address_family_ipv6:
                 type: dict
-                keys:
-                  peer_groups:
-                    type: list
-                    items:
-                      $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv6/keys/peer_groups/items/"
-                      type: dict
+                $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv6/keys/peer_groups/items/"
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -1017,22 +1007,13 @@ $defs:
                       description: |
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                         If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                    # Currently in EOS peer-groups defined inside vrf gets added in global context
                     address_family_ipv4:
                       type: dict
-                      keys:
-                        peer_groups:
-                          type: list
-                          items:
-                            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/address_family_ipv4/keys/peer_groups/items/"
-                            type: dict
+                      $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/"
                     address_family_ipv6:
                       type: dict
-                      keys:
-                        peer_groups:
-                          type: list
-                          items:
-                            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/address_family_ipv6/keys/peer_groups/items/"
-                            type: dict
+                      $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv6/keys/peer_groups/items/"
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings

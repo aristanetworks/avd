@@ -60,8 +60,6 @@ router_bgp:
       activate: false
     - name: IPVPN-INTERWORKING-PEERS
       activate: false
-    - name: Tenant_C_AFIPv4_PG_1
-      activate: true
     - name: Tenant_C_AFIPv4_PG_2
       activate: true
       prefix_list_in: PL_In_Test_1
@@ -260,8 +258,6 @@ router_bgp:
     vlan: '350'
   address_family_ipv6:
     peer_groups:
-    - name: Tenant_C_AFPv6_PG_1
-      activate: true
     - name: Tenant_C_AFPv6_PG_2
       activate: false
 static_routes:
