@@ -92,6 +92,7 @@ missing_files = check_files_in_markdown(table_files, md_files)
 if len(missing_files) == 0:
     sys.exit(0)
 else:
+    print("These are the missing files:")
     for missing_file in missing_files:
         print(missing_file)
     sys.exit(1)
