@@ -17,47 +17,55 @@ MSS-G is disabled.
 
 ### Segmentation Policies
 {%         for policy in router_segment_security.policies %}
+{%             if policy.name is arista.avd.defined %}
 
 #### {{ policy.name }}
 
 | Sequence Number | Application Name | Action | Next-Hop | Log | Stateless |
 | --------------- | ---------------- | ------ | -------- | --- | --------- |
-{%             for entry in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
-| {{ entry.sequence }} | {{ entry.application }} | {{ entry.action }} | {{ entry.next_hop | arista.avd.default('-') }} | {{ entry.log | arista.avd.default('-') }} | {{ entry.stateless | arista.avd.default('-') }} |
-{%             endfor %}
+{%                 for entry in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
+| {{ entry.sequence | arista.avd.default('-') }} | {{ entry.application | arista.avd.default('-') }} | {{ entry.action | arista.avd.default('-') }} | {{ entry.next_hop | arista.avd.default('-') }} | {{ entry.log | arista.avd.default('-') }} | {{ entry.stateless | arista.avd.default('-') }} |
+{%                 endfor %}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if router_segment_security.vrfs is arista.avd.defined %}
 
 ### Segment Definitions
 {%         for vrf in router_segment_security.vrfs | arista.avd.natural_sort('name') %}
+{%             if vrf.name is arista.avd.defined %}
 
 #### VRF {{ vrf.name }} Segmentation
-{%             for segment in vrf.segments %}
+{%                 for segment in vrf.segments %}
+{%                     if segment.name is arista.avd.defined %}
 
 ##### Segment {{ segment.name }} Definitions
 
 | Interface | Match-List Name | Covered Prefix-List Name | Address Family |
 | --------- |---------------- | ------------------------ | -------------- |
-{%                 if segment.definition.interfaces is arista.avd.defined %}
-{%                     for entry in segment.definition.interfaces %}
+{%                         if segment.definition.interfaces is arista.avd.defined %}
+{%                             for entry in segment.definition.interfaces %}
 | {{ entry }} | - | - | - |
-{%                     endfor %}
-{%                 endif %}
-{%                 if segment.definition.match_lists is arista.avd.defined %}
-{%                     for entry in segment.definition.match_lists %}
+{%                             endfor %}
+{%                         endif %}
+{%                         if segment.definition.match_lists is arista.avd.defined %}
+{%                             for entry in segment.definition.match_lists %}
 | - | {{ entry.prefix | arista.avd.default('-') }} | {{ entry.covered_prefix_list | arista.avd.default('-') }} | {{ entry.address_family }} |
-{%                     endfor %}
-{%                 endif %}
+{%                             endfor %}
+{%                         endif %}
 
 ##### Segment {{ segment.name }} Policies
 
 | Source Segment | Policy Applied |
 | -------------- | -------------- |
-{%                 for entry in segment.policies | arista.avd.natural_sort('name') %}
+{%                         for entry in segment.policies | arista.avd.natural_sort('source') %}
+{%                             if entry.source is arista.avd.defined and entry.policy is arista.avd.defined %}
 | {{ entry.source }} | {{ entry.policy }} |
+{%                             endif %}
+{%                         endfor %}
+{%                     endif %}
 {%                 endfor %}
-{%             endfor %}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 
