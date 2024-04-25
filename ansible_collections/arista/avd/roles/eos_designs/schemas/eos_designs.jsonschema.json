@@ -27703,6 +27703,9 @@
                               "title": "Vtep IP"
                             }
                           },
+                          "required": [
+                            "vtep_ip"
+                          ],
                           "additionalProperties": false,
                           "patternProperties": {
                             "^_.+$": {}
@@ -27787,6 +27790,9 @@
                               "title": "Imported Carriers"
                             }
                           },
+                          "required": [
+                            "name"
+                          ],
                           "additionalProperties": false,
                           "patternProperties": {
                             "^_.+$": {}
@@ -27959,6 +27965,121 @@
                           }
                         },
                         "title": "VRFs"
+                      },
+                      "internet_exit_policies": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "Name"
+                            },
+                            "type": {
+                              "type": "string",
+                              "title": "Type"
+                            },
+                            "city": {
+                              "type": "string",
+                              "title": "City"
+                            },
+                            "country": {
+                              "type": "string",
+                              "title": "Country"
+                            },
+                            "upload_bandwidth": {
+                              "type": "integer",
+                              "title": "Upload Bandwidth"
+                            },
+                            "download_bandwidth": {
+                              "type": "integer",
+                              "title": "Download Bandwidth"
+                            },
+                            "firewall": {
+                              "type": "boolean",
+                              "title": "Firewall"
+                            },
+                            "ips_control": {
+                              "type": "boolean",
+                              "title": "Ips Control"
+                            },
+                            "acceptable_use_policy": {
+                              "type": "boolean",
+                              "title": "Acceptable Use Policy"
+                            },
+                            "vpn_credentials": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "fqdn": {
+                                    "type": "string",
+                                    "title": "Fqdn"
+                                  },
+                                  "vpn_type": {
+                                    "type": "string",
+                                    "title": "VPN Type"
+                                  },
+                                  "pre_shared_key": {
+                                    "type": "string",
+                                    "title": "Pre Shared Key"
+                                  }
+                                },
+                                "required": [
+                                  "fqdn",
+                                  "vpn_type",
+                                  "pre_shared_key"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                }
+                              },
+                              "title": "VPN Credentials"
+                            },
+                            "tunnels": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "title": "Name"
+                                  },
+                                  "preference": {
+                                    "type": "string",
+                                    "title": "Preference"
+                                  }
+                                },
+                                "required": [
+                                  "name",
+                                  "preference"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                }
+                              },
+                              "title": "Tunnels"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "type",
+                            "city",
+                            "country",
+                            "firewall",
+                            "ips_control",
+                            "acceptable_use_policy",
+                            "vpn_credentials",
+                            "tunnels"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Internet Exit Policies"
                       }
                     },
                     "additionalProperties": false,
