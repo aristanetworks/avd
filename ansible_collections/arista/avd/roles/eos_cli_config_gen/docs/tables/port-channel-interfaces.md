@@ -99,8 +99,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "port_channel_interfaces.[].storm_control.unknown_unicast.level") | String |  |  |  | Configure maximum storm-control level. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "port_channel_interfaces.[].storm_control.unknown_unicast.unit") | String |  | `percent` | Valid Values:<br>- <code>percent</code><br>- <code>pps</code> | Optional field and is hardware dependent. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_proxy_arp</samp>](## "port_channel_interfaces.[].ip_proxy_arp") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_enable</samp>](## "port_channel_interfaces.[].isis_enable") | String |  |  |  | ISIS instance |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_bfd</samp>](## "port_channel_interfaces.[].isis_bfd") | Boolean |  |  |  | Enable BFD |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_enable</samp>](## "port_channel_interfaces.[].isis_enable") | String |  |  |  | ISIS instance. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_bfd</samp>](## "port_channel_interfaces.[].isis_bfd") | Boolean |  |  |  | Enable BFD. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_passive</samp>](## "port_channel_interfaces.[].isis_passive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "port_channel_interfaces.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_network_point_to_point</samp>](## "port_channel_interfaces.[].isis_network_point_to_point") | Boolean |  |  |  |  |
@@ -432,10 +432,10 @@
             unit: <str; "percent" | "pps"; default="percent">
         ip_proxy_arp: <bool>
 
-        # ISIS instance
+        # ISIS instance.
         isis_enable: <str>
 
-        # Enable BFD
+        # Enable BFD.
         isis_bfd: <bool>
         isis_passive: <bool>
         isis_metric: <int>

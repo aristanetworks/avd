@@ -22,8 +22,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "loopback_interfaces.[].mpls") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldp</samp>](## "loopback_interfaces.[].mpls.ldp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "loopback_interfaces.[].mpls.ldp.interface") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_enable</samp>](## "loopback_interfaces.[].isis_enable") | String |  |  |  | ISIS instance name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_bfd</samp>](## "loopback_interfaces.[].isis_bfd") | Boolean |  |  |  | Enable BFD |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_enable</samp>](## "loopback_interfaces.[].isis_enable") | String |  |  |  | ISIS instance name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_bfd</samp>](## "loopback_interfaces.[].isis_bfd") | Boolean |  |  |  | Enable BFD. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_passive</samp>](## "loopback_interfaces.[].isis_passive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "loopback_interfaces.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_network_point_to_point</samp>](## "loopback_interfaces.[].isis_network_point_to_point") | Boolean |  |  |  |  |
@@ -61,10 +61,10 @@
           ldp:
             interface: <bool>
 
-        # ISIS instance name
+        # ISIS instance name.
         isis_enable: <str>
 
-        # Enable BFD
+        # Enable BFD.
         isis_bfd: <bool>
         isis_passive: <bool>
         isis_metric: <int>

@@ -180,7 +180,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "ethernet_interfaces.[].channel_group.id") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].channel_group.mode") | String |  |  | Valid Values:<br>- <code>on</code><br>- <code>active</code><br>- <code>passive</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_enable</samp>](## "ethernet_interfaces.[].isis_enable") | String |  |  |  | ISIS instance. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_bfd</samp>](## "ethernet_interfaces.[].isis_bfd") | Boolean |  |  |  | Enable BFD |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_bfd</samp>](## "ethernet_interfaces.[].isis_bfd") | Boolean |  |  |  | Enable BFD. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_passive</samp>](## "ethernet_interfaces.[].isis_passive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "ethernet_interfaces.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_network_point_to_point</samp>](## "ethernet_interfaces.[].isis_network_point_to_point") | Boolean |  |  |  |  |
@@ -730,7 +730,7 @@
         # ISIS instance.
         isis_enable: <str>
 
-        # Enable BFD
+        # Enable BFD.
         isis_bfd: <bool>
         isis_passive: <bool>
         isis_metric: <int>

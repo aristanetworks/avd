@@ -2298,7 +2298,7 @@ keys:
           description: ISIS instance.
         isis_bfd:
           type: bool
-          description: Enable BFD
+          description: Enable BFD.
         isis_passive:
           type: bool
         isis_metric:
@@ -5507,10 +5507,10 @@ keys:
                   type: bool
         isis_enable:
           type: str
-          description: ISIS instance name
+          description: ISIS instance name.
         isis_bfd:
           type: bool
-          description: Enable BFD
+          description: Enable BFD.
         isis_passive:
           type: bool
         isis_metric:
@@ -8150,10 +8150,10 @@ keys:
           type: bool
         isis_enable:
           type: str
-          description: ISIS instance
+          description: ISIS instance.
         isis_bfd:
           type: bool
-          description: Enable BFD
+          description: Enable BFD.
         isis_passive:
           type: bool
         isis_metric:
@@ -16223,10 +16223,10 @@ keys:
                       description: PIM hello interval in seconds.
         isis_enable:
           type: str
-          description: ISIS instance name
+          description: ISIS instance name.
         isis_bfd:
           type: bool
-          description: Enable BFD
+          description: Enable BFD.
         isis_passive:
           type: bool
         isis_metric:
