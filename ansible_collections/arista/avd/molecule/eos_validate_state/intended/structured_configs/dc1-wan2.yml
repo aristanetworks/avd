@@ -422,7 +422,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 10.255.1.2/32
   flow_tracker:
-    hardware: FLOW-TRACKER
+    sampled: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: dc1-wan2_VTEP
@@ -433,7 +433,8 @@ vxlan_interface:
       - name: default
         vni: 1
 flow_tracking:
-  hardware:
+  sampled:
+    sample: 10000
     trackers:
     - name: FLOW-TRACKER
       record_export:

@@ -131,6 +131,24 @@ anta.tests.connectivity:
         dc1-wan2 Loopback0 (IP: 10.255.2.2)'
 - VerifyReachability:
     hosts:
+    - destination: 10.33.0.5
+      repeat: 1
+      source: 172.21.110.4
+      vrf: MGMT
+    result_overwrite:
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination:
+        dc1-svc-leaf1a Loopback0 (IP: 10.33.0.5)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.33.0.6
+      repeat: 1
+      source: 172.21.110.4
+      vrf: MGMT
+    result_overwrite:
+      custom_field: 'Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.4) - Destination:
+        dc1-svc-leaf1b Loopback0 (IP: 10.33.0.6)'
+- VerifyReachability:
+    hosts:
     - destination: 10.255.128.11
       repeat: 1
       source: 172.21.110.4
