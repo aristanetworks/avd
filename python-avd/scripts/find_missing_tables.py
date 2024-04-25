@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 import argparse
 import glob
 import sys
@@ -21,7 +24,7 @@ DESCRIPTION
 
         Can take any number of table_files, any number of role docs, one root path, any number of ignored files, and checks all role docs files for all of the table files.
 
-        checks role docs for the snip string, and adds the table files from the role docs to the md_file_set. 
+        checks role docs for the snip string, and adds the table files from the role docs to the md_file_set.
 
         Adds all table files from the table_files_glob to a set, then reformats to match root_path, and adds to a new set. Discard then the ignored_files,
         and compare to the set of table files found in the role docs.
