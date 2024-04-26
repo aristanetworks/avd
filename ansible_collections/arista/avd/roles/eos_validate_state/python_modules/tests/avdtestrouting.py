@@ -86,11 +86,7 @@ class AvdTestBGP(AvdTestBase):
 
     def add_test(self, afi: str, bgp_neighbor_ip: str, bgp_peer: str, description: str, safi: str | None = None) -> dict:
         """Add a BGP test definition with the proper input parameters."""
-        custom_field = (
-            f"BGP {description} Peer: "
-            f"{bgp_peer + ' ' if bgp_peer is not None else ''}"
-            f"{'(IP: ' + bgp_neighbor_ip + ')' if bgp_peer is not None else bgp_neighbor_ip}"
-        )
+        custom_field = f"BGP {description} Peer: {''.join([bgp_peer, ' (IP: ',  bgp_neighbor_ip, ')']) if bgp_peer is not None else bgp_neighbor_ip}"
 
         address_family = {"afi": afi, "peers": [bgp_neighbor_ip]}
         if safi:
@@ -109,17 +105,15 @@ class AvdTestBGP(AvdTestBase):
         self,
         afi: str,
         description: str,
+        avd_key: str,
         safi: str | None = None,
     ) -> None:
         """Create BGP tests for the given AFI and SAFI."""
         bgp_neighbors = get(self.structured_config, "router_bgp.neighbors", [])
-        formatted_afi = afi.replace("-", "_")
-        if safi == "sr-te":
-            formatted_afi += "_sr_te"
 
         # Retrieve peer groups and direct neighbors.
-        peer_groups = get(self.structured_config, f"router_bgp.address_family_{formatted_afi}.peer_groups", [])
-        direct_neighbors = get(self.structured_config, f"router_bgp.address_family_{formatted_afi}.neighbors", [])
+        peer_groups = get(self.structured_config, f"router_bgp.{avd_key}.peer_groups", [])
+        direct_neighbors = get(self.structured_config, f"router_bgp.{avd_key}.neighbors", [])
 
         # Only explicitly activated neighbors and peer groups are tested.
         filtered_peer_groups = [peer_group["name"] for peer_group in peer_groups if peer_group.get("activate")]
