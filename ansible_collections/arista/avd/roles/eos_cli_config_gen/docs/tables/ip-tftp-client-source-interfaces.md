@@ -8,17 +8,17 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ip_tftp_client_source_interfaces</samp>](## "ip_tftp_client_source_interfaces") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_tftp_client_source_interfaces.[].name") | String | Required |  |  | Interface Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_tftp_client_source_interfaces.[].vrf") | String |  |  |  | VRF Name |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_tftp_client_source_interfaces.[].name") | String | Required |  |  | Interface Name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_tftp_client_source_interfaces.[].vrf") | String |  |  |  | VRF Name. |
 
 === "YAML"
 
     ```yaml
     ip_tftp_client_source_interfaces:
 
-        # Interface Name
+        # Interface Name.
       - name: <str; required>
 
-        # VRF Name
+        # VRF Name.
         vrf: <str>
     ```

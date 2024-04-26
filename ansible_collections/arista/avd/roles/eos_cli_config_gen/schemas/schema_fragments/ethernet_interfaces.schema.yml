@@ -26,7 +26,7 @@ keys:
           max: 600
           convert_types:
             - str
-          description: Interval in seconds for updating interface counters"
+          description: Interval in seconds for updating interface counters.
         speed:
           type: str
           description: Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
@@ -43,7 +43,7 @@ keys:
           convert_types:
             - str
           description: |
-            "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
+            "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
         l2_mru:
           type: int
           min: 68
@@ -51,22 +51,22 @@ keys:
           convert_types:
             - str
           description: |
-            "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI
+            "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
         vlans:
           type: str
           convert_types:
             - int
           description: |
-            List of switchport vlans as string
-            For a trunk port this would be a range like "1-200,300"
-            For an access port this would be a single vlan "123"
+            List of switchport vlans as string.
+            For a trunk port this would be a range like "1-200,300".
+            For an access port this would be a single vlan "123".
         native_vlan:
           type: int
           convert_types:
             - str
         native_vlan_tag:
           type: bool
-          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
+          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
         mode:
           type: str
           valid_values: ["access", "dot1q-tunnel", "trunk", "trunk phone"]
@@ -89,10 +89,10 @@ keys:
               type: int
               convert_types:
                 - str
-              description: Vlan tag to configure on sub-interface
+              description: Vlan tag to configure on sub-interface.
             forwarding_profile:
               type: str
-              description: L2 protocol forwarding profile
+              description: L2 protocol forwarding profile.
         trunk_groups:
           type: list
           items:
@@ -110,10 +110,10 @@ keys:
           keys:
             ipv4:
               type: bool
-              description: Enable address locking for IPv4
+              description: Enable address locking for IPv4.
             ipv6:
               type: bool
-              description: Enable address locking for IPv6
+              description: Enable address locking for IPv6.
         flowcontrol:
           type: dict
           keys:
@@ -122,7 +122,7 @@ keys:
               valid_values: ["desired", "on", "off"]
         vrf:
           type: str
-          description: VRF name
+          description: VRF name.
           convert_types:
             - int
         flow_tracker:
@@ -152,7 +152,7 @@ keys:
             keys:
               name:
                 type: str
-                description: Group name
+                description: Group name.
               direction:
                 type: str
                 valid_values: ["upstream", "downstream"]
@@ -161,7 +161,7 @@ keys:
           keys:
             identifier:
               type: str
-              description: EVPN Ethernet Segment Identifier (Type 1 format)
+              description: EVPN Ethernet Segment Identifier (Type 1 format).
             redundancy:
               type: str
               valid_values: ["all-active", "single-active"]
@@ -177,10 +177,10 @@ keys:
                   max: 65535
                   convert_types:
                     - str
-                  description: Preference_value is only used when "algorithm" is "preference"
+                  description: Preference_value is only used when "algorithm" is "preference".
                 dont_preempt:
                   type: bool
-                  description: Dont_preempt is only used when "algorithm" is "preference"
+                  description: Dont_preempt is only used when "algorithm" is "preference".
                 hold_time:
                   type: int
                   convert_types:
@@ -206,12 +206,12 @@ keys:
                     - str
             route_target:
               type: str
-              description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
+              description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
         encapsulation_dot1q_vlan:
           type: int
           convert_types:
             - str
-          description: VLAN tag to configure on sub-interface
+          description: VLAN tag to configure on sub-interface.
         encapsulation_vlan:
           type: dict
           keys:
@@ -225,22 +225,22 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      description: Client VLAN ID
+                      description: Client VLAN ID.
                     outer:
                       type: int
                       convert_types:
                         - str
-                      description: Client Outer VLAN ID
+                      description: Client Outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                         - str
-                      description: Client Inner VLAN ID
+                      description: Client Inner VLAN ID.
                 unmatched:
                   type: bool
             network:
               type: dict
-              description: Network encapsulations are all optional and skipped if using client unmatched
+              description: Network encapsulations are all optional and skipped if using client unmatched.
               keys:
                 dot1q:
                   type: dict
@@ -249,17 +249,17 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      description: Network VLAN ID
+                      description: Network VLAN ID.
                     outer:
                       type: int
                       convert_types:
                         - str
-                      description: Network outer VLAN ID
+                      description: Network outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                         - str
-                      description: Network inner VLAN ID
+                      description: Network inner VLAN ID.
                 client:
                   type: bool
         vlan_id:
@@ -271,7 +271,7 @@ keys:
         # TODO Format to validate ipv4 CIDR or "dhcp"
         ip_address:
           type: str
-          description: IPv4 address/mask or "dhcp"
+          description: IPv4 address/mask or "dhcp".
         ip_address_secondaries:
           type: list
           items:
@@ -283,7 +283,7 @@ keys:
             - rx
         dhcp_client_accept_default_route:
           type: bool
-          description: Install default-route obtained via DHCP
+          description: Install default-route obtained via DHCP.
         dhcp_server_ipv4:
           type: bool
           description: Enable IPv4 DHCP server.
@@ -302,10 +302,10 @@ keys:
                 type: str
               source_interface:
                 type: str
-                description: Source interface name
+                description: Source interface name.
               vrf:
                 type: str
-                description: VRF name
+                description: VRF name.
                 convert_types:
                   - int
         ip_nat:
@@ -321,7 +321,7 @@ keys:
           type: str
         ipv6_address_link_local:
           type: str
-          description: Link local IPv6 address/mask
+          description: Link local IPv6 address/mask.
         ipv6_nd_ra_disabled:
           type: bool
         ipv6_nd_managed_config_flag:
@@ -340,12 +340,12 @@ keys:
                 type: str
                 convert_types:
                   - int
-                description: Infinite or lifetime in seconds
+                description: Infinite or lifetime in seconds.
               preferred_lifetime:
                 type: str
                 convert_types:
                   - int
-                description: Infinite or lifetime in seconds
+                description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
         ipv6_dhcp_relay_destinations:
@@ -356,41 +356,41 @@ keys:
             keys:
               address:
                 type: str
-                description: DHCP server's IPv6 address
+                description: DHCP server's IPv6 address.
               vrf:
                 type: str
                 convert_types:
                   - int
               local_interface:
                 type: str
-                description: Local interface to communicate with DHCP server - mutually exclusive to source_address
+                description: Local interface to communicate with DHCP server - mutually exclusive to source_address.
               source_address:
                 type: str
-                description: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface
+                description: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
               link_address:
                 type: str
-                description: Override the default link address specified in the relayed DHCP packet
+                description: Override the default link address specified in the relayed DHCP packet.
         access_group_in:
           type: str
-          description: Access list name
+          description: Access list name.
         access_group_out:
           type: str
-          description: Access list name
+          description: Access list name.
         ipv6_access_group_in:
           type: str
-          description: IPv6 access list name
+          description: IPv6 access list name.
         ipv6_access_group_out:
           type: str
-          description: IPv6 access list name
+          description: IPv6 access list name.
         mac_access_group_in:
           type: str
-          description: MAC access list name
+          description: MAC access list name.
         mac_access_group_out:
           type: str
-          description: MAC access list name
+          description: MAC access list name.
         multicast:
           type: dict
-          description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
+          description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both.
           keys:
             ipv4:
               type: dict
@@ -402,7 +402,7 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet
+                        description: ACL name or multicast IP subnet.
                       out:
                         type: bool
                 static:
@@ -417,7 +417,7 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet
+                        description: ACL name or multicast IP subnet.
                 static:
                   type: bool
         ospf_network_point_to_point:
@@ -435,7 +435,7 @@ keys:
           valid_values: ["none", "simple", "message-digest"]
         ospf_authentication_key:
           type: str
-          description: Encrypted password - only type 7 supported
+          description: Encrypted password - only type 7 supported.
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -453,7 +453,7 @@ keys:
                 valid_values: ["md5", "sha1", "sha256", "sha384", "sha512"]
               key:
                 type: str
-                description: Encrypted password - only type 7 supported
+                description: Encrypted password - only type 7 supported.
         pim:
           type: dict
           keys:
@@ -509,7 +509,7 @@ keys:
               valid_values: ["on", "active", "passive"]
         isis_enable:
           type: str
-          description: ISIS instance
+          description: ISIS instance.
         isis_passive:
           type: bool
         isis_metric:
@@ -528,7 +528,7 @@ keys:
           valid_values: ["text", "md5"]
         isis_authentication_key:
           type: str
-          description: Type-7 encrypted password
+          description: Type-7 encrypted password.
         poe:
           type: dict
           keys:
@@ -539,23 +539,23 @@ keys:
             priority:
               type: str
               valid_values: ["critical", "high", "medium", "low"]
-              description: Prioritize a port's power in the event that one of the switch's power supplies loses power
+              description: Prioritize a port's power in the event that one of the switch's power supplies loses power.
             reboot:
-              description: Set the PoE power behavior for a PoE port when the system is rebooted
+              description: Set the PoE power behavior for a PoE port when the system is rebooted.
               type: dict
               keys:
                 action:
                   type: str
                   valid_values: ["maintain", "power-off"]
-                  description: PoE action for interface
+                  description: PoE action for interface.
             link_down:
-              description: Set the PoE power behavior for a PoE port when the port goes down
+              description: Set the PoE power behavior for a PoE port when the port goes down.
               type: dict
               keys:
                 action:
                   type: str
                   valid_values: ["maintain", "power-off"]
-                  description: PoE action for interface
+                  description: PoE action for interface.
                 power_off_delay:
                   type: int
                   min: 1
@@ -564,13 +564,13 @@ keys:
                     - str
                   description: Number of seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.
             shutdown:
-              description: Set the PoE power behavior for a PoE port when the port is admin down
+              description: Set the PoE power behavior for a PoE port when the port is admin down.
               type: dict
               keys:
                 action:
                   type: str
                   valid_values: ["maintain", "power-off"]
-                  description: PoE action for interface
+                  description: PoE action for interface.
             limit:
               type: dict
               description: Override the hardware-negotiated power limit using either wattage or a power class. Note that if using a power class, AVD will automatically convert the class value to the wattage value corresponding to that power class.
@@ -588,7 +588,7 @@ keys:
                     - float
                 fixed:
                   type: bool
-                  description: Set to ignore hardware classification
+                  description: Set to ignore hardware classification.
             negotiation_lldp:
               type: bool
               description: Disable to prevent port from negotiating power with powered devices over LLDP. Enabled by default in EOS.
@@ -632,13 +632,13 @@ keys:
               type: str
               convert_types:
                 - int
-              description: VLAN can be 'all' or list of vlans as string
+              description: VLAN can be 'all' or list of vlans as string.
             transport:
               type: str
               valid_values: ["ipv4", "ipv6", "layer2"]
         profile:
           type: str
-          description: Interface profile
+          description: Interface profile.
         storm_control:
           type: dict
           keys:
@@ -650,12 +650,12 @@ keys:
                   convert_types:
                     - int
                     - float
-                  description: Configure maximum storm-control level
+                  description: Configure maximum storm-control level.
                 unit:
                   type: str
                   default: "percent"
                   valid_values: [ "percent", "pps" ]
-                  description: Optional field and is hardware dependent
+                  description: Optional field and is hardware dependent.
             broadcast:
               type: dict
               keys:
@@ -664,12 +664,12 @@ keys:
                   convert_types:
                     - int
                     - float
-                  description: Configure maximum storm-control level
+                  description: Configure maximum storm-control level.
                 unit:
                   type: str
                   default: "percent"
                   valid_values: ["percent", "pps"]
-                  description: Optional field and is hardware dependent
+                  description: Optional field and is hardware dependent.
             multicast:
               type: dict
               keys:
@@ -678,12 +678,12 @@ keys:
                   convert_types:
                     - int
                     - float
-                  description: Configure maximum storm-control level
+                  description: Configure maximum storm-control level.
                 unit:
                   type: str
                   default: "percent"
                   valid_values: ["percent", "pps"]
-                  description: Optional field and is hardware dependent
+                  description: Optional field and is hardware dependent.
             unknown_unicast:
               type: dict
               keys:
@@ -692,12 +692,12 @@ keys:
                   convert_types:
                     - int
                     - float
-                  description: Configure maximum storm-control level
+                  description: Configure maximum storm-control level.
                 unit:
                   type: str
                   default: "percent"
                   valid_values: [ "percent", "pps" ]
-                  description: Optional field and is hardware dependent
+                  description: Optional field and is hardware dependent.
         logging:
           type: dict
           keys:
@@ -725,14 +725,14 @@ keys:
               type: int
               convert_types:
                 - str
-              description: ZTP vlan number
+              description: ZTP vlan number.
         trunk_private_vlan_secondary:
           type: bool
         pvlan_mapping:
           type: str
           convert_types:
             - int
-          description: List of vlans as string
+          description: List of vlans as string.
         vlan_translations:
           type: list
           items:
@@ -742,12 +742,12 @@ keys:
                 type: str
                 convert_types:
                   - int
-                description: List of vlans as string (only one vlan if direction is "both")
+                description: List of vlans as string (only one vlan if direction is "both").
               to:
                 type: int
                 convert_types:
                   - str
-                description: VLAN ID
+                description: VLAN ID.
               direction:
                 type: str
                 valid_values: ["in", "out", "both"]
@@ -816,7 +816,7 @@ keys:
                   type: str
                   convert_types:
                     - int
-                  description: Value can be 60-4294967295 or 'server'
+                  description: Value can be 60-4294967295 or 'server'.
                 reauth_timeout_ignore:
                   type: bool
                 tx_period:
@@ -856,15 +856,15 @@ keys:
                         - str
         service_profile:
           type: str
-          description: QOS profile
+          description: QOS profile.
         shape:
           type: dict
           keys:
             rate:
               type: str
               description: |
-                Rate in kbps, pps or percent
-                Supported options are platform dependent
+                Rate in kbps, pps or percent.
+                Supported options are platform dependent.
                 Examples:
                 - "5000 kbps"
                 - "1000 pps"
@@ -879,12 +879,12 @@ keys:
               type: int
               convert_types:
                 - str
-              description: DSCP value
+              description: DSCP value.
             cos:
               type: int
               convert_types:
                 - str
-              description: COS value
+              description: COS value.
         spanning_tree_bpdufilter:
           type: str
           convert_types:
@@ -931,12 +931,12 @@ keys:
               type: int
               convert_types:
                 - str
-              description: Interval in milliseconds
+              description: Interval in milliseconds.
             min_rx:
               type: int
               convert_types:
                 - str
-              description: Rate in milliseconds
+              description: Rate in milliseconds.
             multiplier:
               type: int
               min: 3
@@ -951,14 +951,14 @@ keys:
               keys:
                 input:
                   type: str
-                  description: Policy Based Routing Policy-map name
+                  description: Policy Based Routing Policy-map name.
             qos:
               type: dict
               keys:
                 input:
                   type: str
                   required: true
-                  description: Quality of Service Policy-map name
+                  description: Quality of Service Policy-map name.
 
         mpls:
           type: dict
@@ -998,7 +998,7 @@ keys:
               keys:
                 override:
                   type: str
-                  description: Transceiver type
+                  description: Transceiver type.
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -1006,16 +1006,16 @@ keys:
           keys:
             input:
               type: str
-              description: Ingress traffic policy
+              description: Ingress traffic policy.
             output:
               type: str
-              description: Egress traffic policy
+              description: Egress traffic policy.
         bgp:
           type: dict
           keys:
             session_tracker:
               type: str
-              description: Name of session tracker
+              description: Name of session tracker.
         ip_igmp_host_proxy:
           type: dict
           keys:
@@ -1073,13 +1073,13 @@ keys:
               description: IGMP version on IGMP host-proxy interface.
         peer:
           type: str
-          description: Key only used for documentation or validation purposes
+          description: Key only used for documentation or validation purposes.
         peer_interface:
           type: str
-          description: Key only used for documentation or validation purposes
+          description: Key only used for documentation or validation purposes.
         peer_type:
           type: str
-          description: Key only used for documentation or validation purposes
+          description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -1094,7 +1094,7 @@ keys:
                   type: bool
         port_profile:
           type: str
-          description: Key only used for documentation or validation purposes
+          description: Key only used for documentation or validation purposes.
         uc_tx_queues:
           type: list
           primary_key: id
@@ -1108,17 +1108,17 @@ keys:
                 convert_types:
                   - str
                 required: true
-                description: TX-Queue ID
+                description: TX-Queue ID.
               random_detect:
                 type: dict
                 keys:
                   ecn:
-                    description: Explicit Congestion Notification
+                    description: Explicit Congestion Notification.
                     type: dict
                     keys:
                       count:
                         type: bool
-                        description: Enable counter for random-detect ECNs
+                        description: Enable counter for random-detect ECNs.
                       threshold:
                         type: dict
                         keys:
@@ -1126,7 +1126,7 @@ keys:
                             required: true
                             type: str
                             valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
-                            description: Indicate the units to be used for the threshold values
+                            description: Indicate the units to be used for the threshold values.
                           min:
                             type: int
                             required: true
@@ -1134,7 +1134,7 @@ keys:
                             max: 256000000
                             convert_types:
                               - str
-                            description: Set the random-detect ECN minimum-threshold
+                            description: Set the random-detect ECN minimum-threshold.
                           max:
                             type: int
                             required: true
@@ -1142,21 +1142,21 @@ keys:
                               - str
                             min: 1
                             max: 256000000
-                            description: Set the random-detect ECN maximum-threshold
+                            description: Set the random-detect ECN maximum-threshold.
                           max_probability:
                             type: int
                             min: 1
                             max: 100
                             convert_types:
                               - str
-                            description: Set the random-detect ECN max-mark-probability
+                            description: Set the random-detect ECN max-mark-probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
                             convert_types:
                               - str
-                            description: Set the random-detect ECN weight
+                            description: Set the random-detect ECN weight.
         tx_queues:
           type: list
           primary_key: id
@@ -1170,17 +1170,17 @@ keys:
                 convert_types:
                   - str
                 required: true
-                description: TX-Queue ID
+                description: TX-Queue ID.
               random_detect:
                 type: dict
                 keys:
                   ecn:
-                    description: Explicit Congestion Notification
+                    description: Explicit Congestion Notification.
                     type: dict
                     keys:
                       count:
                         type: bool
-                        description: Enable counter for random-detect ECNs
+                        description: Enable counter for random-detect ECNs.
                       threshold:
                         type: dict
                         keys:
@@ -1188,14 +1188,14 @@ keys:
                             type: str
                             required: true
                             valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
-                            description: Indicate the units to be used for the threshold values
+                            description: Indicate the units to be used for the threshold values.
                           min:
                             type: int
                             min: 1
                             max: 256000000
                             convert_types:
                               - str
-                            description: Set the random-detect ECN minimum-threshold
+                            description: Set the random-detect ECN minimum-threshold.
                           max:
                             type: int
                             required: true
@@ -1203,7 +1203,7 @@ keys:
                               - str
                             min: 1
                             max: 256000000
-                            description: Set the random-detect ECN maximum-threshold
+                            description: Set the random-detect ECN maximum-threshold.
                           max_probability:
                             type: int
                             required: true
@@ -1211,14 +1211,14 @@ keys:
                             max: 100
                             convert_types:
                               - str
-                            description: Set the random-detect ECN max-mark-probability
+                            description: Set the random-detect ECN max-mark-probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
                             convert_types:
                               - str
-                            description: Set the random-detect ECN weight
+                            description: Set the random-detect ECN weight.
         vrrp_ids:
           type: list
           description: VRRP model.
@@ -1230,12 +1230,12 @@ keys:
                 type: int
                 convert_types:
                   - str
-                description: VRID
+                description: VRID.
               priority_level:
                 type: int
                 convert_types:
                   - str
-                description: Instance priority
+                description: Instance priority.
                 min: 1
                 max: 254
               advertisement:
@@ -1245,7 +1245,7 @@ keys:
                     type: int
                     convert_types:
                       - str
-                    description: Interval in seconds
+                    description: Interval in seconds.
                     min: 1
                     max: 255
               preempt:
@@ -1261,14 +1261,14 @@ keys:
                         type: int
                         convert_types:
                           - str
-                        description: Minimum preempt delay in seconds
+                        description: Minimum preempt delay in seconds.
                         min: 0
                         max: 3600
                       reload:
                         type: int
                         convert_types:
                           - str
-                        description: Reload preempt delay in seconds
+                        description: Reload preempt delay in seconds.
                         min: 0
                         max: 3600
               timers:
@@ -1292,14 +1292,14 @@ keys:
                   keys:
                     name:
                       type: str
-                      description: Tracked object name
+                      description: Tracked object name.
                     decrement:
                       type: int
                       convert_types:
                         - str
                       min: 1
                       max: 254
-                      description: Decrement VRRP priority by 1-254
+                      description: Decrement VRRP priority by 1-254.
                     shutdown:
                       type: bool
               ipv4:
@@ -1308,7 +1308,7 @@ keys:
                   address:
                     type: str
                     required: true
-                    description: Virtual IPv4 address
+                    description: Virtual IPv4 address.
                   version:
                     type: int
                     convert_types:
@@ -1322,10 +1322,10 @@ keys:
                   address:
                     type: str
                     required: true
-                    description: Virtual IPv6 address
+                    description: Virtual IPv6 address.
         validate_state:
           type: bool
-          description: Set to false to disable interface validation by the `eos_validate_state` role
+          description: Set to false to disable interface validation by the `eos_validate_state` role.
         switchport:
           type: dict
           keys:
@@ -1390,4 +1390,4 @@ keys:
                           - str
         eos_cli:
           type: str
-          description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
+          description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration.

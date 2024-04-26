@@ -17,7 +17,7 @@ keys:
         type: dict
         keys:
           vrf:
-            description: VRF Name
+            description: VRF Name.
             type: str
             convert_types:
               - int

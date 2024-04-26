@@ -31,10 +31,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sequential</samp>](## "management_security.password.policies.[].maximum.sequential") | Integer |  |  | Min: 1<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;ssl_profiles</samp>](## "management_security.ssl_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.ssl_profiles.[].name") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls_versions</samp>](## "management_security.ssl_profiles.[].tls_versions") | String |  |  |  | List of allowed TLS versions as string<br>Examples:<br>  - "1.0"<br>  - "1.0 1.1"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls_versions</samp>](## "management_security.ssl_profiles.[].tls_versions") | String |  |  |  | List of allowed TLS versions as string.<br>Examples:<br>  - "1.0"<br>  - "1.0 1.1"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cipher_list</samp>](## "management_security.ssl_profiles.[].cipher_list") | String |  |  |  | cipher_list syntax follows the openssl cipher strings format.<br>Colon (:) separated list of allowed ciphers as a string<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trust_certificate</samp>](## "management_security.ssl_profiles.[].trust_certificate") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificates</samp>](## "management_security.ssl_profiles.[].trust_certificate.certificates") | List, items: String |  |  |  | List of trust certificate names<br>Examples:<br>  - test1.crt<br>  - test2.crt<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificates</samp>](## "management_security.ssl_profiles.[].trust_certificate.certificates") | List, items: String |  |  |  | List of trust certificate names.<br>Examples:<br>  - test1.crt<br>  - test2.crt<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.ssl_profiles.[].trust_certificate.certificates.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;requirement</samp>](## "management_security.ssl_profiles.[].trust_certificate.requirement") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;basic_constraint_ca</samp>](## "management_security.ssl_profiles.[].trust_certificate.requirement.basic_constraint_ca") | Boolean |  |  |  |  |
@@ -42,7 +42,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy_expiry_date_ignore</samp>](## "management_security.ssl_profiles.[].trust_certificate.policy_expiry_date_ignore") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system</samp>](## "management_security.ssl_profiles.[].trust_certificate.system") | Boolean |  |  |  | Use system-supplied trust certificates.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chain_certificate</samp>](## "management_security.ssl_profiles.[].chain_certificate") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificates</samp>](## "management_security.ssl_profiles.[].chain_certificate.certificates") | List, items: String |  |  |  | List of chain certificate names<br>Examples:<br>  - chain1.crt<br>  - chain2.crt<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificates</samp>](## "management_security.ssl_profiles.[].chain_certificate.certificates") | List, items: String |  |  |  | List of chain certificate names.<br>Examples:<br>  - chain1.crt<br>  - chain2.crt<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.ssl_profiles.[].chain_certificate.certificates.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;requirement</samp>](## "management_security.ssl_profiles.[].chain_certificate.requirement") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;basic_constraint_ca</samp>](## "management_security.ssl_profiles.[].chain_certificate.requirement.basic_constraint_ca") | Boolean |  |  |  |  |
@@ -94,7 +94,7 @@
       ssl_profiles:
         - name: <str>
 
-          # List of allowed TLS versions as string
+          # List of allowed TLS versions as string.
           # Examples:
           #   - "1.0"
           #   - "1.0 1.1"
@@ -105,7 +105,7 @@
           cipher_list: <str>
           trust_certificate:
 
-            # List of trust certificate names
+            # List of trust certificate names.
             # Examples:
             #   - test1.crt
             #   - test2.crt
@@ -122,7 +122,7 @@
             system: <bool>
           chain_certificate:
 
-            # List of chain certificate names
+            # List of chain certificate names.
             # Examples:
             #   - chain1.crt
             #   - chain2.crt

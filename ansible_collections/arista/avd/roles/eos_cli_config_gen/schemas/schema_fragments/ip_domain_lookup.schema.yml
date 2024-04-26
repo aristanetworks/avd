@@ -20,7 +20,7 @@ keys:
             name:
               type: str
               description: |
-                Source Interface
+                Source Interface.
             vrf:
               type: str
               convert_types:

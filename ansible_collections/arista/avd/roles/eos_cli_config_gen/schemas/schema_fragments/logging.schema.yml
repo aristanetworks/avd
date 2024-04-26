@@ -13,12 +13,12 @@ keys:
         type: str
         valid_values: ["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
         description: |
-          Console logging severity level
+          Console logging severity level.
       monitor:
         type: str
         valid_values: ["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
         description: |
-          Monitor logging severity level
+          Monitor logging severity level.
       buffered:
         type: dict
         keys:
@@ -32,12 +32,12 @@ keys:
             type: str
             valid_values: ["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
             description: |
-              Buffer logging severity level
+              Buffer logging severity level.
       trap:
         type: str
         valid_values: ["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"]
         description: |
-          Trap logging severity level
+          Trap logging severity level.
       synchronous:
         type: dict
         keys:
@@ -45,7 +45,7 @@ keys:
             type: str
             valid_values: ["alerts", "all", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
             description: |
-              Synchronous logging severity level
+              Synchronous logging severity level.
             default: "critical"
       format:
         type: dict
@@ -53,7 +53,7 @@ keys:
           timestamp:
             type: str
             valid_values: ["high-resolution", "traditional", "traditional timezone", "traditional year", "traditional timezone year", "traditional year timezone"]
-            description: Timestamp format
+            description: Timestamp format.
           hostname:
             type: str
             valid_values: ["fqdn", "ipv4"]
@@ -61,11 +61,11 @@ keys:
           sequence_numbers:
             type: bool
             description: |
-              Add sequence numbers to log messages
+              Add sequence numbers to log messages.
           rfc5424:
             type: bool
             description: |
-              Forward logs in RFC5424 format
+              Forward logs in RFC5424 format.
       facility:
         type: str
         valid_values: ["auth", "cron", "daemon", "kern", "local0", "local1", "local2", "local3", "local4",
@@ -73,7 +73,7 @@ keys:
                        "sys13", "sys14", "syslog", "user", "uucp"]
       source_interface:
         type: str
-        description: Source Interface Name
+        description: Source Interface Name.
       vrfs:
         type: list
         primary_key: name
@@ -86,10 +86,10 @@ keys:
               type: str
               convert_types:
                 - int
-              description: VRF name
+              description: VRF name.
             source_interface:
               type: str
-              description: Source interface name
+              description: Source interface name.
             hosts:
               type: list
               primary_key: name
@@ -100,7 +100,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Syslog server name
+                    description: Syslog server name.
                   protocol:
                     type: str
                     valid_values: ["tcp", "udp"]
@@ -127,7 +127,7 @@ keys:
                   keys:
                     name:
                       type: str
-                      description: Match list
+                      description: Match list.
                     action:
                       type: str
                       valid_values: ["discard"]
@@ -148,4 +148,4 @@ keys:
                       - str
                     min: 10
                     max: 65535
-                    description: Logging interval in seconds
+                    description: Logging interval in seconds.

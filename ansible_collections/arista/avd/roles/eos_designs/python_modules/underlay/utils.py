@@ -57,6 +57,13 @@ class UtilsMixin:
             for uplink in underlay_links:
                 uplink.update({"sflow": {"enable": self.shared_utils.fabric_sflow_uplinks}})
 
+        uplinks_flow_tracker = self.shared_utils.get_flow_tracker(None, "uplinks")
+        if uplinks_flow_tracker is not None:
+            for uplink in underlay_links:
+                uplink.update({"flow_tracker": uplinks_flow_tracker})
+
+        downlinks_flow_tracker = self.shared_utils.get_flow_tracker(None, "downlinks")
+
         for peer in self._avd_peers:
             peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
             for uplink in peer_facts["uplinks"]:
@@ -87,6 +94,7 @@ class UtilsMixin:
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
+                        "flow_tracker": downlinks_flow_tracker,
                         "spanning_tree_portfast": get(uplink, "peer_spanning_tree_portfast"),
                         "structured_config": get(uplink, "structured_config"),
                     }
@@ -189,6 +197,7 @@ class UtilsMixin:
             "access_group_out": get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_out.name"),
             "eos_cli": l3_interface.get("raw_eos_cli"),
             "struct_cfg": l3_interface.get("structured_config"),
+            "flow_tracker": self.shared_utils.get_flow_tracker(l3_interface, "l3_interfaces"),
         }
 
         if iface_type == "l3dot1q":
@@ -196,10 +205,6 @@ class UtilsMixin:
 
         if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", True):
             interface["dhcp_client_accept_default_route"] = True
-
-        # TODO: enable flow tracking once toggle is in place
-        # if self.shared_utils.is_cv_pathfinder_router:
-        #    interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
         if self.shared_utils.is_wan_router and (wan_carrier_name := l3_interface.get("wan_carrier")) is not None and interface["access_group_in"] is None:
             if not get(get_item(self.shared_utils.wan_carriers, "name", wan_carrier_name, default={}), "trusted"):
@@ -269,6 +274,7 @@ class UtilsMixin:
             "mtu": svi.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
             "eos_cli": svi.get("raw_eos_cli"),
             "struct_cfg": svi.get("structured_config"),
+            "flow_tracker": link.get("flow_tracker"),
         }
         if (mtu := subinterface["mtu"]) is not None and subinterface["mtu"] > self.shared_utils.p2p_uplinks_mtu:
             raise AristaAvdError(
@@ -289,11 +295,6 @@ class UtilsMixin:
 
         # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
         self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
-
-        # TODO: enable flow tracking once toggle is in place
-        # Configuring flow tracking on LAN interfaces of WAN routers
-        # if self.shared_utils.is_cv_pathfinder_client:
-        #    subinterface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
         return strip_empties_from_dict(subinterface)
 

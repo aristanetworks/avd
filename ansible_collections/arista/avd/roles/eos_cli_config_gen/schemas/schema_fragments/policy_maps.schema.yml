@@ -11,7 +11,7 @@ keys:
     keys:
       pbr:
         type: list
-        description: PBR Policy-Maps
+        description: PBR Policy-Maps.
         primary_key: name
         convert_types:
           - dict
@@ -20,7 +20,7 @@ keys:
           keys:
             name:
               type: str
-              description: Policy-Map Name
+              description: Policy-Map Name.
             classes:
               type: list
               primary_key: name
@@ -31,18 +31,18 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Class Name
+                    description: Class Name.
                   index:
                     type: int
                     convert_types:
                       - str
                   drop:
-                    description: "'drop' and 'set' are mutually exclusive"
+                    description: "'drop' and 'set' are mutually exclusive."
                     type: bool
                   set:
                     description: |
                       Set Nexthop
-                      'drop' and 'set' are mutually exclusive
+                      'drop' and 'set' are mutually exclusive.
                     type: dict
                     keys:
                       nexthop:
@@ -50,12 +50,12 @@ keys:
                         keys:
                           ip_address:
                             type: str
-                            description: IPv4 or IPv6 Address
+                            description: IPv4 or IPv6 Address.
                           recursive:
                             type: bool
       qos:
         type: list
-        description: QOS Policy-Maps
+        description: QOS Policy-Maps.
         primary_key: name
         convert_types:
           - dict
@@ -64,7 +64,7 @@ keys:
           keys:
             name:
               type: str
-              description: Policy-Map Name
+              description: Policy-Map Name.
             classes:
               type: list
               primary_key: name
@@ -75,7 +75,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Class Name
+                    description: Class Name.
                   set:
                     type: dict
                     keys:

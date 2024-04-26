@@ -11,9 +11,9 @@
     | [<samp>&nbsp;&nbsp;mode</samp>](## "ptp.mode") | String |  |  | Valid Values:<br>- <code>boundary</code><br>- <code>disabled</code><br>- <code>e2etransparent</code><br>- <code>gptp</code><br>- <code>ordinarymaster</code><br>- <code>p2ptransparent</code> |  |
     | [<samp>&nbsp;&nbsp;mode_one_step</samp>](## "ptp.mode_one_step") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;forward_unicast</samp>](## "ptp.forward_unicast") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;clock_identity</samp>](## "ptp.clock_identity") | String |  |  |  | The clock-id in xx:xx:xx:xx:xx:xx format |
+    | [<samp>&nbsp;&nbsp;clock_identity</samp>](## "ptp.clock_identity") | String |  |  |  | The clock-id in xx:xx:xx:xx:xx:xx format. |
     | [<samp>&nbsp;&nbsp;source</samp>](## "ptp.source") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "ptp.source.ip") | String |  |  |  | Source IP |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "ptp.source.ip") | String |  |  |  | Source IP. |
     | [<samp>&nbsp;&nbsp;priority1</samp>](## "ptp.priority1") | Integer |  |  | Min: 0<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;priority2</samp>](## "ptp.priority2") | Integer |  |  | Min: 0<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;ttl</samp>](## "ptp.ttl") | Integer |  |  | Min: 1<br>Max: 255 |  |
@@ -51,11 +51,11 @@
       mode_one_step: <bool>
       forward_unicast: <bool>
 
-      # The clock-id in xx:xx:xx:xx:xx:xx format
+      # The clock-id in xx:xx:xx:xx:xx:xx format.
       clock_identity: <str>
       source:
 
-        # Source IP
+        # Source IP.
         ip: <str>
       priority1: <int; 0-255>
       priority2: <int; 0-255>

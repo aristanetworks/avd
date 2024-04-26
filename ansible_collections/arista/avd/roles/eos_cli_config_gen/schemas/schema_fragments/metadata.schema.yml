@@ -51,7 +51,7 @@ keys:
                         required: true
       cv_pathfinder:
         type: dict
-        description: Metadata used for CV Pathfinder visualization on CloudVision
+        description: Metadata used for CV Pathfinder visualization on CloudVision.
         keys:
           role:
             type: str
@@ -72,6 +72,7 @@ keys:
               keys:
                 vtep_ip:
                   type: str
+                  required: true
           interfaces:
             type: list
             items:
@@ -94,6 +95,7 @@ keys:
               keys:
                 name:
                   type: str
+                  required: true
                 carriers:
                   type: list
                   items:
@@ -180,3 +182,60 @@ keys:
                               type: str
                             preference:
                               type: str
+          internet_exit_policies:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  required: true
+                type:
+                  type: str
+                  required: true
+                city:
+                  type: str
+                  required: true
+                country:
+                  type: str
+                  required: true
+                upload_bandwidth:
+                  type: int
+                download_bandwidth:
+                  type: int
+                firewall:
+                  type: bool
+                  required: true
+                ips_control:
+                  type: bool
+                  required: true
+                acceptable_use_policy:
+                  type: bool
+                  required: true
+                vpn_credentials:
+                  type: list
+                  required: true
+                  items:
+                    type: dict
+                    keys:
+                      fqdn:
+                        type: str
+                        required: true
+                      vpn_type:
+                        type: str
+                        required: true
+                      pre_shared_key:
+                        type: str
+                        required: true
+                tunnels:
+                  type: list
+                  required: true
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        required: true
+                      preference:
+                        type: str
+                        required: true
