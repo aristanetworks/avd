@@ -55,7 +55,13 @@ parser.add_argument(
     type=Path,
     help="The start of the relative path of the md files, ie. the place in the table path from where to cut down to match",
 )
-parser.add_argument("--ignore_files", dest="ignore_files", nargs="*", type=Path, help="The table files to be ignored, when checking for missing table files",)
+parser.add_argument(
+    "--ignore_files",
+    dest="ignore_files",
+    nargs="*",
+    type=Path,
+    help="The table files to be ignored, when checking for missing table files",
+)
 args = parser.parse_args()
 
 ignored_files = list(args.ignore_files)
