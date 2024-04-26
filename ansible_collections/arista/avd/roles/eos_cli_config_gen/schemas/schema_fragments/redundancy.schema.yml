@@ -11,4 +11,4 @@ keys:
     keys:
       protocol:
         type: str
-        description: Redundancy Protocol
+        description: Redundancy Protocol.

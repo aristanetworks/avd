@@ -7,13 +7,13 @@ __metaclass__ = type
 
 import logging
 from json import dump
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Mapping
 
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import AnsibleEOSDevice, get_anta_results
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import AnsibleEOSDevice, ConfigManager, get_anta_results
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
@@ -76,19 +76,25 @@ class ActionModule(ActionBase):
             save_catalog = get_validated_value(data=self._task.args, key="save_catalog", expected_type=bool, default_value=False)
             catalog_path = get_validated_path(path_input=self._task.args.get("device_catalog_path"), parent=True) if save_catalog else None
             test_results_dir = get_validated_path(path_input=self._task.args.get("test_results_dir"), parent=False)
+            custom_anta_catalogs_dir = get_validated_path(path_input=self._task.args.get("custom_anta_catalogs_dir"), parent=False)
         except (TypeError, ValueError, FileNotFoundError) as error:
             msg = f"Failed to validate task arguments: {error}"
             raise AnsibleActionFail(msg) from error
+
+        custom_anta_catalogs = get_custom_anta_catalogs(hostvars, hostname, custom_anta_catalogs_dir)
+
+        config_manager = ConfigManager(device_name=hostname, hostvars=hostvars)
 
         try:
             anta_device = AnsibleEOSDevice(name=hostname, connection=ansible_connection, check_mode=ansible_check_mode)
             anta_results = get_anta_results(
                 anta_device=anta_device,
-                hostvars=hostvars,
+                config_manager=config_manager,
                 logging_level=logging_level,
                 skipped_tests=skipped_tests,
                 ansible_tags=ansible_tags,
                 save_catalog_name=catalog_path,
+                custom_anta_catalogs=custom_anta_catalogs,
                 # This convert Ansible Check Mode to dry_run
                 dry_run=ansible_check_mode,
                 yaml_dumper=AnsibleNoAliasDumper,
@@ -102,6 +108,34 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(msg) from error
 
         return result
+
+
+def get_custom_anta_catalogs(hostvars: Mapping, hostname: str, custom_anta_catalogs_dir: Path) -> list[Path] | None:
+    """Retrieve the custom ANTA catalogs for the current inventory device.
+
+    Custom catalogs can be provided for each device or for each Ansible inventory group of devices.
+
+    They must be named after the device hostname or the group name and have a .yml or .yaml extension.
+
+    Args:
+    ----
+      hostvars (Mapping): The Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
+      hostname (str): Current inventory device that is running the plugin.
+      custom_anta_catalogs_dir (Path): The directory where the custom ANTA catalogs are stored.
+
+    Returns:
+    -------
+      list[Path] | None: The list of custom ANTA catalog files for the current inventory device or None if no custom catalogs are found.
+    """
+    # Get the groups for the current inventory device
+    inventory_manager = hostvars._inventory
+    host = inventory_manager.get_host(hostname)
+    host_groups = {group.get_name() for group in host.get_groups()}
+
+    # Search for custom ANTA catalogs
+    search_prefix = [*list(host_groups), hostname]
+    custom_anta_catalogs = [file for prefix in search_prefix for ext in ("yml", "yaml") for file in custom_anta_catalogs_dir.glob(f"{prefix}.{ext}")]
+    return custom_anta_catalogs if custom_anta_catalogs else None
 
 
 def write_results(hostname: str, anta_results: list[dict], test_results_dir: Path) -> None:

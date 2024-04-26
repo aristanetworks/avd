@@ -1,0 +1,20 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  wan_stun_dtls_disable:
+    type: bool
+    documentation_options:
+      table: wan-settings
+    default: false
+    description: |-
+      WAN STUN connections are authenticated and secured with DTLS by default.
+      For CV Pathfinder deployments CloudVision will automatically deploy certificates on the devices.
+      In case of AutoVPN the certificates must be deployed manually to all devices.
+
+      For LAB environments this can be disabled, if there are no certificates available.
+      This should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication.

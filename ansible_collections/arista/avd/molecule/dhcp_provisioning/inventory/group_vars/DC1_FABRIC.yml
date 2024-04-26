@@ -149,6 +149,16 @@ l2leaf:
           mgmt_ip: 192.168.200.112/24
           mac_address: '0c:1d:c0:1d:62:21'
           l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
+
+custom_l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
+    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  node_groups:
     - group: DC1_L2LEAF2
       nodes:
         - name: DC1-L2LEAF2A

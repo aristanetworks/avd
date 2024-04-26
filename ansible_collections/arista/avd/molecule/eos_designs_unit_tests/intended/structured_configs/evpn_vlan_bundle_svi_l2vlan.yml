@@ -1,0 +1,202 @@
+hostname: evpn_vlan_bundle_svi_l2vlan
+is_deployed: true
+router_bgp:
+  as: '65101'
+  router_id: 10.10.0.3
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: SIT_VRF
+    router_id: 10.10.0.3
+    rd: 10.10.0.3:789654
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 789654:789654
+      export:
+      - address_family: evpn
+        route_targets:
+        - 789654:789654
+    redistribute_routes:
+    - source_protocol: connected
+  vlans:
+  - id: 1010
+    tenant: SIT
+    rd: 10.10.0.3:21010
+    route_targets:
+      both:
+      - 21010:21010
+    redistribute_routes:
+    - learned
+  - id: 10
+    tenant: SIT
+    rd: 10.10.0.3:20010
+    route_targets:
+      both:
+      - 20010:20010
+    redistribute_routes:
+    - learned
+  - id: 20
+    tenant: SIT
+    rd: 10.10.0.3:20020
+    route_targets:
+      both:
+      - 20020:20020
+    redistribute_routes:
+    - learned
+  vlan_aware_bundles:
+  - name: bundle3
+    rd: 1.1.1.1:333
+    route_targets:
+      both:
+      - 303:333
+    redistribute_routes:
+    - learned
+    vlan: 90,100,1008-1009
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: SIT_VRF
+  tenant: SIT
+  ip_routing: true
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.10.0.3/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 10.11.0.3/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.0.0/24 eq 32
+  - sequence: 20
+    action: permit 10.11.0.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+vlans:
+- id: 1008
+  name: SVI_1
+  tenant: SIT
+- id: 1009
+  name: SVI_2
+  tenant: SIT
+- id: 1010
+  name: SVI_3
+  tenant: SIT
+- id: 10
+  name: storage_prod
+  tenant: SIT
+- id: 20
+  name: storage_prod
+  tenant: SIT
+- id: 90
+  name: vlan90
+  tenant: SIT
+- id: 100
+  name: vlan100
+  tenant: SIT
+ip_igmp_snooping:
+  globally_enabled: true
+vlan_interfaces:
+- name: Vlan1008
+  tenant: SIT
+  tags:
+  - sit
+  description: SVI_1
+  shutdown: false
+  vrf: SIT_VRF
+- name: Vlan1009
+  tenant: SIT
+  tags:
+  - sit
+  description: SVI_2
+  shutdown: false
+  vrf: SIT_VRF
+- name: Vlan1010
+  tenant: SIT
+  tags:
+  - sit
+  description: SVI_3
+  shutdown: false
+  vrf: SIT_VRF
+vxlan_interface:
+  Vxlan1:
+    description: evpn_vlan_bundle_svi_l2vlan_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+      vlans:
+      - id: 1008
+        vni: 21008
+      - id: 1009
+        vni: 21009
+      - id: 1010
+        vni: 21010
+      - id: 10
+        vni: 20010
+      - id: 20
+        vni: 20020
+      - id: 90
+        vni: 20090
+      - id: 100
+        vni: 20100
+      vrfs:
+      - name: SIT_VRF
+        vni: 789654

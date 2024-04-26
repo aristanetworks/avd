@@ -5,6 +5,9 @@ l2leaf:
   defaults:
   nodes:
     - name: connected_endpoints
+      platform: 720XP
+      link_tracking:
+        enabled: true
 
 servers:
   # single port override physical port description
@@ -58,7 +61,21 @@ servers:
             mode: individual
             individual:
               profile: INDIVIDUAL_TRUNK
-
+  - name: DOT1X_UNAUTHORIZED
+    adapters:
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet14]
+        profile: INDIVIDUAL_TRUNK
+  - name: INDIVIDUAL_2_TRUNK_PHONE
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet15, Ethernet16]
+        port_channel:
+          mode: "active"
+          lacp_fallback:
+            mode: individual
+            individual:
+              profile: INDIVIDUAL_TRUNK_PHONE
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
@@ -67,3 +84,20 @@ port_profiles:
     native_vlan: 123
     spanning_tree_portfast: "edge"
     spanning_tree_bpdufilter: True
+    dot1x:
+      unauthorized:
+        access_vlan_membership_egress: True
+        native_vlan_membership_egress: True
+    qos_profile: MYQOS
+    poe:
+      disabled: true
+    ptp:
+      enabled: true
+    sflow: false
+
+  - profile: INDIVIDUAL_TRUNK_PHONE
+    mode: trunk phone
+    native_vlan: 123
+    phone_vlan: 321
+    link_tracking:
+      enabled: true

@@ -22,11 +22,11 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         """
         Return structured config for profiles, policies and VRFs for router adaptive-virtual-topology (AVT)
         """
-        if not self.shared_utils.cv_pathfinder_role:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return None
 
         router_adaptive_virtual_topology = {
-            "profiles": self._cv_pathfinder_profiles,
+            "profiles": self._cv_pathfinder_profiles(),
             "vrfs": self._cv_pathfinder_wan_vrfs(),
             "policies": self._cv_pathfinder_policies(),
         }
@@ -41,24 +41,29 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         wan_vrfs = []
 
         for vrf in self._filtered_wan_vrfs:
-            wan_vrf = vrf.copy()
+            wan_vrf = {"name": vrf["name"], "policy": vrf["policy"], "profiles": []}
 
             # Need to allocate an ID for each profile in the policy, for now picked up from the input.
             policy = get_item(
-                self._augmented_cv_pathfinder_policies,
+                self._filtered_wan_policies,
                 "name",
-                wan_vrf[self._wan_policy_key],
+                wan_vrf["policy"],
                 required=True,
-                custom_error_msg=(
-                    f"The policy {wan_vrf[self._wan_policy_key]} used in vrf {wan_vrf['name']} is not configured under 'wan_virtual_topologies.policies'."
-                ),
+                custom_error_msg=(f"The policy {wan_vrf['policy']} used in vrf {wan_vrf['name']} is not configured under 'wan_virtual_topologies.policies'."),
             )
 
             for match in policy.get("matches", []):
-                wan_vrf.setdefault("profiles", []).append(
+                wan_vrf["profiles"].append(
                     {
                         "name": get(match, "avt_profile", required=True),
-                        "id": get(match, "_id", required=False),
+                        "id": get(match, "id", required=True),
+                    }
+                )
+            if (default_match := policy.get("default_match")) is not None:
+                wan_vrf["profiles"].append(
+                    {
+                        "name": get(default_match, "avt_profile", required=True),
+                        "id": get(default_match, "id", required=True),
                     }
                 )
 
@@ -66,133 +71,78 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
 
         return wan_vrfs
 
-    @cached_property
-    def _augmented_cv_pathfinder_policies(self) -> list:
-        """
-        Return a list of augmented CV_Pathfinder Policies with an `_id` key to be used when rendering VRFs.
-
-        Insert the policy for default VRF using  {name}-WITH-CP
-        """
-        if not self.shared_utils.cv_pathfinder_role:
-            return []
-
-        cv_pathfinder_policies = []
-
-        control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={"id": 254})
-
-        for avt_policy in self._filtered_wan_policies:
-            cv_pathfinder_policy = {
-                "name": avt_policy["name"],
-                "matches": [],
-            }
-
-            if get(avt_policy, "is_default", default=False):
-                # Update policy name
-                cv_pathfinder_policy["name"] = f"{cv_pathfinder_policy['name']}-WITH-CP"
-                cv_pathfinder_policy["matches"].append(
-                    {
-                        "application_profile": self._wan_control_plane_application_profile,
-                        "avt_profile": self._wan_control_plane_profile,
-                        "traffic_class": get(control_plane_virtual_topology, "traffic_class"),
-                        "dscp": get(control_plane_virtual_topology, "dscp"),
-                        "_id": 254,
-                    }
-                )
-
-            for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
-                application_profile = get(application_virtual_topology, "application_profile", required=True)
-                cv_pathfinder_policy["matches"].append(
-                    {
-                        "application_profile": application_profile,
-                        "avt_profile": get(
-                            application_virtual_topology,
-                            "name",
-                            default=self._default_profile_name(avt_policy["name"], application_virtual_topology["application_profile"]),
-                        ),
-                        "traffic_class": get(application_virtual_topology, "traffic_class"),
-                        "dscp": get(application_virtual_topology, "dscp"),
-                        # Storing id as _id to avoid schema validation and be able to pick up in VRFs
-                        "_id": get(application_virtual_topology, "id"),
-                    }
-                )
-
-            default_virtual_topology = get(avt_policy, "default_virtual_topology", required=True)
-            if not get(default_virtual_topology, "drop_unmatched", default=False):
-                application_profile = get(default_virtual_topology, "application_profile", default="default")
-                cv_pathfinder_policy["matches"].append(
-                    {
-                        "application_profile": application_profile,
-                        "avt_profile": get(default_virtual_topology, "name", default=self._default_profile_name(avt_policy["name"], "DEFAULT")),
-                        "traffic_class": get(default_virtual_topology, "traffic_class"),
-                        "dscp": get(default_virtual_topology, "dscp"),
-                        # Storing id as _id to avoid schema validation and be able to pick up in VRFs
-                        "_id": 1,
-                    }
-                )
-
-            cv_pathfinder_policies.append(cv_pathfinder_policy)
-
-        return cv_pathfinder_policies
-
     def _cv_pathfinder_policies(self) -> list:
         """
-        Return the policies generated by _augmented_cv_pathfinder_policies popping the `_id` key
+        Build and return the CV Pathfinder policies based on the computed
+        _filtered_wan_policies.
+
+        It loops though the different match statements to build the appropriate entries
+        by popping the load_balance_policy and id keys.
         """
         policies = []
-        for policy in self._augmented_cv_pathfinder_policies:
-            new_policy = policy.copy()
+
+        for policy in self._filtered_wan_policies:
+            pathfinder_policy = {"name": policy["name"], "matches": []}
             for match in get(policy, "matches", default=[]):
-                match.pop("_id")
-            policies.append(new_policy)
+                # popping id, load_balance_and internet-exit policy
+                pathfinder_match = match.copy()
+                pathfinder_match.pop("id")
+                pathfinder_match.pop("load_balance_policy")
+                pathfinder_match.pop("internet_exit_policy_name")
+                pathfinder_policy["matches"].append(pathfinder_match)
+
+            if (default_match := policy.get("default_match")) is not None:
+                pathfinder_match = default_match.copy()
+                pathfinder_match.pop("id")
+                pathfinder_match.pop("load_balance_policy")
+                pathfinder_match.pop("internet_exit_policy_name")
+                pathfinder_policy["matches"].append(pathfinder_match)
+
+            policies.append(strip_empties_from_dict(pathfinder_policy))
+
         return policies
 
-    @cached_property
     def _cv_pathfinder_profiles(self) -> list:
         """
         Return a list of router adaptive-virtual-topology profiles for this router.
 
         TODO: add internet exit once supported
         """
-        if not self.shared_utils.cv_pathfinder_role:
-            return []
+        profiles = []
+        for policy in self._filtered_wan_policies:
+            for match in policy.get("matches", []):
+                profile = {
+                    "name": match["avt_profile"],
+                    "load_balance_policy": match["load_balance_policy"]["name"],
+                }
+                if (internet_exit_policy_name := match["internet_exit_policy_name"]) is not None and get_item(
+                    self._filtered_internet_exit_policies, "name", internet_exit_policy_name
+                ) is not None:
+                    profile["internet_exit_policy"] = internet_exit_policy_name
 
-        # Control Plan profile
-        cv_pathfinder_profiles = [
-            {"name": self._wan_control_plane_profile, "load_balance_policy": self.shared_utils.generate_lb_policy_name(self._wan_control_plane_profile)}
-        ]
-        for avt_policy in self._filtered_wan_policies:
-            for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
-                name = get(
-                    application_virtual_topology,
-                    "name",
-                    default=self._default_profile_name(avt_policy["name"], application_virtual_topology["application_profile"]),
-                )
                 append_if_not_duplicate(
-                    list_of_dicts=cv_pathfinder_profiles,
+                    list_of_dicts=profiles,
                     primary_key="name",
-                    new_dict={
-                        "name": name,
-                        "load_balance_policy": self.shared_utils.generate_lb_policy_name(name),
-                    },
+                    new_dict=profile,
                     context="Router Adaptive Virtual Topology profiles.",
                     context_keys=["name"],
                 )
-            default_virtual_topology = get(avt_policy, "default_virtual_topology", required=True)
-            if not get(default_virtual_topology, "drop_unmatched", default=False):
-                name = get(
-                    default_virtual_topology,
-                    "name",
-                    default=self._default_profile_name(avt_policy["name"], "DEFAULT"),
-                )
+            if (default_match := policy.get("default_match")) is not None:
+                profile = {
+                    "name": default_match["avt_profile"],
+                    "load_balance_policy": default_match["load_balance_policy"]["name"],
+                }
+                if (internet_exit_policy_name := default_match["internet_exit_policy_name"]) is not None and get_item(
+                    self._filtered_internet_exit_policies, "name", internet_exit_policy_name
+                ) is not None:
+                    profile["internet_exit_policy"] = internet_exit_policy_name
+
                 append_if_not_duplicate(
-                    list_of_dicts=cv_pathfinder_profiles,
+                    list_of_dicts=profiles,
                     primary_key="name",
-                    new_dict={
-                        "name": name,
-                        "load_balance_policy": self.shared_utils.generate_lb_policy_name(name),
-                    },
+                    new_dict=profile,
                     context="Router Adaptive Virtual Topology profiles.",
                     context_keys=["name"],
                 )
 
-        return cv_pathfinder_profiles
+        return profiles

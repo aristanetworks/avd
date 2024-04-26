@@ -157,6 +157,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
             "trunk_groups": [self._trunk_groups_mlag_name],
             "struct_cfg": get(self.shared_utils.switch_data_combined, "mlag_port_channel_structured_config"),
+            "flow_tracker": self.shared_utils.get_flow_tracker(None, "mlag_interfaces"),
         }
 
         if self.shared_utils.mlag_l3 is True and self._trunk_groups_mlag_l3_name != self._trunk_groups_mlag_name:
@@ -177,6 +178,10 @@ class AvdStructuredConfigMlag(AvdFacts):
             ptp_config.pop("profile", None)
             # Apply ptp config to port-channel
             port_channel_interface["ptp"] = ptp_config
+
+        if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
+            port_channel_interface["lacp_fallback_mode"] = "individual"
+            port_channel_interface["lacp_fallback_timeout"] = self.shared_utils.get_mlag_peer_fact("inband_ztp_lacp_fallback_delay")
 
         return [strip_empties_from_dict(port_channel_interface)]
 
@@ -207,6 +212,8 @@ class AvdStructuredConfigMlag(AvdFacts):
                 },
                 "speed": self.shared_utils.mlag_interfaces_speed,
             }
+            if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
+                ethernet_interface.update({"mode": "access", "vlans": self.shared_utils.get_mlag_peer_fact("inband_mgmt_vlan")})
             ethernet_interfaces.append(strip_empties_from_dict(ethernet_interface))
 
         return ethernet_interfaces

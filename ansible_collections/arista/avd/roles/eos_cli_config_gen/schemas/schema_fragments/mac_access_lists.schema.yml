@@ -16,7 +16,7 @@ keys:
       keys:
         name:
           type: str
-          description: MAC Access-list Name
+          description: MAC Access-list Name.
           convert_types: [ int ]
         counters_per_entry:
           type: bool

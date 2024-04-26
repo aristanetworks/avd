@@ -39,6 +39,8 @@ interface Management1
 
 ### Router BGP
 
+ASN Notation: asplain
+
 #### Router BGP Summary
 
 | BGP AS | Router ID |
@@ -265,6 +267,8 @@ router bgp 65101
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
       next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
+      route import ethernet-segment ip mass-withdraw
+      route export ethernet-segment ip mass-withdraw
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
@@ -305,4 +309,11 @@ router bgp 65101
       route-target import evpn 14:14
       route-target export evpn 14:14
       router-id 192.168.255.3
+   !
+   address-family evpn
+      evpn ethernet-segment domain all
+         identifier 0011:1111:1111:1111:1111
+         route-target import 00:01:00:01:00:01
+            !
+            layer-2 fec in-place update
 ```

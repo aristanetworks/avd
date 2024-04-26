@@ -7,6 +7,7 @@
 - [Monitoring](#monitoring)
   - [Flow Tracking](#flow-tracking)
 - [Interfaces](#interfaces)
+  - [DPS Interfaces](#dps-interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
 
@@ -68,13 +69,15 @@ interface Management1
 
 #### Flow Tracking Hardware
 
+Software export of IPFIX data records enabled.
+
 ##### Trackers Summary
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
 | ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
 | T1 | 3666 | 5666 | 0 |  |
 | T2 | - | - | 1 | Ethernet40 |
-| T3 | - | - | 4 | Ethernet41<br>Port-Channel42 |
+| T3 | - | - | 4 | Dps1<br>Ethernet41<br>Port-Channel42 |
 
 ##### Exporters Summary
 
@@ -135,10 +138,27 @@ flow tracking hardware
          template interval 424242
       exporter T3-E4
          collector dead:beef::cafe
+   record format ipfix standard timestamps counters
    no shutdown
 ```
 
 ## Interfaces
+
+### DPS Interfaces
+
+#### DPS Interfaces Summary
+
+| Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------- | --- | --------------- | --------------- |
+| Dps1 | - | - | - | Hardware: T3 |  |
+
+#### DPS Interfaces Device Configuration
+
+```eos
+!
+interface Dps1
+   flow tracker hardware T3
+```
 
 ### Ethernet Interfaces
 

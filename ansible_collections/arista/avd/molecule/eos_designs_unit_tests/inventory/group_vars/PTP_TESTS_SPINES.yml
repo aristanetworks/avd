@@ -3,11 +3,14 @@ type: spine
 
 spine:
   defaults:
+    id: 10
     platform: vEOS-LAB
     loopback_ipv4_pool: 10.255.0.0/27
     bgp_as: 65200
     ptp:
       enabled: true
+      mode: boundary
+      mode_one_step: true
 
   nodes:
     - name: ptp-tests-spine1

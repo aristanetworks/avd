@@ -57,7 +57,7 @@ ptp ttl 12
 ptp domain 17
 ptp message-type general dscp 36 default
 ptp message-type event dscp 46 default
-ptp mode boundary
+ptp mode boundary one-step
 ptp forward-unicast
 ptp monitor threshold offset-from-master 11
 ptp monitor threshold mean-path-delay 12

@@ -43,7 +43,7 @@ interface Management1
 
 ##### Hardware Counter Features
 
-**NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsability to configure valid options for each feature.
+**NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsibility to configure valid options for each feature.
 
 | Feature | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
 | ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |

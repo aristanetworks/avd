@@ -11,13 +11,13 @@ keys:
     keys:
       interval:
         type: int
-        description: Rate in milliseconds
+        description: Rate in milliseconds.
       local_address:
         type: str
-        description: Configure BFD local IP/IPv6 address
+        description: Configure BFD local IP/IPv6 address.
       min_rx:
         type: int
-        description: Rate in milliseconds
+        description: Rate in milliseconds.
       multiplier:
         type: int
         min: 3
@@ -27,10 +27,10 @@ keys:
         keys:
           interval:
             type: int
-            description: Rate in milliseconds
+            description: Rate in milliseconds.
           min_rx:
             type: int
-            description: Rate in milliseconds
+            description: Rate in milliseconds.
           multiplier:
             type: int
             min: 3
@@ -54,7 +54,7 @@ keys:
             keys:
               name:
                 type: str
-                description: Interface Name
+                description: Interface Name.
               protocols:
                 type: dict
                 keys:
@@ -64,20 +64,20 @@ keys:
                     type: bool
           initiator_interval:
             type: int
-            description: Rate in milliseconds
+            description: Rate in milliseconds.
           initiator_multiplier:
             type: int
             min: 3
             max: 50
           initiator_measurement_round_trip:
             type: bool
-            description: Enable round-trip delay measurement
+            description: Enable round-trip delay measurement.
           reflector:
             type: dict
             keys:
               min_rx:
                 type: int
-                description: Rate in milliseconds
+                description: Rate in milliseconds.
               local_discriminator:
                 type: str
-                description: IPv4 address or 32 bit integer
+                description: IPv4 address or 32 bit integer.

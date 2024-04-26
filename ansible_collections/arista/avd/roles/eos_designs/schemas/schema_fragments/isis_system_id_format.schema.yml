@@ -1,0 +1,23 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+# TODO: AVD5.0 flip default to underlay_loopback
+type: dict
+keys:
+  isis_system_id_format:
+    display_name: ISIS Default IS System-ID format
+    description: |-
+      Configures source for the system-id within the ISIS net id.
+      By default the `id` and `isis_system_id_prefix` fields configured under the node attributes are used to generate the system-id.
+
+      If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings will be ignored and the loopback address will be used to generate the system-id.
+    documentation_options:
+      table: isis-settings
+    type: str
+    valid_values:
+      - node_id
+      - underlay_loopback
+    default: "node_id"

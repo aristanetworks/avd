@@ -280,7 +280,7 @@ class RouterBgpMixin(UtilsMixin):
 
     def _address_family_ipv4_sr_te(self) -> dict | None:
         """Generate structured config for IPv4 SR-TE address family"""
-        if not self.shared_utils.cv_pathfinder_role:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return None
 
         address_family_ipv4_sr_te = {
@@ -299,7 +299,7 @@ class RouterBgpMixin(UtilsMixin):
 
     def _address_family_link_state(self) -> dict | None:
         """Generate structured config for link-state address family"""
-        if not self.shared_utils.cv_pathfinder_role:
+        if not self.shared_utils.is_cv_pathfinder_router:
             return None
 
         address_family_link_state = {
@@ -311,7 +311,7 @@ class RouterBgpMixin(UtilsMixin):
             ],
         }
 
-        if self.shared_utils.cv_pathfinder_role == "pathfinder":
+        if self.shared_utils.is_cv_pathfinder_server:
             address_family_link_state["path_selection"] = {"roles": {"consumer": True, "propagator": True}}
             address_family_link_state["peer_groups"][0].update(
                 {
@@ -368,7 +368,7 @@ class RouterBgpMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             if self.shared_utils.evpn_gateway_vxlan_l2 is True or self.shared_utils.evpn_gateway_vxlan_l3 is True:
                 core_peer_group = {"name": self.shared_utils.bgp_peer_groups["evpn_overlay_core"]["name"], "activate": True}
-                # TODO @Claus told me to remove this
+                # TODO (@Claus) told me to remove this
                 if self.shared_utils.evpn_role == "server":
                     core_peer_group["default_route_target"] = {"only": True}
                 peer_groups.append(core_peer_group)
@@ -432,7 +432,7 @@ class RouterBgpMixin(UtilsMixin):
 
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             if remote_as is None:
-                raise AristaAvdError("Configuring eBGP neighor without a remote_as")
+                raise AristaAvdError("Configuring eBGP neighbor without a remote_as")
 
             neighbor["remote_as"] = remote_as
 

@@ -106,6 +106,9 @@ router_bgp:
     next_hop:
       resolution_disabled: true
     next_hop_unchanged: true
+    route:
+      import_ethernet_segment_ip_mass_withdraw: true
+      export_ethernet_segment_ip_mass_withdraw: true
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
@@ -273,3 +276,10 @@ router_bgp:
           - address_family: evpn
             route_targets:
               - "14:14"
+  eos_cli: |-
+    address-family evpn
+       evpn ethernet-segment domain all
+          identifier 0011:1111:1111:1111:1111
+          route-target import 00:01:00:01:00:01
+             !
+             layer-2 fec in-place update

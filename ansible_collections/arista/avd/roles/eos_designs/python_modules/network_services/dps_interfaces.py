@@ -37,7 +37,7 @@ class DpsInterfacesMixin(UtilsMixin):
         # TODO do IPv6 when needed - for now no easy way in AVD to detect if this is needed
         # When needed - need a default value if different than IPv4
 
-        if self.shared_utils.cv_pathfinder_role:
-            dps1["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
+        if (dpsFlow := self.shared_utils.get_flow_tracker(None, "dps_interfaces")) is not None:
+            dps1["flow_tracker"] = dpsFlow
 
         return [dps1]

@@ -22,13 +22,13 @@ keys:
               keys:
                 name:
                   type: str
-                  description: Transport name
+                  description: Transport name.
                 ssl_profile:
                   type: str
-                  description: SSL profile name
+                  description: SSL profile name.
                 vrf:
                   type: str
-                  description: VRF name is optional
+                  description: VRF name is optional.
                   convert_types:
                     - int
                 notification_timestamp:
@@ -41,7 +41,7 @@ keys:
                     an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.
                 ip_access_group:
                   type: str
-                  description: ACL name
+                  description: ACL name.
                 port:
                   type: int
                   description: |
@@ -57,19 +57,19 @@ keys:
               keys:
                 name:
                   type: str
-                  description: Transport name
+                  description: Transport name.
                 shutdown:
                   type: bool
-                  description: Operational status of the gRPC tunnel
+                  description: Operational status of the gRPC tunnel.
                 tunnel_ssl_profile:
                   type: str
-                  description: Tunnel SSL profile name
+                  description: Tunnel SSL profile name.
                 gnmi_ssl_profile:
                   type: str
-                  description: gNMI SSL profile name
+                  description: gNMI SSL profile name.
                 vrf:
                   type: str
-                  description: VRF name
+                  description: VRF name.
                   convert_types:
                     - int
                 destination:
@@ -78,7 +78,7 @@ keys:
                     address:
                       type: str
                       required: true
-                      description: IP address or hostname
+                      description: IP address or hostname.
                     port:
                       type: int
                       min: 1
@@ -86,14 +86,14 @@ keys:
                       required: true
                       convert_types:
                         - str
-                      description: TCP Port
+                      description: TCP Port.
                 local_interface:
                   type: dict
                   keys:
                     name:
                       type: str
                       required: true
-                      description: Interface name
+                      description: Interface name.
                     port:
                       type: int
                       min: 1
@@ -101,13 +101,13 @@ keys:
                       required: true
                       convert_types:
                         - str
-                      description: TCP Port
+                      description: TCP Port.
                 target:
                   type: dict
                   keys:
                     use_serial_number:
                       type: bool
-                      description: Use serial number as the Target ID
+                      description: Use serial number as the Target ID.
                     target_ids:
                       type: list
                       description: |
@@ -130,12 +130,12 @@ keys:
           keys:
             name:
               type: str
-              description: VRF name
+              description: VRF name.
               convert_types:
                 - int
             access_group:
               type: str
-              description: Standard IPv4 ACL name
+              description: Standard IPv4 ACL name.
       octa:
         type: dict
         deprecation:

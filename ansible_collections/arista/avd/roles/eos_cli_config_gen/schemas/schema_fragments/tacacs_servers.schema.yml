@@ -13,7 +13,7 @@ keys:
         type: int
         convert_types:
           - str
-        description: Timeout in seconds
+        description: Timeout in seconds.
         min: 1
         max: 1000
       hosts:
@@ -23,14 +23,14 @@ keys:
           keys:
             host:
               type: str
-              description: Host IP address or name
+              description: Host IP address or name.
             vrf:
               type: str
               convert_types:
                 - int
             key:
               type: str
-              description: Encrypted key
+              description: Encrypted key.
             key_type:
               type: str
               convert_types:
@@ -43,7 +43,7 @@ keys:
               type: int
               convert_types:
                 - str
-              description: Timeout in seconds
+              description: Timeout in seconds.
               min: 1
               max: 1000
       policy_unknown_mandatory_attribute_ignore:

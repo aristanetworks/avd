@@ -59,17 +59,17 @@ router_bgp:
     - ip_address: 172.17.0.2
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf1_Ethernet2.100_vrf_IT
-    rd: 192.168.43.2:100
+      description: site-ha-enabled-leaf1_Ethernet2.1000_vrf_IT
+    rd: 192.168.43.2:1000
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - 100:100
+        - 1000:1000
       export:
       - address_family: evpn
         route_targets:
-        - 100:100
+        - 1000:1000
     redistribute_routes:
     - source_protocol: connected
   - name: PROD
@@ -78,17 +78,36 @@ router_bgp:
     - ip_address: 172.17.0.2
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf1_Ethernet2.42_vrf_PROD
-    rd: 192.168.43.2:42
+      description: site-ha-enabled-leaf1_Ethernet2.142_vrf_PROD
+    rd: 192.168.43.2:142
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '42:42'
+        - 142:142
       export:
       - address_family: evpn
         route_targets:
-        - '42:42'
+        - 142:142
+    redistribute_routes:
+    - source_protocol: connected
+  - name: ATTRACTED-VRF-FROM-UPLINK
+    router_id: 192.168.43.2
+    neighbors:
+    - ip_address: 172.17.0.2
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65199'
+      description: site-ha-enabled-leaf1_Ethernet2.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+    rd: 192.168.43.2:666
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 666:666
+      export:
+      - address_family: evpn
+        route_targets:
+        - 666:666
     redistribute_routes:
     - source_protocol: connected
   - name: default
@@ -103,6 +122,10 @@ router_bgp:
         route_targets:
         - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+  - name: NOT-WAN-VRF
+    router_id: 192.168.43.2
+    redistribute_routes:
+    - source_protocol: connected
   - name: TRANSIT
     router_id: 192.168.43.2
     rd: 192.168.43.2:66
@@ -157,8 +180,14 @@ vrfs:
 - name: PROD
   tenant: TenantA
   ip_routing: true
+- name: NOT-WAN-VRF
+  tenant: TenantB
+  ip_routing: true
 - name: TRANSIT
   tenant: TenantB
+  ip_routing: true
+- name: ATTRACTED-VRF-FROM-UPLINK
+  tenant: TenantC
   ip_routing: true
 management_api_http:
   enable_vrfs:
@@ -174,28 +203,37 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 172.17.0.3/31
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
-- name: Ethernet52.100
+- name: Ethernet52.1000
   peer: site-ha-enabled-leaf1
-  peer_interface: Ethernet2.100
+  peer_interface: Ethernet2.1000
   peer_type: l3leaf
   vrf: IT
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet2.100_vrf_IT
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet2.1000_vrf_IT
   shutdown: false
   type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q_vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.3/31
-- name: Ethernet52.42
+- name: Ethernet52.142
   peer: site-ha-enabled-leaf1
-  peer_interface: Ethernet2.42
+  peer_interface: Ethernet2.142
   peer_type: l3leaf
   vrf: PROD
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet2.42_vrf_PROD
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet2.142_vrf_PROD
   shutdown: false
   type: l3dot1q
-  encapsulation_dot1q_vlan: 42
+  encapsulation_dot1q_vlan: 142
+  mtu: 9214
+  ip_address: 172.17.0.3/31
+- name: Ethernet52.666
+  peer: site-ha-enabled-leaf1
+  peer_interface: Ethernet2.666
+  peer_type: l3leaf
+  vrf: ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet2.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.3/31
 - name: Ethernet1.42
@@ -203,18 +241,16 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: l3dot1q
+  description: Comcast
   encapsulation_dot1q_vlan: 42
   dhcp_client_accept_default_route: true
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet2.42
   peer_type: l3_interface
   ip_address: 172.16.6.6/31
   shutdown: false
   type: l3dot1q
+  description: Colt_10666
   encapsulation_dot1q_vlan: 666
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 - name: Ethernet1
   type: routed
   peer_type: l3_interface
@@ -323,20 +359,11 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
-flow_tracking:
-  hardware:
-    trackers:
-    - name: WAN-FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 5000
-      exporters:
-      - name: DPI-EXPORTER
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 5000
-    shutdown: false
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -344,8 +371,6 @@ ip_extcommunity_lists:
     extcommunities: soo 192.168.43.1:422
 ip_security:
   ike_policies:
-  - name: DP-IKE-POLICY
-    local_id: 192.168.143.2
   - name: CP-IKE-POLICY
     local_id: 192.168.143.2
   sa_policies:
@@ -359,7 +384,6 @@ ip_security:
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
-    ike_policy: DP-IKE-POLICY
     sa_policy: DP-SA-POLICY
     connection: start
     shared_key: ABCDEF1234567890666
@@ -380,39 +404,53 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: profileA
+    certificate:
+      file: profileA.crt
+      key: profileA.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: transit region
   region:
     name: AVD_Land_West
     id: 42
   zone:
-    name: DEFAULT-ZONE
+    name: AVD_Land_West-ZONE
     id: 1
   site:
     name: Site422
     id: 422
   profiles:
-  - name: CONTROL-PLANE-PROFILE
-    load_balance_policy: LB-CONTROL-PLANE-PROFILE
-  - name: PROD-AVT-POLICY-VOICE
-    load_balance_policy: LB-PROD-AVT-POLICY-VOICE
-  - name: PROD-AVT-POLICY-VIDEO
-    load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
-  - name: PROD-AVT-POLICY-DEFAULT
-    load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
+  - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
   - name: DEFAULT-AVT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
   - name: DEFAULT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
-  - name: TRANSIT-AVT-POLICY-VOICE
-    load_balance_policy: LB-TRANSIT-AVT-POLICY-VOICE
+  - name: PROD-AVT-POLICY-VOICE
+    load_balance_policy: LB-PROD-AVT-POLICY-VOICE
+  - name: PROD-AVT-POLICY-VIDEO
+    load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
+  - name: PROD-AVT-POLICY-MPLS-ONLY
+    load_balance_policy: LB-PROD-AVT-POLICY-MPLS-ONLY
+  - name: PROD-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
+  - name: CUSTOM-VOICE-PROFILE-NAME
+    load_balance_policy: LB-CUSTOM-VOICE-PROFILE-NAME
   - name: TRANSIT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-TRANSIT-AVT-POLICY-DEFAULT
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
   vrfs:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
-    - name: CONTROL-PLANE-PROFILE
+    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
       id: 254
     - name: DEFAULT-AVT-POLICY-VIDEO
       id: 3
@@ -425,6 +463,8 @@ router_adaptive_virtual_topology:
       id: 2
     - name: PROD-AVT-POLICY-VIDEO
       id: 4
+    - name: PROD-AVT-POLICY-MPLS-ONLY
+      id: 5
     - name: PROD-AVT-POLICY-DEFAULT
       id: 1
   - name: IT
@@ -437,17 +477,32 @@ router_adaptive_virtual_topology:
   - name: TRANSIT
     policy: TRANSIT-AVT-POLICY
     profiles:
-    - name: TRANSIT-AVT-POLICY-VOICE
+    - name: CUSTOM-VOICE-PROFILE-NAME
       id: 42
     - name: TRANSIT-AVT-POLICY-DEFAULT
       id: 1
+  - name: ATTRACTED-VRF-FROM-UPLINK
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
   policies:
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    matches:
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-AVT-POLICY-VIDEO
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY
     matches:
     - application_profile: VOICE
       avt_profile: PROD-AVT-POLICY-VOICE
     - application_profile: VIDEO
       avt_profile: PROD-AVT-POLICY-VIDEO
+    - application_profile: MPLS-ONLY
+      avt_profile: PROD-AVT-POLICY-MPLS-ONLY
     - application_profile: default
       avt_profile: PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-AVT-POLICY
@@ -459,17 +514,13 @@ router_adaptive_virtual_topology:
   - name: TRANSIT-AVT-POLICY
     matches:
     - application_profile: VOICE
-      avt_profile: TRANSIT-AVT-POLICY-VOICE
+      avt_profile: CUSTOM-VOICE-PROFILE-NAME
     - application_profile: default
       avt_profile: TRANSIT-AVT-POLICY-DEFAULT
-  - name: DEFAULT-AVT-POLICY-WITH-CP
+  - name: DEFAULT-POLICY
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
-    - application_profile: VIDEO
-      avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
+      avt_profile: DEFAULT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300
@@ -493,7 +544,7 @@ router_path_selection:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
-      - 10.7.7.7
+      - 172.17.7.7
       - 10.9.9.9
     ipsec_profile: CP-PROFILE
   - name: MPLS
@@ -505,11 +556,15 @@ router_path_selection:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2
     dynamic_peers:
       enabled: true
+      ipsec: false
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
       - 172.16.0.1
+    keepalive:
+      interval: 300
+      failure_threshold: 5
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
@@ -521,79 +576,93 @@ router_path_selection:
       ipv4_addresses:
       - 172.17.0.1
   load_balance_policies:
-  - name: LB-CONTROL-PLANE-PROFILE
+  - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
-    - name: LAN_HA
     - name: INET
     - name: MPLS
-  - name: LB-PROD-AVT-POLICY-VOICE
-    path_groups:
     - name: LAN_HA
-    - name: MPLS
-    - name: INET
-      priority: 2
-    jitter: 42
-  - name: LB-PROD-AVT-POLICY-VIDEO
-    path_groups:
-    - name: LAN_HA
-    - name: MPLS
-    - name: INET
-      priority: 2
-    loss_rate: '42.0'
-  - name: LB-PROD-AVT-POLICY-DEFAULT
-    path_groups:
-    - name: LAN_HA
-    - name: INET
-    - name: MPLS
-      priority: 2
   - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
-    - name: LAN_HA
     - name: MPLS
     - name: INET
+    - name: LAN_HA
   - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
     - name: MPLS
-      priority: 42
-  - name: LB-TRANSIT-AVT-POLICY-VOICE
-    path_groups:
+      priority: 4223
     - name: LAN_HA
+  - name: LB-PROD-AVT-POLICY-VOICE
+    path_groups:
     - name: MPLS
     - name: INET
       priority: 2
+    - name: LAN_HA
+    jitter: 42
+    lowest_hop_count: true
+  - name: LB-PROD-AVT-POLICY-VIDEO
+    path_groups:
+    - name: MPLS
+    - name: INET
+      priority: 2
+    - name: LAN_HA
+    loss_rate: '42.0'
+  - name: LB-PROD-AVT-POLICY-MPLS-ONLY
+    path_groups:
+    - name: MPLS
+    - name: LAN_HA
+  - name: LB-PROD-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
+    - name: MPLS
+      priority: 2
+    - name: LAN_HA
+  - name: LB-CUSTOM-VOICE-PROFILE-NAME
+    path_groups:
+    - name: MPLS
+    - name: INET
+      priority: 2
+    - name: LAN_HA
   - name: LB-TRANSIT-AVT-POLICY-DEFAULT
     path_groups:
-    - name: LAN_HA
     - name: INET
     - name: MPLS
       priority: 2
+    - name: LAN_HA
+  - name: LB-DEFAULT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
+    - name: MPLS
+    - name: LAN_HA
 router_traffic_engineering:
   enabled: true
 stun:
   client:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
-      ip_address: 10.7.7.7
+      ip_address: 172.17.7.7
+      ssl_profile: profileA
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
+      ssl_profile: profileA
     - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
       ip_address: 172.16.0.1
+      ssl_profile: profileA
 application_traffic_recognition:
   application_profiles:
-  - name: VOICE
-    applications:
-    - name: CUSTOM-VOICE-APPLICATION
   - name: VIDEO
     categories:
     - name: VIDEO1
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
-  - name: CONTROL-PLANE-APPLICATION-PROFILE
+  - name: VOICE
     applications:
-    - name: CONTROL-PLANE-APPLICATION
+    - name: CUSTOM-VOICE-APPLICATION
+  - name: MPLS-ONLY
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
   categories:
   - name: VIDEO1
     applications:
@@ -611,8 +680,8 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
-    - name: CONTROL-PLANE-APPLICATION
-      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -629,7 +698,7 @@ application_traffic_recognition:
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+    - name: PFX-PATHFINDERS
       prefix_values:
       - 192.168.144.1/32
 dps_interfaces:
@@ -638,7 +707,7 @@ dps_interfaces:
   mtu: 9214
   ip_address: 192.168.143.2/32
   flow_tracker:
-    hardware: WAN-FLOW-TRACKER
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: cv-pathfinder-transit1B_VTEP
@@ -654,6 +723,22 @@ vxlan_interface:
         vni: 42
       - name: TRANSIT
         vni: 66
+      - name: ATTRACTED-VRF-FROM-UPLINK
+        vni: 166
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
 metadata:
   cv_tags:
     device_tags:
@@ -662,7 +747,7 @@ metadata:
     - name: Region
       value: AVD_Land_West
     - name: Zone
-      value: DEFAULT-ZONE
+      value: AVD_Land_West-ZONE
     - name: Site
       value: Site422
     interface_tags:
@@ -670,6 +755,32 @@ metadata:
       tags:
       - name: Type
         value: lan
+    - interface: Ethernet52.1000
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.142
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet52.666
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1.42
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Comcast
+    - interface: Ethernet2.42
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10666'
     - interface: Ethernet1
       tags:
       - name: Type
@@ -680,9 +791,10 @@ metadata:
         value: lan
   cv_pathfinder:
     role: transit region
+    ssl_profile: profileA
     vtep_ip: 192.168.143.2
     region: AVD_Land_West
-    zone: DEFAULT-ZONE
+    zone: AVD_Land_West-ZONE
     site: Site422
     interfaces:
     - name: Ethernet1.42

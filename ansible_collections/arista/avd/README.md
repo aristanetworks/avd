@@ -41,7 +41,7 @@ This repository provides content for Arista's **arista.avd** collection. The fol
 - [**arista.avd.eos_validate_state**](roles/eos_validate_state/README.md) - Validate operational states of Arista EOS devices.
 - [**arista.avd.eos_snapshot**](roles/eos_snapshot/README.md) - Collect commands on EOS devices and generate reports.
 - [**arista.avd.dhcp_provisioner**](roles/dhcp_provisioner/README.md) - Configure an ISC-DHCP server to provide ZTP services and CloudVision registration.
-- [**arista.avd.deploy_to_cv**](roles/deploy_to_cv/README.md) - Deploys EOS device configurations and tags to the CloudVision management platform.
+- [**arista.avd.cv_deploy**](roles/cv_deploy/README.md) - Deploys EOS device configurations and tags to the CloudVision management platform.
 
 ![Arista AVD Overview](docs/_media/avd_roles_dark.svg#only-dark)
 ![Arista AVD Overview](docs/_media/avd_roles_light.svg#only-light)

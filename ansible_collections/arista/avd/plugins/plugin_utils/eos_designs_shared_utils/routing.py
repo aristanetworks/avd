@@ -47,7 +47,7 @@ class RoutingMixin:
         """
         return (
             self.underlay_router
-            and self.uplink_type in ["p2p", "p2p-vrfs"]
+            and self.uplink_type in ["p2p", "p2p-vrfs", "lan"]
             and (
                 self.underlay_routing_protocol == "ebgp"
                 or (

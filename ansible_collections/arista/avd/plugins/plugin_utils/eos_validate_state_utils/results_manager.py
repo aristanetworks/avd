@@ -79,12 +79,12 @@ class ResultsManager:
 
         # Create the parsed result dictionary
         return {
-            "test_id": self.test_id,
-            "node": result.get("name", ""),
-            "test_categories": test_categories,
-            "test_description": result.get("description", ""),
-            # Since AVD tests can have the same description and category, ANTA's custom_field is used to differentiate tests
-            "test": result.get("custom_field") or result.get("test", ""),
+            "id": self.test_id,
+            "dut": result.get("name", ""),
+            "categories": test_categories,
+            "test": result.get("test", ""),
+            "description": result.get("description", ""),
+            "inputs": result.get("custom_field"),
             "result": new_result,
             "messages": result.get("messages", []),
         }
@@ -125,8 +125,8 @@ class ResultsManager:
 
         parsed_result = self._parse_result(result)
         test_status = parsed_result["result"]
-        categories = parsed_result["test_categories"]
-        dut = parsed_result["node"]
+        categories = parsed_result["categories"]
+        dut = parsed_result["dut"]
 
         self._increment_stats(test_status, dut, categories)
 
@@ -144,3 +144,13 @@ class ResultsManager:
             int: The total number of tests.
         """
         return self.total_tests_passed + self.total_tests_failed + self.total_tests_skipped + self.total_tests_not_run
+
+    @property
+    def sorted_category_stats(self) -> dict:
+        """A property that returns the category_stats dictionary sorted by key name.
+
+        Returns
+        -------
+            dict: The sorted category_stats dictionary.
+        """
+        return dict(sorted(self.category_stats.items()))

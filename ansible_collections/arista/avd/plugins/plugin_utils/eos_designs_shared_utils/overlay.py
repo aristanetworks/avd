@@ -146,7 +146,7 @@ class OverlayMixin:
         """
         if self.is_wan_router:
             # for Pathfinder, no HA, no Site ID
-            if not self.is_cv_pathfinder_edge_or_transit:
+            if not self.is_cv_pathfinder_client:
                 return f"{self.router_id}:0"
             if not self.wan_ha:
                 return f"{self.router_id}:{self.wan_site['id']}"
@@ -194,7 +194,7 @@ class OverlayMixin:
             self.overlay_routing_protocol in ["ebgp", "ibgp", "her", "cvx"]
             and (self.network_services_l2 or self.network_services_l3)
             and self.underlay_router
-            and self.uplink_type in ["p2p", "p2p-vrfs"]
+            and self.uplink_type in ["p2p", "p2p-vrfs", "lan"]
             and self.vtep
         )
 

@@ -23,7 +23,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
 
     Other attributes are "stable" and changes follow semver practices:
     - Existing attributes will not be changed in terms of type and value, but the underlying code for cached_properties may change.
-    - New attributes may be added in minor relases.
+    - New attributes may be added in minor releases.
     - The __init__ method may change between minor versions as the data may need to be consumed from other sources.
     - Breaking changes may happen between major releases or in rare cases for bug fixes.
     """
@@ -43,8 +43,19 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
             - overlay_routing_protocol
             - type
             - vrf
+            - wan_carrier
+            - wan_circuit_id
         """
-        desc = self.underlay_ethernet_interfaces(link_type=data.link_type, link_peer=data.peer, link_peer_interface=data.peer_interface)
+        desc = self.underlay_ethernet_interfaces(
+            link_type=data.link_type,
+            link_peer=data.peer,
+            link_peer_interface=data.peer_interface,
+        )
+
+        if not desc:
+            elems = [data.wan_carrier, data.wan_circuit_id, data.peer, data.peer_interface]
+            desc = "_".join([elem for elem in elems if elem])
+
         return f"{desc}_vrf_{data.vrf}" if data.vrf is not None else desc
 
     def underlay_ethernet_interfaces(self, link_type: str, link_peer: str, link_peer_interface: str) -> str:
@@ -59,7 +70,8 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
                 },
             )
 
-        link_peer = str(link_peer).upper()
+        if link_peer:
+            link_peer = str(link_peer).upper()
         if link_type == "underlay_p2p":
             return f"P2P_LINK_TO_{link_peer}_{link_peer_interface}"
 

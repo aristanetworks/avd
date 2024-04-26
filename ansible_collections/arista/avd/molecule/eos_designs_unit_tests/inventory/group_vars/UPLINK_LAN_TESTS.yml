@@ -1,0 +1,123 @@
+default_node_types:
+  - node_type: l2leaf
+    match_hostnames: [.*l2leaf]
+  - node_type: wan_router
+    match_hostnames: [.*wan_router\d]
+
+l2leaf: # dynamic_key: node_type
+  defaults:
+    id: 1
+    filter:
+      tags: [l2leaf]
+
+fabric_flow_tracking:
+  uplinks:
+    enabled: true
+  downlinks:
+    enabled: true
+
+wan_router: # dynamic_key: node_type
+  defaults:
+    bgp_as: 65100
+    id: 1
+    loopback_ipv4_pool: 192.168.1.0/24
+    vtep_loopback_ipv4_pool: 192.168.2.0/24
+    uplink_type: lan
+    uplink_switches: [uplink_lan_l2leaf]
+    uplink_interfaces: [Ethernet2]
+    filter:
+      tags: [wan_router]
+  nodes:
+    - name: uplink_lan_wan_router1
+      id: 1
+      uplink_switch_interfaces: [Ethernet1]
+      uplink_native_vlan: 10
+      cv_pathfinder_region: region1
+      cv_pathfinder_site: site1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Comcast
+          wan_circuit_id: 999
+          ip_address: 10.9.9.9/31
+    - name: uplink_lan_wan_router2
+      uplink_switch_interfaces: [Ethernet2]
+      cv_pathfinder_region: region1
+      cv_pathfinder_site: site2
+      id: 2
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Comcast
+          wan_circuit_id: 999
+          ip_address: 10.9.9.1/31
+
+tenants: # dynamic_key: network_services
+  - name: TEST
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF1
+        vrf_id: 123
+        svis:
+          - id: 10
+            name: VLAN10_NATIVE
+            ip_address: 10.0.10.1/24
+            enabled: true
+            tags: [wan_router, l2leaf]
+            mtu: 9214
+          - id: 100
+            name: VLAN100
+            description: "My vlan 100"
+            ip_address: 10.0.100.1/24
+            ipv6_address: cafe::cafe/64
+            ipv6_enable: true
+            enabled: true
+            tags: [wan_router, l2leaf]
+            raw_eos_cli: |-
+              comment yo
+            structured_config:
+              _custom_key: custom_value
+
+          # VLAN 101, 102 will not show up on the uplink since it is not allowed on both ends.
+          - id: 101
+            name: VLAN101
+            ip_address: 10.0.101.1/24
+            enabled: true
+            tags: [wan_router]
+          - id: 102
+            name: VLAN102
+            ip_address: 10.0.102.1/24
+            enabled: true
+            tags: [l2leaf]
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: test
+
+wan_mode: cv-pathfinder
+
+wan_route_servers: []
+wan_path_groups:
+  - name: INET
+    ipsec:
+      static_peers: false
+    id: 100
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+    trusted: true
+bgp_peer_groups:
+  wan_overlay_peers:
+    listen_range_prefixes: [0.0.0.0/0]
+
+wan_virtual_topologies:
+  vrfs:
+    - name: VRF1
+      wan_vni: 123
+
+cv_pathfinder_regions:
+  - name: region1
+    id: 1
+    sites:
+      - name: site1
+        id: 1
+      - name: site2
+        id: 2

@@ -361,6 +361,18 @@ interface Port-Channel5
    switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   ip igmp host-proxy
+   ip igmp host-proxy 239.0.0.1
+   ip igmp host-proxy 239.0.0.2 exclude 10.0.2.1
+   ip igmp host-proxy 239.0.0.3 include 10.0.3.1
+   ip igmp host-proxy 239.0.0.4 include 10.0.4.3
+   ip igmp host-proxy 239.0.0.4 include 10.0.4.4
+   ip igmp host-proxy 239.0.0.4 exclude 10.0.4.1
+   ip igmp host-proxy 239.0.0.4 exclude 10.0.4.2
+   ip igmp host-proxy access-list ACL1
+   ip igmp host-proxy access-list ACL2
+   ip igmp host-proxy report-interval 2
+   ip igmp host-proxy version 2
    l2 mtu 8000
    l2 mru 8000
    mlag 5
@@ -482,7 +494,11 @@ interface Port-Channel99
    no switchport
    ip address 192.0.2.10/31
    pim ipv4 sparse-mode
+   pim ipv4 bidirectional
+   pim ipv4 hello interval 15
+   pim ipv4 hello count 4.5
    pim ipv4 dr-priority 200
+   pim ipv4 bfd
 !
 interface Port-Channel100
    logging event link-status

@@ -28,7 +28,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         port_channel_interfaces = []
         port_channel_list = []
         for link in self._underlay_links:
-            if link["type"] != "underlay_l2":
+            if link["type"] != "underlay_l2" or link.get("channel_group_id") is None:
                 continue
 
             if (channel_group_id := link.get("channel_group_id")) in port_channel_list:
@@ -56,6 +56,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "link_tracking_groups": link.get("link_tracking_groups"),
                 "native_vlan": link.get("native_vlan"),
                 "sflow": link.get("sflow"),
+                "flow_tracker": link.get("flow_tracker"),
+                "spanning_tree_portfast": link.get("spanning_tree_portfast"),
             }
 
             if (trunk_groups := link.get("trunk_groups")) is not None:
@@ -86,6 +88,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 ptp_config.pop("profile", None)
 
                 port_channel_interface["ptp"] = ptp_config
+
+            # Inband ZTP Port-Channel LACP Fallback
+            if get(link, "inband_ztp_vlan"):
+                port_channel_interface["lacp_fallback_mode"] = "individual"
+                port_channel_interface["lacp_fallback_timeout"] = get(link, "inband_ztp_lacp_fallback_delay")
 
             # Structured Config
             port_channel_interface["struct_cfg"] = link.get("structured_config")

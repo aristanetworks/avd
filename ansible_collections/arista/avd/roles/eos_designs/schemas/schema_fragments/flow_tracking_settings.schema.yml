@@ -1,0 +1,158 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  flow_tracking_settings:
+    documentation_options:
+      table: management-flow-tracking-settings
+    description: |-
+      PREVIEW: This key is currently not supported
+
+      Define the flow tracking parameters for this topology.
+    type: dict
+    keys:
+      sampled:
+        type: dict
+        description: |-
+          The options relevant only for flow tracker type sampled.
+        keys:
+          encapsulation:
+            type: dict
+            keys:
+              ipv4_ipv6:
+                type: bool
+              mpls:
+                type: bool
+          sample:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 4294967295
+            default: 10000
+          hardware_offload:
+            type: dict
+            keys:
+              ipv4:
+                type: bool
+                description: Configure hardware offload for IPv4 traffic.
+              ipv6:
+                type: bool
+                description: Configure hardware offload for IPv6 traffic.
+              threshold_minimum:
+                type: int
+                convert_types:
+                  - str
+                min: 1
+                max: 4294967295
+                description: Minimum number of samples.
+      hardware:
+        type: dict
+        description: |-
+          The options relevant only for flow tracker type hardware.
+        keys:
+          record:
+            type: dict
+            keys:
+              format_ipfix_standard_timestamps_counters:
+                type: bool
+                description: Enable software export of IPFIX data records.
+      trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Tracker Name
+            sampled:
+              type: dict
+              description: |-
+                The options relevant only for flow tracker type sampled.
+              keys:
+                table_size:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 614400
+                  description: |
+                    Maximum number of entries in flow table.
+                record_export:
+                  type: dict
+                  keys:
+                    mpls:
+                      type: bool
+                      description: Export MPLS forwarding information.
+            record_export:
+              type: dict
+              keys:
+                on_inactive_timeout:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 3000
+                  max: 900000
+                  description: Flow record inactive export timeout in milliseconds
+                on_interval:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1000
+                  max: 36000000
+                  description: Flow record export interval in milliseconds
+            exporters:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Exporter Name
+                  collector:
+                    type: dict
+                    keys:
+                      host:
+                        type: str
+                        description: Collector IPv4 address or IPv6 address or fully qualified domain name
+                      port:
+                        type: int
+                        description: Collector Port Number
+                        min: 1
+                        max: 65535
+                        convert_types:
+                          - str
+                  format:
+                    type: dict
+                    keys:
+                      ipfix_version:
+                        type: int
+                        convert_types:
+                          - str
+                  local_interface:
+                    type: str
+                    description: Local Source Interface
+                  template_interval:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 5000
+                    max: 3600000
+                    description: Template interval in milliseconds
+        default:
+          - name: FLOW-TRACKER
+            record_export:
+              on_inactive_timeout: 70000
+              on_interval: 300000
+            exporters:
+              - name: CV-TELEMETRY
+                collector:
+                  host: 127.0.0.1
+                local_interface: Loopback0
+                template_interval: 3600000
