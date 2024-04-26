@@ -775,21 +775,48 @@ monitor_connectivity:
     local_interfaces: SET-Tunnel102
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 metadata:
+  cv_pathfinder:
+    internet_exit_policies:
+    - name: ZSCALER-EXIT-POLICY-1
+      type: zscaler
+      city: BigCity
+      country: BigCountry
+      firewall: false
+      ips_control: false
+      acceptable_use_policy: false
+      vpn_credentials:
+      - fqdn: cv-pathfinder-edge_ZSCALER-EXIT-POLICY-1@test.local
+        vpn_type: UFQDN
+        pre_shared_key: 0007054B145A1F0E0928424A0C0B4812160C093B101807091F10105E222E2A351B69777F7D2D3A5547666C7F7A616A672374332B7C68263639327A3E2A3B0468
+      tunnels:
+      - name: Tunnel100
+        preference: Preferred
+      - name: Tunnel101
+        preference: Alternate
+      - name: Tunnel102
+        preference: Alternate
+    role: edge
+    ssl_profile: profileA
+    vtep_ip: 192.168.142.1
+    region: AVD_Land_East
+    zone: AVD_Land_East-ZONE
+    site: Site511
+    interfaces:
+    - name: Ethernet1
+      carrier: ATT
+      circuit_id: '666'
+      pathgroup: INET
+    - name: Ethernet2
+      carrier: Colt
+      circuit_id: '10555'
+      pathgroup: MPLS
+    - name: Ethernet3
+      carrier: Comcast-5G
+      circuit_id: AF830
+      pathgroup: LTE
+    pathfinders:
+    - vtep_ip: 192.168.144.1
   cv_tags:
     device_tags:
     - name: Role
@@ -841,25 +868,17 @@ metadata:
         value: Comcast-5G
       - name: Circuit
         value: AF830
-  cv_pathfinder:
-    role: edge
-    ssl_profile: profileA
-    vtep_ip: 192.168.142.1
-    region: AVD_Land_East
-    zone: AVD_Land_East-ZONE
-    site: Site511
-    interfaces:
-    - name: Ethernet1
-      carrier: ATT
-      circuit_id: '666'
-      pathgroup: INET
-    - name: Ethernet2
-      carrier: Colt
-      circuit_id: '10555'
-      pathgroup: MPLS
-    - name: Ethernet3
-      carrier: Comcast-5G
-      circuit_id: AF830
-      pathgroup: LTE
-    pathfinders:
-    - vtep_ip: 192.168.144.1
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
