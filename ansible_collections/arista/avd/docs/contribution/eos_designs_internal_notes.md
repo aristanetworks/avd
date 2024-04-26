@@ -417,7 +417,7 @@ outside of that, so any inline Jinja2 could not use these values.
 | switch.mlag_l3_ip | mlag_l3_ip must be available to the mlag peer. |
 | switch.mgmt_ip | mgmt_ip must be available to the mlag peer. |
 | switch.uplink_peers | These are used to generate the "avd_topology_peers" fact covering downlinks for all devices in eos_designs_facts action plugin. |
-| switch.dc_name | Used for underlay HER flood-list calculations when using scope dc_name
+| switch.dc_name | Used for underlay HER flood-list calculations when using scope dc_name |
 | switch.bgp_as | Known use of inline jinja in customer deployments |
 | switch.group | Known use of inline jinja in customer deployments |
 | switch.hostname | Known use of inline jinja in customer deployments |
