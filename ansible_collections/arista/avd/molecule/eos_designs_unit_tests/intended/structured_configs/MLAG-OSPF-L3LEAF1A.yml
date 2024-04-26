@@ -118,9 +118,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.10.255.6/31
   no_autostate: true
   mtu: 1500
+  ip_address: 10.10.255.6/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
 port_channel_interfaces:
