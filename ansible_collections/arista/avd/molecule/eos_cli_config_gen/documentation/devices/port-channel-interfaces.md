@@ -99,6 +99,7 @@ sFlow is disabled.
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet17 | LAG Member | *routed | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
+
 *Inherited from Port-Channel Interface
 
 ##### ISIS
@@ -106,7 +107,8 @@ sFlow is disabled.
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 | Ethernet10/10 | 110 | *ISIS_TEST | *99 | *point-to-point | *level-2 | *True | *text |
- *Inherited from Port-Channel Interface
+
+*Inherited from Port-Channel Interface
 
 ##### Error Correction Encoding Interfaces
 

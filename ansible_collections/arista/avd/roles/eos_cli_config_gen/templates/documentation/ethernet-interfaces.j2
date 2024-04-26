@@ -303,6 +303,7 @@
 {%         endfor %}
 {%     endif %}
 {%     if port_channel_interface_ipv4.configured == true %}
+
 *Inherited from Port-Channel Interface
 {%     endif %}
 {# IP NAT Documentation #}
@@ -374,7 +375,8 @@
 {%         endfor %}
 {%     endif %}
 {%     if port_channel_interface_ipv6.configured == true %}
- *Inherited from Port-Channel Interface
+
+*Inherited from Port-Channel Interface
 {%     endif %}
 {# ISIS #}
 {%     set ethernet_interfaces_isis = [] %}
@@ -492,7 +494,8 @@
 {%         endfor %}
 {%     endif %}
 {%     if port_channel_interfaces_isis | length > 0 %}
- *Inherited from Port-Channel Interface
+
+*Inherited from Port-Channel Interface
 {%     endif %}
 {# EVPN Multihoming #}
 {%     set evpn_es_ethernet_interfaces = [] %}
