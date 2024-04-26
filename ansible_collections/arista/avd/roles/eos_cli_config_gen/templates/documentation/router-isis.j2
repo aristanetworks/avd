@@ -46,6 +46,9 @@
 | SPF Interval | {{ router_isis.spf_interval.interval }} |
 {%         if router_isis.spf_interval.wait_interval is arista.avd.defined %}
 | SPF Interval Wait Time| {{ router_isis.spf_interval.wait_interval }} |
+{%             if router_isis.spf_interval.hold_interval is arista.avd.defined %}
+| SPF Interval Hold Time| {{ router_isis.spf_interval.hold_interval }} |
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {%     if router_isis.graceful_restart is arista.avd.defined %}

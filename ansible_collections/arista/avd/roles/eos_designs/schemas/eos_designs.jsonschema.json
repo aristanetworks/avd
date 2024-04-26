@@ -39569,6 +39569,13 @@
                         "maximum": 300000,
                         "description": "Initial wait interval for SPF in milliseconds.",
                         "title": "Wait Interval"
+                      },
+                      "hold_interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 300000,
+                        "description": "Hold interval between the first and second SPF runs in milliseconds.",
+                        "title": "Hold Interval"
                       }
                     },
                     "additionalProperties": false,

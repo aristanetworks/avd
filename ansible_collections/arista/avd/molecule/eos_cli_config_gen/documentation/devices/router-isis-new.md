@@ -203,6 +203,7 @@ interface Vlan4094
 | SR MPLS Enabled | True |
 | SPF Interval | 250 |
 | SPF Interval Wait Time| 10 |
+| SPF Interval Hold Time| 20 |
 | Graceful-restart Enabled | True |
 | Graceful-restart t2 Level-1 | 10 |
 | Graceful-restart t2 Level-2 | 20 |
@@ -281,7 +282,7 @@ router isis EVPN_UNDERLAY
    timers local-convergence-delay 15000 protected-prefixes
    set-overload-bit on-startup wait-for-bgp timeout 10
    advertise passive-only
-   spf-interval 250 10
+   spf-interval 250 10 20
    authentication mode md5 level-1
    authentication mode sha key-id 2 level-2
    graceful-restart

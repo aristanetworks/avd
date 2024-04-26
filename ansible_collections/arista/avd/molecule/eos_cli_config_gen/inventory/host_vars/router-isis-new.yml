@@ -9,6 +9,7 @@ router_isis:
   spf_interval:
     interval: 250
     wait_interval: 10
+    hold_interval: 20
   graceful_restart:
     enabled: true
     restart_hold_time: 10

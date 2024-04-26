@@ -13214,6 +13214,13 @@ keys:
             min: 1
             max: 300000
             description: Initial wait interval for SPF in milliseconds.
+          hold_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 300000
+            description: Hold interval between the first and second SPF runs in milliseconds.
       graceful_restart:
         type: dict
         keys:
