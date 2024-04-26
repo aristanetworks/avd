@@ -86,7 +86,7 @@ class AvdTestBGP(AvdTestBase):
 
     def add_test(self, afi: str, bgp_neighbor_ip: str, bgp_peer: str, description: str, safi: str | None = None) -> dict:
         """Add a BGP test definition with the proper input parameters."""
-        custom_field = f"BGP {description} Peer: {''.join([bgp_peer, ' (IP: ',  bgp_neighbor_ip, ')']) if bgp_peer is not None else bgp_neighbor_ip}"
+        custom_field = f"BGP {description} Peer: {''.join([bgp_peer, ' (IP: ', bgp_neighbor_ip, ')']) if bgp_peer is not None else bgp_neighbor_ip}"
 
         address_family = {"afi": afi, "peers": [bgp_neighbor_ip]}
         if safi:
