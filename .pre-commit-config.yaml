@@ -158,7 +158,7 @@ repos:
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Modules_and_action_plugins/"
         language: python
         types: [python]
-        additional_dependencies: [ansible-doc-extractor, "ansible-core>=2.14.0,<2.17.0"]
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.14.0,<2.17.0']
         files: ansible_collections/arista/avd/plugins/modules/
 
       - id: docs-plugin-filter
@@ -166,7 +166,7 @@ repos:
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Filter_plugins/"
         language: python
         types: [python]
-        additional_dependencies: [ansible-doc-extractor, "ansible-core>=2.14.0,<2.17.0"]
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.14.0,<2.17.0']
         files: ansible_collections/arista/avd/plugins/filter/
 
       - id: docs-plugin-lookup
@@ -174,7 +174,7 @@ repos:
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Lookup_plugins/"
         language: python
         types: [python]
-        additional_dependencies: [ansible-doc-extractor, "ansible-core>=2.14.0,<2.17.0"]
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.14.0,<2.17.0']
         files: ansible_collections/arista/avd/plugins/lookup/
 
       - id: docs-plugin-test
@@ -182,7 +182,7 @@ repos:
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Test_plugins/"
         language: python
         types: [python]
-        additional_dependencies: [ansible-doc-extractor, "ansible-core>=2.14.0,<2.17.0"]
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.14.0,<2.17.0']
         files: ansible_collections/arista/avd/plugins/test/
 
       - id: docs-plugin-vars
@@ -190,7 +190,7 @@ repos:
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Vars_plugins/"
         language: python
         types: [python]
-        additional_dependencies: [ansible-doc-extractor, "ansible-core>=2.14.0,<2.17.0"]
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.14.0,<2.17.0']
         files: ansible_collections/arista/avd/plugins/vars/
 
       - id: schemas
@@ -199,7 +199,7 @@ repos:
         language: python
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false
-        additional_dependencies: [deepmerge, pyyaml, pydantic, jsonschema, pyavd]
+        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.5.1,<4.18']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.39.0
