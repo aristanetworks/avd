@@ -234,7 +234,7 @@ Below is an example of the playbook we are leveraging to build and deploy our co
   collections:
     - arista.avd
   vars:
-    fabric_dir_name: "{{fabric_name}}"
+    fabric_dir_name: "{{ fabric_name }}"
   tasks:
 
     - name: Generate intended variables
@@ -276,25 +276,49 @@ We have everything we need to run our job template now.
 
 === "Jobs"
 
-    - On the center pane, select `Add`.
-    - Set `Question` to an appropriate value.
-    - Set `Answer variable name` to any valid variable name, here we use `lab_pass`.
-    - `Answer type` is set to `Password` and the default value is set.
-    - Click `Save` when done.
+    On the left pane, select `Jobs`. You may see a series of updates. For example, our source control is updating because our timeout is set to zero. The inventory has also been updating since we checked `Update on launch`. Last but not least, the job template will run.
 
-    ![Survey save](../_media/getting-started/aap-avd/survey-save.png)
+    ![Job updates](../_media/getting-started/aap-avd/job-updates.png)
 
-    The `lab_pass` variable or whichever name you would prefer can be used in your project by assigning the correct variable value to the `ansible_password` variable.
+=== "Job - Output"
 
-    ```yaml
-    vars:
-      ansible_user: arista
-      ansible_password: "{{ lab_pass }}"
-      ansible_network_os: arista.eos.eos
-    ```
+    We can now click on the job run and see a successful execution.
 
-=== "Surveys - Enable"
+    ![Job output](../_media/getting-started/aap-avd/job-output.png)
 
-    Click the `Surveys Disabled` radio button to ensure the survey is enabled.
+=== "CVP View"
 
-    ![Survey enable](../_media/getting-started/aap-avd/survey-enabled.png)
+    From CVP's perspective, we can see a new container topology is created, and our change control workflow has been completed for us when leveraging the CVP Ansible collection.
+
+    ![CVP topology](../_media/getting-started/aap-avd/cvp-topo.png)
+    ![CVP Change Controls](../_media/getting-started/aap-avd/cvp-cc.png)
+
+### Running the Template directly to EOS nodes
+
+The AVD collection provides a role to deploy updates directly to EOS nodes. Assuming AAP has direct connectivity to your topology, we could use the following playbook to build and deploy and updates directly to EOS nodes.
+
+```yaml
+---
+- name: Manage Arista EOS EVPN/VXLAN Configuration
+  hosts: ATD_FABRIC
+  connection: local
+  gather_facts: false
+  collections:
+    - arista.avd
+  vars:
+    fabric_dir_name: "{{ fabric_name }}"
+  tasks:
+
+    - name: Generate intended variables
+      import_role:
+        name: eos_designs
+
+    - name: Generate device intended config and documentation
+      import_role:
+        name: eos_cli_config_gen
+
+    - name: Deploy updates to EOS nodes
+      import_role:
+        name: eos_config_deploy_eapi
+
+```
