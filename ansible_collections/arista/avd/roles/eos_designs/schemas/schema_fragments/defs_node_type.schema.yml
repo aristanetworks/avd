@@ -1305,6 +1305,15 @@ $defs:
             description: |-
               Set the maximum number of CPU used for the data plane.
               This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
+          flow_tracker_type:
+            type: str
+            valid_values:
+              - "sampled"
+              - "hardware"
+            description: |-
+              Set the flow tracker type.
+              Override the `default_flow_tracker_type`` set at the `node_type_key` level.
+              `default_flow_tracker_type` default value is `sampled`.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

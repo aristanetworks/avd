@@ -79,7 +79,7 @@ repos:
         name: Check for changes when running isort on all python files
 
   - repo: https://github.com/psf/black
-    rev: 24.4.0
+    rev: 24.4.1
     hooks:
       - id: black
         name: Check for changes when running Black on all python files
@@ -145,7 +145,8 @@ repos:
             ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
             ansible_collections/arista/avd/roles/.*/schemas/.*schema\.yml| # Exclude YAML schemas file
             ansible_collections/arista/avd/roles/.*/schemas/.*jsonschema\.json| # Exclude JSON schemas file
-            ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/.*| # Exclude auto generated files for cv API
+            ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/.*| # Exclude auto generated files for CV API
+            ansible_collections/arista/avd/plugins/plugin_utils/cv_client/extra_cv_protos/.*| # Exclude extra CV proto files
             ansible-avd/ansible_collections/arista/avd/docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
           )$
 
@@ -165,6 +166,13 @@ repos:
         language: system
         types: [python]
         files: ansible_collections/arista/avd/plugins/filter/
+
+      - id: docs-plugin-lookup
+        name: Build documentation for collection lookup plugins
+        entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Lookup_plugins/"
+        language: system
+        types: [python]
+        files: ansible_collections/arista/avd/plugins/lookup/
 
       - id: docs-plugin-test
         name: Build documentation for collection test plugins
