@@ -183,7 +183,7 @@ outputs:
   - Structure config can change to use new keys when keys are deprecated in the eos_cli_config_gen role.
   - The resulting EOS CLI configuration generated from eos_cli_config_gen will be maintained, unless in rare cases when
 
-#### Function: validate_structured_config()
+### Function: validate_structured_config()
 
 Inputs:
 
