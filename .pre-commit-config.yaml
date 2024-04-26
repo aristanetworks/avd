@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.4.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
         exclude: ansible_collections/arista/avd/molecule
@@ -96,7 +96,7 @@ repos:
         exclude: ^ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/
 
   - repo: https://github.com/pycqa/pylint
-    rev: "v2.16.1"
+    rev: "v3.1.0"
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files
@@ -107,7 +107,7 @@ repos:
           - -d duplicate-code
 
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: "v1.23.0"
+    rev: "v1.35.1"
     hooks:
       - id: yamllint
         name: Check for Linting errors on YAML files
@@ -196,7 +196,7 @@ repos:
         pass_filenames: false
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.32.1
+    rev: v0.39.0
     hooks:
       - id: markdownlint
         name: Check for Linting errors on MarkDown files
