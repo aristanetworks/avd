@@ -9,6 +9,10 @@
 The AVD project follows Semantic Versioning ([SemVer](https://semver.org/)).
 This document describes what attributes and APIs are stable and follow SemVer and which ones may change between minor releases.
 
+!!! note
+
+- All role input variables follow SemVer. Any breaking changes will, at a minimum, be communicated with a deprecation notice for 6 months.
+
 ## Ansible Roles
 
 ### eos_designs
