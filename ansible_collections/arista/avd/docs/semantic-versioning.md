@@ -150,7 +150,7 @@ Outputs:
 
 !!! warning
 
-    - No internal/undocumented functions are covered by SemVer. Changes can occur in any release a be undocumented.
+    - No internal/undocumented functions are covered by SemVer, changes may also not be documented in release notes.
 
 ### Function: validate_inputs()
 
