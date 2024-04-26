@@ -3743,25 +3743,22 @@ keys:
               type: str
             policy:
               type: str
-              description: Confiure data retention policy.
+              description: Data retention policy.
             url:
               type: str
-              description: Configure URL for the destination.
             username:
               type: str
-              description: Configure login details with destination.
             password:
               type: str
-              description: Assign login password
-            encryption:
+            password_type:
               type: str
               convert_types:
               - int
-              description: '0: Indicates that keystring is not encrypted.
-
-                7: Speciefies that HIDDEN key will follow.
-
-                8a: Speciefies that AES-256-GCM encrypted key will follow.'
+              valid_values:
+              - '0'
+              - '7'
+              - 8a
+              default: '7'
       source_standard_enabled:
         type: bool
         description: Enable standard set of telemetry.
@@ -3782,20 +3779,19 @@ keys:
               - str
             url:
               type: str
-              description: Configure socket URL.
       tags:
         type: list
         primary_key: name
-        description: Add extra tag to the telemetry output.
+        description: Extra tags added to the telemetry output.
         items:
           type: dict
           keys:
             name:
               type: str
-              description: Specify the key of the global tag pair.
+              description: Key of the global tag pair.
             value:
               type: str
-              description: Specify the value of the global tag pair.
+              description: Value of the global tag pair.
   interface_defaults:
     type: dict
     keys:
@@ -6621,6 +6617,7 @@ keys:
               keys:
                 vtep_ip:
                   type: str
+                  required: true
           interfaces:
             type: list
             items:
@@ -6643,6 +6640,7 @@ keys:
               keys:
                 name:
                   type: str
+                  required: true
                 carriers:
                   type: list
                   items:
@@ -6729,6 +6727,63 @@ keys:
                               type: str
                             preference:
                               type: str
+          internet_exit_policies:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  required: true
+                type:
+                  type: str
+                  required: true
+                city:
+                  type: str
+                  required: true
+                country:
+                  type: str
+                  required: true
+                upload_bandwidth:
+                  type: int
+                download_bandwidth:
+                  type: int
+                firewall:
+                  type: bool
+                  required: true
+                ips_control:
+                  type: bool
+                  required: true
+                acceptable_use_policy:
+                  type: bool
+                  required: true
+                vpn_credentials:
+                  type: list
+                  required: true
+                  items:
+                    type: dict
+                    keys:
+                      fqdn:
+                        type: str
+                        required: true
+                      vpn_type:
+                        type: str
+                        required: true
+                      pre_shared_key:
+                        type: str
+                        required: true
+                tunnels:
+                  type: list
+                  required: true
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        required: true
+                      preference:
+                        type: str
+                        required: true
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration

@@ -11,35 +11,31 @@
 ### Influxdb Summary
 
 {%     if influxdb.destinations is arista.avd.defined %}
-| Destination | Database | URL | Vrf | Username |
+| Destination | Database | URL | VRF | Username |
 | ----------- | -------- | --- | --- | -------- |
-{%         for destination in influxdb.destinations %}
-| {{ destination.name }} | {{ destination.database }} | {{ destination.url }} | {{ influxdb.vrf }} | {{ destination.username }} |
+{%         for destination in influxdb.destinations | arista.avd.natural_sort('name') %}
+| {{ destination.name | arista.avd.default('-') }} | {{ destination.database | arista.avd.default('-') }} | {{ destination.url | arista.avd.default('-') }} | {{ influxdb.vrf | arista.avd.default('-') }} | {{ destination.username | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
-
 {%     if influxdb.source_standard_enabled is arista.avd.defined(false) %}
+
 Standard Group Source Enabled : {{ influxdb.source_standard_enabled }}
 {%     endif %}
-
 {%     if influxdb.source_sockets is arista.avd.defined %}
+
 | Source Name | URL | Connection Limit |
 | ----------- | --- | ---------------- |
-{%         for source in influxdb.source_sockets %}
-| {{ source.name }} | {{ source.url }} | {{ source.connection_limit }} |
+{%         for source in influxdb.source_sockets | arista.avd.natural_sort('name') %}
+| {{ source.name | arista.avd.default('-') }} | {{ source.url | arista.avd.default('-') }} | {{ source.connection_limit | arista.avd.default('-') }} |
 {%         endfor %}
-{%     else %}
-No Socket Sources Defined
 {%     endif %}
-
 {%     if influxdb.tags is arista.avd.defined %}
+
 | Tag | Value |
 | --- | ----- |
 {%         for tag in influxdb.tags %}
-| {{ tag.name }} | {{ tag.value }} |
+| {{ tag.name | arista.avd.default('-') }} | {{ tag.value | arista.avd.default('-') }} |
 {%         endfor %}
-{%     else %}
-No Global Tags Defined
 {%     endif %}
 
 ### Influxdb Device Configuration

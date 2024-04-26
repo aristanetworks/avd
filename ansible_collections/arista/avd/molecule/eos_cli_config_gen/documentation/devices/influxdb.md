@@ -40,7 +40,7 @@ interface Management1
 
 ### Influxdb Summary
 
-| Destination | Database | URL | Vrf | Username |
+| Destination | Database | URL | VRF | Username |
 | ----------- | -------- | --- | --- | -------- |
 | test | test | https://influx_test.localhost | test | test |
 | test1 | test1 | https://influx_test1.localhost | test | test1 |
@@ -67,13 +67,13 @@ monitor telemetry influx
       database name test
       retention policy test
       vrf test
-      username test password test
+      username test password 7 <removed>
    destination influxdb test1
       url https://influx_test1.localhost
       database name test1
       retention policy test1
       vrf test
-      username test1 password 7 010703174F5A
+      username test1 password 7 <removed>
    source socket socket1
       url unix:///var/run/example2.sock
       connection limit 100

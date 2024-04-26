@@ -7,44 +7,36 @@
 {% if influxdb is arista.avd.defined %}
 !
 monitor telemetry influx
-{%     if influxdb.destinations is arista.avd.defined %}
-{%         for destination in influxdb.destinations | arista.avd.natural_sort('name') %}
+{%     for destination in influxdb.destinations | arista.avd.natural_sort('name') %}
    destination influxdb {{ destination.name }}
-{%             if destination.url is arista.avd.defined %}
+{%         if destination.url is arista.avd.defined %}
       url {{ destination.url }}
-{%             endif %}
-{%             if destination.database is arista.avd.defined %}
+{%         endif %}
+{%         if destination.database is arista.avd.defined %}
       database name {{ destination.database }}
-{%             endif %}
-{%             if destination.policy is arista.avd.defined %}
+{%         endif %}
+{%         if destination.policy is arista.avd.defined %}
       retention policy {{ destination.policy }}
-{%             endif %}
-{%             if influxdb.vrf is arista.avd.defined %}
+{%         endif %}
+{%         if influxdb.vrf is arista.avd.defined %}
       vrf {{ influxdb.vrf }}
-{%             endif %}
-{%             if destination.username is arista.avd.defined and destination.encryption is arista.avd.defined %}
-      username {{ destination.username }} password {{ destination.encryption }} {{ destination.password }}
-{%             elif destination.username is arista.avd.defined %}
-      username {{ destination.username }} password {{ destination.password }}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
-{%     if influxdb.source_sockets is arista.avd.defined %}
-{%         for socket in influxdb.source_sockets | arista.avd.natural_sort('name') %}
+{%         endif %}
+{%         if destination.username is arista.avd.defined and destination.password is arista.avd.defined %}
+      username {{ destination.username }} password {{ destination.password_type | arista.avd.default("7") }} {{ destination.password | arista.avd.hide_passwords(hide_passwords) }}
+{%         endif %}
+{%     endfor %}
+{%     for socket in influxdb.source_sockets | arista.avd.natural_sort('name') %}
    source socket {{ socket.name }}
-{%             if socket.url is arista.avd.defined %}
+{%         if socket.url is arista.avd.defined %}
       url {{ socket.url }}
-{%             endif %}
-{%             if socket.connection_limit is arista.avd.defined %}
+{%         endif %}
+{%         if socket.connection_limit is arista.avd.defined %}
       connection limit {{ socket.connection_limit }}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
-{%     if influxdb.tags is arista.avd.defined %}
-{%         for tag in influxdb.tags | arista.avd.natural_sort('name') %}
+{%         endif %}
+{%     endfor %}
+{%     for tag in influxdb.tags | arista.avd.natural_sort('name') %}
    tag global {{ tag.name }} {{ tag.value }}
-{%         endfor %}
-{%     endif %}
+{%     endfor %}
 {%     if influxdb.source_standard_enabled is arista.avd.defined(false) %}
    source group standard disabled
 {%     endif %}
