@@ -85,7 +85,7 @@ repos:
         name: Check for changes when running Black on all python files
 
   - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0 # Note ansible-test uses pycodestyle 2.8.0 which is part of this tagged release of flake8
+    rev: 7.0.0
     hooks:
       - id: flake8
         name: Check for Flake8 errors on Python files
