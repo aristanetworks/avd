@@ -975,15 +975,16 @@ class RouterBgpMixin(UtilsMixin):
         peer_groups = router_bgp.get(address_family, {}).get("peer_groups", [])
 
         if af_peer_groups:
-            for peer_group in af_peer_groups:
-                if peer_group:
+            for af_peer_group in af_peer_groups:
+                if af_peer_group:
                     append_if_not_duplicate(
                         primary_key="name",
                         list_of_dicts=peer_groups,
-                        new_dict=peer_group,
+                        new_dict=af_peer_group,
                         context="Address Family Peer Groups defined under network services",
                         context_keys=["name"],
                     )
+        if peer_groups:
             router_bgp[address_family] = strip_empties_from_dict({"peer_groups": peer_groups})
 
         return
