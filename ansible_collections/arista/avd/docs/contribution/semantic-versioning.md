@@ -16,7 +16,7 @@ This document describes what attributes and APIs are stable and follow SemVer an
 Inputs:
 
 - All role input variables follow SemVer.
-  - Any breaking changes will at a minimum be communicated with a deprecation notice for 6 months before being removed.
+  - Any breaking changes will, at a minimum, be communicated with a deprecation notice for 6 months.
 
 Outputs:
 
@@ -39,7 +39,7 @@ Outputs:
 
 - EOS configuration generated from eos_cli_config_gen follows SemVer.
   - Breaking changes may occur in rare cases when addressing a bug.
-  - Reordering of the CLI output may occur but with no impact on the resulting configuration on EOS.
+  - Reordering of the CLI output may occur but without impacting the resulting configuration on EOS.
 - Device documentation artifacts may change during minor releases.
 
 ### cvp_configlet_upload
@@ -60,8 +60,8 @@ Inputs:
 
 Outputs:
 
-- Structured configuration output may change during minor releases, to accommodate changes in the ansible-cvp collection.
-- The resulting CloudVision configuration will be maintained, unless in rare cases when addressing a bug.
+- Structured configuration output may change during minor releases to accommodate changes in the ansible-cvp collection.
+- The resulting CloudVision configuration will be maintained, unless in rare cases, when addressing a bug.
   - Breaking changes will be communicated in the release notes.
 
 ### eos_config_deploy_eapi
@@ -99,8 +99,8 @@ Inputs:
 
 Outputs:
 
-- Structured configuration output may change during minor releases, to accommodate changes in the ansible-cvp collection.
-- The resulting DHCP configuration will be maintained, unless in rare cases when addressing a bug.
+- Structured configuration output may change during minor releases to accommodate changes in the ansible-cvp collection.
+- The resulting DHCP configuration will be maintained, unless in rare cases, when addressing a bug.
   - Breaking changes will be communicated in the release notes.
 
 ### build_output_folders
@@ -117,6 +117,6 @@ Outputs:
 
 ## Ansible Plugins
 
-- All Ansible modules, action plugins, filter plugins, test plugins or vars plugins are not covered by SemVer.
-  - Functionality may change in minor releases, to accommodate the project's needs.
+- No Ansible modules, action plugins, filter plugins, test plugins, or vars plugins are covered by SemVer.
+  - Functionality may change in minor releases to accommodate the project's needs.
   - Breaking changes will be communicated in the release notes.
