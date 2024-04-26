@@ -13,7 +13,7 @@ This document describes what attributes and APIs are stable and follow SemVer an
 
 !!! note
 
-- All roles input variables follow SemVer. Any breaking changes will, at a minimum, be communicated with a deprecation notice for 6 months.
+    - All roles input variables follow SemVer. Any breaking changes will, at a minimum, be communicated with a deprecation notice for 6 months.
 
 ### eos_designs
 
