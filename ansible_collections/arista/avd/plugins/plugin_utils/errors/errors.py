@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 try:
@@ -10,7 +10,7 @@ else:
 
 
 class AristaAvdError(Exception):
-    def __init__(self, message="An Error has occured in an arista.avd plugin"):
+    def __init__(self, message="An Error has occurred in an arista.avd plugin"):
         self.message = message
         super().__init__(self.message)
 

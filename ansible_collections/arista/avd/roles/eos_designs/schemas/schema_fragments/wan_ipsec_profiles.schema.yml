@@ -1,0 +1,49 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  wan_ipsec_profiles:
+    documentation_options:
+      table: wan-settings
+    description: Define IPsec profiles parameters for WAN configuration.
+    type: dict
+    keys:
+      control_plane:
+        type: dict
+        required: True
+        $ref: "eos_designs#/$defs/ipsec_profile"
+        keys:
+          ike_policy_name:
+            type: str
+            default: CP-IKE-POLICY
+          sa_policy_name:
+            type: str
+            default: CP-SA-POLICY
+          profile_name:
+            type: str
+            default: CP-PROFILE
+          shared_key:
+            type: str
+            required: True
+            description: |-
+              The IPSec shared key.
+              This variable is sensitive and SHOULD be configured using some vault mechanism.
+      data_plane:
+        type: dict
+        $ref: "eos_designs#/$defs/ipsec_profile"
+        description: |-
+          If `data_plane` is not defined, `control_plane` information is used for both.
+        keys:
+          ike_policy_name:
+            type: str
+            default: DP-IKE-POLICY
+          sa_policy_name:
+            type: str
+            default: DP-SA-POLICY
+          profile_name:
+            type: str
+            default: DP-PROFILE

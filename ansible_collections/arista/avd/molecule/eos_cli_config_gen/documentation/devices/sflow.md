@@ -15,13 +15,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -60,6 +60,10 @@ interface Management1
 
 sFlow Sample Rate: 1000
 
+sFlow Sample Input Subinterface is enabled.
+
+sFlow Sample Output Subinterface is enabled.
+
 sFlow Polling Interval: 10
 
 sFlow is enabled.
@@ -94,6 +98,7 @@ sFlow hardware accelerated Sample Rate: 1024
 ```eos
 !
 sflow sample dangerous 1000
+sflow sample input subinterface
 sflow polling-interval 10
 sflow vrf AAA destination 10.6.75.62 123
 sflow vrf AAA destination 10.6.75.63 333
@@ -109,6 +114,7 @@ sflow vrf MGMT source-interface Ethernet3
 sflow destination 10.6.75.61
 sflow destination 10.6.75.62 123
 sflow source-interface Management0
+sflow sample output subinterface
 sflow extension bgp
 sflow extension router
 no sflow extension switch

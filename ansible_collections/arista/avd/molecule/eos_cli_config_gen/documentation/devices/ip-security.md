@@ -19,13 +19,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -41,27 +41,32 @@ interface Management1
 
 ## IP Security
 
+- Hardware encryption is disabled
+
 ### IKE policies
 
 | Policy name | IKE lifetime | Encryption | DH group | Local ID |
 | ----------- | ------------ | ---------- | -------- | -------- |
 | IKE-1 | 24 | aes256 | 20 | 192.168.100.1 |
 | IKE-2 | - | - | - | - |
+| IKE-FQDN | - | - | - | fqdn.local |
+| IKE-UFQDN | - | - | - | my.awesome@fqdn.local |
 
 ### Security Association policies
 
-| Policy name | ESP Integrity | ESP Encryption | PFS DH Group |
-| ----------- | ------------- | -------------- | ------------ |
-| SA-1 | - | aes128 | 14 |
-| SA-2 | - | aes128 | 14 |
-| SA-3 | disabled | disabled | 17 |
+| Policy name | ESP Integrity | ESP Encryption | Lifetime | PFS DH Group |
+| ----------- | ------------- | -------------- | -------- | ------------ |
+| SA-1 | - | aes128 | - | 14 |
+| SA-2 | - | aes128 | 42 gigabytes | 14 |
+| SA-3 | disabled | disabled | 8 hours | 17 |
 
 ### IPSec profiles
 
-| Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode |
-| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- |
-| Profile-1 | IKE-1 | SA-1 | start | - | - | - | transport |
-| Profile-2 | - | SA-2 | start | - | - | - | tunnel |
+| Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
+| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
+| Profile-1 | IKE-1 | SA-1 | start | - | - | - | transport | - |
+| Profile-2 | - | SA-2 | start | - | - | - | tunnel | False |
+| Profile-3 | - | SA-3 | start | - | - | - | tunnel | True |
 
 ### Key controller
 
@@ -83,33 +88,49 @@ ip security
    !
    ike policy IKE-2
    !
+   ike policy IKE-FQDN
+      local-id fqdn fqdn.local
+   !
+   ike policy IKE-UFQDN
+      local-id fqdn my.awesome@fqdn.local
+   !
    sa policy SA-1
       esp encryption aes128
       pfs dh-group 14
    !
    sa policy SA-2
       esp encryption aes128
+      sa lifetime 42 gigabytes
       pfs dh-group 14
    !
    sa policy SA-3
       esp integrity null
       esp encryption null
+      sa lifetime 8 hours
       pfs dh-group 17
    !
    profile Profile-1
       ike-policy IKE-1
       sa-policy SA-1
       connection start
-      shared-key 7 12312312313213AA
+      shared-key 7 <removed>
       dpd 42 666 clear
       mode transport
    !
    profile Profile-2
       sa-policy SA-2
       connection start
-      shared-key 7 1231231231321AA
+      shared-key 7 <removed>
+      mode tunnel
+   !
+   profile Profile-3
+      sa-policy SA-3
+      connection start
+      shared-key 7 <removed>
+      flow parallelization encapsulation udp
       mode tunnel
    !
    key controller
       profile Profile-1
+   hardware encryption disabled
 ```

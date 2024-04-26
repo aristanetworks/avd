@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -11,6 +11,26 @@ keys:
     keys:
       entropy_source:
         type: str
+        deprecation:
+          warning: true
+          remove_in_version: v5.0.0
+          new_key: entropy_sources
+      entropy_sources:
+        type: dict
+        description: Source of entropy.
+        keys:
+          hardware:
+            type: bool
+            description: Use a hardware based source.
+          haveged:
+            type: bool
+            description: Use the HAVEGE algorithm.
+          cpu_jitter:
+            type: bool
+            description: Use the Jitter RNG algorithm of a CPU based source.
+          hardware_exclusive:
+            type: bool
+            description: Only use entropy from the hardware source.
       password:
         type: dict
         keys:
@@ -90,7 +110,7 @@ keys:
             tls_versions:
               type: str
               description: |
-                List of allowed TLS versions as string
+                List of allowed TLS versions as string.
                 Examples:
                   - "1.0"
                   - "1.0 1.1"
@@ -107,7 +127,7 @@ keys:
                 certificates:
                   type: list
                   description: |
-                    List of trust certificate names
+                    List of trust certificate names.
                     Examples:
                       - test1.crt
                       - test2.crt
@@ -134,7 +154,7 @@ keys:
                 certificates:
                   type: list
                   description: |
-                    List of chain certificate names
+                    List of chain certificate names.
                     Examples:
                       - chain1.crt
                       - chain2.crt
@@ -154,3 +174,10 @@ keys:
                   type: str
                 key:
                   type: str
+            certificate_revocation_lists:
+              type: list
+              description: |
+                List of CRLs (Certificate Revocation List).
+                If specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.
+              items:
+                type: str

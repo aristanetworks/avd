@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -17,7 +17,7 @@ keys:
       keys:
         name:
           type: str
-          description: Prefix-list Name
+          description: Prefix-list Name.
         sequence_numbers:
           type: list
           primary_key: sequence
@@ -28,12 +28,12 @@ keys:
             keys:
               sequence:
                 type: int
-                description: Sequence ID
+                description: Sequence ID.
                 convert_types:
                   - str
               action:
                 type: str
                 required: true
                 description: |
-                  Action as string
+                  Action as string.
                   Example: "permit 10.255.0.0/27 eq 32"

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -21,9 +21,15 @@ keys:
               description: Policy name.
             local_id:
               type: str
-              description: |
-                Local IKE Identification.
+              description: |-
+                Local IKE identification.
                 Can be an IPv4 or an IPv6 address.
+                If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
+            local_id_fqdn:
+              type: str
+              description: |-
+                Local FQDN or UFQDN IKE identification.
+                If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
             ike_lifetime:
               type: int
               convert_types:
@@ -53,7 +59,27 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0
+              description: Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0.
+            sa_lifetime:
+              type: dict
+              keys:
+                value:
+                  type: int
+                  description: |-
+                    Lifetime value for this SA.
+                    Valid range depends on the unit.
+                    <1-24>       Lifetime in hours ( default )
+                    <1-4000000>  Packet limit in thousands
+                    <1-6000>     Byte limit in GB ( 1024 MB )
+                    <1-6144000>  Byte limit in MB ( 1024 KB )
+                unit:
+                  type: str
+                  valid_values:
+                    - gigabytes
+                    - hours
+                    - megabytes
+                    - thousand-packets
+                  default: hours
             esp:
               type: dict
               keys:
@@ -72,7 +98,7 @@ keys:
                     - aes128gcm128
                     - aes128gcm64
                     - aes256
-                    - aes256gcm256
+                    - aes256gcm128
                     - "null"  # TODO: AVD 5.0.0
             pfs_dh_group:
               type: int
@@ -128,7 +154,7 @@ keys:
                 action:
                   type: str
                   description: |
-                    Action to apply
+                    Action to apply.
 
                     * 'clear': Delete all connections
                     * 'hold': Re-negotiate connection on demand
@@ -144,9 +170,20 @@ keys:
               valid_values:
                 - transport
                 - tunnel
+            flow_parallelization_encapsulation_udp:
+              type: bool
+              description: |-
+                Enable flow parallelization.
+                When enabled, multiple cores are used to parallelize the IPsec encryption and decryption processing.
       key_controller:
         type: dict
         keys:
           profile:
             type: str
             description: IPsec profile name to use.
+      hardware_encryption_disabled:
+        type: bool
+        default: False
+        description: |-
+          Disable hardware encryption.
+          An SFE restart is needed for this change to take effect.

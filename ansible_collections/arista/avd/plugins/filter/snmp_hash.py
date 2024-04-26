@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -19,7 +19,7 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "3.6.0"
 short_description: Compute localized SNMP passphrases
 description:
-  - Key localization as described in L(RFC 2574 section 2.6,https://www.rfc-editor.org/rfc/rfc2574.html#section-2.6)
+  - Key localization as described in [RFC 2574 section 2.6](https://www.rfc-editor.org/rfc/rfc2574.html#section-2.6)
 positional: _input
 options:
   _input:
@@ -32,8 +32,8 @@ options:
         required: true
         description:
           - The passphrase to localize.
-          - This is the "auth" passphrase when the I(priv) argument is not set.
-          - If I(priv) is set, it is the "priv" passphrase.
+          - This is the "auth" passphrase when the `priv` argument is not set.
+          - If `priv` is set, it is the "priv" passphrase.
       auth:
         type: string
         description: Auth type
@@ -54,8 +54,8 @@ RETURN = r"""
 ---
 _value:
   description:
-    - The localized key generated from the passphrase using I(auth) type.
-    - If required the key is truncated to match the appropriate keylength for the I(priv) type.
+    - The localized key generated from the passphrase using `auth` type.
+    - If required the key is truncated to match the appropriate keylength for the `priv` type.
   type: string
 """
 
@@ -168,5 +168,5 @@ def hash_passphrase(input_dict):
 class FilterModule(object):
     def filters(self):
         return {
-            "hash_passphrase": hash_passphrase,
+            "snmp_hash": hash_passphrase,
         }

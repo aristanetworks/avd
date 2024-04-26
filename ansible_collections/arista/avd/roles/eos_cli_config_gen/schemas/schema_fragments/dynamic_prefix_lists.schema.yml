@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -13,16 +13,16 @@ keys:
       keys:
         name:
           type: str
-          description: Dynamic prefix-list name
+          description: Dynamic prefix-list name.
         match_map:
           type: str
-          description: Route-map name
+          description: Route-map name.
         prefix_list:
           type: dict
           keys:
             ipv4:
               type: str
-              description: Prefix-list name
+              description: Prefix-list name.
             ipv6:
               type: str
-              description: Prefix-list name
+              description: Prefix-list name.

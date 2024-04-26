@@ -1,36 +1,47 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from .append_if_not_duplicate import append_if_not_duplicate
+from .batch import batch
 from .compare_dicts import compare_dicts
 from .compile_searchpath import compile_searchpath
+from .cprofile_decorator import cprofile
 from .default import default
 from .get import get
-from .get_all import get_all
+from .get_all import get_all, get_all_with_path
+from .get_indices_of_duplicate_items import get_indices_of_duplicate_items
 from .get_ip_from_pool import get_ip_from_pool
 from .get_item import get_item
 from .get_templar import get_templar
+from .get_validated_path import get_validated_path
+from .get_validated_value import get_validated_value
 from .groupby import groupby
 from .load_python_class import load_python_class
+from .log_message import log_message
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 from .replace_or_append_item import replace_or_append_item
 from .template import template
 from .template_var import template_var
 from .unique import unique
-from .yaml_dumper import NoAliasDumper
+from .yaml_dumper import NoAliasDumper, YamlDumper
+from .yaml_loader import YamlLoader
 
 __all__ = [
     "append_if_not_duplicate",
+    "batch",
     "compare_dicts",
     "compile_searchpath",
     "default",
     "get",
     "get_all",
+    "get_all_with_path",
+    "get_indices_of_duplicate_items",
     "get_ip_from_pool",
     "get_item",
     "get_templar",
     "groupby",
     "load_python_class",
+    "log_message",
     "replace_or_append_item",
     "template",
     "template_var",
@@ -38,4 +49,9 @@ __all__ = [
     "PythonToAnsibleContextFilter",
     "PythonToAnsibleHandler",
     "NoAliasDumper",
+    "get_validated_path",
+    "get_validated_value",
+    "cprofile",
+    "YamlDumper",
+    "YamlLoader",
 ]

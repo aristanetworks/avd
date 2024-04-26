@@ -31,13 +31,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -344,8 +344,22 @@ interface Ethernet1
    bgp session tracker ST1
    no switchport
    ip address 172.31.255.1/31
+   ip verify unicast source reachable-via rx
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
+   ip igmp host-proxy
+   ip igmp host-proxy 239.0.0.1
+   ip igmp host-proxy 239.0.0.2 exclude 10.0.2.1
+   ip igmp host-proxy 239.0.0.3 include 10.0.3.1
+   ip igmp host-proxy 239.0.0.4 include 10.0.4.3
+   ip igmp host-proxy 239.0.0.4 include 10.0.4.4
+   ip igmp host-proxy 239.0.0.4 exclude 10.0.4.1
+   ip igmp host-proxy 239.0.0.4 exclude 10.0.4.2
+   ip igmp host-proxy access-list ACL1
+   ip igmp host-proxy access-list ACL2
+   ip igmp host-proxy report-interval 2
+   ip igmp host-proxy version 2
+   switchport port-security
    priority-flow-control on
    priority-flow-control priority 5 drop
    link tracking group EVPN_MH_ES1 upstream
@@ -362,6 +376,8 @@ interface Ethernet2
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
    multicast ipv4 static
+   switchport port-security violation protect log
+   switchport port-security mac-address maximum 100
    priority-flow-control on
    priority-flow-control priority 5 no-drop
    storm-control all level 10
@@ -381,6 +397,12 @@ interface Ethernet3
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
    ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
    ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
+   switchport port-security
+   no switchport port-security mac-address maximum disabled
+   switchport port-security vlan 1 mac-address maximum 3
+   switchport port-security vlan 2 mac-address maximum 3
+   switchport port-security vlan 3 mac-address maximum 3
+   switchport port-security vlan default mac-address maximum 2
    no priority-flow-control
    spanning-tree guard root
    link tracking group EVPN_MH_ES2 downstream
@@ -418,7 +440,12 @@ interface Ethernet5
    ip ospf area 100
    ip ospf message-digest-key 1 sha512 7 <removed>
    pim ipv4 sparse-mode
+   pim ipv4 bidirectional
+   pim ipv4 border-router
+   pim ipv4 hello interval 10
+   pim ipv4 hello count 2.5
    pim ipv4 dr-priority 200
+   pim ipv4 bfd
    isis enable ISIS_TEST
    isis circuit-type level-2
    isis metric 99
@@ -978,9 +1005,9 @@ interface Ethernet69
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Ethernet5 | - | IPv4 | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Ethernet5 | - | IPv4 | True | 200 | - |
 
 ## 802.1X Port Security
 

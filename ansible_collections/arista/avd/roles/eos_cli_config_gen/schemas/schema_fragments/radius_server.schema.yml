@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -26,10 +26,10 @@ keys:
             max: 65535
             convert_types:
               - str
-            description: TCP Port
+            description: TCP Port.
           tls_ssl_profile:
             type: str
-            description: Name of TLS profile
+            description: Name of TLS profile.
       hosts:
         type: list
         primary_key: host
@@ -38,7 +38,7 @@ keys:
           keys:
             host:
               type: str
-              description: Host IP address or name
+              description: Host IP address or name.
             vrf:
               type: str
               convert_types:
@@ -57,4 +57,4 @@ keys:
                 - str
             key:
               type: str
-              description: Encrypted key
+              description: Encrypted key.

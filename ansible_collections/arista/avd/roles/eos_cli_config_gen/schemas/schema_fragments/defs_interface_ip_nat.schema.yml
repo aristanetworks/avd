@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -58,8 +58,8 @@ $defs:
                 pool_name:
                   type: str
                   description: |
-                    required if 'nat_type' is pool, pool-address-only or pool-full-cone
-                    ignored if 'nat_type' is overload
+                    required if 'nat_type' is pool, pool-address-only or pool-full-cone.
+                    ignored if 'nat_type' is overload.
                 priority:
                   type: int
                   convert_types:

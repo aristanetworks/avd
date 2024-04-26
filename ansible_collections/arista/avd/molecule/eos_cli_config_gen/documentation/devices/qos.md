@@ -26,13 +26,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -282,13 +282,13 @@ class-map type qos match-any cmap_tc5_v6
 
 ##### pmap_test1
 
-| class | Set | Value |
-| ----- | --- | ----- |
-| cmap_tc0_v4 | traffic_class | 0 |
-| cmap_tc5_v4 | traffic_class | 5 |
-| cmap_tc5_v6 | traffic_class | 5 |
-| cmap_tc0_v6 | traffic_class | 0 |
-| class-default | traffic_class | 1 |
+| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
+| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
+| cmap_tc0_v4 | - | - | 0 | - | - |
+| cmap_tc5_v4 | - | - | 5 | - | - |
+| cmap_tc5_v6 | - | - | 5 | - | - |
+| cmap_tc0_v6 | - | - | 0 | - | - |
+| class-default | - | - | 1 | - | - |
 
 #### QOS Policy Maps Device Configuration
 

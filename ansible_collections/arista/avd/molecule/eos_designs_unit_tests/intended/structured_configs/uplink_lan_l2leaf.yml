@@ -1,0 +1,68 @@
+hostname: uplink_lan_l2leaf
+is_deployed: true
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: uplink_lan_wan_router1
+  peer_interface: Ethernet2
+  peer_type: wan_router
+  description: UPLINK_LAN_WAN_ROUTER1_Ethernet2
+  shutdown: false
+  type: switched
+  vlans: 10,100
+  mode: trunk
+  native_vlan: 10
+  spanning_tree_portfast: edge
+  flow_tracker:
+    sampled: FLOW-TRACKER
+- name: Ethernet2
+  peer: uplink_lan_wan_router2
+  peer_interface: Ethernet2
+  peer_type: wan_router
+  description: UPLINK_LAN_WAN_ROUTER2_Ethernet2
+  shutdown: false
+  type: switched
+  vlans: 10,100
+  mode: trunk
+  spanning_tree_portfast: edge
+  flow_tracker:
+    sampled: FLOW-TRACKER
+vlans:
+- id: 10
+  name: VLAN10_NATIVE
+  tenant: TEST
+- id: 100
+  name: VLAN100
+  tenant: TEST
+- id: 102
+  name: VLAN102
+  tenant: TEST
+ip_igmp_snooping:
+  globally_enabled: true
+flow_tracking:
+  sampled:
+    sample: 10000
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false

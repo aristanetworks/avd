@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -13,12 +13,22 @@
 
 ##### {{ policy_map.name }}
 
-| class | Set | Value |
-| ----- | --- | ----- |
+| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
+| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
 {%         for class in policy_map.classes | arista.avd.default([]) %}
-{%             for set in class.set | arista.avd.default([]) %}
-| {{ class.name }} | {{ set }} | {{ class.set[set] }} |
-{%             endfor %}
+{%             set cos = class.set.cos | arista.avd.default("-") %}
+{%             set dscp = class.set.dscp | arista.avd.default("-") %}
+{%             set traffic_class = class.set.traffic_class | arista.avd.default("-") %}
+{%             set drop_precedence = class.set.drop_precedence | arista.avd.default("-") %}
+{%             if class.police.rate is arista.avd.defined and class.police.rate_burst_size is arista.avd.defined %}
+{%                 set police_rate = class.police.rate ~ " " ~ class.police.rate_unit | arista.avd.default('bps') ~ " (" ~ class.police.rate_burst_size ~ " " ~ class.police.rate_burst_size_unit | arista.avd.default('bytes') ~ ")" %}
+{%                 set police_rate = police_rate ~ " -> " ~ class.police.action.type | arista.avd.default("drop") %}
+{%                 if class.police.higher_rate is arista.avd.defined and class.police.higher_rate_burst_size is arista.avd.defined %}
+{%                     set police_rate = police_rate ~ "<br> " ~ class.police.higher_rate ~ " " ~ class.police.higher_rate_unit | arista.avd.default('bps') ~ "(" ~ class.police.higher_rate_burst_size ~ " " ~ class.police.higher_rate_burst_size_unit | arista.avd.default('bytes') ~ ") -> drop" %}
+{%                 endif %}
+{%             endif %}
+{%             set police = police_rate | arista.avd.default("-") %}
+| {{ class.name }} | {{ cos }} | {{ dscp }} | {{ traffic_class }} | {{ drop_precedence }} | {{ police }} |
 {%         endfor %}
 {%     endfor %}
 

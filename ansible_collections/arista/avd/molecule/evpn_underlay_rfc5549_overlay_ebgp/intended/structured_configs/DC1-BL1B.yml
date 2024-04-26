@@ -100,6 +100,11 @@ router_bgp:
     peer: DC1-SPINE4
     description: DC1-SPINE4
     remote_as: '65001'
+  - ip_address: 10.23.23.6
+    remote_as: '64900'
+    peer: outside-r1
+    description: outside-r1
+    peer_group: UNDERLAY_PEERS
   vrfs:
   - name: Tenant_A_WAN_Zone
     router_id: 192.168.255.11
@@ -135,7 +140,6 @@ router_bgp:
       route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
     - ip_address: fd5a:fe45:8831:06c5::a
       remote_as: '12345'
-      send_community: null
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
     - ip_address: fd5a:fe45:8831:06c5::b
       remote_as: '12345'
@@ -274,6 +278,14 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 ethernet_interfaces:
 - name: Ethernet1
   peer: DC1-SPINE1
@@ -328,6 +340,16 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
+  ipv6_enable: true
+- name: Ethernet11
+  peer: outside-r1
+  peer_interface: other2
+  peer_type: other
+  description: P2P_LINK_TO_outside-r1_other2
+  type: routed
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.23.23.5/30
   ipv6_enable: true
 - name: Ethernet4000
   description: My test
@@ -436,3 +458,5 @@ vxlan_interface:
         vni: 21
       - name: Tenant_C_WAN_Zone
         vni: 31
+metadata:
+  platform: 7280R

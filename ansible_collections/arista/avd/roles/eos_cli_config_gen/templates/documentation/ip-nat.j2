@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -130,27 +130,32 @@ NAT profile VRF is: {{ profile.vrf }}
 {%     if ip_nat.pools is arista.avd.defined %}
 
 ### NAT Pools
-{%         for pool in ip_nat.pools %}
 
-#### Pool: {{ pool.name }}
-
-| Setting | Value |
-| -------- | ----- |
-| Pool Prefix Length | {{ pool.prefix_length }} |
-{%             if pool.utilization_log_threshold is arista.avd.defined %}
-| Pool Utilization Threshold | {{ pool.utilization_log_threshold }} % (action: log) |
+| Pool Name | Pool Type | Prefix Length | Utilization Log Threshold | First-Last IP Addresses | First-Last Ports |
+| --------- | --------- | ------------- | ------------------------- | ----------------------- | ---------------- |
+{%         for pool in ip_nat.pools | arista.avd.natural_sort('name') %}
+{%             set pool_name = pool.name %}
+{%             set pool_type = pool.type | arista.avd.default('ip-port') %}
+{%             if pool_type == 'ip-port' %}
+{%                 set prefix_length = pool.prefix_length | arista.avd.default('-') %}
+{%                 set utilization_log_threshold = pool.utilization_log_threshold | arista.avd.default('-') %}
 {%             endif %}
-
-##### Pool Ranges
-
-| First IP Address  | Last IP Address | First Port | Last Port |
-| ----------------- | --------------- | ---------- | --------- |
+{%             set first_last_ip = [] %}
+{%             set first_last_port = [] %}
 {%             for range in pool.ranges | arista.avd.default([]) %}
-| {{ range.first_ip }} | {{ range.last_ip }} | {{ range.first_port | arista.avd.default('-') }} | {{ range.last_port | arista.avd.default('-') }} |
+{%                 if pool_type == 'ip-port' %}
+{%                     do first_last_ip.append(range.first_ip | arista.avd.default('') ~ '-' ~ range.last_ip | arista.avd.default('')) %}
+{%                 endif %}
+{%                 do first_last_port.append(range.first_port | arista.avd.default('') ~ '-' ~ range.last_port | arista.avd.default('')) %}
 {%             endfor %}
+{%             if first_last_ip == [] %}
+{%                 set first_last_ip = '-' %}
+{%             endif %}
+{%             if first_last_port == [] %}
+{%                 set first_last_port = '-' %}
+{%             endif %}
+| {{ pool_name }} | {{ pool_type }} | {{ prefix_length | arista.avd.default('-') }} | {{ utilization_log_threshold | arista.avd.default('-') }} | {{ first_last_ip | join('<br>') }} | {{ first_last_port | join('<br>') }} |
 {%         endfor %}
-{%     endif %}
-{%     if ip_nat.synchronization is arista.avd.defined %}
 
 ### NAT Synchronization
 

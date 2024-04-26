@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -31,7 +31,11 @@ ptp message-type general dscp {{ ptp.message_type.general.dscp }} default
 ptp message-type event dscp {{ ptp.message_type.event.dscp }} default
 {%     endif %}
 {%     if ptp.mode is arista.avd.defined %}
+{%         if ptp.mode_one_step is arista.avd.defined(true) and ptp.mode in ["boundary", "e2etransparent"] %}
+ptp mode {{ ptp.mode }} one-step
+{%         else %}
 ptp mode {{ ptp.mode }}
+{%         endif %}
 {%     endif %}
 {%     if ptp.forward_unicast is arista.avd.defined(true) %}
 ptp forward-unicast

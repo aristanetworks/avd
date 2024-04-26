@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -237,8 +237,35 @@ class UtilsMixin:
 
         return None
 
+    def _get_adapter_phone(self, adapter: dict, connected_endpoint: dict) -> dict | None:
+        """
+        Return phone settings for one adapter
+        """
+        if (adapter_phone_vlan := get(adapter, "phone_vlan")) is None:
+            return None
+
+        # Verify that "mode" is set to "trunk phone"
+        if get(adapter, "mode") != "trunk phone":
+            raise AristaAvdError(f"Setting 'phone_vlan' requires 'mode: trunk phone' to be set on connected endpoint '{connected_endpoint['name']}'.")
+
+        # Verify that "vlans" is not set, since data vlan is picked up from 'native_vlan'.
+        if get(adapter, "vlans") is not None:
+            raise AristaAvdError(
+                "With 'phone_vlan' and 'mode: trunk phone' the data VLAN is set via 'native_vlan' instead of 'vlans'. Found 'vlans' on connected endpoint"
+                f" '{connected_endpoint['name']}'."
+            )
+
+        return {
+            "vlan": adapter_phone_vlan,
+            "trunk": get(adapter, "phone_trunk_mode"),
+        }
+
     def _get_adapter_sflow(self, adapter: dict) -> dict | None:
         if (adapter_sflow := get(adapter, "sflow", default=self.shared_utils.fabric_sflow_endpoints)) is not None:
             return {"enable": adapter_sflow}
 
         return None
+
+    def _get_adapter_flow_tracking(self, adapter: dict) -> dict | None:
+        # Adapter flow tracking variables will be validated in _filtered_connected_endpoints
+        return self.shared_utils.get_flow_tracker(adapter, "endpoints")

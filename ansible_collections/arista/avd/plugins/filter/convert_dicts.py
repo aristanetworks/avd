@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -21,7 +21,7 @@ short_description: Convert a dictionary containing nested dictionaries to a list
 description:
   - The filter inserts the outer dictionary keys into each list item using the primary_key `name` (the key name is
     configurable), and if there is a non-dictionary value, it inserts this value to
-    secondary key (the key name is configurable), if I(secondary_key) is provided.
+    secondary key (the key name is configurable), if `secondary_key` is provided.
   - This filter is intended for seamless data model migration from dictionaries to lists.
   - The filter can improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
   - Note - if there is a non-dictionary value with no secondary key provided, it will pass through untouched.
@@ -96,7 +96,7 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
 
     This filter is intended for:
 
-    - Seemless data model migration from dictionaries to lists.
+    - Seamless data model migration from dictionaries to lists.
     - Improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
 
     Note: If there is a non-dictionary value with no secondary key provided, it will pass through untouched

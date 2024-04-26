@@ -15,13 +15,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -41,14 +41,20 @@ interface Management1
 
 #### Router IGMP Summary
 
-| Settings | Value |
-| -------- | ----- |
-| SSM Aware | True |
+| VRF | SSM Aware | Host Proxy |
+| --- | --------- | ---------- |
+| - | Enabled | - |
+| default | - | all |
+| BLUE | - | iif |
 
 #### Router IGMP Device Configuration
 
 ```eos
 !
 router igmp
+   host-proxy match mroute all
    ssm aware
+   !
+   vrf BLUE
+     host-proxy match mroute iif
 ```

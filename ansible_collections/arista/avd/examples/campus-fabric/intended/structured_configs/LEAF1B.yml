@@ -3,7 +3,7 @@ is_deployed: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 172.100.100.1
+  gateway: 172.16.100.1
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.10.10.1
 service_routing_protocols_model: multi-agent
@@ -36,13 +36,23 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 172.100.100.104/24
-  gateway: 172.100.100.1
+  ip_address: 172.16.100.104/24
+  gateway: 172.16.100.1
   type: oob
 management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ntp:
+  local_interface:
+    name: Management0
+    vrf: MGMT
+  servers:
+  - name: time.google.com
+    vrf: MGMT
+    preferred: true
+  - name: pool.ntp.org
+    vrf: MGMT
 vlans:
 - id: 4094
   tenant: system
@@ -1617,3 +1627,5 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: cEOSLab

@@ -15,13 +15,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -43,7 +43,7 @@ interface Management1
 
 ##### Hardware Counter Features
 
-**NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsability to configure valid options for each feature.
+**NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsibility to configure valid options for each feature.
 
 | Feature | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
 | ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |

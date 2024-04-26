@@ -3,7 +3,7 @@
 title: arista.avd.set_vars
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -13,11 +13,11 @@ title: arista.avd.set_vars
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.set_vars` when using this plugin.
 
-Set vars as ansible\_facts.
+Set vars as ansible_facts.
 
 ## Synopsis
 
-Set vars as ansible\_facts.
+Set vars as ansible_facts.
 
 Ansible will copy these into vars in the global namespace as well.
 

@@ -2,6 +2,9 @@
 # inventory.yml
 all:
   children:
+    WAN:
+      children:
+        DC1_WAN:
     FABRIC:
       children:
         DC1:
@@ -29,6 +32,18 @@ all:
                   ansible_host: 172.16.1.151
                 dc1-leaf2c:
                   ansible_host: 172.16.1.152
+            DC1_WAN:
+              hosts:
+                dc1-wan1:
+                  ansible_host: 172.16.1.15
+                dc1-wan2:
+                  ansible_host: 172.16.1.16
+            DC1_SVC_LEAVES:
+              hosts:
+                dc1-svc-leaf1a:
+                  ansible_host: 172.16.1.31
+                dc1-svc-leaf1b:
+                  ansible_host: 172.16.1.32
         DC2:
           children:
             DC2_SPINES:
@@ -47,6 +62,8 @@ all:
                   ansible_host: 172.16.1.113
                 dc2-leaf2b:
                   ansible_host: 172.16.1.114
+                dc2-leaf3a.arista.com:
+                dc2-leaf3b.arista.com:
             DC2_L2_LEAVES:
               hosts:
                 dc2-leaf1c:

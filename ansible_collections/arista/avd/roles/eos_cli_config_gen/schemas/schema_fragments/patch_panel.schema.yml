@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -28,7 +28,7 @@ keys:
               - dict
               min_length: 2
               max_length: 2
-              description: Must have exactly two connectors to a patch of which at least one must be of type "interface"
+              description: Must have exactly two connectors to a patch of which at least one must be of type "interface".
               items:
                 type: dict
                 keys:

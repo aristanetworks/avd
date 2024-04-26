@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -31,7 +31,7 @@ class VrfsMixin(UtilsMixin):
             return None
 
         vrfs = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrf_name = vrf["name"]
                 if vrf_name == "default":
@@ -73,7 +73,7 @@ class VrfsMixin(UtilsMixin):
         """
         Return bool if IPv6 is configured in the given VRF.
 
-        Expects a VRF definition coming from _filtered_tenants, where all keys have been set and filtered
+        Expects a VRF definition coming from filtered_tenants, where all keys have been set and filtered
         """
         for svi in vrf["svis"]:
             if svi.get("ipv6_address_virtual") is not None:

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -11,8 +11,11 @@
 {%     set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ip'] %}
 {% endif %}
 {% set node_types = dict() %}
-{% set node_type_keys = hostvars[groups[fabric_group][0]]['node_type_keys'] |
-        arista.avd.default(['spine', 'l3leaf', 'l2leaf', 'super_spine', 'overlay_controller']) %}
+{% if hostvars[groups[fabric_group][0]]['node_type_keys'] is arista.avd.defined %}
+{%     set node_type_keys = hostvars[groups[fabric_group][0]]['node_type_keys'] | arista.avd.convert_dicts('key') | map(attribute='key') %}
+{% else %}
+{%     set node_type_keys = ['spine', 'l3leaf', 'l2leaf', 'super_spine', 'overlay_controller'] %}
+{% endif %}
 {% for node_type_key in node_type_keys | arista.avd.natural_sort %}
 {%     for host in hostvars | arista.avd.natural_sort %}
 {%         if host in groups[fabric_group] %}

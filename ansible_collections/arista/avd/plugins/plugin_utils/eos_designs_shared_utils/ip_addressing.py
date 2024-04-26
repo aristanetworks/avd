@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -40,6 +40,10 @@ class IpAddressingMixin:
         return get(self.switch_data_combined, "uplink_ipv4_pool")
 
     @cached_property
+    def downlink_pools(self: SharedUtils) -> list | None:
+        return get(self.switch_data_combined, "downlink_pools")
+
+    @cached_property
     def loopback_ipv4_pool(self: SharedUtils) -> str:
         return get(self.switch_data_combined, "loopback_ipv4_pool", required=True)
 
@@ -54,7 +58,6 @@ class IpAddressingMixin:
         """
         if self.mlag is True:
             return self.ip_addressing.vtep_ip_mlag()
-
         else:
             return self.ip_addressing.vtep_ip()
 

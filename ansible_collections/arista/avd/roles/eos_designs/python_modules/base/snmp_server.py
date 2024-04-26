@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -42,7 +42,7 @@ class SnmpServerMixin(UtilsMixin):
         # Set here so we can reuse it.
         engine_ids = self._snmp_engine_ids(snmp_settings)
 
-        # Pass through most settings with no abstration.
+        # Pass through most settings with no abstraction.
         # Use other functions for abstraction.
         return strip_null_from_data(
             {
@@ -89,14 +89,14 @@ class SnmpServerMixin(UtilsMixin):
         Return location if "snmp_settings.location" is True.
         Otherwise return None
         """
-        if not snmp_settings.get("location") is True:
+        if snmp_settings.get("location") is not True:
             return None
 
         location_elements = [
-            get(self._hostvars, "fabric_name"),
+            self.shared_utils.fabric_name,
             self.shared_utils.dc_name,
             self.shared_utils.pod_name,
-            get(self.shared_utils.switch_data_combined, "rack"),
+            self.shared_utils.rack,
             self.shared_utils.hostname,
         ]
         location_elements = [location for location in location_elements if location not in [None, ""]]
@@ -168,10 +168,10 @@ class SnmpServerMixin(UtilsMixin):
         has_mgmt_ip = (self.shared_utils.mgmt_ip is not None) or (self.shared_utils.ipv6_mgmt_ip is not None)
 
         for host in natural_sort(hosts, "host"):
-            # Initialize a set with vrf defined under the host (Catching None value with or [])
             vrfs = set()
             if (vrf := host.pop("vrf", None)) is not None:
                 vrfs.add(vrf)
+
             if (use_mgmt_interface_vrf := host.pop("use_mgmt_interface_vrf", False)) is True and has_mgmt_ip:
                 vrfs.add(self.shared_utils.mgmt_interface_vrf)
 

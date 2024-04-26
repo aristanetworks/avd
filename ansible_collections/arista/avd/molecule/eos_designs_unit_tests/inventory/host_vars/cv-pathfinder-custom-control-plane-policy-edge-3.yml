@@ -1,0 +1,53 @@
+---
+# Testing CV pathfinder edge with custom control plane policy to make sure the correct
+# control plane policy can be overridden.
+# Also override the application profile name, and define it, so that
+# we can override how control plane traffic is determined
+
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      wan_vni: 1
+    - name: PROD
+      wan_vni: 42
+    - name: IT
+      wan_vni: 13
+    # Testing reusing the same policy as default VRF
+  control_plane_virtual_topology:
+    name: CUSTOM-CP-POLICY
+    path_groups:
+      - names: [INET]
+        preference: preferred
+      - names: [MPLS]
+        preference: alternate
+    lowest_hop_count: true
+    constraints:
+      jitter: 5
+    application_profile: CUSTOM-CP-APP-PROFILE
+  policies:
+    # Name of the DEFAULT-POLICY being overwritten
+    - name: DEFAULT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET]
+          - names: [LTE]
+            preference: 42
+      application_virtual_topologies:
+        - application_profile: VIDEO
+          path_groups:
+            - names: [MPLS, INET]
+              preference: preferred
+          id: 3
+
+application_classification:
+  application_profiles:
+    - name: CUSTOM-CP-APP-PROFILE
+      applications:
+        - name: google
+    - name: VIDEO
+      # Testing categories filtering
+      applications:
+        # Testing applications in application-profiles filtering
+        - name: CUSTOM-APPLICATION-1
+        # Builtin application that should not raise
+        - name: skype

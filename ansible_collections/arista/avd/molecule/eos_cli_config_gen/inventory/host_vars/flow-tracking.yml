@@ -3,6 +3,9 @@
 
 flow_tracking:
   sampled:
+    encapsulation:
+      ipv4_ipv6: true
+      mpls: true
     sample: 666
     hardware_offload:
       ipv4: true
@@ -89,7 +92,8 @@ flow_tracking:
             collector:
               host: dead:beef::cafe
     shutdown: false
-
+    record:
+      format_ipfix_standard_timestamps_counters: true
 ethernet_interfaces:
   - name: Ethernet40
     flow_tracker:
@@ -107,4 +111,9 @@ port_channel_interfaces:
   - name: Port-Channel42
     flow_tracker:
       sampled: T3
+      hardware: T3
+
+dps_interfaces:
+  - name: Dps1
+    flow_tracker:
       hardware: T3

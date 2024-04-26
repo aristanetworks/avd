@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -14,8 +14,6 @@ class AvdTestNTP(AvdTestBase):
     """
 
     anta_module = "anta.tests.system"
-    categories = ["NTP"]
-    description = "Synchronised with NTP server"
 
     @cached_property
     def test_definition(self) -> dict:
@@ -27,7 +25,7 @@ class AvdTestNTP(AvdTestBase):
         """
 
         anta_tests = [
-            {"VerifyNTP": {"result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": "NTP"}}},
+            {"VerifyNTP": None},
         ]
 
         return {self.anta_module: anta_tests}
@@ -39,8 +37,6 @@ class AvdTestReloadCause(AvdTestBase):
     """
 
     anta_module = "anta.tests.system"
-    categories = ["Reload Cause"]
-    description = "Reload Cause - Reload requested by the user"
 
     @cached_property
     def test_definition(self) -> dict:
@@ -52,7 +48,7 @@ class AvdTestReloadCause(AvdTestBase):
         """
 
         anta_tests = [
-            {"VerifyReloadCause": {"result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": "Reload Cause"}}},
+            {"VerifyReloadCause": None},
         ]
 
         return {self.anta_module: anta_tests}

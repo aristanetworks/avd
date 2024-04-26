@@ -5,6 +5,9 @@ l2leaf:
   defaults:
   nodes:
     - name: connected_endpoints
+      platform: 720XP
+      link_tracking:
+        enabled: true
 
 servers:
   # single port override physical port description
@@ -46,3 +49,55 @@ servers:
         port_channel:
           mode: "active"
           description: "PORT_CHANNEL_DESCRIPTION"
+  # port-channel with lacp fallback individual and profile for member interfaces
+  - name: INDIVIDUAL_1
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet12, Ethernet13]
+        port_channel:
+          mode: "active"
+          description: "INDIVIDUAL_1"
+          lacp_fallback:
+            mode: individual
+            individual:
+              profile: INDIVIDUAL_TRUNK
+  - name: DOT1X_UNAUTHORIZED
+    adapters:
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet14]
+        profile: INDIVIDUAL_TRUNK
+  - name: INDIVIDUAL_2_TRUNK_PHONE
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet15, Ethernet16]
+        port_channel:
+          mode: "active"
+          lacp_fallback:
+            mode: individual
+            individual:
+              profile: INDIVIDUAL_TRUNK_PHONE
+port_profiles:
+  - profile: INDIVIDUAL_TRUNK
+    mode: trunk
+    vlans: "1,2,3,4,5,6,7,123,234"
+    native_vlan_tag: False
+    native_vlan: 123
+    spanning_tree_portfast: "edge"
+    spanning_tree_bpdufilter: True
+    dot1x:
+      unauthorized:
+        access_vlan_membership_egress: True
+        native_vlan_membership_egress: True
+    qos_profile: MYQOS
+    poe:
+      disabled: true
+    ptp:
+      enabled: true
+    sflow: false
+
+  - profile: INDIVIDUAL_TRUNK_PHONE
+    mode: trunk phone
+    native_vlan: 123
+    phone_vlan: 321
+    link_tracking:
+      enabled: true

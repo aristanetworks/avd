@@ -1,0 +1,14 @@
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: ntp-settings-2
+      # mgmt_ip: 192.168.0.2/24
+      inband_mgmt_ip: 192.168.1.2/24
+      inband_mgmt_vrf: INBAND_MGMT
+
+ntp_settings:
+  server_vrf: use_inband_mgmt_vrf
+  servers:
+    - name: 10.10.10.1
+    - name: 10.10.10.2

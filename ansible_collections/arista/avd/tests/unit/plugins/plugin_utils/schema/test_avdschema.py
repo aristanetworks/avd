@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
@@ -70,6 +70,47 @@ INVALID_ACL_DATA = [
     {"access_lists": [{"name": "name", "sequence_numbers": [{"sequence": 10, "action": "permit ip any any"}, {"sequence": 10, "action": "deny ip any any"}]}]},
     # Primary key not set on one list item.
     {"access_lists": [{"name": "name", "sequence_numbers": [{"sequence": 10, "action": "permit ip any any"}, {"action": "deny ip any any"}]}]},
+]
+
+
+UNIQUE_KEYS_SCHEMAS = [
+    {
+        "type": "list",
+        "unique_keys": ["key", "nested_list.nested_list_key"],
+        "items": {
+            "type": "dict",
+            "keys": {"key": {"type": "str"}, "nested_list": {"type": "list", "items": {"type": "dict", "keys": {"nested_list_key": {"type": "int"}}}}},
+        },
+    }
+]
+
+UNIQUE_KEYS_VALID_DATA = [
+    [
+        {"key": "a", "nested_list": [{"nested_list_key": 1}, {"nested_list_key": 2}]},
+        {"key": "b", "nested_list": [{"nested_list_key": 3}, {"nested_list_key": 4}]},
+    ],
+    [
+        {"key": "a", "nested_list": [{"nested_list_key": 1}, {}]},
+        {"nested_list": [{"nested_list_key": 3}, {"nested_list_key": 4}]},
+    ],
+    [],
+    [{}],
+    [{"nested_list": []}],
+]
+
+UNIQUE_KEYS_INVALID_DATA = [
+    [
+        {"key": "a", "nested_list": [{"nested_list_key": 1}, {"nested_list_key": 2}]},
+        {"key": "b", "nested_list": [{"nested_list_key": 3}, {"nested_list_key": 3}]},
+    ],
+    [
+        {"key": "a", "nested_list": [{"nested_list_key": 1}, {"nested_list_key": 2}]},
+        {"key": "b", "nested_list": [{"nested_list_key": 1}, {"nested_list_key": 4}]},
+    ],
+    [
+        {"key": "a", "nested_list": [{"nested_list_key": 1}, {"nested_list_key": 2}]},
+        {"key": "a", "nested_list": [{"nested_list_key": 3}, {"nested_list_key": 4}]},
+    ],
 ]
 
 
@@ -186,10 +227,39 @@ class TestAvdSchema:
                 continue
             test_schema["keys"][id] = {"type": "dict", "$ref": f"{id}#/"}
 
+        # For performance reasons $ref is no longer supported at runtime.
+        # The $ref must be resolved before loading the schema.
         avdschema = AvdSchema(test_schema)
+        resolved_test_schema = avdschema.resolved_schema
+
+        avdschema = AvdSchema(resolved_test_schema)
         for id in DEFAULT_SCHEMAS:
             if id == "avd_meta_schema":
                 continue
             subschema = avdschema.subschema([id])
             assert subschema.get("type") == "dict"
             assert subschema.get("keys") is not None
+
+    @pytest.mark.parametrize("TEST_SCHEMA", UNIQUE_KEYS_SCHEMAS)
+    @pytest.mark.parametrize("TEST_DATA", UNIQUE_KEYS_VALID_DATA)
+    def test_avd_schema_validate_unique_keys_valid_data(self, TEST_SCHEMA, TEST_DATA):
+        try:
+            for validation_error in AvdSchema(TEST_SCHEMA).validate(TEST_DATA):
+                assert False, f"Validation Error '{validation_error.message}' returned"
+        except Exception as e:
+            assert False, f"AvdSchema(UNIQUE_KEYS_SCHEMAS).validate(UNIQUE_KEYS_VALID_DATA) raised an exception: {e}"
+        assert True
+
+    @pytest.mark.parametrize("TEST_SCHEMA", UNIQUE_KEYS_SCHEMAS)
+    @pytest.mark.parametrize("INVALID_DATA", UNIQUE_KEYS_INVALID_DATA)
+    def test_avd_schema_validate_unique_keys_invalid_data(self, TEST_SCHEMA, INVALID_DATA):
+        try:
+            validation_errors = tuple(AvdSchema(TEST_SCHEMA).validate(INVALID_DATA))
+            if not validation_errors:
+                assert False, "did NOT fail validation"
+            for validation_error in validation_errors:
+                assert isinstance(validation_error, AvdValidationError)
+                assert validation_error.path.endswith((".key", ".nested_list_key"))
+
+        except Exception as e:
+            assert False, f"AvdSchema(UNIQUE_KEYS_SCHEMAS).validate(UNIQUE_KEYS_INVALID_DATA) raised an exception: {e}"

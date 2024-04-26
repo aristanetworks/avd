@@ -3,7 +3,7 @@
 title: Ansible Collection Role eos_designs
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -66,7 +66,8 @@ The following reference design types are included in the roles default variables
 
 - L3LS EVPN: Layer 3 Leaf Spine with VXLAN EVPN
 - L2LS: Layer 2 Leaf Spine
-- MPLS (BETA): MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
+- MPLS: MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
+- WAN: WAN AutoVPN and CV Pathfinder
 
 ### Layer 3 Leaf Spine with VXLAN EVPN
 
@@ -111,6 +112,12 @@ Across all designs, the following functionality is provided:
 | L3 + OSPF | L2 | Arbitrary or leaf-spine |
 | L3 + ISIS | L2 | Arbitrary or leaf-spine |
 
+**L2LS topology example:**
+
+<div style="text-align:center">
+  <img src="../../media/l2ls-topology.svg" />
+</div>
+
 ### MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
 
 | Underlay | Overlay | Topology |
@@ -119,6 +126,25 @@ Across all designs, the following functionality is provided:
 | ISIS-SR + LDP | iBGP | Arbitrary Mesh or leaf-spine |
 | ISIS + LDP | iBGP | Arbitrary Mesh or leaf-spine |
 | OSPF + LDP | iBGP | Arbitrary Mesh or leaf-spine |
+
+**MPLS topology example:**
+
+<div style="text-align:center">
+  <img src="../../media/mpls-topology.svg" />
+</div>
+
+### WAN AutoVPN / CV Pathfinder
+
+| LAN Uplinks | WAN Overlay | Topology |
+| ----------- | ----------- | -------- |
+| L3 eBGP with p2p-vrfs | iBGP | Arbitrary Mesh or leaf-spine |
+| L2 | iBGP | Arbitrary Mesh or leaf-spine |
+
+**WAN topology example:**
+
+<div style="text-align:center">
+  <img src="../../media/wan-topology.svg" />
+</div>
 
 ## Requirements
 
@@ -138,7 +164,7 @@ Role configuration settings can be set either as regular inventory variables or 
 
 ## vEOS-LAB Know Caveats and Recommendations
 
-- vEOS-LAB is a great tool to learn and test ansible-avd automation framework. This is the primary tool leveraged by Arista Ansible Team for development and testing efforts.
+- vEOS-LAB is a great tool to learn and test the AVD automation framework. This is the primary tool leveraged by Arista Ansible Team for development and testing efforts.
 - vEOS-lab enables you to create and run replicas of physical networks within a risk-free virtual environment.
 - Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
 - vEOS-lab isn't a network simulator but the exact EOS implementation that runs on the hardware platforms.

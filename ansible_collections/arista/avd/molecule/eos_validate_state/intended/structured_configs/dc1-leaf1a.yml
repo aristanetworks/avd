@@ -55,6 +55,16 @@ router_bgp:
     remote_as: '65100'
     peer: dc1-spine2
     description: dc1-spine2_Ethernet1
+  - ip_address: 10.255.255.1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: dc1-wan1
+    description: dc1-wan1_Ethernet1
+  - ip_address: 10.255.255.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: dc1-wan2
+    description: dc1-wan2_Ethernet1
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc1-spine1
@@ -68,6 +78,7 @@ router_bgp:
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
+  - source_protocol: attached-host
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -203,6 +214,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+  https_ssl_profile: eAPI_SSL_Profile
 vlans:
 - id: 4093
   tenant: system
@@ -242,6 +254,9 @@ vlans:
 - id: 3402
   name: L2_VLAN3402
   tenant: TENANT1
+- id: 4085
+  tenant: system
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
@@ -294,6 +309,16 @@ vlan_interfaces:
   vrf: VRF11
   mtu: 1500
   ip_address: 10.255.1.96/31
+- name: Vlan4085
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_attached_host_route_export:
+    enabled: true
+    distance: 19
+  ip_address: 172.21.110.2/24
+  ip_virtual_router_addresses:
+  - 172.21.110.1
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_dc1-leaf1b_Po3
@@ -308,7 +333,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 11-12,21-22,3401-3402
+  vlans: 11-12,21-22,3401-3402,4085
   mlag: 8
 - name: Port-Channel5
   description: dc1-leaf1-server1_PortChannel dc1-leaf1-server1
@@ -358,6 +383,24 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.3/31
+- name: Ethernet6
+  peer: dc1-wan1
+  peer_interface: Ethernet1
+  peer_type: wan_router
+  description: P2P_LINK_TO_DC1-WAN1_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.255.0/31
+- name: Ethernet7
+  peer: dc1-wan2
+  peer_interface: Ethernet1
+  peer_type: wan_router
+  description: P2P_LINK_TO_DC1-WAN2_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.255.4/31
 - name: Ethernet8
   peer: dc1-leaf1c
   peer_interface: Ethernet1
@@ -378,6 +421,30 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
+- name: Ethernet31
+  peer: dc1-leaf1-workstation1
+  peer_interface: e1
+  peer_type: workstation
+  port_profile: Workstations
+  description: dc1-leaf1-workstation1_e1
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '11'
+  spanning_tree_portfast: edge
+- name: Ethernet32
+  peer: dc1-leaf1-workstation2
+  peer_interface: e1
+  peer_type: workstation
+  port_profile: Workstations
+  description: dc1-leaf1-workstation2_e1
+  shutdown: false
+  validate_state: false
+  type: switched
+  mode: access
+  vlans: '11'
+  spanning_tree_portfast: edge
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094
@@ -399,6 +466,10 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 20
+    type: permit
+    match:
+    - ip address prefix-list PL-L2LEAF-INBAND-MGMT
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -425,6 +496,10 @@ prefix_lists:
     action: permit 10.255.0.0/27 eq 32
   - sequence: 20
     action: permit 10.255.1.0/27 eq 32
+- name: PL-L2LEAF-INBAND-MGMT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.21.110.0/24
 router_bfd:
   multihop:
     interval: 300
@@ -463,4 +538,6 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.10.3
 - name: VRF11
   ip_address: 10.255.11.3
+metadata:
+  platform: vEOS-lab
 dns_domain: dc1.local

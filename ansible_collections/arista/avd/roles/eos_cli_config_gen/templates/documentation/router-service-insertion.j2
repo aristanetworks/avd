@@ -1,10 +1,51 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# doc - router service-insertion #}
 {% if router_service_insertion.enabled is arista.avd.defined(true) %}
 
+## Router Service Insertion
+
 Router service-insertion is enabled.
+{%     if router_service_insertion.connections is arista.avd.defined %}
+
+### Connections
+{%         set ethernet_connections = [] %}
+{%         set tunnel_connections = [] %}
+{%         for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
+{%             if connection.ethernet_interface.name is arista.avd.defined and connection.ethernet_interface.next_hop is arista.avd.defined %}
+{%                 do ethernet_connections.append(connection) %}
+{%             elif connection.tunnel_interface.primary is arista.avd.defined or connection.tunnel_interface.secondary is arista.avd.defined %}
+{%                 do tunnel_connections.append(connection) %}
+{%             endif %}
+{%         endfor %}
+{%         if ethernet_connections %}
+
+#### Connections Through Ethernet Interface
+
+| Name | Interface | Next Hop | Monitor Connectivity Host |
+| ---- | --------- | -------- | ------------------------- |
+{%             for connection in ethernet_connections %}
+| {{ connection.name }} | {{ connection.ethernet_interface.name }} | {{ connection.ethernet_interface.next_hop }} | {{ connection.monitor_connectivity_host | arista.avd.default("-") }} |
+{%             endfor %}
+{%         endif %}
+{%         if tunnel_connections %}
+
+#### Connections Through Tunnel Interface
+
+| Name | Primary Interface | Secondary Interface | Monitor Connectivity Host |
+| ---- | ----------------- | ------------------- | ------------------------- |
+{%             for connection in tunnel_connections %}
+| {{ connection.name }} | {{ connection.tunnel_interface.primary | arista.avd.default("-") }} | {{ connection.tunnel_interface.secondary | arista.avd.default("-") }} | {{ connection.monitor_connectivity_host | arista.avd.default("-") }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+
+### Router Service Insertion Configuration
+
+```eos
+{%     include 'eos/router-service-insertion.j2' %}
+```
 {% endif %}

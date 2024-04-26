@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -41,6 +41,7 @@ This repository provides content for Arista's **arista.avd** collection. The fol
 - [**arista.avd.eos_validate_state**](roles/eos_validate_state/README.md) - Validate operational states of Arista EOS devices.
 - [**arista.avd.eos_snapshot**](roles/eos_snapshot/README.md) - Collect commands on EOS devices and generate reports.
 - [**arista.avd.dhcp_provisioner**](roles/dhcp_provisioner/README.md) - Configure an ISC-DHCP server to provide ZTP services and CloudVision registration.
+- [**arista.avd.cv_deploy**](roles/cv_deploy/README.md) - Deploys EOS device configurations and tags to the CloudVision management platform.
 
 ![Arista AVD Overview](docs/_media/avd_roles_dark.svg#only-dark)
 ![Arista AVD Overview](docs/_media/avd_roles_light.svg#only-light)
@@ -67,7 +68,7 @@ See the section "Ansible Collection Plugins" on the menu to the left.
 
 ## Ask a question
 
-Support for the `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions).
+Support for the `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ### Official Arista support
 
@@ -77,8 +78,8 @@ AVD version 4.x releases with full support from Arista TAC. If your organization
 
 Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](https://avd.arista.com/stable/docs/contribution/overview.html) for additional details.
 
-You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problems or submit enhancements.
+You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit enhancements.
 
 ## License
 
-The project is published under [Apache 2.0 License](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/LICENSE)
+The project is published under [Apache 2.0 License](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/LICENSE)

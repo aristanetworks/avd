@@ -1,13 +1,11 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from collections import ChainMap
-from copy import deepcopy
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all, get_all_with_path, get_indices_of_duplicate_items
 
 try:
     import jsonschema
@@ -20,34 +18,54 @@ except ImportError as imp_exc:
 else:
     JSONSCHEMA_IMPORT_ERROR = None
 
-try:
-    from deepmerge import always_merger
-except ImportError as imp_exc:
-    DEEPMERGE_IMPORT_ERROR = imp_exc
-else:
-    DEEPMERGE_IMPORT_ERROR = None
+
+def _unique_keys_validator(validator, unique_keys: list[str], instance: list, schema: dict):
+    if not validator.is_type(unique_keys, "list"):
+        return
+
+    if not validator.is_type(instance, "list") or not instance:
+        return
+
+    if not all(validator.is_type(element, "dict") for element in instance):
+        return
+
+    for unique_key in unique_keys:
+        if not (paths_and_values := tuple(get_all_with_path(instance, unique_key))):
+            # No values matching the unique key, check the next unique_key
+            continue
+
+        # Separate all paths and values
+        paths, values = zip(*paths_and_values)
+
+        key = unique_key.split(".")[-1]
+        is_nested_key = unique_key != key
+
+        # Find any duplicate values and emit errors for each index.
+        for duplicate_value, duplicate_indices in get_indices_of_duplicate_items(values):
+            for duplicate_index in duplicate_indices:
+                yield jsonschema.ValidationError(
+                    f"The value '{duplicate_value}' is not unique between all {'nested ' if is_nested_key else ''}list items as required.",
+                    path=[*paths[duplicate_index], key],
+                    schema_path=["items"],
+                )
 
 
 def _primary_key_validator(validator, primary_key: str, instance: list, schema: dict):
     if not validator.is_type(primary_key, "str"):
         return
 
-    if not validator.is_type(instance, "list"):
+    if not validator.is_type(instance, "list") or not instance:
         return
 
     if not all(validator.is_type(element, "dict") for element in instance):
         return
 
-    # Don't run validator if $ref is part of the schema.
-    # Instead $ref validator will pop $ref and run all validators.
-    if "$ref" in schema:
-        return
-
     if not all(element.get(primary_key) is not None for element in instance):
         yield jsonschema.ValidationError(f"Primary key '{primary_key}' is not set on all items as required.")
 
-    if len(set(element.get(primary_key) for element in instance)) < len(instance):
-        yield jsonschema.ValidationError(f"Values of Primary key '{primary_key}' are not unique as required.")
+    if not schema.get("allow_duplicate_primary_key"):
+        # Reusing the unique keys validator
+        yield from _unique_keys_validator(validator, [primary_key], instance, schema)
 
 
 def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
@@ -63,11 +81,6 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
     if not validator.is_type(instance, "object"):
         return
 
-    # Don't run validator if $ref is part of the schema.
-    # Instead $ref validator will pop $ref and run all validators.
-    if "$ref" in schema:
-        return
-
     # Compile schema_dynamic_keys and add to "dynamic_keys"
     schema_dynamic_keys = schema.get("dynamic_keys", {})
     dynamic_keys = {}
@@ -76,30 +89,18 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
         for resolved_key in resolved_keys:
             dynamic_keys.setdefault(resolved_key, childschema)
 
-    # Resolve $ref for child keys, to support schema actions below which operates on the child schema
-    # Add the final merged child_schema to a new dict "resolved_keys" to avoid touching the original
-    resolved_keys = {}
     all_keys = ChainMap(keys, dynamic_keys)
-    for key, childschema in all_keys.items():
-        if key in instance and "$ref" in childschema:
-            scope, resolved = validator.resolver.resolve(childschema["$ref"])
-            merged_childschema = deepcopy(resolved)
-            always_merger.merge(merged_childschema, childschema)
-            merged_childschema.pop("$ref", None)
-            resolved_keys[key] = merged_childschema
-        else:
-            resolved_keys[key] = all_keys[key]
 
     # Validation of "allow_other_keys"
     if not schema.get("allow_other_keys", False):
         # Check that instance only contains the schema keys
-        invalid_keys = ", ".join([key for key in instance if key not in resolved_keys and key[0] != "_"])
+        invalid_keys = ", ".join([key for key in instance if key not in all_keys and key[0] != "_"])
         if invalid_keys:
             yield jsonschema.ValidationError(f"Unexpected key(s) '{invalid_keys}' found in dict.")
 
     # Run over child keys and check for required and update child schema with dynamic valid values before
     # descending into validation of child schema.
-    for key, childschema in resolved_keys.items():
+    for key, childschema in all_keys.items():
         if instance.get(key) is None:
             # Validation of "required" on child keys
             if childschema.get("required"):
@@ -130,31 +131,7 @@ def _dynamic_keys_validator(validator, dynamic_keys: dict, instance: dict, schem
 
 
 def _ref_validator(validator, ref, instance: dict, schema: dict):
-    """
-    This function resolves the $ref referenced schema,
-    then merges with any schema defined at the same level
-    Then performs validation on the resolved+merged schema.
-
-    Since this will run all validation tasks on the same level,
-    a check for $ref has been added to the other validators, to
-    avoid duplicate validation (and duplicate errors)
-    """
-    scope, ref_schema = validator.resolver.resolve(ref)
-    validator.resolver.push_scope(scope)
-    schema = deepcopy(schema)
-    schema.pop("$ref", None)
-    merged_schema = merge(schema, ref_schema, same_key_strategy="use_existing", destructive_merge=False)
-
-    # Resolve new refs inherited from the first ref.
-    if "$ref" in merged_schema:
-        yield from _ref_validator(validator, merged_schema["$ref"], instance, merged_schema)
-        validator.resolver.pop_scope()
-        return
-
-    try:
-        yield from validator.descend(instance, merged_schema)
-    finally:
-        validator.resolver.pop_scope()
+    raise NotImplementedError("$ref must be resolved before using AvdValidator")
 
 
 def _valid_values_validator(validator, valid_values, instance, schema: dict):
@@ -180,8 +157,6 @@ class AvdValidator:
         """
         if JSONSCHEMA_IMPORT_ERROR:
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
-        if DEEPMERGE_IMPORT_ERROR:
-            raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
 
         ValidatorClass = jsonschema.validators.create(
             meta_schema=store["avd_meta_schema"],
@@ -197,6 +172,7 @@ class AvdValidator:
                 "pattern": jsonschema._validators.pattern,
                 "items": jsonschema._validators.items,
                 "primary_key": _primary_key_validator,
+                "unique_keys": _unique_keys_validator,
                 "keys": _keys_validator,
                 "dynamic_keys": _dynamic_keys_validator,
             },

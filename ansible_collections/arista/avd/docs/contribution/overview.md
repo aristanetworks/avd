@@ -1,12 +1,12 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
 
 # Arista Validated Design Development
 
-**Arista Validated Design (AVD)** is maintained as a [GitHub project](https://github.com/aristanetworks/ansible-avd) under the Apache 2 license. Users are encouraged to submit GitHub issues for feature requests and bug reports.
+**Arista Validated Design (AVD)** is maintained as a [GitHub project](https://github.com/aristanetworks/avd) under the Apache 2 license. Users are encouraged to submit GitHub issues for feature requests and bug reports.
 
 ## Governance
 
@@ -36,8 +36,8 @@ Communication among the contributors should always occur via public channels. Th
 
 #### GitHub
 
-- [GitHub issues](https://github.com/aristanetworks/ansible-avd/issues) - All feature requests, bug reports, and other substantial changes should be documented in an issue.
-- [GitHub discussions](https://github.com/aristanetworks/ansible-avd/discussions) - The preferred forum for general discussion and support issues. Ideal for shaping a feature request before submitting an issue.
+- [GitHub issues](https://github.com/aristanetworks/avd/issues) - All feature requests, bug reports, and other substantial changes should be documented in an issue.
+- [GitHub discussions](https://github.com/aristanetworks/avd/discussions) - The preferred forum for general discussion and support issues. Ideal for shaping a feature request before submitting an issue.
 
 GitHub's discussions are the best place to get help or propose rough ideas for new functionality. Their integration with GitHub allows cross-referencing and converting posts to issues as needed. Below are some examples of categories used for discussions:
 
@@ -76,15 +76,15 @@ Contributing pull requests are gladly welcomed for this repository. If you are p
 #### Branching model
 
 - The **`devel`** branch corresponds to the release actively under development.
-- The [release tags](https://github.com/aristanetworks/ansible-avd/tags) correspond to stable releases.
+- The [release tags](https://github.com/aristanetworks/avd/tags) correspond to stable releases.
 - Fork the repository and create a branch based on **`devel`** to set up a dev environment if you want to open a PR.
-- See the ansible-avd release for information about active branches.
+- See the AVD release for information about active branches.
 
 #### Reporting Bugs
 
-- First, ensure that you're running the [latest stable version](https://github.com/aristanetworks/ansible-avd/releases) of AVD. If you're running an older version, it's possible that the bug has already been fixed.
+- First, ensure that you're running the [latest stable version](https://github.com/aristanetworks/avd/releases) of AVD. If you're running an older version, it's possible that the bug has already been fixed.
 
-- Next, check the GitHub [issues list](https://github.com/aristanetworks/ansible-avd/issues) to see if the bug you've found has already been reported. If you think you may be experiencing a reported issue that hasn't already been resolved, please click "add a reaction" in the top right corner of the issue and add a thumbs up (+1). Also, add a comment describing how it's affecting your installation. This will allow us to prioritize bugs based on how many users are affected.
+- Next, check the GitHub [issues list](https://github.com/aristanetworks/avd/issues) to see if the bug you've found has already been reported. If you think you may be experiencing a reported issue that hasn't already been resolved, please click "add a reaction" in the top right corner of the issue and add a thumbs up (+1). Also, add a comment describing how it's affecting your installation. This will allow us to prioritize bugs based on how many users are affected.
 
 - When submitting an issue, please be as descriptive as possible. Be sure to provide all information requests in the issue template, including:
 
@@ -100,7 +100,7 @@ Contributing pull requests are gladly welcomed for this repository. If you are p
 
 #### Feature Requests
 
-- First, check the GitHub [issues list](https://github.com/aristanetworks/ansible-avd/issues) and [Discussions](https://github.com/aristanetworks/ansible-avd/discussions) to see if the feature you're requesting is already listed. If the feature you'd like to see has already been requested and is open, click "add a reaction" in the top right corner of the issue and add a thumbs up (+1). This ensures that the issue has a better chance of receiving attention. Also, feel free to add a comment with any additional justification for the feature. However, note that comments with no substance other than a "+1" will be deleted. Please use GitHub's reactions feature to indicate your support.
+- First, check the GitHub [issues list](https://github.com/aristanetworks/avd/issues) and [Discussions](https://github.com/aristanetworks/avd/discussions) to see if the feature you're requesting is already listed. If the feature you'd like to see has already been requested and is open, click "add a reaction" in the top right corner of the issue and add a thumbs up (+1). This ensures that the issue has a better chance of receiving attention. Also, feel free to add a comment with any additional justification for the feature. However, note that comments with no substance other than a "+1" will be deleted. Please use GitHub's reactions feature to indicate your support.
 
 - Before filing a new feature request, consider starting with a GitHub Discussion. The feedback you receive there will help validate and shape the proposed feature before filing a formal issue. Suppose the feature request isn't accepted into the *current* or *near-term* backlog. In that case, it will get converted to a discussion anyway.
 

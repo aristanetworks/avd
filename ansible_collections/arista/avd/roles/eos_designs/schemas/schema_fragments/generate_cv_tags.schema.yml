@@ -1,0 +1,61 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  generate_cv_tags:
+    documentation_options:
+      table: cloudvision-tags
+    type: dict
+    description: |-
+      PREVIEW: This key is currently not supported
+      Generate CloudVision Tags based on AVD data.
+    keys:
+      topology_hints:
+        type: bool
+        default: false
+        description: Enable the generation of CloudVision Topology Tags (hints).
+      interface_tags:
+        description: List of interface tags that should be generated.
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          description: Each tag can either have a static value or a dynamic value sourced from structured configuration.
+          keys:
+            name:
+              description: Tag name to be assigned to generated tags.
+              required: true
+              type: str
+            data_path:
+              description: |-
+                Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.
+                For Example: 'data_path: channel_group.id' would set the tag with the value of the channel id of the interface. If there is no channel id, the tag is not created.
+                `data_path` is ignored if `value` is set.
+              type: str
+            value:
+              description: Value to be assigned to the tag.
+              type: str
+      device_tags:
+        description: List of device tags that should be generated.
+        type: list
+        items:
+          type: dict
+          description: Each tag can either have a static value or a dynamic value sourced from structured configuration.
+          keys:
+            name:
+              description: Tag name to be assigned to generated tags.
+              required: true
+              type: str
+            data_path:
+              description: |-
+                Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.
+                For Example: 'data_path: router_bfd.multihop.interval' would set the tag with the value of the interval for multihop bfd. If this value is not specified in the structured config, the tag is not created.
+                `data_path` is ignored if `value` is set.
+              type: str
+            value:
+              description: Value to be assigned to the tag.
+              type: str

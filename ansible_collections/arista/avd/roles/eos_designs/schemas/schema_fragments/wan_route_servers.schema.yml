@@ -1,0 +1,59 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  wan_route_servers:
+    description: |-
+      List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders
+      when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
+      This is also used to establish iBGP sessions between WAN route servers.
+
+      When the route server is part of the same inventory as the WAN routers,
+      only the name is required.
+    type: list
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+          description: Route-Reflector hostname.
+        vtep_ip:
+          type: str
+          description: Route-Reflector VTEP IP Address. This is usually the IP address under `interface Dps1`.
+        path_groups:
+          type: list
+          description: Path-groups through which the Route Reflector/Pathfinder is reached.
+          primary_key: name
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Path-group name.
+              interfaces:
+                type: list
+                primary_key: name
+                required: true
+                min_length: 1
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      description: Interface name.
+                    ip_address:
+                      type: str
+                      description: The public IPv4 address (without mask) of the Route Reflector for this path-group.
+                      deprecation:
+                        warning: true
+                        new_key: public_ip
+                        removed: true
+                        remove_in_version: "4.7.0"
+                    public_ip:
+                      type: str
+                      description: The public IPv4 address (without mask) of the Route Reflector for this path-group.

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from functools import lru_cache
@@ -8,7 +8,9 @@ from pyavd.vendor.schema.default_schemas import DEFAULT_PICKLED_SCHEMAS
 
 
 @lru_cache
-def create_store():
+def create_store(load_from_yaml=False):
+    if load_from_yaml:
+        raise NotImplementedError("'load_from_yaml' not supported for create_store under PyAVD")
     store = {}
     for id, schema_file in DEFAULT_PICKLED_SCHEMAS.items():
         with open(schema_file, "rb") as file:

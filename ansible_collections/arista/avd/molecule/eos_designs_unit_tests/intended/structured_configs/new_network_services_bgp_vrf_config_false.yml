@@ -1,0 +1,73 @@
+hostname: new_network_services_bgp_vrf_config_false
+is_deployed: true
+router_bgp:
+  as: '65000'
+  router_id: 192.168.42.2
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+  redistribute_routes:
+  - source_protocol: connected
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: PROD
+  tenant: TenantA
+  ip_routing: true
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 192.168.42.2/32
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: cafe:cafe:cafe
+ethernet_interfaces:
+- name: Ethernet7
+  peer_type: l3_interface
+  ip_address: 11.11.11.11/24
+  mtu: 9000
+  shutdown: false
+  description: test
+  type: routed
+  vrf: PROD
+route_maps:
+- name: RM-PROD-123.1.1.10-SET-NEXT-HOP-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - ip next-hop 123.1.1.1
+- name: RM-PROD-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - ipv6 next-hop fd5a:fe45:8831:06c5::1
+metadata:
+  platform: vEOS-LAB

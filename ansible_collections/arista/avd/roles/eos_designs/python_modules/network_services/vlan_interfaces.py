@@ -1,12 +1,12 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get
 
 from .utils import UtilsMixin
@@ -30,7 +30,7 @@ class VlanInterfacesMixin(UtilsMixin):
             return None
 
         vlan_interfaces = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     vlan_interface = self._get_vlan_interface_config_for_svi(svi, vrf)
@@ -68,6 +68,9 @@ class VlanInterfacesMixin(UtilsMixin):
             """
             Check if any variable in the list of variables is not None in vlan_interface_config
             and if it is the case, raise an Exception if virtual_router_mac_address is None
+
+            NOTE: SVI settings are also used for subinterfaces for uplink_type: 'lan'.
+            So any changes here may also be needed in underlay.utils.UtilsMixin._get_l2_as_subint().
             """
             if any(vlan_interface_config.get(var) for var in variables) and self.shared_utils.virtual_router_mac_address is None:
                 quoted_vars = [f"'{var}'" for var in variables]
@@ -140,42 +143,10 @@ class VlanInterfacesMixin(UtilsMixin):
         if vrf["name"] != "default":
             vlan_interface_config["vrf"] = vrf["name"]
 
-        svi_ip_helpers: list[dict] = convert_dicts(default(svi.get("ip_helpers"), vrf.get("ip_helpers"), []), "ip_helper")
-        if svi_ip_helpers:
-            ip_helpers = []
-            for svi_ip_helper in svi_ip_helpers:
-                ip_helper = {"ip_helper": svi_ip_helper["ip_helper"]}
-                if "source_interface" in svi_ip_helper:
-                    ip_helper["source_interface"] = svi_ip_helper["source_interface"]
-                if "source_vrf" in svi_ip_helper:
-                    ip_helper["vrf"] = svi_ip_helper["source_vrf"]
-                ip_helpers.append(ip_helper)
-            if ip_helpers:
-                vlan_interface_config["ip_helpers"] = ip_helpers
+        # Adding IP helpers and OSPF via a common function also used for subinterfaces when uplink_type: lan
+        self.shared_utils.get_additional_svi_config(vlan_interface_config, svi, vrf)
 
-        if get(svi, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
-            vlan_interface_config["ospf_area"] = svi["ospf"].get("area", "0")
-            vlan_interface_config["ospf_network_point_to_point"] = svi["ospf"].get("point_to_point", False)
-            vlan_interface_config["ospf_cost"] = svi["ospf"].get("cost")
-            ospf_authentication = svi["ospf"].get("authentication")
-            if ospf_authentication == "simple" and (ospf_simple_auth_key := svi["ospf"].get("simple_auth_key")) is not None:
-                vlan_interface_config["ospf_authentication"] = ospf_authentication
-                vlan_interface_config["ospf_authentication_key"] = ospf_simple_auth_key
-            elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := svi["ospf"].get("message_digest_keys")) is not None:
-                ospf_keys = []
-                for ospf_key in ospf_message_digest_keys:
-                    if not ("id" in ospf_key and "key" in ospf_key):
-                        continue
-
-                    ospf_keys.append({"id": ospf_key["id"], "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]})
-                if ospf_keys:
-                    vlan_interface_config["ospf_authentication"] = ospf_authentication
-                    vlan_interface_config["ospf_message_digest_keys"] = ospf_keys
-
-        # Strip None values from vlan_interface_config before adding to list
-        vlan_interface_config = {key: value for key, value in vlan_interface_config.items() if value is not None}
-
-        return vlan_interface_config
+        return strip_empties_from_dict(vlan_interface_config)
 
     def _get_vlan_interface_config_for_mlag_peering(self, vrf) -> dict:
         """
@@ -194,10 +165,16 @@ class VlanInterfacesMixin(UtilsMixin):
             vlan_interface_config["ipv6_enable"] = True
         elif (mlag_ibgp_peering_ipv4_pool := vrf.get("mlag_ibgp_peering_ipv4_pool")) is not None:
             if self.shared_utils.mlag_role == "primary":
-                vlan_interface_config["ip_address"] = f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)}/31"
+                vlan_interface_config["ip_address"] = (
+                    f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)}/"
+                    f"{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}"
+                )
             else:
-                vlan_interface_config["ip_address"] = f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)}/31"
+                vlan_interface_config["ip_address"] = (
+                    f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)}/"
+                    f"{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}"
+                )
         else:
-            vlan_interface_config["ip_address"] = f"{self.shared_utils.mlag_ibgp_ip}/31"
+            vlan_interface_config["ip_address"] = f"{self.shared_utils.mlag_ibgp_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}"
 
         return vlan_interface_config

@@ -1,9 +1,10 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
+from copy import deepcopy
 from functools import cached_property
 from ipaddress import ip_network
 from itertools import islice
@@ -38,6 +39,10 @@ class UtilsMixin:
         return get(self._hostvars, f"{self.data_model}.p2p_links", default=[])
 
     @cached_property
+    def _p2p_links_sflow(self) -> bool | None:
+        return get(self._hostvars, f"fabric_sflow.{self.data_model}")
+
+    @cached_property
     def _filtered_p2p_links(self) -> list:
         """
         Returns a filtered list of p2p_links, which only contains links with our hostname.
@@ -50,7 +55,7 @@ class UtilsMixin:
 
         # Apply p2p_profiles if set. Silently ignoring missing profile.
         if self._p2p_links_profiles:
-            p2p_links = [self._apply_p2p_profile(p2p_link) for p2p_link in p2p_links]
+            p2p_links = [self._apply_p2p_links_profile(p2p_link) for p2p_link in p2p_links]
 
         # Filter to only include p2p_links with our hostname under "nodes"
         p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.hostname in p2p_link.get("nodes", [])]
@@ -65,16 +70,18 @@ class UtilsMixin:
 
         return p2p_links
 
-    def _apply_p2p_profile(self, p2p_link: dict) -> dict:
-        if "profile" not in p2p_link:
+    def _apply_p2p_links_profile(self, target_dict: dict) -> dict:
+        """
+        Apply a profile to a p2p_link
+        """
+        if "profile" not in target_dict:
             # Nothing to do
-            return p2p_link
+            return target_dict
 
-        # Silently ignoring missing profile.
-        profile = get_item(self._p2p_links_profiles, "name", p2p_link["profile"], default={})
-        p2p_link = merge(profile, p2p_link, list_merge="replace", destructive_merge=False)
-        p2p_link.pop("name", None)
-        return p2p_link
+        profile = deepcopy(get_item(self._p2p_links_profiles, "name", target_dict["profile"], default={}))
+        merged_dict: dict = merge(profile, target_dict, list_merge="replace", destructive_merge=False)
+        merged_dict.pop("name", None)
+        return merged_dict
 
     def _resolve_p2p_ips(self, p2p_link: dict) -> dict:
         if "ip" in p2p_link:
@@ -152,22 +159,28 @@ class UtilsMixin:
         node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
         # Convert to new data models
         node_child_interfaces = convert_dicts(node_child_interfaces, primary_key="node", secondary_key="interfaces")
-        if member_interfaces := get_item(node_child_interfaces, "node", self.shared_utils.hostname, default={}).get("interfaces"):
+        if (node_data := get_item(node_child_interfaces, "node", self.shared_utils.hostname)) is not None and (
+            member_interfaces := node_data.get("interfaces")
+        ):
             # Port-channel
-            peer_member_interfaces = get_item(
+            default_channel_id = int("".join(re.findall(r"\d", member_interfaces[0])))
+            portchannel_id = node_data.get("channel_id", default_channel_id)
+
+            peer = get_item(
                 node_child_interfaces,
                 "node",
                 peer,
-                required=True,
                 var_name=f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces",
-            )["interfaces"]
-            id = int("".join(re.findall(r"\d", member_interfaces[0])))
-            peer_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
+            )
+            peer_member_interfaces = peer["interfaces"]
+            default_peer_channel_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
+            peer_id = peer.get("channel_id", default_peer_channel_id)
+
             data.update(
                 {
-                    "interface": f"Port-Channel{id}",
+                    "interface": f"Port-Channel{portchannel_id}",
                     "peer_interface": f"Port-Channel{peer_id}",
-                    "port_channel_id": id,
+                    "port_channel_id": portchannel_id,
                     "port_channel_members": [
                         {
                             "interface": interface,
@@ -222,7 +235,10 @@ class UtilsMixin:
             interface_cfg["ip_address"] = ip[index]
 
         if p2p_link.get("include_in_underlay_protocol", True) is True:
-            if self.shared_utils.underlay_rfc5549 or p2p_link.get("ipv6_enable") is True:
+            if p2p_link.get("underlay_multicast", False) and self.shared_utils.underlay_multicast is True:
+                interface_cfg["pim"] = {"ipv4": {"sparse_mode": True}}
+
+            if (self.shared_utils.underlay_rfc5549 and p2p_link.get("routing_protocol") != "ebgp") or p2p_link.get("ipv6_enable") is True:
                 interface_cfg["ipv6_enable"] = True
 
             if self.shared_utils.underlay_ospf:
@@ -253,6 +269,9 @@ class UtilsMixin:
 
         if (p2p_link_sflow := get(p2p_link, "sflow", default=self._p2p_links_sflow)) is not None:
             interface_cfg["sflow"] = {"enable": p2p_link_sflow}
+
+        if (p2p_link_flow_tracking := self.shared_utils.get_flow_tracker(p2p_link, self.data_model)) is not None:
+            interface_cfg["flow_tracker"] = p2p_link_flow_tracking
 
         if self.shared_utils.mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}
@@ -315,7 +334,3 @@ class UtilsMixin:
                 "mode": get(p2p_link, "port_channel.mode", default="active"),
             },
         }
-
-    @cached_property
-    def _p2p_links_sflow(self) -> bool | None:
-        return get(self._hostvars, f"fabric_sflow.{self.data_model}")

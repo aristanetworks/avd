@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -10,6 +10,7 @@ from ansible_collections.arista.avd.plugins.filter.generate_lacp_id import gener
 from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from ..interface_descriptions.models import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 
@@ -27,7 +28,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         port_channel_interfaces = []
         port_channel_list = []
         for link in self._underlay_links:
-            if link["type"] != "underlay_l2":
+            if link["type"] != "underlay_l2" or link.get("channel_group_id") is None:
                 continue
 
             if (channel_group_id := link.get("channel_group_id")) in port_channel_list:
@@ -39,8 +40,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
             port_channel_interface = {
                 "name": port_channel_name,
-                "description": self.shared_utils.interface_descriptions.underlay_port_channel_interfaces(
-                    link["peer"], link["peer_channel_group_id"], link.get("channel_description")
+                "description": self.shared_utils.interface_descriptions.underlay_port_channel_interface(
+                    InterfaceDescriptionData(
+                        shared_utils=self.shared_utils,
+                        interface=port_channel_name,
+                        peer=link["peer"],
+                        peer_channel_group_id=link["peer_channel_group_id"],
+                        port_channel_description=link.get("channel_description"),
+                    )
                 ),
                 "type": "switched",
                 "shutdown": False,
@@ -49,6 +56,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "link_tracking_groups": link.get("link_tracking_groups"),
                 "native_vlan": link.get("native_vlan"),
                 "sflow": link.get("sflow"),
+                "flow_tracker": link.get("flow_tracker"),
+                "spanning_tree_portfast": link.get("spanning_tree_portfast"),
             }
 
             if (trunk_groups := link.get("trunk_groups")) is not None:
@@ -56,7 +65,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
             elif (vlans := link.get("vlans")) is not None:
                 port_channel_interface["vlans"] = vlans
 
-            if self.shared_utils.mlag is True:
+            # Configure MLAG on MLAG switches if either 'mlag_on_orphan_port_channel_downlink' or 'link.mlag' is True
+            if self.shared_utils.mlag is True and any([get(self._hostvars, "mlag_on_orphan_port_channel_downlink", default=True), link.get("mlag", True)]):
                 port_channel_interface["mlag"] = int(link.get("channel_group_id"))
 
             if (short_esi := link.get("short_esi")) is not None:
@@ -78,6 +88,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 ptp_config.pop("profile", None)
 
                 port_channel_interface["ptp"] = ptp_config
+
+            # Inband ZTP Port-Channel LACP Fallback
+            if get(link, "inband_ztp_vlan"):
+                port_channel_interface["lacp_fallback_mode"] = "individual"
+                port_channel_interface["lacp_fallback_timeout"] = get(link, "inband_ztp_lacp_fallback_delay")
 
             # Structured Config
             port_channel_interface["struct_cfg"] = link.get("structured_config")

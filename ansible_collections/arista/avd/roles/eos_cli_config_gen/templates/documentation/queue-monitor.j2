@@ -1,0 +1,46 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - queue-monitor #}
+{% if queue_monitor_length is arista.avd.defined or queue_monitor_streaming is arista.avd.defined %}
+
+## Queue Monitor
+{%     if queue_monitor_length is arista.avd.defined %}
+
+### Queue Monitor Length
+{%         set enabled = queue_monitor_length.enabled | arista.avd.default('-') %}
+{%         set log = queue_monitor_length.log | arista.avd.default('-') %}
+{%         set default_high = queue_monitor_length.default_thresholds.high | arista.avd.default('-') %}
+{%         set default_low = queue_monitor_length.default_thresholds.low | arista.avd.default('-') %}
+{%         set notifying = 'enabled' if queue_monitor_length.notifying is arista.avd.defined(true) else 'disabled' %}
+{%         set tx_latency = 'enabled' if queue_monitor_length.tx_latency is arista.avd.defined(true) else 'disabled' %}
+{%         set cpu_high = queue_monitor_length.cpu.thresholds.high | arista.avd.default('-') %}
+{%         set cpu_low = queue_monitor_length.cpu.thresholds.low | arista.avd.default('-') %}
+
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| {{ enabled }} | {{ log }} | {{ default_high }} | {{ default_low }} | {{ notifying }} | {{ tx_latency }} | {{ cpu_high }} | {{ cpu_low }} |
+{%     endif %}
+{%     if queue_monitor_streaming is arista.avd.defined %}
+
+### Queue Monitor Streaming
+{%         set enabled = queue_monitor_streaming.enable | arista.avd.default('-') %}
+{%         set vrf = queue_monitor_streaming.vrf | arista.avd.default('-') %}
+{%         set ip_acl = queue_monitor_streaming.ip_access_group | arista.avd.default('-') %}
+{%         set ipv6_acl = queue_monitor_streaming.ipv6_access_group | arista.avd.default('-') %}
+{%         set max_connections = queue_monitor_streaming.max_connections | arista.avd.default('-') %}
+
+| Enabled | IP Access Group | IPv6 Access Group | Max Connections | VRF |
+| ------- | --------------- | ----------------- | --------------- | --- |
+| {{ enabled }} | {{ ip_acl }} | {{ ipv6_acl }} | {{ max_connections }} | {{ vrf }} |
+{%     endif %}
+
+### Queue Monitor Configuration
+
+```eos
+{%     include 'eos/queue-monitor-length.j2' %}
+{%     include 'eos/queue-monitor-streaming.j2' %}
+```
+{% endif %}

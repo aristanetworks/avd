@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -48,7 +48,7 @@ $defs:
                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
                 items:
                   type: str
-                  description: Device
+                  description: Device.
               endpoint_ports:
                 type: list
                 description: |

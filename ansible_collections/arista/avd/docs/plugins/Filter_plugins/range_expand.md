@@ -3,7 +3,7 @@
 title: arista.avd.range_expand
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -19,15 +19,15 @@ Expand a range of interfaces or list of ranges and return as a list of strings.
 
 Provides the capabilities to expand a range of interfaces or list of ranges and return as a list of strings.
 
-The filter supports VLANs, interfaces, modules, sub\-interfaces, and ranges are expanded at all levels.
+The filter supports VLANs, interfaces, modules, sub-interfaces, and ranges are expanded at all levels.
 
-Within a single range, prefixes \(ex. Ethernet, Eth, Po\) are carried over to items without prefixes \(see examples\).
+Within a single range, prefixes (ex. Ethernet, Eth, Po) are carried over to items without prefixes (see examples).
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | any | True | None |  | Range as string or list of ranges. |
+| <samp>_input</samp> | any | True | None |  | Range as string or list of ranges. |
 
 ## Examples
 

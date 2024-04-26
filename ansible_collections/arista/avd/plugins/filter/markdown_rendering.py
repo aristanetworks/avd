@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
@@ -14,9 +14,9 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "1.1.1"
 short_description: Convert Text to EMOJI code.
 description:
-  - Returns the input value unless I(rendering) is set to "github".
-  - Returns C(:x:) if input status string is C(FAIL) and I(rendering) is set to "github".
-  - Returns C(:white_check_mark:) if input status string is C(PASS) and I(rendering) is set to "github".
+  - Returns the input value unless `rendering` is set to "github".
+  - Returns `:x:` if input status string is `FAIL` and `rendering` is set to "github".
+  - Returns `:white_check_mark:` if input status string is `PASS` and `rendering` is set to "github".
 positional: _input
 options:
   _input:

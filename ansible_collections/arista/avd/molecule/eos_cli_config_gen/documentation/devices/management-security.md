@@ -22,13 +22,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -48,24 +48,24 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Entropy source | hardware |
+| Entropy sources | hardware, haveged, cpu jitter, hardware exclusive |
 | Common password encryption key | True |
 | Reversible password encryption | aes-256-gcm |
 | Minimum password length | 17 |
 
 ### Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List |
-| ---------------- | --------------------- | -------------------- | ------------ | ----------- |
-| certificate-profile | - | eAPI.crt | eAPI.key | - |
-| cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 |
-| test1-chain-cert | - | - | - | - |
-| test1-trust-cert | - | - | - | - |
-| test2-chain-cert | - | - | - | - |
-| test2-trust-cert | - | - | - | - |
-| tls-single-version-profile-as-float | 1.0 | - | - | - |
-| tls-single-version-profile-as-string | 1.1 | - | - | - |
-| tls-versions-profile | 1.0 1.1 | - | - | - |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List | CRLs |
+| ---------------- | --------------------- | -------------------- | ------------ | ----------- | ---- |
+| certificate-profile | - | eAPI.crt | eAPI.key | - | ca.crl<br>intermediate.crl |
+| cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - |
+| test1-chain-cert | - | - | - | - | - |
+| test1-trust-cert | - | - | - | - | - |
+| test2-chain-cert | - | - | - | - | - |
+| test2-trust-cert | - | - | - | - | - |
+| tls-single-version-profile-as-float | 1.0 | - | - | - | - |
+| tls-single-version-profile-as-string | 1.1 | - | - | - | - |
+| tls-versions-profile | 1.0 1.1 | - | - | - | - |
 
 ### SSL profile test1-chain-cert Certificates Summary
 
@@ -102,7 +102,8 @@ interface Management1
 ```eos
 !
 management security
-   entropy source hardware
+   entropy source hardware haveged cpu jitter
+   entropy source hardware exclusive
    password encryption-key common
    password encryption reversible aes-256-gcm
    password minimum length 17
@@ -116,6 +117,8 @@ management security
       maximum sequential 7
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
+      crl ca.crl
+      crl intermediate.crl
    ssl profile cipher-list-profile
       cipher-list ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
    ssl profile test1-chain-cert

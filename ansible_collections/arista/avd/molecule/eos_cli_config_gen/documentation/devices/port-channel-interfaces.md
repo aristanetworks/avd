@@ -26,13 +26,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -87,6 +87,12 @@ sFlow is disabled.
 | Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
+
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Port-Channel12 | trunk phone | 100 | 70 | untagged |
 
 ##### IPv4
 
@@ -227,6 +233,7 @@ interface Ethernet50
 | Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
 | Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
 | Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
+| Port-Channel131 | dot1q-tunnel mode | switched | dot1q-tunnel | - | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q
 
@@ -354,9 +361,22 @@ interface Port-Channel5
    switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   ip igmp host-proxy
+   ip igmp host-proxy 239.0.0.1
+   ip igmp host-proxy 239.0.0.2 exclude 10.0.2.1
+   ip igmp host-proxy 239.0.0.3 include 10.0.3.1
+   ip igmp host-proxy 239.0.0.4 include 10.0.4.3
+   ip igmp host-proxy 239.0.0.4 include 10.0.4.4
+   ip igmp host-proxy 239.0.0.4 exclude 10.0.4.1
+   ip igmp host-proxy 239.0.0.4 exclude 10.0.4.2
+   ip igmp host-proxy access-list ACL1
+   ip igmp host-proxy access-list ACL2
+   ip igmp host-proxy report-interval 2
+   ip igmp host-proxy version 2
    l2 mtu 8000
    l2 mru 8000
    mlag 5
+   ip verify unicast source reachable-via rx
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1
@@ -381,6 +401,8 @@ interface Port-Channel9
    ip address 10.9.2.3/31
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
+   bfd neighbor 10.1.2.4
+   bfd per-link rfc-7130
 !
 interface Port-Channel10
    description SRV01_bond0
@@ -398,6 +420,7 @@ interface Port-Channel12
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
+   switchport mode trunk phone
 !
 interface Port-Channel13
    description EVPN-Vxlan single-active redundancy
@@ -471,7 +494,11 @@ interface Port-Channel99
    no switchport
    ip address 192.0.2.10/31
    pim ipv4 sparse-mode
+   pim ipv4 bidirectional
+   pim ipv4 hello interval 15
+   pim ipv4 hello count 4.5
    pim ipv4 dr-priority 200
+   pim ipv4 bfd
 !
 interface Port-Channel100
    logging event link-status
@@ -487,6 +514,7 @@ interface Port-Channel100.101
 interface Port-Channel100.102
    description IFL for TENANT02
    no logging event link-status
+   logging event storm-control discards
    mtu 1500
    encapsulation dot1q vlan 102
    vrf C2
@@ -673,6 +701,11 @@ interface Port-Channel130
    ip nat source dynamic access-list ACL2 pool POOL2
    ip nat destination static 1.0.0.1 2.0.0.1
    ip nat destination dynamic access-list ACL1 pool POOL1
+!
+interface Port-Channel131
+   description dot1q-tunnel mode
+   switchport
+   switchport mode dot1q-tunnel
 ```
 
 ## BFD
@@ -698,9 +731,9 @@ interface Port-Channel130
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Port-Channel99 | - | IPv4 | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Port-Channel99 | - | IPv4 | - | 200 | - |
 
 ## Quality Of Service
 

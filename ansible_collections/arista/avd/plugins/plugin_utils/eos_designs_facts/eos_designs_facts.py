@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -14,9 +14,10 @@ from .overlay import OverlayMixin
 from .short_esi import ShortEsiMixin
 from .uplinks import UplinksMixin
 from .vlans import VlansMixin
+from .wan import WanMixin
 
 
-class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksMixin, VlansMixin):
+class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin, UplinksMixin, VlansMixin):
     """
     `EosDesignsFacts` is based on `AvdFacts`, so make sure to read the description there first.
 
@@ -126,6 +127,15 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return None
 
     @cached_property
+    def downlink_pools(self) -> dict | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        if self.shared_utils.underlay_router:
+            return self.shared_utils.downlink_pools
+        return None
+
+    @cached_property
     def bgp_as(self) -> str | None:
         """
         Exposed in avd_switch_facts
@@ -158,12 +168,34 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
             return self.shared_utils.inband_mgmt_subnet
 
     @cached_property
+    def inband_mgmt_ipv6_subnet(self) -> str | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        if self.shared_utils.configure_parent_for_inband_mgmt_ipv6:
+            return self.shared_utils.inband_mgmt_ipv6_subnet
+
+    @cached_property
     def inband_mgmt_vlan(self) -> int | None:
         """
         Exposed in avd_switch_facts
         """
-        if self.shared_utils.configure_parent_for_inband_mgmt:
+        if self.shared_utils.configure_parent_for_inband_mgmt or self.shared_utils.configure_parent_for_inband_mgmt_ipv6:
             return self.shared_utils.inband_mgmt_vlan
+
+    @cached_property
+    def inband_ztp(self) -> bool | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        return self.shared_utils.inband_ztp
+
+    @cached_property
+    def inband_ztp_lacp_fallback_delay(self) -> int | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        return self.shared_utils.inband_ztp_lacp_fallback_delay
 
     @cached_property
     def dc_name(self) -> str | None:

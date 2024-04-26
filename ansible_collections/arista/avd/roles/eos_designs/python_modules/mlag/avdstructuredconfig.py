@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -9,6 +9,8 @@ from ansible_collections.arista.avd.plugins.filter.list_compress import list_com
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+
+from ..interface_descriptions import InterfaceDescriptionData
 
 
 class AvdStructuredConfigMlag(AvdFacts):
@@ -74,7 +76,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             "name": main_vlan_interface_name,
             "description": "MLAG_PEER",
             "shutdown": False,
-            "ip_address": f"{self.shared_utils.mlag_ip}/31",
+            "ip_address": f"{self.shared_utils.mlag_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}",
             "no_autostate": True,
             "struct_cfg": self.shared_utils.mlag_peer_vlan_structured_config,
             "mtu": self.shared_utils.p2p_uplinks_mtu,
@@ -127,7 +129,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             "mtu": self.shared_utils.p2p_uplinks_mtu,
         }
         if not self.shared_utils.underlay_rfc5549:
-            l3_vlan_interface["ip_address"] = f"{self.shared_utils.mlag_l3_ip}/31"
+            l3_vlan_interface["ip_address"] = f"{self.shared_utils.mlag_l3_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}"
 
         l3_vlan_interface.update(l3_cfg)
 
@@ -145,7 +147,9 @@ class AvdStructuredConfigMlag(AvdFacts):
         port_channel_interface_name = f"Port-Channel{self.shared_utils.mlag_port_channel_id}"
         port_channel_interface = {
             "name": port_channel_interface_name,
-            "description": self.shared_utils.interface_descriptions.mlag_port_channel_interfaces(),
+            "description": self.shared_utils.interface_descriptions.mlag_port_channel_interface(
+                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=port_channel_interface_name)
+            ),
             "type": "switched",
             "shutdown": False,
             "vlans": get(self.shared_utils.switch_data_combined, "mlag_peer_link_allowed_vlans"),
@@ -153,6 +157,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
             "trunk_groups": [self._trunk_groups_mlag_name],
             "struct_cfg": get(self.shared_utils.switch_data_combined, "mlag_port_channel_structured_config"),
+            "flow_tracker": self.shared_utils.get_flow_tracker(None, "mlag_interfaces"),
         }
 
         if self.shared_utils.mlag_l3 is True and self._trunk_groups_mlag_l3_name != self._trunk_groups_mlag_name:
@@ -174,6 +179,10 @@ class AvdStructuredConfigMlag(AvdFacts):
             # Apply ptp config to port-channel
             port_channel_interface["ptp"] = ptp_config
 
+        if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
+            port_channel_interface["lacp_fallback_mode"] = "individual"
+            port_channel_interface["lacp_fallback_timeout"] = self.shared_utils.get_mlag_peer_fact("inband_ztp_lacp_fallback_delay")
+
         return [strip_empties_from_dict(port_channel_interface)]
 
     @cached_property
@@ -192,7 +201,9 @@ class AvdStructuredConfigMlag(AvdFacts):
                 "peer": self.shared_utils.mlag_peer,
                 "peer_interface": mlag_interface,
                 "peer_type": "mlag_peer",
-                "description": self.shared_utils.interface_descriptions.mlag_ethernet_interfaces(mlag_interface),
+                "description": self.shared_utils.interface_descriptions.mlag_ethernet_interface(
+                    InterfaceDescriptionData(shared_utils=self.shared_utils, interface=mlag_interface, peer_interface=mlag_interface)
+                ),
                 "type": "port-channel-member",
                 "shutdown": False,
                 "channel_group": {
@@ -201,6 +212,8 @@ class AvdStructuredConfigMlag(AvdFacts):
                 },
                 "speed": self.shared_utils.mlag_interfaces_speed,
             }
+            if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
+                ethernet_interface.update({"mode": "access", "vlans": self.shared_utils.get_mlag_peer_fact("inband_mgmt_vlan")})
             ethernet_interfaces.append(strip_empties_from_dict(ethernet_interface))
 
         return ethernet_interfaces
@@ -210,14 +223,13 @@ class AvdStructuredConfigMlag(AvdFacts):
         """
         Return Structured Config for MLAG Configuration
         """
-
         mlag_configuration = {
             "domain_id": get(self.shared_utils.switch_data_combined, "mlag_domain_id", default=self.shared_utils.group),
             "local_interface": f"Vlan{self.shared_utils.mlag_peer_vlan}",
             "peer_address": self.shared_utils.mlag_peer_ip,
             "peer_link": f"Port-Channel{self.shared_utils.mlag_port_channel_id}",
-            "reload_delay_mlag": str(get(self.shared_utils.platform_settings, "reload_delay.mlag")),
-            "reload_delay_non_mlag": str(get(self.shared_utils.platform_settings, "reload_delay.non_mlag")),
+            "reload_delay_mlag": str(get(self.shared_utils.platform_settings, "reload_delay.mlag", default="")) or None,
+            "reload_delay_non_mlag": str(get(self.shared_utils.platform_settings, "reload_delay.non_mlag", default="")) or None,
         }
         if (
             get(self.shared_utils.switch_data_combined, "mlag_dual_primary_detection", default=False) is True

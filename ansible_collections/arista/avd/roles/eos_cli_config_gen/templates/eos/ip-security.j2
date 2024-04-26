@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -10,7 +10,9 @@ ip security
 {%     for ike_policy in ip_security.ike_policies | arista.avd.default([]) %}
    !
    ike policy {{ ike_policy.name }}
-{%         if ike_policy.local_id is arista.avd.defined %}
+{%         if ike_policy.local_id_fqdn is arista.avd.defined %}
+      local-id fqdn {{ ike_policy.local_id_fqdn }}
+{%         elif ike_policy.local_id is arista.avd.defined %}
       local-id {{ ike_policy.local_id }}
 {%         endif %}
 {%         if ike_policy.ike_lifetime is arista.avd.defined %}
@@ -40,6 +42,9 @@ ip security
       esp encryption {{ sa_policy.esp.encryption }}
 {%             endif %}
 {%         endif %}
+{%         if sa_policy.sa_lifetime.value is arista.avd.defined %}
+      sa lifetime {{ sa_policy.sa_lifetime.value }} {{ sa_policy.sa_lifetime.unit | arista.avd.default("hours") }}
+{%         endif %}
 {%         if sa_policy.pfs_dh_group is arista.avd.defined %}
       pfs dh-group {{ sa_policy.pfs_dh_group }}
 {%         endif %}
@@ -57,10 +62,13 @@ ip security
       connection {{ profile.connection }}
 {%         endif %}
 {%         if profile.shared_key is arista.avd.defined %}
-      shared-key 7 {{ profile.shared_key }}
+      shared-key 7 {{ profile.shared_key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%         if profile.dpd.interval is arista.avd.defined and profile.dpd.time is arista.avd.defined and profile.dpd.action is arista.avd.defined %}
       dpd {{ profile.dpd.interval }} {{ profile.dpd.time }} {{ profile.dpd.action }}
+{%         endif %}
+{%         if profile.flow_parallelization_encapsulation_udp is arista.avd.defined(true) %}
+      flow parallelization encapsulation udp
 {%         endif %}
 {%         if profile.mode is arista.avd.defined %}
       mode {{ profile.mode }}
@@ -72,5 +80,8 @@ ip security
 {%         if ip_security.key_controller.profile is arista.avd.defined %}
       profile {{ ip_security.key_controller.profile }}
 {%         endif %}
+{%     endif %}
+{%     if ip_security.hardware_encryption_disabled is arista.avd.defined(true) %}
+   hardware encryption disabled
 {%     endif %}
 {% endif %}

@@ -297,3 +297,18 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
+sflow:
+  run: true
+  vrfs:
+  - name: MGMT
+    destinations:
+    - destination: 10.10.10.10
+    - destination: 10.10.10.11
+    source_interface: Management1
+  - name: sflowvrf
+    destinations:
+    - destination: 10.10.10.12
+      port: 1234
+    source_interface: Loopback321
+metadata:
+  platform: vEOS-LAB

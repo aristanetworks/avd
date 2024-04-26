@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -7,8 +7,28 @@
 {% if match_list_input is arista.avd.defined %}
 
 ### Match-lists
+{%     if match_list_input.prefix_ipv4 is arista.avd.defined %}
 
+#### Match-list Input IPv4-prefix Summary
+
+| Prefix List Name | Prefixes |
+| ---------------- | -------- |
+{%         for match_list in match_list_input.prefix_ipv4 %}
+| {{ match_list.name }} | {{ match_list.prefixes | arista.avd.default(['-']) | join(', ') }} |
+{%         endfor %}
+{%     endif %}
+{%     if match_list_input.prefix_ipv6 is arista.avd.defined %}
+
+#### Match-list Input IPv6-prefix Summary
+
+| Prefix List Name | Prefixes |
+| ---------------- | -------- |
+{%         for match_list in match_list_input.prefix_ipv6 %}
+| {{ match_list.name }} | {{ match_list.prefixes | arista.avd.default(['-']) | join(', ') }} |
+{%         endfor %}
+{%     endif %}
 {%     if match_list_input.string is arista.avd.defined %}
+
 #### Match-list Input String Summary
 
 {%         for match_list in match_list_input.string | arista.avd.natural_sort('name') %}

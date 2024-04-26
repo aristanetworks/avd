@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
@@ -40,7 +40,12 @@ class TestAddMdTocFilter:
             toc_output = m.search(resp).group(2)
 
             # Generate TOC for input file
-            toc_input = md_toc.build_toc(MD_INPUT, list_marker="-", keep_header_levels=TOC_LEVEL, skip_lines=SKIP_LINES)
+            try:
+                # Try using new md_toc api when md-toc>=9.0.0.
+                toc_input = md_toc.api.build_toc(MD_INPUT, list_marker="-", keep_header_levels=TOC_LEVEL, skip_lines=SKIP_LINES)
+            except AttributeError:
+                # If that fails, use the previous version md-toc>=7.1.0,<9.0.0
+                toc_input = md_toc.build_toc(MD_INPUT, list_marker="-", keep_header_levels=TOC_LEVEL, skip_lines=SKIP_LINES)
 
             assert toc_output.strip() == toc_input.strip()
 

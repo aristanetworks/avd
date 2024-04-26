@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -13,7 +13,7 @@ keys:
       system:
         type: str
         description: |
-          TCAM profile name to activate
+          TCAM profile name to activate.
       profiles:
         type: list
         secondary_key: config
@@ -25,7 +25,7 @@ keys:
           keys:
             name:
               type: str
-              description: Tcam-Profile Name
+              description: Tcam-Profile Name.
             config:
               type: str
               required: false

@@ -167,6 +167,7 @@ router_bgp:
       description: External IPv4 BGP peer
       send_community: standard extended
       maximum_routes: 0
+      maximum_routes_warning_only: true
       default_originate:
         always: false
         route_map: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
@@ -348,6 +349,8 @@ local_users:
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
     cvpadmin@hostmachine.local
+  secondary_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz=
+    cvpadmin@hostmachine.local
 clock:
   timezone: correctly_templated_timezone
 vrfs:
@@ -391,6 +394,7 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+ntp: null
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS DC1-BL1A
@@ -620,6 +624,16 @@ vxlan_interface:
         vni: 21
       - name: Tenant_C_WAN_Zone
         vni: 31
+metadata:
+  platform: 7280R
+  cv_tags:
+    device_tags:
+    - name: topology_hint_fabric
+      value: EOS_DESIGNS_UNIT_TESTS
+    - name: topology_hint_type
+      value: leaf
+    - name: topology_hint_rack
+      value: DC1_BL1
 sflow:
   vrfs:
   - name: OOB
@@ -627,4 +641,3 @@ sflow:
     - destination: 192.168.200.10
     - destination: 10.0.200.90
     source_interface: Management1
-ntp: null

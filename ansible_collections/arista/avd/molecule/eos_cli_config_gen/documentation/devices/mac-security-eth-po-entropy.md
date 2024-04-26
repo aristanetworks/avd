@@ -23,13 +23,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -49,14 +49,14 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Entropy source | hardware |
+| Entropy sources | hardware |
 | Common password encryption key | True |
 
 ### Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List |
-| ---------------- | --------------------- | -------------------- | ------------ | ----------- |
-| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List | CRLs |
+| ---------------- | --------------------- | -------------------- | ------------ | ----------- | ---- |
+| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - | - |
 
 ### Management Security Device Configuration
 
@@ -147,7 +147,7 @@ FIPS restrictions enabled.
 ###### Keys
 
 | Key ID | Fallback |
-| ------ |  -------- |
+| ------ | -------- |
 | 1234a | - |
 | 1234c | True |
 
@@ -168,8 +168,22 @@ FIPS restrictions enabled.
 ###### Keys
 
 | Key ID | Fallback |
-| ------ |  -------- |
+| ------ | -------- |
 | 1234b | - |
+
+##### Profile A3
+
+###### Settings
+
+| Cipher | Key-Server Priority | Rekey-Period | SCI |
+| ------ | ------------------- | ------------ | --- |
+| aes256-gcm-xpn | - | - | - |
+
+###### Keys
+
+| Key ID | Fallback |
+| ------ | -------- |
+| ab | False |
 
 ### MACsec Device Configuration
 
@@ -189,4 +203,7 @@ mac security
       l2-protocol lldp bypass unauthorized
    profile A2
       key 1234b 7 <removed>
+   profile A3
+      cipher aes256-gcm-xpn
+      key ab 7 <removed>
 ```

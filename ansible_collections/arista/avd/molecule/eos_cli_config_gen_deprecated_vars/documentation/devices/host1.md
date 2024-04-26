@@ -12,6 +12,9 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [RADIUS Server](#radius-server)
+- [Management Security](#management-security)
+  - [Management Security Summary](#management-security-summary)
+  - [Management Security Device Configuration](#management-security-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -46,6 +49,9 @@
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
+- [Queue Monitor](#queue-monitor)
+  - [Queue Monitor Length](#queue-monitor-length)
+  - [Queue Monitor Configuration](#queue-monitor-configuration)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
   - [PIM Sparse Mode](#pim-sparse-mode)
@@ -95,13 +101,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -265,6 +271,22 @@ username admin privilege 15 role network-admin nopassword
 radius-server host 10.10.10.157 vrf mgt key 7 <removed>
 radius-server host 10.10.10.249 key 7 <removed>
 radius-server host 10.10.10.158 key 7 <removed>
+```
+
+## Management Security
+
+### Management Security Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Entropy source | hardware |
+
+### Management Security Device Configuration
+
+```eos
+!
+management security
+   entropy source hardware
 ```
 
 ## Monitoring
@@ -454,9 +476,9 @@ event-handler evpn-blacklist-recovery
 
 #### Flow Tracking Sampled
 
-| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 |
-| ----------- | ------------------- | ------------------------- | ------------------------- |
-| 666 | default | disabled | disabled |
+| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 | Encapsulations |
+| ----------- | ------------------- | ------------------------- | ------------------------- | -------------- |
+| 666 | default | disabled | disabled | - |
 
 ##### Trackers Summary
 
@@ -782,10 +804,10 @@ interface Loopback1
 
 #### Tunnel Interfaces Summary
 
-| Interface | Description | VRF | MTU | Shutdown | Source Interface | Destination | PMTU-Discovery |
-| --------- | ----------- | --- | --- | -------- | ---------------- | ----------- | -------------- |
-| Tunnel3 | test dual stack | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
-| Tunnel4 | test no tcp_mss | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
+| Interface | Description | VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Destination | PMTU-Discovery | IPsec Profile |
+| --------- | ----------- | --- | --- | -------- | ----------- | ---- | ---------------- | ----------- | -------------- | ------------- |
+| Tunnel3 | test dual stack | default | 1500 | - | - | - | Ethernet42 | 1.1.1.1 | - | - |
+| Tunnel4 | test no tcp_mss | default | 1500 | - | - | - | Ethernet42 | 1.1.1.1 | - | - |
 
 ##### IPv4
 
@@ -1040,6 +1062,8 @@ router isis EVPN_UNDERLAY
 
 ### Router BGP
 
+ASN Notation: asplain
+
 #### Router BGP Summary
 
 | BGP AS | Router ID |
@@ -1059,10 +1083,10 @@ router isis EVPN_UNDERLAY
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
 | 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
 | 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
@@ -1076,10 +1100,10 @@ router isis EVPN_UNDERLAY
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 2.2.1.0/24 | False | False | - | - | False |
+| Prefix | AS Set | Advertise Map | Supress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------- | ----------- | ------------ | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | - | - | False | - | - | True |
+| 2.2.1.0/24 | False | - | - | False | - | - | False |
 
 #### Router BGP EVPN Address Family
 
@@ -1250,6 +1274,24 @@ policy-map type pbr PM_PBR_BREAKOUT
    !
    class CM_PBR_INCLUDE
       set nexthop recursive 192.168.4.2
+```
+
+## Queue Monitor
+
+### Queue Monitor Length
+
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| True | 100 | - | - | enabled | disabled | 200000 | 100000 |
+
+### Queue Monitor Configuration
+
+```eos
+!
+queue-monitor length
+queue-monitor length log 100
+queue-monitor length notifying
+queue-monitor length cpu thresholds 200000 100000
 ```
 
 ## Multicast
@@ -1640,7 +1682,7 @@ FIPS restrictions enabled.
 ###### Keys
 
 | Key ID | Fallback |
-| ------ |  -------- |
+| ------ | -------- |
 | 1234b | - |
 
 ### MACsec Device Configuration
@@ -1755,11 +1797,9 @@ class-map type pbr match-any CM_PBR_INCLUDE
 
 ##### PM_REPLICATION_LD
 
-| class | Set | Value |
-| ----- | --- | ----- |
-| CM_REPLICATION_LD | dscp | af11 |
-| CM_REPLICATION_LD | traffic_class | 2 |
-| CM_REPLICATION_LD | drop_precedence | 1 |
+| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
+| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
+| CM_REPLICATION_LD | - | af11 | 2 | 1 | - |
 
 #### QOS Policy Maps Device Configuration
 

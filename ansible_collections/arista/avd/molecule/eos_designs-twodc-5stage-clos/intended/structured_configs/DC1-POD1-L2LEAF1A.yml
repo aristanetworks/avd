@@ -64,3 +64,5 @@ vlan_interfaces:
   shutdown: false
   ip_address: 172.21.110.4/24
   type: inband_mgmt
+metadata:
+  platform: vEOS-LAB

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -31,7 +31,7 @@ keys:
           keys:
             name:
               type: str
-              description: Profile-Name
+              description: Profile-Name.
             cipher:
               type: str
               valid_values:
@@ -71,7 +71,7 @@ keys:
                         - str
                       min: 30
                       max: 100000
-                      description: Rekey period in seconds
+                      description: Rekey period in seconds.
             sci:
               type: bool
             l2_protocols:

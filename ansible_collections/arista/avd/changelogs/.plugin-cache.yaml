@@ -17,10 +17,6 @@ plugins:
         dictionaries.
       name: convert_dicts
       version_added: '2.0'
-    convert_schema:
-      description: Convert AVD Schema to a chosen output format.
-      name: convert_schema
-      version_added: '3.8'
     decrypt:
       description: Decrypt supported EOS passwords.
       name: decrypt
@@ -35,27 +31,23 @@ plugins:
       name: encrypt
       version_added: 3.8.0
     generate_esi:
-      description: Transforms short_esi C(0303:0202:0101) to EVPN ESI format C(0000:0000:0303:0202:0101)
+      description: Transforms short_esi `0303:0202:0101` to EVPN ESI format `0000:0000:0303:0202:0101`
       name: generate_esi
       version_added: '1.1'
     generate_lacp_id:
-      description: Transforms short_esi C(0303:0202:0101) to LACP ID format C(0303.0202.0101)
+      description: Transforms short_esi `0303:0202:0101` to LACP ID format `0303.0202.0101`
       name: generate_lacp_id
       version_added: '1.1'
     generate_route_target:
-      description: Transforms short_esi C(0303:0202:0101) to route-target format C(03:03:02:02:01:01)
+      description: Transforms short_esi `0303:0202:0101` to route-target format `03:03:02:02:01:01`
       name: generate_route_target
       version_added: '1.1'
-    hash_passphrase:
-      description: Compute localized SNMP passphrases
-      name: hash_passphrase
-      version_added: 3.6.0
     hide_passwords:
       description: Replace a value by "<removed>"
       name: hide_passwords
       version_added: 4.0.0
     is_in_filter:
-      description: Returns V(True) if the input hostname matches the I(hostname_filter).
+      description: Returns `True` if the input hostname matches the `hostname_filter`.
       name: is_in_filter
       version_added: '1.1'
     list_compress:
@@ -71,6 +63,10 @@ plugins:
         list of strings.
       name: range_expand
       version_added: 3.4.0
+    snmp_hash:
+      description: Compute localized SNMP passphrases
+      name: snmp_hash
+      version_added: 3.6.0
     status_render:
       description: Convert Text to EMOJI code.
       name: status_render
@@ -90,6 +86,11 @@ plugins:
       name: configlet_build_config
       namespace: ''
       version_added: 1.0.0
+    cv_workflow:
+      description: Deploy various objects to CloudVision
+      name: cv_workflow
+      namespace: ''
+      version_added: 4.7.0
     eos_designs_facts:
       description: Set eos_designs facts
       name: eos_designs_facts
@@ -100,8 +101,13 @@ plugins:
       name: eos_designs_structured_config
       namespace: ''
       version_added: 4.0.0
+    eos_validate_state_reports:
+      description: Generates validation reports for the eos_validate_state role
+      name: eos_validate_state_reports
+      namespace: ''
+      version_added: 4.5.0
     eos_validate_state_runner:
-      description: Leverage ANTA for eos_validate_state role
+      description: Uses ANTA for eos_validate_state role
       name: eos_validate_state_runner
       namespace: ''
       version_added: 4.4.0
@@ -140,7 +146,7 @@ plugins:
       name: contains
       version_added: '2.0'
     defined:
-      description: Test if the value is not C(Undefined) or C(None).
+      description: Test if the value is not `Undefined` or `None`.
       name: defined
       version_added: '2.0'
   vars:
@@ -149,4 +155,4 @@ plugins:
         than group_vars or host_vars
       name: global_vars
       version_added: 4.0.0
-version: 4.4.0
+version: 4.7.1

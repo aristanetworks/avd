@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -15,12 +15,12 @@ keys:
         type: list
         items:
           type: str
-          description: IP or hostname
+          description: IP or hostname.
       source_interface:
         type: str
-        description: Interface name
+        description: Interface name.
       vrf:
         type: str
-        description: VRF Name
+        description: VRF Name.
         convert_types:
           - int

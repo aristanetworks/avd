@@ -3,7 +3,7 @@
 title: AVD example for a MPLS-VPN based WAN Network
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -72,7 +72,7 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here is referenced across the entire example, so keep that in mind if this example must be adapted to a different topology. Finally, the Ansible host is connected to the dedicated out-of-band management port (Management1 when using vEOS-lab):
 
-![Figure: Arista MPLS-VPN physical topology](images/avd-isis-ldp-ipvpn-example.svg)
+![Figure: Arista MPLS-VPN physical topology](images/avd-isis-ldp-ipvpn.svg)
 
 ### IP ranges used
 
@@ -89,7 +89,7 @@ The drawing below shows the physical topology used in this example. The interfac
 | rr1                                                 | 172.16.1.151                |
 | rr2                                                 | 172.16.1.152                |
 | **Point-to-point links between network nodes**      | **(Underlay)**              |
-| WAN1                                                | 100.64.48.0/24              |
+| WAN1                                                | 10.255.3.0/24              |
 | **Loopback0 interfaces for router ID (p)**          | 10.255.0.0/27               |
 | **Loopback0 interfaces for overlay peering (pe)**   | 10.255.1.0/27               |
 | **Loopback0 interfaces for overlay peering (rr)**   | 10.255.2.0/27               |
@@ -430,7 +430,7 @@ A free-standing list of `core_interfaces` dictionaries and their associated prof
 core_interfaces:
   p2p_links_ip_pools:
     - name: core_pool # (1)!
-      ipv4_pool: 100.64.48.0/24
+      ipv4_pool: 10.255.3.0/24
 
   p2p_links_profiles:
     - name: core_profile # (2)!

@@ -33,14 +33,10 @@ name_servers:
   - 8.8.8.8
 
 # NTP Servers IP or DNS name, first NTP server will be preferred and sourced from Management
-ntp:
-  local_interface:
-    name: "{{ mgmt_interface | arista.avd.default('Management1') }}"
-    vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
   servers:
     - name: 192.168.200.5
-      preferred: True
-      vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
 
 queue_monitor_length:
   enabled: true

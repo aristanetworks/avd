@@ -1,0 +1,26 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  ipsec_profile:
+    type: dict
+    keys:
+      ike_policy_name:
+        type: str
+        description: Name of the IKE policy.
+      sa_policy_name:
+        type: str
+        description: Name of the SA policy.
+      profile_name:
+        type: str
+        description: Name of the IPSec profile.
+      shared_key:
+        type: str
+        required: True
+        description: |-
+          The type 7 encrypted IPSec shared key.
+          This variable is sensitive and should be configured using some vault mechanism.

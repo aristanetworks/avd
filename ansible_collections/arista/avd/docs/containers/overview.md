@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -45,7 +45,7 @@ To start using the containers for running AVD:
 
 - Install [VScode Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/tutorial)
 - Add `.devcontainer/devcontainer.json` to your repository containing the AVD inventory (check examples below for possible dev container definitions).
-- Open VSCode command pallette and pick `Dev Containers: Rebuild and Reopen in Container`.
+- Open VSCode command palette and pick `Dev Containers: Rebuild and Reopen in Container`.
 - Wait until the build finish and enjoy running AVD in a container.
 
 If you want to use a specific AVD release, use the following `devcontainer.json`:
@@ -53,7 +53,7 @@ If you want to use a specific AVD release, use the following `devcontainer.json`
 ```json
 {
     "name": "AVD Universal",
-    "image": "ghcr.io/aristanetworks/ansible-avd/universal:python3.11-avd-v4.4.0"
+    "image": "ghcr.io/aristanetworks/avd/universal:python3.11-avd-v4.4.0"
 }
 ```
 
@@ -64,9 +64,9 @@ If you want to test specific AVD branch or fork without making any changes, use 
 ```json
 {
     "name": "AVD Development",
-    "image": "ghcr.io/aristanetworks/ansible-avd/dev:python3.11",
+    "image": "ghcr.io/aristanetworks/avd/dev:python3.11",
     "containerEnv": {
-        "AVD_GITHUB_REPO": "aristanetworks/ansible-avd",
+        "AVD_GITHUB_REPO": "aristanetworks/avd",
         "AVD_BRANCH_NAME": "devel"
     },
     // Run entrypoint script manually as it's ignored by dev container CLI otherwise.

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2019-2023 Arista Networks, Inc.
+# Copyright (c) 2019-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -150,7 +150,7 @@ def isIterable(testing_object=None):
     try:
         iter(testing_object)  # noqa
         return True
-    except TypeError as te:  # noqa # pylint: disable=unused-variable
+    except TypeError:
         return False
 
 

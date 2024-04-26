@@ -15,13 +15,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -39,11 +39,13 @@ interface Management1
 
 ### Router BGP
 
+ASN Notation: asdot
+
 #### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101 | 192.168.255.3 |
+| 65101.0001 | 192.168.255.3 |
 
 #### Router BGP Peer Groups
 
@@ -51,20 +53,20 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote AS | 65001 |
+| Remote AS | 65001.0002 |
 
 ##### PG-2
 
 | Settings | Value |
 | -------- | ----- |
-| Remote AS | 65001 |
+| Remote AS | 65001.0003 |
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 192.168.255.1 | - | default | - | - | - | - | - | - | - | - |
-| 192.168.255.2 | - | default | - | - | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 192.168.255.1 | - | default | - | - | - | - | - | - | - | - | - |
+| 192.168.255.2 | - | default | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP Link-State Address Family
 
@@ -92,12 +94,13 @@ interface Management1
 
 ```eos
 !
-router bgp 65101
+router bgp 65101.0001
+   bgp asn notation asdot
    router-id 192.168.255.3
    neighbor PG-1 peer group
-   neighbor PG-1 remote-as 65001
+   neighbor PG-1 remote-as 65001.0002
    neighbor PG-2 peer group
-   neighbor PG-2 remote-as 65001
+   neighbor PG-2 remote-as 65001.0003
    !
    address-family link-state
       bgp missing-policy direction in action permit

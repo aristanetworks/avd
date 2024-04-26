@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -12,6 +12,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, g
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
+# Campus platforms are separated out by their ability to support "trident_forwarding_table_partition".
+# This is required for EVPN multicast, currently only supported on all 720XP platforms.
+# This command is not supported on 710P or 722XP platforms.  720D range has some devices that support this
+# and others that don't, but I've grouped them all together as none of them support EVPN multicast.
 DEFAULT_PLATFORM_SETTINGS = [
     {
         "platforms": ["default"],
@@ -32,7 +36,7 @@ DEFAULT_PLATFORM_SETTINGS = [
         },
     },
     {
-        "platforms": ["720XP", "722XP"],
+        "platforms": ["720XP"],
         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
         "reload_delay": {
             "mlag": 300,
@@ -42,6 +46,15 @@ DEFAULT_PLATFORM_SETTINGS = [
     },
     {
         "platforms": ["750", "755", "758"],
+        "management_interface": "Management0",
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {"queue_monitor_length_notify": False, "poe": True},
+    },
+    {
+        "platforms": ["720DP", "722XP", "710P"],
         "reload_delay": {
             "mlag": 300,
             "non_mlag": 330,
@@ -80,6 +93,20 @@ DEFAULT_PLATFORM_SETTINGS = [
         "reload_delay": {
             "mlag": 900,
             "non_mlag": 1020,
+        },
+    },
+    {
+        "platforms": ["7358X4"],
+        "management_interface": "Management1/1",
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {
+            "queue_monitor_length_notify": False,
+            "interface_storm_control": True,
+            "bgp_update_wait_for_convergence": True,
+            "bgp_update_wait_install": False,
         },
     },
     {

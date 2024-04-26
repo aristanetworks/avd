@@ -1,0 +1,119 @@
+---
+# Testing CV pathfinder edge with custom control plane policy to make sure the correct
+# control plane policy can be overridden
+
+# Inheriting most values from CV_PATHFINDER_TESTS
+default_node_types:
+  - node_type: wan_rr
+    match_hostnames:
+      - "cv-pathfinder-custom-control-plane-policy-pathfinder.*"
+  - node_type: wan_router
+    match_hostnames:
+      - "cv-pathfinder-custom-control-plane-policy-edge.*"
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+    bgp_as: 65000
+  # Testing HA and disabling HA
+  node_groups:
+    # SITE_HA_DISABLED
+    - group: Site511
+      cv_pathfinder_region: AVD_Land_East
+      cv_pathfinder_site: Site511
+      wan_ha:
+        enabled: False
+      nodes:
+        - name: cv-pathfinder-custom-control-plane-policy-edge-1
+          id: 1
+          l3_interfaces:
+            - name: Ethernet1
+              peer: peer3
+              peer_interface: Ethernet42
+              wan_carrier: ATT
+              wan_circuit_id: 666
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+        - name: cv-pathfinder-custom-control-plane-policy-edge-2
+          id: 2
+          l3_interfaces:
+            - name: Ethernet1
+              peer: peer3
+              peer_interface: Ethernet42
+              wan_carrier: ATT
+              wan_circuit_id: 666
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+        - name: cv-pathfinder-custom-control-plane-policy-edge-3
+          id: 3
+          l3_interfaces:
+            - name: Ethernet1
+              peer: peer3
+              peer_interface: Ethernet42
+              wan_carrier: ATT
+              wan_circuit_id: 666
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+
+wan_rr:
+  defaults:
+    loopback_ipv4_pool: 192.168.44.0/24
+    vtep_loopback_ipv4_pool: 192.168.144.0/24
+    data_plane_cpu_allocation_max: 1
+    bgp_as: 65000
+  nodes:
+    - name: cv-pathfinder-custom-control-plane-policy-pathfinder-1
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Bouygues_Telecom
+          wan_circuit_id: 777
+          static_routes:
+            - prefix: 0.0.0.0/0
+          ip_address: 10.7.7.7/31
+          peer_ip: 10.7.7.6
+        - name: Ethernet2
+          wan_carrier: Colt
+          wan_circuit_id: 10000
+          ip_address: 172.16.0.1/31
+        - name: Ethernet3
+          wan_carrier: Another-ISP
+          wan_circuit_id: 999
+          ip_address: 10.9.9.9/31
+
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      wan_vni: 1
+    - name: PROD
+      wan_vni: 42
+    - name: IT
+      wan_vni: 14
+    # Testing reusing the same policy as default VRF
+  control_plane_virtual_topology:
+    name: CUSTOM-CP-POLICY
+    path_groups:
+      - names: [INET]
+        preference: preferred
+      - names: [MPLS]
+        preference: alternate
+    lowest_hop_count: true
+    constraints:
+      jitter: 5
+  policies:
+    # Name of the DEFAULT-POLICY being overwritten
+    - name: DEFAULT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET]
+          - names: [LTE]
+            preference: 42
+      application_virtual_topologies:
+        - application_profile: VIDEO
+          path_groups:
+            - names: [MPLS, INET]
+              preference: preferred
+          id: 3

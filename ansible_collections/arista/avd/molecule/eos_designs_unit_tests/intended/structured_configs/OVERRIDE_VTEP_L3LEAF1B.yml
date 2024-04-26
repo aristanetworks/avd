@@ -166,3 +166,5 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-LAB

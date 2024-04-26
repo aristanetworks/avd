@@ -5,12 +5,13 @@ __pycache__/
 *$py.class
 .j2cache/
 *.log
+*.pickle
 
 # pyavd ignores
 python-avd/build/
 python-avd/dist/
 python-avd/vendor/
-python-avd/tests/artifacts/
+python-avd/tests/pyavd/artifacts/
 python-avd/pyavd.egg-info/
 python-avd/.tox/
 python-avd/.coverage
@@ -29,6 +30,9 @@ python-avd/.mypy_cache/
 # ansible_collections/arista/avd/tests ignores
 ansible_collections/arista/avd/tests/.mypy_cache/
 
+# Ignore cloned cloudvision-python repo created during generation of cv_client/api
+ansible_collections/arista/avd/plugins/plugin_utils/cv_client/cloudvision-apis/
+
 # Development
 ## pyenv
 .python-version
@@ -39,3 +43,6 @@ ansible_collections/arista/avd/tests/.mypy_cache/
 
 # OSX
 *.DS_Store
+
+# Checksum of schemas
+*schema.sha1

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -34,7 +34,7 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "2.0"
 short_description: Test if a list contains one or more of the supplied values.
 description:
-  - The M(arista.avd.contains) test will test if the passed list contains one or more of the supplied test_values.
+  - The `arista.avd.contains` test will test if the passed list contains one or more of the supplied test_values.
   - The test accepts either a single test_value or a list of test_values.
 positional: _input
 options:
@@ -60,8 +60,8 @@ RETURN = r"""
 ---
 _value:
   description:
-    - Returns V(False) if either the passed value or the test_values are C(Undefined) or C(none).
-    - Returns V(True) if the passed list contains one or more of the supplied test_values. V(False) otherwise.
+    - Returns `False` if either the passed value or the test_values are `Undefined` or `none`.
+    - Returns `True` if the passed list contains one or more of the supplied test_values. `False` otherwise.
   type: boolean
 """
 

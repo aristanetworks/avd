@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -23,6 +23,9 @@ queue-monitor length log {{ queue_monitor_length.log }}
 queue-monitor length notifying
 {%     elif queue_monitor_length.notifying is arista.avd.defined(false) %}
 no queue-monitor length notifying
+{%     endif %}
+{%     if queue_monitor_length.tx_latency is arista.avd.defined(true) %}
+queue-monitor length tx-latency
 {%     endif %}
 {%     if queue_monitor_length.cpu.thresholds.high is arista.avd.defined %}
 {%         if queue_monitor_length.cpu.thresholds.low is arista.avd.defined %}

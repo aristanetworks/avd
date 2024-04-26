@@ -18,6 +18,13 @@ port_profiles:
     parent_profile: common
     vlans: "100"
 
+    # Test phone_vlan with only_vlans_in_use
+  - profile: phone_with_pc
+    mode: trunk phone
+    phone_vlan: 300
+    native_vlan: 100
+    phone_trunk_mode: untagged
+
 network_ports:
   - switches:
       - network-ports-tests.1
@@ -41,6 +48,13 @@ network_ports:
     profile: pc
     description: PCs
 
+  - switches:
+      - network-ports-tests-2
+    switch_ports:
+      - Ethernet11-12
+    profile: phone_with_pc
+    description: Phones with attached PCs
+
   # Test for issue #2223 regarding colon in description
   - switches:
       - network-ports-tests.1
@@ -57,6 +71,45 @@ network_ports:
       channel_id: 42
       mode: "active"
 
+  # Tests for issue #3816
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet14
+    description: Checking monitor sessions on single interface
+    monitor_sessions:
+      - name: DMF
+        role: "source"
+        source_settings:
+          direction: "both"
+        session_settings:
+          encapsulation_gre_metadata_tx: true
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet15-16
+    description: Checking monitor sessions on port-channels
+    port_channel:
+      channel_id: 44
+      mode: "active"
+    monitor_sessions:
+      - name: DMF
+        role: source
+        source_settings:
+          direction: both
+        session_settings:
+          encapsulation_gre_metadata_tx: true
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet17
+    description: Monitor sessions destination
+    monitor_sessions:
+      - name: DMF
+        role: destination
+        session_settings:
+          encapsulation_gre_metadata_tx: true
+
   # The next entries are used to test the duplicate check feature together with the
   # CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT below.
   - switches:
@@ -70,6 +123,20 @@ network_ports:
     switch_ports:
       - Ethernet12
     description: Config overwriting base config
+
+  # Test no description
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet51-54
+    enabled: false
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet51-52
+    port_channel:
+      channel_id: 43
+      mode: "active"
 
 servers:
   - name: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT
@@ -88,6 +155,10 @@ tenants:
       # Vlan 200 will only be configured on L2LEAF_1 since it is not in use
       - id: 200
         name: VLAN200_ON_L2LEAF_1_ONLY
+      # VLAN 300 will be configured on network-ports-tests-1 by default, and
+      # network-ports-tests-2 using only_vlans_in_use
+      - id: 300
+        name: VLAN300_PHONE_ON_L2LEAF1_AND_2
 
 l2leaf:
   node_groups:

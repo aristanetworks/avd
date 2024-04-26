@@ -3,7 +3,7 @@
 title: Input variables for eos_cli_config_gen
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -363,6 +363,18 @@ roles/eos_cli_config_gen/docs/tables/port-channel-interfaces.md
 roles/eos_cli_config_gen/docs/tables/switchport-default.md
 --8<--
 
+### Switchport port security
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/switchport-port-security.md
+--8<--
+
+### Transceiver QSFP default mode 4x10
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/transceiver-qsfp-default-mode-4x10.md
+--8<--
+
 ### Tunnel interfaces
 
 --8<--
@@ -549,6 +561,12 @@ roles/eos_cli_config_gen/docs/tables/virtual-source-nat-vrfs.md
 
 ## Miscellaneous
 
+### Config comment
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/config-comment.md
+--8<--
+
 ### CVX
 
 --8<--
@@ -641,6 +659,12 @@ roles/eos_cli_config_gen/docs/tables/monitor-connectivity.md
 roles/eos_cli_config_gen/docs/tables/monitor-sessions.md
 --8<--
 
+### Monitor layer 1
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/monitor-layer1.md
+--8<--
+
 ### SFLOW
 
 --8<--
@@ -729,6 +753,12 @@ roles/eos_cli_config_gen/docs/tables/queue-monitor-length.md
 roles/eos_cli_config_gen/docs/tables/queue-monitor-streaming.md
 --8<--
 
+### Application traffic recognition
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/application-traffic-recognition.md
+--8<--
+
 ## Routing
 
 ### ARP
@@ -753,6 +783,12 @@ roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-dhcp-snooping.md
+--8<--
+
+### DHCP Servers
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/dhcp-servers.md
 --8<--
 
 ### IP ICMP redirect
@@ -831,6 +867,12 @@ roles/eos_cli_config_gen/docs/tables/router-bgp.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/router-general.md
+--8<--
+
+### Router internet-exit
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-internet-exit.md
 --8<--
 
 ### Router ISIS
@@ -1011,4 +1053,12 @@ roles/eos_cli_config_gen/docs/tables/system.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/tcam-profile.md
+--8<--
+
+## Metadata
+
+These fields are not generating any configuration. They are meant to be used by tools that parse structured configuration.
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/metadata.md
 --8<--

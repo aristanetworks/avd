@@ -3,7 +3,7 @@
 title: arista.avd.natural_sort
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -19,16 +19,16 @@ Sort an input list with natural sorting.
 
 Provides the capability to sort a list or a dictionary of integers and strings that contain alphanumeric characters naturally.
 When leveraged on a dictionary, only the key value will be returned.
-An optional \`sort\_key\` can be specified, to sort on content of certain key if the items are dictionaries.
+An optional `sort_key` can be specified, to sort on content of certain key if the items are dictionaries.
 
-The filter will return an empty list if the value parsed to arista.avd.natural\_sort is <code>None</code> or <code>undefined</code>.
+The filter will return an empty list if the value parsed to `arista.avd.natural_sort` is `None` or `undefined`.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | any | True | None |  | List or dictionary |
-| sort_key | string | optional | None |  | Key to sort on when sorting a list of dictionaries |
+| <samp>_input</samp> | any | True | None |  | List or dictionary |
+| <samp>sort_key</samp> | string | optional | None |  | Key to sort on when sorting a list of dictionaries |
 
 ## Examples
 
@@ -45,7 +45,7 @@ empty_list_2: "{{ some_undefined_var | natural_sort }}" # -> []
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | list | Sorted list if the input was a list. Sorted keys if the input was a dictionary. Empty list if the input value was <code>None</code> or <code>undefined</code>. |
+| _value | list | Sorted list if the input was a list. Sorted keys if the input was a dictionary. Empty list if the input value was `None` or `undefined`. |
 
 ## Authors
 

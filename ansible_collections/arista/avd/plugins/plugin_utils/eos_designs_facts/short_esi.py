@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -30,8 +30,8 @@ class ShortEsiMixin:
         short_esi = get(self.shared_utils.switch_data_combined, "short_esi")
         if short_esi == "auto":
             esi_seed_1 = "".join(self.shared_utils.uplink_switches[:2])
-            esi_seed_2 = "".join(self._uplink_switch_interfaces[:2])
-            esi_seed_3 = "".join(default(self._uplink_interfaces, [])[:2])
+            esi_seed_2 = "".join(self.shared_utils.uplink_switch_interfaces[:2])
+            esi_seed_3 = "".join(default(self.shared_utils.uplink_interfaces, [])[:2])
             esi_seed_4 = default(self.shared_utils.group, "")
             esi_hash = sha256(f"{esi_seed_1}{esi_seed_2}{esi_seed_3}{esi_seed_4}".encode("UTF-8")).hexdigest()
             short_esi = re.sub(r"([0-9a-f]{4})", r"\1:", esi_hash)[:14]

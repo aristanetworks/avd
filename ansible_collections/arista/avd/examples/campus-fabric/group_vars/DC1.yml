@@ -14,7 +14,7 @@ aaa_authorization:
     default: local
 
 # OOB Management network default gateway.
-mgmt_gateway: 172.100.100.1
+mgmt_gateway: 172.16.100.1
 mgmt_interface: Management0
 
 # dns servers.
@@ -22,11 +22,9 @@ name_servers:
   - 8.8.4.4
   - 8.8.8.8
 
-# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
-ntp:
+# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
   servers:
     - name: time.google.com
-      preferred: true
-      vrf: MGMT
     - name: pool.ntp.org
-      vrf: MGMT

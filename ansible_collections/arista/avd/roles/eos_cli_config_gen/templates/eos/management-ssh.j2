@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -53,6 +53,15 @@ management ssh
 {%     endif %}
 {%     if management_ssh.hostkey.server is arista.avd.defined %}
    hostkey server {{ management_ssh.hostkey.server | join(" ") }}
+{%     endif %}
+{%     if management_ssh.fips_restrictions is arista.avd.defined(true) %}
+   fips restrictions
+{%     endif %}
+{%     if management_ssh.hostkey.client_strict_checking is arista.avd.defined(true) %}
+   hostkey client strict-checking
+{%     endif %}
+{%     if management_ssh.hostkey.server_cert is arista.avd.defined %}
+   hostkey server cert {{ management_ssh.hostkey.server_cert }}
 {%     endif %}
 {%     if management_ssh.enable is arista.avd.defined(false) %}
    shutdown

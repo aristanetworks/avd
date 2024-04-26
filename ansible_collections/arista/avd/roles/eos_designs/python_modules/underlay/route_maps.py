@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -23,7 +23,7 @@ class RouteMapsMixin(UtilsMixin):
         - Route map for connected routes redistribution in BGP
         - Route map to filter peer AS in underlay
         """
-        if self.shared_utils.underlay_bgp is not True:
+        if not self.shared_utils.underlay_bgp and not self.shared_utils.is_wan_router:
             return None
 
         route_maps = []
@@ -31,13 +31,15 @@ class RouteMapsMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol != "none" and self.shared_utils.underlay_filter_redistribute_connected:
             # RM-CONN-2-BGP
             sequence_numbers = []
-            sequence_numbers.append(
-                {
-                    "sequence": 10,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
-                }
-            )
+            sequence_10 = {
+                "sequence": 10,
+                "type": "permit",
+                "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
+            }
+            if self.shared_utils.wan_role:
+                sequence_10["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
+
+            sequence_numbers.append(sequence_10)
 
             # SEQ 20 is set by inband management if applicable, so avoid setting that here
 
@@ -56,6 +58,15 @@ class RouteMapsMixin(UtilsMixin):
                         "sequence": 40,
                         "type": "permit",
                         "match": ["ip address prefix-list PL-LOOPBACKS-PIM-RP"],
+                    }
+                )
+
+            if self.shared_utils.wan_ha:
+                sequence_numbers.append(
+                    {
+                        "sequence": 50,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
                     }
                 )
 
@@ -80,6 +91,70 @@ class RouteMapsMixin(UtilsMixin):
                     ],
                 }
             )
+
+        # Route-map IN and OUT for SOO, rendered for WAN routers
+        if self.shared_utils.underlay_routing_protocol == "ebgp" and self.shared_utils.wan_role == "client":
+            # RM-BGP-UNDERLAY-PEERS-IN
+            sequence_numbers = [
+                {
+                    "sequence": 40,
+                    "type": "permit",
+                    "description": "Mark prefixes originated from the LAN",
+                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                },
+            ]
+            if self.shared_utils.wan_ha:
+                sequence_numbers.extend(
+                    [
+                        {
+                            "sequence": 10,
+                            "type": "permit",
+                            "description": "Allow WAN HA peer interface prefixes",
+                            "match": ["ip address prefix-list PL-WAN-HA-PEER-PREFIXES"],
+                        },
+                        {
+                            "sequence": 20,
+                            "type": "permit",
+                            "description": "Allow prefixes originated from the HA peer",
+                            "match": ["extcommunity ECL-EVPN-SOO"],
+                            "set": ["as-path match all replacement auto auto"],
+                        },
+                        {
+                            "sequence": 30,
+                            "type": "permit",
+                            "description": "Use WAN routes from HA peer as backup",
+                            "match": ["as-path ASPATH-WAN"],
+                            "set": ["community no-advertise"],
+                        },
+                    ]
+                )
+            route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-IN", "sequence_numbers": sequence_numbers})
+
+            # RM-BGP-UNDERLAY-PEERS-OUT
+            sequence_numbers = [
+                {
+                    "sequence": 10,
+                    "type": "permit",
+                    "description": "Advertise local routes towards LAN",
+                    "match": ["extcommunity ECL-EVPN-SOO"],
+                },
+                {
+                    "sequence": 20,
+                    "type": "permit",
+                    "description": "Advertise routes received from WAN iBGP towards LAN",
+                    "match": ["route-type internal"],
+                },
+            ]
+            if self.shared_utils.wan_ha:
+                sequence_numbers.append(
+                    {
+                        "sequence": 30,
+                        "type": "permit",
+                        "description": "Advertise WAN HA prefixes towards LAN",
+                        "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
+                    },
+                )
+            route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})
 
         if route_maps:
             return route_maps

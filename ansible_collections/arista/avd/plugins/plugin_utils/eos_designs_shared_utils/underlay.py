@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -21,7 +21,7 @@ class UnderlayMixin:
 
     @cached_property
     def underlay_bgp(self: SharedUtils) -> bool:
-        return self.bgp and self.underlay_routing_protocol == "ebgp" and self.underlay_router and self.uplink_type == "p2p"
+        return self.bgp and self.underlay_routing_protocol == "ebgp" and self.underlay_router and self.uplink_type in ["p2p", "p2p-vrfs"]
 
     @cached_property
     def underlay_mpls(self: SharedUtils) -> bool:
@@ -29,7 +29,7 @@ class UnderlayMixin:
             self.underlay_routing_protocol in ["isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"]
             and self.mpls_lsr
             and self.underlay_router
-            and self.uplink_type == "p2p"
+            and self.uplink_type in ["p2p", "p2p-vrfs"]
         )
 
     @cached_property
@@ -42,11 +42,15 @@ class UnderlayMixin:
 
     @cached_property
     def underlay_ospf(self: SharedUtils) -> bool:
-        return self.underlay_routing_protocol in ["ospf", "ospf-ldp"] and self.underlay_router and self.uplink_type == "p2p"
+        return self.underlay_routing_protocol in ["ospf", "ospf-ldp"] and self.underlay_router and self.uplink_type in ["p2p", "p2p-vrfs"]
 
     @cached_property
     def underlay_isis(self: SharedUtils) -> bool:
-        return self.underlay_routing_protocol in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"] and self.underlay_router and self.uplink_type == "p2p"
+        return (
+            self.underlay_routing_protocol in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"]
+            and self.underlay_router
+            and self.uplink_type in ["p2p", "p2p-vrfs"]
+        )
 
     @cached_property
     def underlay_ipv6(self: SharedUtils) -> bool:

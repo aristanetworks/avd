@@ -49,3 +49,5 @@ vlans:
   tenant: L2LS_ISIS
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-LAB

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -21,7 +21,7 @@ keys:
             description: PoE action for interface. By default in EOS, reboot action is set to power-off.
       interface_shutdown:
         type: dict
-        description: Set the global PoE power behavior for PoE ports when ports are admin down
+        description: Set the global PoE power behavior for PoE ports when ports are admin down.
         keys:
           action:
             type: str

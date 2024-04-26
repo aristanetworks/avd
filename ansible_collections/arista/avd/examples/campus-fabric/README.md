@@ -3,7 +3,7 @@
 title: Example for Campus Fabric
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -151,16 +151,16 @@ Details on this feature can be found [here](../../roles/eos_designs/docs/input-v
 
 | Node   | Management0     | Vlan10    |
 | ------ | --------------- | --------- |
-| SPINE1 | 172.100.100.101 | 10.10.10.2  |
-| SPINE2 | 172.100.100.102 | 10.10.10.3  |
-| LEAF1A | 172.100.100.103 | 10.10.10.6  |
-| LEAF1B | 172.100.100.104 | 10.10.10.7  |
-| LEAF2A | 172.100.100.105 | 10.10.10.8  |
-| LEAF3A | 172.100.100.106 | 10.10.10.9  |
-| LEAF3B | 172.100.100.107 | 10.10.10.10 |
-| LEAF3C | 172.100.100.108 | 10.10.10.11 |
-| LEAF3D | 172.100.100.109 | 10.10.10.12 |
-| LEAF3E | 172.100.100.110 | 10.10.10.13 |
+| SPINE1 | 172.16.100.101 | 10.10.10.2  |
+| SPINE2 | 172.16.100.102 | 10.10.10.3  |
+| LEAF1A | 172.16.100.103 | 10.10.10.6  |
+| LEAF1B | 172.16.100.104 | 10.10.10.7  |
+| LEAF2A | 172.16.100.105 | 10.10.10.8  |
+| LEAF3A | 172.16.100.106 | 10.10.10.9  |
+| LEAF3B | 172.16.100.107 | 10.10.10.10 |
+| LEAF3C | 172.16.100.108 | 10.10.10.11 |
+| LEAF3D | 172.16.100.109 | 10.10.10.12 |
+| LEAF3E | 172.16.100.110 | 10.10.10.13 |
 
 In Campus Networks, having a dedicated out-of-band management network in each IDF is uncommon. Therefore, you can easily disable configuring the Management0 interface and the management VRF by adding these variables to the `DC1_LEAFS.yml` group_vars.
 

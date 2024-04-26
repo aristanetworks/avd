@@ -158,6 +158,7 @@ tenant_a:
             description: External IPv4 BGP peer
             send_community: standard extended
             maximum_routes: 0
+            maximum_routes_warning_only: true
             default_originate:
               always: false
             update_source: Loopback123
@@ -252,7 +253,7 @@ tenant_a:
             enabled: True
             description: "Single description"
             descriptions: ["DC1-BL1A descriptions preferred over single description", "DC1-BL1B descriptions preferred over single description"]
-            # no description nor desciptions is tested in Tenant_OSPF below
+            # no description nor descriptions is tested in Tenant_OSPF below
       - name: Tenant_A_OSPF
         vrf_id: 16
         ospf:
@@ -274,6 +275,26 @@ tenant_a:
               enabled: true
               point_to_point: true
               area: 0
+        loopbacks:
+          - loopback: 123
+            ip_address: 10.1.53.0/32
+            node: DC1-LEAF2A
+            description: Test-Loopback
+            enabled: true
+            ospf:
+              enabled: true
+              area: 1
+          - loopback: 123
+            ip_address: 10.1.53.1/32
+            node: DC1-LEAF2B
+            enabled: false
+            ospf:
+              enabled: true
+            raw_eos_cli: |
+              ip ospf cost 100
+        vtep_diagnostic:
+          loopback: 101
+          loopback_ip_range: 10.255.11.0/24
     l2vlans:
       # L2 vlan as string
       - id: '160'

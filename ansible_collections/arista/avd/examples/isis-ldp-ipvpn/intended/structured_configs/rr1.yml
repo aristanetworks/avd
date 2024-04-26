@@ -143,7 +143,7 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
-  ip_address: 100.64.48.10/31
+  ip_address: 10.255.3.10/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -164,7 +164,7 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
-  ip_address: 100.64.48.12/31
+  ip_address: 10.255.3.12/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -185,7 +185,7 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
-  ip_address: 100.64.48.14/31
+  ip_address: 10.255.3.14/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -198,3 +198,5 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+metadata:
+  platform: vEOS-lab

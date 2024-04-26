@@ -57,6 +57,14 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackE DC1-L2LEAF3A
@@ -134,3 +142,5 @@ ip_igmp_snooping:
     enabled: true
   - id: 161
     enabled: false
+metadata:
+  platform: vEOS-LAB

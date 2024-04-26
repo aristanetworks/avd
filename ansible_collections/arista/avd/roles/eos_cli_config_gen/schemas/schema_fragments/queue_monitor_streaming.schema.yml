@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -13,10 +13,10 @@ keys:
         type: bool
       ip_access_group:
         type: str
-        description: Name of IP ACL
+        description: Name of IP ACL.
       ipv6_access_group:
         type: str
-        description: Name of IPv6 ACL
+        description: Name of IPv6 ACL.
       max_connections:
         type: int
         convert_types:

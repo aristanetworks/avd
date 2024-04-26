@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -151,7 +151,7 @@ Alternatively the default `node_type_keys` can be overridden to add a `ptp_leaf`
 
 #### Manually setting PTP priorities
 
-The automatic PTP priorities can be manually overriden if required, for example for leaf1:
+The automatic PTP priorities can be manually overridden if required, for example for leaf1:
 
 ```yaml
 l3leaf:

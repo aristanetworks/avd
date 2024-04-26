@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -18,7 +18,7 @@ $defs:
         type: str
         description: |
           By default the description is built leveraging `<peer>_<peer_interface>`.
-          When set this key will overide the default value on the physical ports.
+          When set this key will override the default value on the physical ports.
       profile:
         type: str
         description: Port-profile name to inherit configuration.
@@ -60,6 +60,25 @@ $defs:
         type: bool
         default: false
         description: If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
+      phone_vlan:
+        type: int
+        convert_types:
+          - str
+        description: |-
+          Phone VLAN for a mode `trunk phone` port.
+          Requires `mode: trunk phone` to be set.
+        min: 1
+        max: 4094
+      phone_trunk_mode:
+        type: str
+        valid_values:
+          - "tagged"
+          - "untagged"
+          - "tagged phone"
+          - "untagged phone"
+        description: |-
+          Specify if the phone traffic is tagged or untagged.
+          If both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
       trunk_groups:
         type: list
         items:
@@ -98,7 +117,7 @@ $defs:
               - "on"
       qos_profile:
         type: str
-        description: QOS profile name
+        description: QOS profile name.
       ptp:
         type: dict
         description: |
@@ -124,8 +143,13 @@ $defs:
               - "smpte2059-2"
       sflow:
         type: bool
-        description: |
-          Configures sFlow on the interface. Overrides `fabric_sflow` setting.
+        description: |-
+          Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.
+      flow_tracking:
+        type: dict
+        $ref: "eos_designs#/$defs/flow_tracking_link"
+        description: |-
+          Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
       link_tracking:
         type: dict
         description: |
@@ -229,6 +253,13 @@ $defs:
               - str
             min: 1
             max: 10
+          unauthorized:
+            type: dict
+            keys:
+              access_vlan_membership_egress:
+                type: bool
+              native_vlan_membership_egress:
+                type: bool
       poe:
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
         type: dict
@@ -354,7 +385,7 @@ $defs:
                       type: bool
                     size:
                       type: int
-                      description: Size in bytes
+                      description: Size in bytes.
                       convert_types:
                         - str
       ethernet_segment:
@@ -459,7 +490,17 @@ $defs:
                 type: str
                 valid_values:
                   - static
-                description: Currently only static mode is supported.
+                  - individual
+                description: |
+                  Either static or individual mode is supported.
+                  If the mode is set to "individual" the "individual.profile" setting must be defined.
+              individual:
+                type: dict
+                description: Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to "individual".
+                keys:
+                  profile:
+                    type: str
+                    description: Port-profile name to inherit configuration.
               timeout:
                 type: int
                 convert_types:
@@ -494,12 +535,12 @@ $defs:
                   type: int
                   convert_types:
                     - str
-                  description: Subinterface number
+                  description: Subinterface number.
                 short_esi:
                   type: str
                   description: |
-                    In format xxxx:xxxx:xxxx or "auto"
-                    Required for multihomed port-channels with subinterfaces
+                    In format xxxx:xxxx:xxxx or "auto".
+                    Required for multihomed port-channels with subinterfaces.
                 vlan_id:
                   type: int
                   convert_types:
@@ -530,6 +571,9 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items/"
+      validate_state:
+        type: bool
+        description: Set to false to disable interface validation by the `eos_validate_state` role.
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.

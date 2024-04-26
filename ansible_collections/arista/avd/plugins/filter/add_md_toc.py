@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -31,8 +31,8 @@ requirements:
   - md_toc
 short_description: Parse the input Markdown and add a Table of Contents between the toc_markers.
 description:
-  - The filter is used in M(arista.avd.eos_designs) to create a table of contents for Fabric Documentation.
-  - The filter is also used in M(arista.avd.eos_cli_config_gen) to create a table of contents for Device Documentation.
+  - The filter is used in `arista.avd.eos_designs` to create a table of contents for Fabric Documentation.
+  - The filter is also used in `arista.avd.eos_cli_config_gen` to create a table of contents for Device Documentation.
 positional: _input
 options:
   _input:
@@ -118,7 +118,12 @@ def add_md_toc(md_input, skip_lines=0, toc_levels=3, toc_marker="<!-- toc -->"):
     with StringIO(md_input) as md:
         stdin = sys.stdin
         sys.stdin = md
-        toc = md_toc.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
+        try:
+            # Try using new md_toc api when md-toc>=9.0.0.
+            toc = md_toc.api.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
+        except AttributeError:
+            # If that fails, use the previous version md-toc>=7.1.0,<9.0.0
+            toc = md_toc.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
         sys.stdin = stdin
 
     # Insert TOC between markers

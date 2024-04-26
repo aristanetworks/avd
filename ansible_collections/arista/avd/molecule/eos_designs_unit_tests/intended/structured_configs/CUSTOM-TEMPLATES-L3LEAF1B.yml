@@ -177,6 +177,11 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
+- name: Port-Channel12
+  description: TEST_CUSTOM_PREFIX_SERVER-2_portchannel
+  type: switched
+  shutdown: false
+  mode: trunk
 ethernet_interfaces:
 - name: Ethernet3
   peer: CUSTOM-TEMPLATES-L3LEAF1A
@@ -207,6 +212,26 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 172.31.255.23/31
+- name: Ethernet12
+  peer: SERVER-2
+  peer_interface: Nic1
+  peer_type: server
+  description: TEST_CUSTOM_PREFIX_SERVER-2_Nic1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 12
+    mode: active
+- name: Ethernet13
+  peer: SERVER-2
+  peer_interface: Nic2
+  peer_type: server
+  description: TEST_CUSTOM_PREFIX_SERVER-2_Nic2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 12
+    mode: active
 mlag_configuration:
   domain_id: CUSTOM_TEMPLATES_L3LEAF1
   local_interface: Vlan4094
@@ -265,3 +290,5 @@ vxlan_interface:
       vrfs:
       - name: TEST_VRF
         vni: 1
+metadata:
+  platform: vEOS-LAB

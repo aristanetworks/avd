@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -14,7 +14,7 @@ queue-monitor streaming
    ip access-group {{ queue_monitor_streaming.ip_access_group }}
 {%     endif %}
 {%     if queue_monitor_streaming.ipv6_access_group is arista.avd.defined %}
-   ipv6 access-group {{ queue_monitor_streaming.ip_access_group }}
+   ipv6 access-group {{ queue_monitor_streaming.ipv6_access_group }}
 {%     endif %}
 {%     if queue_monitor_streaming.vrf is arista.avd.defined %}
    vrf {{ queue_monitor_streaming.vrf }}

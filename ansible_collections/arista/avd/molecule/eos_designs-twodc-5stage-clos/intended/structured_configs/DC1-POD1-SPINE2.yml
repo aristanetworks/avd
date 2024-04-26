@@ -196,3 +196,5 @@ loopback_interfaces:
   description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.110.2/32
+metadata:
+  platform: vEOS-LAB

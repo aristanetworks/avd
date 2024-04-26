@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -13,6 +13,9 @@
 {%         endif %}
 {%         set sample_cli = sample_cli ~ sflow.sample %}
 {{ sample_cli }}
+{%     endif %}
+{%     if sflow.sample_input_subinterface is arista.avd.defined(true) %}
+sflow sample input subinterface
 {%     endif %}
 {%     if sflow.polling_interval is arista.avd.defined %}
 sflow polling-interval {{ sflow.polling_interval }}
@@ -42,6 +45,9 @@ sflow vrf {{ vrf.name }} source {{ vrf.source }}
 sflow source-interface {{ sflow.source_interface }}
 {%     elif sflow.source is arista.avd.defined %}
 sflow source {{ sflow.source }}
+{%     endif %}
+{%     if sflow.sample_output_subinterface is arista.avd.defined(true) %}
+sflow sample output subinterface
 {%     endif %}
 {%     if sflow.extensions is arista.avd.defined %}
 {%         for extension in sflow.extensions | arista.avd.natural_sort('name') if extension.name is arista.avd.defined and extension.enabled is arista.avd.defined %}

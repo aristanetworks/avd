@@ -105,3 +105,5 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
+metadata:
+  platform: vEOS-LAB

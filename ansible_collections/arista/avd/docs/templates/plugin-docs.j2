@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,7 +9,7 @@
 title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -36,8 +36,8 @@ title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 {%         if spec.max %}
 {%             set _ = restrictions.append("Max value: <code>" ~ spec.max ~ "</code>") %}
 {%         endif %}
-{%         set description = spec.description | map("md_ify") | map("replace", "\.", ".") | map("replace", "\,", ",") | join("<br>") %}
-| {{ "    " * level }}{{ name }} | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
+{%         set description = spec.description | map("e") | join("<br>") | trim | replace("\n", "<br>") %}
+| <samp>{{ "&nbsp;" * 4 * level }}{{ name }}</samp> | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
 {%         if spec.suboptions %}
 {{ option_desc(spec.suboptions, level + 1) -}}
 {%         endif %}
@@ -50,7 +50,7 @@ title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 {%     endif %}
 {%     for name, spec in results.items() %}
 {%         set typ = spec.type | default("any") %}
-{%         set description = spec.description | map("md_ify") | map("replace", "\.", ".") | map("replace", "\,", ",") | join("<br>") %}
+{%         set description = spec.description | map("e") | join("<br>") | trim | replace("\n", "<br>") %}
 | {{ "    " * level }}{{ name }} | {{ typ }} | {{ description }} |
 {%         if spec.contains %}
 {{ result_desc(spec.contains, level + 1) -}}
@@ -64,7 +64,7 @@ title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 {% if deprecated %}
 
 !!! danger "This plugin is **deprecated**"
-    This {{ plugin_type }} will be removed in version {{ deprecated['removed_in'] | default('') | string | md_ify | replace("\.", ".") | replace("\,", ",") }}.
+    This {{ plugin_type }} will be removed in version {{ deprecated['removed_in'] | default('') }}.
 
 {% else %}
 {%     set module_states = {
@@ -84,14 +84,14 @@ title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 {% endif %}
 {% if short_description %}
 
-{{ short_description | md_ify | replace("\.", ".") | replace("\,", ",") }}
+{{ short_description | e }}
 {% endif %}
 {% if description %}
 
 ## Synopsis
 {%     for desc in description %}
 
-{{ desc | md_ify | replace("\.", ".") | replace("\,", ",") }}
+{{ desc | e }}
 {%     endfor %}
 {% endif %}
 {% if requirements %}
@@ -101,7 +101,7 @@ title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 The below requirements are needed on the host that executes this module.
 
 {%     for req in requirements %}
-- {{ req | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- {{ req | e }}
 {%     endfor %}
 {% endif %}
 {% if options %}
@@ -115,7 +115,7 @@ The below requirements are needed on the host that executes this module.
 ## Notes
 
 {%     for note in notes %}
-- {{ note | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- {{ note | e }}
 {%     endfor %}
 {% endif %}
 {% if seealso %}
@@ -124,13 +124,13 @@ The below requirements are needed on the host that executes this module.
 
 {%     for item in seealso %}
 {%         if item.module is defined and item.description is defined %}
-- :ref:`{{ item.module }}_module<br>{{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- :ref:`{{ item.module }}_module<br>{{ item.description | e }}
 {%         elif item.module is defined %}
 - :ref:`{{ item.module }}_module`<br>The official documentation on the **{{ item.module }}** module.
 {%         elif item.name is defined and item.link is defined and item.description is defined %}
-- {{ item.name }}: [{{ item.link }}]({{ item.link }})<br>{{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- {{ item.name }}: [{{ item.link }}]({{ item.link }})<br>{{ item.description | e }}
 {%         elif item.ref is defined and item.description is defined %}
-- :ref:`{{ item.ref }}`<br>{{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- :ref:`{{ item.ref }}`<br>{{ item.description | e }}
 {%         endif %}
 {%     endfor %}
 {% endif %}

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -17,19 +17,19 @@ keys:
       keys:
         name:
           type: str
-          description: Interface-Group name
+          description: Interface-Group name.
         interfaces:
           type: list
           items:
             type: str
-            description: Interface Name
+            description: Interface Name.
         bgp_maintenance_profiles:
           type: list
           items:
             type: str
-            description: Name of BGP Maintenance Profile
+            description: Name of BGP Maintenance Profile.
         interface_maintenance_profiles:
           type: list
           items:
             type: str
-            description: Name of Interface Maintenance Profile
+            description: Name of Interface Maintenance Profile.

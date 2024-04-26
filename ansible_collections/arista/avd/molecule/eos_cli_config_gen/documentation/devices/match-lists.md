@@ -15,13 +15,13 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
@@ -39,6 +39,18 @@ interface Management1
 
 ### Match-lists
 
+#### Match-list Input IPv4-prefix Summary
+
+| Prefix List Name | Prefixes |
+| ---------------- | -------- |
+| molecule_v4 | 10.10.10.0/24, 10.10.20.0/24 |
+
+#### Match-list Input IPv6-prefix Summary
+
+| Prefix List Name | Prefixes |
+| ---------------- | -------- |
+| molecule_v6 | 2001:0DB8::/32 |
+
 #### Match-list Input String Summary
 
 ##### molecule
@@ -51,6 +63,13 @@ interface Management1
 #### Match-lists Device Configuration
 
 ```eos
+!
+match-list input prefix-ipv4 molecule_v4
+   match prefix-ipv4 10.10.10.0/24
+   match prefix-ipv4 10.10.20.0/24
+!
+match-list input prefix-ipv6 molecule_v6
+   match prefix-ipv6 2001:0DB8::/32
 !
 match-list input string molecule
    10 match regex ^.*MOLECULE.*$

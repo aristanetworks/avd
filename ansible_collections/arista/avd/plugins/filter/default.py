@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -18,15 +18,15 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "2.0"
 short_description: Returns input value if defined and is not none. Otherwise, return default value.
 description: |-
-  The M(arista.avd.default) filter can provide the same essential capability as the built-in C(default) filter.
+  The `arista.avd.default` filter can provide the same essential capability as the built-in `default` filter.
   It will return the input value only if it's valid and, if not, provide a default value instead.
-  Our custom filter requires a value to be C(not undefined) and C(not None) to pass through.
+  Our custom filter requires a value to be `not undefined` and `not None` to pass through.
   Furthermore, the filter allows multiple default values as arguments, which will undergo the same validation until we find a valid default value.
-  As a last resort, the filter will return C(None).
+  As a last resort, the filter will return `None`.
 positional: _input
 options:
   _input:
-    description: Default value to check. Will be returned untouched if C(not undefined) and C(not None).
+    description: Default value to check. Will be returned untouched if `not undefined` and `not None`.
     type: any
     required: true
   default_values:
@@ -42,7 +42,7 @@ myvalue: "{{ variable | arista.avd.default(default_value_1, default_value_2) }}"
 RETURN = r"""
 ---
 _value:
-  description: Input value if C(not undefined) and C(not None). Otherwise, return the first defined default value or C(None).
+  description: Input value if `not undefined` and `not None`. Otherwise, return the first defined default value or `None`.
   type: any
 """
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
@@ -87,6 +87,14 @@
 - name: "Create folder {{ eos_validate_state_name }} for EOS state report dir"
   ansible.builtin.file:
     path: "{{ eos_validate_state_dir }}"
+    state: directory
+    mode: 0775
+  delegate_to: localhost
+  run_once: True
+
+- name: "Create folder {{ custom_anta_catalogs_dir_name }} for input custom ANTA catalogs"
+  ansible.builtin.file:
+    path: "{{ custom_anta_catalogs_dir }}"
     state: directory
     mode: 0775
   delegate_to: localhost

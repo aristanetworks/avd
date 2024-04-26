@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
@@ -26,7 +26,7 @@ class AvdStructuredConfigCoreInterfacesAndL3Edge(
     a dict with the name of the method as key. This means that each key in the final dict corresponds to a method.
 
     The Class uses AvdFacts, as the base class, to inherit the _hostvars, keys and other attributes.
-    All other methods are included as "Mixins" to make the files more managable.
+    All other methods are included as "Mixins" to make the files more manageable.
 
     The order of the @cached_properties methods imported from Mixins will also control the order in the output.
     """

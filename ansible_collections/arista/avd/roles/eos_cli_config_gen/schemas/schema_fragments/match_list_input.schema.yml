@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -10,6 +10,38 @@ keys:
     type: dict
     display_name: Match Lists
     keys:
+      prefix_ipv4:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Prefix-List Name.
+            prefixes:
+              type: list
+              required: true
+              min_length: 1
+              description: List of IPv4 prefixes (with the subnet mask e.g. 192.0.2.0/24).
+              items:
+                type: str
+      prefix_ipv6:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Prefix-List Name.
+            prefixes:
+              type: list
+              required: true
+              min_length: 1
+              description: List of IPv6 prefixes (with the subnet mask e.g. 2001:db8:abcd:0013::/64).
+              items:
+                type: str
       string:
         type: list
         primary_key: name
@@ -20,7 +52,7 @@ keys:
           keys:
             name:
               type: str
-              description: Match-list Name
+              description: Match-list Name.
             sequence_numbers:
               type: list
               required: true
@@ -32,10 +64,10 @@ keys:
                 keys:
                   sequence:
                     type: int
-                    description: Sequence ID
+                    description: Sequence ID.
                     convert_types:
                       - str
                   match_regex:
                     type: str
                     required: true
-                    description: Regular Expression
+                    description: Regular Expression.

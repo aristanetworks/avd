@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -35,9 +35,9 @@ class EthernetInterfacesMixin(UtilsMixin):
         subif_parent_interface_names = set()
 
         if self.shared_utils.network_services_l3:
-            for tenant in self._filtered_tenants:
+            for tenant in self.shared_utils.filtered_tenants:
                 for vrf in tenant["vrfs"]:
-                    # The l3_interfaces has already been filtered in _filtered_tenants
+                    # The l3_interfaces has already been filtered in filtered_tenants
                     # to only contain entries with our hostname
                     for l3_interface in vrf["l3_interfaces"]:
                         nodes_length = len(l3_interface["nodes"])
@@ -70,6 +70,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "description": interface_description,
                                 "eos_cli": l3_interface.get("raw_eos_cli"),
                                 "struct_cfg": l3_interface.get("structured_config"),
+                                "flow_tracker": self.shared_utils.get_flow_tracker(l3_interface, "l3_interfaces"),
                             }
 
                             if "." in interface_name:
@@ -122,14 +123,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                             if get(l3_interface, "pim.enabled"):
                                 if not vrf.get("_evpn_l3_multicast_enabled"):
                                     raise AristaAvdError(
-                                        f"'pim: enabled' set on l3_interface {interface_name} on {self.shared_utils.hostname} requires evpn_l3_multicast:"
-                                        f" enabled: true under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                                        f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires evpn_l3_multicast:"
+                                        f" enabled: true under VRF '{vrf['name']}' or Tenant '{tenant['name']}'"
                                     )
 
                                 if not vrf.get("_pim_rp_addresses"):
                                     raise AristaAvdError(
-                                        f"'pim: enabled' set on l3_interface {interface_name} on {self.shared_utils.hostname} requires at least one RP defined"
-                                        f" in pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                                        f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires at least one RP"
+                                        f" defined in pim_rp_addresses under VRF '{vrf['name']}' or Tenant '{tenant['name']}'"
                                     )
 
                                 interface["pim"] = {"ipv4": {"sparse_mode": True}}
@@ -146,7 +147,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             )
 
         if self.shared_utils.network_services_l1:
-            for tenant in self._filtered_tenants:
+            for tenant in self.shared_utils.filtered_tenants:
                 if "point_to_point_services" not in tenant:
                     continue
 

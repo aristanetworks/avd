@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -116,13 +116,14 @@ $defs:
             - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
             - Enables `redistribute igmp` on the router bgp MAC VRF.
             - When evpn_l2_multicast.enabled is true for a VLAN or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
+            - Requires `evpn_multicast` to also be set to `true`.
           type: dict
           keys:
             enabled:
               type: bool
             underlay_l2_multicast_group_ipv4_pool:
               type: str
-              description: IPv4_address/Mask
+              description: IPv4_address/Mask.
             underlay_l2_multicast_group_ipv4_pool_offset:
               type: int
               convert_types:
@@ -143,13 +144,14 @@ $defs:
                  - If switch is part of an MLAG pair, enables "pim ipv4 sparse-mode" on the SVI.
                  - If switch is standalone or A-A MH, enables "ip igmp" on the SVI.
                  - If "ip address virtual" is configured, enables "pim ipv4 local-interface" and uses the diagnostic Loopback defined in the VRF
+            - Requires `evpn_multicast` to also be set to `true`.
           type: dict
           keys:
             enabled:
               type: bool
             evpn_underlay_l3_multicast_group_ipv4_pool:
               type: str
-              description: IPv4_address/Mask
+              description: IPv4_address/Mask.
               required: true
             evpn_underlay_l3_multicast_group_ipv4_pool_offset:
               type: int
@@ -220,7 +222,7 @@ $defs:
             source_address:
               type: str
               format: ipv4
-              description: Default IP address of Loopback0
+              description: Default IP address of Loopback0.
             version:
               type: int
               convert_types:
@@ -289,6 +291,28 @@ $defs:
                   "vrf_id" is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.
                   "vrf_id" may also be used for VRF RD/RT ID. See "overlay_rd_type" and "overlay_rt_type" for details.
                   "vrf_id" is preferred over "vrf_vni" for MLAG iBGP peering vlan, see "mlag_ibgp_peering_vrfs.base_vlan" for details.
+              rd_override:
+                type: str
+                convert_types:
+                  - int
+                description: |
+                  By default, the VRF RD will be derived from the pattern defined in `overlay_rd_type`.
+                  The rd_override allows us to override this value and statically define it.
+
+                  rd_override supports two formats:
+                    - A single number will be used in the RD assigned number subfield (second part of the RD).
+                    - A full RD string with colon separator which will override the full RD.
+              rt_override:
+                type: str
+                convert_types:
+                  - int
+                description: |
+                  By default, the VRF RT will be derived from the pattern defined in `overlay_rt_type`.
+                  The rt_override allows us to override this value and statically define it.
+
+                  rt_override supports two formats:
+                    - A single number will be used in the RT assigned number subfield (second part of the RT).
+                    - A full RT string with colon separator which will override the full RT.
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: |
@@ -335,7 +359,7 @@ $defs:
                   - str
                 description: |
                   Manually define the VLAN used on the MLAG pair for the iBGP session.
-                  By default this parameter is calculated using the following formula: <mlag_ibgp_peering_vrfs.base_vlan> + <vrf_id> - 1.
+                  By default this parameter is calculated using the following formula: `<mlag_ibgp_peering_vrfs.base_vlan>` + `<vrf_id>` - 1.
                 min: 1
                 max: 4096
               vtep_diagnostic:
@@ -505,6 +529,7 @@ $defs:
                   table: network-services-vrfs-svis-settings
                 type: list
                 primary_key: id
+                allow_duplicate_primary_key: True
                 convert_types:
                   - dict
                 description: |
@@ -542,6 +567,11 @@ $defs:
                         convert_types:
                           - int
                         description: Tag value.
+                    evpn_vlan_bundle:
+                      type: str
+                      description: |
+                        Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+                        The common option "evpn_vlan_aware_bundles" is disregarded for this option.
                     nodes:
                       type: list
                       primary_key: node
@@ -665,12 +695,17 @@ $defs:
                     pim:
                       type: dict
                       description: |
-                        Enable PIM sparse-mode on the interface; requires "evpn_l3_multicast" to be enabled on the VRF/Tenant
+                        Enable PIM sparse-mode on the interface; requires "evpn_l3_multicast" to be enabled on the VRF/Tenant.
                         Enabling this implicitly makes the device a PIM External Gateway (PEG) in EVPN designs only.
                         At least one RP address must be configured for EVPN PEG to be configured.
                       keys:
                         enabled:
                           type: bool
+                    flow_tracking:
+                      type: dict
+                      $ref: "eos_designs#/$defs/flow_tracking_link"
+                      description: |-
+                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                     structured_config:
                       type: dict
                       description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
@@ -681,6 +716,49 @@ $defs:
                       type: str
                       description: |
                         EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.
+              loopbacks:
+                documentation_options:
+                  table: network-services-vrfs-loopbacks-settings
+                type: list
+                description: |
+                  List of Loopback interfaces.
+                  This will create Loopback interfaces inside the VRF.
+                items:
+                  type: dict
+                  keys:
+                    node:
+                      type: str
+                      required: true
+                    loopback:
+                      type: int
+                      required: true
+                      min: 0
+                      max: 8191
+                    ip_address:
+                      type: str
+                      required: true
+                    description:
+                      type: str
+                    enabled:
+                      type: bool
+                      default: True
+                    ospf:
+                      type: dict
+                      description: OSPF interface configuration.
+                      keys:
+                        enabled:
+                          type: bool
+                          default: False
+                        area:
+                          type: str
+                          convert_types:
+                            - int
+                          description: OSPF area ID.
+                          default: "0"
+                    raw_eos_cli:
+                      type: str
+                      description: |
+                        EOS CLI rendered directly on the Loopback interface in the final EOS configuration.
               static_routes:
                 type: list
                 description: |
@@ -797,7 +875,9 @@ $defs:
                       type: str
                       convert_types:
                         - int
-                      description: Remote BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                      description: |-
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     description:
                       type: str
                     password:
@@ -819,6 +899,8 @@ $defs:
                       min: 0
                       max: 4294967294
                       description: Maximum number of routes (0 means unlimited).
+                    maximum_routes_warning_only:
+                      type: bool
                     default_originate:
                       type: dict
                       keys:
@@ -870,9 +952,9 @@ $defs:
                       type: str
                       convert_types:
                         - int
-                      description: |
-                        Local BGP ASN.
-                        eg. "65001.1200".
+                      description: |-
+                        Local BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     weight:
                       type: int
                       convert_types:
@@ -955,6 +1037,7 @@ $defs:
             table: network-services-l2vlans-settings
           type: list
           primary_key: id
+          allow_duplicate_primary_key: True
           convert_types:
             - dict
           description: Define L2 network services organized by vlan id.
@@ -967,7 +1050,7 @@ $defs:
                   - str
                 min: 1
                 max: 4094
-                description: VLAN ID
+                description: VLAN ID.
               vni_override:
                 type: int
                 convert_types:
@@ -988,7 +1071,7 @@ $defs:
 
                   rt_override supports two formats:
                     - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
-                    - A full RT string with colon seperator which will override the full RT.
+                    - A full RT string with colon separator which will override the full RT.
               rd_override:
                 type: str
                 convert_types:
@@ -1000,11 +1083,11 @@ $defs:
 
                   rd_override supports two formats:
                     - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-                    - A full RD string with colon seperator which will override the full RD.
+                    - A full RD string with colon separator which will override the full RD.
               name:
                 type: str
                 required: true
-                description: VLAN name
+                description: VLAN name.
               tags:
                 type: list
                 description: |
@@ -1018,11 +1101,18 @@ $defs:
                 type: bool
                 default: true
                 description: Extend this L2VLAN over VXLAN.
+              spanning_tree_priority:
+                type: int
+                convert_types:
+                  - str
+                description: |-
+                  Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.
+                  The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).
               evpn_vlan_bundle:
                 type: str
                 description: |
                   Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                  To use this option the common "evpn_vlan_aware_bundles" option must be set to true.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this option.
               trunk_groups:
                 type: list
                 items:
@@ -1102,7 +1192,7 @@ $defs:
             keys:
               name:
                 type: str
-                description: Pseudowire name
+                description: Pseudowire name.
               type:
                 type: str
                 default: vpws-pseudowire
@@ -1117,7 +1207,7 @@ $defs:
                   keys:
                     number:
                       type: int
-                      description: Subinterface number
+                      description: Subinterface number.
                       convert_types:
                         - str
               endpoints:
@@ -1136,7 +1226,7 @@ $defs:
                       description: Pseudowire ID on this endpoint.
                     nodes:
                       type: list
-                      description: Usually one node. With ESI multihoming we support two nodes per pseudowire endpoint
+                      description: Usually one node. With ESI multihoming we support two nodes per pseudowire endpoint.
                       required: true
                       min_length: 1
                       items:

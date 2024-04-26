@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -11,14 +11,16 @@ The purpose of this tutorial is to review the steps required in order to integra
 !!! info "Important"
     The name of the service account created on CVaaS must match a username configured to be authorized on EOS,
     otherwise device interactive API calls may fail due to authorization denial.
+
     When using service accounts, on ansible side the `ansible_user` variable must always be `cvaas` or `svc_account`.
     The `cvaas` and `svc_account` are special variable names to notify the client to switch to using service accounts instead of creating a session using the login API with username/password.
+
     When using service accounts the username is embedded into the token itself so it does not need to be passed in a separate HTTP header on the client side.
     For example when using service accounts we would have the following:
-    - on the CV UI the username in Users page and Service Accounts page would be john.smith
+
+    - on the CV UI the username in Users page and Service Accounts page would be `john.smith`
     - on EOS in the running config there would be either a local user: `username john.smith privilege 15 role <roleName> <nopassword/secret>` or one in TACACS/RADIUS
-    - on ansible side in inventory.yaml the `ansible_user` has to be set to `cvaas` or `svc_account`, e.g.:  `ansible_user: cvaas` or `ansible_user: svc_account`
-      and `ansible_password` will reference the service account token, e.g.: `"{{ lookup('file', '/tokens/cvaas.tok')}}"`
+    - on ansible side in `inventory.yaml` the `ansible_user` has to be set to `cvaas` or `svc_account`, e.g.:  `ansible_user: cvaas` or `ansible_user: svc_account` and `ansible_password` will reference the service account token, e.g.: `"{{ lookup('file', '/tokens/cvaas.tok')}}"`
     - reference: [ansible-cvp authentication](https://cvp.avd.sh/en/stable/docs/how-to/cvp-authentication/)
 
 ## Steps to create service accounts on CloudVision

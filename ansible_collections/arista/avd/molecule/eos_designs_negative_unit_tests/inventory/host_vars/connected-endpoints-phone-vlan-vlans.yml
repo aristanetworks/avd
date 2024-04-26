@@ -1,0 +1,19 @@
+loopback_ipv4_pool: 192.168.0.0/24
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: connected-endpoints-phone-vlan-vlans
+
+servers:
+  # port-channel provide physical and individual port-channel descriptions
+  - name: OLD_SW-1/7
+    adapters:
+      - switches: [connected-endpoints-phone-vlan-vlans, connected-endpoints-phone-vlan-vlans]
+        switch_ports: [Ethernet9, Ethernet10]
+        vlans: 123  # vlans should not be set together with phone_vlan.
+        mode: trunk phone
+        phone_vlan: 333
+
+expected_error_message: "With 'phone_vlan' and 'mode: trunk phone' the data VLAN is set via 'native_vlan' instead of 'vlans'. Found 'vlans' on connected endpoint 'OLD_SW-1/7'."

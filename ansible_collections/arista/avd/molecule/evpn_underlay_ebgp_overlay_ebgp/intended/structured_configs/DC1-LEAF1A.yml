@@ -196,6 +196,14 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackA DC1-LEAF1A
@@ -423,4 +431,6 @@ vxlan_interface:
         vni: 12
       - name: Tenant_A_WEB_Zone
         vni: 11
+metadata:
+  platform: 7050SX3
 tags: no-monitor

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -27,7 +27,7 @@ class RouterPimSparseModeMixin(UtilsMixin):
             return None
 
         vrfs = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if vrf_rps := get(vrf, "_pim_rp_addresses"):
                     vrf_config = {

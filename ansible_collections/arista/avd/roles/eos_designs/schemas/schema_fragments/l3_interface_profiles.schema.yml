@@ -1,0 +1,23 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  l3_interface_profiles:
+    type: list
+    documentation_options:
+      table: node-type-l3-interfaces-configuration
+    description: |-
+      Profiles to inherit common settings for l3_interfaces defined under the node type key.
+      These profiles will *not* work for `l3_interfaces` defined under `vrfs`.
+    primary_key: profile
+    $ref: "eos_designs#/$defs/node_type_l3_interfaces"
+    items:
+      type: dict
+      keys:
+        profile:
+          type: str
+          description: L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.

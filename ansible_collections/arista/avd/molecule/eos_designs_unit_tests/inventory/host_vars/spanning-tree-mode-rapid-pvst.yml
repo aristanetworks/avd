@@ -1,0 +1,36 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: spanning-tree-mode-rapid-pvst
+      spanning_tree_mode: rapid-pvst
+      spanning_tree_priority: 8192
+
+tenants:
+  - name: test
+    vrfs:
+      - name: test
+        svis:
+          - id: 10
+            name: DEFAULTPRIORITY
+          - id: 11
+            name: PRIORITY16384
+            spanning_tree_priority: 16384
+          - id: 12
+            name: PRIORITY32768
+            spanning_tree_priority: 32768
+          - id: 13
+            name: PRIORITY8192
+            spanning_tree_priority: 8192
+    l2vlans:
+      - id: 20
+        name: DEFAULTPRIORITY
+      - id: 21
+        name: PRIORITY16384
+        spanning_tree_priority: 16384
+      - id: 22
+        name: PRIORITY32768
+        spanning_tree_priority: 32768
+      - id: 23
+        name: PRIORITY8192
+        spanning_tree_priority: 8192

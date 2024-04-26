@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -20,19 +20,10 @@ class RouteMapsMixin(UtilsMixin):
     def route_maps(self) -> list | None:
         """
         Return structured config for route_maps
-
-        TODO
         """
 
         if self.shared_utils.overlay_cvx:
             return None
-
-        if self.shared_utils.overlay_mpls is True:
-            # some logic
-            pass
-        if self.shared_utils.overlay_evpn is True:
-            # some logic
-            pass
 
         route_maps = []
 
@@ -58,39 +49,37 @@ class RouteMapsMixin(UtilsMixin):
                         }
                     )
 
-        elif self.shared_utils.overlay_routing_protocol == "ibgp":
-            if self.shared_utils.overlay_vtep:
-                # Route-map IN and OUT for SOO
-                route_maps.append(
-                    {
-                        "name": "RM-EVPN-SOO-IN",
-                        "sequence_numbers": [
-                            {
-                                "sequence": 10,
-                                "type": "deny",
-                                "match": ["extcommunity ECL-EVPN-SOO"],
-                            },
-                            {
-                                "sequence": 20,
-                                "type": "permit",
-                            },
-                        ],
-                    }
-                )
-                route_maps.append(
-                    {
-                        "name": "RM-EVPN-SOO-OUT",
-                        "sequence_numbers": [
-                            {
-                                "sequence": 10,
-                                "type": "permit",
-                                "set": [f"extcommunity soo {self.shared_utils.vtep_ip}:1 additive"],
-                            },
-                        ],
-                    }
-                )
+        elif self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.overlay_vtep and self.shared_utils.evpn_role != "server":
+            # Route-map IN and OUT for SOO
+            route_maps.append(
+                {
+                    "name": "RM-EVPN-SOO-IN",
+                    "sequence_numbers": [
+                        {
+                            "sequence": 10,
+                            "type": "deny",
+                            "match": ["extcommunity ECL-EVPN-SOO"],
+                        },
+                        {
+                            "sequence": 20,
+                            "type": "permit",
+                        },
+                    ],
+                }
+            )
+            route_maps.append(
+                {
+                    "name": "RM-EVPN-SOO-OUT",
+                    "sequence_numbers": [
+                        {
+                            "sequence": 10,
+                            "type": "permit",
+                            "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                        },
+                    ],
+                }
+            )
 
-        # TODO - maybe need to clean None
         if route_maps:
             return route_maps
 

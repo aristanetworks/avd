@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -40,11 +40,11 @@ keys:
         type: bool
       random_detect:
         type: dict
-        description: Global random-detect settings
+        description: Global random-detect settings.
         keys:
           ecn:
             type: dict
-            description: Global ECN Configuration
+            description: Global ECN Configuration.
             keys:
               allow_non_ect:
                 type: dict
@@ -56,4 +56,4 @@ keys:
                       Check which command is required for your platform.
                   chip_based:
                     type: bool
-                    description: Allow non-ect chip-based
+                    description: Allow non-ect chip-based.
