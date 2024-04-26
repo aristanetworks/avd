@@ -125,7 +125,7 @@ class RouterBgpMixin(UtilsMixin):
                     "peer": link["peer"],
                     "description": "_".join([link["peer"], link["peer_interface"]]),
                     "bfd": get(link, "bfd"),
-                    "shutdown": True if link["peer_is_deployed"] is False else None
+                    "shutdown": True if link["peer_is_deployed"] is False else None,
                 }
 
                 if self.shared_utils.underlay_filter_peer_as is True:
