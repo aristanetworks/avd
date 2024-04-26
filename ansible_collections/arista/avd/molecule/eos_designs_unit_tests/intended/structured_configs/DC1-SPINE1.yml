@@ -128,11 +128,13 @@ router_bgp:
     remote_as: '65110'
     peer: DC1_UNDEPLOYED_LEAF1A
     description: DC1_UNDEPLOYED_LEAF1A_Ethernet49/1
+    shutdown: true
   - ip_address: 172.31.255.161
     peer_group: UNDERLAY-PEERS
     remote_as: '65111'
     peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B_Ethernet49/1
+    shutdown: true
   - ip_address: 10.10.101.9
     peer_group: UNDERLAY-PEERS
     remote_as: '65161'
