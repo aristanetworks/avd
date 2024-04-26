@@ -69,7 +69,7 @@ tenants:
   - name: TENANT_WITH_DUPLICATE_VLANS
     # Extra tenant with duplicate vlan numbers.
     # This is to verify that "filter.only_vlans_in_use" properly filter on trunk_groups when there might be overlapping vlan numbers.
-    # Since "filter.only_vlans_in_use" are only configured on some devices, we have to filter this tenant away on the remaning switches.
+    # Since "filter.only_vlans_in_use" are only configured on some devices, we have to filter this tenant away on the remaining switches.
     # If not, there will be a duplicate vlan error (tested and verified offline).
     # So in the end the vlans here are not configured anywhere, but will trigger duplicate checks if filtering is not implemented properly on trunk groups
     mac_vrf_vni_base: 20000

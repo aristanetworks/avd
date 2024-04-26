@@ -1,0 +1,66 @@
+---
+type: spine
+
+spine:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 10.255.0.0/27
+    bgp_as: 65200
+
+  nodes:
+    - name: flow-tracking-tests-spine1
+      id: 1
+      mgmt_ip: 192.168.0.11/24
+
+    - name: flow-tracking-tests-spine2
+      id: 2
+      mgmt_ip: 192.168.0.21/24
+      flow_tracker_type: hardware
+
+
+# P2P links between spine switches.
+core_interfaces:
+  p2p_links:
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet9, Ethernet9 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: true
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet10, Ethernet10 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: true
+        name: FLOW-TRACKER-1
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet11, Ethernet11 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: false
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet12, Ethernet12 ]
+      include_in_underlay_protocol: false
+
+
+# Testing the same as above with l3_edge
+l3_edge:
+  p2p_links:
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet13, Ethernet13 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: true
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet14, Ethernet14 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: true
+        name: FLOW-TRACKER-1
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet15, Ethernet15 ]
+      include_in_underlay_protocol: false
+      flow_tracking:
+        enabled: false
+    - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
+      interfaces: [ Ethernet16, Ethernet16 ]
+      include_in_underlay_protocol: false

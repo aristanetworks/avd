@@ -1,0 +1,41 @@
+underlay_routing_protocol: ospf
+underlay_multicast: true
+
+type: spine
+spine:
+  nodes:
+    - name: l3_edge_multicast
+      id: 1
+      evpn_role: "none"
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
+
+l3_edge:
+  p2p_links_profiles:
+    - name: profile1
+      ip_pool: pool1
+      speed: "forced 10000full"
+      mtu: 2000
+      bfd: true
+      ptp:
+        enabled: true
+      qos_profile: TEST-QOS-PROFILE
+      macsec_profile: TEST-MACSEC-PROFILE
+
+  p2p_links_ip_pools:
+    - name: pool1
+      ipv4_pool: 192.168.0.0/24
+
+  p2p_links:
+      # P2P link with underlay multicast(pim-sparse) disabled.
+    - nodes: [l3_edge_multicast, peer1]
+      interfaces: [ethernet1, ethernet1]
+      ip: [192.168.0.4/31, 192.168.0.5/31]
+      include_in_underlay_protocol: true
+      underlay_multicast: false
+      # P2P link with underlay multicast(pim-sparse) enabled.
+    - nodes: [l3_edge_multicast, peer2]
+      interfaces: [ethernet2, ethernet2]
+      ip: [192.168.0.2/31, 192.168.0.3/31]
+      include_in_underlay_protocol: true
+      underlay_multicast: true

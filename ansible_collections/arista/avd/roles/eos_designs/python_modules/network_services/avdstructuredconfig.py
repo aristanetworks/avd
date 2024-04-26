@@ -9,24 +9,31 @@ from .eos_cli import EosCliMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
 from .ip_access_lists import IpAccesslistsMixin
 from .ip_igmp_snooping import IpIgmpSnoopingMixin
+from .ip_nat import IpNatMixin
+from .ip_security import IpSecurityMixin
 from .ip_virtual_router_mac_address import IpVirtualRouterMacAddressMixin
 from .ipv6_static_routes import Ipv6StaticRoutesMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
+from .metadata import MetadataMixin
+from .monitor_connectivity import MonitorConnectivityMixin
 from .patch_panel import PatchPanelMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
 from .prefix_lists import PrefixListsMixin
 from .route_maps import RouteMapsMixin
 from .router_adaptive_virtual_topology import RouterAdaptiveVirtualTopologyMixin
 from .router_bgp import RouterBgpMixin
+from .router_internet_exit import RouterInternetExitMixin
 from .router_isis import RouterIsisMixin
 from .router_multicast import RouterMulticastMixin
 from .router_ospf import RouterOspfMixin
 from .router_path_selection import RouterPathSelectionMixin
 from .router_pim_sparse_mode import RouterPimSparseModeMixin
+from .router_service_insertion import RouterServiceInsertionMixin
 from .spanning_tree import SpanningTreeMixin
 from .standard_access_lists import StandardAccessListsMixin
 from .static_routes import StaticRoutesMixin
 from .struct_cfgs import StructCfgsMixin
+from .tunnel_interfaces import TunnelInterfacesMixin
 from .virtual_source_nat_vrfs import VirtualSourceNatVrfsMixin
 from .vlan_interfaces import VlanInterfacesMixin
 from .vlans import VlansMixin
@@ -40,7 +47,10 @@ class AvdStructuredConfigNetworkServices(
     SpanningTreeMixin,
     PatchPanelMixin,
     VlansMixin,
+    IpAccesslistsMixin,
     IpIgmpSnoopingMixin,
+    IpNatMixin,
+    IpSecurityMixin,
     IpVirtualRouterMacAddressMixin,
     VlanInterfacesMixin,
     EthernetInterfacesMixin,
@@ -53,6 +63,8 @@ class AvdStructuredConfigNetworkServices(
     RouterBgpMixin,
     RouterOspfMixin,
     RouterPathSelectionMixin,
+    RouterServiceInsertionMixin,
+    RouterInternetExitMixin,
     DpsInterfacesMixin,
     VrfsMixin,
     EosCliMixin,
@@ -64,7 +76,9 @@ class AvdStructuredConfigNetworkServices(
     RouterMulticastMixin,
     RouterPimSparseModeMixin,
     StandardAccessListsMixin,
-    IpAccesslistsMixin,
+    TunnelInterfacesMixin,
+    MonitorConnectivityMixin,
+    MetadataMixin,
 ):
     """
     The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.
@@ -74,7 +88,7 @@ class AvdStructuredConfigNetworkServices(
     a dict with the name of the method as key. This means that each key in the final dict corresponds to a method.
 
     The Class uses AvdFacts, as the base class, to inherit the _hostvars, keys and other attributes.
-    All other methods are included as "Mixins" to make the files more managable.
+    All other methods are included as "Mixins" to make the files more manageable.
 
     The order of the @cached_properties methods imported from Mixins will also control the order in the output.
     """

@@ -30,7 +30,7 @@ keys:
             type: int
             convert_types:
               - str
-            description: Maximum number of BPDUs per timer interval
+            description: Maximum number of BPDUs per timer interval.
       rstp_priority:
         type: int
         convert_types:
@@ -49,7 +49,7 @@ keys:
                 type: int
                 convert_types:
                   - str
-                description: 0-65535
+                description: 0-65535.
               instances:
                 type: list
                 primary_key: id
@@ -62,7 +62,7 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      description: Instance ID
+                      description: Instance ID.
                     vlans:
                       type: str
                       convert_types:
@@ -82,7 +82,7 @@ keys:
               type: str
               convert_types:
                 - int
-              description: Instance ID
+              description: Instance ID.
             priority:
               type: int
               convert_types:

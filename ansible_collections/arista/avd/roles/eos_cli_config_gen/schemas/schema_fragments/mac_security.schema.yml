@@ -31,7 +31,7 @@ keys:
           keys:
             name:
               type: str
-              description: Profile-Name
+              description: Profile-Name.
             cipher:
               type: str
               valid_values:
@@ -71,7 +71,7 @@ keys:
                         - str
                       min: 30
                       max: 100000
-                      description: Rekey period in seconds
+                      description: Rekey period in seconds.
             sci:
               type: bool
             l2_protocols:

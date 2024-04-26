@@ -80,7 +80,7 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: Privelege level 'all' or 0-15
+                  description: Privilege level 'all' or 0-15
                 type:
                   type: str
                   valid_values:
@@ -101,7 +101,7 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: Privelege level 'all' or 0-15
+                  description: Privilege level 'all' or 0-15
                 type:
                   type: str
                   valid_values:
@@ -798,12 +798,12 @@ keys:
                 '
             cvsourceip:
               type: str
-              description: 'Set source IP address in case of in-band managament
+              description: 'Set source IP address in case of in-band management
 
                 '
             cvsourceintf:
               type: str
-              description: 'Set source interface in case of in-band managament. Available
+              description: 'Set source interface in case of in-band management. Available
                 as of TerminAttr v1.23.0
 
                 '
@@ -873,12 +873,12 @@ keys:
           '
       cvsourceip:
         type: str
-        description: 'Set source IP address in case of in-band managament
+        description: 'Set source IP address in case of in-band management
 
           '
       cvsourceintf:
         type: str
-        description: 'Set source interface in case of in-band managament
+        description: 'Set source interface in case of in-band management
 
           '
       cvvrf:
@@ -1101,7 +1101,7 @@ keys:
       hide_passwords:
         type: bool
         description: 'Replace the input data using the `hide_passwords` filter in
-          the Jinja2 templates by ''<removed>'' in the configruation if true
+          the Jinja2 templates by ''<removed>'' in the configuration if true
 
           '
         default: false
@@ -1845,7 +1845,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -1861,7 +1861,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -1877,7 +1877,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -1893,7 +1893,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         logging:
           type: dict
           keys:
@@ -2636,7 +2636,7 @@ keys:
           of valid_values which MUST be updated to support\nnew feature as they are
           released in EOS.\n\nThe available values of the different keys like 'direction'
           or 'address_type'\nare feature and hardware dependent and this model DOES
-          NOT validate that the\ncombinations are valid. It is the responsability
+          NOT validate that the\ncombinations are valid. It is the responsibility
           of the user of this data model\nto make sure that the rendered CLI is accepted
           by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n
           \     features:\n        - name: ip\n          direction: out\n          layer3:
@@ -5718,7 +5718,7 @@ keys:
                                 required: true
                                 convert_types:
                                 - int
-                                description: 'Drop Treshold. This value may also be
+                                description: 'Drop Threshold. This value may also be
                                   fractions.
 
                                   Example: 7/8 or 3/4 or 1/2
@@ -5779,7 +5779,7 @@ keys:
                                 required: true
                                 convert_types:
                                 - int
-                                description: 'Drop Treshold. This value may also be
+                                description: 'Drop Threshold. This value may also be
                                   fractions.
 
                                   Example: 7/8 or 3/4 or 1/2
@@ -5787,7 +5787,7 @@ keys:
                                   '
       sand:
         type: dict
-        description: Most of the platform sand options are hardware dependant and
+        description: Most of the platform sand options are hardware dependent and
           optional
         keys:
           qos_maps:
@@ -6285,7 +6285,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -6301,7 +6301,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -6317,7 +6317,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -6333,7 +6333,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         ip_proxy_arp:
           type: bool
         isis_enable:

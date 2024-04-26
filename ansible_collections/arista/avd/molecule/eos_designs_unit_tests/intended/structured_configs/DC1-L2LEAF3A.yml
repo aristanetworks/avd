@@ -127,11 +127,6 @@ vlans:
 - id: 161
   name: Tenant_A_NFS
   tenant: Tenant_A
-ip_igmp_snooping:
-  globally_enabled: true
-  vlans:
-  - id: 120
-    enabled: false
 ip_access_lists:
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   entries:
@@ -147,5 +142,10 @@ ip_access_lists:
     protocol: ip
     source: 10.1.10.1
     destination: any
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+  - id: 120
+    enabled: false
 metadata:
   platform: vEOS-LAB

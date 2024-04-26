@@ -458,6 +458,21 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.1.10.1
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan110
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - action: permit
+    protocol: ip
+    source: 10.1.10.1
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -506,20 +521,5 @@ vxlan_interface:
         vni: 30311
       - id: 350
         vni: 30350
-ip_access_lists:
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
-  entries:
-  - sequence: 15
-    action: deny
-    protocol: ip
-    source: any
-    destination: 10.1.10.1
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan110
-  entries:
-  - remark: Some remark will not require source and destination fields.
-  - action: permit
-    protocol: ip
-    source: 10.1.10.1
-    destination: any
 metadata:
   platform: 7300X3

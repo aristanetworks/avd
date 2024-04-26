@@ -562,6 +562,21 @@ vlans:
 - id: 413
   name: Tenant_D_v6_OP_Zone_3
   tenant: Tenant_D
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.1.10.1
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan110
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - action: permit
+    protocol: ip
+    source: 10.1.10.1
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -939,18 +954,3 @@ vxlan_interface:
 virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
   ip_address: 10.255.1.109
-ip_access_lists:
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
-  entries:
-  - sequence: 15
-    action: deny
-    protocol: ip
-    source: any
-    destination: 10.1.10.1
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan110
-  entries:
-  - remark: Some remark will not require source and destination fields.
-  - action: permit
-    protocol: ip
-    source: 10.1.10.1
-    destination: any

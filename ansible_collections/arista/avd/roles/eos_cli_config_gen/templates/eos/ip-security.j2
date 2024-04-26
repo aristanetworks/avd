@@ -42,6 +42,9 @@ ip security
       esp encryption {{ sa_policy.esp.encryption }}
 {%             endif %}
 {%         endif %}
+{%         if sa_policy.sa_lifetime.value is arista.avd.defined %}
+      sa lifetime {{ sa_policy.sa_lifetime.value }} {{ sa_policy.sa_lifetime.unit | arista.avd.default("hours") }}
+{%         endif %}
 {%         if sa_policy.pfs_dh_group is arista.avd.defined %}
       pfs dh-group {{ sa_policy.pfs_dh_group }}
 {%         endif %}

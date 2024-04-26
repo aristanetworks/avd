@@ -14,7 +14,7 @@ else:
     HAS_GRPCLIB = True
 
 
-def get_cv_client_exception(exception: Exception, cv_client_details: str | None = None) -> Exception or None:
+def get_cv_client_exception(exception: Exception, cv_client_details: str | None = None) -> Exception | None:
     """
     Convert GRPCError or TimeoutError instances to an instance of the relevant subclass of CVClientException.
 
