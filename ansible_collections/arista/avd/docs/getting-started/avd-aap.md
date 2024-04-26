@@ -295,6 +295,8 @@ We have everything we need to run our job template now.
 
 ### Running the Template directly to EOS nodes
 
+![AAP with EOS topology](../_media/getting-started/aap-avd/aap-eos.svg)
+
 The AVD collection provides a role to deploy updates directly to EOS nodes. Assuming AAP has direct connectivity to your topology, we could use the following playbook to build and deploy and updates directly to EOS nodes.
 
 ```yaml
