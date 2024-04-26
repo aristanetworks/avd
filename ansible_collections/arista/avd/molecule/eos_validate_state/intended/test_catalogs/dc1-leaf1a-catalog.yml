@@ -516,6 +516,13 @@ anta.tests.routing.bgp:
       custom_field: 'BGP EVPN Peer: dc1-spine2 (IP: 10.255.0.2)'
 - VerifyBGPSpecificPeers:
     address_families:
+    - afi: evpn
+      peers:
+      - 10.1.1.1
+    result_overwrite:
+      custom_field: 'BGP EVPN Peer: 10.1.1.1'
+- VerifyBGPSpecificPeers:
+    address_families:
     - afi: ipv4
       peers:
       - 10.255.1.97
