@@ -9,7 +9,7 @@
 The AVD project follows Semantic Versioning ([SemVer](https://semver.org/)).
 This document describes what attributes and APIs are stable and follow SemVer and which ones may change between minor releases.
 
-## Ansible Roles
+## Ansible Collection (arista.avd)
 
 !!! note
 
@@ -19,7 +19,7 @@ This document describes what attributes and APIs are stable and follow SemVer an
 
     - No Ansible modules, action plugins, filter plugins, test plugins, or vars plugins are covered by SemVer.
 
-### eos_designs
+### Role: eos_designs
 
 Inputs:
 
@@ -35,7 +35,7 @@ Outputs:
 - Fabric documentation artifacts may change between minor releases.
   - Breaking changes to YAML/JSON/CSV outputs will be communicated in the release notes.
 
-### eos_cli_config_gen
+### Role: eos_cli_config_gen
 
 Inputs:
 
@@ -50,7 +50,7 @@ Outputs:
   - Reordering of the CLI output may occur but without impacting the resulting configuration on EOS.
 - Device documentation artifacts may change during minor releases.
 
-### cvp_configlet_upload
+### Role: cvp_configlet_upload
 
 Inputs:
 
@@ -58,7 +58,7 @@ Inputs:
   - Any breaking changes will at a minimum be communicated with a deprecation notice for 6 months.
   - Keys will then be documented as removed in the next major release.
 
-### eos_config_deploy_cvp
+### Role: eos_config_deploy_cvp
 
 Inputs:
 
@@ -72,7 +72,20 @@ Outputs:
 - The resulting CloudVision configuration will be maintained, unless in rare cases, when addressing a bug.
   - Breaking changes will be communicated in the release notes.
 
-### eos_config_deploy_eapi
+### Role: cv_deploy
+
+Inputs:
+
+- All role input variables follow SemVer.
+  - Any breaking changes will at a minimum be communicated with a deprecation notice for 6 months.
+  - Keys will then be documented as removed in the next major release.
+
+Outputs:
+
+- The resulting CloudVision configuration will be maintained, unless in rare cases, when addressing a bug.
+  - Breaking changes will be communicated in the release notes.
+
+### Role: eos_config_deploy_eapi
 
 Inputs:
 
@@ -84,7 +97,7 @@ Outputs:
 
 - All role outputs follow SemVer.
 
-### eos_validate_state
+### Role: eos_validate_state
 
 Inputs:
 
@@ -97,7 +110,7 @@ Outputs:
 - The generated reports and other artifacts may change between minor releases.
   - Breaking changes to YAML/JSON/CSV outputs will be communicated in the release notes.
 
-### dhcp_provisioner
+### Role: dhcp_provisioner
 
 Inputs:
 
@@ -111,7 +124,7 @@ Outputs:
 - The resulting DHCP configuration will be maintained, unless in rare cases, when addressing a bug.
   - Breaking changes will be communicated in the release notes.
 
-### build_output_folders
+### Role: build_output_folders
 
 Inputs:
 
