@@ -74,7 +74,7 @@ def _create_avd_switch_facts_instances(all_inputs: dict[str, dict]) -> dict:
 
     avd_switch_facts = {}
     for hostname, hostvars in all_inputs.items():
-        # Set 'inventory_hostname' on the input variables, to keep compatability with Ansible focused code.
+        # Set 'inventory_hostname' on the input variables, to keep compatibility with Ansible focused code.
         # Add reference to dict "avd_switch_facts" to access EosDesignsFacts objects of other switches during rendering of one switch.
         mapped_hostvars = ChainMap(
             {"inventory_hostname": hostname, "avd_switch_facts": avd_switch_facts},

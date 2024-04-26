@@ -2,6 +2,7 @@
 # These tests will be added to devices part of the DC1_SPINES group
 anta.tests.interfaces:
   - VerifyInterfaceUtilization:
+      threshold: 70.0
   - VerifyInterfaceErrors:
   - VerifyInterfaceDiscards:
   - VerifyInterfaceErrDisabled:
@@ -112,7 +113,65 @@ anta.tests.routing:
               - 10.1.255.0
               - 10.1.255.2
               - 10.1.255.4
+    - VerifyBGPExchangedRoutes:
+        bgp_peers:
+          - peer_address: 172.30.255.5
+            vrf: default
+            advertised_routes:
+              - 192.0.254.5/32
+            received_routes:
+              - 192.0.255.4/32
+          - peer_address: 172.30.255.1
+            vrf: default
+            advertised_routes:
+              - 192.0.255.1/32
+              - 192.0.254.5/32
+            received_routes:
+              - 192.0.254.3/32
+    - VerifyBGPPeerMPCaps:
+        bgp_peers:
+          - peer_address: 172.30.11.1
+            vrf: default
+            capabilities:
+              - ipv4Unicast
+    - VerifyBGPPeerASNCap:
+        bgp_peers:
+          - peer_address: 172.30.11.1
+            vrf: default
+    - VerifyBGPPeerRouteRefreshCap:
+        bgp_peers:
+          - peer_address: 172.30.11.1
+            vrf: default
+    - VerifyBGPPeerMD5Auth:
+        bgp_peers:
+          - peer_address: 172.30.11.1
+            vrf: default
+          - peer_address: 172.30.11.5
+            vrf: default
+    - VerifyEVPNType2Route:
+        vxlan_endpoints:
+          - address: 192.168.20.102
+            vni: 10020
+          - address: aac1.ab5d.b41e
+            vni: 10010
+    - VerifyBGPAdvCommunities:
+        bgp_peers:
+          - peer_address: 172.30.11.17
+            vrf: default
+          - peer_address: 172.30.11.21
+            vrf: default
+    - VerifyBGPTimers:
+        bgp_peers:
+          - peer_address: 172.30.11.1
+            vrf: default
+            hold_time: 180
+            keep_alive_time: 60
+          - peer_address: 172.30.11.5
+            vrf: default
+            hold_time: 180
+            keep_alive_time: 60
   ospf:
     - VerifyOSPFNeighborState:
     - VerifyOSPFNeighborCount:
         number: 3
+    - VerifyOSPFMaxLSA:

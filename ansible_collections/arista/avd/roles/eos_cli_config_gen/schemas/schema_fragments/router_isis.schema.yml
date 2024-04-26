@@ -12,13 +12,13 @@ keys:
       instance:
         type: str
         required: true
-        description: ISIS Instance Name
+        description: ISIS Instance Name.
       net:
         type: str
-        description: CLNS Address like "49.0001.0001.0000.0001.00"
+        description: CLNS Address like "49.0001.0001.0000.0001.00".
       router_id:
         type: str
-        description: IPv4 Address
+        description: IPv4 Address.
       is_type:
         display_name: "IS Type"
         type: str
@@ -188,7 +188,7 @@ keys:
             - "ipv6"
             - "ipv4 unicast"
             - "ipv6 unicast"
-          description: Address Family
+          description: Address Family.
           deprecation:
             warning: true
             new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
@@ -198,7 +198,7 @@ keys:
         items:
           type: str
           description: |
-            EOS CLI rendered under the address families
+            EOS CLI rendered under the address families.
             Example "maximum-paths 64"
           deprecation:
             warning: true
@@ -221,7 +221,7 @@ keys:
                 - "static"
             route_map:
               type: str
-              description: Route-map name
+              description: Route-map name.
             include_leaked:
               type: bool
             ospf_route_type:
@@ -230,7 +230,7 @@ keys:
                 - "external"
                 - "internal"
                 - "nssa-external"
-              description: ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'
+              description: ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'.
       address_family_ipv4:
         type: dict
         keys:
@@ -260,7 +260,7 @@ keys:
                   - "level-2"
               srlg:
                 type: dict
-                description: Shared Risk Link Group
+                description: Shared Risk Link Group.
                 keys:
                   enable:
                     type: bool
@@ -273,7 +273,7 @@ keys:
                 type: bool
               rcf:
                 type: str
-                description: Route Control Function
+                description: Route Control Function.
       address_family_ipv6:
         type: dict
         keys:
@@ -304,7 +304,7 @@ keys:
                 description: Optional, default is to protect all levels.
               srlg:
                 type: dict
-                description: Shared Risk Link Group
+                description: Shared Risk Link Group.
                 keys:
                   enable:
                     type: bool

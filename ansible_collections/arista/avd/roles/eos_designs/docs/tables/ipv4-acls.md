@@ -26,7 +26,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv4_acls.[].entries.[].tcp_flags.[]") | String |  |  |  | TCP Flag Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fragments</samp>](## "ipv4_acls.[].entries.[].fragments") | Boolean |  |  |  | Match non-head fragment packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "ipv4_acls.[].entries.[].log") | Boolean |  |  |  | Log matches against this rule. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "ipv4_acls.[].entries.[].ttl") | Integer |  |  | Min: 0<br>Max: 255 | TTL value |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "ipv4_acls.[].entries.[].ttl") | Integer |  |  | Min: 0<br>Max: 255 | TTL value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_match</samp>](## "ipv4_acls.[].entries.[].ttl_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_type</samp>](## "ipv4_acls.[].entries.[].icmp_type") | String |  |  |  | Message type name/number for ICMP packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_code</samp>](## "ipv4_acls.[].entries.[].icmp_code") | String |  |  |  | Message code for ICMP packets. |
@@ -103,7 +103,7 @@
             # Log matches against this rule.
             log: <bool>
 
-            # TTL value
+            # TTL value.
             ttl: <int; 0-255>
             ttl_match: <str; "eq" | "gt" | "lt" | "neq"; default="eq">
 

@@ -54,7 +54,7 @@ keys:
             type: int
             convert_types:
             - "str"
-            description: Interval in seconds
+            description: Interval in seconds.
             default: 300
             min: 30
             max: 86400

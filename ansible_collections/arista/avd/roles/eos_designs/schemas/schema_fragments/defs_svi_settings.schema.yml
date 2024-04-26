@@ -11,10 +11,10 @@ $defs:
     keys:
       name:
         type: str
-        description: VLAN name
+        description: VLAN name.
       enabled:
         type: bool
-        description: Enable or disable interface
+        description: Enable or disable interface.
       description:
         type: str
         description: |
@@ -31,15 +31,15 @@ $defs:
       ip_address_virtual:
         type: str
         description: |
-          IPv4_address/Mask
-          IPv4 VXLAN Anycast IP address
+          IPv4_address/Mask.
+          IPv4 VXLAN Anycast IP address.
           Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
       ipv6_address_virtual:
         type: str
         description: |
-          IPv6_address/Mask
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional)
-          If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
+          IPv6_address/Mask.
+          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
+          If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured.
         deprecation:
           warning: true
           remove_in_version: 5.0.0
@@ -47,17 +47,17 @@ $defs:
       ipv6_address_virtuals:
         type: list
         description: |
-          IPv6 VXLAN Anycast IP addresses
+          IPv6 VXLAN Anycast IP addresses.
           Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.
         items:
           type: str
-          description: IPv6_address/Mask
+          description: IPv6_address/Mask.
       ip_address_virtual_secondaries:
         type: list
-        description: Secondary IPv4 VXLAN Anycast IP addresses
+        description: Secondary IPv4 VXLAN Anycast IP addresses.
         items:
           type: str
-          description: IPv4_address/Mask
+          description: IPv4_address/Mask.
       ip_virtual_router_addresses:
         type: list
         description: |
@@ -68,7 +68,7 @@ $defs:
         items:
           type: str
           description: |
-            IPv4_address/Mask or IPv4_address
+            IPv4_address/Mask or IPv4_address.
             IPv4_address/Mask will also configure a static route to the SVI per best practice.
       ipv6_virtual_router_addresses:
         type: list
@@ -79,19 +79,19 @@ $defs:
           _if_ there is an ipv6_address configured for the node.
         items:
           type: str
-          description: IPv6_address
+          description: IPv6_address.
       ip_helpers:
         type: list
         primary_key: ip_helper
         convert_types:
           - dict
-        description: IP helper for DHCP relay
+        description: IP helper for DHCP relay.
         items:
           type: dict
           keys:
             ip_helper:
               type: str
-              description: IPv4 DHCP server IP
+              description: IPv4 DHCP server IP.
             source_interface:
               type: str
               description: Interface name to originate DHCP relay packets to DHCP server.
@@ -120,7 +120,7 @@ $defs:
 
           rt_override supports two formats:
             - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
-            - A full RT string with colon seperator which will override the full RT.
+            - A full RT string with colon separator which will override the full RT.
       rd_override:
         type: str
         convert_types:
@@ -132,7 +132,7 @@ $defs:
 
           rd_override supports two formats:
             - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-            - A full RD string with colon seperator which will override the full RD.
+            - A full RD string with colon separator which will override the full RD.
       trunk_groups:
         type: list
         items:
@@ -261,8 +261,8 @@ $defs:
           structured_config:
             type: dict
             description: |
-              Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>]
-              This configuration will not be applied to vlan aware bundles
+              Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>].
+              This configuration will not be applied to vlan aware bundles.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items/"

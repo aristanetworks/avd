@@ -14,7 +14,7 @@ $defs:
       keys:
         access_list:
           type: str
-          description: "'access_list' and 'group' are mutual exclusive"
+          description: "'access_list' and 'group' are mutual exclusive."
         comment:
           type: str
         direction:
@@ -29,10 +29,10 @@ $defs:
             - str
           min: 1
           max: 65535
-          description: "'access_list' and 'group' are mutual exclusive"
+          description: "'access_list' and 'group' are mutual exclusive."
         original_ip:
           type: str
-          description: IPv4 address
+          description: IPv4 address.
         original_port:
           type: int
           convert_types:
@@ -51,11 +51,11 @@ $defs:
         translated_ip:
           type: str
           required: true
-          description: IPv4 address
+          description: IPv4 address.
         translated_port:
           type: int
           convert_types:
             - str
           min: 1
           max: 65535
-          description: "requires 'original_port'"
+          description: "requires 'original_port'."

@@ -38,6 +38,12 @@ all:
                   ansible_host: 172.16.1.15
                 dc1-wan2:
                   ansible_host: 172.16.1.16
+            DC1_SVC_LEAVES:
+              hosts:
+                dc1-svc-leaf1a:
+                  ansible_host: 172.16.1.31
+                dc1-svc-leaf1b:
+                  ansible_host: 172.16.1.32
         DC2:
           children:
             DC2_SPINES:

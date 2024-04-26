@@ -8,13 +8,21 @@ underlay_routing_protocol: none
 bgp_as: 65000
 
 flow_tracking_settings:
-  flow_tracker_name: custom_flow_track_name
-  record_export:
-    on_inactive_timeout: 50000
-    on_interval: 300331
-  exporter:
-    name: ayush_exporter
-    template_interval: 40000
+  trackers:
+    - name: custom_flow_track_name
+      record_export:
+        on_inactive_timeout: 50000
+        on_interval: 300331
+      exporters:
+        - name: ayush_exporter
+          collector:
+            host: 127.0.0.1
+          local_interface: Loopback0
+          template_interval: 40000
+
+fabric_flow_tracking:
+  dps_interfaces:
+    name: custom_flow_track_name
 
 cv_pathfinder_regions:
   - name: AVD_Land_West

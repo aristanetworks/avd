@@ -211,7 +211,7 @@ class WorkspaceMixin:
         )
         client = WorkspaceConfigServiceStub(self._channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        LOGGER.debug("submit_workspace: Got reponse to submission: %s", response.value)
+        LOGGER.debug("submit_workspace: Got response to submission: %s", response.value)
         return response.value
 
     async def wait_for_workspace_response(
@@ -223,7 +223,7 @@ class WorkspaceMixin:
     ) -> tuple[Response, Workspace]:
         """
         Monitor a Workspace using arista.workspace.v1.WorkspaceService.Subscribe API for a response to the given request_id.
-        Blocks until a reponse is returned or timed out.
+        Blocks until a response is returned or timed out.
 
         Parameters:
             workspace_id: Unique identifier the Workspace.

@@ -22,4 +22,4 @@ keys:
             type: list
             items:
               type: str
-              description: IP or hostname
+              description: IP or hostname.

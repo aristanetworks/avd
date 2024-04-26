@@ -16,7 +16,7 @@ keys:
         name:
           type: str
           required: true
-          description: Session Name
+          description: Session Name.
         sources:
           type: list
           items:
@@ -24,7 +24,7 @@ keys:
             keys:
               name:
                 type: str
-                description: Interface name, range or comma separated list
+                description: Interface name, range or comma separated list.
               direction:
                 type: str
                 valid_values: ["rx", "tx", "both"]
@@ -35,7 +35,7 @@ keys:
                     type: str
                     valid_values: ["ip", "ipv6", "mac"]
                   name:
-                    description: ACL Name
+                    description: ACL Name.
                     type: str
                   priority:
                     type: int
@@ -45,12 +45,12 @@ keys:
           type: list
           items:
             type: str
-            description: "'cpu' or interface name, range or comma separated list"
+            description: "'cpu' or interface name, range or comma separated list."
         encapsulation_gre_metadata_tx:
           type: bool
         header_remove_size:
           type: int
-          description: Number of bytes to remove from header
+          description: Number of bytes to remove from header.
           convert_types:
           - str
         access_group:
@@ -60,7 +60,7 @@ keys:
               type: str
               valid_values: ["ip", "ipv6", "mac"]
             name:
-              description: ACL Name
+              description: ACL Name.
               type: str
         rate_limit_per_ingress_chip:
           type: str
@@ -89,6 +89,6 @@ keys:
               type: bool
             size:
               type: int
-              description: Size in bytes
+              description: Size in bytes.
               convert_types:
               - str

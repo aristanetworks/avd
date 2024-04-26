@@ -40,7 +40,7 @@ keys:
 
             rt_override supports two formats:
               - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
-              - A full RT string with colon seperator which will override the full RT.
+              - A full RT string with colon separator which will override the full RT.
         rd_override:
           type: str
           convert_types:
@@ -52,7 +52,7 @@ keys:
 
             rd_override supports two formats:
               - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-              - A full RD string with colon seperator which will override the full RD.
+              - A full RD string with colon separator which will override the full RD.
         evpn_l2_multi_domain:
           type: bool
           description: |

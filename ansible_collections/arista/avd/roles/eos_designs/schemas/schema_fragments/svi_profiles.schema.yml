@@ -27,7 +27,7 @@ keys:
       keys:
         profile:
           type: str
-          description: Profile name
+          description: Profile name.
         parent_profile:
           type: str
           description: |

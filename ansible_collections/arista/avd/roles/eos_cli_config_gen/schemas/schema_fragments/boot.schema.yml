@@ -9,7 +9,7 @@ keys:
   boot:
     display_name: System Boot Settings
     description: |
-      Set the Aboot password
+      Set the Aboot password.
     type: dict
     keys:
       secret:
@@ -20,5 +20,5 @@ keys:
             valid_values: ["md5", "sha512"]
             default: "sha512"
           key:
-            description: Hashed Password
+            description: Hashed Password.
             type: str
