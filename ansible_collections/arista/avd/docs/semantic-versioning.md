@@ -15,6 +15,10 @@ This document describes what attributes and APIs are stable and follow SemVer an
 
     - All roles input variables follow SemVer. Any breaking changes will, at a minimum, be communicated with a deprecation notice for 6 months.
 
+!!! warning
+
+    - No Ansible modules, action plugins, filter plugins, test plugins, or vars plugins are covered by SemVer.
+
 ### eos_designs
 
 Inputs:
