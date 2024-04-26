@@ -267,7 +267,7 @@ interface Ethernet50
 
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
-| Port-Channel102 | 111-112 | 110 | out
+| Port-Channel102 | 111-112 | 110 | out |
 
 ##### EVPN Multihoming
 

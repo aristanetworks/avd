@@ -134,7 +134,7 @@
 {%                 for vlan_translation in port_channel_interface.vlan_translations | arista.avd.natural_sort %}
 {%                     if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
 {%                         set row_direction = vlan_translation.direction | arista.avd.default('both') %}
-| {{ port_channel_interface.name }} | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ row_direction }}
+| {{ port_channel_interface.name }} | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ row_direction }} |
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
