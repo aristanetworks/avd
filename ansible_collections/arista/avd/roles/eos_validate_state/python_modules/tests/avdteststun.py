@@ -46,12 +46,17 @@ class AvdTestStun(AvdTestBase):
         for source_interface in stun_interfaces:
             interfaces_data = get(self.structured_config, "ethernet_interfaces")
             interface_address = get_item(interfaces_data, "name", source_interface)
-            source_address = interface_address.get("ip_address").split("/")[0]
+            ip_address = interface_address.get("ip_address")
+            if ip_address is None:
+                LOGGER.info("No IP address found for interface %s. Skipping this interface.", source_interface)
+                continue
+            source_address = ip_address.split("/")[0]
+            source_port = 4500  # TODO: Keeping source port as default 4500. We might need to change it later.
             anta_tests.append(
                 {
                     "VerifyStunClient": {
-                        "stun_clients": [{"source_address": source_address, "source_port": 4500}],
-                        "result_overwrite": {"custom_field": f"source address: {source_address} source port: 4500"},
+                        "stun_clients": [{"source_address": source_address, "source_port": source_port}],
+                        "result_overwrite": {"custom_field": f"source address: {source_address} source port: {source_port}"},
                     }
                 }
             )

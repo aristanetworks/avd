@@ -4082,6 +4082,32 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -4329,6 +4355,32 @@
                 "type": "boolean",
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
+              },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
               },
               "qos_profile": {
                 "type": "string",
@@ -5178,7 +5230,7 @@
       "title": "EVPN Short Esi Prefix"
     },
     "evpn_vlan_aware_bundles": {
-      "description": "Enable vlan aware bundles for EVPN MAC-VRF.",
+      "description": "Enable VLAN aware bundles for every EVPN MAC-VRF.\nIf set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles using the VLAN name as the bundle name.\n\nThe `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.",
       "type": "boolean",
       "default": false,
       "title": "EVPN VLAN Aware Bundles"
@@ -5249,6 +5301,177 @@
       "default": "vxlan",
       "type": "string",
       "title": "Fabric EVPN Encapsulation"
+    },
+    "fabric_flow_tracking": {
+      "type": "object",
+      "description": "Default enabling of flow-tracking(IPFIX) for various interface types across the fabric.\nFlow Tracking can also be enabled/disabled under each of the specific data models.\nFor general flow-tracking settings see `flow_tracking_settings`.",
+      "properties": {
+        "uplinks": {
+          "description": "Enable flow-tracking on all fabric uplinks.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Uplinks"
+        },
+        "downlinks": {
+          "description": "Enable flow-tracking on all fabric downlinks.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Downlinks"
+        },
+        "endpoints": {
+          "description": "Enable flow-tracking on all endpoints ports.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Endpoints"
+        },
+        "l3_edge": {
+          "description": "Enable flow-tracking on all p2p_links defined under l3_edge.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "L3 Edge"
+        },
+        "core_interfaces": {
+          "description": "Enable flow-tracking on all p2p_links defined under core_interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Core Interfaces"
+        },
+        "mlag_interfaces": {
+          "description": "Enable flow-tracking on all MLAG peer interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MLAG Interfaces"
+        },
+        "l3_interfaces": {
+          "description": "Enable flow-tracking on all node.l3_interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "L3 Interfaces"
+        },
+        "dps_interfaces": {
+          "description": "Enable flow-tracking on all dps_interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "DPS Interfaces"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Fabric Flow Tracking"
     },
     "fabric_ip_addressing": {
       "type": "object",
@@ -5357,61 +5580,260 @@
       "description": "PREVIEW: This key is currently not supported\n\nDefine the flow tracking parameters for this topology.",
       "type": "object",
       "properties": {
-        "flow_tracker_name": {
-          "type": "string",
-          "default": "FLOW-TRACKER",
-          "description": "Flow Tracker Name.",
-          "title": "Flow Tracker Name"
-        },
-        "record_export": {
+        "sampled": {
           "type": "object",
+          "description": "The options relevant only for flow tracker type sampled.",
           "properties": {
-            "on_inactive_timeout": {
-              "description": "Flow record inactive export timeout in milliseconds.",
-              "type": "integer",
-              "minimum": 3000,
-              "maximum": 900000,
-              "default": 70000,
-              "title": "On Inactive Timeout"
+            "encapsulation": {
+              "type": "object",
+              "properties": {
+                "ipv4_ipv6": {
+                  "type": "boolean",
+                  "title": "IPv4 IPv6"
+                },
+                "mpls": {
+                  "type": "boolean",
+                  "title": "MPLS"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Encapsulation"
             },
-            "on_interval": {
+            "sample": {
               "type": "integer",
-              "minimum": 1000,
-              "maximum": 36000000,
-              "default": 300000,
-              "description": "Flow record export interval in milliseconds.",
-              "title": "On Interval"
+              "minimum": 1,
+              "maximum": 4294967295,
+              "default": 10000,
+              "title": "Sample"
+            },
+            "hardware_offload": {
+              "type": "object",
+              "properties": {
+                "ipv4": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv4 traffic.",
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv6 traffic.",
+                  "title": "IPv6"
+                },
+                "threshold_minimum": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4294967295,
+                  "description": "Minimum number of samples.",
+                  "title": "Threshold Minimum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Hardware Offload"
             }
           },
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "Record Export"
+          "title": "Sampled"
         },
-        "exporter": {
+        "hardware": {
           "type": "object",
+          "description": "The options relevant only for flow tracker type hardware.",
           "properties": {
-            "name": {
-              "type": "string",
-              "default": "CV-TELEMETRY",
-              "description": "Exporter Name.",
-              "title": "Name"
-            },
-            "template_interval": {
-              "description": "Template interval in milliseconds.",
-              "type": "integer",
-              "minimum": 5000,
-              "maximum": 3600000,
-              "default": 3600000,
-              "title": "Template Interval"
+            "record": {
+              "type": "object",
+              "properties": {
+                "format_ipfix_standard_timestamps_counters": {
+                  "type": "boolean",
+                  "description": "Enable software export of IPFIX data records.",
+                  "title": "Format Ipfix Standard Timestamps Counters"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Record"
             }
           },
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "Exporter"
+          "title": "Hardware"
+        },
+        "trackers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Tracker Name",
+                "title": "Name"
+              },
+              "sampled": {
+                "type": "object",
+                "description": "The options relevant only for flow tracker type sampled.",
+                "properties": {
+                  "table_size": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 614400,
+                    "description": "Maximum number of entries in flow table.\n",
+                    "title": "Table Size"
+                  },
+                  "record_export": {
+                    "type": "object",
+                    "properties": {
+                      "mpls": {
+                        "type": "boolean",
+                        "description": "Export MPLS forwarding information.",
+                        "title": "MPLS"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Record Export"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sampled"
+              },
+              "record_export": {
+                "type": "object",
+                "properties": {
+                  "on_inactive_timeout": {
+                    "type": "integer",
+                    "minimum": 3000,
+                    "maximum": 900000,
+                    "description": "Flow record inactive export timeout in milliseconds",
+                    "title": "On Inactive Timeout"
+                  },
+                  "on_interval": {
+                    "type": "integer",
+                    "minimum": 1000,
+                    "maximum": 36000000,
+                    "description": "Flow record export interval in milliseconds",
+                    "title": "On Interval"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Record Export"
+              },
+              "exporters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Exporter Name",
+                      "title": "Name"
+                    },
+                    "collector": {
+                      "type": "object",
+                      "properties": {
+                        "host": {
+                          "type": "string",
+                          "description": "Collector IPv4 address or IPv6 address or fully qualified domain name",
+                          "title": "Host"
+                        },
+                        "port": {
+                          "type": "integer",
+                          "description": "Collector Port Number",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Port"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Collector"
+                    },
+                    "format": {
+                      "type": "object",
+                      "properties": {
+                        "ipfix_version": {
+                          "type": "integer",
+                          "title": "Ipfix Version"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Format"
+                    },
+                    "local_interface": {
+                      "type": "string",
+                      "description": "Local Source Interface",
+                      "title": "Local Interface"
+                    },
+                    "template_interval": {
+                      "type": "integer",
+                      "minimum": 5000,
+                      "maximum": 3600000,
+                      "description": "Template interval in milliseconds",
+                      "title": "Template Interval"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Exporters"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "default": [
+            {
+              "name": "FLOW-TRACKER",
+              "record_export": {
+                "on_inactive_timeout": 70000,
+                "on_interval": 300000
+              },
+              "exporters": [
+                {
+                  "name": "CV-TELEMETRY",
+                  "collector": {
+                    "host": "127.0.0.1"
+                  },
+                  "local_interface": "Loopback0",
+                  "template_interval": 3600000
+                }
+              ]
+            }
+          ],
+          "title": "Trackers"
         }
       },
       "additionalProperties": false,
@@ -6147,6 +6569,32 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -6394,6 +6842,32 @@
                 "type": "boolean",
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
+              },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
               },
               "qos_profile": {
                 "type": "string",
@@ -6663,6 +7137,26 @@
             "type": "string",
             "description": "EOS CLI rendered directly on the interface in the final EOS configuration.",
             "title": "Raw EOS CLI"
+          },
+          "flow_tracking": {
+            "type": "object",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Flow tracker name as defined in flow_tracking_settings.",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracking"
           },
           "structured_config": {
             "type": "object",
@@ -9910,8 +10404,28 @@
           },
           "sflow": {
             "type": "boolean",
-            "description": "Configures sFlow on the interface. Overrides `fabric_sflow` setting.\n",
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.",
             "title": "Sflow"
+          },
+          "flow_tracking": {
+            "type": "object",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Flow tracker name as defined in flow_tracking_settings.",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracking"
           },
           "link_tracking": {
             "type": "object",
@@ -15368,6 +15882,16 @@
             ],
             "description": "Set the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
             "title": "Default Wan Role"
+          },
+          "default_flow_tracker_type": {
+            "type": "string",
+            "enum": [
+              "sampled",
+              "hardware"
+            ],
+            "description": "Set the default flow tracker type.",
+            "default": "sampled",
+            "title": "Default Flow Tracker Type"
           },
           "mlag_support": {
             "type": "boolean",
@@ -27179,6 +27703,9 @@
                               "title": "Vtep IP"
                             }
                           },
+                          "required": [
+                            "vtep_ip"
+                          ],
                           "additionalProperties": false,
                           "patternProperties": {
                             "^_.+$": {}
@@ -27263,6 +27790,9 @@
                               "title": "Imported Carriers"
                             }
                           },
+                          "required": [
+                            "name"
+                          ],
                           "additionalProperties": false,
                           "patternProperties": {
                             "^_.+$": {}
@@ -27435,6 +27965,121 @@
                           }
                         },
                         "title": "VRFs"
+                      },
+                      "internet_exit_policies": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "Name"
+                            },
+                            "type": {
+                              "type": "string",
+                              "title": "Type"
+                            },
+                            "city": {
+                              "type": "string",
+                              "title": "City"
+                            },
+                            "country": {
+                              "type": "string",
+                              "title": "Country"
+                            },
+                            "upload_bandwidth": {
+                              "type": "integer",
+                              "title": "Upload Bandwidth"
+                            },
+                            "download_bandwidth": {
+                              "type": "integer",
+                              "title": "Download Bandwidth"
+                            },
+                            "firewall": {
+                              "type": "boolean",
+                              "title": "Firewall"
+                            },
+                            "ips_control": {
+                              "type": "boolean",
+                              "title": "Ips Control"
+                            },
+                            "acceptable_use_policy": {
+                              "type": "boolean",
+                              "title": "Acceptable Use Policy"
+                            },
+                            "vpn_credentials": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "fqdn": {
+                                    "type": "string",
+                                    "title": "Fqdn"
+                                  },
+                                  "vpn_type": {
+                                    "type": "string",
+                                    "title": "VPN Type"
+                                  },
+                                  "pre_shared_key": {
+                                    "type": "string",
+                                    "title": "Pre Shared Key"
+                                  }
+                                },
+                                "required": [
+                                  "fqdn",
+                                  "vpn_type",
+                                  "pre_shared_key"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                }
+                              },
+                              "title": "VPN Credentials"
+                            },
+                            "tunnels": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "title": "Name"
+                                  },
+                                  "preference": {
+                                    "type": "string",
+                                    "title": "Preference"
+                                  }
+                                },
+                                "required": [
+                                  "name",
+                                  "preference"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                }
+                              },
+                              "title": "Tunnels"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "type",
+                            "city",
+                            "country",
+                            "firewall",
+                            "ips_control",
+                            "acceptable_use_policy",
+                            "vpn_credentials",
+                            "tunnels"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Internet Exit Policies"
                       }
                     },
                     "additionalProperties": false,
@@ -45178,8 +45823,28 @@
           },
           "sflow": {
             "type": "boolean",
-            "description": "Configures sFlow on the interface. Overrides `fabric_sflow` setting.\n",
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.",
             "title": "Sflow"
+          },
+          "flow_tracking": {
+            "type": "object",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Flow tracker name as defined in flow_tracking_settings.",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracking"
           },
           "link_tracking": {
             "type": "object",

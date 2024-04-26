@@ -25,6 +25,8 @@ ethernet_interfaces:
   mode: trunk
   native_vlan: 10
   spanning_tree_portfast: edge
+  flow_tracker:
+    sampled: FLOW-TRACKER
 - name: Ethernet2
   peer: uplink_lan_wan_router2
   peer_interface: Ethernet2
@@ -35,6 +37,8 @@ ethernet_interfaces:
   vlans: 10,100
   mode: trunk
   spanning_tree_portfast: edge
+  flow_tracker:
+    sampled: FLOW-TRACKER
 vlans:
 - id: 10
   name: VLAN10_NATIVE
@@ -47,3 +51,18 @@ vlans:
   tenant: TEST
 ip_igmp_snooping:
   globally_enabled: true
+flow_tracking:
+  sampled:
+    sample: 10000
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false

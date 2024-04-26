@@ -10,6 +10,12 @@ l2leaf: # dynamic_key: node_type
     filter:
       tags: [l2leaf]
 
+fabric_flow_tracking:
+  uplinks:
+    enabled: true
+  downlinks:
+    enabled: true
+
 wan_router: # dynamic_key: node_type
   defaults:
     bgp_as: 65100

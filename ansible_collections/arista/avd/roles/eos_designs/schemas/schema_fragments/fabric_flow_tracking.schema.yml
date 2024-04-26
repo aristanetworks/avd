@@ -1,0 +1,49 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  fabric_flow_tracking:
+    documentation_options:
+      table: management-flow-tracking-settings
+    type: dict
+    description: |-
+      Default enabling of flow-tracking(IPFIX) for various interface types across the fabric.
+      Flow Tracking can also be enabled/disabled under each of the specific data models.
+      For general flow-tracking settings see `flow_tracking_settings`.
+    keys:
+      uplinks:
+        description: Enable flow-tracking on all fabric uplinks.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      downlinks:
+        description: Enable flow-tracking on all fabric downlinks.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      endpoints:
+        description: Enable flow-tracking on all endpoints ports.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      l3_edge:
+        description: Enable flow-tracking on all p2p_links defined under l3_edge.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      core_interfaces:
+        description: Enable flow-tracking on all p2p_links defined under core_interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      mlag_interfaces:
+        description: Enable flow-tracking on all MLAG peer interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      l3_interfaces:
+        description: Enable flow-tracking on all node.l3_interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
+      dps_interfaces:
+        description: Enable flow-tracking on all dps_interfaces.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link

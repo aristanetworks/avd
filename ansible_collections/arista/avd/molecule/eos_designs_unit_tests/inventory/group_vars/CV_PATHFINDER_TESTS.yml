@@ -22,6 +22,9 @@ cv_pathfinder_regions:
     sites:
       - name: Site511
         id: 511
+        resolved_location: # Only used for internet exit metadata. Will probably go away again soon(ish).
+          city: BigCity
+          country: BigCountry
 
 bgp_peer_groups:
   wan_overlay_peers:
@@ -85,6 +88,8 @@ wan_router:
               wan_circuit_id: 666
               dhcp_accept_default_route: true
               ip_address: dhcp
+              flow_tracking:
+                enabled: true
             - name: Ethernet2
               wan_carrier: Colt
               wan_circuit_id: 10555

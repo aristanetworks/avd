@@ -67,6 +67,7 @@ DEFAULT_NODE_TYPE_KEYS = {
             "default_wan_role": "client",
             "default_underlay_routing_protocol": "none",
             "default_overlay_routing_protocol": "ibgp",
+            "default_flow_tracker_type": "hardware",
             "vtep": True,
             "network_services": {
                 "l3": True,
@@ -79,6 +80,7 @@ DEFAULT_NODE_TYPE_KEYS = {
             "default_wan_role": "server",
             "default_underlay_routing_protocol": "none",
             "default_overlay_routing_protocol": "ibgp",
+            "default_flow_tracker_type": "hardware",
             "vtep": True,
             "network_services": {
                 "l3": True,
