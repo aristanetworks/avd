@@ -188,6 +188,8 @@ port_channel_interfaces:
   mode: trunk
   vlans: '105'
   mlag: 25
+  lacp_fallback_mode: individual
+  lacp_fallback_timeout: 30
 ethernet_interfaces:
 - name: Ethernet11
   peer: inband-mgmt-parent-dualstack1
@@ -311,6 +313,8 @@ ethernet_interfaces:
   channel_group:
     id: 25
     mode: active
+  mode: access
+  vlans: 105
 mlag_configuration:
   domain_id: inband-mgmt-parents-dualstack
   local_interface: Vlan4094
