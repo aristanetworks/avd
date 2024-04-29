@@ -125,8 +125,10 @@ class RouterBgpMixin(UtilsMixin):
                     "peer": link["peer"],
                     "description": "_".join([link["peer"], link["peer_interface"]]),
                     "bfd": get(link, "bfd"),
-                    "shutdown": True if link["peer_is_deployed"] is False else None,
                 }
+
+                if self.shared_utils.shutdown_bgp_towards_undeployed_peers is True and link["peer_is_deployed"] is False:
+                    neighbor["shutdown"] = True
 
                 if self.shared_utils.underlay_filter_peer_as is True:
                     neighbor["route_map_out"] = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"

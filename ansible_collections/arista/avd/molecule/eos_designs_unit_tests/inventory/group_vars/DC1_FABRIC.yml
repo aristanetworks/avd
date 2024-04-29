@@ -5,6 +5,9 @@
 # If a device is set to "is_deployed: false" at the host_vars level, then shutdown interfaces towards undeployed peers.
 shutdown_interfaces_towards_undeployed_peers: true
 
+# If a device is set to "is_deployed: false" at the host_vars level, then shutdown bgp towards undeployed peers.
+shutdown_bgp_towards_undeployed_peers: true
+
 # Enable vlan aware bundles
 evpn_vlan_aware_bundles: true
 
