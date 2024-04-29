@@ -62,6 +62,42 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: dc1-leaf1a (IP: 10.255.255.10)"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: dc1-leaf1b (IP: 10.255.255.20)"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 SR-TE Peer: dc1-leaf1a (IP: 10.255.255.10)"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 SR-TE Peer: dc1-leaf1b (IP: 10.255.255.20)"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1a (IP: 10.255.255.0)"
   },
   {
@@ -72,6 +108,42 @@
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: dc1-leaf1b (IP: 10.255.255.2)"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP Link-State Peer: dc1-leaf1a (IP: 10.255.255.10)"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP Link-State Peer: dc1-leaf1b (IP: 10.255.255.20)"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP Path-Selection Peer: dc1-leaf1a (IP: 10.255.255.10)"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP Path-Selection Peer: dc1-leaf1b (IP: 10.255.255.20)"
   },
   {
     "name": "dc1-wan1",

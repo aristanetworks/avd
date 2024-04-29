@@ -519,6 +519,8 @@ metadata:
     device_tags:
     - name: Role
       value: pathfinder
+    - name: Region
+      value: AVD_Land_West
     - name: PathfinderSet
       value: PATHFINDERS
     interface_tags:
@@ -534,6 +536,9 @@ metadata:
     role: pathfinder
     ssl_profile: profileB
     vtep_ip: 192.168.144.2
+    region: AVD_Land_West
+    site: Site423
+    address: Somewhere-warm
     interfaces:
     - name: Ethernet1
       carrier: Orange
