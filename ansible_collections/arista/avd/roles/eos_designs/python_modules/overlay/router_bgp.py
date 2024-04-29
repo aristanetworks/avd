@@ -150,9 +150,13 @@ class RouterBgpMixin(UtilsMixin):
             if self._is_wan_server_with_peers:
                 wan_rr_overlay_peer_group = self._generate_base_peer_group("wan", "wan_rr_overlay_peers", update_source=self.shared_utils.vtep_loopback)
                 wan_rr_overlay_peer_group.update(
-                    {"remote_as": self.shared_utils.bgp_as, "ttl_maximum_hops": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["ttl_maximum_hops"]}
+                    {
+                        "remote_as": self.shared_utils.bgp_as,
+                        "ttl_maximum_hops": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["ttl_maximum_hops"],
+                        "bfd_timers": get(self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"], "bfd_timers"),
+                        "route_reflector_client": True,
+                    }
                 )
-                wan_rr_overlay_peer_group["bfd_timers"] = get(self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"], "bfd_timers")
                 peer_groups.append(wan_rr_overlay_peer_group)
 
         # same for ebgp and ibgp
