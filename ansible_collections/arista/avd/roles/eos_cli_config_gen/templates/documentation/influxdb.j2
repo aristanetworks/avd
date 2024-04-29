@@ -9,19 +9,23 @@
 ## Influxdb Streaming
 
 ### Influxdb Summary
+{%     if influxdb.source_group_standard_disabled is arista.avd.defined(true) %}
 
+Source Group Standard Disabled : {{ influxdb.source_group_standard_disabled }}
+{%     endif %}
 {%     if influxdb.destinations is arista.avd.defined %}
+
+#### Telemetry Outputs Summary
+
 | Destination | Database | URL | VRF | Username |
 | ----------- | -------- | --- | --- | -------- |
 {%         for destination in influxdb.destinations | arista.avd.natural_sort('name') %}
 | {{ destination.name | arista.avd.default('-') }} | {{ destination.database | arista.avd.default('-') }} | {{ destination.url | arista.avd.default('-') }} | {{ influxdb.vrf | arista.avd.default('-') }} | {{ destination.username | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
-{%     if influxdb.source_standard_enabled is arista.avd.defined(false) %}
-
-Standard Group Source Enabled : {{ influxdb.source_standard_enabled }}
-{%     endif %}
 {%     if influxdb.source_sockets is arista.avd.defined %}
+
+#### Telemetry Inputs Summary
 
 | Source Name | URL | Connection Limit |
 | ----------- | --- | ---------------- |
@@ -30,6 +34,8 @@ Standard Group Source Enabled : {{ influxdb.source_standard_enabled }}
 {%         endfor %}
 {%     endif %}
 {%     if influxdb.tags is arista.avd.defined %}
+
+#### Tags Summary
 
 | Tag | Value |
 | --- | ----- |

@@ -40,17 +40,23 @@ interface Management1
 
 ### Influxdb Summary
 
+Source Group Standard Disabled : True
+
+#### Telemetry Outputs Summary
+
 | Destination | Database | URL | VRF | Username |
 | ----------- | -------- | --- | --- | -------- |
 | test | test | https://influx_test.localhost | test | test |
 | test1 | test1 | https://influx_test1.localhost | test | test1 |
 
-Standard Group Source Enabled : False
+#### Telemetry Inputs Summary
 
 | Source Name | URL | Connection Limit |
 | ----------- | --- | ---------------- |
 | socket1 | unix:///var/run/example2.sock | 100 |
 | socket2 | unix:///var/run/example3.sock | 22222 |
+
+#### Tags Summary
 
 | Tag | Value |
 | --- | ----- |

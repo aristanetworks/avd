@@ -14,7 +14,7 @@ influxdb:
       username: test1
       password: 131112011F5D
       password_type: "7"
-  source_standard_enabled: false
+  source_group_standard_disabled: true
   source_sockets:
     - name: socket1
       connection_limit: 100

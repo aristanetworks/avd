@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "influxdb.destinations.[].username") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "influxdb.destinations.[].password") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "influxdb.destinations.[].password_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
-    | [<samp>&nbsp;&nbsp;source_standard_enabled</samp>](## "influxdb.source_standard_enabled") | Boolean |  |  |  | Enable standard set of telemetry. |
+    | [<samp>&nbsp;&nbsp;source_group_standard_disabled</samp>](## "influxdb.source_group_standard_disabled") | Boolean |  |  |  | Disable standard set of telemetry. |
     | [<samp>&nbsp;&nbsp;source_sockets</samp>](## "influxdb.source_sockets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "influxdb.source_sockets.[].name") | String | Required, Unique |  |  | Label of the socket connection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection_limit</samp>](## "influxdb.source_sockets.[].connection_limit") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
@@ -46,8 +46,8 @@
           password: <str>
           password_type: <str; "0" | "7" | "8a"; default="7">
 
-      # Enable standard set of telemetry.
-      source_standard_enabled: <bool>
+      # Disable standard set of telemetry.
+      source_group_standard_disabled: <bool>
       source_sockets:
 
           # Label of the socket connection.

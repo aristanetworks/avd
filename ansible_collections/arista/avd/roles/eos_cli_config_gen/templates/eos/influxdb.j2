@@ -37,7 +37,7 @@ monitor telemetry influx
 {%     for tag in influxdb.tags | arista.avd.natural_sort('name') %}
    tag global {{ tag.name }} {{ tag.value }}
 {%     endfor %}
-{%     if influxdb.source_standard_enabled is arista.avd.defined(false) %}
+{%     if influxdb.source_group_standard_disabled is arista.avd.defined(true) %}
    source group standard disabled
 {%     endif %}
 {% endif %}

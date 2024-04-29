@@ -3759,9 +3759,9 @@ keys:
               - '7'
               - 8a
               default: '7'
-      source_standard_enabled:
+      source_group_standard_disabled:
         type: bool
-        description: Enable standard set of telemetry.
+        description: Disable standard set of telemetry.
       source_sockets:
         type: list
         primary_key: name

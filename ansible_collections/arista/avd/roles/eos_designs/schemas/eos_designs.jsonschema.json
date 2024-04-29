@@ -22920,10 +22920,10 @@
                     },
                     "title": "Destinations"
                   },
-                  "source_standard_enabled": {
+                  "source_group_standard_disabled": {
                     "type": "boolean",
-                    "description": "Enable standard set of telemetry.",
-                    "title": "Source Standard Enabled"
+                    "description": "Disable standard set of telemetry.",
+                    "title": "Source Group Standard Disabled"
                   },
                   "source_sockets": {
                     "type": "array",
