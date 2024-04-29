@@ -1,9 +1,13 @@
-hostname: mgmt_interface_ipv6
+hostname: TEST-MGMT-GATEWAY-IN-NODE-GROUP
 is_deployed: true
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.201.254
 ipv6_static_routes:
 - vrf: MGMT
   destination_address_prefix: ::/0
-  gateway: 0200::2
+  gateway: 2001:db8::2
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending
@@ -19,12 +23,12 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: null
-  gateway: null
+  ip_address: 192.168.201.202/24
+  gateway: 192.168.201.254
   type: oob
   ipv6_enable: true
-  ipv6_address: 0200::105/64
-  ipv6_gateway: 0200::2
+  ipv6_address: 2001:db8::105/64
+  ipv6_gateway: 2001:db8::2
 management_api_http:
   enable_vrfs:
   - name: MGMT
