@@ -11577,7 +11577,7 @@
         },
         "peer_address": {
           "type": "string",
-          "description": "IPv4 Address.",
+          "description": "IPv4 or IPv6 Address.",
           "title": "Peer Address"
         },
         "peer_address_heartbeat": {
@@ -11585,7 +11585,7 @@
           "properties": {
             "peer_ip": {
               "type": "string",
-              "description": "IPv4 Address.",
+              "description": "IPv4 or IPv6 Address.",
               "title": "Peer IP"
             },
             "vrf": {
