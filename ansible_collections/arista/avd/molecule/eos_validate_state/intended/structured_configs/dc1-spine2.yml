@@ -65,6 +65,7 @@ router_bgp:
     remote_as: '65102'
     peer: dc1-leaf2b
     description: dc1-leaf2b_Ethernet2
+    shutdown: true
   - ip_address: 10.33.255.19
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65133'
