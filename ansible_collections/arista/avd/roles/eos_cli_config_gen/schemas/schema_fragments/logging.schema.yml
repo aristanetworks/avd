@@ -149,3 +149,19 @@ keys:
                     min: 10
                     max: 65535
                     description: Logging interval in seconds.
+      level:
+        type: list
+        primary_key: facility_name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            facility_name:
+              type: str
+              description: Facility name.
+            severity:
+              type: str
+              convert_types:
+                - int
+              description: Severity of facility.

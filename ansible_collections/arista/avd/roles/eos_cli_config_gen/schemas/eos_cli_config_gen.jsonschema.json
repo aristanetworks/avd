@@ -9210,6 +9210,32 @@
             "^_.+$": {}
           },
           "title": "Event"
+        },
+        "level": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "facility_name": {
+                "type": "string",
+                "description": "Facility name.",
+                "title": "Facility Name"
+              },
+              "severity": {
+                "type": "string",
+                "description": "Severity of facility.",
+                "title": "Severity"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "facility_name"
+            ]
+          },
+          "title": "Level"
         }
       },
       "additionalProperties": false,

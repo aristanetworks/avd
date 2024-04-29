@@ -74,6 +74,13 @@ logging format hostname ipv4
 {%     if logging.format.sequence_numbers is arista.avd.defined(true) %}
 logging format sequence-numbers
 {%     endif %}
+{%     if logging.level is arista.avd.defined %}
+{%         for level in logging.level | arista.avd.natural_sort('facility_name') %}
+{%             set logging_cli = "logging" %}
+{%             set logging_cli = logging_cli ~ " level " ~ level.facility_name ~ " " ~ level.severity %}
+{{ logging_cli }}
+{%         endfor %}
+{%     endif %}
 {%     if logging.facility is arista.avd.defined %}
 logging facility {{ logging.facility }}
 {%     endif %}

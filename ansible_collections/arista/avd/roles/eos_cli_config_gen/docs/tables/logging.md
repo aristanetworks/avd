@@ -41,6 +41,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;discards</samp>](## "logging.event.storm_control.discards") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global</samp>](## "logging.event.storm_control.discards.global") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "logging.event.storm_control.discards.interval") | Integer |  |  | Min: 10<br>Max: 65535 | Logging interval in seconds. |
+    | [<samp>&nbsp;&nbsp;level</samp>](## "logging.level") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;facility_name</samp>](## "logging.level.[].facility_name") | String | Required, Unique |  |  | Facility name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;severity</samp>](## "logging.level.[].severity") | String |  |  |  | Severity of facility. |
 
 === "YAML"
 
@@ -109,4 +112,11 @@
 
             # Logging interval in seconds.
             interval: <int; 10-65535>
+      level:
+
+          # Facility name.
+        - facility_name: <str; required; unique>
+
+          # Severity of facility.
+          severity: <str>
     ```
