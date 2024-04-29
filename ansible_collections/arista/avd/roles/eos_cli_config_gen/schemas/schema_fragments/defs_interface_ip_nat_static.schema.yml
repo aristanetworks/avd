@@ -34,7 +34,7 @@ $defs:
           description: IPv4 address. The combination of `original_ip` and `original_port` must be unique.
         original_port:
           type: int
-          description: The combination of original_ip and original_port must be unique.
+          description: TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.
           convert_types:
             - str
           min: 1
