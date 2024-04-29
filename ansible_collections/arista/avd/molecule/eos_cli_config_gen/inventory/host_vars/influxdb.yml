@@ -3,13 +3,13 @@ influxdb:
   destinations:
     - name: test
       database: test
-      policy: test
+      data_retention_policy: test
       url: https://influx_test.localhost
       username: test
       password: 071B245F5A
     - name: test1
       database: test1
-      policy: test1
+      data_retention_policy: test1
       url: https://influx_test1.localhost
       username: test1
       password: 131112011F5D

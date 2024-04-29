@@ -23,9 +23,9 @@ keys:
               description: InfluxDB connection name.
             database:
               type: str
-            policy:
+              description: Set name of the database.
+            data_retention_policy:
               type: str
-              description: Data retention policy.
             url:
               type: str
             username:

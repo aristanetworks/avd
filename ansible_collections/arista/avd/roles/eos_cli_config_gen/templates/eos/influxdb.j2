@@ -15,8 +15,8 @@ monitor telemetry influx
 {%         if destination.database is arista.avd.defined %}
       database name {{ destination.database }}
 {%         endif %}
-{%         if destination.policy is arista.avd.defined %}
-      retention policy {{ destination.policy }}
+{%         if destination.data_retention_policy is arista.avd.defined %}
+      retention policy {{ destination.data_retention_policy }}
 {%         endif %}
 {%         if influxdb.vrf is arista.avd.defined %}
       vrf {{ influxdb.vrf }}

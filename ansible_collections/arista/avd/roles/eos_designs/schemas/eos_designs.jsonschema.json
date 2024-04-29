@@ -22880,12 +22880,12 @@
                         },
                         "database": {
                           "type": "string",
+                          "description": "Set name of the database.",
                           "title": "Database"
                         },
-                        "policy": {
+                        "data_retention_policy": {
                           "type": "string",
-                          "description": "Data retention policy.",
-                          "title": "Policy"
+                          "title": "Data Retention Policy"
                         },
                         "url": {
                           "type": "string",

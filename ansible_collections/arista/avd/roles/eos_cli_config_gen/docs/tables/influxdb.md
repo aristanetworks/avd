@@ -11,8 +11,8 @@
     | [<samp>&nbsp;&nbsp;vrf</samp>](## "influxdb.vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;destinations</samp>](## "influxdb.destinations") | List, items: Dictionary |  |  |  | Configure telemetry output destinations. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "influxdb.destinations.[].name") | String | Required, Unique |  |  | InfluxDB connection name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;database</samp>](## "influxdb.destinations.[].database") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "influxdb.destinations.[].policy") | String |  |  |  | Data retention policy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;database</samp>](## "influxdb.destinations.[].database") | String |  |  |  | Set name of the database. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_retention_policy</samp>](## "influxdb.destinations.[].data_retention_policy") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "influxdb.destinations.[].url") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "influxdb.destinations.[].username") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "influxdb.destinations.[].password") | String |  |  |  |  |
@@ -37,10 +37,10 @@
 
           # InfluxDB connection name.
         - name: <str; required; unique>
-          database: <str>
 
-          # Data retention policy.
-          policy: <str>
+          # Set name of the database.
+          database: <str>
+          data_retention_policy: <str>
           url: <str>
           username: <str>
           password: <str>
