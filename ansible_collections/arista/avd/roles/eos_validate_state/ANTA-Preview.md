@@ -151,6 +151,9 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
 - (New) AvdTestAPIHttpsSSL (No Ansible tags, use the new `skipped_tests` variable instead)
   - VerifyAPIHttpsSSL: Validate eAPI HTTPS SSL profile status.
 
+- (New) VerifySpecificIPSecConn (No Ansible tags, use the new `skipped_tests` variable instead)
+  - VerifySpecificIPSecConn: Validate the IP security connection status.
+
 ## Input variables
 
 ```yaml
