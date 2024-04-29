@@ -55,7 +55,7 @@ event_handlers:
     trigger_on_intf:
       interface: Ethernet4
       ip: true
-      ip6: true
+      ipv6: true
       operstatus: true
     action_type: bash
     action: echo "on-intf"

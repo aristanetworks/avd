@@ -20,10 +20,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger_on_logging</samp>](## "event_handlers.[].trigger_on_logging") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poll_interval</samp>](## "event_handlers.[].trigger_on_logging.poll_interval") | Integer |  |  | Min: 1<br>Max: 1000000 | Set the polling interval in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].trigger_on_logging.regex") | String |  |  |  | Regular expression to use for searching log messages. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger_on_intf</samp>](## "event_handlers.[].trigger_on_intf") | Dictionary |  |  |  | Trigger condition occurs on specified interface changes.<br>Note: Any one of the `ip`, `ip6` and `operstatus` key needs to be defined with the `interface` |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger_on_intf</samp>](## "event_handlers.[].trigger_on_intf") | Dictionary |  |  |  | Trigger condition occurs on specified interface changes.<br>Note: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "event_handlers.[].trigger_on_intf.interface") | String | Required |  |  | Interface name.<br>Example - Ethernet4<br>          Loopback4-6<br>          Port-channel4,7 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "event_handlers.[].trigger_on_intf.ip") | Boolean |  |  |  | Action is triggered upon changes to interface IP address assignment. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip6</samp>](## "event_handlers.[].trigger_on_intf.ip6") | Boolean |  |  |  | Action is triggered upon changes to interface ip6 address assignment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "event_handlers.[].trigger_on_intf.ipv6") | Boolean |  |  |  | Action is triggered upon changes to interface ipv6 address assignment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;operstatus</samp>](## "event_handlers.[].trigger_on_intf.operstatus") | Boolean |  |  |  | Action is triggered upon changes to interface operStatus. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger_on_maintenance</samp>](## "event_handlers.[].trigger_on_maintenance") | Dictionary |  |  |  | Settings required for trigger 'on-maintenance'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;operation</samp>](## "event_handlers.[].trigger_on_maintenance.operation") | String | Required |  | Valid Values:<br>- <code>enter</code><br>- <code>exit</code> |  |
@@ -116,7 +116,7 @@
           regex: <str>
 
         # Trigger condition occurs on specified interface changes.
-        # Note: Any one of the `ip`, `ip6` and `operstatus` key needs to be defined with the `interface`
+        # Note: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`.
         trigger_on_intf:
 
           # Interface name.
@@ -128,8 +128,8 @@
           # Action is triggered upon changes to interface IP address assignment.
           ip: <bool>
 
-          # Action is triggered upon changes to interface ip6 address assignment.
-          ip6: <bool>
+          # Action is triggered upon changes to interface ipv6 address assignment.
+          ipv6: <bool>
 
           # Action is triggered upon changes to interface operStatus.
           operstatus: <bool>

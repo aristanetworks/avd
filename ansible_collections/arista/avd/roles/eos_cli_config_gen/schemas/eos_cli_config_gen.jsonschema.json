@@ -5596,7 +5596,7 @@
           },
           "trigger_on_intf": {
             "type": "object",
-            "description": "Trigger condition occurs on specified interface changes.\nNote: Any one of the `ip`, `ip6` and `operstatus` key needs to be defined with the `interface`",
+            "description": "Trigger condition occurs on specified interface changes.\nNote: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`.",
             "properties": {
               "interface": {
                 "type": "string",
@@ -5608,10 +5608,10 @@
                 "description": "Action is triggered upon changes to interface IP address assignment.",
                 "title": "IP"
               },
-              "ip6": {
+              "ipv6": {
                 "type": "boolean",
-                "description": "Action is triggered upon changes to interface ip6 address assignment.",
-                "title": "Ip6"
+                "description": "Action is triggered upon changes to interface ipv6 address assignment.",
+                "title": "IPv6"
               },
               "operstatus": {
                 "type": "boolean",

@@ -83,7 +83,7 @@ keys:
           type: dict
           description: |-
             Trigger condition occurs on specified interface changes.
-            Note: Any one of the `ip`, `ip6` and `operstatus` key needs to be defined with the `interface`
+            Note: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`.
           keys:
             interface:
               type: str
@@ -96,9 +96,9 @@ keys:
             ip:
               type: bool
               description: Action is triggered upon changes to interface IP address assignment.
-            ip6:
+            ipv6:
               type: bool
-              description: Action is triggered upon changes to interface ip6 address assignment.
+              description: Action is triggered upon changes to interface ipv6 address assignment.
             operstatus:
               type: bool
               description: Action is triggered upon changes to interface operStatus.
