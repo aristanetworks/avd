@@ -22,6 +22,9 @@ cv_pathfinder_regions:
     sites:
       - name: Site511
         id: 511
+        resolved_location: # Only used for internet exit metadata. Will probably go away again soon(ish).
+          city: BigCity
+          country: BigCountry
 
 bgp_peer_groups:
   wan_overlay_peers:

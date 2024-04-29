@@ -101,6 +101,22 @@ l2leaf:
       inband_mgmt_ipv6_subnet: 2a00:107::/64
       inband_mgmt_vrf: INBANDMGMT
       id: 7
+  node_groups:
+    - group: inband-mgmt-mlag-test
+      mlag: true
+      mlag_peer_ipv4_pool: 100.64.0.0/24
+      mlag_peer_l3_ipv4_pool: 100.64.1.0/24
+      inband_mgmt_vlan: 101
+      inband_mgmt_gateway: 192.168.101.21
+      nodes:
+        - name: inband-mgmt-mlag-a
+          id: 101
+          inband_mgmt_ip: 192.168.101.22/24
+          uplink_switch_interfaces: [Ethernet101, Ethernet101]
+        - name: inband-mgmt-mlag-b
+          id: 102
+          inband_mgmt_ip: 192.168.101.23/24
+          uplink_switch_interfaces: [Ethernet102, Ethernet102]
 
 tenants:
   - name: INBAND_MGMT_TESTS

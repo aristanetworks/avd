@@ -16,7 +16,7 @@ wan_router: # dynamic_key: node_type
       enabled: true # TODO: AVD 4.8.0 Remove this once WAN HA is out of preview
   node_groups:
     - group: DC1-WAN
-      bgp_as: 65000
+      bgp_as: 65101
       nodes:
         - name: dc1-wan1
           id: 1

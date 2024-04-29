@@ -162,7 +162,7 @@ NAT profile VRF is: {{ profile.vrf }}
 | Setting | Value |
 | -------- | ----- |
 {%         if ip_nat.synchronization.shutdown | arista.avd.default(false) %}
-| State | Disabled !
+| State | Disabled |
 {%         else %}
 | State | Enabled !
 {%         endif %}
