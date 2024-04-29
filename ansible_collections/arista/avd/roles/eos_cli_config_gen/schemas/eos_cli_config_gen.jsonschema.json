@@ -3248,7 +3248,7 @@
                         },
                         "original_port": {
                           "type": "integer",
-                          "description": "The combination of original_ip and original_port must be unique.",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -3383,7 +3383,7 @@
                         },
                         "original_port": {
                           "type": "integer",
-                          "description": "The combination of original_ip and original_port must be unique.",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -7277,7 +7277,7 @@
                         },
                         "original_port": {
                           "type": "integer",
-                          "description": "The combination of original_ip and original_port must be unique.",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -7412,7 +7412,7 @@
                         },
                         "original_port": {
                           "type": "integer",
-                          "description": "The combination of original_ip and original_port must be unique.",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -14010,7 +14010,7 @@
                         },
                         "original_port": {
                           "type": "integer",
-                          "description": "The combination of original_ip and original_port must be unique.",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -14145,7 +14145,7 @@
                         },
                         "original_port": {
                           "type": "integer",
-                          "description": "The combination of original_ip and original_port must be unique.",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -27384,7 +27384,7 @@
                         },
                         "original_port": {
                           "type": "integer",
-                          "description": "The combination of original_ip and original_port must be unique.",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -27519,7 +27519,7 @@
                         },
                         "original_port": {
                           "type": "integer",
-                          "description": "The combination of original_ip and original_port must be unique.",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
