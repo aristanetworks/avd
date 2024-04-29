@@ -11151,6 +11151,10 @@
               "type": "string",
               "title": "SSL Profile"
             },
+            "address": {
+              "type": "string",
+              "title": "Address"
+            },
             "pathfinders": {
               "type": "array",
               "items": {

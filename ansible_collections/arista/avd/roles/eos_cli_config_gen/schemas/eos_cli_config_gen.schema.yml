@@ -6542,6 +6542,8 @@ keys:
             type: str
           ssl_profile:
             type: str
+          address:
+            type: str
           pathfinders:
             type: list
             items:
