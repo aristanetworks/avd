@@ -3427,6 +3427,11 @@ keys:
                 of specified unit
         regex:
           type: str
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handlers.trigger_on_logging.regex
           description: 'Regular expression to use for searching log messages. Required
             for on-logging trigger.
 

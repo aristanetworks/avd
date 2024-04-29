@@ -5696,7 +5696,8 @@
           },
           "regex": {
             "type": "string",
-            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n",
+            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.",
+            "deprecated": true,
             "title": "Regex"
           },
           "asynchronous": {
