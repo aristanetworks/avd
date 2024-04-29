@@ -26,6 +26,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;site</samp>](## "metadata.cv_pathfinder.site") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip</samp>](## "metadata.cv_pathfinder.vtep_ip") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "metadata.cv_pathfinder.ssl_profile") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "metadata.cv_pathfinder.address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;pathfinders</samp>](## "metadata.cv_pathfinder.pathfinders") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vtep_ip</samp>](## "metadata.cv_pathfinder.pathfinders.[].vtep_ip") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "metadata.cv_pathfinder.interfaces") | List, items: Dictionary |  |  |  |  |
@@ -109,6 +110,7 @@
         site: <str>
         vtep_ip: <str>
         ssl_profile: <str>
+        address: <str>
         pathfinders:
           - vtep_ip: <str; required>
         interfaces:
