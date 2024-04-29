@@ -245,6 +245,8 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
+      bgp additional-paths receive
+      bgp additional-paths send any
       bgp next-hop-unchanged
       host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
@@ -269,6 +271,7 @@ router bgp 65101
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
       route import ethernet-segment ip mass-withdraw
       route export ethernet-segment ip mass-withdraw
+      route import overlay-index gateway
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
