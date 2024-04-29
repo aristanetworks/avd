@@ -13362,6 +13362,13 @@ keys:
       ipv4:
         type: dict
         keys:
+          activity_polling_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 60
+            description: MFIB entry activity polling interval.
           counters:
             type: dict
             keys:
@@ -13415,6 +13422,16 @@ keys:
                             max: 255
                             convert_types:
                             - str
+      ipv6:
+        type: dict
+        keys:
+          activity_polling_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 60
+            description: MFIB entry activity polling interval.
       vrfs:
         type: list
         primary_key: name

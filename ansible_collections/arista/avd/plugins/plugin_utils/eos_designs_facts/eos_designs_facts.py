@@ -191,6 +191,14 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
         return self.shared_utils.inband_ztp
 
     @cached_property
+    def inband_ztp_vlan(self) -> int | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        if self.shared_utils.inband_ztp:
+            return self.shared_utils.inband_mgmt_vlan
+
+    @cached_property
     def inband_ztp_lacp_fallback_delay(self) -> int | None:
         """
         Exposed in avd_switch_facts

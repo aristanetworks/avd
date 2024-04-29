@@ -39796,6 +39796,13 @@
                   "ipv4": {
                     "type": "object",
                     "properties": {
+                      "activity_polling_interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 60,
+                        "description": "MFIB entry activity polling interval.",
+                        "title": "Activity Polling Interval"
+                      },
                       "counters": {
                         "type": "object",
                         "properties": {
@@ -39901,6 +39908,23 @@
                       "^_.+$": {}
                     },
                     "title": "IPv4"
+                  },
+                  "ipv6": {
+                    "type": "object",
+                    "properties": {
+                      "activity_polling_interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 60,
+                        "description": "MFIB entry activity polling interval.",
+                        "title": "Activity Polling Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "IPv6"
                   },
                   "vrfs": {
                     "type": "array",
