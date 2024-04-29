@@ -144,7 +144,7 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 10.50.2.1 | 65000 | BLAH | - | - | - | - | - | - | - | - |
+| 10.50.2.1 | 65000 | BLAH | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP VRFs
 
