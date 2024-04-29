@@ -3243,7 +3243,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -3378,7 +3378,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -7272,7 +7272,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -7407,7 +7407,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -14005,7 +14005,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -14140,7 +14140,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -27379,7 +27379,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
@@ -27514,7 +27514,7 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address. The combination of original_ip and original_port must be unique.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
