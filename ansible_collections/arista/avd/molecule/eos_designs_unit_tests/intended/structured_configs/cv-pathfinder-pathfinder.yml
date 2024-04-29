@@ -533,6 +533,8 @@ metadata:
     role: pathfinder
     ssl_profile: profileA
     vtep_ip: 192.168.144.1
+    site: Global-pathfinder-site
+    address: Somewhere under the rainbow
     interfaces:
     - name: Ethernet1
       carrier: Bouygues_Telecom

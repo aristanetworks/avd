@@ -63,12 +63,18 @@ $defs:
             description: Node management interface IPv4 address.
             type: str
             format: cidr
+          mgmt_gateway:
+            type: str
+            description: This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
             description: Node management interface IPv6 address.
             type: str
             format: cidr
+          ipv6_mgmt_gateway:
+            type: str
+            description: This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
@@ -1252,8 +1258,9 @@ $defs:
             type: str
             description: |-
               The CV Pathfinder site name.
-              This key is required for WAN routers but ignored for pathfinders.
-              The site name must be defined for the relevant region under 'cv_pathfinder_regions'.
+              This key is required for WAN routers but optional for pathfinders.
+              For WAN routers and pathfinders with `cv_pathfinder_region`, the site name must be defined for the relevant region under 'cv_pathfinder_regions'.
+              For pathfinders without `cv_pathfinder_region` set, the site must be defined under `cv_pathfinder_global_sites`.
           wan_ha:
             documentation_options:
               table: node-type-wan-configuration
