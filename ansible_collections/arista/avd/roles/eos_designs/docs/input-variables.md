@@ -110,7 +110,7 @@ For more information please read the [WAN how-to guide](./how-to/wan.md).
 ## Fabric topology hierarchy
 
 <div style="text-align:center">
-  <img src="../../../media/5-stage-topology.gif" />
+  <img src="../../../media/5-stage-topology.gif" alt="5 stage topology"/>
 </div>
 
 As per the diagram above, the topology hierarchy is the following:
@@ -798,6 +798,27 @@ roles/eos_designs/docs/tables/wan-virtual-topologies.md
 roles/eos_designs/docs/tables/application-classification.md
 --8<--
 
+#### Internet Exit policies
+
+!!! note
+
+    This section is only relevant for CV Pathfinder and not for AutoVPN
+
+--8<--
+roles/eos_designs/docs/tables/cv-pathfinder-internet-exit-policies.md
+--8<--
+
+##### Zscaler Internet Exit
+
+!!! note
+
+    This data model is intended to be autofilled using a lookup plugin.
+    See the top level key description for more information.
+
+--8<--
+roles/eos_designs/docs/tables/zscaler-endpoints.md
+--8<--
+
 ## Management settings
 
 --8<--
@@ -819,7 +840,7 @@ roles/eos_designs/docs/tables/management-sflow-settings.md
 ### Flow Tracking Settings
 
 --8<--
-roles/eos_designs/docs/tables/flow-tracking-settings.md
+roles/eos_designs/docs/tables/management-flow-tracking-settings.md
 --8<--
 
 ### SNMP settings

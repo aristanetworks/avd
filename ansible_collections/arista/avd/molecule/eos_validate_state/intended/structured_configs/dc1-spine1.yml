@@ -59,6 +59,16 @@ router_bgp:
     remote_as: '65102'
     peer: dc1-leaf2b
     description: dc1-leaf2b_Ethernet1
+  - ip_address: 10.33.255.17
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65133'
+    peer: dc1-svc-leaf1a
+    description: dc1-svc-leaf1a_Ethernet1
+  - ip_address: 10.33.255.21
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65133'
+    peer: dc1-svc-leaf1b
+    description: dc1-svc-leaf1b_Ethernet1
   - ip_address: 10.255.0.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc1-leaf1a
@@ -79,6 +89,16 @@ router_bgp:
     peer: dc1-leaf2b
     description: dc1-leaf2b
     remote_as: '65102'
+  - ip_address: 10.33.0.5
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc1-svc-leaf1a
+    description: dc1-svc-leaf1a
+    remote_as: '65133'
+  - ip_address: 10.33.0.6
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: dc1-svc-leaf1b
+    description: dc1-svc-leaf1b
+    remote_as: '65133'
   - ip_address: 123.1.1.10
     remote_as: '1234'
     password: oBztv71m2uhR7hh58/OCNA==
@@ -197,6 +217,24 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.12/31
+- name: Ethernet5
+  peer: dc1-svc-leaf1a
+  peer_interface: Ethernet1
+  peer_type: service_leaf
+  description: P2P_LINK_TO_DC1-SVC-LEAF1A_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.33.255.16/31
+- name: Ethernet6
+  peer: dc1-svc-leaf1b
+  peer_interface: Ethernet1
+  peer_type: service_leaf
+  description: P2P_LINK_TO_DC1-SVC-LEAF1B_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.33.255.20/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

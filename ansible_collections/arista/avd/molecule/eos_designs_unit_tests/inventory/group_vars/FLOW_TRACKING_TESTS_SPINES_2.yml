@@ -1,0 +1,60 @@
+---
+# Common AVD group variables
+
+fabric_name: FLOW_TRACKING_TESTS
+
+mgmt_gateway: 192.168.0.1
+
+default_mgmt_method: oob
+
+flow_tracking_settings:
+  sampled:
+    encapsulation:
+      mpls: true
+    sample: 50000
+    hardware_offload:
+      ipv4: true
+      ipv6: true
+      threshold_minimum: 1332
+  hardware:
+    record:
+      format_ipfix_standard_timestamps_counters: true
+  trackers:
+  - name: FLOW-TRACKER-2
+    record_export:
+      on_inactive_timeout: 50020
+      on_interval: 300321
+    exporters:
+    - name: ayush_exporter
+      collector:
+        host: 127.0.2.1
+      local_interface: Loopback0
+      template_interval: 40020
+  - name: FLOW-TRACKER-1
+    record_export:
+      on_inactive_timeout: 50000
+      on_interval: 300331
+    exporters:
+    - name: ayush_exporter
+      collector:
+        host: 127.0.0.1
+      local_interface: Loopback0
+      template_interval: 40000
+
+# False by default
+fabric_flow_tracking:
+  uplinks:
+    enabled: true
+  downlinks:
+    enabled: true
+    name: FLOW-TRACKER-2
+  endpoints:
+    enabled: true
+  l3_edge:
+    enabled: false
+    name: FLOW-TRACKER-2
+  core_interfaces:
+    enabled: false
+    name: FLOW-TRACKER-2
+  mlag_interfaces:
+    enabled: true

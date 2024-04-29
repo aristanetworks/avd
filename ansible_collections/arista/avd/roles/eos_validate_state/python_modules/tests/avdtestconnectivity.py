@@ -131,7 +131,14 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         """
         anta_tests = []
 
-        if not self.validate_data(type="l3leaf"):
+        # Skip the test if the host is not a VTEP (no VXLAN interface)
+        if get(self.structured_config, "vxlan_interface") is None:
+            LOGGER.info("Host is not a VTEP since it doesn't have a VXLAN interface. %s is skipped.", self.__class__.__name__)
+            return None
+
+        # TODO: For now, we exclude WAN VTEPs from testing
+        if "Dps" in get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"):
+            LOGGER.info("Host is a VTEP with a DPS source interface for VXLAN. For now, WAN VTEPs are excluded. %s is skipped.", self.__class__.__name__)
             return None
 
         if (loopback0_ip := self.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")) is None:

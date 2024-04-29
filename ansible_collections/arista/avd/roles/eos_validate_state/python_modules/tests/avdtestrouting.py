@@ -9,6 +9,8 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from ..bgp_constants import BGP_ADDRESS_FAMILIES
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -53,12 +55,21 @@ class AvdTestRoutingTable(AvdTestBase):
                     )
                     processed_ips.add(ip)
 
-        if not self.validate_data(type="l3leaf"):
+        # Skip the test if the host is not a VTEP (no VXLAN interface)
+        if get(self.structured_config, "vxlan_interface") is None:
+            LOGGER.info("Host is not a VTEP since it doesn't have a VXLAN interface. %s is skipped.", self.__class__.__name__)
+            return None
+
+        vtep_interface = get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface")
+
+        # TODO: For now, we exclude WAN VTEPs from testing
+        if "Dps" in vtep_interface:
+            LOGGER.info("Host is a VTEP with a DPS source interface for VXLAN. For now, WAN VTEPs are excluded. %s is skipped.", self.__class__.__name__)
             return None
 
         add_test(mapping=self.loopback0_mapping)
 
-        if get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface") is not None:
+        if vtep_interface is not None:
             add_test(mapping=self.vtep_mapping)
 
         return {self.anta_module: anta_tests} if anta_tests else None
@@ -67,17 +78,15 @@ class AvdTestRoutingTable(AvdTestBase):
 class AvdTestBGP(AvdTestBase):
     """AvdTestBGP class for BGP tests.
 
-    Supports IPv4, IPv6 and EVPN address families.
+    Supports IPv4, IPv6, Path-Selection, Link-State and EVPN address families.
     """
 
     anta_module = "anta.tests.routing"
     anta_tests = {}
 
-    def add_test(self, afi: str, bgp_neighbor_ip: str, bgp_peer: str, safi: str | None = None) -> dict:
+    def add_test(self, afi: str, bgp_neighbor_ip: str, bgp_peer: str, description: str, safi: str | None = None) -> dict:
         """Add a BGP test definition with the proper input parameters."""
-        formatted_afi = "IPv4" if afi.lower() == "ipv4" else "IPv6" if afi.lower() == "ipv6" else afi.upper()
-        formatted_safi = f" {safi.capitalize()}" if safi else ""
-        custom_field = f"BGP {formatted_afi}{formatted_safi} Peer: {bgp_peer} (IP: {bgp_neighbor_ip})"
+        custom_field = f"BGP {description} Peer: {''.join([bgp_peer, ' (IP: ', bgp_neighbor_ip, ')']) if bgp_peer is not None else bgp_neighbor_ip}"
 
         address_family = {"afi": afi, "peers": [bgp_neighbor_ip]}
         if safi:
@@ -92,13 +101,19 @@ class AvdTestBGP(AvdTestBase):
             },
         )
 
-    def create_tests(self, afi: str, safi: str | None = None) -> None:
+    def create_tests(
+        self,
+        afi: str,
+        description: str,
+        avd_key: str,
+        safi: str | None = None,
+    ) -> None:
         """Create BGP tests for the given AFI and SAFI."""
         bgp_neighbors = get(self.structured_config, "router_bgp.neighbors", [])
 
         # Retrieve peer groups and direct neighbors.
-        peer_groups = get(self.structured_config, f"router_bgp.address_family_{afi}.peer_groups", [])
-        direct_neighbors = get(self.structured_config, f"router_bgp.address_family_{afi}.neighbors", [])
+        peer_groups = get(self.structured_config, f"router_bgp.{avd_key}.peer_groups", [])
+        direct_neighbors = get(self.structured_config, f"router_bgp.{avd_key}.neighbors", [])
 
         # Only explicitly activated neighbors and peer groups are tested.
         filtered_peer_groups = [peer_group["name"] for peer_group in peer_groups if peer_group.get("activate")]
@@ -116,7 +131,7 @@ class AvdTestBGP(AvdTestBase):
             # Check peer availability if the 'peer' key exists. Otherwise, still include the test for potential BGP external peers.
             if peer is not None and not self.is_peer_available(peer):
                 continue
-            self.add_test(afi=afi, safi=safi, bgp_neighbor_ip=str(ip), bgp_peer=peer)
+            self.add_test(afi=afi, safi=safi, bgp_neighbor_ip=str(ip), bgp_peer=peer, description=description)
 
     @cached_property
     def test_definition(self) -> dict | None:
@@ -143,8 +158,8 @@ class AvdTestBGP(AvdTestBase):
                 },
             },
         )
-        # Create tests for IPv4, IPv6 and EVPN address families
-        for afi, safi in [("evpn", None), ("ipv4", "unicast"), ("ipv6", "unicast")]:
-            self.create_tests(afi=afi, safi=safi)
+        # Create tests for IPv4, IPv6, Path-Selection, Link-State and EVPN address families
+        for family in BGP_ADDRESS_FAMILIES:
+            self.create_tests(**family)
 
         return self.anta_tests if self.anta_tests.get(f"{self.anta_module}.bgp") else None
