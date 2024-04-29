@@ -45,7 +45,7 @@ monitor telemetry postcard policy
    no disabled
    ingress collection gre source 10.3.3.3 destination 10.3.3.4 version 2
    ingress sample rate 16384
-   ingress sample tcp-udp-checksum 2343223
+   ingress sample tcp-udp-checksum 65000
    sample policy samplepo1
       match rule1 ipv4
          destination prefix 10.3.3.0/24

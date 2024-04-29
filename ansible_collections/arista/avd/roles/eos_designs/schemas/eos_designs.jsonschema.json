@@ -27974,6 +27974,8 @@
                           "tcp_udp_checksum": {
                             "type": "integer",
                             "description": "Configure TCP/UDP checksum or IP ID checksum.",
+                            "minimum": 0,
+                            "maximum": 65535,
                             "title": "TCP UDP Checksum"
                           }
                         },

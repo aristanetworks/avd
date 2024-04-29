@@ -16,7 +16,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "monitor_telemetry_postcard.ingress.collection.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | Postcard version |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sample</samp>](## "monitor_telemetry_postcard.ingress.sample") | Dictionary |  |  |  | Configure sampling parameters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate</samp>](## "monitor_telemetry_postcard.ingress.sample.rate") | Integer |  |  | Valid Values:<br>- <code>16384</code><br>- <code>32768</code><br>- <code>65536</code> | Configure sampling rate. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_udp_checksum</samp>](## "monitor_telemetry_postcard.ingress.sample.tcp_udp_checksum") | Integer |  |  |  | Configure TCP/UDP checksum or IP ID checksum. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_udp_checksum</samp>](## "monitor_telemetry_postcard.ingress.sample.tcp_udp_checksum") | Integer |  |  | Min: 0<br>Max: 65535 | Configure TCP/UDP checksum or IP ID checksum. |
     | [<samp>&nbsp;&nbsp;profiles</samp>](## "monitor_telemetry_postcard.profiles") | List, items: Dictionary |  |  |  | Configure the postcard telemetry profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_telemetry_postcard.profiles.[].name") | String | Required, Unique |  |  | Profile name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ingress_sample_policy</samp>](## "monitor_telemetry_postcard.profiles.[].ingress_sample_policy") | String |  |  |  | Configure ingress sample policy for the profile. |
@@ -60,7 +60,7 @@
           rate: <int; 16384 | 32768 | 65536>
 
           # Configure TCP/UDP checksum or IP ID checksum.
-          tcp_udp_checksum: <int>
+          tcp_udp_checksum: <int; 0-65535>
 
       # Configure the postcard telemetry profile.
       profiles:

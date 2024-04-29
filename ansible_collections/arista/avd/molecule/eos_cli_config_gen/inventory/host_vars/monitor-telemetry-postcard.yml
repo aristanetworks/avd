@@ -7,7 +7,7 @@ monitor_telemetry_postcard:
       version: 2
     sample:
       rate: 16384
-      tcp_udp_checksum: 2343223
+      tcp_udp_checksum: 65000
   profiles:
     - name: profile1
       ingress_sample_policy: ingresspo1

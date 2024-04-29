@@ -42,6 +42,8 @@ keys:
               tcp_udp_checksum:
                 type: int
                 description: Configure TCP/UDP checksum or IP ID checksum.
+                min: 0
+                max: 65535
                 convert_types:
                 - str
       profiles:
