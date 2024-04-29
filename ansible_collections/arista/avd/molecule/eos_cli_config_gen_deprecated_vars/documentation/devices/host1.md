@@ -1087,9 +1087,9 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
-| 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
-| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
-| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
+| 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
+| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
+| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
 
 #### BGP Neighbor Interfaces
 
