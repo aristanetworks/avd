@@ -167,7 +167,7 @@ sFlow is disabled.
 
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
-| Ethernet16 | 111-112 | 110 | out
+| Ethernet16 | 111-112 | 110 | out |
 
 ##### Link Tracking Groups
 
