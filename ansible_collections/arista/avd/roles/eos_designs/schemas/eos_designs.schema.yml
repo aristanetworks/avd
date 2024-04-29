@@ -5519,10 +5519,44 @@ $defs:
                   '
               address_family_ipv4:
                 type: dict
-                $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/
+                keys:
+                  activate:
+                    type: bool
+                  route_map_in:
+                    type: str
+                    description: Inbound route-map name.
+                  route_map_out:
+                    type: str
+                    description: Outbound route-map name.
+                  default_originate:
+                    type: dict
+                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/default_originate/
+                  next_hop:
+                    type: dict
+                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/next_hop/
+                  prefix_list_in:
+                    type: str
+                    description: Inbound prefix-list name.
+                  prefix_list_out:
+                    type: str
+                    description: Outbound prefix-list name.
               address_family_ipv6:
                 type: dict
-                $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv6/keys/peer_groups/items/
+                keys:
+                  activate:
+                    type: bool
+                  route_map_in:
+                    type: str
+                    description: Inbound route-map name.
+                  route_map_out:
+                    type: str
+                    description: Outbound route-map name.
+                  prefix_list_in:
+                    type: str
+                    description: Inbound prefix-list name.
+                  prefix_list_out:
+                    type: str
+                    description: Outbound prefix-list name.
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -6630,10 +6664,44 @@ $defs:
                         '
                     address_family_ipv4:
                       type: dict
-                      $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/
+                      keys:
+                        activate:
+                          type: bool
+                        route_map_in:
+                          type: str
+                          description: Inbound route-map name.
+                        route_map_out:
+                          type: str
+                          description: Outbound route-map name.
+                        default_originate:
+                          type: dict
+                          $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/default_originate/
+                        next_hop:
+                          type: dict
+                          $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/next_hop/
+                        prefix_list_in:
+                          type: str
+                          description: Inbound prefix-list name.
+                        prefix_list_out:
+                          type: str
+                          description: Outbound prefix-list name.
                     address_family_ipv6:
                       type: dict
-                      $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv6/keys/peer_groups/items/
+                      keys:
+                        activate:
+                          type: bool
+                        route_map_in:
+                          type: str
+                          description: Inbound route-map name.
+                        route_map_out:
+                          type: str
+                          description: Outbound route-map name.
+                        prefix_list_in:
+                          type: str
+                          description: Inbound prefix-list name.
+                        prefix_list_out:
+                          type: str
+                          description: Outbound prefix-list name.
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings

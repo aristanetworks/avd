@@ -64,11 +64,11 @@ router_bgp:
       activate: false
     - name: IPVPN-INTERWORKING-PEERS
       activate: false
-    - name: Tenant_C_AFIPv4_PG_2
+    - name: Tenant_C_BGP_PEER_GROUP
       activate: true
       prefix_list_in: PL_In_Test_1
       prefix_list_out: PL_Out_Test_1
-    - name: Tenant_C_AFIPv4_PG_3
+    - name: Tenant_C_BGP_PEER_GROUP2
       activate: true
       route_map_in: TEST_IN
       route_map_out: TEST_OUT
@@ -259,7 +259,7 @@ router_bgp:
     vlan: '350'
   address_family_ipv6:
     peer_groups:
-    - name: Tenant_C_AFPv6_PG_2
+    - name: Tenant_C_BGP_PEER_GROUP
       activate: false
 static_routes:
 - vrf: MGMT

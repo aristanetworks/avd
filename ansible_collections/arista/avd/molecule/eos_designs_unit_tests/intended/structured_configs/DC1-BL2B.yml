@@ -60,7 +60,7 @@ router_bgp:
       activate: false
     - name: IPVPN-INTERWORKING-PEERS
       activate: false
-    - name: VRF_Tenant_C_AFIPv4_PG_1
+    - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       activate: true
   redistribute_routes:
   - source_protocol: connected
@@ -252,7 +252,7 @@ router_bgp:
     vlan: '350'
   address_family_ipv6:
     peer_groups:
-    - name: VRF_Tenant_C_AFIPv6_PG_1
+    - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       activate: true
 static_routes:
 - vrf: MGMT
