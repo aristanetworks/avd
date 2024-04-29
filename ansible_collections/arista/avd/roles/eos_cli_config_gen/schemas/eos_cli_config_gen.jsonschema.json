@@ -3243,11 +3243,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -3280,8 +3281,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -3378,11 +3378,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -3415,8 +3416,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -7272,11 +7272,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -7309,8 +7310,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -7407,11 +7407,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -7444,8 +7445,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -11151,6 +11151,10 @@
               "type": "string",
               "title": "SSL Profile"
             },
+            "address": {
+              "type": "string",
+              "title": "Address"
+            },
             "pathfinders": {
               "type": "array",
               "items": {
@@ -14005,11 +14009,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -14042,8 +14047,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -14140,11 +14144,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -14177,8 +14182,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -18297,6 +18301,10 @@
                   "type": "boolean",
                   "title": "Import Ethernet Segment IP Mass Withdraw"
                 },
+                "import_overlay_index_gateway": {
+                  "type": "boolean",
+                  "title": "Import Overlay Index Gateway"
+                },
                 "export_ethernet_segment_ip_mass_withdraw": {
                   "type": "boolean",
                   "title": "Export Ethernet Segment IP Mass Withdraw"
@@ -18311,6 +18319,62 @@
             "next_hop_unchanged": {
               "type": "boolean",
               "title": "Next Hop Unchanged"
+            },
+            "bgp_additional_paths": {
+              "type": "object",
+              "description": "BGP additional-paths commands.",
+              "properties": {
+                "receive": {
+                  "type": "boolean",
+                  "description": "Receive multiple paths.",
+                  "title": "Receive"
+                },
+                "send": {
+                  "type": "object",
+                  "description": "Send multiple paths.",
+                  "properties": {
+                    "any": {
+                      "type": "boolean",
+                      "description": "Any eligible path.",
+                      "title": "Any"
+                    },
+                    "backup": {
+                      "type": "boolean",
+                      "description": "Best path and installed backup path.",
+                      "title": "Backup"
+                    },
+                    "ecmp": {
+                      "type": "boolean",
+                      "description": "All paths in best path ECMP group.",
+                      "title": "ECMP"
+                    },
+                    "ecmp_limit": {
+                      "type": "integer",
+                      "description": "Amount of ECMP paths to send.",
+                      "minimum": 2,
+                      "maximum": 64,
+                      "title": "ECMP Limit"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Amount of paths to send.",
+                      "minimum": 2,
+                      "maximum": 64,
+                      "title": "Limit"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Send"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP Additional Paths"
             }
           },
           "additionalProperties": false,
@@ -23219,6 +23283,13 @@
         "ipv4": {
           "type": "object",
           "properties": {
+            "activity_polling_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60,
+              "description": "MFIB entry activity polling interval.",
+              "title": "Activity Polling Interval"
+            },
             "counters": {
               "type": "object",
               "properties": {
@@ -23324,6 +23395,23 @@
             "^_.+$": {}
           },
           "title": "IPv4"
+        },
+        "ipv6": {
+          "type": "object",
+          "properties": {
+            "activity_polling_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60,
+              "description": "MFIB entry activity polling interval.",
+              "title": "Activity Polling Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "IPv6"
         },
         "vrfs": {
           "type": "array",
@@ -27379,11 +27467,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -27416,8 +27505,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -27514,11 +27602,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -27551,8 +27640,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
