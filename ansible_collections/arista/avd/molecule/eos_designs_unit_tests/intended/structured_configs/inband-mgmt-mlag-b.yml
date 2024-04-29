@@ -28,9 +28,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 100.64.0.201/31
   no_autostate: true
   mtu: 9214
+  ip_address: 100.64.0.201/31
 - name: Vlan101
   description: Inband Management
   shutdown: false
