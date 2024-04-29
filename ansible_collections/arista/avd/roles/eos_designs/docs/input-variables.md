@@ -110,7 +110,7 @@ For more information please read the [WAN how-to guide](./how-to/wan.md).
 ## Fabric topology hierarchy
 
 <div style="text-align:center">
-  <img src="../../../media/5-stage-topology.gif" />
+  <img src="../../../media/5-stage-topology.gif" alt="5 stage topology"/>
 </div>
 
 As per the diagram above, the topology hierarchy is the following:
