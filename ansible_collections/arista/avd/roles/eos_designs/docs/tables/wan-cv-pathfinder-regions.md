@@ -7,6 +7,10 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>cv_pathfinder_global_sites</samp>](## "cv_pathfinder_global_sites") | List, items: Dictionary |  |  |  | Define sites that are outside of the CV Pathfinder hierarchy.<br>This is used to arrange pathfinders in the CloudVision topology layout. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_pathfinder_global_sites.[].name") | String | Required, Unique |  |  | The site name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "cv_pathfinder_global_sites.[].description") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;location</samp>](## "cv_pathfinder_global_sites.[].location") | String |  |  |  | Location as a string is resolved on Cloudvision. |
     | [<samp>cv_pathfinder_regions</samp>](## "cv_pathfinder_regions") | List, items: Dictionary |  |  |  | Define the CV Pathfinder hierarchy. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_pathfinder_regions.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "cv_pathfinder_regions.[].description") | String |  |  |  |  |
@@ -25,6 +29,17 @@
 === "YAML"
 
     ```yaml
+    # Define sites that are outside of the CV Pathfinder hierarchy.
+    # This is used to arrange pathfinders in the CloudVision topology layout.
+    cv_pathfinder_global_sites:
+
+        # The site name.
+      - name: <str; required; unique>
+        description: <str>
+
+        # Location as a string is resolved on Cloudvision.
+        location: <str>
+
     # Define the CV Pathfinder hierarchy.
     cv_pathfinder_regions:
       - name: <str; required; unique>

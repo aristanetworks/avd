@@ -853,9 +853,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.255.252.1/31
   no_autostate: true
   mtu: 9214
+  ip_address: 10.255.252.1/31
 - name: Vlan310
   tenant: Tenant_A
   tags:

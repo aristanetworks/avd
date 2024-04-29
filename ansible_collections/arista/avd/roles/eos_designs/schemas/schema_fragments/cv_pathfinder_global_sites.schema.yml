@@ -1,0 +1,32 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  cv_pathfinder_global_sites:
+    documentation_options:
+      table: wan-cv-pathfinder-regions
+    description: |-
+      Define sites that are outside of the CV Pathfinder hierarchy.
+      This is used to arrange pathfinders in the CloudVision topology layout.
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: The site name.
+        description:
+          type: str
+        location:
+          type: str
+          description: Location as a string is resolved on Cloudvision.
+        # TBD
+        # site_contact:
+        #   type: str
+        # site_after_hours_contact:
+        #   type: str

@@ -110,7 +110,7 @@ For more information please read the [WAN how-to guide](./how-to/wan.md).
 ## Fabric topology hierarchy
 
 <div style="text-align:center">
-  <img src="../../../media/5-stage-topology.gif" />
+  <img src="../../../media/5-stage-topology.gif" alt="5 stage topology"/>
 </div>
 
 As per the diagram above, the topology hierarchy is the following:
@@ -326,7 +326,9 @@ mlag_ip_primary & mlag_ip_secondary:
 
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
+- `{{ switch_data.combined.mlag_peer_address_family }}`
 - `{{ switch_data.combined.mlag_peer_ipv4_pool }}`
+- `{{ switch_data.combined.mlag_peer_ipv6_pool }}`
 - All group/hostvars
 
 mlag_l3_ip_primary & mlag_l3_ip_secondary:

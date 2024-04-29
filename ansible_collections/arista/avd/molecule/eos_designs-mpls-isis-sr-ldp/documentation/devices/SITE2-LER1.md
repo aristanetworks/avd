@@ -192,6 +192,7 @@ vlan 2020
 | Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | *routed | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
 | Ethernet13 | P2P_LINK_TO_SITE2-LSR2_Ethernet14 | *routed | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
 | Ethernet14 | P2P_LINK_TO_SITE2-LSR2_Ethernet15 | *routed | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
+
 *Inherited from Port-Channel Interface
 
 ##### IPv6
@@ -203,7 +204,8 @@ vlan 2020
 | Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | *routed | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
 | Ethernet13 | P2P_LINK_TO_SITE2-LSR2_Ethernet14 | *routed | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
 | Ethernet14 | P2P_LINK_TO_SITE2-LSR2_Ethernet15 | *routed | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
- *Inherited from Port-Channel Interface
+
+*Inherited from Port-Channel Interface
 
 ##### ISIS
 
@@ -214,7 +216,8 @@ vlan 2020
 | Ethernet12 | 11 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
 | Ethernet13 | 220 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
 | Ethernet14 | 220 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
- *Inherited from Port-Channel Interface
+
+*Inherited from Port-Channel Interface
 
 #### Ethernet Interfaces Device Configuration
 
@@ -706,7 +709,7 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
-| 192.168.48.3 | 65202 | TENANT_B_WAN | - | - | - | - | - | - | - | - |
+| 192.168.48.3 | 65202 | TENANT_B_WAN | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
