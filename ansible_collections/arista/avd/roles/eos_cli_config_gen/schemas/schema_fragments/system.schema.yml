@@ -18,10 +18,10 @@ keys:
             keys:
               ipv4:
                 type: int
-                description: Segment size
+                description: Segment size.
               ipv6:
                 type: int
-                description: Segment size
+                description: Segment size.
           ipv4_access_groups:
             type: list
             primary_key: acl_name

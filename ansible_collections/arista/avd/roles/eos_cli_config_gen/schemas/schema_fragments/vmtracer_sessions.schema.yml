@@ -16,14 +16,14 @@ keys:
       keys:
         name:
           type: str
-          description: Vmtracer Session Name
+          description: Vmtracer Session Name.
         url:
           type: str
         username:
           type: str
         password:
           type: str
-          description: Type 7 Password Hash
+          description: Type 7 Password Hash.
         autovlan_disable:
           type: bool
         source_interface:

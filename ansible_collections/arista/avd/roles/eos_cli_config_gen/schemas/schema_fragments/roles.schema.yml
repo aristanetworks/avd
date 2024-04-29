@@ -13,7 +13,7 @@ keys:
       keys:
         name:
           type: str
-          description: Role name
+          description: Role name.
         sequence_numbers:
           type: list
           items:
@@ -23,14 +23,14 @@ keys:
                 type: int
                 convert_types:
                   - str
-                description: Sequence number
+                description: Sequence number.
               action:
                 type: str
                 valid_values: ["permit", "deny"]
               mode:
                 type: str
                 description: |
-                  "config", "config-all", "exec" or mode key as string
+                  "config", "config-all", "exec" or mode key as string.
               command:
                 type: str
-                description: Command as string
+                description: Command as string.

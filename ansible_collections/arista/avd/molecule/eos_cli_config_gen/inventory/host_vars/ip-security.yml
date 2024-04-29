@@ -7,6 +7,12 @@ ip_security:
       encryption: aes256
       dh_group: 20
     - name: IKE-2
+    - name: IKE-FQDN
+      local_id_fqdn: fqdn.local
+    - name: IKE-UFQDN
+      local_id_fqdn: my.awesome@fqdn.local
+      # local_id won't be rendered as local_id_fqdn takes precedence
+      local_id: 192.168.42.42
   sa_policies:
     - name: SA-1
       esp:
@@ -15,11 +21,17 @@ ip_security:
     - name: SA-2
       esp:
         encryption: aes128
+      sa_lifetime:
+        value: 42
+        unit: gigabytes
       pfs_dh_group: 14
     - name: SA-3
       esp:
         integrity: disabled
         encryption: disabled
+      sa_lifetime:
+        value: 8
+        # default unit is hours
       pfs_dh_group: 17
   profiles:
     - name: Profile-1

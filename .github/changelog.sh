@@ -20,7 +20,7 @@ TYPES=(
   OPTIMIZE  "Code optimization"
   PERF      "Performance"
   REFACTOR  "Code Refactoring"
-  REFORMAT  "Code Reformating"
+  REFORMAT  "Code Reformatting"
   REVERT    "Revert"
   TEST      "Testing"
 )

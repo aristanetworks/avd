@@ -7,8 +7,10 @@ import ipaddress
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import simple_7_encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 
@@ -305,6 +307,7 @@ class UtilsMixin:
                 {
                     "application_profile": self._wan_control_plane_application_profile_name,
                     "avt_profile": self._wan_control_plane_profile_name,
+                    "internet_exit_policy_name": get(control_plane_virtual_topology, "internet_exit.policy"),
                     "traffic_class": get(control_plane_virtual_topology, "traffic_class"),
                     "dscp": get(control_plane_virtual_topology, "dscp"),
                     "load_balance_policy": load_balance_policy,
@@ -347,6 +350,7 @@ class UtilsMixin:
                 {
                     "application_profile": application_profile,
                     "avt_profile": name,
+                    "internet_exit_policy_name": get(application_virtual_topology, "internet_exit.policy"),
                     "traffic_class": get(application_virtual_topology, "traffic_class"),
                     "dscp": get(application_virtual_topology, "dscp"),
                     "load_balance_policy": load_balance_policy,
@@ -386,6 +390,7 @@ class UtilsMixin:
             default_match = {
                 "application_profile": application_profile,
                 "avt_profile": name,
+                "internet_exit_policy_name": get(default_virtual_topology, "internet_exit.policy"),
                 "traffic_class": get(default_virtual_topology, "traffic_class"),
                 "dscp": get(default_virtual_topology, "dscp"),
                 "load_balance_policy": load_balance_policy,
@@ -585,3 +590,155 @@ class UtilsMixin:
             for path_group in self.shared_utils.wan_local_path_groups
             if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
         ]
+
+    @cached_property
+    def _filtered_internet_exit_policies(self) -> list:
+        """
+        - Parse self._filtered_wan_policies looking to internet_exit_policies.
+        - Verify each internet_exit_policy is present in inputs `cv_pathfinder_internet_exit_policies`.
+        - get_internet_exit_connections and insert into the policy dict.
+        - Return the list of relevant internet_exit_policies.
+        """
+        # Only supported for CV Pathfinder
+        if not self.shared_utils.is_cv_pathfinder_router:
+            return []
+
+        internet_exit_policy_names = set()
+        candidate_internet_exit_policies = []
+        configured_internet_exit_policies = get(self._hostvars, "cv_pathfinder_internet_exit_policies", [])
+
+        for policy in self._filtered_wan_policies:
+            for match in get(policy, "matches", default=[]):
+                internet_exit_policy_name = match.get("internet_exit_policy_name")
+                if not internet_exit_policy_name or internet_exit_policy_name in internet_exit_policy_names:
+                    continue
+                internet_exit_policy = get_item(
+                    configured_internet_exit_policies,
+                    "name",
+                    internet_exit_policy_name,
+                    required=True,
+                    custom_error_msg=(
+                        f"The internet exit policy {internet_exit_policy_name} configured under "
+                        f"`wan_virtual_topologies.policies[name={policy['name']}].internet_exit.policy` "
+                        "is not defined under `cv_pathfinder_internet_exit_policies`."
+                    ),
+                ).copy()
+                internet_exit_policy_names.add(internet_exit_policy_name)
+                candidate_internet_exit_policies.append(internet_exit_policy)
+
+            if (default_match := policy.get("default_match")) is not None:
+                internet_exit_policy_name = default_match.get("internet_exit_policy_name")
+                if not internet_exit_policy_name or internet_exit_policy_name in internet_exit_policy_names:
+                    continue
+                internet_exit_policy = get_item(
+                    configured_internet_exit_policies,
+                    "name",
+                    internet_exit_policy_name,
+                    required=True,
+                    custom_error_msg=(
+                        f"The internet exit policy {internet_exit_policy_name} configured under "
+                        f"`wan_virtual_topologies.policies[name={policy['name']}].internet_exit.policy` "
+                        "is not defined under `cv_pathfinder_internet_exit_policies`."
+                    ),
+                ).copy()
+                internet_exit_policy_names.add(internet_exit_policy_name)
+                candidate_internet_exit_policies.append(internet_exit_policy)
+
+        if not internet_exit_policy_names:
+            return []
+
+        internet_exit_policies = []
+
+        for internet_exit_policy in candidate_internet_exit_policies:
+            internet_exit_policy["connections"] = self.get_internet_exit_connections(internet_exit_policy)
+            if not internet_exit_policy["connections"]:
+                # No local interface for this policy
+                # TODO: Decide if we should raise here instead
+                continue
+            internet_exit_policies.append(internet_exit_policy)
+
+        return internet_exit_policies
+
+    def get_internet_exit_connections(self, internet_exit_policy: dict) -> list:
+        """
+        Return a list of connections (dicts) for the given internet_exit_policy.
+
+        These are useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
+        """
+        # Only supporting Zscaler for now
+        if get(internet_exit_policy, "type") != "zscaler":
+            raise AristaAvdError(
+                f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={internet_exit_policy['name']}]."
+            )
+
+        cloud_name = get(internet_exit_policy, "zscaler.cloud_name", required=True)
+        connections = []
+
+        # Check if the policy has any local interface
+        for wan_interface in self.shared_utils.wan_interfaces:
+            wan_interface_internet_exit_policies = get(wan_interface, "cv_pathfinder_internet_exit.policies", default=[])
+            if (interface_policy_config := get_item(wan_interface_internet_exit_policies, "name", internet_exit_policy["name"])) is None:
+                continue
+
+            connection_base = {
+                "type": "tunnel",
+                "source_interface": wan_interface["name"],
+                "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
+                "ipsec_profile": "ZSCALER-IPSEC-PROFILE",
+            }
+
+            tunnel_id_range = range_expand(get(interface_policy_config, "tunnel_interface_numbers", required=True))
+
+            zscaler_endpoint_keys = ("primary", "secondary", "tertiary")
+            for index in range(len(zscaler_endpoint_keys)):
+                zscaler_endpoint_key = zscaler_endpoint_keys[index]
+                if zscaler_endpoint_key not in self._zscaler_endpoints:
+                    continue
+
+                zscaler_endpoint = self._zscaler_endpoints[zscaler_endpoint_key]
+
+                # PRI, SEC, TER used for groups
+                # TODO: consider if we should use DC names as group suffix.
+                suffix = zscaler_endpoint_key[0:3].upper()
+
+                destination_ip = zscaler_endpoint["ip_address"]
+                tunnel_id = tunnel_id_range[index]
+                connections.append(
+                    {
+                        **connection_base,
+                        "tunnel_id": tunnel_id,
+                        "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
+                        "tunnel_destination_ip": destination_ip,
+                        "description": f"Internet Exit {internet_exit_policy['name']} {suffix}",
+                        "exit_group": f"{internet_exit_policy['name']}_{suffix}",
+                        "preference": zscaler_endpoint_key,
+                    }
+                )
+
+        return connections
+
+    @cached_property
+    def _zscaler_endpoints(self) -> dict:
+        return get(self._hostvars, "zscaler_endpoints", default={})
+
+    def _get_ipsec_credentials(self, internet_exit_policy: dict) -> tuple[str, str]:
+        """
+        Returns ufqdn, shared_key based on various details from the given internet_exit_policy.
+        """
+        policy_name = internet_exit_policy["name"]
+        domain_name = get(internet_exit_policy, "zscaler.domain_name", required=True)
+        ipsec_key_salt = get(internet_exit_policy, "zscaler.ipsec_key_salt", required=True)
+        ipsec_key = self._generate_ipsec_key(name=policy_name, salt=ipsec_key_salt)
+        ufqdn = f"{self.shared_utils.hostname}_{policy_name}@{domain_name}"
+        return ufqdn, ipsec_key
+
+    def _generate_ipsec_key(self, name: str, salt: str) -> str:
+        """
+        Build a secret containing various components for this policy and device.
+        Run type-7 obfuscation using a algorithmic salt so we ensure the same key every time.
+
+        TODO: Maybe introduce some formatting with max length of each element, since the keys can be come very very long.
+        """
+        secret = "_".join((self.shared_utils.hostname, name, salt))
+        type_7_salt = sum(salt.encode("utf-8")) % 16
+        return simple_7_encrypt(secret, type_7_salt)

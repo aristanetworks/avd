@@ -115,9 +115,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.255.252.6/31
   no_autostate: true
   mtu: 1500
+  ip_address: 10.255.252.6/31
   isis_enable: EVPN_UNDERLAY
   isis_metric: 50
   isis_network_point_to_point: true

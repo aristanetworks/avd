@@ -11,4 +11,4 @@ keys:
     keys:
       information_option:
         type: bool
-        description: Insert Option-82 information
+        description: Insert Option-82 information.

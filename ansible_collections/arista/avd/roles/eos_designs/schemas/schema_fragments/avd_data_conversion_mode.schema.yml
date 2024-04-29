@@ -22,4 +22,4 @@ keys:
        "warning" will produce warning messages.
        "info" will produce regular log messages.
        "debug" will produce hidden debug messages viewable with -v.
-       "quiet" will not produce any messages
+       "quiet" will not produce any messages.

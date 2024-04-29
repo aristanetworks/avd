@@ -219,6 +219,8 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: ATT_666_peer3_Ethernet42
+  flow_tracker:
+    hardware: FLOW-TRACKER
   dhcp_client_accept_default_route: true
 - name: Ethernet2
   peer_type: l3_interface
@@ -319,20 +321,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -342,6 +330,11 @@ ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
     local_id: 192.168.142.1
+  - name: IE-ZSCALER-EXIT-POLICY-1-IKE-POLICY
+    local_id_fqdn: cv-pathfinder-edge_ZSCALER-EXIT-POLICY-1@test.local
+    ike_lifetime: 24
+    encryption: aes256
+    dh_group: 24
   sa_policies:
   - name: DP-SA-POLICY
     esp:
@@ -351,6 +344,13 @@ ip_security:
     esp:
       encryption: aes256gcm128
     pfs_dh_group: 14
+  - name: IE-ZSCALER-EXIT-POLICY-1-SA-POLICY
+    pfs_dh_group: 24
+    sa_lifetime:
+      value: 8
+    esp:
+      integrity: sha256
+      encryption: aes256
   profiles:
   - name: DP-PROFILE
     sa_policy: DP-SA-POLICY
@@ -371,6 +371,14 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+  - name: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+    ike_policy: IE-ZSCALER-EXIT-POLICY-1-IKE-POLICY
+    sa_policy: IE-ZSCALER-EXIT-POLICY-1-SA-POLICY
+    shared_key: 0007054B145A1F0E0928424A0C0B4812160C093B101807091F10105E222E2A351B69777F7D2D3A5547666C7F7A616A672374332B7C68263639327A3E2A3B0468
+    dpd:
+      interval: 10
+      time: 60
+      action: clear
   key_controller:
     profile: DP-PROFILE
 management_security:
@@ -403,6 +411,7 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY-VOICE
     load_balance_policy: LB-PROD-AVT-POLICY-VOICE
+    internet_exit_policy: ZSCALER-EXIT-POLICY-1
   - name: PROD-AVT-POLICY-VIDEO
     load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
   - name: PROD-AVT-POLICY-MPLS-ONLY
@@ -634,6 +643,61 @@ application_traffic_recognition:
     - name: PFX-PATHFINDERS
       prefix_values:
       - 192.168.144.1/32
+ip_access_lists:
+- name: ALLOW-ALL
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
+ip_nat:
+  pools:
+  - name: PORT-ONLY-POOL
+    type: port-only
+    ranges:
+    - first_port: 1500
+      last_port: 65535
+  profiles:
+  - name: VRF-AWARE-NAT
+    source:
+      dynamic:
+      - access_list: ALLOW-ALL
+        pool_name: PORT-ONLY-POOL
+        nat_type: pool
+router_service_insertion:
+  enabled: true
+  connections:
+  - name: IE-Tunnel100
+    tunnel_interface:
+      primary: Tunnel100
+    monitor_connectivity_host: IE-Tunnel100
+  - name: IE-Tunnel101
+    tunnel_interface:
+      primary: Tunnel101
+    monitor_connectivity_host: IE-Tunnel101
+  - name: IE-Tunnel102
+    tunnel_interface:
+      primary: Tunnel102
+    monitor_connectivity_host: IE-Tunnel102
+router_internet_exit:
+  exit_groups:
+  - name: ZSCALER-EXIT-POLICY-1_PRI
+    local_connections:
+    - name: IE-Tunnel100
+  - name: ZSCALER-EXIT-POLICY-1_SEC
+    local_connections:
+    - name: IE-Tunnel101
+  - name: ZSCALER-EXIT-POLICY-1_TER
+    local_connections:
+    - name: IE-Tunnel102
+  policies:
+  - name: ZSCALER-EXIT-POLICY-1
+    exit_groups:
+    - name: ZSCALER-EXIT-POLICY-1_PRI
+    - name: ZSCALER-EXIT-POLICY-1_SEC
+    - name: ZSCALER-EXIT-POLICY-1_TER
+    - name: system-default-exit-group
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -656,7 +720,103 @@ vxlan_interface:
         vni: 42
       - name: ATTRACTED-VRF-FROM-UPLINK
         vni: 166
+tunnel_interfaces:
+- name: Tunnel100
+  description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
+  mtu: 1394
+  ip_address: unnumbered Ethernet3
+  tunnel_mode: ipsec
+  source_interface: Ethernet3
+  destination: 10.37.121.1
+  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  nat_profile: VRF-AWARE-NAT
+- name: Tunnel101
+  description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
+  mtu: 1394
+  ip_address: unnumbered Ethernet3
+  tunnel_mode: ipsec
+  source_interface: Ethernet3
+  destination: 10.39.77.1
+  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  nat_profile: VRF-AWARE-NAT
+- name: Tunnel102
+  description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
+  mtu: 1394
+  ip_address: unnumbered Ethernet3
+  tunnel_mode: ipsec
+  source_interface: Ethernet3
+  destination: 10.50.9.1
+  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  nat_profile: VRF-AWARE-NAT
+monitor_connectivity:
+  interface_sets:
+  - name: SET-Tunnel100
+    interfaces: Tunnel100
+  - name: SET-Tunnel101
+    interfaces: Tunnel101
+  - name: SET-Tunnel102
+    interfaces: Tunnel102
+  hosts:
+  - name: IE-Tunnel100
+    description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
+    ip: 10.37.121.1
+    local_interfaces: SET-Tunnel100
+    address_only: false
+    url: http://gateway.zscalerbeta.net/vpntest
+  - name: IE-Tunnel101
+    description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
+    ip: 10.39.77.1
+    local_interfaces: SET-Tunnel101
+    address_only: false
+    url: http://gateway.zscalerbeta.net/vpntest
+  - name: IE-Tunnel102
+    description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
+    ip: 10.50.9.1
+    local_interfaces: SET-Tunnel102
+    address_only: false
+    url: http://gateway.zscalerbeta.net/vpntest
 metadata:
+  cv_pathfinder:
+    internet_exit_policies:
+    - name: ZSCALER-EXIT-POLICY-1
+      type: zscaler
+      city: BigCity
+      country: BigCountry
+      firewall: false
+      ips_control: false
+      acceptable_use_policy: false
+      vpn_credentials:
+      - fqdn: cv-pathfinder-edge_ZSCALER-EXIT-POLICY-1@test.local
+        vpn_type: UFQDN
+        pre_shared_key: 0007054B145A1F0E0928424A0C0B4812160C093B101807091F10105E222E2A351B69777F7D2D3A5547666C7F7A616A672374332B7C68263639327A3E2A3B0468
+      tunnels:
+      - name: Tunnel100
+        preference: Preferred
+      - name: Tunnel101
+        preference: Alternate
+      - name: Tunnel102
+        preference: Alternate
+    role: edge
+    ssl_profile: profileA
+    vtep_ip: 192.168.142.1
+    region: AVD_Land_East
+    zone: AVD_Land_East-ZONE
+    site: Site511
+    interfaces:
+    - name: Ethernet1
+      carrier: ATT
+      circuit_id: '666'
+      pathgroup: INET
+    - name: Ethernet2
+      carrier: Colt
+      circuit_id: '10555'
+      pathgroup: MPLS
+    - name: Ethernet3
+      carrier: Comcast-5G
+      circuit_id: AF830
+      pathgroup: LTE
+    pathfinders:
+    - vtep_ip: 192.168.144.1
   cv_tags:
     device_tags:
     - name: Role
@@ -708,25 +868,17 @@ metadata:
         value: Comcast-5G
       - name: Circuit
         value: AF830
-  cv_pathfinder:
-    role: edge
-    ssl_profile: profileA
-    vtep_ip: 192.168.142.1
-    region: AVD_Land_East
-    zone: AVD_Land_East-ZONE
-    site: Site511
-    interfaces:
-    - name: Ethernet1
-      carrier: ATT
-      circuit_id: '666'
-      pathgroup: INET
-    - name: Ethernet2
-      carrier: Colt
-      circuit_id: '10555'
-      pathgroup: MPLS
-    - name: Ethernet3
-      carrier: Comcast-5G
-      circuit_id: AF830
-      pathgroup: LTE
-    pathfinders:
-    - vtep_ip: 192.168.144.1
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false

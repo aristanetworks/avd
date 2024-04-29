@@ -152,7 +152,7 @@ class RouterPathSelectionMixin(UtilsMixin):
 
     def _get_path_group_id(self, path_group_name: str, config_id: int | None = None) -> int:
         """
-        TODO - implement algorithm to auto assign IDs - cf internal documenation
+        TODO - implement algorithm to auto assign IDs - cf internal documentation
         TODO - also implement algorithm for cross connects on public path_groups
         """
         if path_group_name == self.shared_utils.wan_ha_path_group_name:

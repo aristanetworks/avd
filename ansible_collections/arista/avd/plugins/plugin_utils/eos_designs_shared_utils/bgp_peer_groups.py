@@ -56,7 +56,7 @@ class BgpPeerGroupsMixin:
                 bgp_peer_groups[key]["listen_range_prefixes"] = get(self.hostvars, f"bgp_peer_groups.{key}.listen_range_prefixes", required=True)
 
             if key in ["wan_overlay_peers", "wan_rr_overlay_peers"]:
-                # For WAN peerings, set the TTL for maximum hops and use defaut timers for BFD
+                # For WAN peerings, set the TTL for maximum hops and use default timers for BFD
                 bgp_peer_groups[key]["ttl_maximum_hops"] = get(self.hostvars, f"bgp_peer_groups.{key}.ttl_maximum_hops", default=1)
 
                 if get(self.hostvars, f"bgp_peer_groups.{key}.bfd", default=default_bfd):
