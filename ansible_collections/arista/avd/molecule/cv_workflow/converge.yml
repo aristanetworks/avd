@@ -105,6 +105,7 @@
     - name: Get workspace information
       delegate_to: localhost
       run_once: true
+      no_log: true
       ansible.builtin.uri:
         url: '{{ configlet_url + "?key.workspaceId=" + ws_name + "&key.configlet_id=" + item }}'
         return_content: true
@@ -122,6 +123,7 @@
 
     - name: Set configlets facts
       run_once: true
+      no_log: true
       vars:
         configs: ["{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf1.cfg",
                   "{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf2.cfg",
@@ -141,6 +143,7 @@
     - name: Get Device Tag information
       delegate_to: localhost
       run_once: true
+      no_log: true
       ansible.builtin.uri:
         url: '{{ tag_url }}'
         return_content: true
@@ -164,6 +167,7 @@
     - name: Get and verify Interface Tag information
       delegate_to: localhost
       run_once: true
+      no_log: true
       ansible.builtin.uri:
         url: '{{ tag_url }}'
         return_content: true
@@ -220,6 +224,7 @@
     - name: Get Strict Device Tag information
       delegate_to: localhost
       run_once: true
+      no_log: true
       ansible.builtin.uri:
         url: '{{ tag_url }}'
         return_content: true
@@ -275,6 +280,7 @@
     - name: Get Value Device Tag information
       delegate_to: localhost
       run_once: true
+      no_log: true
       vars:
         ws_name_value: avd-static-studio-tag-value-change-{{ r }}
       ansible.builtin.uri:
@@ -365,6 +371,7 @@
     - name: Get workspace information
       delegate_to: localhost
       run_once: true
+      no_log: true
       vars:
         ws_name_dotted: avd-static-studio-test-dotted-{{ r }}
       ansible.builtin.uri:
@@ -381,13 +388,13 @@
 
     - name: Set configlets facts
       run_once: true
+      no_log: true
       vars:
         configs: ["{{ configuration_dir ~ '/dotted_hostname/test_dotted_hostname' }}/ci-s1-leaf.1.cfg"]
       ansible.builtin.set_fact:
         dotted_response_configlet: "{{ response_configlet | default({}) | combine({item.0.json.value.body | trim: item.1}) }}"
       loop: "{{ dotted_result.results | zip(configs) | list }}"
 
-    # XXX: fix me!
     - name: Check configlets
       ansible.builtin.assert:
         that:

@@ -116,9 +116,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: mlag_peer_vlan_structured_config_override
   shutdown: false
-  ip_address: 10.255.252.1/31
   no_autostate: true
   mtu: 9214
+  ip_address: 10.255.252.1/31
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Po3

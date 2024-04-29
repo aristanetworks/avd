@@ -593,6 +593,25 @@ keys:
       existing keys will be replaced.\n"
     default:
     - custom_structured_configuration_
+  cv_pathfinder_global_sites:
+    documentation_options:
+      table: wan-cv-pathfinder-regions
+    description: 'Define sites that are outside of the CV Pathfinder hierarchy.
+
+      This is used to arrange pathfinders in the CloudVision topology layout.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: The site name.
+        description:
+          type: str
+        location:
+          type: str
+          description: Location as a string is resolved on Cloudvision.
   cv_pathfinder_internet_exit_policies:
     description: 'PREVIEW: These keys are in preview mode.
 
@@ -1334,6 +1353,15 @@ keys:
             convert_types:
             - str
             description: IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point
+              SVIs over the MLAG peer-link.
+          ipv6_prefix_length:
+            type: int
+            default: 64
+            min: 1
+            max: 127
+            convert_types:
+            - str
+            description: IPv6 prefix length used for MLAG peer-vlan and L3 point-to-point
               SVIs over the MLAG peer-link.
       p2p_uplinks:
         type: dict
@@ -6931,12 +6959,20 @@ $defs:
             description: Node management interface IPv4 address.
             type: str
             format: cidr
+          mgmt_gateway:
+            type: str
+            description: This key sets the management gateway for the device. It takes
+              precedence over the global `mgmt_gateway`.
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
             description: Node management interface IPv6 address.
             type: str
             format: cidr
+          ipv6_mgmt_gateway:
+            type: str
+            description: This key sets the ipv6 management gateway for the device.
+              It takes precedence over the global `ipv6_mgmt_gateway`.
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
@@ -7784,17 +7820,39 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: str
+          mlag_peer_address_family:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: 'IP address family used to establish MLAG Peer Link (control
+              link).
+
+              `ipv6` requires EOS version 4.31.1F or higher.
+
+              Note: `ipv6` is not supported in combination with a common MLAG peer
+              link VLAN (ex. `mlag_l3_peer_vlan` set to 4094).'
+            type: str
+            valid_values:
+            - ipv4
+            - ipv6
+            default: ipv4
           mlag_peer_ipv4_pool:
             documentation_options:
               table: node-type-l2-mlag-configuration
-            description: 'IP address pool used for MLAG Peer Link (control link).
+            description: 'IPv4 address pool used for MLAG Peer Link (control link).
               IP is derived from the node id.
 
-              Required when MLAG leafs present in topology.
-
-              '
+              Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).'
             type: str
             format: ipv4_cidr
+          mlag_peer_ipv6_pool:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: 'IPv6 address pool used for MLAG Peer Link (control link).
+              IP is derived from the node id.
+
+              Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.'
+            type: str
+            format: ipv6_cidr
           mlag_port_channel_id:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -8408,9 +8466,13 @@ $defs:
             type: str
             description: 'The CV Pathfinder site name.
 
-              This key is required for WAN routers but ignored for pathfinders.
+              This key is required for WAN routers but optional for pathfinders.
 
-              The site name must be defined for the relevant region under ''cv_pathfinder_regions''.'
+              For WAN routers and pathfinders with `cv_pathfinder_region`, the site
+              name must be defined for the relevant region under ''cv_pathfinder_regions''.
+
+              For pathfinders without `cv_pathfinder_region` set, the site must be
+              defined under `cv_pathfinder_global_sites`.'
           wan_ha:
             documentation_options:
               table: node-type-wan-configuration
