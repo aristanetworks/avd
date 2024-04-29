@@ -121,7 +121,7 @@ NAT profile VRF is: TEST
 
 | Setting | Value |
 | -------- | ----- |
-| State | Disabled !
+| State | Disabled |
 | Expiry Interval | 60 Seconds |
 | Interface | Ethernet1 |
 | Peer IP Address | 1.1.1.1 |
