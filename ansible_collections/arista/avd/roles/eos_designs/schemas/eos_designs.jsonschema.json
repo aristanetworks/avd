@@ -5528,6 +5528,14 @@
               "maximum": 31,
               "description": "IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.",
               "title": "IPv4 Prefix Length"
+            },
+            "ipv6_prefix_length": {
+              "type": "integer",
+              "default": 64,
+              "minimum": 1,
+              "maximum": 127,
+              "description": "IPv6 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.",
+              "title": "IPv6 Prefix Length"
             }
           },
           "additionalProperties": false,
@@ -28150,7 +28158,7 @@
                   },
                   "peer_address": {
                     "type": "string",
-                    "description": "IPv4 Address.",
+                    "description": "IPv4 or IPv6 Address.",
                     "title": "Peer Address"
                   },
                   "peer_address_heartbeat": {
@@ -28158,7 +28166,7 @@
                     "properties": {
                       "peer_ip": {
                         "type": "string",
-                        "description": "IPv4 Address.",
+                        "description": "IPv4 or IPv6 Address.",
                         "title": "Peer IP"
                       },
                       "vrf": {
@@ -34874,6 +34882,10 @@
                             "type": "boolean",
                             "title": "Import Ethernet Segment IP Mass Withdraw"
                           },
+                          "import_overlay_index_gateway": {
+                            "type": "boolean",
+                            "title": "Import Overlay Index Gateway"
+                          },
                           "export_ethernet_segment_ip_mass_withdraw": {
                             "type": "boolean",
                             "title": "Export Ethernet Segment IP Mass Withdraw"
@@ -34888,6 +34900,62 @@
                       "next_hop_unchanged": {
                         "type": "boolean",
                         "title": "Next Hop Unchanged"
+                      },
+                      "bgp_additional_paths": {
+                        "type": "object",
+                        "description": "BGP additional-paths commands.",
+                        "properties": {
+                          "receive": {
+                            "type": "boolean",
+                            "description": "Receive multiple paths.",
+                            "title": "Receive"
+                          },
+                          "send": {
+                            "type": "object",
+                            "description": "Send multiple paths.",
+                            "properties": {
+                              "any": {
+                                "type": "boolean",
+                                "description": "Any eligible path.",
+                                "title": "Any"
+                              },
+                              "backup": {
+                                "type": "boolean",
+                                "description": "Best path and installed backup path.",
+                                "title": "Backup"
+                              },
+                              "ecmp": {
+                                "type": "boolean",
+                                "description": "All paths in best path ECMP group.",
+                                "title": "ECMP"
+                              },
+                              "ecmp_limit": {
+                                "type": "integer",
+                                "description": "Amount of ECMP paths to send.",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "ECMP Limit"
+                              },
+                              "limit": {
+                                "type": "integer",
+                                "description": "Amount of paths to send.",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "Limit"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Send"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "BGP Additional Paths"
                       }
                     },
                     "additionalProperties": false,
@@ -51481,6 +51549,23 @@
       "type": "object",
       "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.",
       "properties": {
+        "sample": {
+          "type": "object",
+          "properties": {
+            "rate": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4294967295,
+              "description": "Packet sampling rate that defines the average number of ingress packets that pass through an interface for every packet that is sampled.\nA rate of 16384 corresponds to an average sample of one per 16384 packets.",
+              "title": "Rate"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sample"
+        },
         "destinations": {
           "type": "array",
           "items": {
