@@ -4,6 +4,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [IPv6 DHCP Relay](#ipv6-dhcp-relay)
+  - [IPv6 DHCP Relay](#ipv6-dhcp-relay-1)
+  - [IPv6 DHCP Relay Device Configuration](#ipv6-dhcp-relay-device-configuration)
 
 ## Management
 
@@ -31,4 +34,26 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+## IPv6 DHCP Relay
+
+### IPv6 DHCP Relay
+
+DhcpRelay Agent is in always-on mode.
+
+Forwarding requests with additional IPv6 addresses in the "giaddr" field is allowed.
+
+Add Option 79 - Link Layer Address Option.
+
+Add RemoteID option 37 in format MAC address and interface ID.
+
+### IPv6 DHCP Relay Device Configuration
+
+```eos
+!
+ipv6 dhcp relay always-on
+ipv6 dhcp relay all-subnets default
+ipv6 dhcp relay option link-layer address
+ipv6 dhcp relay option remote-id format %m:%i
 ```

@@ -12,11 +12,11 @@ ipv6 dhcp relay always-on
 {%     if ipv6_dhcp_relay.all_subnets is arista.avd.defined(true) %}
 ipv6 dhcp relay all-subnets default
 {%     endif %}
-{%     if ipv6_dhcp_relay.option is arista.avd.defined(true) %}
+{%     if ipv6_dhcp_relay.option is arista.avd.defined() %}
 {%         if ipv6_dhcp_relay.option.link_layer_address is arista.avd.defined(true) %}
 ipv6 dhcp relay option link-layer address
 {%         endif %}
-{%         if ipv6_dhcp_relay.option.remote_id_format is arista.avd.defined(true) %}
+{%         if ipv6_dhcp_relay.option.remote_id_format is arista.avd.defined() %}
 {%             if ipv6_dhcp_relay.option.remote_id_format == "%m:%i" %}
 ipv6 dhcp relay option remote-id format %m:%i
 {%             elif ipv6_dhcp_relay.option.remote_id_format == "%m:%p" %}

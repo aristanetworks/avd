@@ -17,21 +17,21 @@ DhcpRelay Agent is in always-on mode.
 
 Forwarding requests with additional IPv6 addresses in the "giaddr" field is allowed.
 {%     endif %}
-{% if ipv6_dhcp_relay.option is arista.avd.defined(true) %}
-{%     if ipv6_dhcp_relay.option.link_layer_address is arista.avd.defined(true) %}
+{%     if ipv6_dhcp_relay.option is arista.avd.defined() %}
+{%         if ipv6_dhcp_relay.option.link_layer_address is arista.avd.defined(true) %}
 
 Add Option 79 - Link Layer Address Option.
-{%     endif %}
-{%     if ipv6_dhcp_relay.option.remote_id_format is arista.avd.defined(true) %}
-{%         if ipv6_dhcp_relay.option.remote_id_format == "%m:%i" %}
+{%         endif %}
+{%         if ipv6_dhcp_relay.option.remote_id_format is arista.avd.defined() %}
+{%             if ipv6_dhcp_relay.option.remote_id_format == "%m:%i" %}
 
 Add RemoteID option 37 in format MAC address and interface ID.
-{%         elif ipv6_dhcp_relay.option.remote_id_format == "%m:%p" %}
+{%             elif ipv6_dhcp_relay.option.remote_id_format == "%m:%p" %}
 
 Add RemoteID option 37 in format MAC address and interface name.
+{%             endif %}
 {%         endif %}
 {%     endif %}
-{% endif %}
 
 ### IPv6 DHCP Relay Device Configuration
 
