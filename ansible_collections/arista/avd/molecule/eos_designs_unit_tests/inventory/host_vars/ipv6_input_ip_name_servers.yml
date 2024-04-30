@@ -1,0 +1,13 @@
+---
+type: l2leaf
+
+l2leaf:
+  defaults:
+
+ip_name_servers:
+  - ip_address: 2001:4860:4860::8888
+    vrf: MGMT
+    priority: 0
+  - ip_address: 2001:4860:4860::8844
+    vrf: MGMT
+    priority: 1
