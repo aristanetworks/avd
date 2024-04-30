@@ -69,7 +69,7 @@ def _create_avd_switch_facts_instances(all_inputs: dict[str, dict]) -> dict:
             ```
     """
     # pylint: disable=import-outside-toplevel
-    from .vendor.eos_designs.eos_designs_facts import EosDesignsFacts  
+    from .vendor.eos_designs.eos_designs_facts import EosDesignsFacts
     from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils
 
     # pylint: enable=import-outside-toplevel
