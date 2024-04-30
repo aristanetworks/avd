@@ -18782,13 +18782,17 @@
                     "type": "string",
                     "title": "Source Protocol"
                   },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map"
+                  },
                   "include_leaked": {
                     "type": "boolean",
                     "title": "Include Leaked"
                   },
                   "rcf": {
                     "type": "string",
-                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
                     "title": "RCF"
                   }
                 },
@@ -19148,7 +19152,7 @@
                   },
                   "rcf": {
                     "type": "string",
-                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
                     "title": "RCF"
                   }
                 },

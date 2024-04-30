@@ -847,7 +847,9 @@ router bgp {{ router_bgp.as }}
 {%                 elif redistribute_route.include_leaked is arista.avd.defined %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
 {%                 endif %}
-{%                 if redistribute_route.source_protocol in ["connected", "static", "isis", "user", "dynamic"] %}
+{%                 if redistribute_route.route_map is arista.avd.defined %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
+{%                 elif redistribute_route.source_protocol in ["connected", "static", "isis", "user", "dynamic"] %}
 {%                     if redistribute_route.rcf is arista.avd.defined %}
 {%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
 {%                     endif %}

@@ -106,6 +106,8 @@ router_bgp:
         rcf: Address_Family_IPV4_Connected()
       - source_protocol: static
         rcf: Address_Family_IPV4_Static()
+      - source_protocol: dynamic
+        route_map: Address_Family_IPV4_Dynamic_RM
   address_family_ipv6:
     networks:
       - prefix: 2001:db8:100::/40

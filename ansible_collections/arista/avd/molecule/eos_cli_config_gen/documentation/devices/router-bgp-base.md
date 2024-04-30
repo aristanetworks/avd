@@ -236,6 +236,7 @@ router bgp 65101
       network 172.16.0.0/12
       network 192.168.0.0/16 route-map RM-FOO-MATCH
       redistribute connected rcf Address_Family_IPV4_Connected()
+      redistribute dynamic route-map Address_Family_IPV4_Dynamic_RM
       redistribute static rcf Address_Family_IPV4_Static()
    !
    address-family ipv6
