@@ -120,7 +120,7 @@ class YamlLineGenBase(ABC):
         Renders YamlLines for this field including description.
         """
 
-        # Build semicolon seperated list of field properties.
+        # Build semicolon separated list of field properties.
         value_fields = [
             self.schema.type,
             self.render_restrictions(),
@@ -190,7 +190,11 @@ class YamlLineGenBase(ABC):
         Determines if this field should use a mkdocs codeblock annotation / popup to display the default value.
         Is true for list or dict with length above 1. Otherwise false.
         """
-        return self.schema.default is not None and isinstance(self.schema.default, (list, dict)) and len(self.schema.default) > 1
+        return (
+            self.schema.default is not None
+            and isinstance(self.schema.default, (list, dict))
+            and (len(self.schema.default) > 1 or len(str(self.schema.default)) > 40)
+        )
 
     def get_default(self) -> str | None:
         """
@@ -294,7 +298,7 @@ class YamlLineGenList(YamlLineGenBase):
         Renders YamlLine for this field.
         """
 
-        # Build semicolon seperated list of field properties.
+        # Build semicolon separated list of field properties.
         properties_fields = [
             self.render_restrictions(),
             self.get_default(),
@@ -357,7 +361,7 @@ class YamlLineGenDict(YamlLineGenBase):
         Renders YamlLine for this field.
         """
 
-        # Build semicolon seperated list of field properties.
+        # Build semicolon separated list of field properties.
         properties_fields = [
             self.render_restrictions(),
             self.get_default(),

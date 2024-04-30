@@ -156,7 +156,7 @@
 {%             if profile.mc_tx_queues is arista.avd.defined %}
 {%                 for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "Multicast" %}
-| {{ mc_tx_queue.id }} | {{ type }} | - | - | - | - |
+| {{ mc_tx_queue.id }} | {{ type }} | - | - | - | - | - |
 {%                 endfor %}
 {%             endif %}
 {%         endif %}

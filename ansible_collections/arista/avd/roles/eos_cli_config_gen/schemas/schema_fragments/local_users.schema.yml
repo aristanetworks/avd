@@ -15,7 +15,7 @@ keys:
       type: dict
       keys:
         name:
-          description: Username
+          description: Username.
           type: str
         disabled:
           type: bool
@@ -33,11 +33,11 @@ keys:
         role:
           type: str
           description: |
-            EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"
+            EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator".
         sha512_password:
           type: str
           description: |
-            SHA512 Hash of Password
+            SHA512 Hash of Password.
             Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.
         no_password:
           type: bool
@@ -50,7 +50,7 @@ keys:
         shell:
           type: str
           description: |
-            Specify shell for the user
+            Specify shell for the user.
           valid_values:
           - /bin/bash
           - /bin/sh

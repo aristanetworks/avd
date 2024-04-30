@@ -25,7 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_preference</samp>](## "wan_path_groups.[].default_preference") | String |  | `preferred` |  | Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when<br>the path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.<br><br>Valid values are 1-65535 | "preferred" | "alternate".<br><br>`preferred` is converted to priority 1.<br>`alternate` is converted to priority 2. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;excluded_from_default_policy</samp>](## "wan_path_groups.[].excluded_from_default_policy") | Boolean |  | `False` |  | When set to `true`, the path-group is excluded from AVD auto generated policies. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dps_keepalive</samp>](## "wan_path_groups.[].dps_keepalive") | Dictionary |  |  |  | Period between the transmission of consecutive keepalive messages, and failure threshold. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "wan_path_groups.[].dps_keepalive.interval") | String |  |  |  | Interval in milliseconds. Valid values are 50-60000 | "auto"<br><br>When auto, the interval and failure_threshold are automatically determined based on<br>path state. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "wan_path_groups.[].dps_keepalive.interval") | String |  |  |  | Interval in milliseconds. Valid values are 50-60000 | "auto".<br><br>When auto, the interval and failure_threshold are automatically determined based on<br>path state. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;failure_threshold</samp>](## "wan_path_groups.[].dps_keepalive.failure_threshold") | Integer |  | `5` | Min: 2<br>Max: 100 | Failure threshold in number of lost keep-alive messages. |
 
 === "YAML"
@@ -93,7 +93,7 @@
         # Period between the transmission of consecutive keepalive messages, and failure threshold.
         dps_keepalive:
 
-          # Interval in milliseconds. Valid values are 50-60000 | "auto"
+          # Interval in milliseconds. Valid values are 50-60000 | "auto".
           #
           # When auto, the interval and failure_threshold are automatically determined based on
           # path state.

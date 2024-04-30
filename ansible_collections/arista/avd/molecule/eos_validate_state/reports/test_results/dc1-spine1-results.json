@@ -81,11 +81,59 @@
   },
   {
     "name": "dc1-spine1",
+    "test": "VerifyBGPAdvCommunities",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the advertised communities of a BGP peer."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPExchangedRoutes",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the advertised and received routes of BGP peers."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPPeerASNCap",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the four octet asn capabilities of a BGP peer."
+  },
+  {
+    "name": "dc1-spine1",
     "test": "VerifyBGPPeerCount",
     "categories": [
       "bgp"
     ],
     "description": "Verifies the count of BGP peers."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPPeerMD5Auth",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the MD5 authentication and state of a BGP peer."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPPeerMPCaps",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the multiprotocol capabilities of a BGP peer."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPPeerRouteRefreshCap",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the route refresh capabilities of a BGP peer."
   },
   {
     "name": "dc1-spine1",
@@ -102,6 +150,22 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s)."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPTimers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the timers of a BGP peer."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyEVPNType2Route",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the EVPN Type-2 routes for a given IPv4 or MAC address and VNI."
   },
   {
     "name": "dc1-spine1",
@@ -148,6 +212,24 @@
   },
   {
     "name": "dc1-spine1",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet5 - Remote: dc1-svc-leaf1a Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Verifies that the provided LLDP neighbors are connected properly.",
+    "custom_field": "Local: Ethernet6 - Remote: dc1-svc-leaf1b Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
     "test": "VerifyReachability",
     "categories": [
       "connectivity"
@@ -175,21 +257,53 @@
   },
   {
     "name": "dc1-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet5 (IP: 10.33.255.16) - Destination: dc1-svc-leaf1a Ethernet1 (IP: 10.33.255.17)"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet6 (IP: 10.33.255.20) - Destination: dc1-svc-leaf1b Ethernet1 (IP: 10.33.255.21)"
+  },
+  {
+    "name": "dc1-spine1",
     "test": "VerifyFieldNotice44Resolution",
     "categories": [
-      "field notices",
-      "software"
+      "field notices"
     ],
-    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
+    "description": "Verifies that the device is using the correct Aboot version per FN0044."
   },
   {
     "name": "dc1-spine1",
     "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "field notices",
-      "software"
+      "field notices"
     ],
-    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+    "description": "Verifies if the device is exposed to FN0072, and if the issue has been mitigated."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyGreenT",
+    "categories": [
+      "greent"
+    ],
+    "description": "Verifies if a GreenT policy is created."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyGreenTCounters",
+    "categories": [
+      "greent"
+    ],
+    "description": "Verifies if the GreenT counters are incremented."
   },
   {
     "name": "dc1-spine1",
@@ -197,7 +311,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
+    "description": "Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches."
   },
   {
     "name": "dc1-spine1",
@@ -365,6 +479,24 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet5 - P2P_LINK_TO_DC1-SVC-LEAF1A_Ethernet1 = 'up'"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet6 - P2P_LINK_TO_DC1-SVC-LEAF1B_Ethernet1 = 'up'"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Loopback0 - EVPN_Overlay_Peering = 'up'"
   },
   {
@@ -373,7 +505,7 @@
     "categories": [
       "interfaces"
     ],
-    "description": "Verifies that all interfaces have a usage below 75%."
+    "description": "Verifies that the utilization of interfaces is below a certain threshold."
   },
   {
     "name": "dc1-spine1",
@@ -433,6 +565,22 @@
   },
   {
     "name": "dc1-spine1",
+    "test": "VerifyLANZ",
+    "categories": [
+      "lanz"
+    ],
+    "description": "Verifies if LANZ is enabled."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyOSPFMaxLSA",
+    "categories": [
+      "ospf"
+    ],
+    "description": "Verifies all OSPF instances did not cross the maximum LSA threshold."
+  },
+  {
+    "name": "dc1-spine1",
     "test": "VerifyOSPFNeighborCount",
     "categories": [
       "ospf"
@@ -446,6 +594,46 @@
       "ospf"
     ],
     "description": "Verifies all OSPF neighbors are in FULL state."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyPtpGMStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the device is locked to a valid PTP Grandmaster."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyPtpLockStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the device was locked to the upstream PTP GM in the last minute."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyPtpModeStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the device is configured as a PTP Boundary Clock."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyPtpOffset",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the PTP timing offset is within +/- 1000ns from the master clock."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyPtpPortModeStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies the PTP interfaces state."
   },
   {
     "name": "dc1-spine1",
@@ -469,7 +657,15 @@
     "categories": [
       "routing"
     ],
-    "description": "Verifies the size of the IP routing table (default VRF). Should be between the two provided thresholds."
+    "description": "Verifies the size of the IP routing table of the default VRF."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyAPIHttpsSSL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the eAPI has a valid SSL profile."
   },
   {
     "name": "dc1-spine1",
@@ -479,6 +675,142 @@
     ],
     "description": "Verifies if the eAPI has a valid SSL profile.",
     "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyAPIHttpStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI HTTP server is disabled globally."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyAPIIPv4Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI has the right number IPv4 ACL(s) configured for a specified VRF."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyAPIIPv6Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI has the right number IPv6 ACL(s) configured for a specified VRF."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyAPISSLCertificate",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the eAPI SSL certificate expiry, common subject name, encryption algorithm and key size."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBannerLogin",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the login banner of a device."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBannerMotd",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the motd banner of a device."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyIPSecConnHealth",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies all IPv4 security connections."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyIPv4ACL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the configuration of IPv4 ACLs."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifySSHIPv4Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent has IPv4 ACL(s) configured."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifySSHIPv6Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent has IPv6 ACL(s) configured."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifySSHStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent is disabled in the default VRF."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyTelnetStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if Telnet is disabled in the default VRF."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyDNSLookup",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the DNS name to IP address resolution."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyDNSServers",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies if the DNS servers are correctly configured."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyErrdisableRecovery",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the errdisable recovery reason, status, and interval."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyHostname",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the hostname of a device."
   },
   {
     "name": "dc1-spine1",
@@ -510,7 +842,7 @@
     "categories": [
       "software"
     ],
-    "description": "Verifies the device is running one of the allowed EOS version."
+    "description": "Verifies the EOS version of the device."
   },
   {
     "name": "dc1-spine1",
@@ -518,7 +850,15 @@
     "categories": [
       "software"
     ],
-    "description": "Verifies the device is running one of the allowed TerminAttr version."
+    "description": "Verifies the TerminAttr version of the device."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyStunClient",
+    "categories": [
+      "stun"
+    ],
+    "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided."
   },
   {
     "name": "dc1-spine1",
@@ -591,5 +931,13 @@
       "system"
     ],
     "description": "Verifies the device uptime."
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyVlanInternalPolicy",
+    "categories": [
+      "vlan"
+    ],
+    "description": "Verifies the VLAN internal allocation policy and the range of VLANs."
   }
 ]

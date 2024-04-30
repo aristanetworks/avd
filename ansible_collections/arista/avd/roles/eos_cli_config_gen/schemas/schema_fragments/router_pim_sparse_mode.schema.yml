@@ -14,10 +14,10 @@ keys:
         keys:
           bfd:
             type: bool
-            description: Enable/Disable BFD
+            description: Enable/Disable BFD.
           ssm_range:
             type: str
-            description: IPv4 Prefix associated with SSM
+            description: IPv4 Prefix associated with SSM.
           rp_addresses:
             type: list
             # This primary_key is inserted to support conversion from wildcard dicts,
@@ -32,7 +32,7 @@ keys:
               keys:
                 address:
                   type: str
-                  description: RP Address
+                  description: RP Address.
                 groups:
                   type: list
                   convert_types:
@@ -63,7 +63,7 @@ keys:
               keys:
                 address:
                   type: str
-                  description: Anycast RP Address
+                  description: Anycast RP Address.
                 other_anycast_rp_addresses:
                   type: list
                   primary_key: address
@@ -74,7 +74,7 @@ keys:
                     keys:
                       address:
                         type: str
-                        description: Other Anycast RP Address
+                        description: Other Anycast RP Address.
                       register_count:
                         type: int
                         convert_types:
@@ -87,7 +87,7 @@ keys:
           keys:
             name:
               type: str
-              description: VRF Name
+              description: VRF Name.
               convert_types:
                 - int
             ipv4:
@@ -95,7 +95,7 @@ keys:
               keys:
                 bfd:
                   type: bool
-                  description: Enable/Disable BFD
+                  description: Enable/Disable BFD.
                 rp_addresses:
                   type: list
                   items:
@@ -103,7 +103,7 @@ keys:
                     keys:
                       address:
                         type: str
-                        description: RP Address
+                        description: RP Address.
                         required: true
                       groups:
                         type: list

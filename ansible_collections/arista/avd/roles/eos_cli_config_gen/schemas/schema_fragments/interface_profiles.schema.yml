@@ -16,12 +16,12 @@ keys:
       keys:
         name:
           type: str
-          description: Interface-Profile Name
+          description: Interface-Profile Name.
         commands:
           type: list
           required: true
           items:
             type: str
             description: |
-              EOS CLI interface command
+              EOS CLI interface command.
               Example: "switchport mode access"

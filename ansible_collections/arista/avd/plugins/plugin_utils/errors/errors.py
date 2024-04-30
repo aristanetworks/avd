@@ -10,7 +10,7 @@ else:
 
 
 class AristaAvdError(Exception):
-    def __init__(self, message="An Error has occured in an arista.avd plugin"):
+    def __init__(self, message="An Error has occurred in an arista.avd plugin"):
         self.message = message
         super().__init__(self.message)
 

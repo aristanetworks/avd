@@ -12,6 +12,9 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [RADIUS Server](#radius-server)
+- [Management Security](#management-security)
+  - [Management Security Summary](#management-security-summary)
+  - [Management Security Device Configuration](#management-security-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -268,6 +271,22 @@ username admin privilege 15 role network-admin nopassword
 radius-server host 10.10.10.157 vrf mgt key 7 <removed>
 radius-server host 10.10.10.249 key 7 <removed>
 radius-server host 10.10.10.158 key 7 <removed>
+```
+
+## Management Security
+
+### Management Security Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Entropy source | hardware |
+
+### Management Security Device Configuration
+
+```eos
+!
+management security
+   entropy source hardware
 ```
 
 ## Monitoring
@@ -1068,9 +1087,9 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
-| 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
-| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
-| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
+| 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
+| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
+| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
 
 #### BGP Neighbor Interfaces
 
