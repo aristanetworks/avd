@@ -56,7 +56,7 @@ Source Group Standard Disabled : True
 | socket1 | unix:///var/run/example2.sock | 100 |
 | socket2 | unix:///var/run/example3.sock | 22222 |
 
-#### Tags Summary
+#### Telemetry Output Tags Summary
 
 | Tag | Value |
 | --- | ----- |
