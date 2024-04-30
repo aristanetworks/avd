@@ -3318,7 +3318,7 @@ keys:
       table: fabric-settings
     type: bool
     default: false
-    description: 'When a device is set undeployed using `is_deployed: false` and `shudown_bgp_towards_undeployed_peers`
+    description: 'When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers`
       key is set to true, the bgp neighborship beetween undeployed device and its
       peer is shut on the peer.'
   shutdown_interfaces_towards_undeployed_peers:

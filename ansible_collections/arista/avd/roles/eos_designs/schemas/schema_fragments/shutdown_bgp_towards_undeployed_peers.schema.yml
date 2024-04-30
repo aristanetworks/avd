@@ -12,4 +12,4 @@ keys:
     type: bool
     default: false
     description: |-
-      When a device is set undeployed using `is_deployed: false` and `shudown_bgp_towards_undeployed_peers` key is set to true, the bgp neighborship beetween undeployed device and its peer is shut on the peer.
+      When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers` key is set to true, the bgp neighborship beetween undeployed device and its peer is shut on the peer.
