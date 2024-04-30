@@ -7,6 +7,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
+
 from .utils import UtilsMixin
 
 
