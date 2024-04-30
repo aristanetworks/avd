@@ -9,7 +9,7 @@
 ## Installation workflow
 
 - Install [Python](https://www.python.org/downloads/) **3.9** or later
-- Install [ansible-core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) from **2.14.0** to **2.16.x**. Avoid the `pipx` installation method.
+- Install [ansible-core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) from **2.15.0** to **2.16.x**. Avoid the `pipx` installation method.
 - Install [arista.avd](#install-collection-from-ansible-galaxy) collection
 - Install additional Python [requirements](#python-requirements-installation)
 - Modify `ansible.cfg` file to support additional [jinja2 extensions](#ansible-configuration-file)
