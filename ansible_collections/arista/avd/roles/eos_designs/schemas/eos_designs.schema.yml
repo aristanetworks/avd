@@ -3263,6 +3263,20 @@ keys:
       For default enabling of sFlow for various interface types across the fabric
       see `fabric_sflow`.'
     keys:
+      sample:
+        type: dict
+        keys:
+          rate:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+            description: 'Packet sampling rate that defines the average number of
+              ingress packets that pass through an interface for every packet that
+              is sampled.
+
+              A rate of 16384 corresponds to an average sample of one per 16384 packets.'
       destinations:
         type: list
         items:
