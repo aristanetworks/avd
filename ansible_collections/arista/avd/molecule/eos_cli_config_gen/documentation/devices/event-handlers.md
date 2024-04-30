@@ -41,17 +41,17 @@ interface Management1
 
 #### Event Handler Summary
 
-| Handler | Action Type | Action | Trigger |
-| ------- | ----------- | ------ | ------- |
-| CONFIG_VERSIONING | bash | <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config |
-| trigger-on-boot | bash | <code>echo "on-boot"</code> | on-boot |
-| trigger-on-counters | bash | <code>echo "on-counters"</code> | on-counters |
-| trigger-on-intf | bash | <code>echo "on-intf"</code> | on-intf |
-| trigger-on-logging | bash | <code>echo "on-logging"</code> | on-logging |
-| trigger-on-maintenance1 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
-| trigger-on-maintenance2 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
-| trigger-on-maintenance3 | bash | <code>echo "on-maintenance"</code> | on-maintenance |
-| trigger-vm-tracer | bash | <code>echo "vm-tracer vm"</code> | vm-tracer vm |
+| Handler | Action Type | Action | Trigger | Trigger Config |
+| ------- | ----------- | ------ | ------- | -------------- |
+| CONFIG_VERSIONING | bash | <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config | - |
+| trigger-on-boot | bash | <code>echo "on-boot"</code> | on-boot | - |
+| trigger-on-counters | bash | <code>echo "on-counters"</code> | on-counters | poll interval 10<br>condition( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )<br>granularity per-source |
+| trigger-on-intf | bash | <code>echo "on-intf"</code> | on-intf | trigger on-intf Ethernet4 operstatus ip ip6 |
+| trigger-on-logging | bash | <code>echo "on-logging"</code> | on-logging | poll interval 10<br>regex ab* |
+| trigger-on-maintenance1 | bash | <code>echo "on-maintenance"</code> | on-maintenance | trigger on-maintenance enter interface Management3 after stage linkdown |
+| trigger-on-maintenance2 | bash | <code>echo "on-maintenance"</code> | on-maintenance | trigger on-maintenance enter unit unit1 before stage bgp |
+| trigger-on-maintenance3 | bash | <code>echo "on-maintenance"</code> | on-maintenance | trigger on-maintenance enter bgp 10.0.0.2 vrf vrf1 all |
+| trigger-vm-tracer | bash | <code>echo "vm-tracer vm"</code> | vm-tracer vm | - |
 
 #### Event Handler Device Configuration
 
