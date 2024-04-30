@@ -80,6 +80,20 @@ interface Management1
 | Access Group Name | ipv4ACL |
 | Sample | 50 |
 
+##### myMonitoringSession3
+
+####### myMonitoringSession3 Sources
+
+| Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
+| ------- | --------- | ----------------- | ----------------- | --------------------- |
+| Ethernet20 | both | ip | ipv4ACL | 10 |
+
+####### myMonitoringSession3 Destinations and Session Settings
+
+| Settings | Values |
+| -------- | ------ |
+| Destinations | - |
+
 #### Monitor Sessions Device Configuration
 
 ```eos
@@ -99,4 +113,5 @@ monitor session myMonitoringSession2 destination Ethernet50
 monitor session myMonitoringSession2 encapsulation gre metadata tx
 monitor session myMonitoringSession2 ip access-group ipv4ACL
 monitor session myMonitoringSession2 sample 50
+monitor session myMonitoringSession3 source Ethernet20 both ip access-group ipv4ACL priority 10
 ```
