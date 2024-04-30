@@ -3,9 +3,6 @@
 # that can be found in the LICENSE file.
 from collections import ChainMap
 
-from .vendor.eos_designs.eos_designs_facts import EosDesignsFacts
-from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils
-
 
 def get_avd_facts(all_inputs: dict[str, dict]) -> dict[str, dict]:
     """
@@ -71,6 +68,8 @@ def _create_avd_switch_facts_instances(all_inputs: dict[str, dict]) -> dict:
             }
             ```
     """
+    from .vendor.eos_designs.eos_designs_facts import EosDesignsFacts  # pylint: disable=import-outside-toplevel
+    from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils  # pylint: disable=import-outside-toplevel
 
     avd_switch_facts = {}
     for hostname, hostvars in all_inputs.items():
