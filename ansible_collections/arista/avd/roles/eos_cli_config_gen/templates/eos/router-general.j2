@@ -41,18 +41,16 @@ router general
 {%     endfor %}
 {%     if router_general.control_functions is arista.avd.defined %}
    control-functions
-{%         if router_general.control_functions.code_units is arista.avd.defined %}
-{%             for code_unit in router_general.control_functions.code_units | arista.avd.natural_sort('name') %}
-{%                 if code_unit.content is arista.avd.defined %}
-{%                     set content = code_unit.content %}
-{%                     if not content.rstrip().endswith('\nEOF') %}
-{%                         set content = content.rstrip() + "\nEOF" %}
-{%                     endif %}
+{%         for code_unit in router_general.control_functions.code_units | arista.avd.natural_sort('name') %}
+{%             if code_unit.content is arista.avd.defined %}
+{%                 set content = code_unit.content %}
+{%                 if not content.rstrip().endswith('\nEOF') %}
+{%                     set content = content.rstrip() + "\nEOF" %}
+{%                 endif %}
       code unit {{ code_unit.name }}
          {{ content | indent(width=9, first=False) }}
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
+{%             endif %}
+{%         endfor %}
    !
 {%     endif %}
 {#    EOS issue #}
