@@ -34,6 +34,7 @@ pyavd-publish: ## Build and publish PyAVD Python package
 pyavd-install: pyavd-build ## Build and install PyAVD Python package
 	pip install python-avd/dist/*
 
+# The editable_mode=compat is required for pylance to pick up the editable install.
 .PHONY: pyavd-editable-install
 pyavd-editable-install: ## Build and install PyAVD as editable
 	pip install -e python-avd --config-settings editable_mode=compat
