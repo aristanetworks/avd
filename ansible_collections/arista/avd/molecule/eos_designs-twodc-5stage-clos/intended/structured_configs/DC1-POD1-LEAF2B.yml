@@ -395,8 +395,8 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 172.20.110.3/31
   no_autostate: true
+  ip_address: 172.20.110.3/31
 - name: Vlan110
   tenant: Tenant_A
   tags:
