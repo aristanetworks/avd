@@ -58,6 +58,12 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_verify_unicast_source_reachable_via is arista.avd.defined %}
    ip verify unicast source reachable-via {{ vlan_interface.ip_verify_unicast_source_reachable_via }}
 {%     endif %}
+{%     if ip_dhcp_relay_all_subnets is arista.avd.defined(true) %}
+   ip dhcp relay all-subnets
+{%     endif %}
+{%     if ipv6_dhcp_relay_all_subnets is arista.avd.defined(true) %}
+   ipv6 dhcp relay all-subnets
+{%     endif %}
 {%     for ip_helper in vlan_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
 {%         if ip_helper.vrf is arista.avd.defined %}

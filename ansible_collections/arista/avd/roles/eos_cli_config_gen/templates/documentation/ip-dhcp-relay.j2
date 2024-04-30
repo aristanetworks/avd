@@ -9,6 +9,14 @@
 ## IP DHCP Relay
 
 ### IP DHCP Relay
+{%     if ip_dhcp_relay.always_on is arista.avd.defined(true) %}
+
+DhcpRelay Agent is in always-on mode.
+{%     endif %}
+{%     if ip_dhcp_relay.all_subnets is arista.avd.defined(true) %}
+
+Forwarding requests with secondary IP addresses in the "giaddr" field is allowed.
+{%     endif %}
 {%     if ip_dhcp_relay.information_option is arista.avd.defined(true) %}
 
 IP DHCP Relay Option 82 is enabled.

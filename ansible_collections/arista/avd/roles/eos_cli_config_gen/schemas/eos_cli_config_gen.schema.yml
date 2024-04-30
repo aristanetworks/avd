@@ -4000,6 +4000,13 @@ keys:
   ip_dhcp_relay:
     type: dict
     keys:
+      always_on:
+        type: bool
+        description: DhcpRelay Agent will be in always-on mode, off by default.
+      all_subnets:
+        type: bool
+        description: Allow forwarding requests with secondary IP addresses in the
+          gateway address "giaddr" field, off by default.
       information_option:
         type: bool
         description: Insert Option-82 information.
@@ -4832,6 +4839,30 @@ keys:
                   Example: "deny ipv6 any any"
 
                   '
+  ipv6_dhcp_relay:
+    type: dict
+    keys:
+      always_on:
+        type: bool
+        description: DhcpRelay Agent will be in always-on mode, off by default.
+      all_subnets:
+        type: bool
+        description: Allow forwarding requests with additional IPv6 addresses in the
+          gateway address "giaddr" field, off by default.
+      option:
+        type: dict
+        description: Insert DHCP Option.
+        keys:
+          link_layer_address:
+            type: bool
+            description: Add Option 79 (Link Layer Address Option), off by default.
+          remote_id_format:
+            type: str
+            valid_values:
+            - '%m:%i'
+            - '%m:%p'
+            description: Add RemoteID option 37 in format MAC address and interface
+              ID (%m:%i) or MAC address and interface name (%m:%p), off by default.
   ipv6_hardware:
     type: dict
     keys:
@@ -15826,6 +15857,10 @@ keys:
                 description: VRF where DHCP server can be reached.
                 convert_types:
                 - int
+        ip_dhcp_relay_all_subnets:
+          type: bool
+          description: Allow forwarding requests with secondary IP addresses in the
+            gateway address "giaddr" field.
         ip_nat:
           type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
@@ -15925,6 +15960,10 @@ keys:
                 type: str
                 description: Override the default link address specified in the relayed
                   DHCP packet.
+        ipv6_dhcp_relay_all_subnets:
+          type: bool
+          description: Allow forwarding requests with additional IPv6 addresses in
+            the gateway address "giaddr" field.
         access_group_in:
           type: str
           description: IPv4 access-list name.
