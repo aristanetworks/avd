@@ -7,4 +7,6 @@ l2leaf:
   nodes:
     - name: mgmt_interface_ipv6
       ipv6_mgmt_ip: 0200::105/64
+      # this will take precedence over the global ipv6_mgmt_gateway
+      ipv6_mgmt_gateway: 0200::2
       id: 103

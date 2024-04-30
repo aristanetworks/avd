@@ -63,12 +63,18 @@ $defs:
             description: Node management interface IPv4 address.
             type: str
             format: cidr
+          mgmt_gateway:
+            type: str
+            description: This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
             description: Node management interface IPv6 address.
             type: str
             format: cidr
+          ipv6_mgmt_gateway:
+            type: str
+            description: This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
@@ -177,7 +183,7 @@ $defs:
             documentation_options:
               table: node-type-uplink-configuration
             description: |
-              Local uplink interfaces
+              Local uplink interfaces.
               Each list item supports range syntax that can be expanded into a list of interfaces.
               If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
               Please note that default_interfaces are not defined by default, you should define these yourself.
@@ -753,14 +759,34 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: str
+          mlag_peer_address_family:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: |-
+              IP address family used to establish MLAG Peer Link (control link).
+              `ipv6` requires EOS version 4.31.1F or higher.
+              Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_l3_peer_vlan` set to 4094).
+            type: str
+            valid_values:
+              - ipv4
+              - ipv6
+            default: ipv4
           mlag_peer_ipv4_pool:
             documentation_options:
               table: node-type-l2-mlag-configuration
-            description: |
-              IP address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-              Required when MLAG leafs present in topology.
+            description: |-
+              IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
+              Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
             type: str
             format: ipv4_cidr
+          mlag_peer_ipv6_pool:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: |-
+              IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
+              Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+            type: str
+            format: ipv6_cidr
           mlag_port_channel_id:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -1252,8 +1278,9 @@ $defs:
             type: str
             description: |-
               The CV Pathfinder site name.
-              This key is required for WAN routers but ignored for pathfinders.
-              The site name must be defined for the relevant region under 'cv_pathfinder_regions'.
+              This key is required for WAN routers but optional for pathfinders.
+              For WAN routers and pathfinders with `cv_pathfinder_region`, the site name must be defined for the relevant region under 'cv_pathfinder_regions'.
+              For pathfinders without `cv_pathfinder_region` set, the site must be defined under `cv_pathfinder_global_sites`.
           wan_ha:
             documentation_options:
               table: node-type-wan-configuration
@@ -1332,6 +1359,15 @@ $defs:
             description: |-
               Set the maximum number of CPU used for the data plane.
               This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
+          flow_tracker_type:
+            type: str
+            valid_values:
+              - "sampled"
+              - "hardware"
+            description: |-
+              Set the flow tracker type.
+              Override the `default_flow_tracker_type`` set at the `node_type_key` level.
+              `default_flow_tracker_type` default value is `sampled`.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -1364,3 +1400,20 @@ $defs:
             name:
               type: str
               description: The Node Name is used as "hostname".
+            downlink_pools:
+              documentation_options:
+                table: node-type-uplink-configuration
+              description: IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch.
+              type: list
+              items:
+                type: dict
+                keys:
+                  ipv4_pool:
+                    type: str
+                    format: ipv4_cidr
+                    description: IPv4 pool from which subnets will be allocated for links to downlink switches.
+                  downlink_interfaces:
+                    type: list
+                    description: List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.
+                    items:
+                      type: str

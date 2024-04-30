@@ -19,7 +19,7 @@ keys:
               keys:
                 command:
                   type: str
-                  description: Command to exclude from tech-support
+                  description: Command to exclude from tech-support.
                 type:
                   type: str
                   valid_values:
@@ -34,4 +34,4 @@ keys:
               keys:
                 command:
                   type: str
-                  description: Command to include in tech-support
+                  description: Command to include in tech-support.

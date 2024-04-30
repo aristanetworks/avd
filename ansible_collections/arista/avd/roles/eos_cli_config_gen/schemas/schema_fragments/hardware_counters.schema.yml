@@ -20,7 +20,7 @@ keys:
 
           The available values of the different keys like 'direction' or 'address_type'
           are feature and hardware dependent and this model DOES NOT validate that the
-          combinations are valid. It is the responsability of the user of this data model
+          combinations are valid. It is the responsibility of the user of this data model
           to make sure that the rendered CLI is accepted by the targeted device.
 
           Examples:
@@ -116,7 +116,7 @@ keys:
             layer3:
               type: bool
               description: |
-                Supported only for the 'ip' feature
+                Supported only for the 'ip' feature.
             vrf:
               type: str
               description: |

@@ -19,16 +19,16 @@ keys:
       cvaddrs:
         type: list
         description: |
-          Streaming address(es) for CloudVision single cluster
+          Streaming address(es) for CloudVision single cluster.
           - TCP 9910 is used for CV on-prem
           - TCP 443 is used for CV as a Service
         items:
           type: str
-          description: "Server address in the format `<ip/fqdn>:<port>`"
+          description: "Server address in the format `<ip/fqdn>:<port>`."
       clusters:
         type: list
         description: |
-          Multiple CloudVision clusters
+          Multiple CloudVision clusters.
         primary_key: name
         convert_types:
           - dict
@@ -37,20 +37,20 @@ keys:
           keys:
             name:
               type: str
-              description: Cluster Name
+              description: Cluster Name.
             cvaddrs:
               type: list
               description: |
-                Streaming address(es) for CloudVision cluster
+                Streaming address(es) for CloudVision cluster.
                 - TCP 9910 is used for CV on-prem
                 - TCP 443 is used for CV as a Service
               items:
                 type: str
-                description: "Server address in the format `<ip/fqdn>:<port>`"
+                description: "Server address in the format `<ip/fqdn>:<port>`."
             cvauth:
               type: dict
               description: |
-                Authentication scheme used to connect to CloudVision
+                Authentication scheme used to connect to CloudVision.
               keys:
                 method:
                   type: str
@@ -60,51 +60,51 @@ keys:
                 token_file:
                   type: str
                   description: |
-                    Token file path
+                    Token file path.
                     e.g. "/tmp/token"
                 cert_file:
                   type: str
                   description: |
-                    Client certificate file path
+                    Client certificate file path.
                     e.g. "/persist/secure/ssl/terminattr/primary/certs/client.crt"
                 ca_file:
                   type: str
                   description: |
-                    CA certificate file path (on-prem only)
+                    CA certificate file path (on-prem only).
                     e.g. "/persist/secure/ssl/terminattr/primary/certs/ca.crt"
                 key_file:
                   type: str
                   description: |
-                    Client certificate key file path
+                    Client certificate key file path.
                     e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"
             cvobscurekeyfile:
               type: bool
               description: |
-                Encrypt the private key used for authentication to CloudVision
+                Encrypt the private key used for authentication to CloudVision.
             cvproxy:
               type: str
               description: |
                 Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
-                The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0
+                The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0.
             cvsourceip:
               type: str
               description: |
-                Set source IP address in case of in-band managament
+                Set source IP address in case of in-band management.
             cvsourceintf:
               type: str
               description: |
-                Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0.
+                Set source interface in case of in-band management. Available as of TerminAttr v1.23.0.
                 The interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.
             cvvrf:
               type: str
               description: |
-                The VRF to use to connect to CloudVision
+                The VRF to use to connect to CloudVision.
               convert_types:
                 - int
       cvauth:
         type: dict
         description: |
-          Authentication scheme used to connect to CloudVision
+          Authentication scheme used to connect to CloudVision.
         keys:
           method:
             type: str
@@ -114,65 +114,65 @@ keys:
           token_file:
             type: str
             description: |
-              Token file path
+              Token file path.
               e.g. "/tmp/token"
           cert_file:
             type: str
             description: |
-              Client certificate file path
+              Client certificate file path.
               e.g. "/persist/secure/ssl/terminattr/primary/certs/client.crt"
           ca_file:
             type: str
             description: |
-              CA certificate file path (on-prem only)
+              CA certificate file path (on-prem only).
               e.g. "/persist/secure/ssl/terminattr/primary/certs/ca.crt"
           key_file:
             type: str
             description: |
-              Client certificate key file path
+              Client certificate key file path.
               e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"
       cvobscurekeyfile:
         type: bool
         description: |
-          Encrypt the private key used for authentication to CloudVision
+          Encrypt the private key used for authentication to CloudVision.
       cvproxy:
         type: str
         description: |
           Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
-          The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0
+          The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0.
       cvsourceip:
         type: str
         description: |
-          Set source IP address in case of in-band managament
+          Set source IP address in case of in-band management.
       cvsourceintf:
         type: str
         description: |
-          Set source interface in case of in-band managament.
+          Set source interface in case of in-band management.
           The interface name is case sensitive and has to match the interface name in the running-config, e.g.:Vlan100.
       cvvrf:
         type: str
         description: |
-          The VRF to use to connect to CloudVision
+          The VRF to use to connect to CloudVision.
         convert_types:
           - int
       cvgnmi:
         type: bool
         description: |
-          Stream states from EOS gNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1
+          Stream states from EOS gNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1.
       disable_aaa:
         type: bool
         description: |
           Disable AAA authorization and accounting.
-          When setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization
+          When setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization.
       grpcaddr:
         type: str
         description: |
-          Set the gRPC server address, the default is 127.0.0.1:6042
+          Set the gRPC server address, the default is 127.0.0.1:6042.
           e.g. "MGMT/0.0.0.0:6042"
       grpcreadonly:
         type: bool
         description: |
-          gNMI read-only mode - Disable gnmi.Set()
+          gNMI read-only mode - Disable gnmi.Set().
       ingestexclude:
         type: str
         description: |
@@ -191,7 +191,7 @@ keys:
       ecodhcpaddr:
         type: str
         description: |
-          ECO DHCP Collector address or ECO DHCP Fingerprint listening address in standalone mode (default "127.0.0.1:67")
+          ECO DHCP Collector address or ECO DHCP Fingerprint listening address in standalone mode (default "127.0.0.1:67").
       ipfix:
         type: bool
         description: |

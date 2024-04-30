@@ -13,9 +13,9 @@ keys:
       keys:
         name:
           type: str
-          description: Interface Name
+          description: Interface Name.
         vrf:
           type: str
-          description: VRF Name
+          description: VRF Name.
           convert_types:
             - int

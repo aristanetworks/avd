@@ -71,7 +71,7 @@ class FilteredTenantsMixin:
                 }
             )
         elif self.is_wan_router:
-            # It is enough to check only the first occurence of default VRF as some other piece of code
+            # It is enough to check only the first occurrence of default VRF as some other piece of code
             # checks that if the VRF is in multiple tenants, the configuration is consistent.
             for tenant in filtered_tenants:
                 if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:

@@ -25,4 +25,4 @@ keys:
       Add `custom_templates` to group/host variables:
     items:
       type: str
-      description: Template relative path below playbook directory
+      description: Template relative path below playbook directory.

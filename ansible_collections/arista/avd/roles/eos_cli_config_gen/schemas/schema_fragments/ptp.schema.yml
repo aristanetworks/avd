@@ -24,12 +24,12 @@ keys:
         type: bool
       clock_identity:
         type: str
-        description: The clock-id in xx:xx:xx:xx:xx:xx format
+        description: The clock-id in xx:xx:xx:xx:xx:xx format.
       source:
         type: dict
         keys:
           ip:
-            description: Source IP
+            description: Source IP.
             type: str
       priority1:
         type: int

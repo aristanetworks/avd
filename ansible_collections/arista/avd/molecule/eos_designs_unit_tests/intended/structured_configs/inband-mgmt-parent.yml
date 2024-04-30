@@ -104,6 +104,30 @@ ethernet_interfaces:
   channel_group:
     id: 23
     mode: active
+- name: Ethernet101
+  peer: inband-mgmt-mlag-a
+  peer_interface: Ethernet1
+  peer_type: l2leaf
+  description: INBAND-MGMT-MLAG-A_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 101
+    mode: active
+  mode: access
+  vlans: 101
+- name: Ethernet102
+  peer: inband-mgmt-mlag-b
+  peer_interface: Ethernet1
+  peer_type: l2leaf
+  description: INBAND-MGMT-MLAG-B_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 101
+    mode: active
+  mode: access
+  vlans: 101
 port_channel_interfaces:
 - name: Port-Channel21
   description: INBAND-MGMT-SUBNET_Po1
@@ -127,6 +151,14 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: '103'
+- name: Port-Channel101
+  description: INBAND-MGMT-MLAG-TEST_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: '101'
+  lacp_fallback_mode: individual
+  lacp_fallback_timeout: 30
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

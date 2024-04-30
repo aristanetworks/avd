@@ -4,7 +4,6 @@
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
 from .cvx import CvxMixin
-from .flow_tracking import FlowTrackingMixin
 from .ip_extcommunity_lists import IpExtCommunityListsMixin
 from .ip_security import IpSecurityMixin
 from .management_cvx import ManagementCvxMixin
@@ -21,7 +20,6 @@ from .stun import StunMixin
 class AvdStructuredConfigOverlay(
     AvdFacts,
     CvxMixin,
-    FlowTrackingMixin,
     IpExtCommunityListsMixin,
     IpSecurityMixin,
     ManagementCvxMixin,
@@ -42,7 +40,7 @@ class AvdStructuredConfigOverlay(
     a dict with the name of the method as key. This means that each key in the final dict corresponds to a method.
 
     The Class uses AvdFacts, as the base class, to get the render, keys and other attributes.
-    All other methods are included as "Mixins" to make the files more managable.
+    All other methods are included as "Mixins" to make the files more manageable.
 
     The order of the @cached_properties methods imported from Mixins will also control the order in the output.
     """

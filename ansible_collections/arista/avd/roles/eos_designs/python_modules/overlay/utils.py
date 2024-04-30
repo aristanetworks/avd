@@ -238,7 +238,7 @@ class UtilsMixin:
 
     def _append_peer(self, peers_dict: dict, peer_name: str, peer_facts: dict) -> None:
         """
-        Retieve bgp_as and "overlay.peering_address" from peer_facts and append
+        Retrieve bgp_as and "overlay.peering_address" from peer_facts and append
         a new peer to peers_dict
         {
             peer_name: {
