@@ -5615,6 +5615,14 @@
               "maximum": 31,
               "description": "IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.",
               "title": "IPv4 Prefix Length"
+            },
+            "ipv6_prefix_length": {
+              "type": "integer",
+              "default": 64,
+              "minimum": 1,
+              "maximum": 127,
+              "description": "IPv6 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.",
+              "title": "IPv6 Prefix Length"
             }
           },
           "additionalProperties": false,
@@ -11216,6 +11224,12 @@
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
+              "ptp_mpass": {
+                "type": "boolean",
+                "default": false,
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "PTP Mpass"
+              },
               "short_esi": {
                 "type": "string",
                 "description": "In format xxxx:xxxx:xxxx or \"auto\".\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.",
@@ -12271,6 +12285,11 @@
                           "layer2"
                         ],
                         "title": "Transport"
+                      },
+                      "mpass": {
+                        "type": "boolean",
+                        "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                        "title": "Mpass"
                       }
                     },
                     "additionalProperties": false,
@@ -28324,7 +28343,7 @@
                   },
                   "peer_address": {
                     "type": "string",
-                    "description": "IPv4 Address.",
+                    "description": "IPv4 or IPv6 Address.",
                     "title": "Peer Address"
                   },
                   "peer_address_heartbeat": {
@@ -28332,7 +28351,7 @@
                     "properties": {
                       "peer_ip": {
                         "type": "string",
-                        "description": "IPv4 Address.",
+                        "description": "IPv4 or IPv6 Address.",
                         "title": "Peer IP"
                       },
                       "vrf": {
@@ -30662,6 +30681,11 @@
                             "layer2"
                           ],
                           "title": "Transport"
+                        },
+                        "mpass": {
+                          "type": "boolean",
+                          "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                          "title": "Mpass"
                         }
                       },
                       "additionalProperties": false,
@@ -46810,6 +46834,12 @@
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
+              "ptp_mpass": {
+                "type": "boolean",
+                "default": false,
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "PTP Mpass"
+              },
               "short_esi": {
                 "type": "string",
                 "description": "In format xxxx:xxxx:xxxx or \"auto\".\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.",
@@ -47865,6 +47895,11 @@
                           "layer2"
                         ],
                         "title": "Transport"
+                      },
+                      "mpass": {
+                        "type": "boolean",
+                        "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                        "title": "Mpass"
                       }
                     },
                     "additionalProperties": false,
@@ -51715,6 +51750,23 @@
       "type": "object",
       "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.",
       "properties": {
+        "sample": {
+          "type": "object",
+          "properties": {
+            "rate": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4294967295,
+              "description": "Packet sampling rate that defines the average number of ingress packets that pass through an interface for every packet that is sampled.\nA rate of 16384 corresponds to an average sample of one per 16384 packets.",
+              "title": "Rate"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sample"
+        },
         "destinations": {
           "type": "array",
           "items": {

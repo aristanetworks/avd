@@ -55,7 +55,7 @@ exclude = ["vendor_overrides*"]
 [tool.setuptools.dynamic]
 version = {attr = "pyavd.__version__"}
 dependencies = {file = ["requirements.txt"]}
-optional-dependencies = {"mdtoc" = { file = ["requirements-mdtoc.txt"] }}
+optional-dependencies = {"mdtoc" = { file = ["requirements-mdtoc.txt"] }, "ansible" = { file = ["requirements-ansible-avd.txt"] } }
 
 [tool.black]
 line-length = 160

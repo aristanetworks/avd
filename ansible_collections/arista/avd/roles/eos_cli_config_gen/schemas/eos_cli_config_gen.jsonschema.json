@@ -11664,7 +11664,7 @@
         },
         "peer_address": {
           "type": "string",
-          "description": "IPv4 Address.",
+          "description": "IPv4 or IPv6 Address.",
           "title": "Peer Address"
         },
         "peer_address_heartbeat": {
@@ -11672,7 +11672,7 @@
           "properties": {
             "peer_ip": {
               "type": "string",
-              "description": "IPv4 Address.",
+              "description": "IPv4 or IPv6 Address.",
               "title": "Peer IP"
             },
             "vrf": {
@@ -14002,6 +14002,11 @@
                   "layer2"
                 ],
                 "title": "Transport"
+              },
+              "mpass": {
+                "type": "boolean",
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "Mpass"
               }
             },
             "additionalProperties": false,

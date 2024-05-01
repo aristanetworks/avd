@@ -75,6 +75,7 @@ vlan_interfaces:
   type: inband_mgmt
 sflow:
   run: true
+  sample: 10
   destinations:
   - destination: 10.10.10.10
   - destination: 10.10.10.11
