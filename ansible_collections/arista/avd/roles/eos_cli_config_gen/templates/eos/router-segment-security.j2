@@ -9,38 +9,29 @@
 router segment-security
 {%     if router_segment_security.enabled is arista.avd.defined(true) %}
    no shutdown
-{%     endif %}
-{%     if router_segment_security.policies is arista.avd.defined %}
-{%         for policy in router_segment_security.policies %}
-{%             if policy.name is arista.avd.defined %}
    !
+{%     endif %}
+{%     for policy in router_segment_security.policies | arista.avd.natural_sort('name') %}
    policy {{ policy.name }}
-{%                 if policy.sequence_numbers is arista.avd.defined %}
-{%                     for sequence in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
-{%                         if sequence.sequence is arista.avd.defined and sequence.action is arista.avd.defined and sequence.application is arista.avd.defined %}
-{%                             set eos_cli = sequence.action %}
-{%                             if sequence.action == "redirect" %}
-{%                                 if sequence.next_hop is arista.avd.defined %}
-{%                                     set eos_cli = eos_cli ~ " next-hop " ~ sequence.next_hop %}
-{%                                 else %}
-{%                                     set eos_cli = "BAD!" %}
-{%                                 endif %}
-{%                             endif %}
-{%                             if sequence.stateless | arista.avd.default(true) %}
-{%                                 set eos_cli = eos_cli ~ " stateless" %}
-{%                             endif %}
-{%                             if sequence.log is arista.avd.defined(true) %}
-{%                                 set eos_cli = eos_cli ~ " log" %}
-{%                             endif %}
-{%                             if eos_cli != "BAD!" %}
-      {{ sequence.sequence }} application {{ sequence.application }} action {{ eos_cli }}
-{%                             endif %}
-{%                         endif %}
-{%                     endfor %}
+{%         for sequence in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%             if sequence.sequence is arista.avd.defined and sequence.action is arista.avd.defined and sequence.application is arista.avd.defined %}
+{%                 set eos_cli = sequence.action %}
+{%                 if sequence.action == "redirect" and sequence.next_hop is arista.avd.defined %}
+{%                     set eos_cli = eos_cli ~ " next-hop " ~ sequence.next_hop %}
+{%                 else %}
+{%                     continue %}
 {%                 endif %}
+{%                 if sequence.stateless | arista.avd.default(true) %}
+{%                     set eos_cli = eos_cli ~ " stateless" %}
+{%                 endif %}
+{%                 if sequence.log is arista.avd.defined(true) %}
+{%                     set eos_cli = eos_cli ~ " log" %}
+{%                 endif %}
+      {{ sequence.sequence }} application {{ sequence.application }} action {{ eos_cli }}
 {%             endif %}
 {%         endfor %}
-{%     endif %}
+   !
+{%     endfor %}
 {%     if router_segment_security.vrfs is arista.avd.defined %}
 {%         for vrf in router_segment_security.vrfs | arista.avd.natural_sort('name') %}
    !
