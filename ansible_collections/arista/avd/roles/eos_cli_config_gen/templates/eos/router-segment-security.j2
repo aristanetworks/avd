@@ -40,16 +40,16 @@ router segment-security
 {%                 if segment.name is arista.avd.defined %}
       segment {{ segment.name }}
          definition
-{%                     for entry in segment.definition.interfaces | arista.avd.natural_sort %}
-            match interface {{ entry }}
+{%                     for interface in segment.definition.interfaces | arista.avd.natural_sort %}
+            match interface {{ interface }}
 {%                     endfor %}
 {%                     if segment.definition.match_lists is arista.avd.defined %}
-{%                         for entry in segment.definition.match_lists %}
-{%                             if entry.address_family is arista.avd.defined and (entry.prefix is arista.avd.defined or entry.covered_prefix_list is arista.avd.defined ) %}
-{%                                 if entry.prefix is arista.avd.defined %}
-{%                                     set host_cli = "match prefix-" ~ entry.address_family ~ " " ~ entry.prefix %}
-{%                                 elif entry.covered_prefix_list is arista.avd.defined %}
-{%                                     set host_cli = "match covered prefix-list " ~ entry.address_family ~ " " ~ entry.covered_prefix_list %}
+{%                         for match_list in segment.definition.match_lists %}
+{%                             if match_list.address_family is arista.avd.defined and (match_list.prefix is arista.avd.defined or match_list.covered_prefix_list is arista.avd.defined ) %}
+{%                                 if match_list.prefix is arista.avd.defined %}
+{%                                     set host_cli = "match prefix-" ~ match_list.address_family ~ " " ~ match_list.prefix %}
+{%                                 elif match_list.covered_prefix_list is arista.avd.defined %}
+{%                                     set host_cli = "match covered prefix-list " ~ match_list.address_family ~ " " ~ match_list.covered_prefix_list %}
 {%                                 endif %}
             {{ host_cli }}
 {%                             endif %}
@@ -58,9 +58,9 @@ router segment-security
 {%                     if segment.policies is arista.avd.defined %}
          !
          policies
-{%                         for entry in segment.policies | arista.avd.natural_sort('source') %}
-{%                             if entry.source is arista.avd.defined and entry.policy is arista.avd.defined %}
-            from {{ entry.source }} policy {{ entry.policy }}
+{%                         for policy in segment.policies | arista.avd.natural_sort('source') %}
+{%                             if policy.source is arista.avd.defined and policy.policy is arista.avd.defined %}
+            from {{ policy.source }} policy {{ policy.policy }}
 {%                             endif %}
 {%                         endfor %}
 {%                     endif %}
