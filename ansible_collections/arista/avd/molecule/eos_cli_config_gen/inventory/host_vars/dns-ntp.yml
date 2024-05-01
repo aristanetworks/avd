@@ -48,6 +48,10 @@ ntp:
       vrf: mgt
     - name: 10.10.111.2
       vrf: mgt
+    - name: 2001:db8::4
+      vrf: mgt
+    - name: 2001:db8::3
+      vrf: mgt
   authenticate_servers_only: true
   authentication_keys:
     - id: 1
