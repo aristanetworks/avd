@@ -41438,7 +41438,7 @@
                               },
                               "action": {
                                 "type": "string",
-                                "description": "The action to take - note that platform support for the redirect action is limited.",
+                                "description": "The action to take - note that platform support for the redirect action is limited. The \"redirect\" action also requires the 'next_hop' to be configured.",
                                 "enum": [
                                   "forward",
                                   "drop",
