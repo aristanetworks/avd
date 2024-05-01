@@ -2000,7 +2000,7 @@ keys:
     description: List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     items:
       type: str
-      description: IPv4 address.
+      description: IPv4 or IPv6 address.
   network_ports:
     type: list
     items:
