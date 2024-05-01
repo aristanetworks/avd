@@ -237,7 +237,7 @@ def _parser(tokens: deque, prefix: str = "") -> list[str]:
     """
     Return list of strings expanded from the given tokens.
 
-    The fuction is called recursively to expand multiple ranges in the right order:
+    The function is called recursively to expand multiple ranges in the right order:
     Tokens ["Ethernet", "11", "-", "12", "/", "1" - "2"]
     becomes ["Ethernet11/1" "Ethernet11/2", "Ethernet12/1", "Ethernet12/2"]
     so the first "-" is resolved into 11, 12 which are then looped over to call the function
