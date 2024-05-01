@@ -20,7 +20,7 @@ Please note, that this guide leverages AAP version 2.4. The workflows should be 
 
 ## Topology
 
-Our topology leverages two spines and four leaf nodes to create a layer three leaf spine topology. The topology is managed by Arista CloudVision Portal (CVP). There will also be an example of running any provisioning tasks directly on the EOS nodes. In our case, the EOS nodes are constantly streaming to CVP and gives us the ability to provision the nodes with CVP. AAP will act as our controller to communicate any updates to CVP, which can then push the updates to our topology.
+Our topology leverages two spines and four leaf nodes to create a layer three leaf spine topology. The topology is managed by Arista CloudVision Portal (CVP). In our case, the EOS nodes are constantly streaming to CVP and gives us the ability to provision the nodes with CVP. AAP will act as our controller to communicate any updates to CVP, which can then push the updates to our topology.
 
 ![Topology leveraging Ansible Automation Platform to communicate with CloudVision](../_media/getting-started/aap-avd/aap-cvp-eos.svg)
 
@@ -36,11 +36,113 @@ The image below provides an excellent overview of the AAP dashboard. From one pa
 
 ![AAP Dashboard](../_media/getting-started/aap-avd/aap-dashboardpng.png)
 
-## Execution environments
+## Execution environments with Ansible Builder
 
-Execution environments (EEs) are Red Hat's solution for managing project dependencies. In the past, we used Python virtual environments. The Python virtual environments had pros and cons, but EEs leverage containers to wrap all dependencies within a container. EEs make environments more portable and quicker to replicate between AAP nodes and standalone projects.
+Execution environments (EEs) are Red Hat's solution for managing project dependencies. In the past, we used Python virtual environments. The Python virtual environments had pros and cons, but EEs leverage containers to wrap all dependencies within a container. EEs make environments more portable and quicker to replicate between AAP nodes and standalone projects. We will go through an EE build together but it is highly recommended to build your own for your specific requirements.
 
-This example will leverage the AVD all-in-one container to get us up and running with the required software. You may use this environment or create your own. To learn more about working with execution environments, please see the [official documentation](https://docs.ansible.com/ansible/latest/getting_started_ee/index.html).
+### Ansible Builder
+
+Ansible Builder is a tool developed by the Ansible team to aid in creating EEs. Like any tool, there are a few requirements to get started with Ansible Builder.
+
+- A development machine with Python installed.
+- Ansible builder installed with `pip install ansible-builder`.
+- [Docker](https://docs.docker.com/engine/install/) or [Podman](https://podman.io/docs/installation) installed on the development machine.
+
+You can place the Ansible builder dependencies with your current project or leverage a separate project entirely for your EE builds. Please note that this example was created with version 4.7.1 of the AVD collection. Dependencies may change between versions.
+
+```shell
+❯ tree -I venv/
+.
+├── execution-environment.yml
+├── requirements.txt
+└── requirements.yml
+```
+
+=== "execution-environment.yml"
+
+    ```yaml
+    ---
+    version: 3 #(1)
+
+    images: #(2)
+      base_image:
+        name: quay.io/centos/centos:stream8
+
+    dependencies: #(3)
+      python_interpreter:
+        package_system: python311
+        python_path: /usr/bin/python3.11
+
+      ansible_core: #(4)
+        package_pip: ansible-core<2.17.0
+
+      ansible_runner: #(5)
+        package_pip: ansible-runner
+
+      galaxy: requirements.yml #(6)
+
+      python: requirements.txt #(7)
+
+    ```
+
+    1. We are leveraging Ansible Builder 3.x, which requires version 3 of the definition file. If you leverage an older version of Ansible Builder, you may need to use `version: 1`.
+    2. You may use any base container image. Please see the official documentation for more examples.
+    3. Specifying what version of Python we would like installed during the container build.
+    4. The version of ansible-core you need will greatly depend on your specific workflows.
+    5. The `ansible-runner` package is required when building an EE.
+    6. This is a pointer to any additional collections we want installed on our container.
+    7. This is a pointer to any additional Python packages we require for our workflow.
+
+=== "requirements.yml"
+
+    ```yaml
+    ---
+    collections: #(1)
+      - name: arista.avd
+        version: 4.7.1
+
+    ```
+
+    1. Installing the `arista.avd` collection for this workflow will ensure that any other required collections are also installed.
+
+=== "requirements.txt"
+
+    ```text
+    netaddr>=0.7.19
+    Jinja2>=3.0.0
+    treelib>=1.5.5
+    cvprac>=1.3.1
+    jsonschema>=4.5.1,<4.18
+    requests>=2.27.0
+    PyYAML>=6.0.0
+    md-toc>=7.1.0
+    deepmerge>=1.1.0
+    cryptography>=38.0.4
+    # No anta requirement until the eos_validate_state integration is out of preview.
+    # anta>=1.0.0
+    aristaproto>=0.1.1
+
+    ```
+
+    The Python dependencies were taken from the [collection installation](../../docs/installation/collection-installation.md#python-requirements-installation) instructions. Please update for your specific version of the `arista.avd` collection.
+
+#### Build the image
+
+The command below will use Ansible Builder to start building our custom EE. In this case, we leverage Podman as a container runtime and tag the image appropriately.
+
+```shell
+ansible-builder build --container-runtime podman -v 3 --tag username/image-name
+```
+
+Once complete, you can push the image to a public or private container registry.
+
+```shell
+podman push IMAGEID docker://docker.io/username/image-name
+```
+
+### Execution environments on AAP
+
+Once the image is located on our container registry, we are ready to add our custom EE to AAP.
 
 === "Click on EE"
 
@@ -56,11 +158,7 @@ This example will leverage the AVD all-in-one container to get us up and running
 
 === "EE - Save"
 
-    Give the EE an appropriate `Name` and full `Image` location. For the `Pull` option, this will vary if the EE is in active development and frequent changes are expected. Since our EE is ready, we will set this to `Only pull image of not present`. We are leveraging the AVD all-in-one container image, but you may use any EE for your specific project or build your own.
-
-    ```shell
-    ghcr.io/arista-netdevops-community/avd-all-in-one-container/avd-all-in-one:avd4.6.0_cvp3.10.1
-    ```
+    Give the EE an appropriate `Name` and full `Image` location. For the `Pull` option, this will vary if the EE is in active development and frequent changes are expected. Since our EE is in development, we will set this to `Always pull container before running`.
 
     ![Create EE](../_media/getting-started/aap-avd/create-ee.png)
 
@@ -123,9 +221,11 @@ At this point, we have an inventory with no hosts. This is where inventory sourc
     - In the new pane, click on `Add`.
     - A new pane is shown but similar to before, fill in an appropriate `Name` and select `Source from a Project` under `source`.
     - Under `Source details` click on the search icon under `Project`
-      - Select you newly created project
-    - Under `Source details`, if the `Inventory file` drop down does not show your inventory, feel free to enter it manually.
-    - Under `Update options` make sure `Update on launch` is checked.
+      - Select your newly created project
+    - Under `Source details`, if the `Inventory file` drop-down does not show your inventory, feel free to enter it manually.
+    - Under `Update options`:
+      - `Overwrite` is checked. Overwrite will ensure our inventory source manages additions and removal of hosts and groups.
+      - `Update on launch` is checked.
     - Scroll down and click `Save`.
 
     ![Create source](../_media/getting-started/aap-avd/create-source.png)
@@ -223,7 +323,7 @@ With most jobs, we need a way to authenticate to our CVP instance or EOS nodes. 
 
 ### Running the Template with CVP
 
-Below is an example of the playbook we are leveraging to build and deploy our configurations with CVP. The following section will have an alternate version that can be deployed directly to EOS nodes.
+Below is an example of the playbook we are leveraging to build and deploy our configurations with CVP.
 
 ```yaml
 ---
@@ -293,34 +393,8 @@ We have everything we need to run our job template now.
     ![CVP topology](../_media/getting-started/aap-avd/cvp-topo.png)
     ![CVP Change Controls](../_media/getting-started/aap-avd/cvp-cc.png)
 
-### Running the Template directly to EOS nodes
+## References
 
-![AAP with EOS topology](../_media/getting-started/aap-avd/aap-eos.svg)
-
-The AVD collection provides a role to deploy updates directly to EOS nodes. Assuming AAP has direct connectivity to your topology, we could use the following playbook to build and deploy and updates directly to EOS nodes.
-
-```yaml
----
-- name: Manage Arista EOS EVPN/VXLAN Configuration
-  hosts: ATD_FABRIC
-  connection: local
-  gather_facts: false
-  collections:
-    - arista.avd
-  vars:
-    fabric_dir_name: "{{ fabric_name }}"
-  tasks:
-
-    - name: Generate intended variables
-      import_role:
-        name: eos_designs
-
-    - name: Generate device intended config and documentation
-      import_role:
-        name: eos_cli_config_gen
-
-    - name: Deploy updates to EOS nodes
-      import_role:
-        name: eos_config_deploy_eapi
-
-```
+- [Ansible Builder documentation](https://ansible.readthedocs.io/projects/builder/en/latest/)
+- [Getting started with Execution Environments](https://docs.ansible.com/ansible/latest/getting_started_ee/index.html)
+- [Red Hat Ansible Automation Platform Installation Guide](https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.0-ea/html/red_hat_ansible_automation_platform_installation_guide/index)
