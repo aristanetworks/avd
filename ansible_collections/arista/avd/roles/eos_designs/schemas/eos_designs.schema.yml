@@ -3263,6 +3263,20 @@ keys:
       For default enabling of sFlow for various interface types across the fabric
       see `fabric_sflow`.'
     keys:
+      sample:
+        type: dict
+        keys:
+          rate:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+            description: 'Packet sampling rate that defines the average number of
+              ingress packets that pass through an interface for every packet that
+              is sampled.
+
+              A rate of 16384 corresponds to an average sample of one per 16384 packets.'
       destinations:
         type: list
         items:
@@ -5050,6 +5064,17 @@ $defs:
               Setting to false will set port to ''shutdown'' in intended configuration.
 
               '
+          ptp_mpass:
+            type: bool
+            default: false
+            description: 'When MPASS is enabled on an MLAG port-channel, MLAG peers
+              coordinate to function as a single PTP logical device.
+
+              Arista PTP enabled devices always place PTP messages on the same physical
+              link within the port-channel.
+
+              Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+              devices.'
           esi:
             type: str
             description: Format xxxx:xxxx:xxxx.
