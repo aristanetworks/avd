@@ -10315,7 +10315,7 @@
       "description": "List of DNS servers. The VRF is set to < mgmt_interface_vrf >.",
       "items": {
         "type": "string",
-        "description": "IPv4 address."
+        "description": "IPv4 or IPv6 address."
       },
       "title": "Name Servers"
     },
