@@ -49,8 +49,8 @@ router segment-security
 {%                 if segment.name is arista.avd.defined %}
       segment {{ segment.name }}
          definition
-{%                     for entry in segment.definition.interfaces | arista.avd.natural_sort %}
-            match interface {{ entry }}
+{%                     for interface in segment.definition.interfaces | arista.avd.natural_sort %}
+            match interface {{ interface }}
 {%                     endfor %}
 {%                     if segment.definition.match_lists is arista.avd.defined %}
 {%                         for match_list in segment.definition.match_lists %}
