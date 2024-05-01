@@ -121,6 +121,7 @@ router segment-security
          !
          policies
             from MATCH-LIST22 policy POLICY-TEST1
+      !
       segment SEGMENT-TEST2
          definition
             match prefix-ipv4 MATCH-LIST4
@@ -142,4 +143,5 @@ router segment-security
          policies
             from MATCH-LIST20 policy policy-forward-all
             from MATCH-LIST30 policy policy-drop-all
+   !
 ```
