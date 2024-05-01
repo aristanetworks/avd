@@ -236,7 +236,7 @@ jobs:
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
-          molecule_args: '--scenario-name ${{ matrix.avd_scenario }} -- --extra-vars avd_ignore_requirements=True' # Testing with 2.17.0rc2 in CI revert this change before merging PR!
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }} -- --extra-vars avd_ignore_requirements=True -vvv' # Testing with 2.17.0rc2 in CI revert this change before merging PR!
           pip_file: ${{ matrix.pip_requirements }}
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
