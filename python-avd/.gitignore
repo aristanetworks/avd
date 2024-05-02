@@ -12,3 +12,5 @@ __pycache__/
 /pyavd/version.py
 *.prof
 /site/
+
+requirements-ansible-avd.txt
