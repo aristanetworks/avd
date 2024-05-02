@@ -15,7 +15,7 @@ yamllint
 treelib>=1.5.5
 md-toc>=7.1.0
 natsort
-jsonschema==4.5.1
+jsonschema==4.10.0
 referencing>=0.35.0
 deepmerge>=1.1.0
 isort==5.13.2
