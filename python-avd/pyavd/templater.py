@@ -11,9 +11,9 @@ from .vendor.j2.filter.encrypt import encrypt
 from .vendor.j2.filter.hide_passwords import hide_passwords
 from .vendor.j2.filter.list_compress import list_compress
 from .vendor.j2.filter.natural_sort import natural_sort
-from .vendor.j2.filter.range_expand import range_expand
 from .vendor.j2.test.contains import contains
 from .vendor.j2.test.defined import defined
+from .vendor.utils import range_expand
 
 JINJA2_CUSTOM_FILTERS = {
     "arista.avd.default": default,

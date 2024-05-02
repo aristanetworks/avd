@@ -235,7 +235,7 @@ interface Ethernet50
 | Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
 | Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
 | Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
-| Port-Channel131 | dot1q-tunnel mode | switched | dot1q-tunnel | - | - | - | - | - | - | - |
+| Port-Channel131 | dot1q-tunnel mode | switched | dot1q-tunnel | 115 | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q
 
@@ -707,6 +707,7 @@ interface Port-Channel130
 interface Port-Channel131
    description dot1q-tunnel mode
    switchport
+   switchport access vlan 115
    switchport mode dot1q-tunnel
 ```
 

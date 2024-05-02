@@ -2000,7 +2000,7 @@ keys:
     description: List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     items:
       type: str
-      description: IPv4 address.
+      description: IPv4 or IPv6 address.
   network_ports:
     type: list
     items:
@@ -5064,6 +5064,17 @@ $defs:
               Setting to false will set port to ''shutdown'' in intended configuration.
 
               '
+          ptp_mpass:
+            type: bool
+            default: false
+            description: 'When MPASS is enabled on an MLAG port-channel, MLAG peers
+              coordinate to function as a single PTP logical device.
+
+              Arista PTP enabled devices always place PTP messages on the same physical
+              link within the port-channel.
+
+              Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+              devices.'
           esi:
             type: str
             description: Format xxxx:xxxx:xxxx.
