@@ -4065,11 +4065,11 @@ keys:
     keys:
       always_on:
         type: bool
-        description: DhcpRelay Agent will be in always-on mode, off by default.
+        description: DhcpRelay Agent will be in always-on mode.
       all_subnets:
         type: bool
         description: Allow forwarding requests with secondary IP addresses in the
-          gateway address "giaddr" field, off by default.
+          gateway address "giaddr" field.
       information_option:
         type: bool
         description: Insert Option-82 information.
@@ -4911,21 +4911,21 @@ keys:
       all_subnets:
         type: bool
         description: Allow forwarding requests with additional IPv6 addresses in the
-          gateway address "giaddr" field, off by default.
+          gateway address "giaddr" field.
       option:
         type: dict
         description: Insert DHCP Option.
         keys:
           link_layer_address:
             type: bool
-            description: Add Option 79 (Link Layer Address Option), off by default.
+            description: Add Option 79 (Link Layer Address Option).
           remote_id_format:
             type: str
             valid_values:
             - '%m:%i'
             - '%m:%p'
             description: Add RemoteID option 37 in format MAC address and interface
-              ID (%m:%i) or MAC address and interface name (%m:%p), off by default.
+              ID (`%m:%i`) or MAC address and interface name (`%m:%p`).
   ipv6_hardware:
     type: dict
     keys:

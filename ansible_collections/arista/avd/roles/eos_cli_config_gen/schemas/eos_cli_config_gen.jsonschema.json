@@ -6766,12 +6766,12 @@
       "properties": {
         "always_on": {
           "type": "boolean",
-          "description": "DhcpRelay Agent will be in always-on mode, off by default.",
+          "description": "DhcpRelay Agent will be in always-on mode.",
           "title": "Always On"
         },
         "all_subnets": {
           "type": "boolean",
-          "description": "Allow forwarding requests with secondary IP addresses in the gateway address \"giaddr\" field, off by default.",
+          "description": "Allow forwarding requests with secondary IP addresses in the gateway address \"giaddr\" field.",
           "title": "All Subnets"
         },
         "information_option": {
@@ -8345,7 +8345,7 @@
         },
         "all_subnets": {
           "type": "boolean",
-          "description": "Allow forwarding requests with additional IPv6 addresses in the gateway address \"giaddr\" field, off by default.",
+          "description": "Allow forwarding requests with additional IPv6 addresses in the gateway address \"giaddr\" field.",
           "title": "All Subnets"
         },
         "option": {
@@ -8354,7 +8354,7 @@
           "properties": {
             "link_layer_address": {
               "type": "boolean",
-              "description": "Add Option 79 (Link Layer Address Option), off by default.",
+              "description": "Add Option 79 (Link Layer Address Option).",
               "title": "Link Layer Address"
             },
             "remote_id_format": {
@@ -8363,7 +8363,7 @@
                 "%m:%i",
                 "%m:%p"
               ],
-              "description": "Add RemoteID option 37 in format MAC address and interface ID (%m:%i) or MAC address and interface name (%m:%p), off by default.",
+              "description": "Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface name (`%m:%p`).",
               "title": "Remote ID Format"
             }
           },
