@@ -3815,7 +3815,7 @@
           },
           "isis_bfd": {
             "type": "boolean",
-            "description": "Enable BFD.",
+            "description": "Enable BFD for ISIS.",
             "title": "ISIS BFD"
           },
           "isis_passive": {
@@ -13731,7 +13731,7 @@
           },
           "isis_bfd": {
             "type": "boolean",
-            "description": "Enable BFD.",
+            "description": "Enable BFD for ISIS.",
             "title": "ISIS BFD"
           },
           "isis_passive": {
@@ -28241,7 +28241,7 @@
           },
           "isis_bfd": {
             "type": "boolean",
-            "description": "Enable BFD.",
+            "description": "Enable BFD for ISIS.",
             "title": "ISIS BFD"
           },
           "isis_passive": {

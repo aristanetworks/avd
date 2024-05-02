@@ -47,8 +47,8 @@
 
 ##### ISIS
 
-| Interface | ISIS instance | ISIS metric | Interface mode |
-| --------- | ------------- | ----------- | -------------- |
+| Interface | ISIS instance | ISIS BFD | ISIS metric | Interface mode |
+| --------- | ------------- | -------- | ----------- | -------------- |
 {%         for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
 {%             if loopback_interface.isis_enable is arista.avd.defined %}
 {%                 if loopback_interface.isis_network_point_to_point is arista.avd.defined %}
@@ -56,7 +56,7 @@
 {%                 elif loopback_interface.isis_passive is arista.avd.defined %}
 {%                     set mode = 'passive' %}
 {%                 endif %}
-| {{ loopback_interface.name }} | {{ loopback_interface.isis_enable }} | {{ loopback_interface.isis_metric | arista.avd.default('-') }} | {{ mode | arista.avd.default('-') }} |
+| {{ loopback_interface.name }} | {{ loopback_interface.isis_enable }} | {{ loopback_interface.isis_bfd | arista.avd.default("False") }} | {{ loopback_interface.isis_metric | arista.avd.default('-') }} | {{ mode | arista.avd.default('-') }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

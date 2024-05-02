@@ -104,9 +104,9 @@ sFlow is disabled.
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet10/10 | 110 | *ISIS_TEST | *99 | *point-to-point | *level-2 | *True | *text |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet10/10 | 110 | *ISIS_TEST | True | *99 | *point-to-point | *level-2 | *True | *text |
 
 *Inherited from Port-Channel Interface
 
@@ -339,9 +339,9 @@ interface Ethernet50
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Port-Channel110 | ISIS_TEST | 99 | point-to-point | level-2 | True | text |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Port-Channel110 | ISIS_TEST | True | 99 | point-to-point | level-2 | True | text |
 
 #### Port-Channel Interfaces Device Configuration
 

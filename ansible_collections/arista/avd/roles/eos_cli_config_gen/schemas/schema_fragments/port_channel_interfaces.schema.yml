@@ -412,7 +412,7 @@ keys:
           description: ISIS instance.
         isis_bfd:
           type: bool
-          description: Enable BFD.
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:

@@ -265,7 +265,6 @@ ethernet_interfaces:
   ip_address: 172.16.0.0/31
   mpls:
     ip: true
-  isis_enable: CORE
 - name: ethernet23
   peer: peer4
   peer_interface: ethernet23
@@ -277,7 +276,6 @@ ethernet_interfaces:
   ip_address: 172.16.0.2/31
   mpls:
     ip: true
-  isis_enable: CORE
 - name: ethernet24
   peer: peer5
   peer_interface: ethernet22
@@ -289,7 +287,6 @@ ethernet_interfaces:
   ip_address: 172.16.1.1/29
   mpls:
     ip: true
-  isis_enable: CORE
 - name: ethernet25
   peer: peer6
   peer_interface: ethernet23
@@ -301,7 +298,6 @@ ethernet_interfaces:
   ip_address: 172.16.1.9/29
   mpls:
     ip: true
-  isis_enable: CORE
 port_channel_interfaces:
 - name: Port-Channel12
   peer: core-2-ospf-ldp

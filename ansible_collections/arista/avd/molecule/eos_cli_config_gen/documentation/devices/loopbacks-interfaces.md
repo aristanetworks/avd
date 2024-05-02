@@ -63,9 +63,9 @@ interface Management1
 
 ##### ISIS
 
-| Interface | ISIS instance | ISIS metric | Interface mode |
-| --------- | ------------- | ----------- | -------------- |
-| Loopback99 | ISIS_TEST | 100 | point-to-point |
+| Interface | ISIS instance | ISIS BFD | ISIS metric | Interface mode |
+| --------- | ------------- | -------- | ----------- | -------------- |
+| Loopback99 | ISIS_TEST | True | 100 | point-to-point |
 
 #### Loopback Interfaces Device Configuration
 

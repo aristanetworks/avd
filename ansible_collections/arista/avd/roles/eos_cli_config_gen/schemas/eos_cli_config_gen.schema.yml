@@ -2298,7 +2298,7 @@ keys:
           description: ISIS instance.
         isis_bfd:
           type: bool
-          description: Enable BFD.
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -8153,7 +8153,7 @@ keys:
           description: ISIS instance.
         isis_bfd:
           type: bool
-          description: Enable BFD.
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -16226,7 +16226,7 @@ keys:
           description: ISIS instance name.
         isis_bfd:
           type: bool
-          description: Enable BFD.
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:

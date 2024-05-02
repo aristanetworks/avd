@@ -382,6 +382,7 @@
 {%     set ethernet_interfaces_isis = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%         if ethernet_interface.isis_enable is arista.avd.defined or
+               ethernet_interface.isis_bfd is arista.avd.defined or
                ethernet_interface.isis_metric is arista.avd.defined or
                ethernet_interface.isis_circuit_type is arista.avd.defined or
                ethernet_interface.isis_network_point_to_point is arista.avd.defined or
@@ -394,6 +395,7 @@
 {%     set port_channel_interfaces_isis = [] %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.isis_enable is arista.avd.defined or
+               port_channel_interface.isis_bfd is arista.avd.defined or
                port_channel_interface.isis_metric is arista.avd.defined or
                port_channel_interface.isis_circuit_type is arista.avd.defined or
                port_channel_interface.isis_network_point_to_point is arista.avd.defined or
@@ -450,8 +452,8 @@
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
@@ -460,6 +462,7 @@
 {%                 if port_channel_interface is arista.avd.defined %}
 {%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
 {%                     set isis_instance = port_channel_interface.isis_enable | arista.avd.default("-") %}
+{%                     set isis_bfd = port_channel_interface.isis_bfd | arista.avd.default("False") %}
 {%                     set isis_metric = port_channel_interface.isis_metric | arista.avd.default("-") %}
 {%                     set isis_circuit_type = port_channel_interface.isis_circuit_type | arista.avd.default("-") %}
 {%                     set isis_hello_padding = port_channel_interface.isis_hello_padding | arista.avd.default("-") %}
@@ -471,12 +474,13 @@
 {%                     else %}
 {%                         set mode = "-" %}
 {%                     endif %}
-| {{ ethernet_interface.name }} | {{ channel_group }} | *{{ isis_instance }} | *{{ isis_metric }} | *{{ mode }} | *{{ isis_circuit_type }} | *{{ isis_hello_padding }} | *{{ isis_authentication_mode }} |
+| {{ ethernet_interface.name }} | {{ channel_group }} | *{{ isis_instance }} | {{ isis_bfd }} | *{{ isis_metric }} | *{{ mode }} | *{{ isis_circuit_type }} | *{{ isis_hello_padding }} | *{{ isis_authentication_mode }} |
 {%                 endif %}
 {%             else %}
 {%                 if ethernet_interface in ethernet_interfaces_isis %}
 {%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
 {%                     set isis_instance = ethernet_interface.isis_enable | arista.avd.default("-") %}
+{%                     set isis_bfd = ethernet_interface.isis_bfd | arista.avd.default("False") %}
 {%                     set isis_metric = ethernet_interface.isis_metric | arista.avd.default("-") %}
 {%                     set isis_circuit_type = ethernet_interface.isis_circuit_type | arista.avd.default("-") %}
 {%                     set isis_hello_padding = ethernet_interface.isis_hello_padding | arista.avd.default("-") %}
@@ -488,7 +492,7 @@
 {%                     else %}
 {%                         set mode = "-" %}
 {%                     endif %}
-| {{ ethernet_interface.name }} | {{ channel_group }} | {{ isis_instance }} | {{ isis_metric }} | {{ mode }} | {{ isis_circuit_type }} | {{ isis_hello_padding }} | {{ isis_authentication_mode }} |
+| {{ ethernet_interface.name }} | {{ channel_group }} | {{ isis_instance }} | {{ isis_bfd }} | {{ isis_metric }} | {{ mode }} | {{ isis_circuit_type }} | {{ isis_hello_padding }} | {{ isis_authentication_mode }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

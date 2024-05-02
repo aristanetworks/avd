@@ -48,8 +48,6 @@ ethernet_interfaces:
   speed: forced 10000full
   ptp:
     enable: true
-  isis_enable: EVPN_UNDERLAY
-  isis_bfd: true
 - name: ethernet2
   peer: peer2
   peer_interface: ethernet2
@@ -60,13 +58,13 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 192.168.0.2/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 60
   isis_network_point_to_point: true
   isis_hello_padding: false
   isis_circuit_type: level-2
   isis_authentication_mode: md5
   isis_authentication_key: $1c$sTNAlR6rKSw=
-  isis_bfd: true
 - name: ethernet3
   peer: peer3
   peer_interface: ethernet3
@@ -77,11 +75,11 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 192.168.0.4/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_hello_padding: true
   isis_circuit_type: level-2
-  isis_bfd: true
 - name: ethernet4
   peer: peer4
   peer_interface: ethernet4
@@ -92,8 +90,8 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 192.168.0.6/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_hello_padding: true
   isis_circuit_type: level-2
-  isis_bfd: true

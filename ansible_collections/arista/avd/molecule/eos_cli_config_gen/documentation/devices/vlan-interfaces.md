@@ -177,9 +177,9 @@ interface Management1
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ----------- | ---- |
-| Vlan2002 | EVPN_UNDERLAY | - | - |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
+| --------- | ------------- | -------- | ----------- | ---- |
+| Vlan2002 | EVPN_UNDERLAY | True | - | - |
 
 ##### Multicast Routing
 
