@@ -150,8 +150,6 @@ router bgp 65103
       neighbor 192.168.255.5 rcf out Address_Family_VPN_IPV4_Out()
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       route import match-failure action discard
-      redistribute connected rcf Address-Family_VPN_IPV4_Connected()
-      redistribute static rcf Address-Family_VPN_IPV4_Static()
    !
    address-family vpn-ipv6
       domain identifier 65000:0
@@ -167,6 +165,4 @@ router bgp 65103
       neighbor 2001:cafe:192:168::5 rcf out Address_Family_VPN_IPV6_Out()
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       route import match-failure action discard
-      redistribute connected rcf Address-Family_VPN_IPV4_Connected()
-      redistribute dynamic rcf Address-Family_VPN_IPV4_Dynamic()
 ```

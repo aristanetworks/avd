@@ -36416,35 +36416,6 @@
                           "^_.+$": {}
                         },
                         "title": "Neighbor Default Encapsulation MPLS Next Hop Self"
-                      },
-                      "redistribute_routes": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "source_protocol": {
-                              "type": "string",
-                              "title": "Source Protocol"
-                            },
-                            "include_leaked": {
-                              "type": "boolean",
-                              "title": "Include Leaked"
-                            },
-                            "rcf": {
-                              "type": "string",
-                              "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
-                              "title": "RCF"
-                            }
-                          },
-                          "additionalProperties": false,
-                          "patternProperties": {
-                            "^_.+$": {}
-                          },
-                          "required": [
-                            "source_protocol"
-                          ]
-                        },
-                        "title": "Redistribute Routes"
                       }
                     },
                     "additionalProperties": false,
@@ -36579,35 +36550,6 @@
                           "^_.+$": {}
                         },
                         "title": "Neighbor Default Encapsulation MPLS Next Hop Self"
-                      },
-                      "redistribute_routes": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "source_protocol": {
-                              "type": "string",
-                              "title": "Source Protocol"
-                            },
-                            "include_leaked": {
-                              "type": "boolean",
-                              "title": "Include Leaked"
-                            },
-                            "rcf": {
-                              "type": "string",
-                              "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
-                              "title": "RCF"
-                            }
-                          },
-                          "additionalProperties": false,
-                          "patternProperties": {
-                            "^_.+$": {}
-                          },
-                          "required": [
-                            "source_protocol"
-                          ]
-                        },
-                        "title": "Redistribute Routes"
                       }
                     },
                     "additionalProperties": false,

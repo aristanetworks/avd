@@ -49,11 +49,6 @@ router_bgp:
         rcf_out: Address_Family_VPN_IPV4_Out()
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
-    redistribute_routes:
-      - source_protocol: connected
-        rcf: Address-Family_VPN_IPV4_Connected()
-      - source_protocol: static
-        rcf: Address-Family_VPN_IPV4_Static()
   address_family_vpn_ipv6:
     domain_identifier: "65000:0"
     route:
@@ -76,8 +71,3 @@ router_bgp:
         rcf_out: Address_Family_VPN_IPV6_Out()
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
-    redistribute_routes:
-      - source_protocol: connected
-        rcf: Address-Family_VPN_IPV4_Connected()
-      - source_protocol: dynamic
-        rcf: Address-Family_VPN_IPV4_Dynamic()
