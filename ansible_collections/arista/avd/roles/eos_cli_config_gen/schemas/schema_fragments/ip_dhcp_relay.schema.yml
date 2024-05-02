@@ -11,7 +11,7 @@ keys:
     keys:
       always_on:
         type: bool
-        description: DhcpRelay Agent will be in always-on mode, off by default.
+        description: DhcpRelay Agent will be in always-on mode.
       all_subnets:
         type: bool
         description: Allow forwarding requests with secondary IP addresses in the gateway address "giaddr" field, off by default.
