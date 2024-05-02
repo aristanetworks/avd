@@ -116,26 +116,26 @@ management security
 {%             if profile.secrets is arista.avd.defined %}
 {%                 for secret in profile.secrets | arista.avd.natural_sort("name") %}
 {%                     if secret.secret is arista.avd.defined %}
-{%                         set tmp_cli = "secret " ~ secret.name ~ " " ~ secret.secret_type | arista.avd.default("7") ~ " " ~ secret.secret | arista.avd.hide_passwords(hide_passwords) %}
+{%                         set secret_cli = "secret " ~ secret.name ~ " " ~ secret.secret_type | arista.avd.default("7") ~ " " ~ secret.secret | arista.avd.hide_passwords(hide_passwords) %}
 {%                         if secret.lifetime.infinite is arista.avd.defined(true) %}
-{%                             set tmp_cli = tmp_cli ~ " receive-lifetime infinite transmit-lifetime infinite" %}
+{%                             set secret_cli = secret_cli ~ " receive-lifetime infinite transmit-lifetime infinite" %}
 {%                         elif secret.lifetime.start_date_time is arista.avd.defined and secret.lifetime.end_date_time is arista.avd.defined %}
-{%                             set tmp_cli = tmp_cli ~ " receive-lifetime " ~ secret.lifetime.start_date_time ~ " " ~ secret.lifetime.end_date_time ~ " transmit-lifetime " ~ secret.lifetime.start_date_time ~ " " ~ secret.lifetime.end_date_time %}
+{%                             set secret_cli = secret_cli ~ " receive-lifetime " ~ secret.lifetime.start_date_time ~ " " ~ secret.lifetime.end_date_time ~ " transmit-lifetime " ~ secret.lifetime.start_date_time ~ " " ~ secret.lifetime.end_date_time %}
 {%                         elif secret.receive_lifetime.infinite is arista.avd.defined(true) %}
 {%                             if secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
-{%                                 set tmp_cli = tmp_cli ~ " receive-lifetime infinite transmit-lifetime " ~ secret.transmit_lifetime.start_date_time ~ " " ~ secret.transmit_lifetime.end_date_time %}
+{%                                 set secret_cli = secret_cli ~ " receive-lifetime infinite transmit-lifetime " ~ secret.transmit_lifetime.start_date_time ~ " " ~ secret.transmit_lifetime.end_date_time %}
 {%                             elif secret.transmit_lifetime.infinite is arista.avd.defined(true) %}
-{%                                 set tmp_cli = tmp_cli ~ " receive-lifetime infinite transmit-lifetime infinite" %}
+{%                                 set secret_cli = secret_cli ~ " receive-lifetime infinite transmit-lifetime infinite" %}
 {%                             endif %}
 {%                         elif secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined %}
-{%                             set tmp_cli = tmp_cli ~ " receive-lifetime " ~ secret.receive_lifetime.start_date_time ~ " " ~ secret.receive_lifetime.end_date_time %}
+{%                             set secret_cli = secret_cli ~ " receive-lifetime " ~ secret.receive_lifetime.start_date_time ~ " " ~ secret.receive_lifetime.end_date_time %}
 {%                             if secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
-{%                                 set tmp_cli = tmp_cli ~ " transmit-lifetime " ~ secret.transmit_lifetime.start_date_time ~ " " ~ secret.transmit_lifetime.end_date_time %}
+{%                                 set secret_cli = secret_cli ~ " transmit-lifetime " ~ secret.transmit_lifetime.start_date_time ~ " " ~ secret.transmit_lifetime.end_date_time %}
 {%                             elif secret.transmit_lifetime.infinite is arista.avd.defined(true) %}
-{%                                 set tmp_cli = tmp_cli ~ " transmit-lifetime infinite" %}
+{%                                 set secret_cli = secret_cli ~ " transmit-lifetime infinite" %}
 {%                             endif %}
 {%                         endif %}
-      {{ tmp_cli }}
+      {{ secret_cli }}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}

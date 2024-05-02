@@ -27,7 +27,7 @@ router_bgp:
       allowas_in:
         enabled: true
       shared_secret:
-        shared_secret_profile_name: profile2
+        profile: profile2
         hash_algorithm: aes-128-cmac-96
     - name: MLAG-IPv4-UNDERLAY-PEER
       type: ipv4
@@ -47,7 +47,7 @@ router_bgp:
         enabled: true
         times: 5
       shared_secret:
-        shared_secret_profile_name: profile1
+        profile: profile1
         hash_algorithm: aes-128-cmac-96
     - ip_address: 192.168.255.2
       peer_group: EVPN-OVERLAY-PEERS
