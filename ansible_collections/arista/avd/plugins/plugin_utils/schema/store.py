@@ -131,6 +131,6 @@ def _resolve_schema(schema: dict, store: dict) -> dict:
     schemaresolver.resolve(resolved_schema)
 
     # Since the schema is now fully resolved we can drop the $defs.
-    # resolved_schema.pop("$defs", None)
+    resolved_schema.pop("$defs", None)
 
     return resolved_schema
