@@ -570,7 +570,7 @@ $defs:
             description: Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items/"
+            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
       validate_state:
         type: bool
         description: Set to false to disable interface validation by the `eos_validate_state` role.
@@ -582,4 +582,4 @@ $defs:
         description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
         documentation_options:
           hide_keys: true
-        $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
+        $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"

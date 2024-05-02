@@ -7,99 +7,111 @@ __metaclass__ = type
 
 from copy import deepcopy
 
+try:
+    from referencing import Registry, Specification
+    from referencing.jsonschema import DRAFT7, _legacy_anchor_in_dollar_id, _legacy_dollar_id, _maybe_in_subresource_crazy_items_dependencies
+
+    HAS_REFERENCING = True
+except ImportError:
+    HAS_REFERENCING = False
+
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
-
-try:
-    import jsonschema
-    import jsonschema._types
-    import jsonschema._validators
-    import jsonschema.protocols
-    import jsonschema.validators
-except ImportError as imp_exc:
-    JSONSCHEMA_IMPORT_ERROR = imp_exc
-else:
-    JSONSCHEMA_IMPORT_ERROR = None
-
-
-def _keys(validator, keys: dict, resolved_schema: dict, schema: dict):
-    # Resolve the child schemas
-    for key, childschema in keys.items():
-        if "$ref" in childschema:
-            _ref_on_child(validator, childschema["$ref"], resolved_schema["keys"][key])
-        yield from validator.descend(
-            resolved_schema["keys"][key],
-            resolved_schema["keys"][key],
-            path=key,
-            schema_path=key,
-        )
-
-
-def _dynamic_keys(validator, dynamic_keys: dict, resolved_schema: dict, schema: dict):
-    # Resolve the child schemas
-    for key, childschema in dynamic_keys.items():
-        if "$ref" in childschema:
-            _ref_on_child(validator, childschema["$ref"], resolved_schema["dynamic_keys"][key])
-        yield from validator.descend(
-            resolved_schema["dynamic_keys"][key],
-            resolved_schema["dynamic_keys"][key],
-            path=key,
-            schema_path=key,
-        )
-
-
-def _items(validator, items: dict, resolved_schema: dict, schema: dict):
-    # Resolve the child schema
-    if "$ref" in items:
-        _ref_on_child(validator, items["$ref"], resolved_schema["items"])
-    yield from validator.descend(
-        resolved_schema["items"],
-        resolved_schema["items"],
-        path=0,
-        schema_path=0,
-    )
-
-
-def _ref_on_child(validator, ref, child_schema: dict):
-    """
-    This function resolves the $ref referenced schema,
-    then merges with any schema defined at the same level
-
-    In place update of supplied child_schema
-    """
-    scope, ref_schema = validator.resolver.resolve(ref)
-    ref_schema = deepcopy(ref_schema)
-    child_schema.pop("$ref", None)
-    merge(child_schema, ref_schema, same_key_strategy="use_existing")
-    # Resolve new refs inherited from the first ref.
-    if "$ref" in child_schema:
-        _ref_on_child(validator, child_schema["$ref"], child_schema)
 
 
 class AvdSchemaResolver:
-    def __new__(cls, schema, store):
+    def __init__(self, base_schema_name: str, store: dict):
+        if not HAS_REFERENCING:
+            raise AristaAvdError('Python library "referencing" must be installed to use this plugin')
+
+        self.resolver = self.create_resolver(store, base_uri=base_schema_name)
+
+    def resolve(self, resolved_schema: dict):
+        methods = {
+            "items": self._items,
+            "keys": self._keys,
+            "dynamic_keys": self._dynamic_keys,
+        }
+
+        for key, method in methods.items():
+            if resolved_schema.get(key):
+                method(resolved_schema)
+
+        return resolved_schema
+
+    def _keys(self, resolved_schema: dict):
+        for key in resolved_schema["keys"]:
+            # Resolve the child schema
+            # Repeat in case new refs inherited from the first ref.
+            while "$ref" in resolved_schema["keys"][key]:
+                self._ref_on_child(resolved_schema["keys"][key])
+
+            self.resolve(resolved_schema["keys"][key])
+
+    def _dynamic_keys(self, resolved_schema: dict):
+        for key in resolved_schema["dynamic_keys"]:
+            # Resolve the child schema
+            # Repeat in case new refs inherited from the first ref.
+            while "$ref" in resolved_schema["dynamic_keys"][key]:
+                self._ref_on_child(resolved_schema["dynamic_keys"][key])
+
+            self.resolve(resolved_schema["dynamic_keys"][key])
+
+    def _items(self, resolved_schema: dict):
+        # Resolve the child schema
+        # Repeat in case new refs inherited from the first ref.
+        while "$ref" in resolved_schema["items"]:
+            self._ref_on_child(resolved_schema["items"])
+
+        self.resolve(resolved_schema["items"])
+
+    def _ref_on_child(self, resolved_schema: dict):
         """
-        AvdSchemaResolver is used to resolve $ref in AVD Schemas.
+        This function resolves the $ref referenced schema,
+        then merges with any schema defined at the same level
 
-        It is used to generate full documentation covering all nested schemas.
-
-        Since we return generators, we cannot also return the resolved schema.
-        Instead we use the "instance" in jsonschema - the variable normally holding
-        the data to be validated - called "resolved_schema" above.
-        The "resolved_schema" must contain a copy of the original schema, and then
-        the $ref resolver will merge in the resolved schema and do in-place update.
+        In place update of supplied resolved_schema
         """
-        if JSONSCHEMA_IMPORT_ERROR:
-            raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
+        resolved = self.resolver.lookup(resolved_schema["$ref"])
+        ref_schema = deepcopy(resolved.contents)
+        resolved_schema.pop("$ref")
+        merge(resolved_schema, ref_schema, same_key_strategy="use_existing", list_merge="replace")
 
-        ValidatorClass = jsonschema.validators.create(
-            meta_schema=store["avd_meta_schema"],
-            validators={
-                "items": _items,
-                "keys": _keys,
-                "dynamic_keys": _dynamic_keys,
-            },
+    def create_resolver(self, store: dict, base_uri=""):
+        registry = self.create_registry(store)
+        return registry.resolver(base_uri)
+
+    @staticmethod
+    def create_registry(store: dict) -> Registry:
+        def subresources(schema: dict):
+            """
+            Generator of childschemas
+            """
+            if "keys" in schema and schema["keys"]:
+                yield from schema["keys"].values()
+            if "dynamic_keys" in schema and schema["dynamic_keys"]:
+                yield from schema["dynamic_keys"].values()
+            if "$defs" in schema and schema["$defs"]:
+                yield from schema["$defs"].values()
+            if "items" in schema:
+                yield schema["items"]
+
+        avd_meta_schema_spec = Specification(
+            name="avd_meta_schema",
+            id_of=_legacy_dollar_id,
+            subresources_of=subresources,
+            anchors_in=_legacy_anchor_in_dollar_id,
+            maybe_in_subresource=_maybe_in_subresource_crazy_items_dependencies(
+                in_value=set(),
+                in_subarray=set(),
+                in_subvalues={"keys", "dynamic_keys", "$defs"},
+            ),
         )
+        resources = [
+            ("avd_meta_schema", DRAFT7.create_resource(store["avd_meta_schema"])),
+            ("eos_cli_config_gen", avd_meta_schema_spec.create_resource(store["eos_cli_config_gen"])),
+            ("eos_designs", avd_meta_schema_spec.create_resource(store["eos_designs"])),
+        ]
+        registry = Registry().with_resources(resources)
 
-        return ValidatorClass(schema, resolver=create_refresolver(schema, store))
+        return registry

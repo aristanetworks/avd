@@ -68,7 +68,7 @@ Requirements (automatically installed with above command):
 
 ```ini
 jinja2>=3.0
-jsonschema>=4.5.1,<4.18
+jsonschema>=4.5.1
 deepmerge>=1.1.0
 ```
 

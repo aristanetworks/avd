@@ -127,14 +127,10 @@ def _resolve_schema(schema: dict, store: dict) -> dict:
     .schemaresolver performs inplace update of the argument so we give it a copy of the existing schema.
     """
     resolved_schema = deepcopy(schema)
-    schemaresolver = AvdSchemaResolver(resolved_schema, store)
-    resolve_errors = schemaresolver.iter_errors(resolved_schema)
-    for resolve_error in resolve_errors:
-        if isinstance(resolve_error, Exception):
-            # TODO: Raise multiple errors or abstract them
-            raise resolve_error
+    schemaresolver = AvdSchemaResolver(schema["$id"], store)
+    schemaresolver.resolve(resolved_schema)
 
     # Since the schema is now fully resolved we can drop the $defs.
-    resolved_schema.pop("$defs", None)
+    # resolved_schema.pop("$defs", None)
 
     return resolved_schema

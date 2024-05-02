@@ -199,7 +199,7 @@ repos:
         language: python
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false
-        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.5.1,<4.18']
+        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.5.1']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.39.0

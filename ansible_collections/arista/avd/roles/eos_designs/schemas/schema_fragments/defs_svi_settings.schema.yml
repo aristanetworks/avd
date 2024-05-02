@@ -265,7 +265,7 @@ $defs:
               This configuration will not be applied to vlan aware bundles.
             documentation_options:
               hide_keys: true
-            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items/"
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items"
           raw_eos_cli:
             type: str
             description: |
@@ -280,4 +280,4 @@ $defs:
           Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
         documentation_options:
           hide_keys: true
-        $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/"
+        $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"

@@ -225,7 +225,7 @@ class TestAvdSchema:
         for id in DEFAULT_SCHEMAS:
             if id == "avd_meta_schema":
                 continue
-            test_schema["keys"][id] = {"type": "dict", "$ref": f"{id}#/"}
+            test_schema["keys"][id] = {"type": "dict", "$ref": f"{id}#"}
 
         # For performance reasons $ref is no longer supported at runtime.
         # The $ref must be resolved before loading the schema.

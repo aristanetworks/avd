@@ -1,7 +1,7 @@
 {
     "$comment": "Copyright (c) 2023 Arista Networks, Inc. Use of this source code is governed by the Apache License 2.0 that can be found in the LICENSE file.",
-    "$schema": "https://json-schema.org/draft-07/schema",
-    "$id": "https://avd.sh/development/schema-schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://avd.sh/development/schema-schema.json",
     "$defs": {
         "avd_schema_var": {
             "type": "object",
@@ -310,6 +310,7 @@
         },
         "$ref": {
             "type": "string",
+            "pattern": "^(eos_cli_config_gen|eos_designs)#(/[a-z$][a-z0-9_]*)*$",
             "description": "Reference to Sub Schema using JSON Schema resolver.\nExample '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema"
         },
         "documentation_options": {
