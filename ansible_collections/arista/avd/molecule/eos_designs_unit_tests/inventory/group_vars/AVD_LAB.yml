@@ -34,6 +34,8 @@ mgmt_gateway: 192.168.200.5
 name_servers:
   - 192.168.200.5
   - 8.8.8.8
+  - 2001:db8::1
+  - 2001:db8::2
 
 # Management api-http
 management_eapi:

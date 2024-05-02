@@ -226,26 +226,42 @@ class WanMixin:
         return interface["ip_address"].split("/", maxsplit=1)[0]
 
     @cached_property
-    def wan_site(self: SharedUtils) -> dict:
+    def wan_site(self: SharedUtils) -> dict | None:
         """
         WAN site for CV Pathfinder
+
+        The site is required for edges, but optional for pathfinders
         """
         node_defined_site = get(
             self.switch_data_combined,
             "cv_pathfinder_site",
-            required=True,
+            required=self.is_cv_pathfinder_client,
             org_key="A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
         )
-        sites = get(self.wan_region, "sites", required=True, org_key=f"The CV Pathfinder region '{self.wan_region['name']}' is missing a list of sites")
+        if node_defined_site is None:
+            return None
+
+        # Special case for cv_pathfinders without a region, we find the site details under `cv_pathfinder_global_sites` instead.
+        if self.is_cv_pathfinder_server and self.wan_region is None:
+            sites = get(self.hostvars, "cv_pathfinder_global_sites", required=True)
+            site_not_found_error_msg = (
+                f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'cv_pathfinder_global_sites' list"
+            )
+        else:
+            sites = get(self.wan_region, "sites", required=True, org_key=f"The CV Pathfinder region '{self.wan_region['name']}' is missing a list of sites")
+            site_not_found_error_msg = (
+                (
+                    f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'sites' list for the region"
+                    f" '{self.wan_region['name']}'."
+                ),
+            )
+
         return get_item(
             sites,
             "name",
             node_defined_site,
             required=True,
-            custom_error_msg=(
-                f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'sites' list for the region"
-                f" '{self.wan_region['name']}'."
-            ),
+            custom_error_msg=site_not_found_error_msg,
         )
 
     @cached_property
