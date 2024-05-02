@@ -6238,7 +6238,7 @@ keys:
               type: str
             tls_versions:
               type: str
-              description: "List of allowed TLS versions as string\nExamples:\n  -
+              description: "List of allowed TLS versions as string.\nExamples:\n  -
                 \"1.0\"\n  - \"1.0 1.1\"\n"
               convert_types:
               - float
@@ -6247,7 +6247,7 @@ keys:
               description: 'cipher_list syntax follows the openssl cipher strings
                 format.
 
-                Colon (:) separated list of allowed ciphers as a string
+                Colon (:) separated list of allowed ciphers as a string.
 
                 '
             trust_certificate:
@@ -6255,7 +6255,7 @@ keys:
               keys:
                 certificates:
                   type: list
-                  description: "List of trust certificate names\nExamples:\n  - test1.crt\n
+                  description: "List of trust certificate names.\nExamples:\n  - test1.crt\n
                     \ - test2.crt\n"
                   items:
                     type: str
@@ -6281,7 +6281,7 @@ keys:
               keys:
                 certificates:
                   type: list
-                  description: "List of chain certificate names\nExamples:\n  - chain1.crt\n
+                  description: "List of chain certificate names.\nExamples:\n  - chain1.crt\n
                     \ - chain2.crt\n"
                   items:
                     type: str
@@ -10414,10 +10414,9 @@ keys:
             shared_secret:
               type: dict
               keys:
-                shared_secret_profile_name:
+                profile:
                   type: str
-                  description: To apply the profile name, it must be created under
-                    "management-security".
+                  description: Name of profile defined under `management_security`.
                 hash_algorithm:
                   type: str
                   valid_values:
@@ -10623,7 +10622,7 @@ keys:
             shared_secret:
               type: dict
               keys:
-                shared_secret_profile_name:
+                profile:
                   type: str
                   description: To apply a profile, it must be created under "management-security".
                 hash_algorithm:
