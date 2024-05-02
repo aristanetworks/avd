@@ -57,12 +57,12 @@ router_bgp:
     description: dc1-spine2_Ethernet2
   - ip_address: 10.255.255.3
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65000'
+    remote_as: '65101'
     peer: dc1-wan1
     description: dc1-wan1_Ethernet2
   - ip_address: 10.255.255.7
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65000'
+    remote_as: '65101'
     peer: dc1-wan2
     description: dc1-wan2_Ethernet2
   - ip_address: 10.255.0.1
@@ -266,9 +266,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.255.1.65/31
   no_autostate: true
   mtu: 1500
+  ip_address: 10.255.1.65/31
 - name: Vlan11
   tenant: TENANT1
   description: VRF10_VLAN11
