@@ -6238,7 +6238,7 @@ keys:
               type: str
             tls_versions:
               type: str
-              description: "List of allowed TLS versions as string.\nExamples:\n  -
+              description: "List of allowed TLS versions as string\nExamples:\n  -
                 \"1.0\"\n  - \"1.0 1.1\"\n"
               convert_types:
               - float
@@ -6255,7 +6255,7 @@ keys:
               keys:
                 certificates:
                   type: list
-                  description: "List of trust certificate names.\nExamples:\n  - test1.crt\n
+                  description: "List of trust certificate names\nExamples:\n  - test1.crt\n
                     \ - test2.crt\n"
                   items:
                     type: str
@@ -6281,7 +6281,7 @@ keys:
               keys:
                 certificates:
                   type: list
-                  description: "List of chain certificate names.\nExamples:\n  - chain1.crt\n
+                  description: "List of chain certificate names\nExamples:\n  - chain1.crt\n
                     \ - chain2.crt\n"
                   items:
                     type: str
@@ -6311,11 +6311,11 @@ keys:
                 type: str
       shared_secret_profiles:
         type: list
-        primary_key: profile_name
+        primary_key: profile
         items:
           type: dict
           keys:
-            profile_name:
+            profile:
               type: str
             secrets:
               type: list
@@ -6326,10 +6326,21 @@ keys:
                     type: str
                   secret:
                     type: str
+                  secret_type:
+                    type: str
+                    default: '7'
+                    valid_values:
+                    - '0'
+                    - '7'
+                    - 8a
+                    convert_types:
+                    - int
                   lifetime:
                     type: dict
                     description: Configure to set lifetime of the secret. This is
-                      applicable to both receive and transmit lifetime.
+                      applicable to both receive and transmit lifetime. `lifetime`
+                      is preferred even though `receive_lifetime` and `transmit_lifetime`
+                      are defined separately.
                     keys:
                       infinite:
                         type: bool
@@ -6344,11 +6355,11 @@ keys:
 
                           2. yyyy-mm-dd hh:mm:ss
 
-                          e.g 2024/12/20 10:00:00'
+                          e.g 2024_12-20 10:00:00'
                       end_date_time:
                         type: str
-                        description: 'Specify the end date and time of lifetime of
-                          the secret. End date should be greater than start date time.
+                        description: 'End date and time of lifetime of the secret.
+                          End date should be greater than start date time.
 
                           Formats supported:
 
@@ -6356,7 +6367,7 @@ keys:
 
                           2. yyyy-mm-dd hh:mm:ss
 
-                          e.g 2024/12/20 10:00:00'
+                          e.g 2024-12-20 10:00:00'
                   receive_lifetime:
                     type: dict
                     keys:
@@ -6364,8 +6375,7 @@ keys:
                         type: bool
                       start_date_time:
                         type: str
-                        description: 'Specify the start date and time of lifetime
-                          of the secret.
+                        description: 'Start date and time of lifetime of the secret.
 
                           Formats supported:
 
@@ -6373,11 +6383,11 @@ keys:
 
                           2. yyyy-mm-dd hh:mm:ss
 
-                          e.g 2024/12/20 10:00:00'
+                          e.g 2024-12-20 10:00:00'
                       end_date_time:
                         type: str
-                        description: 'Specify the end date and time of lifetime of
-                          the secret. End date should be greater than start date.
+                        description: 'End date and time of lifetime of the secret.
+                          End date should be greater than start date.
 
                           Formats supported:
 
@@ -6385,7 +6395,7 @@ keys:
 
                           2. yyyy-mm-dd hh:mm:ss
 
-                          e.g 2024/12/20 10:00:00'
+                          e.g 2024-12-20 10:00:00'
                   transmit_lifetime:
                     type: dict
                     keys:
@@ -6393,8 +6403,7 @@ keys:
                         type: bool
                       start_date_time:
                         type: str
-                        description: 'Specify the start date and time of lifetime
-                          of the secret.
+                        description: 'Start date and time of lifetime of the secret.
 
                           Formats supported:
 
@@ -6402,11 +6411,10 @@ keys:
 
                           2. yyyy-mm-dd hh:mm:ss
 
-                          e.g 2024/12/20 10:00:00'
+                          e.g 2024-12-20 10:00:00'
                       end_date_time:
                         type: str
-                        description: 'Specify the end date and time of lifetime of
-                          the secret.
+                        description: 'End date and time of lifetime of the secret.
 
                           Formats supported:
 
@@ -6414,7 +6422,7 @@ keys:
 
                           2. yyyy-mm-dd hh:mm:ss
 
-                          e.g 2024/12/20 10:00:00'
+                          e.g 2024-12-20 10:00:00'
   management_ssh:
     type: dict
     keys:

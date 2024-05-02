@@ -111,24 +111,31 @@ management security
 {%         endfor %}
 {%     endfor %}
 {%     if management_security.shared_secret_profiles is arista.avd.defined %}
-{%         for profile in management_security.shared_secret_profiles | arista.avd.natural_sort("profile_name") %}
-   session shared-secret profile {{ profile.profile_name }}
+{%         for profile in management_security.shared_secret_profiles | arista.avd.natural_sort("profile") %}
+   session shared-secret profile {{ profile.profile }}
 {%             if profile.secrets is arista.avd.defined %}
 {%                 for secret in profile.secrets | arista.avd.natural_sort("name") %}
-{%                     if secret.name is arista.avd.defined and secret.secret is arista.avd.defined and secret.lifetime is arista.avd.defined %}
+{%                     if secret.secret is arista.avd.defined %}
+{%                         set tmp_cli = "secret " ~ secret.name ~ " " ~ secret.secret_type | arista.avd.default("7") ~ " " ~ secret.secret | arista.avd.hide_passwords(hide_passwords) %}
 {%                         if secret.lifetime.infinite is arista.avd.defined(true) %}
-      secret {{ secret.name }} {{ secret.secret | arista.avd.hide_passwords(hide_passwords) }} infinite
+{%                             set tmp_cli = tmp_cli ~ " receive-lifetime infinite transmit-lifetime infinite" %}
+{%                         elif secret.lifetime.start_date_time is arista.avd.defined and secret.lifetime.end_date_time is arista.avd.defined %}
+{%                             set tmp_cli = tmp_cli ~ " receive-lifetime " ~ secret.lifetime.start_date_time ~ " " ~ secret.lifetime.end_date_time ~ " transmit-lifetime " ~ secret.lifetime.start_date_time ~ " " ~ secret.lifetime.end_date_time %}
+{%                         elif secret.receive_lifetime.infinite is arista.avd.defined(true) %}
+{%                             if secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
+{%                                 set tmp_cli = tmp_cli ~ " receive-lifetime infinite transmit-lifetime " ~ secret.transmit_lifetime.start_date_time ~ " " ~ secret.transmit_lifetime.end_date_time %}
+{%                             elif secret.transmit_lifetime.infinite is arista.avd.defined(true) %}
+{%                                 set tmp_cli = tmp_cli ~ " receive-lifetime infinite transmit-lifetime infinite" %}
+{%                             endif %}
+{%                         elif secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined %}
+{%                             set tmp_cli = tmp_cli ~ " receive-lifetime " ~ secret.receive_lifetime.start_date_time ~ " " ~ secret.receive_lifetime.end_date_time %}
+{%                             if secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
+{%                                 set tmp_cli = tmp_cli ~ " transmit-lifetime " ~ secret.transmit_lifetime.start_date_time ~ " " ~ secret.transmit_lifetime.end_date_time %}
+{%                             elif secret.transmit_lifetime.infinite is arista.avd.defined(true) %}
+{%                                 set tmp_cli = tmp_cli ~ " transmit-lifetime infinite" %}
+{%                             endif %}
 {%                         endif %}
-{%                     elif secret.name is arista.avd.defined and secret.secret is arista.avd.defined and secret.receive_lifetime is arista.avd.defined and secret.transmit_lifetime is arista.avd.defined %}
-{%                         if secret.receive_lifetime.infinite is arista.avd.defined(true) and secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
-      secret {{ secret.name }} {{ secret.secret | arista.avd.hide_passwords(hide_passwords) }} receive-lifetime infinite transmit-lifetime {{ secret.transmit_lifetime.start_date_time }} {{ secret.transmit_lifetime.end_date_time }}
-{%                         elif secret.transmit_lifetime.infinite is arista.avd.defined(true) and secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined %}
-      secret {{ secret.name }} {{ secret.secret | arista.avd.hide_passwords(hide_passwords) }} receive-lifetime {{ secret.receive_lifetime.start_date_time }} {{ secret.receive_lifetime.end_date_time }} transmit-lifetime infinite
-{%                         elif secret.receive_lifetime.infinite is arista.avd.defined(true) and secret.transmit_lifetime.infinite is arista.avd.defined(true) %}
-      secret {{ secret.name }} {{ secret.secret | arista.avd.hide_passwords(hide_passwords) }} lifetime
-{%                         elif secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined and secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
-      secret {{ secret.name }} {{ secret.secret | arista.avd.hide_passwords(hide_passwords) }} {{ secret.receive_lifetime.start_date_time }} {{ secret.receive_lifetime.end_date_time }} {{ secret.transmit_lifetime.start_date_time }} {{ secret.transmit_lifetime.end_date_time }}
-{%                         endif %}
+      {{ tmp_cli }}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
