@@ -5087,11 +5087,97 @@
             "description": "Configure event trigger condition.\n",
             "enum": [
               "on-boot",
+              "on-counters",
+              "on-intf",
               "on-logging",
+              "on-maintenance",
               "on-startup-config",
-              "on-maintenance"
+              "vm-tracer vm"
             ],
             "title": "Trigger"
+          },
+          "trigger_on_counters": {
+            "type": "object",
+            "properties": {
+              "condition": {
+                "type": "string",
+                "description": "Set the logical expression to evaluate.",
+                "title": "Condition"
+              },
+              "granularity_per_source": {
+                "type": "boolean",
+                "description": "Set the granularity of event counting for a wildcarded condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used here]",
+                "title": "Granularity Per Source"
+              },
+              "poll_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000000,
+                "description": "Set the polling interval in seconds.",
+                "title": "Poll Interval"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Counters"
+          },
+          "trigger_on_logging": {
+            "type": "object",
+            "properties": {
+              "poll_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000000,
+                "description": "Set the polling interval in seconds.",
+                "title": "Poll Interval"
+              },
+              "regex": {
+                "type": "string",
+                "description": "Regular expression to use for searching log messages.",
+                "title": "Regex"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Logging"
+          },
+          "trigger_on_intf": {
+            "type": "object",
+            "description": "Trigger condition occurs on specified interface changes.\nNote: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`.",
+            "properties": {
+              "interface": {
+                "type": "string",
+                "description": "Interface name.\nExample - Ethernet4\n          Loopback4-6\n          Port-channel4,7",
+                "title": "Interface"
+              },
+              "ip": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface IP address assignment.",
+                "title": "IP"
+              },
+              "ipv6": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface ipv6 address assignment.",
+                "title": "IPv6"
+              },
+              "operstatus": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface operStatus.",
+                "title": "Operstatus"
+              }
+            },
+            "required": [
+              "interface"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Intf"
           },
           "trigger_on_maintenance": {
             "description": "Settings required for trigger 'on-maintenance'.",
@@ -5161,7 +5247,8 @@
           },
           "regex": {
             "type": "string",
-            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n",
+            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.",
+            "deprecated": true,
             "title": "Regex"
           },
           "asynchronous": {
@@ -10228,7 +10315,7 @@
       "description": "List of DNS servers. The VRF is set to < mgmt_interface_vrf >.",
       "items": {
         "type": "string",
-        "description": "IPv4 address."
+        "description": "IPv4 or IPv6 address."
       },
       "title": "Name Servers"
     },
@@ -11136,6 +11223,12 @@
                 "default": true,
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
+              },
+              "ptp_mpass": {
+                "type": "boolean",
+                "default": false,
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "PTP Mpass"
               },
               "short_esi": {
                 "type": "string",
@@ -12192,6 +12285,11 @@
                           "layer2"
                         ],
                         "title": "Transport"
+                      },
+                      "mpass": {
+                        "type": "boolean",
+                        "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                        "title": "Mpass"
                       }
                     },
                     "additionalProperties": false,
@@ -22117,11 +22215,97 @@
                       "description": "Configure event trigger condition.\n",
                       "enum": [
                         "on-boot",
+                        "on-counters",
+                        "on-intf",
                         "on-logging",
+                        "on-maintenance",
                         "on-startup-config",
-                        "on-maintenance"
+                        "vm-tracer vm"
                       ],
                       "title": "Trigger"
+                    },
+                    "trigger_on_counters": {
+                      "type": "object",
+                      "properties": {
+                        "condition": {
+                          "type": "string",
+                          "description": "Set the logical expression to evaluate.",
+                          "title": "Condition"
+                        },
+                        "granularity_per_source": {
+                          "type": "boolean",
+                          "description": "Set the granularity of event counting for a wildcarded condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used here]",
+                          "title": "Granularity Per Source"
+                        },
+                        "poll_interval": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 1000000,
+                          "description": "Set the polling interval in seconds.",
+                          "title": "Poll Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Trigger On Counters"
+                    },
+                    "trigger_on_logging": {
+                      "type": "object",
+                      "properties": {
+                        "poll_interval": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 1000000,
+                          "description": "Set the polling interval in seconds.",
+                          "title": "Poll Interval"
+                        },
+                        "regex": {
+                          "type": "string",
+                          "description": "Regular expression to use for searching log messages.",
+                          "title": "Regex"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Trigger On Logging"
+                    },
+                    "trigger_on_intf": {
+                      "type": "object",
+                      "description": "Trigger condition occurs on specified interface changes.\nNote: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`.",
+                      "properties": {
+                        "interface": {
+                          "type": "string",
+                          "description": "Interface name.\nExample - Ethernet4\n          Loopback4-6\n          Port-channel4,7",
+                          "title": "Interface"
+                        },
+                        "ip": {
+                          "type": "boolean",
+                          "description": "Action is triggered upon changes to interface IP address assignment.",
+                          "title": "IP"
+                        },
+                        "ipv6": {
+                          "type": "boolean",
+                          "description": "Action is triggered upon changes to interface ipv6 address assignment.",
+                          "title": "IPv6"
+                        },
+                        "operstatus": {
+                          "type": "boolean",
+                          "description": "Action is triggered upon changes to interface operStatus.",
+                          "title": "Operstatus"
+                        }
+                      },
+                      "required": [
+                        "interface"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Trigger On Intf"
                     },
                     "trigger_on_maintenance": {
                       "description": "Settings required for trigger 'on-maintenance'.",
@@ -22191,7 +22375,8 @@
                     },
                     "regex": {
                       "type": "string",
-                      "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n",
+                      "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.",
+                      "deprecated": true,
                       "title": "Regex"
                     },
                     "asynchronous": {
@@ -30551,6 +30736,11 @@
                             "layer2"
                           ],
                           "title": "Transport"
+                        },
+                        "mpass": {
+                          "type": "boolean",
+                          "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                          "title": "Mpass"
                         }
                       },
                       "additionalProperties": false,
@@ -46709,6 +46899,12 @@
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
+              "ptp_mpass": {
+                "type": "boolean",
+                "default": false,
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "PTP Mpass"
+              },
               "short_esi": {
                 "type": "string",
                 "description": "In format xxxx:xxxx:xxxx or \"auto\".\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.",
@@ -47764,6 +47960,11 @@
                           "layer2"
                         ],
                         "title": "Transport"
+                      },
+                      "mpass": {
+                        "type": "boolean",
+                        "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                        "title": "Mpass"
                       }
                     },
                     "additionalProperties": false,
