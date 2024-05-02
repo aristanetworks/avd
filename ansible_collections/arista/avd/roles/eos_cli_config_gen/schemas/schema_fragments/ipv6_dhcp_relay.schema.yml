@@ -25,4 +25,4 @@ keys:
           remote_id_format:
             type: str
             valid_values: ["%m:%i", "%m:%p"]
-            description: Add RemoteID option 37 in format MAC address and interface ID (%m:%i) or MAC address and interface name (%m:%p), off by default.
+            description: Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface name (`%m:%p`).
