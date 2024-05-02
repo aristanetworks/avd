@@ -100,13 +100,25 @@ interface Management1
 
 ### Secret Profiles
 
-| Profile Name | Secret Name | Secret Password | Receive Lifetime | Transmit Lifetime |
-| ------------ | ----------- | --------------- | ---------------- | ----------------- |
-| profile0 | name1 | <removed> | infinite | infinite |
-| profile1 | name0 | <removed> | infinite | infinite |
-| | name1 | <removed> | infinite | infinite |
-| | name2 | <removed> | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | infinite |
-| profile2 | name3 | <removed> | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 |
+#### profile0
+
+| Secret Name | Secret Type | Receive Lifetime | Transmit Lifetime |
+| ----------- | ----------- | ---------------- | ----------------- |
+| name1 | 7 | Infinite | Infinite |
+
+#### profile1
+
+| Secret Name | Secret Type | Receive Lifetime | Transmit Lifetime |
+| ----------- | ----------- | ---------------- | ----------------- |
+| name0 | 7 | Infinite | Infinite |
+| name1 | 7 | Infinite | Infinite |
+| name2 | 7 | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | Infinite |
+
+#### profile2
+
+| Secret Name | Secret Type | Receive Lifetime | Transmit Lifetime |
+| ----------- | ----------- | ---------------- | ----------------- |
+| name3 | 7 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 |
 
 ### Management Security Device Configuration
 
