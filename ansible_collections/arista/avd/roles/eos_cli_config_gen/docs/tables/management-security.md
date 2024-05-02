@@ -31,10 +31,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sequential</samp>](## "management_security.password.policies.[].maximum.sequential") | Integer |  |  | Min: 1<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;ssl_profiles</samp>](## "management_security.ssl_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.ssl_profiles.[].name") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls_versions</samp>](## "management_security.ssl_profiles.[].tls_versions") | String |  |  |  | List of allowed TLS versions as string.<br>Examples:<br>  - "1.0"<br>  - "1.0 1.1"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls_versions</samp>](## "management_security.ssl_profiles.[].tls_versions") | String |  |  |  | List of allowed TLS versions as string<br>Examples:<br>  - "1.0"<br>  - "1.0 1.1"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cipher_list</samp>](## "management_security.ssl_profiles.[].cipher_list") | String |  |  |  | cipher_list syntax follows the openssl cipher strings format.<br>Colon (:) separated list of allowed ciphers as a string<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trust_certificate</samp>](## "management_security.ssl_profiles.[].trust_certificate") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificates</samp>](## "management_security.ssl_profiles.[].trust_certificate.certificates") | List, items: String |  |  |  | List of trust certificate names.<br>Examples:<br>  - test1.crt<br>  - test2.crt<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificates</samp>](## "management_security.ssl_profiles.[].trust_certificate.certificates") | List, items: String |  |  |  | List of trust certificate names<br>Examples:<br>  - test1.crt<br>  - test2.crt<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.ssl_profiles.[].trust_certificate.certificates.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;requirement</samp>](## "management_security.ssl_profiles.[].trust_certificate.requirement") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;basic_constraint_ca</samp>](## "management_security.ssl_profiles.[].trust_certificate.requirement.basic_constraint_ca") | Boolean |  |  |  |  |
@@ -42,7 +42,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy_expiry_date_ignore</samp>](## "management_security.ssl_profiles.[].trust_certificate.policy_expiry_date_ignore") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system</samp>](## "management_security.ssl_profiles.[].trust_certificate.system") | Boolean |  |  |  | Use system-supplied trust certificates.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chain_certificate</samp>](## "management_security.ssl_profiles.[].chain_certificate") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificates</samp>](## "management_security.ssl_profiles.[].chain_certificate.certificates") | List, items: String |  |  |  | List of chain certificate names.<br>Examples:<br>  - chain1.crt<br>  - chain2.crt<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificates</samp>](## "management_security.ssl_profiles.[].chain_certificate.certificates") | List, items: String |  |  |  | List of chain certificate names<br>Examples:<br>  - chain1.crt<br>  - chain2.crt<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.ssl_profiles.[].chain_certificate.certificates.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;requirement</samp>](## "management_security.ssl_profiles.[].chain_certificate.requirement") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;basic_constraint_ca</samp>](## "management_security.ssl_profiles.[].chain_certificate.requirement.basic_constraint_ca") | Boolean |  |  |  |  |
@@ -53,22 +53,23 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificate_revocation_lists</samp>](## "management_security.ssl_profiles.[].certificate_revocation_lists") | List, items: String |  |  |  | List of CRLs (Certificate Revocation List).<br>If specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.ssl_profiles.[].certificate_revocation_lists.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;shared_secret_profiles</samp>](## "management_security.shared_secret_profiles") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile_name</samp>](## "management_security.shared_secret_profiles.[].profile_name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "management_security.shared_secret_profiles.[].profile") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secrets</samp>](## "management_security.shared_secret_profiles.[].secrets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.shared_secret_profiles.[].secrets.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.shared_secret_profiles.[].secrets.[].secret") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime") | Dictionary |  |  |  | Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.shared_secret_profiles.[].secrets.[].secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime") | Dictionary |  |  |  | Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime. `lifetime` is preferred even though `receive_lifetime` and `transmit_lifetime` are defined separately. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infinite</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime.infinite") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime.start_date_time") | String |  |  |  | Specify the start date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime.end_date_time") | String |  |  |  | Specify the end date and time of lifetime of the secret. End date should be greater than start date time.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime.start_date_time") | String |  |  |  | Specify the start date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024_12-20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].lifetime.end_date_time") | String |  |  |  | End date and time of lifetime of the secret. End date should be greater than start date time.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive_lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infinite</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.infinite") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.start_date_time") | String |  |  |  | Specify the start date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.end_date_time") | String |  |  |  | Specify the end date and time of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.start_date_time") | String |  |  |  | Start date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.end_date_time") | String |  |  |  | End date and time of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transmit_lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infinite</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.infinite") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.start_date_time") | String |  |  |  | Specify the start date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.end_date_time") | String |  |  |  | Specify the end date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024/12/20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.start_date_time") | String |  |  |  | Start date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.end_date_time") | String |  |  |  | End date and time of lifetime of the secret.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
 
 === "YAML"
 
@@ -111,7 +112,7 @@
       ssl_profiles:
         - name: <str>
 
-          # List of allowed TLS versions as string.
+          # List of allowed TLS versions as string
           # Examples:
           #   - "1.0"
           #   - "1.0 1.1"
@@ -122,7 +123,7 @@
           cipher_list: <str>
           trust_certificate:
 
-            # List of trust certificate names.
+            # List of trust certificate names
             # Examples:
             #   - test1.crt
             #   - test2.crt
@@ -139,7 +140,7 @@
             system: <bool>
           chain_certificate:
 
-            # List of chain certificate names.
+            # List of chain certificate names
             # Examples:
             #   - chain1.crt
             #   - chain2.crt
@@ -157,12 +158,13 @@
           certificate_revocation_lists:
             - <str>
       shared_secret_profiles:
-        - profile_name: <str; required; unique>
+        - profile: <str; required; unique>
           secrets:
             - name: <str>
               secret: <str>
+              secret_type: <str; "0" | "7" | "8a"; default="7">
 
-              # Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime.
+              # Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime. `lifetime` is preferred even though `receive_lifetime` and `transmit_lifetime` are defined separately.
               lifetime:
                 infinite: <bool>
 
@@ -170,45 +172,45 @@
                 # Formats supported:
                 # 1. mm/dd/yyyy hh:mm:ss
                 # 2. yyyy-mm-dd hh:mm:ss
-                # e.g 2024/12/20 10:00:00
+                # e.g 2024_12-20 10:00:00
                 start_date_time: <str>
 
-                # Specify the end date and time of lifetime of the secret. End date should be greater than start date time.
+                # End date and time of lifetime of the secret. End date should be greater than start date time.
                 # Formats supported:
                 # 1. mm/dd/yyyy hh:mm:ss
                 # 2. yyyy-mm-dd hh:mm:ss
-                # e.g 2024/12/20 10:00:00
+                # e.g 2024-12-20 10:00:00
                 end_date_time: <str>
               receive_lifetime:
                 infinite: <bool>
 
-                # Specify the start date and time of lifetime of the secret.
+                # Start date and time of lifetime of the secret.
                 # Formats supported:
                 # 1. mm/dd/yyyy hh:mm:ss
                 # 2. yyyy-mm-dd hh:mm:ss
-                # e.g 2024/12/20 10:00:00
+                # e.g 2024-12-20 10:00:00
                 start_date_time: <str>
 
-                # Specify the end date and time of lifetime of the secret. End date should be greater than start date.
+                # End date and time of lifetime of the secret. End date should be greater than start date.
                 # Formats supported:
                 # 1. mm/dd/yyyy hh:mm:ss
                 # 2. yyyy-mm-dd hh:mm:ss
-                # e.g 2024/12/20 10:00:00
+                # e.g 2024-12-20 10:00:00
                 end_date_time: <str>
               transmit_lifetime:
                 infinite: <bool>
 
-                # Specify the start date and time of lifetime of the secret.
+                # Start date and time of lifetime of the secret.
                 # Formats supported:
                 # 1. mm/dd/yyyy hh:mm:ss
                 # 2. yyyy-mm-dd hh:mm:ss
-                # e.g 2024/12/20 10:00:00
+                # e.g 2024-12-20 10:00:00
                 start_date_time: <str>
 
-                # Specify the end date and time of lifetime of the secret.
+                # End date and time of lifetime of the secret.
                 # Formats supported:
                 # 1. mm/dd/yyyy hh:mm:ss
                 # 2. yyyy-mm-dd hh:mm:ss
-                # e.g 2024/12/20 10:00:00
+                # e.g 2024-12-20 10:00:00
                 end_date_time: <str>
     ```

@@ -61,31 +61,47 @@ management_security:
         requirement:
           include_root_ca: true
   shared_secret_profiles:
-    - profile_name: profile1
+    - profile: profile1
       secrets:
         - name: name1
-          secret: secret1
+          secret: $1c$mNvaIXPetcQ3hy7oUnTU3w==
           lifetime:
             infinite: true
         - name: name2
-          secret: secret2
+          secret: $1c$mNvaIXPetcR9edexxanqlQ==
+          secret_type: "7"
           receive_lifetime:
             start_date_time: 12/20/2024 10:00:00
             end_date_time: 12/20/2025 10:00:00
           transmit_lifetime:
             infinite: true
         - name: name0
-          secret: secret3
+          secret: $1c$mNvaIXPetcSA2UnFwIaxwA==
+          secret_type: "7"
           lifetime:
             infinite: true
-    - profile_name: profile2
+    - profile: profile2
       secrets:
         - name: name3
-          secret: secret4
+          secret: $1c$mNvaIXPetcQoGbYuwfX4Ng==
+          secret_type: 7
+          receive_lifetime:
+            start_date_time: "2024-12-20 10:00:00"
+            end_date_time: "2025-12-20 10:00:00"
+          transmit_lifetime:
+            start_date_time: "12/20/2024 10:00:00"
+            end_date_time: "12/10/2025 10:00:00"
+     # `lifetime` is preferred even though `receive_lifetime` and `transmit_lifetime` are defined separately.
+    - profile: profile0
+      secrets:
+        - name: name1
+          secret: $1c$mNvaIXPetcQ3hy7oUnTU3w==
+          secret_type: 7
           lifetime:
             infinite: true
           receive_lifetime:
             start_date_time: "2024-12-20 10:00:00"
             end_date_time: "2025-12-20 10:00:00"
           transmit_lifetime:
-            infinite: true
+            start_date_time: "2024-12-20 10:00:00"
+            end_date_time: "2025-12-20 10:00:00"

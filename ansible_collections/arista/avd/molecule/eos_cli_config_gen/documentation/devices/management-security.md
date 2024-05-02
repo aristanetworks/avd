@@ -102,10 +102,11 @@ interface Management1
 
 | Profile Name | Secret Name | Secret Password | Receive Lifetime | Transmit Lifetime |
 | ------------ | ----------- | --------------- | ---------------- | ----------------- |
+| profile0 | name1 | <removed> | infinite | infinite |
 | profile1 | name0 | <removed> | infinite | infinite |
 | | name1 | <removed> | infinite | infinite |
 | | name2 | <removed> | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | infinite |
-| profile2 | name3 | <removed> | infinite | infinite |
+| profile2 | name3 | <removed> | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 |
 
 ### Management Security Device Configuration
 
@@ -151,10 +152,12 @@ management security
       tls versions 1.1
    ssl profile tls-versions-profile
       tls versions 1.0 1.1
+   session shared-secret profile profile0
+      secret name1 7 <removed> receive-lifetime infinite transmit-lifetime infinite
    session shared-secret profile profile1
-      secret name0 <removed> infinite
-      secret name1 <removed> infinite
-      secret name2 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite
+      secret name0 7 <removed> receive-lifetime infinite transmit-lifetime infinite
+      secret name1 7 <removed> receive-lifetime infinite transmit-lifetime infinite
+      secret name2 7 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite
    session shared-secret profile profile2
-      secret name3 <removed> infinite
+      secret name3 7 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 12/20/2024 10:00:00 12/10/2025 10:00:00
 ```

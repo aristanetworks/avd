@@ -27520,7 +27520,7 @@
                         },
                         "tls_versions": {
                           "type": "string",
-                          "description": "List of allowed TLS versions as string.\nExamples:\n  - \"1.0\"\n  - \"1.0 1.1\"\n",
+                          "description": "List of allowed TLS versions as string\nExamples:\n  - \"1.0\"\n  - \"1.0 1.1\"\n",
                           "title": "TLS Versions"
                         },
                         "cipher_list": {
@@ -27533,7 +27533,7 @@
                           "properties": {
                             "certificates": {
                               "type": "array",
-                              "description": "List of trust certificate names.\nExamples:\n  - test1.crt\n  - test2.crt\n",
+                              "description": "List of trust certificate names\nExamples:\n  - test1.crt\n  - test2.crt\n",
                               "items": {
                                 "type": "string"
                               },
@@ -27579,7 +27579,7 @@
                           "properties": {
                             "certificates": {
                               "type": "array",
-                              "description": "List of chain certificate names.\nExamples:\n  - chain1.crt\n  - chain2.crt\n",
+                              "description": "List of chain certificate names\nExamples:\n  - chain1.crt\n  - chain2.crt\n",
                               "items": {
                                 "type": "string"
                               },
@@ -27649,9 +27649,9 @@
                     "items": {
                       "type": "object",
                       "properties": {
-                        "profile_name": {
+                        "profile": {
                           "type": "string",
-                          "title": "Profile Name"
+                          "title": "Profile"
                         },
                         "secrets": {
                           "type": "array",
@@ -27666,9 +27666,19 @@
                                 "type": "string",
                                 "title": "Secret"
                               },
+                              "secret_type": {
+                                "type": "string",
+                                "default": "7",
+                                "enum": [
+                                  "0",
+                                  "7",
+                                  "8a"
+                                ],
+                                "title": "Secret Type"
+                              },
                               "lifetime": {
                                 "type": "object",
-                                "description": "Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime.",
+                                "description": "Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime. `lifetime` is preferred even though `receive_lifetime` and `transmit_lifetime` are defined separately.",
                                 "properties": {
                                   "infinite": {
                                     "type": "boolean",
@@ -27676,12 +27686,12 @@
                                   },
                                   "start_date_time": {
                                     "type": "string",
-                                    "description": "Specify the start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                                    "description": "Specify the start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024_12-20 10:00:00",
                                     "title": "Start Date Time"
                                   },
                                   "end_date_time": {
                                     "type": "string",
-                                    "description": "Specify the end date and time of lifetime of the secret. End date should be greater than start date time.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                                    "description": "End date and time of lifetime of the secret. End date should be greater than start date time.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
                                     "title": "End Date Time"
                                   }
                                 },
@@ -27700,12 +27710,12 @@
                                   },
                                   "start_date_time": {
                                     "type": "string",
-                                    "description": "Specify the start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                                    "description": "Start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
                                     "title": "Start Date Time"
                                   },
                                   "end_date_time": {
                                     "type": "string",
-                                    "description": "Specify the end date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                                    "description": "End date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
                                     "title": "End Date Time"
                                   }
                                 },
@@ -27724,12 +27734,12 @@
                                   },
                                   "start_date_time": {
                                     "type": "string",
-                                    "description": "Specify the start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                                    "description": "Start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
                                     "title": "Start Date Time"
                                   },
                                   "end_date_time": {
                                     "type": "string",
-                                    "description": "Specify the end date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024/12/20 10:00:00",
+                                    "description": "End date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
                                     "title": "End Date Time"
                                   }
                                 },
@@ -27753,7 +27763,7 @@
                         "^_.+$": {}
                       },
                       "required": [
-                        "profile_name"
+                        "profile"
                       ]
                     },
                     "title": "Shared Secret Profiles"

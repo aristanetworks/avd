@@ -110,7 +110,7 @@ keys:
             tls_versions:
               type: str
               description: |
-                List of allowed TLS versions as string.
+                List of allowed TLS versions as string
                 Examples:
                   - "1.0"
                   - "1.0 1.1"
@@ -127,7 +127,7 @@ keys:
                 certificates:
                   type: list
                   description: |
-                    List of trust certificate names.
+                    List of trust certificate names
                     Examples:
                       - test1.crt
                       - test2.crt
@@ -154,7 +154,7 @@ keys:
                 certificates:
                   type: list
                   description: |
-                    List of chain certificate names.
+                    List of chain certificate names
                     Examples:
                       - chain1.crt
                       - chain2.crt
@@ -183,11 +183,11 @@ keys:
                 type: str
       shared_secret_profiles:
         type: list
-        primary_key: profile_name
+        primary_key: profile
         items:
           type: dict
           keys:
-            profile_name:
+            profile:
               type: str
             secrets:
               type: list
@@ -198,9 +198,15 @@ keys:
                     type: str
                   secret:
                     type: str
+                  secret_type:
+                    type: str
+                    default: "7"
+                    valid_values: [ "0", "7", "8a" ]
+                    convert_types:
+                    - int
                   lifetime:
                     type: dict
-                    description: Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime.
+                    description: Configure to set lifetime of the secret. This is applicable to both receive and transmit lifetime. `lifetime` is preferred even though `receive_lifetime` and `transmit_lifetime` are defined separately.
                     keys:
                       infinite:
                         type: bool
@@ -211,15 +217,15 @@ keys:
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
-                          e.g 2024/12/20 10:00:00
+                          e.g 2024_12-20 10:00:00
                       end_date_time:
                         type: str
                         description: |-
-                          Specify the end date and time of lifetime of the secret. End date should be greater than start date time.
+                          End date and time of lifetime of the secret. End date should be greater than start date time.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
-                          e.g 2024/12/20 10:00:00
+                          e.g 2024-12-20 10:00:00
                   receive_lifetime:
                     type: dict
                     keys:
@@ -228,19 +234,19 @@ keys:
                       start_date_time:
                         type: str
                         description: |-
-                          Specify the start date and time of lifetime of the secret.
+                          Start date and time of lifetime of the secret.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
-                          e.g 2024/12/20 10:00:00
+                          e.g 2024-12-20 10:00:00
                       end_date_time:
                         type: str
                         description: |-
-                          Specify the end date and time of lifetime of the secret. End date should be greater than start date.
+                          End date and time of lifetime of the secret. End date should be greater than start date.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
-                          e.g 2024/12/20 10:00:00
+                          e.g 2024-12-20 10:00:00
                   transmit_lifetime:
                     type: dict
                     keys:
@@ -249,16 +255,16 @@ keys:
                       start_date_time:
                         type: str
                         description: |-
-                          Specify the start date and time of lifetime of the secret.
+                          Start date and time of lifetime of the secret.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
-                          e.g 2024/12/20 10:00:00
+                          e.g 2024-12-20 10:00:00
                       end_date_time:
                         type: str
                         description: |-
-                          Specify the end date and time of lifetime of the secret.
+                          End date and time of lifetime of the secret.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
-                          e.g 2024/12/20 10:00:00
+                          e.g 2024-12-20 10:00:00
