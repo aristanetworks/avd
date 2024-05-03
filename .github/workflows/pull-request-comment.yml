@@ -21,7 +21,7 @@ jobs:
 
             To test this pull request:
 
-            ```sh
+            \`\`\`sh
             # Create virtual environment for this testing below the current directory
             python -m venv test-avd-pr-${{ github.event.pull_request.number }}
             # Activate the virtual environment
@@ -33,12 +33,12 @@ jobs:
             # Optional: Install AVD examples
             cd test-avd-pr-${{ github.event.pull_request.number }}
             ansible-playbook arista.avd.install_examples
-            ```
+            \`\`\`
         with:
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '${{ env.BODY }}'
+              body: `${{ env.BODY }}`
             })
