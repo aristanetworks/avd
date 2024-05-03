@@ -40,5 +40,5 @@ jobs:
               issue_number: context.pull_request.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ${{ BODY }}
+              body: $BODY
             })
