@@ -39567,7 +39567,7 @@
                           "seconds",
                           "milliseconds"
                         ],
-                        "default": "seconds",
+                        "description": "If interval unit is not defined EOS takes `seconds` by default.",
                         "title": "Interval Unit"
                       },
                       "wait_interval": {

@@ -13214,7 +13214,7 @@ keys:
             valid_values:
             - seconds
             - milliseconds
-            default: seconds
+            description: If interval unit is not defined EOS takes `seconds` by default.
           wait_interval:
             type: int
             convert_types:
