@@ -1,3 +1,4 @@
+# requirements-minimum.txt is leveraged in the CI pipeline to test and qualify all our minimum requirements.
 netaddr==0.7.19
 Jinja2==3.0.0
 treelib==1.5.5
