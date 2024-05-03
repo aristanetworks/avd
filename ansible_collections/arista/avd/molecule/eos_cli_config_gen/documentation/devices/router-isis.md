@@ -286,6 +286,9 @@ interface Vlan4094
 | Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
+| SPF Interval | 250 seconds |
+| SPF Interval Wait Time| 10 milliseconds |
+| SPF Interval Hold Time| 20 milliseconds |
 
 #### ISIS Interfaces Summary
 
@@ -323,6 +326,7 @@ router isis EVPN_UNDERLAY
    mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
    advertise passive-only
+   spf-interval 250 10 20
    authentication mode sha key-id 4
    authentication key 0 password
    !

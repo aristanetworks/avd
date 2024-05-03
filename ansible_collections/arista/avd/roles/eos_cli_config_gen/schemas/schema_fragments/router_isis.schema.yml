@@ -337,9 +337,16 @@ keys:
             type: int
             convert_types:
               - str
-            min: 1
-            max: 300
-            description: Maximum interval between two SPFs in seconds.
+            description: |- 
+              Maximum interval between two SPFs in seconds or milliseconds.
+              Range in seconds: <1-300>
+              Range in milliseconds: <1-300000>
+          interval_unit:
+            type: str
+            valid_values:
+              - "seconds"
+              - "milliseconds"
+            default: seconds
           wait_interval:
             type: int
             convert_types:

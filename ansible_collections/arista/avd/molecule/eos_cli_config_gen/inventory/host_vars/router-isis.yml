@@ -16,6 +16,11 @@ router_isis:
     maximum_paths: 2
   segment_routing_mpls:
     enabled: true
+  # Testing spf_interval without unit
+  spf_interval:
+    interval: 250
+    wait_interval: 10
+    hold_interval: 20
   authentication:
     both:
       key_type: 0
