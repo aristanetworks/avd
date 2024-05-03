@@ -140,9 +140,9 @@ vlan internal order ascending range 1006 1199
 
 ##### ISIS
 
-| Interface | ISIS instance | ISIS metric | Interface mode |
-| --------- | ------------- | ----------- | -------------- |
-| Loopback0 | CORE | - | passive |
+| Interface | ISIS instance | ISIS BFD | ISIS metric | Interface mode |
+| --------- | ------------- | -------- | ----------- | -------------- |
+| Loopback0 | CORE | False | - | passive |
 
 #### Loopback Interfaces Device Configuration
 

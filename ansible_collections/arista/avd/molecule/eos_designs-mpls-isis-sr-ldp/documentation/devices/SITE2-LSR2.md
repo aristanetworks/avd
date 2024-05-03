@@ -151,13 +151,13 @@ vlan internal order ascending range 1006 1199
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet3 | - | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
-| Ethernet12 | 12 | *CUSTOM_NAME | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet13 | 12 | *CUSTOM_NAME | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet14 | 110 | *CUSTOM_NAME | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet15 | 110 | *CUSTOM_NAME | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet3 | - | CUSTOM_NAME | False | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet12 | 12 | *CUSTOM_NAME | False | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet13 | 12 | *CUSTOM_NAME | False | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet14 | 110 | *CUSTOM_NAME | False | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet15 | 110 | *CUSTOM_NAME | False | *60 | *point-to-point | *level-2 | *False | *md5 |
 
 *Inherited from Port-Channel Interface
 
@@ -229,10 +229,10 @@ interface Ethernet15
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Port-Channel12 | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
-| Port-Channel110 | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Port-Channel12 | CUSTOM_NAME | False | 60 | point-to-point | level-2 | False | md5 |
+| Port-Channel110 | CUSTOM_NAME | False | 60 | point-to-point | level-2 | False | md5 |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -297,9 +297,9 @@ interface Port-Channel110
 
 ##### ISIS
 
-| Interface | ISIS instance | ISIS metric | Interface mode |
-| --------- | ------------- | ----------- | -------------- |
-| Loopback0 | CUSTOM_NAME | - | passive |
+| Interface | ISIS instance | ISIS BFD | ISIS metric | Interface mode |
+| --------- | ------------- | -------- | ----------- | -------------- |
+| Loopback0 | CUSTOM_NAME | False | - | passive |
 
 #### Loopback Interfaces Device Configuration
 

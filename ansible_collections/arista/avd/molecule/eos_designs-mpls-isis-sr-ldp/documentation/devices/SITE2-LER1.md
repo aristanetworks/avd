@@ -209,13 +209,13 @@ vlan 2020
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | CORE | 60 | point-to-point | level-2 | False | md5 |
-| Ethernet11 | 11 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet12 | 11 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet13 | 220 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet14 | 220 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet1 | - | CORE | False | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet11 | 11 | *CORE | False | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet12 | 11 | *CORE | False | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet13 | 220 | *CORE | False | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet14 | 220 | *CORE | False | *60 | *point-to-point | *level-2 | *False | *md5 |
 
 *Inherited from Port-Channel Interface
 
@@ -350,10 +350,10 @@ interface Ethernet14
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Port-Channel11 | CORE | 60 | point-to-point | level-2 | False | md5 |
-| Port-Channel220 | CORE | 60 | point-to-point | level-2 | False | md5 |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Port-Channel11 | CORE | False | 60 | point-to-point | level-2 | False | md5 |
+| Port-Channel220 | CORE | False | 60 | point-to-point | level-2 | False | md5 |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -447,9 +447,9 @@ interface Port-Channel220
 
 ##### ISIS
 
-| Interface | ISIS instance | ISIS metric | Interface mode |
-| --------- | ------------- | ----------- | -------------- |
-| Loopback0 | CORE | - | passive |
+| Interface | ISIS instance | ISIS BFD | ISIS metric | Interface mode |
+| --------- | ------------- | -------- | ----------- | -------------- |
+| Loopback0 | CORE | False | - | passive |
 
 #### Loopback Interfaces Device Configuration
 
