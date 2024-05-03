@@ -6,16 +6,16 @@
 {# doc - influxdb #}
 {% if influxdb is arista.avd.defined %}
 
-## Influxdb Streaming
+## InfluxDB Telemetry
 
-### Influxdb Summary
+### InfluxDB Telemetry Summary
 {%     if influxdb.source_group_standard_disabled is arista.avd.defined(true) %}
 
 Source Group Standard Disabled : {{ influxdb.source_group_standard_disabled }}
 {%     endif %}
 {%     if influxdb.destinations is arista.avd.defined %}
 
-#### Telemetry Outputs Summary
+#### InfluxDB Telemetry Destinations
 
 | Destination | Database | URL | VRF | Username |
 | ----------- | -------- | --- | --- | -------- |
@@ -25,7 +25,7 @@ Source Group Standard Disabled : {{ influxdb.source_group_standard_disabled }}
 {%     endif %}
 {%     if influxdb.source_sockets is arista.avd.defined %}
 
-#### Telemetry Inputs Summary
+#### InfluxDB Telemetry Sources
 
 | Source Name | URL | Connection Limit |
 | ----------- | --- | ---------------- |
@@ -35,7 +35,7 @@ Source Group Standard Disabled : {{ influxdb.source_group_standard_disabled }}
 {%     endif %}
 {%     if influxdb.tags is arista.avd.defined %}
 
-#### Telemetry Output Tags Summary
+#### InfluxDB Telemetry Tags
 
 | Tag | Value |
 | --- | ----- |
@@ -44,7 +44,7 @@ Source Group Standard Disabled : {{ influxdb.source_group_standard_disabled }}
 {%         endfor %}
 {%     endif %}
 
-### Influxdb Device Configuration
+### InfluxDB Telemetry Device Configuration
 
 ```eos
 {%     include 'eos/influxdb.j2' %}

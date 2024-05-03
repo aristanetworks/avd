@@ -3791,6 +3791,7 @@ keys:
               description: Key of the global tag pair.
             value:
               type: str
+              required: true
               description: Value of the global tag pair.
   interface_defaults:
     type: dict

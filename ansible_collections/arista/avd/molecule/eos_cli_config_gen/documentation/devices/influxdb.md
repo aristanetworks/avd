@@ -4,9 +4,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Influxdb Streaming](#influxdb-streaming)
-  - [Influxdb Summary](#influxdb-summary)
-  - [Influxdb Device Configuration](#influxdb-device-configuration)
+- [InfluxDB Telemetry](#influxdb-telemetry)
+  - [InfluxDB Telemetry Summary](#influxdb-telemetry-summary)
+  - [InfluxDB Telemetry Device Configuration](#influxdb-telemetry-device-configuration)
 
 ## Management
 
@@ -36,34 +36,34 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Influxdb Streaming
+## InfluxDB Telemetry
 
-### Influxdb Summary
+### InfluxDB Telemetry Summary
 
 Source Group Standard Disabled : True
 
-#### Telemetry Outputs Summary
+#### InfluxDB Telemetry Destinations
 
 | Destination | Database | URL | VRF | Username |
 | ----------- | -------- | --- | --- | -------- |
 | test | test | https://influx_test.localhost | test | test |
 | test1 | test1 | https://influx_test1.localhost | test | test1 |
 
-#### Telemetry Inputs Summary
+#### InfluxDB Telemetry Sources
 
 | Source Name | URL | Connection Limit |
 | ----------- | --- | ---------------- |
 | socket1 | unix:///var/run/example2.sock | 100 |
 | socket2 | unix:///var/run/example3.sock | 22222 |
 
-#### Telemetry Output Tags Summary
+#### InfluxDB Telemetry Tags
 
 | Tag | Value |
 | --- | ----- |
 | tag1 | value1 |
 | tag2 | value2 |
 
-### Influxdb Device Configuration
+### InfluxDB Telemetry Device Configuration
 
 ```eos
 !

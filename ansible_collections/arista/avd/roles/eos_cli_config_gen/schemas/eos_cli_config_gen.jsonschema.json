@@ -6431,13 +6431,14 @@
                 "title": "Value"
               }
             },
+            "required": [
+              "value",
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            },
-            "required": [
-              "name"
-            ]
+            }
           },
           "title": "Tags"
         }

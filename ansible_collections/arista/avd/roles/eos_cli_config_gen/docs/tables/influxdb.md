@@ -24,7 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "influxdb.source_sockets.[].url") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;tags</samp>](## "influxdb.tags") | List, items: Dictionary |  |  |  | Extra tags added to the telemetry output. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "influxdb.tags.[].name") | String | Required, Unique |  |  | Key of the global tag pair. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "influxdb.tags.[].value") | String |  |  |  | Value of the global tag pair. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "influxdb.tags.[].value") | String | Required |  |  | Value of the global tag pair. |
 
 === "YAML"
 
@@ -62,5 +62,5 @@
         - name: <str; required; unique>
 
           # Value of the global tag pair.
-          value: <str>
+          value: <str; required>
     ```
