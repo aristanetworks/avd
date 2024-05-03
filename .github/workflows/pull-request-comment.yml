@@ -15,28 +15,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v7
+        env:
+          BODY: |
+            Review docs on [Read the Docs](https://ansible-avd--' + pull_request.number + '.org.readthedocs.build/en/' + pull_request.number + '/)
+
+            To test this pull request:
+
+            ```sh
+            # Create virtual environment for this testing below the current directory
+            python -m venv test-avd-pr-${{ github.event.pull_request.number }}
+            # Activate the virtual environment
+            source test-avd-pr-${{ github.event.pull_request.number }}/bin/activate
+            # Install all requirements including PyAVD
+            pip install "pyavd[ansible] @ git+${{ github.event.pull_request.head.clone_url }}@${{ github.event.pull_request.head.ref }}#subdirectory=python-avd" --force
+            # Install Ansible collection
+            ansible-galaxy collection install git+${{ github.event.pull_request.head.clone_url }}#/ansible_collections/arista/avd/,${{ github.event.pull_request.head.ref }} --force
+            # Optional: Install AVD examples
+            cd test-avd-pr-${{ github.event.pull_request.number }}
+            ansible-playbook arista.avd.install_examples
+            ```
         with:
           script: |
-            const comment = '' +
-              'Review docs on [Read the Docs](https://ansible-avd--' + context.pull_request.number + '.org.readthedocs.build/en/' + context.pull_request.number + '/)\n\n' +
-              'To test this pull request:\n\n' +
-              '```sh\n' +
-              '# Create virtual environment for this testing below the current directory\n' +
-              'python -m venv test-avd-pr' + context.pull_request.number + '\n' +
-              '# Activate the virtual environment\n' +
-              'source test-avd-pr-' + context.pull_request.number + '/bin/activate\n' +
-              '# Install all requirements including PyAVD\n' +
-              'pip install "pyavd[ansible] @ git+' context.payload.pull_request.head.clone_url + '@' + context.payload.pull_request.head.ref + '#subdirectory=python-avd" --force\n' +
-              '# Install Ansible collection\n' +
-              'ansible-galaxy collection install git+' + context.payload.pull_request.head.clone_url + '#/ansible_collections/arista/avd/,' + context.payload.pull_request.head.ref + '--force\n' +
-              '# Optional: Install AVD examples\n' +
-              'cd test-avd-pr' + context.pull_request.number + '\n' +
-              'ansible-playbook arista.avd.install_examples\n' +
-              '```\n'
-
             github.rest.issues.createComment({
               issue_number: context.pull_request.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: comment
+              body: ${{ BODY }}
             })
