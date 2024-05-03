@@ -16276,7 +16276,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org.",
+                "description": "IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org.",
                 "title": "Name"
               },
               "burst": {
@@ -28892,7 +28892,7 @@
                       "properties": {
                         "name": {
                           "type": "string",
-                          "description": "IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org.",
+                          "description": "IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org.",
                           "title": "Name"
                         },
                         "burst": {

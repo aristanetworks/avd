@@ -108,6 +108,8 @@ ip domain lookup vrf mgt source-interface Management0
 | ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
 | 10.10.111.1 | mgt | True | - | - | - | - | - | - | - |
 | 10.10.111.2 | mgt | - | - | - | - | - | - | - | - |
+| 2001:db8::3 | mgt | - | - | - | - | - | - | - | - |
+| 2001:db8::4 | mgt | - | - | - | - | - | - | - | - |
 
 ##### NTP Authentication
 
@@ -133,4 +135,6 @@ ntp authenticate servers
 ntp local-interface vrf mgt Management0
 ntp server vrf mgt 10.10.111.1 prefer
 ntp server vrf mgt 10.10.111.2
+ntp server vrf mgt 2001:db8::3
+ntp server vrf mgt 2001:db8::4
 ```
