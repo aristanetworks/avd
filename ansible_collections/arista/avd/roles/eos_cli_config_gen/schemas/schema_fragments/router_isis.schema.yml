@@ -337,7 +337,7 @@ keys:
             type: int
             convert_types:
               - str
-            description: |- 
+            description: |-
               Maximum interval between two SPFs in seconds or milliseconds.
               Range in seconds: <1-300>
               Range in milliseconds: <1-300000>
