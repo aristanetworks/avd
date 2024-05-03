@@ -21,6 +21,18 @@ ip_name_servers:
   - ip_address: 10.10.128.10
     vrf: TEST
     priority: 3
+  # no VRF
+  - ip_address: 2001:db8::1
+  # no VRF priority
+  - ip_address: 2001:db8::2
+    priority: 0
+  # Same DNS management VRF
+  - ip_address: 2001:db8::1
+    vrf: mgmt
+  # Same DNS different VRF and priority
+  - ip_address: 2001:db8::2
+    vrf: TEST
+    priority: 3
 
 ### DNS Domain ###
 dns_domain: test.local
@@ -35,6 +47,10 @@ ntp:
       preferred: True
       vrf: mgt
     - name: 10.10.111.2
+      vrf: mgt
+    - name: 2001:db8::4
+      vrf: mgt
+    - name: 2001:db8::3
       vrf: mgt
   authenticate_servers_only: true
   authentication_keys:

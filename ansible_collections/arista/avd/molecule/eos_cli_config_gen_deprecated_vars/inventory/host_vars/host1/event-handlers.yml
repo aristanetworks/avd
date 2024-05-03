@@ -8,6 +8,7 @@ event_handlers:
     action: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
     trigger: on-logging
+    # Testing regex key which is deprecared and will be removed in 5.0.0
     regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
     asynchronous: true
   CONFIG_VERSIONING:

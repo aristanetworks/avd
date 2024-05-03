@@ -451,6 +451,7 @@ port_channel_interfaces:
     description: dot1q-tunnel mode
     type: switched
     mode: dot1q-tunnel
+    vlans: 115
 
 
 # Children interfaces
