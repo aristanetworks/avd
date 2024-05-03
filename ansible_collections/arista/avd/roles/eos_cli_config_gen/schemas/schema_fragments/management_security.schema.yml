@@ -217,7 +217,7 @@ keys:
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
-                          e.g 2024_12-20 10:00:00
+                          e.g 2024-12-20 10:00:00
                       end_date_time:
                         type: str
                         description: |-

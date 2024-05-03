@@ -27617,7 +27617,7 @@
                                   },
                                   "start_date_time": {
                                     "type": "string",
-                                    "description": "Specify the start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024_12-20 10:00:00",
+                                    "description": "Specify the start date and time of lifetime of the secret.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
                                     "title": "Start Date Time"
                                   },
                                   "end_date_time": {
