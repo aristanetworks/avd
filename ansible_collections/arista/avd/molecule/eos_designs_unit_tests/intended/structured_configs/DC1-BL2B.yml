@@ -142,6 +142,10 @@ router_bgp:
     - name: IPVPN-INTERWORKING-PEERS
       activate: true
     domain_identifier: '65000:4'
+  address_family_ipv6:
+    peer_groups:
+    - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      activate: true
   vrfs:
   - name: Tenant_A_WAN_Zone
     router_id: 192.168.255.17
@@ -250,10 +254,6 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '350'
-  address_family_ipv6:
-    peer_groups:
-    - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-      activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
