@@ -194,6 +194,10 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
+- ip_address: 2001:db8::1
+  vrf: MGMT
+- ip_address: 2001:db8::2
+  vrf: MGMT
 local_users:
 - name: admin
   disabled: true
@@ -232,6 +236,8 @@ ntp:
   - name: 192.168.200.5
     vrf: MGMT
     preferred: true
+  - name: 2001:db8::3
+    vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_true

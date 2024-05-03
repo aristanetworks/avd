@@ -3320,9 +3320,67 @@ keys:
             '
           valid_values:
           - on-boot
+          - on-counters
+          - on-intf
           - on-logging
-          - on-startup-config
           - on-maintenance
+          - on-startup-config
+          - vm-tracer vm
+        trigger_on_counters:
+          type: dict
+          keys:
+            condition:
+              type: str
+              description: Set the logical expression to evaluate.
+            granularity_per_source:
+              type: bool
+              description: "Set the granularity of event counting for a wildcarded
+                condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100
+                ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used
+                here]"
+            poll_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 1000000
+              description: Set the polling interval in seconds.
+        trigger_on_logging:
+          type: dict
+          keys:
+            poll_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 1000000
+              description: Set the polling interval in seconds.
+            regex:
+              type: str
+              description: Regular expression to use for searching log messages.
+        trigger_on_intf:
+          type: dict
+          description: 'Trigger condition occurs on specified interface changes.
+
+            Note: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined
+            along with the `interface`.'
+          keys:
+            interface:
+              type: str
+              required: true
+              description: "Interface name.\nExample - Ethernet4\n          Loopback4-6\n
+                \         Port-channel4,7"
+            ip:
+              type: bool
+              description: Action is triggered upon changes to interface IP address
+                assignment.
+            ipv6:
+              type: bool
+              description: Action is triggered upon changes to interface ipv6 address
+                assignment.
+            operstatus:
+              type: bool
+              description: Action is triggered upon changes to interface operStatus.
         trigger_on_maintenance:
           description: Settings required for trigger 'on-maintenance'.
           type: dict
@@ -3370,6 +3428,11 @@ keys:
                 of specified unit
         regex:
           type: str
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handlers.trigger_on_logging.regex
           description: 'Regular expression to use for searching log messages. Required
             for on-logging trigger.
 
@@ -7081,7 +7144,7 @@ keys:
           keys:
             name:
               type: str
-              description: IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org.
+              description: IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org.
             burst:
               type: bool
             iburst:
@@ -8282,6 +8345,16 @@ keys:
               - ipv4
               - ipv6
               - layer2
+            mpass:
+              type: bool
+              description: 'When MPASS is enabled on an MLAG port-channel, MLAG peers
+                coordinate to function as a single PTP logical device.
+
+                Arista PTP enabled devices always place PTP messages on the same physical
+                link within the port-channel.
+
+                Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                devices.'
         ip_address:
           type: str
           description: IPv4 address/mask.

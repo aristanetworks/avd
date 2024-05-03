@@ -45,6 +45,7 @@ router_bgp:
       interval: 1000
       min_rx: 1000
       multiplier: 10
+    route_reflector_client: true
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
