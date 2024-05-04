@@ -65,11 +65,6 @@ management_security:
       secrets:
         - name: name1
           secret: $1c$mNvaIXPetcQ3hy7oUnTU3w==
-          lifetime:
-            infinite: true
-        - name: name2
-          secret: $1c$mNvaIXPetcR9edexxanqlQ==
-          secret_type: "7"
           receive_lifetime:
             start_date_time: 12/20/2024 10:00:00
             end_date_time: 12/20/2025 10:00:00
@@ -78,7 +73,9 @@ management_security:
         - name: name0
           secret: $1c$mNvaIXPetcSA2UnFwIaxwA==
           secret_type: "7"
-          lifetime:
+          receive_lifetime:
+            infinite: true
+          transmit_lifetime:
             infinite: true
     - profile: profile2
       secrets:
@@ -91,14 +88,11 @@ management_security:
           transmit_lifetime:
             start_date_time: "12/20/2024 10:00:00"
             end_date_time: "12/10/2025 10:00:00"
-     # `lifetime` is preferred even though `receive_lifetime` and `transmit_lifetime` are defined separately.
     - profile: profile0
       secrets:
         - name: name1
           secret: $1c$mNvaIXPetcQ3hy7oUnTU3w==
           secret_type: 7
-          lifetime:
-            infinite: true
           receive_lifetime:
             start_date_time: "2024-12-20 10:00:00"
             end_date_time: "2025-12-20 10:00:00"

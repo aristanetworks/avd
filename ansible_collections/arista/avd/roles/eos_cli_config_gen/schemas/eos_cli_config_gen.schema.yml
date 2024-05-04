@@ -6396,39 +6396,6 @@ keys:
                     - 8a
                     convert_types:
                     - int
-                  lifetime:
-                    type: dict
-                    description: Configure to set lifetime of the secret. This is
-                      applicable to both receive and transmit lifetime. `lifetime`
-                      is preferred even though `receive_lifetime` and `transmit_lifetime`
-                      are defined separately.
-                    keys:
-                      infinite:
-                        type: bool
-                      start_date_time:
-                        type: str
-                        description: 'Specify the start date and time of lifetime
-                          of the secret.
-
-                          Formats supported:
-
-                          1. mm/dd/yyyy hh:mm:ss
-
-                          2. yyyy-mm-dd hh:mm:ss
-
-                          e.g 2024-12-20 10:00:00'
-                      end_date_time:
-                        type: str
-                        description: 'End date and time of lifetime of the secret.
-                          End date should be greater than start date time.
-
-                          Formats supported:
-
-                          1. mm/dd/yyyy hh:mm:ss
-
-                          2. yyyy-mm-dd hh:mm:ss
-
-                          e.g 2024-12-20 10:00:00'
                   receive_lifetime:
                     type: dict
                     keys:

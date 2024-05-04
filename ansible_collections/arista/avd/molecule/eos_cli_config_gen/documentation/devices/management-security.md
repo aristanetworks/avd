@@ -102,23 +102,22 @@ interface Management1
 
 #### profile0
 
-| Secret Name | Secret Type | Receive Lifetime | Transmit Lifetime |
-| ----------- | ----------- | ---------------- | ----------------- |
-| name1 | 7 | Infinite | Infinite |
+| Secret Name | Receive Lifetime | Transmit Lifetime |
+| ----------- | ---------------- | ----------------- |
+| name1 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 |
 
 #### profile1
 
-| Secret Name | Secret Type | Receive Lifetime | Transmit Lifetime |
-| ----------- | ----------- | ---------------- | ----------------- |
-| name0 | 7 | Infinite | Infinite |
-| name1 | 7 | Infinite | Infinite |
-| name2 | 7 | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | Infinite |
+| Secret Name | Receive Lifetime | Transmit Lifetime |
+| ----------- | ---------------- | ----------------- |
+| name0 | Infinite | Infinite |
+| name1 | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | Infinite |
 
 #### profile2
 
-| Secret Name | Secret Type | Receive Lifetime | Transmit Lifetime |
-| ----------- | ----------- | ---------------- | ----------------- |
-| name3 | 7 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 |
+| Secret Name | Receive Lifetime | Transmit Lifetime |
+| ----------- | ---------------- | ----------------- |
+| name3 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 |
 
 ### Management Security Device Configuration
 
@@ -165,11 +164,10 @@ management security
    ssl profile tls-versions-profile
       tls versions 1.0 1.1
    session shared-secret profile profile0
-      secret name1 7 <removed> receive-lifetime infinite transmit-lifetime infinite
+      secret name1 7 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00
    session shared-secret profile profile1
       secret name0 7 <removed> receive-lifetime infinite transmit-lifetime infinite
-      secret name1 7 <removed> receive-lifetime infinite transmit-lifetime infinite
-      secret name2 7 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite
+      secret name1 7 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite
    session shared-secret profile profile2
       secret name3 7 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 12/20/2024 10:00:00 12/10/2025 10:00:00
 ```
