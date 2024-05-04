@@ -1,0 +1,52 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - monitor telemetry influx #}
+{% if monitor_telemetry_influx is arista.avd.defined %}
+
+## InfluxDB Telemetry
+
+### InfluxDB Telemetry Summary
+{%     if monitor_telemetry_influx.source_group_standard_disabled is arista.avd.defined(true) %}
+
+Source Group Standard Disabled : {{ monitor_telemetry_influx.source_group_standard_disabled }}
+{%     endif %}
+{%     if monitor_telemetry_influx.destinations is arista.avd.defined %}
+
+#### InfluxDB Telemetry Destinations
+
+| Destination | Database | URL | VRF | Username |
+| ----------- | -------- | --- | --- | -------- |
+{%         for destination in monitor_telemetry_influx.destinations | arista.avd.natural_sort('name') %}
+| {{ destination.name | arista.avd.default('-') }} | {{ destination.database | arista.avd.default('-') }} | {{ destination.url | arista.avd.default('-') }} | {{ monitor_telemetry_influx.vrf | arista.avd.default('-') }} | {{ destination.username | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+{%     if monitor_telemetry_influx.source_sockets is arista.avd.defined %}
+
+#### InfluxDB Telemetry Sources
+
+| Source Name | URL | Connection Limit |
+| ----------- | --- | ---------------- |
+{%         for source in monitor_telemetry_influx.source_sockets | arista.avd.natural_sort('name') %}
+| {{ source.name | arista.avd.default('-') }} | {{ source.url | arista.avd.default('-') }} | {{ source.connection_limit | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+{%     if monitor_telemetry_influx.tags is arista.avd.defined %}
+
+#### InfluxDB Telemetry Tags
+
+| Tag | Value |
+| --- | ----- |
+{%         for tag in monitor_telemetry_influx.tags %}
+| {{ tag.name | arista.avd.default('-') }} | {{ tag.value | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+
+### InfluxDB Telemetry Device Configuration
+
+```eos
+{%     include 'eos/monitor-telemetry-influx.j2' %}
+```
+{% endif %}

@@ -6405,137 +6405,6 @@
       "type": "string",
       "title": "Hostname"
     },
-    "influxdb": {
-      "type": "object",
-      "properties": {
-        "vrf": {
-          "type": "string",
-          "title": "VRF"
-        },
-        "destinations": {
-          "type": "array",
-          "description": "Configure telemetry output destinations.",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "InfluxDB connection name.",
-                "title": "Name"
-              },
-              "database": {
-                "type": "string",
-                "description": "Set name of the database.",
-                "title": "Database"
-              },
-              "data_retention_policy": {
-                "type": "string",
-                "title": "Data Retention Policy"
-              },
-              "url": {
-                "type": "string",
-                "title": "URL"
-              },
-              "username": {
-                "type": "string",
-                "title": "Username"
-              },
-              "password": {
-                "type": "string",
-                "title": "Password"
-              },
-              "password_type": {
-                "type": "string",
-                "enum": [
-                  "0",
-                  "7",
-                  "8a"
-                ],
-                "default": "7",
-                "title": "Password Type"
-              }
-            },
-            "additionalProperties": false,
-            "patternProperties": {
-              "^_.+$": {}
-            },
-            "required": [
-              "name"
-            ]
-          },
-          "title": "Destinations"
-        },
-        "source_group_standard_disabled": {
-          "type": "boolean",
-          "description": "Disable standard set of telemetry.",
-          "title": "Source Group Standard Disabled"
-        },
-        "source_sockets": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Label of the socket connection.",
-                "title": "Name"
-              },
-              "connection_limit": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 4294967295,
-                "title": "Connection Limit"
-              },
-              "url": {
-                "type": "string",
-                "title": "URL"
-              }
-            },
-            "additionalProperties": false,
-            "patternProperties": {
-              "^_.+$": {}
-            },
-            "required": [
-              "name"
-            ]
-          },
-          "title": "Source Sockets"
-        },
-        "tags": {
-          "type": "array",
-          "description": "Extra tags added to the telemetry output.",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Key of the global tag pair.",
-                "title": "Name"
-              },
-              "value": {
-                "type": "string",
-                "description": "Value of the global tag pair.",
-                "title": "Value"
-              }
-            },
-            "required": [
-              "value",
-              "name"
-            ],
-            "additionalProperties": false,
-            "patternProperties": {
-              "^_.+$": {}
-            }
-          },
-          "title": "Tags"
-        }
-      },
-      "additionalProperties": false,
-      "patternProperties": {
-        "^_.+$": {}
-      },
-      "title": "Influxdb"
-    },
     "interface_defaults": {
       "type": "object",
       "properties": {
@@ -12240,6 +12109,137 @@
         }
       },
       "title": "Monitor Sessions"
+    },
+    "monitor_telemetry_influx": {
+      "type": "object",
+      "properties": {
+        "vrf": {
+          "type": "string",
+          "title": "VRF"
+        },
+        "destinations": {
+          "type": "array",
+          "description": "Configure telemetry output destinations.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "InfluxDB connection name.",
+                "title": "Name"
+              },
+              "database": {
+                "type": "string",
+                "description": "Set name of the database.",
+                "title": "Database"
+              },
+              "data_retention_policy": {
+                "type": "string",
+                "title": "Data Retention Policy"
+              },
+              "url": {
+                "type": "string",
+                "title": "URL"
+              },
+              "username": {
+                "type": "string",
+                "title": "Username"
+              },
+              "password": {
+                "type": "string",
+                "title": "Password"
+              },
+              "password_type": {
+                "type": "string",
+                "enum": [
+                  "0",
+                  "7",
+                  "8a"
+                ],
+                "default": "7",
+                "title": "Password Type"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Destinations"
+        },
+        "source_group_standard_disabled": {
+          "type": "boolean",
+          "description": "Disable standard set of telemetry.",
+          "title": "Source Group Standard Disabled"
+        },
+        "source_sockets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Label of the socket connection.",
+                "title": "Name"
+              },
+              "connection_limit": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4294967295,
+                "title": "Connection Limit"
+              },
+              "url": {
+                "type": "string",
+                "title": "URL"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Source Sockets"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Extra tags added to the telemetry output.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Key of the global tag pair.",
+                "title": "Name"
+              },
+              "value": {
+                "type": "string",
+                "description": "Value of the global tag pair.",
+                "title": "Value"
+              }
+            },
+            "required": [
+              "value",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Tags"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Monitor Telemetry Influx"
     },
     "mpls": {
       "type": "object",

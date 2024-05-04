@@ -3787,75 +3787,6 @@ keys:
               type: bool
   hostname:
     type: str
-  influxdb:
-    type: dict
-    keys:
-      vrf:
-        type: str
-      destinations:
-        type: list
-        primary_key: name
-        description: Configure telemetry output destinations.
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: InfluxDB connection name.
-            database:
-              type: str
-              description: Set name of the database.
-            data_retention_policy:
-              type: str
-            url:
-              type: str
-            username:
-              type: str
-            password:
-              type: str
-            password_type:
-              type: str
-              convert_types:
-              - int
-              valid_values:
-              - '0'
-              - '7'
-              - 8a
-              default: '7'
-      source_group_standard_disabled:
-        type: bool
-        description: Disable standard set of telemetry.
-      source_sockets:
-        type: list
-        primary_key: name
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Label of the socket connection.
-            connection_limit:
-              type: int
-              min: 0
-              max: 4294967295
-              convert_types:
-              - str
-            url:
-              type: str
-      tags:
-        type: list
-        primary_key: name
-        description: Extra tags added to the telemetry output.
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Key of the global tag pair.
-            value:
-              type: str
-              required: true
-              description: Value of the global tag pair.
   interface_defaults:
     type: dict
     keys:
@@ -7155,6 +7086,75 @@ keys:
               description: Size in bytes.
               convert_types:
               - str
+  monitor_telemetry_influx:
+    type: dict
+    keys:
+      vrf:
+        type: str
+      destinations:
+        type: list
+        primary_key: name
+        description: Configure telemetry output destinations.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: InfluxDB connection name.
+            database:
+              type: str
+              description: Set name of the database.
+            data_retention_policy:
+              type: str
+            url:
+              type: str
+            username:
+              type: str
+            password:
+              type: str
+            password_type:
+              type: str
+              convert_types:
+              - int
+              valid_values:
+              - '0'
+              - '7'
+              - 8a
+              default: '7'
+      source_group_standard_disabled:
+        type: bool
+        description: Disable standard set of telemetry.
+      source_sockets:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Label of the socket connection.
+            connection_limit:
+              type: int
+              min: 0
+              max: 4294967295
+              convert_types:
+              - str
+            url:
+              type: str
+      tags:
+        type: list
+        primary_key: name
+        description: Extra tags added to the telemetry output.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Key of the global tag pair.
+            value:
+              type: str
+              required: true
+              description: Value of the global tag pair.
   mpls:
     type: dict
     keys:
