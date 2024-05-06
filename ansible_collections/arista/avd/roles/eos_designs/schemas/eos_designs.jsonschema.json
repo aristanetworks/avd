@@ -25892,6 +25892,7 @@
                   },
                   "level": {
                     "type": "array",
+                    "description": "Configure logging severity.",
                     "items": {
                       "type": "object",
                       "properties": {
@@ -25902,7 +25903,25 @@
                         },
                         "severity": {
                           "type": "string",
-                          "description": "Severity of facility.",
+                          "description": "Severity of facility. Below are the supported severites.\nalerts         Immediate action needed           (severity=1)\ncritical       Critical conditions               (severity=2)\ndebugging      Debugging messages                (severity=7)\nemergencies    System is unusable                (severity=0)\nerrors         Error conditions                  (severity=3)\ninformational  Informational messages            (severity=6)\nnotifications  Normal but significant conditions (severity=5)\nwarnings       Warning conditions                (severity=4)\n<0-7>          Severity level value",
+                          "enum": [
+                            "alerts",
+                            "critical",
+                            "debugging",
+                            "emergencies",
+                            "errors",
+                            "informational",
+                            "notifications",
+                            "warnings",
+                            "0",
+                            "1",
+                            "2",
+                            "3",
+                            "4",
+                            "5",
+                            "6",
+                            "7"
+                          ],
                           "title": "Severity"
                         }
                       },

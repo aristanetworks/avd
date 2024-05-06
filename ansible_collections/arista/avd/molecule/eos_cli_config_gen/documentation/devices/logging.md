@@ -91,4 +91,7 @@ logging format timestamp traditional year timezone
 logging format rfc5424
 logging source-interface Loopback0
 logging vrf mgt source-interface Management0
+logging level AAA warnings
+logging level ACL critical
+logging level BGP 0
 ```

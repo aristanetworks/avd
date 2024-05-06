@@ -74,13 +74,6 @@ logging format hostname ipv4
 {%     if logging.format.sequence_numbers is arista.avd.defined(true) %}
 logging format sequence-numbers
 {%     endif %}
-{%     if logging.level is arista.avd.defined %}
-{%         for level in logging.level | arista.avd.natural_sort('facility_name') %}
-{%             set logging_cli = "logging" %}
-{%             set logging_cli = logging_cli ~ " level " ~ level.facility_name ~ " " ~ level.severity %}
-{{ logging_cli }}
-{%         endfor %}
-{%     endif %}
 {%     if logging.facility is arista.avd.defined %}
 logging facility {{ logging.facility }}
 {%     endif %}
@@ -100,4 +93,14 @@ logging source-interface {{ logging.source_interface }}
 {%     for match_list in logging.policy.match.match_lists | arista.avd.natural_sort('name') %}
 logging policy match match-list {{ match_list.name }} {{ match_list.action }}
 {%     endfor %}
+{%     if logging.level is arista.avd.defined %}
+{%         for level in logging.level | arista.avd.natural_sort('facility_name') %}
+{%             set logging_cli = "logging" %}
+{%             set logging_cli = logging_cli ~ " level " ~ level.facility_name ~ " " ~ level.severity %}
+{{ logging_cli }}
+{%         endfor %}
+{%     endif %}
+{%     if logging.facility is arista.avd.defined %}
+logging facility {{ logging.facility }}
+{%     endif %}
 {% endif %}

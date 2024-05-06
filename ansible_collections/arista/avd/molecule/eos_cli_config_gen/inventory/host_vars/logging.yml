@@ -48,3 +48,10 @@ logging:
       discards:
         global: true
         interval: 10
+  level:
+    - facility_name: BGP
+      severity: 0
+    - facility_name: AAA
+      severity: warnings
+    - facility_name: ACL
+      severity: critical
