@@ -665,8 +665,9 @@ class UtilsMixin:
 
         These are useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
         """
-        # Only supporting Zscaler for now
         policy_name = internet_exit_policy["name"]
+
+        # Only supporting Zscaler for now
         if get(internet_exit_policy, "type") != "zscaler":
             raise AristaAvdError(f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={policy_name}].")
 
