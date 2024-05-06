@@ -322,7 +322,8 @@ event_handlers:
   action: FastCli -p 15 -c "clear bgp evpn host-flap"
   delay: 300
   trigger: on-logging
-  regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
+  trigger_on_logging:
+    regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
   asynchronous: true
 ip_name_servers:
 - ip_address: 192.168.200.5
