@@ -11187,7 +11187,7 @@ keys:
                   type: str
                 include_leaked:
                   type: bool
-                  description: Only used if `source_protocol` is `isis`.
+                  description: Only applicable if `source_protocol` is `isis`.
                 rcf:
                   type: str
                   description: 'RCF function name with parenthesis.
@@ -11904,8 +11904,8 @@ keys:
                           type: str
                       route_map:
                         type: str
-                        description: Only used if `address_family` is one of `evpn`,
-                          `vpn-ipv4` or `vpn-ipv6`.
+                        description: Only applicable if `address_family` is one of
+                          `evpn`, `vpn-ipv4` or `vpn-ipv6`.
                       rcf:
                         type: str
                         description: 'RCF function name with parenthesis.
@@ -11940,8 +11940,8 @@ keys:
                           type: str
                       route_map:
                         type: str
-                        description: Only used if `address_family` is one of `evpn`,
-                          `vpn-ipv4` or `vpn-ipv6`.
+                        description: Only applicable if `address_family` is one of
+                          `evpn`, `vpn-ipv4` or `vpn-ipv6`.
                       rcf:
                         type: str
                         description: 'RCF function name with parenthesis.
@@ -12266,11 +12266,15 @@ keys:
                     type: str
                     valid_values:
                     - attached-host
+                    - bgp
                     - connected
+                    - dynamic
                     - isis
                     - ospf
                     - ospfv3
+                    - rip
                     - static
+                    - user
                   route_map:
                     type: str
                   include_leaked:

@@ -35499,7 +35499,7 @@
                             },
                             "include_leaked": {
                               "type": "boolean",
-                              "description": "Only used if `source_protocol` is `isis`.",
+                              "description": "Only applicable if `source_protocol` is `isis`.",
                               "title": "Include Leaked"
                             },
                             "rcf": {
@@ -36931,7 +36931,7 @@
                                   },
                                   "route_map": {
                                     "type": "string",
-                                    "description": "Only used if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
+                                    "description": "Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
                                     "title": "Route Map"
                                   },
                                   "rcf": {
@@ -36973,7 +36973,7 @@
                                   },
                                   "route_map": {
                                     "type": "string",
-                                    "description": "Only used if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
+                                    "description": "Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
                                     "title": "Route Map"
                                   },
                                   "rcf": {
@@ -37432,11 +37432,15 @@
                                 "type": "string",
                                 "enum": [
                                   "attached-host",
+                                  "bgp",
                                   "connected",
+                                  "dynamic",
                                   "isis",
                                   "ospf",
                                   "ospfv3",
-                                  "static"
+                                  "rip",
+                                  "static",
+                                  "user"
                                 ],
                                 "title": "Source Protocol"
                               },

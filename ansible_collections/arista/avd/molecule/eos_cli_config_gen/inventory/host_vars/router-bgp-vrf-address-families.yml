@@ -52,6 +52,11 @@ router_bgp:
         networks:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
+        redistribute_routes:
+          - source_protocol: connected
+            rcf: VRF_AFIPV4_RCF_CONNECTED_1()
+          - source_protocol: static
+            route_map: VRF_AFIPV4_RM_STATIC_1
       address_family_ipv6:
         bgp:
           missing_policy:
@@ -148,3 +153,6 @@ router_bgp:
           additional_paths:
             send:
               ecmp: true
+      redistribute_routes:
+        - source_protocol: dynamic
+          rcf: VRF_RCF_DYNAMIC()

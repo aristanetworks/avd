@@ -53,7 +53,7 @@ ASN Notation: asplain
 | --- | ------------------- | ------------ |
 | VRF01 | - | - |
 | VRF02 | - | - |
-| VRF03 | - | - |
+| VRF03 | - | dynamic |
 
 #### Router BGP Device Configuration
 
@@ -104,6 +104,8 @@ router bgp 65001
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
          network 2.3.4.0/24 route-map BARFOO
+         redistribute connected rcf VRF_AFIPV4_RCF_CONNECTED_1()
+         redistribute static route-map VRF_AFIPV4_RM_STATIC_1
       !
       address-family ipv4 multicast
          bgp missing-policy direction in action permit
@@ -147,6 +149,7 @@ router bgp 65001
          bgp additional-paths send limit 3
    !
    vrf VRF03
+      redistribute dynamic rcf VRF_RCF_DYNAMIC()
       !
       address-family ipv4
          bgp additional-paths send ecmp
