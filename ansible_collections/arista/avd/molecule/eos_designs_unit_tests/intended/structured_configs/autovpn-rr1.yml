@@ -45,6 +45,7 @@ router_bgp:
       interval: 1000
       min_rx: 1000
       multiplier: 10
+    route_reflector_client: true
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -257,6 +258,8 @@ dps_interfaces:
   description: DPS Interface
   mtu: 9214
   ip_address: 192.168.131.1/32
+  flow_tracker:
+    hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: autovpn-rr1_VTEP
@@ -268,3 +271,17 @@ vxlan_interface:
         vni: 1
       - name: PROD
         vni: 42
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false

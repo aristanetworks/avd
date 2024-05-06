@@ -17,7 +17,7 @@ keys:
       keys:
         name:
           type: str
-          description: Access-list Name
+          description: Access-list Name.
           convert_types: [ int ]
         counters_per_entry:
           type: bool
@@ -32,12 +32,12 @@ keys:
             keys:
               sequence:
                 type: int
-                description: Sequence ID
+                description: Sequence ID.
                 convert_types:
                   - str
               action:
                 type: str
                 required: true
                 description: |
-                  Action as string
+                  Action as string.
                   Example: "deny ip any any"

@@ -11,8 +11,8 @@ keys:
       table: management-snmp-settings
     type: dict
     description: |-
-      SNMP settings
-      For SNMP local-interfaces see "source_interfaces.snmp"
+      SNMP settings.
+      For SNMP local-interfaces see "source_interfaces.snmp".
       Configuration of remote SNMP engine IDs are currently only possible using `structured_config`.
     keys:
       contact:
@@ -76,10 +76,10 @@ keys:
           keys:
             name:
               type: str
-              description: Username
+              description: Username.
             group:
               type: str
-              description: Group name
+              description: Group name.
             version:
               type: str
               valid_values: ["v1", "v2c", "v3"]

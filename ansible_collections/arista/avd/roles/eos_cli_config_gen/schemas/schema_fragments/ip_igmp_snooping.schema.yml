@@ -34,7 +34,7 @@ keys:
             type: bool
           address:
             type: str
-            description: IP Address
+            description: IP Address.
           query_interval:
             type: int
             convert_types:
@@ -77,7 +77,7 @@ keys:
               type: int
               convert_types:
               - str
-              description: VLAN ID
+              description: VLAN ID.
             enabled:
               type: bool
             querier:
@@ -87,7 +87,7 @@ keys:
                   type: bool
                 address:
                   type: str
-                  description: IP Address
+                  description: IP Address.
                 query_interval:
                   type: int
                   convert_types:
@@ -125,4 +125,4 @@ keys:
             proxy:
               type: bool
               description: |
-                Global proxy settings should be enabled before enabling per-vlan
+                Global proxy settings should be enabled before enabling per-vlan.

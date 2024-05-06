@@ -545,6 +545,20 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
    !
    address-family evpn
+{%         if router_bgp.address_family_evpn.bgp_additional_paths.receive is arista.avd.defined(true) %}
+      bgp additional-paths receive
+{%         endif %}
+{%         if router_bgp.address_family_evpn.bgp_additional_paths.send.any is arista.avd.defined(true) %}
+      bgp additional-paths send any
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.backup is arista.avd.defined(true) %}
+      bgp additional-paths send backup
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp is arista.avd.defined(true) %}
+      bgp additional-paths send ecmp
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp_limit is arista.avd.defined %}
+      bgp additional-paths send ecmp limit {{ router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp_limit }}
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.limit is arista.avd.defined %}
+      bgp additional-paths send limit {{ router_bgp.address_family_evpn.bgp_additional_paths.send.limit }}
+{%         endif %}
 {%         if router_bgp.address_family_evpn.next_hop_unchanged is arista.avd.defined(true) %}
       bgp next-hop-unchanged
 {%         endif %}
@@ -650,6 +664,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.route.export_ethernet_segment_ip_mass_withdraw is arista.avd.defined(true) %}
       route export ethernet-segment ip mass-withdraw
+{%         endif %}
+{%         if router_bgp.address_family_evpn.route.import_overlay_index_gateway is arista.avd.defined(true) %}
+      route import overlay-index gateway
 {%         endif %}
 {%     endif %}
 {# address family flow-spec ipv4 activation #}

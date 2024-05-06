@@ -1,0 +1,30 @@
+---
+type: l2leaf
+
+default_mgmt_method: inband
+
+fabric_flow_tracking:
+  uplinks:
+    enabled: true
+
+l2leaf:
+  defaults:
+    platform: vEOS-lab
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['flow-tracking-tests-leaf3', 'flow-tracking-tests-leaf4']
+    inband_mgmt_subnet: "10.254.254.0/24"
+
+  nodes:
+    - name: flow-tracking-tests-l2-leaf1
+      id: 1
+      mgmt_ip: 192.168.0.201/24
+      uplink_switch_interfaces:
+        - Ethernet31
+        - Ethernet31
+
+    - name: flow-tracking-tests-l2-leaf2
+      id: 2
+      mgmt_ip: 192.168.0.202/24
+      uplink_switch_interfaces:
+        - Ethernet32
+        - Ethernet32

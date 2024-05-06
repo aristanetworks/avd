@@ -12,5 +12,5 @@ keys:
       hide_passwords:
         type: bool
         description: |
-          Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configruation if true
+          Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configuration if true.
         default: false

@@ -19,7 +19,7 @@ keys:
                 type: str
                 valid_values: ["none", "start-stop", "stop-only"]
               group:
-                description: Group Name
+                description: Group Name.
                 type: str
               logging:
                 type: bool
@@ -30,7 +30,7 @@ keys:
                 type: str
                 valid_values: ["none", "start-stop", "stop-only"]
               group:
-                description: Group Name
+                description: Group Name.
                 type: str
               logging:
                 type: bool
@@ -44,7 +44,7 @@ keys:
                 type: str
                 valid_values: ["none", "start-stop", "stop-only"]
               group:
-                description: Group Name
+                description: Group Name.
                 type: str
       dot1x:
         type: dict
@@ -56,7 +56,7 @@ keys:
                 type: str
                 valid_values: ["start-stop", "stop-only"]
               group:
-                description: Group Name
+                description: Group Name.
                 type: str
       commands:
         type: dict
@@ -70,12 +70,12 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: "Privelege level 'all' or 0-15"
+                  description: Privilege level 'all' or 0-15.
                 type:
                   type: str
                   valid_values: ["none", "start-stop", "stop-only"]
                 group:
-                  description: Group Name
+                  description: Group Name.
                   type: str
                 logging:
                   type: bool
@@ -88,12 +88,12 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: "Privelege level 'all' or 0-15"
+                  description: Privilege level 'all' or 0-15.
                 type:
                   type: str
                   valid_values: ["none", "start-stop", "stop-only"]
                 group:
-                  description: Group Name
+                  description: Group Name.
                   type: str
                 logging:
                   type: bool

@@ -1,0 +1,18 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: platform_settings
+
+platform_settings:
+  - platforms: [ default ]
+    # Test for security_entropy_sources
+    security_entropy_sources:
+      hardware: True
+      haveged: True
+      cpu_jitter: True
+      hardware_exclusive: True
+    # Test for structured_config
+    structured_config:
+      ethernet_interfaces:
+        - name: Ethernet12
+          description: Interface Created from platform_settings.structured_config

@@ -190,7 +190,7 @@ class ChangeControlMixin:
     ) -> ChangeControl:
         """
         Monitor a Change control using arista.changecontrol.v1.ChangeControlService.Subscribe API for a response to the given cc_id.
-        Blocks until a reponse is returned or timed out.
+        Blocks until a response is returned or timed out.
 
         Parameters:
             cc_id: Unique identifier of the change control.

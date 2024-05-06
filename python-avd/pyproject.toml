@@ -55,7 +55,7 @@ exclude = ["vendor_overrides*"]
 [tool.setuptools.dynamic]
 version = {attr = "pyavd.__version__"}
 dependencies = {file = ["requirements.txt"]}
-optional-dependencies = {"mdtoc" = { file = ["requirements-mdtoc.txt"] }}
+optional-dependencies = {"mdtoc" = { file = ["requirements-mdtoc.txt"] }, "ansible" = { file = ["requirements-ansible-avd.txt"] } }
 
 [tool.black]
 line-length = 160
@@ -92,7 +92,7 @@ exclude_also = [
     "@(abc\\.)?abstractmethod",
     # Don't complain about TYPE_CHECKING blocks
     "if TYPE_CHECKING:",
-    # Dont' complain about Jinja2 internalcode
+    # Don't complain about Jinja2 internalcode
     # Note that except KeyError is a bit sad but this is the pattern
     "except KeyError:",
     "@internalcode",

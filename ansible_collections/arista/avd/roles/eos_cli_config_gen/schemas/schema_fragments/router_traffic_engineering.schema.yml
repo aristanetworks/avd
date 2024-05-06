@@ -30,7 +30,7 @@ keys:
               keys:
                 address:
                   type: str
-                  description: IPv4 or IPv6 address
+                  description: IPv4 or IPv6 address.
                 colors:
                   type: list
                   primary_key: value
@@ -53,7 +53,7 @@ keys:
                         type: str
                       sbfd_remote_discriminator:
                         type: str
-                        description: IPv4 address or 32 bit integer
+                        description: IPv4 address or 32 bit integer.
                         convert_types:
                         - int
                       path_group:

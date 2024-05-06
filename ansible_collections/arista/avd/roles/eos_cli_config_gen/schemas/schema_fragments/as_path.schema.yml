@@ -19,7 +19,7 @@ keys:
           keys:
             name:
               type: str
-              description: Access List Name
+              description: Access List Name.
             entries:
               type: list
               items:
@@ -30,7 +30,7 @@ keys:
                     valid_values: ["permit", "deny"]
                   match:
                     type: str
-                    description: Regex To Match
+                    description: Regex To Match.
                   origin:
                     type: str
                     valid_values: ["any", "egp", "igp", "incomplete"]

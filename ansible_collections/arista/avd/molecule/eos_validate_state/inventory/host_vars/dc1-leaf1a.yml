@@ -1,0 +1,6 @@
+# Custom router bgp structured_config to test external BGP peer
+custom_structured_configuration_router_bgp:
+  neighbors:
+    - ip_address: 10.1.1.1
+      description: External peer
+      peer_group: EVPN-OVERLAY-PEERS

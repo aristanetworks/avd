@@ -1,0 +1,14 @@
+---
+type: l3leaf
+
+fabric_flow_tracking:
+  uplinks:
+    enabled: false
+  endpoints:
+    enabled: false
+    name: FLOW-TRACKER-3
+  mlag_interfaces:
+    enabled: false
+  l3_interfaces:
+    enabled: false
+    name: FLOW-TRACKER-4

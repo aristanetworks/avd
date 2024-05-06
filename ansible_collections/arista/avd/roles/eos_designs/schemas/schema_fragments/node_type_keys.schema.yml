@@ -108,6 +108,13 @@ keys:
             `server` indicates that the router is a route-reflector.
 
             Only supported if `overlay_routing_protocol` is set to `ibgp`.
+        default_flow_tracker_type:
+          type: str
+          valid_values:
+            - "sampled"
+            - "hardware"
+          description: Set the default flow tracker type.
+          default: "sampled"
         mlag_support:
           type: bool
           default: false
@@ -214,7 +221,7 @@ keys:
         interface_descriptions:
           type: dict
           description: |
-            Override interface_descriptions templates
+            Override interface_descriptions templates.
             If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.
           keys:
             python_module:

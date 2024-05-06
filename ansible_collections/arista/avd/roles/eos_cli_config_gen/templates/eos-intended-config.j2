@@ -97,6 +97,8 @@
 {% include 'eos/switchport-port-security.j2' %}
 {# router adaptive-virtual-topology #}
 {% include 'eos/router-adaptive-virtual-topology.j2' %}
+{# router internet-exit configuration #}
+{% include 'eos/router-internet-exit.j2' %}
 {# router l2-vpn #}
 {% include 'eos/router-l2-vpn.j2' %}
 {# router path-selection #}
@@ -235,7 +237,7 @@
 {% include 'eos/ip-extcommunity-lists.j2' %}
 {# IP Extended Community Lists Regexp #}
 {% include 'eos/ip-extcommunity-lists-regexp.j2' %}
-{# Dynmaic Prefix-lists #}
+{# Dynamic Prefix-lists #}
 {% include 'eos/dynamic-prefix-lists.j2' %}
 {# Prefix-lists #}
 {% include 'eos/prefix-lists.j2' %}

@@ -168,20 +168,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: custom_flow_track_name
-      record_export:
-        on_inactive_timeout: 50000
-        on_interval: 300331
-      exporters:
-      - name: ayush_exporter
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 40000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -393,6 +379,20 @@ vxlan_interface:
         vni: 1
       - name: PROD
         vni: 42
+flow_tracking:
+  hardware:
+    trackers:
+    - name: custom_flow_track_name
+      record_export:
+        on_inactive_timeout: 50000
+        on_interval: 300331
+      exporters:
+      - name: ayush_exporter
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 40000
+    shutdown: false
 metadata:
   cv_tags:
     device_tags:

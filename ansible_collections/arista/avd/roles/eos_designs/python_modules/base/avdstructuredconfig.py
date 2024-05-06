@@ -25,7 +25,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
     a dict with the name of the method as key. This means that each key in the final dict corresponds to a method.
 
     The Class uses AvdFacts, as the base class, to inherit the _hostvars, keys and other attributes.
-    Other methods are included as "Mixins" to make the files more managable.
+    Other methods are included as "Mixins" to make the files more manageable.
 
     The order of the @cached_properties methods imported from Mixins will also control the order in the output.
     """
@@ -519,6 +519,16 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         return None
 
     @cached_property
+    def management_security(self) -> dict | None:
+        """
+        Return structured config for management_security.
+        """
+        if (entropy_sources := get(self.shared_utils.platform_settings, "security_entropy_sources")) is not None:
+            return {"entropy_sources": entropy_sources}
+
+        return None
+
+    @cached_property
     def tcam_profile(self) -> dict | None:
         """
         tcam_profile set based on platform_settings.tcam_profile fact
@@ -796,5 +806,12 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP HTTP Client"
         ):
             return source_interfaces
+
+        return None
+
+    @cached_property
+    def struct_cfgs(self) -> list | None:
+        if (struct_cfg := get(self.shared_utils.platform_settings, "structured_config")) is not None:
+            return [struct_cfg]
 
         return None

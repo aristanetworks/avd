@@ -14,7 +14,7 @@ keys:
       keys:
         name:
           type: str
-          description: Interface name
+          description: Interface name.
         vrf:
           type: str
           display_name: VRF

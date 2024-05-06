@@ -15,10 +15,10 @@ keys:
         keys:
           ipv4:
             type: str
-            description: IPv4 Address
+            description: IPv4 Address.
           ipv6:
             type: str
-            description: IPv6 Address
+            description: IPv6 Address.
       nexthop_fast_failover:
         type: bool
         default: false
@@ -32,7 +32,7 @@ keys:
           keys:
             name:
               type: str
-              description: Destination-VRF
+              description: Destination-VRF.
               convert_types:
                 - int
             leak_routes:
@@ -46,7 +46,7 @@ keys:
                       - int
                   subscribe_policy:
                     type: str
-                    description: Route-Map Policy
+                    description: Route-Map Policy.
             routes:
               type: dict
               keys:
@@ -57,4 +57,31 @@ keys:
                     keys:
                       name:
                         type: str
-                        description: Dynamic Prefix List Name
+                        description: Dynamic Prefix List Name.
+      control_functions:
+        type: dict
+        description: |-
+          Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.
+          Warning:
+          This configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.
+          The configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.
+        keys:
+          code_units:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Name of the code unit.
+                content:
+                  type: str
+                  required: true
+                  description: |-
+                    Content of route control function.
+                    e.g.
+                    function ACCEPT_ALL() {
+                      return true;
+                      }
+                    EOF
