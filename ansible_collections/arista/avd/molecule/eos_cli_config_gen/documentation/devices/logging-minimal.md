@@ -57,5 +57,4 @@ logging buffered 64000
 logging console informational
 logging monitor debugging
 logging facility syslog
-logging facility syslog
 ```

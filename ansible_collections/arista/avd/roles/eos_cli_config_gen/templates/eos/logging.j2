@@ -100,7 +100,4 @@ logging policy match match-list {{ match_list.name }} {{ match_list.action }}
 {{ logging_cli }}
 {%         endfor %}
 {%     endif %}
-{%     if logging.facility is arista.avd.defined %}
-logging facility {{ logging.facility }}
-{%     endif %}
 {% endif %}
