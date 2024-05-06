@@ -4,7 +4,7 @@
   delegate_to: localhost
   when: cv_token is arista.avd.defined
   vars:
-    # This is not working with ansuble-test, so adjust for manual testing.
+    # This is not working with ansible-test, so adjust for manual testing.
     cv_token: "{{ lookup(ansible.builtin.env, 'CV_TOKEN') }}"
     cv_server: "www.cv-play.corp.arista.io"
     serial_number: ABCD1234
