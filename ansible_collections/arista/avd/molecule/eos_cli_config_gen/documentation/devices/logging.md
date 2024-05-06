@@ -48,12 +48,6 @@ interface Management1
 | Trap | disabled |
 | Synchronous | critical |
 
-| Facility | Severity |
-| -------- | -------- |
-| AAA | warnings |
-| ACL | critical |
-| BGP | 0 |
-
 | Format Type | Setting |
 | ----------- | ------- |
 | Timestamp | traditional year timezone |
@@ -75,6 +69,12 @@ interface Management1
 | mgt | 30.30.30.7 | 100, 200 | TCP |
 | mgt | 40.40.40.7 | 300, 400 | UDP |
 | vrf_with_no_source_interface | 1.2.3.4 | Default | UDP |
+
+| Level Facility | Severity |
+| -------------- | -------- |
+| AAA | warnings |
+| ACL | critical |
+| BGP | 0 |
 
 #### Logging Servers and Features Device Configuration
 

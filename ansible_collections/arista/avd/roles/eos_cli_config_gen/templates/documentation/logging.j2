@@ -29,14 +29,6 @@
 {%     endif %}
 {%     if logging.format is arista.avd.defined %}
 
-| Facility | Severity |
-| -------- | -------- |
-{%         for level in logging.level | arista.avd.natural_sort('facility_name') %}
-{%             if level.facility_name is arista.avd.defined and level.severity is arista.avd.defined %}
-| {{ level.facility_name }} | {{ level.severity }} |
-{%             endif %}
-{%         endfor %}
-
 | Format Type | Setting |
 | ----------- | ------- |
 {%         if logging.format.timestamp is arista.avd.defined %}
@@ -74,6 +66,16 @@
 {%                 for host in vrf.hosts | arista.avd.natural_sort('name') %}
 | {{ vrf.name }} | {{ host.name }} | {{ host.ports | arista.avd.default(['Default']) | join(', ') }} | {{ host.protocol | arista.avd.default('UDP') | upper }} |
 {%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if logging.level is arista.avd.defined %}
+
+| Level Facility | Severity |
+| -------------- | -------- |
+{%         for level in logging.level | arista.avd.natural_sort('facility_name') %}
+{%             if level.severity is arista.avd.defined %}
+| {{ level.facility_name }} | {{ level.severity }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
