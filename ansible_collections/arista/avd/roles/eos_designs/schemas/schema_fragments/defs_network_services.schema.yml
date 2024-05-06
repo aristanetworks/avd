@@ -84,7 +84,7 @@ $defs:
           default: false
           description: |-
             Redistribute the connected subnet for the uplunk per VRF into overlay BGP.
-            By default the uplink  subnets are not redistributed into the overlay routing protocol per VRF.
+            By default the uplink subnets are not redistributed into the overlay routing protocol per VRF.
             Setting `redistribute_uplink_subnets_vrfs: true` under a tenant will change this default and allow redistribution of these subnets for all VRFs in the tenant.
             This setting can be overridden per VRF.
         bgp_peer_groups:
@@ -366,7 +366,7 @@ $defs:
                 default: false
                 description: |-
                   Redistribute the connected subnet for the uplunk per VRF into overlay BGP.
-                  By default the uplink  subnets are not redistributed into the overlay routing protocol per VRF.
+                  By default the uplink subnets are not redistributed into the overlay routing protocol per VRF.
                   Setting `redistribute_uplink_subnets_vrfs: true` under a VRF will change this default and/or override the tenant-wide setting.
               mlag_ibgp_peering_vlan:
                 type: int
