@@ -16,6 +16,7 @@ CONFIGLET_ID_PREFIX = "avd-"
 CONFIGLET_NAME_PREFIX = "AVD_"
 CONFIGLET_CONTAINER_ID = f"{CONFIGLET_ID_PREFIX}configlets"
 STATIC_CONFIGLET_STUDIO_ID = "studio-static-configlet"
+PARALLEL_COROUTINES = 20
 
 
 async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvResult, cv_client: CVClient) -> None:
@@ -36,7 +37,7 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
 
     # Build Todo with CVEosConfig objects that exist on CloudVision. Add the rest to skipped.
     result.skipped_configs.extend(config for config in configs if not config.device._exists_on_cv)
-    LOGGER.info("deploy_configs_to_cv: %s skipped configs because they devices are missing.", len(result.skipped_configs))
+    LOGGER.info("deploy_configs_to_cv: %s skipped configs because the devices are missing from CloudVision.", len(result.skipped_configs))
     todo_configs = [config for config in configs if config.device._exists_on_cv]
     LOGGER.info("deploy_configs_to_cv: %s todo configs.", len(todo_configs))
 
@@ -44,90 +45,128 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
     if not todo_configs:
         return
 
-    # Get or create root level container for AVD configurations. Using the hardcoded id from CONFIGLET_CONTAINER_ID.
-    cv_containers = await cv_client.get_configlet_containers(workspace_id=result.workspace.id, container_ids=[CONFIGLET_CONTAINER_ID])
-    LOGGER.info("deploy_configs_to_cv: Got AVD root container? %s", bool(cv_containers))
-    if not cv_containers:
-        # Create the root level container
-        LOGGER.info("deploy_configs_to_cv: Creating AVD root container '%s'", CONFIGLET_CONTAINER_ID)
-        await cv_client.set_configlet_container(
-            workspace_id=result.workspace.id,
-            container_id=CONFIGLET_CONTAINER_ID,
-            display_name="AVD Configurations",
-            description="Configurations created and uploaded by AVD",
-            query="device:*",
-        )
-        # Add the root level container to the list of root level containers using the studio inputs API (!?!)
-        root_containers: list = await cv_client.get_studio_inputs_with_path(
-            studio_id=STATIC_CONFIGLET_STUDIO_ID, workspace_id=result.workspace.id, input_path=["configletAssignmentRoots"], default_value=[]
-        )
-        LOGGER.info("deploy_configs_to_cv: Found %s root containers.", len(root_containers))
-        if CONFIGLET_CONTAINER_ID not in root_containers:
-            LOGGER.info("deploy_configs_to_cv: AVD root container not assigned as root container in Static Config Studio. Fixing...")
-            root_containers.append(CONFIGLET_CONTAINER_ID)
-            await cv_client.set_studio_inputs(
-                studio_id=STATIC_CONFIGLET_STUDIO_ID,
-                workspace_id=result.workspace.id,
-                input_path=["configletAssignmentRoots"],
-                inputs=root_containers,
-            )
-        cv_containers = await cv_client.get_configlet_containers(
-            workspace_id=result.workspace.id,
-            container_ids=[CONFIGLET_CONTAINER_ID],
-        )
+    # First create all configlets in parallel coroutines.
+    await deploy_configlets_to_cv(todo_configs, result.workspace.id, cv_client)
+    # Next create all containers in parallel coroutines.
+    await deploy_configlet_containers_to_cv(todo_configs, result.workspace.id, cv_client)
 
-    existing_device_container_ids = cv_containers[0].child_assignment_ids.values
-    LOGGER.info("deploy_configs_to_cv: %s existing device containers under AVD root container.", len(existing_device_container_ids))
-    update_device_container_ids = existing_device_container_ids.copy()
+    result.deployed_configs.extend(todo_configs)
 
-    # Bluntly setting everything like nothing was there.
-    # Alternative would be to pull down all configlets and containers
-    # to compare them with the target.
+
+async def deploy_configlets_to_cv(configs: list[CVEosConfig], workspace_id: str, cv_client: CVClient) -> None:
+    """
+    Bluntly setting configs like nothing was there. Only create missing containers
+    TODO: Fetch config checksums for existing configs and only upload what is needed.
+    """
     configlet_coroutines = []
-    container_coroutines = []
-    for config in todo_configs:
-        # For now we reuse configlet_id as container_id.
-        container_id = configlet_id = f"{CONFIGLET_ID_PREFIX}{config.device.serial_number}"
+    for config in configs:
+        configlet_id = f"{CONFIGLET_ID_PREFIX}{config.device.serial_number}"
         configlet_coroutines.append(
             cv_client.set_configlet_from_file(
-                workspace_id=result.workspace.id,
+                workspace_id=workspace_id,
                 configlet_id=configlet_id,
                 file=config.file,
                 display_name=config.configlet_name or f"{CONFIGLET_NAME_PREFIX}{config.device.hostname}",
                 description=f"Configuration created and uploaded by AVD for {config.device.hostname}",
             )
         )
-        container_coroutines.append(
-            cv_client.set_configlet_container(
-                workspace_id=result.workspace.id,
-                container_id=container_id,
-                display_name=f"{config.device.hostname}",
-                description=f"Configuration created and uploaded by AVD for {config.device.hostname}",
-                query=f"device:{config.device.serial_number}",
-                configlet_ids=[configlet_id],
-            )
+
+    LOGGER.info("deploy_configs_to_cv: Deploying %s configlets in batches of %s.", len(configlet_coroutines), PARALLEL_COROUTINES)
+    for index, coroutines in enumerate(batch(configlet_coroutines, PARALLEL_COROUTINES), start=1):
+        LOGGER.info("deploy_configs_to_cv: Batch %s", index)
+        await gather(*coroutines)
+
+
+async def get_existing_device_container_ids_from_root_container(workspace_id: str, cv_client: CVClient) -> list[str]:
+    """
+    Get or create root level container for AVD configurations. Using the hardcoded id from CONFIGLET_CONTAINER_ID.
+    Then return the list of existing device container ids. (Always empty if we just created the root container)
+    """
+    root_cv_containers = await cv_client.get_configlet_containers(workspace_id=workspace_id, container_ids=[CONFIGLET_CONTAINER_ID])
+    LOGGER.info("get_or_create_configlet_root_container: Got AVD root container? %s", bool(root_cv_containers))
+    if root_cv_containers:
+        return root_cv_containers[0].child_assignment_ids.values
+
+    # Create the root level container
+    LOGGER.info("deploy_configs_to_cv: Creating AVD root container '%s'", CONFIGLET_CONTAINER_ID)
+    await cv_client.set_configlet_container(
+        workspace_id=workspace_id,
+        container_id=CONFIGLET_CONTAINER_ID,
+        display_name="AVD Configurations",
+        description="Configurations created and uploaded by AVD",
+        query="device:*",
+    )
+    # Add the root level container to the list of root level containers using the studio inputs API (!?!)
+    root_containers: list = await cv_client.get_studio_inputs_with_path(
+        studio_id=STATIC_CONFIGLET_STUDIO_ID, workspace_id=workspace_id, input_path=["configletAssignmentRoots"], default_value=[]
+    )
+    LOGGER.info("deploy_configs_to_cv: Found %s root containers.", len(root_containers))
+    if CONFIGLET_CONTAINER_ID not in root_containers:
+        LOGGER.info("deploy_configs_to_cv: AVD root container not assigned as root container in Static Config Studio. Fixing...")
+        root_containers.append(CONFIGLET_CONTAINER_ID)
+        await cv_client.set_studio_inputs(
+            studio_id=STATIC_CONFIGLET_STUDIO_ID,
+            workspace_id=workspace_id,
+            input_path=["configletAssignmentRoots"],
+            inputs=root_containers,
         )
-        if container_id not in update_device_container_ids:
-            update_device_container_ids.append(container_id)
+    return []
 
-        result.deployed_configs.append(config)
 
-    # First create all configlets in parallel coroutines.
-    LOGGER.info("deploy_configs_to_cv: Deploying %s configlets in batches of 20.", len(configlet_coroutines))
-    for index, coroutines in enumerate(batch(configlet_coroutines, 20), start=1):
+async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspace_id: str, cv_client: CVClient) -> None:
+    """
+    Identify existing containers and ensure they have the correct configuration.
+    Then update/create as needed.
+
+    TODO: Refactor to set_some on supported CV versions
+    """
+    if existing_device_container_ids := get_existing_device_container_ids_from_root_container(workspace_id, cv_client):
+        existing_device_containers = await cv_client.get_configlet_containers(
+            workspace_id=workspace_id,
+            container_ids=existing_device_container_ids,
+        )
+        LOGGER.info("deploy_configs_to_cv: %s existing device containers under AVD root container.", len(existing_device_containers))
+        # Create dict keyed by container id with value of tuple containing key container parameters. Used later to detect changes.
+        existing_device_containers_by_id = {
+            cv_container.key.configlet_assignment_id: (cv_container.display_name, cv_container.description, cv_container.query, cv_container.configlet_ids)
+            for cv_container in existing_device_containers
+        }
+    else:
+        existing_device_containers = []
+        existing_device_containers_by_id = {}
+
+    container_coroutines = []
+    update_device_container_ids = set()
+    for config in configs:
+        # For now we reuse configlet_id as container_id.
+        container_id = configlet_id = f"{CONFIGLET_ID_PREFIX}{config.device.serial_number}"
+        display_name = f"{config.device.hostname}"
+        description = f"Configuration created and uploaded by AVD for {config.device.hostname}"
+        query = f"device:{config.device.serial_number}"
+        configlet_ids = [configlet_id]
+        if existing_device_containers_by_id.get(container_id) != (display_name, description, query, configlet_ids):
+            update_device_container_ids.add(container_id)
+            container_coroutines.append(
+                cv_client.set_configlet_container(
+                    workspace_id=workspace_id,
+                    container_id=container_id,
+                    display_name=display_name,
+                    description=description,
+                    query=query,
+                    configlet_ids=configlet_ids,
+                )
+            )
+
+    LOGGER.info("deploy_configs_to_cv: Deploying %s configlet assignments / containers in batches of %s.", len(container_coroutines), PARALLEL_COROUTINES)
+    for index, coroutines in enumerate(batch(container_coroutines, PARALLEL_COROUTINES), start=1):
         LOGGER.info("deploy_configs_to_cv: Batch %s", index)
         await gather(*coroutines)
-    # Next create all containers in parallel coroutines.
-    LOGGER.info("deploy_configs_to_cv: Deploying %s configlet assignments / containers in batches of 20.", len(container_coroutines))
-    for index, coroutines in enumerate(batch(container_coroutines, 20), start=1):
-        LOGGER.info("deploy_configs_to_cv: Batch %s", index)
-        await gather(*coroutines)
 
-    # Update the device_container_ids on the root level container.
-    if update_device_container_ids != existing_device_container_ids:
+    # Update any missing update_device_container_ids on the root level container.
+    if not update_device_container_ids.issubset(existing_device_containers_by_id):
         LOGGER.info("deploy_configs_to_cv: Updating root container children.")
         await cv_client.set_configlet_container(
-            workspace_id=result.workspace.id,
+            workspace_id=workspace_id,
             container_id=CONFIGLET_CONTAINER_ID,
-            child_assignment_ids=update_device_container_ids,
+            child_assignment_ids=list(update_device_container_ids.union(existing_device_containers_by_id)),
         )
