@@ -4546,10 +4546,11 @@
           },
           "type": {
             "type": "string",
+            "description": "Internet-exit policy type.\ndirect: Exit directly over wan interfaces\nzscaler: Exit using zscaler secure web gateway service",
             "enum": [
+              "direct",
               "zscaler"
             ],
-            "description": "Internet-exit policy type.\nOnly Zscaler supported.",
             "title": "Type"
           },
           "fallback_to_system_default": {
@@ -7240,14 +7241,13 @@
                       "title": "Tunnel Interface Numbers"
                     }
                   },
-                  "required": [
-                    "tunnel_interface_numbers",
-                    "name"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Policies"
               }

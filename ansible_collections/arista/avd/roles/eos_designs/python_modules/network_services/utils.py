@@ -706,13 +706,60 @@ class UtilsMixin:
         """
         Return a list of connections (dicts) for the given internet_exit_policy.
 
-        These are useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
+        These are useful for easy creation of connectivity-monitor, service-intestion connections, exit-groups, tunnels etc.
         """
         policy_name = internet_exit_policy["name"]
 
-        # Only supporting Zscaler for now
-        if get(internet_exit_policy, "type") != "zscaler":
+        if get(internet_exit_policy, "type") == "direct":
+            return self.get_direct_internet_exit_connections(internet_exit_policy)
+        elif get(internet_exit_policy, "type") == "zscaler":
+            return self.get_zscaler_internet_exit_connections(internet_exit_policy)
+        else:
             raise AristaAvdError(f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={policy_name}].")
+
+    def get_direct_internet_exit_connections(self, internet_exit_policy: dict) -> list:
+        """
+        Return a list of connections (dicts) for the given internet_exit_policy of type direct.
+        """
+        if get(internet_exit_policy, "type") != "direct":
+            return []
+
+        connections = []
+
+        # Check if the policy has any local interface
+        for wan_interface in self.shared_utils.wan_interfaces:
+            wan_interface_internet_exit_policies = get(wan_interface, "cv_pathfinder_internet_exit.policies", default=[])
+            if get_item(wan_interface_internet_exit_policies, "name", internet_exit_policy["name"]) is None:
+                continue
+
+            if not wan_interface.get("peer_ip"):
+                raise AristaAvdMissingVariableError(
+                    f"{wan_interface['name']} peer_ip needs to be set. When using wan interface "
+                    "for direct type internet exit, peer_ip is used for nexthop, and connectivity monitoring."
+                )
+            connections.append(
+                {
+                    "type": "ethernet",
+                    "name": wan_interface["name"],
+                    "monitor_name": wan_interface["name"],
+                    "monitor_host": wan_interface["peer_ip"],
+                    "next_hop": wan_interface["peer_ip"],
+                    "source_interface": wan_interface["name"],
+                    "description": f"Internet Exit {internet_exit_policy['name']}",
+                    "exit_group": f"{internet_exit_policy['name']}",
+                }
+            )
+
+        return connections
+
+    def get_zscaler_internet_exit_connections(self, internet_exit_policy: dict) -> list:
+        """
+        Return a list of connections (dicts) for the given internet_exit_policy of type zscaler.
+        """
+        if get(internet_exit_policy, "type") != "zscaler":
+            return []
+
+        policy_name = internet_exit_policy["name"]
 
         cloud_name = get(self._zscaler_endpoints, "cloud_name", required=True)
         connections = []
@@ -748,6 +795,9 @@ class UtilsMixin:
                 connections.append(
                     {
                         **connection_base,
+                        "name": f"IE-Tunnel{tunnel_id}",
+                        "monitor_name": f"IE-Tunnel{tunnel_id}",
+                        "monitor_host": destination_ip,
                         "tunnel_id": tunnel_id,
                         "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
                         "tunnel_destination_ip": destination_ip,

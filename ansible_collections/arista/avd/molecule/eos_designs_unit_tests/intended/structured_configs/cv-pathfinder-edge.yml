@@ -408,6 +408,7 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
   - name: DEFAULT-AVT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
+    internet_exit_policy: DIRECT-EXIT-POLICY-1
   - name: DEFAULT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY-VOICE
@@ -669,6 +670,11 @@ ip_nat:
 router_service_insertion:
   enabled: true
   connections:
+  - name: Ethernet2
+    ethernet_interface:
+      name: Ethernet2
+      next_hop: 172.16.5.4
+    monitor_connectivity_host: Ethernet2
   - name: IE-Tunnel100
     tunnel_interface:
       primary: Tunnel100
@@ -683,6 +689,9 @@ router_service_insertion:
     monitor_connectivity_host: IE-Tunnel102
 router_internet_exit:
   exit_groups:
+  - name: DIRECT-EXIT-POLICY-1
+    local_connections:
+    - name: Ethernet2
   - name: ZSCALER-EXIT-POLICY-1_PRI
     local_connections:
     - name: IE-Tunnel100
@@ -693,6 +702,9 @@ router_internet_exit:
     local_connections:
     - name: IE-Tunnel102
   policies:
+  - name: DIRECT-EXIT-POLICY-1
+    exit_groups:
+    - name: DIRECT-EXIT-POLICY-1
   - name: ZSCALER-EXIT-POLICY-1
     exit_groups:
     - name: ZSCALER-EXIT-POLICY-1_PRI
@@ -751,6 +763,8 @@ tunnel_interfaces:
   nat_profile: VRF-AWARE-NAT
 monitor_connectivity:
   interface_sets:
+  - name: SET-Ethernet2
+    interfaces: Ethernet2
   - name: SET-Tunnel100
     interfaces: Tunnel100
   - name: SET-Tunnel101
@@ -758,6 +772,11 @@ monitor_connectivity:
   - name: SET-Tunnel102
     interfaces: Tunnel102
   hosts:
+  - name: Ethernet2
+    description: Internet Exit DIRECT-EXIT-POLICY-1
+    ip: 172.16.5.4
+    local_interfaces: SET-Ethernet2
+    address_only: false
   - name: IE-Tunnel100
     description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
     ip: 10.37.121.1

@@ -34,28 +34,32 @@ class MonitorConnectivityMixin(UtilsMixin):
         for policy in self._filtered_internet_exit_policies:
             for connection in policy["connections"]:
                 if connection["type"] == "tunnel":
-                    interface_sets.append(
-                        {
-                            "name": f"SET-Tunnel{connection['tunnel_id']}",
-                            "interfaces": f"Tunnel{connection['tunnel_id']}",
-                        }
-                    )
+                    interfaceName = f"Tunnel{connection['tunnel_id']}"
+                elif connection["type"] == "ethernet":
+                    interfaceName = connection["source_interface"]
 
-                    host = {
-                        "name": f"IE-Tunnel{connection['tunnel_id']}",
-                        "description": connection["description"],
-                        "ip": connection["tunnel_destination_ip"],
-                        "local_interfaces": f"SET-Tunnel{connection['tunnel_id']}",
-                        "address_only": False,
-                        "url": connection["monitor_url"],
+                interface_sets.append(
+                    {
+                        "name": f"SET-{interfaceName}",
+                        "interfaces": interfaceName,
                     }
-                    append_if_not_duplicate(
-                        list_of_dicts=hosts,
-                        primary_key="name",
-                        new_dict=host,
-                        context="Monitor connectivity host for Internet Exit policy",
-                        context_keys=["name"],
-                    )
+                )
+
+                host = {
+                    "name": connection["monitor_name"],
+                    "description": connection["description"],
+                    "ip": connection["monitor_host"],
+                    "local_interfaces": f"SET-{interfaceName}",
+                    "address_only": False,
+                    "url": connection.get("monitor_url"),
+                }
+                append_if_not_duplicate(
+                    list_of_dicts=hosts,
+                    primary_key="name",
+                    new_dict=host,
+                    context="Monitor connectivity host for Internet Exit policy",
+                    context_keys=["name"],
+                )
 
         monitor_connectivity["interface_sets"] = interface_sets
         monitor_connectivity["hosts"] = hosts

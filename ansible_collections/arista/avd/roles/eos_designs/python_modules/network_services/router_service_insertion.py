@@ -32,12 +32,23 @@ class RouterServiceInsertionMixin(UtilsMixin):
                 if connection["type"] == "tunnel":
                     connections.append(
                         {
-                            "name": f"IE-Tunnel{connection['tunnel_id']}",
+                            "name": connection["name"],
                             "tunnel_interface": {
                                 "primary": f"Tunnel{connection['tunnel_id']}",
                             },
                             # TODO this host need to match monitor connectivity, maybe centralize name generation in utils
-                            "monitor_connectivity_host": f"IE-Tunnel{connection['tunnel_id']}",
+                            "monitor_connectivity_host": connection["monitor_name"],
+                        }
+                    )
+                elif connection["type"] == "ethernet":
+                    connections.append(
+                        {
+                            "name": connection["name"],
+                            "ethernet_interface": {
+                                "name": connection["source_interface"],
+                                "next_hop": connection["next_hop"],
+                            },
+                            "monitor_connectivity_host": connection["monitor_name"],
                         }
                     )
 
