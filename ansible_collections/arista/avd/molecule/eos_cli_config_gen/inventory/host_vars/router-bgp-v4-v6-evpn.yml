@@ -141,10 +141,16 @@ router_bgp:
             route_targets:
               - "1:30001"
             route_map: RM-DENY-DEFAULT
+          - address_family: vpn-ipv4
+            route_targets:
+              - "1:30011"
+            rcf: RT_IMPORT_AF_RCF()
+            vpn_route_filter_rcf: RT_IMPORT_AF_RCF_FILTER()
         export:
           - address_family: evpn
             route_targets:
               - "1:30001"
+            rcf: RT_EXPORT_AF_RCF()
       redistribute_routes:
         - source_protocol: connected
     - name: Tenant_B
