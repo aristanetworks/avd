@@ -202,7 +202,7 @@ repos:
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.5.1,<4.18']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.39.0
+    rev: v0.40.0
     hooks:
       - id: markdownlint
         name: Check for Linting errors on MarkDown files
