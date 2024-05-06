@@ -160,7 +160,6 @@ keys:
           keys:
             facility_name:
               type: str
-              description: Facility name.
             severity:
               type: str
               convert_types:

@@ -42,7 +42,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global</samp>](## "logging.event.storm_control.discards.global") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "logging.event.storm_control.discards.interval") | Integer |  |  | Min: 10<br>Max: 65535 | Logging interval in seconds. |
     | [<samp>&nbsp;&nbsp;level</samp>](## "logging.level") | List, items: Dictionary |  |  |  | Configure logging severity. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;facility_name</samp>](## "logging.level.[].facility_name") | String | Required, Unique |  |  | Facility name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;facility_name</samp>](## "logging.level.[].facility_name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;severity</samp>](## "logging.level.[].severity") | String |  |  | Valid Values:<br>- <code>alerts</code><br>- <code>critical</code><br>- <code>debugging</code><br>- <code>emergencies</code><br>- <code>errors</code><br>- <code>informational</code><br>- <code>notifications</code><br>- <code>warnings</code><br>- <code>0</code><br>- <code>1</code><br>- <code>2</code><br>- <code>3</code><br>- <code>4</code><br>- <code>5</code><br>- <code>6</code><br>- <code>7</code> | Severity of facility. Below are the supported severites.<br>alerts         Immediate action needed           (severity=1)<br>critical       Critical conditions               (severity=2)<br>debugging      Debugging messages                (severity=7)<br>emergencies    System is unusable                (severity=0)<br>errors         Error conditions                  (severity=3)<br>informational  Informational messages            (severity=6)<br>notifications  Normal but significant conditions (severity=5)<br>warnings       Warning conditions                (severity=4)<br><0-7>          Severity level value |
 
 === "YAML"
@@ -115,8 +115,6 @@
 
       # Configure logging severity.
       level:
-
-          # Facility name.
         - facility_name: <str; required; unique>
 
           # Severity of facility. Below are the supported severites.

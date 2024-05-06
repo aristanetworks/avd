@@ -25898,7 +25898,6 @@
                       "properties": {
                         "facility_name": {
                           "type": "string",
-                          "description": "Facility name.",
                           "title": "Facility Name"
                         },
                         "severity": {

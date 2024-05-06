@@ -48,6 +48,12 @@ interface Management1
 | Trap | disabled |
 | Synchronous | critical |
 
+| Facility | Severity |
+| -------- | -------- |
+| AAA | warnings |
+| ACL | critical |
+| BGP | 0 |
+
 | Format Type | Setting |
 | ----------- | ------- |
 | Timestamp | traditional year timezone |

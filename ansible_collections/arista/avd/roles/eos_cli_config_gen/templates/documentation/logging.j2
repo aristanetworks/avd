@@ -29,6 +29,14 @@
 {%     endif %}
 {%     if logging.format is arista.avd.defined %}
 
+| Facility | Severity |
+| -------- | -------- |
+{%         for level in logging.level | arista.avd.natural_sort('facility_name') %}
+{%             if level.facility_name is arista.avd.defined and level.severity is arista.avd.defined %}
+| {{ level.facility_name }} | {{ level.severity }} |
+{%             endif %}
+{%         endfor %}
+
 | Format Type | Setting |
 | ----------- | ------- |
 {%         if logging.format.timestamp is arista.avd.defined %}
