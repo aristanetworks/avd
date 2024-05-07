@@ -251,6 +251,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         # TODO make this nicer
         if self.shared_utils.use_uplinks_for_wan_ha is False:
+            wan_ha_links_flow_tracker = self.get_flow_tracker(None, "wan_ha_links")
             for index, interface in enumerate(get(self.shared_utils.switch_data_combined, "wan_ha.ha_interfaces", required=True)):
                 ha_interface = {
                     "name": interface,
@@ -260,11 +261,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "shutdown": False,
                     "description": "LAN HA OMG",
                     "ip_address": self.shared_utils.wan_ha_ip_addresses[index],
+                    "flow_tracker": interface.get("flow_tracker", wan_ha_links_flow_tracker),
                 }
-
-                # Configuring flow tracking on LAN interfaces
-                if self.shared_utils.is_cv_pathfinder_client:
-                    ethernet_interface["flow_tracker"] = {"hardware": self.shared_utils.wan_flow_tracker_name}
 
                 append_if_not_duplicate(
                     list_of_dicts=ethernet_interfaces,

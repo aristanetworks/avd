@@ -1320,6 +1320,10 @@ keys:
         description: Enable flow-tracking on all dps_interfaces.
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
+      wan_ha_links:
+        description: Enable flow-tracking on all non uplink WAN HA links..
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
   fabric_ip_addressing:
     type: dict
     keys:
@@ -8539,6 +8543,11 @@ $defs:
                   Can be used to reserve interfaces for future parallel HA links.
 
                   '
+              flow_tracking:
+                type: dict
+                $ref: eos_designs#/$defs/flow_tracking_link
+                description: Configures flow-tracking on the interfaces. Overrides
+                  `fabric_flow_tracking.wan_ha_links` setting.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration

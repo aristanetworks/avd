@@ -20,6 +20,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.wan_ha.ha_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for WAN HA connectivity.<br>IP is derived from the node id.<br>Not used for uplink interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.defaults.wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve interfaces for future parallel HA links.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.defaults.wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.defaults.dps_mss_ipv4") | String |  | `auto` |  | IPv4 MSS value configured under "router path-selection" on WAN Devices. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
@@ -36,6 +39,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.ha_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for WAN HA connectivity.<br>IP is derived from the node id.<br>Not used for uplink interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve interfaces for future parallel HA links.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].dps_mss_ipv4") | String |  | `auto` |  | IPv4 MSS value configured under "router path-selection" on WAN Devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_role</samp>](## "<node_type_keys.key>.node_groups.[].wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | Override the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector.<br><br>Only supported if `overlay_routing_protocol` is set to `ibgp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_transit_mode</samp>](## "<node_type_keys.key>.node_groups.[].cv_pathfinder_transit_mode") | String |  |  | Valid Values:<br>- <code>region</code><br>- <code>zone</code> | Configure the transit mode for a WAN client for CV Pathfinder designs<br>only when the `wan_mode` root key is set to `cv_pathfinder`.<br><br>'zone' is currently not supported. |
@@ -48,6 +54,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.ha_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for WAN HA connectivity.<br>IP is derived from the node id.<br>Not used for uplink interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve interfaces for future parallel HA links.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.node_groups.[].dps_mss_ipv4") | String |  | `auto` |  | IPv4 MSS value configured under "router path-selection" on WAN Devices. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
@@ -62,6 +71,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.ha_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for WAN HA connectivity.<br>IP is derived from the node id.<br>Not used for uplink interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve interfaces for future parallel HA links.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.nodes.[].dps_mss_ipv4") | String |  | `auto` |  | IPv4 MSS value configured under "router path-selection" on WAN Devices. |
 
 === "YAML"
@@ -130,6 +142,13 @@
           # Number of parallel links towards HA switches.
           # Can be used to reserve interfaces for future parallel HA links.
           max_ha_interfaces: <int>
+
+          # Configures flow-tracking on the interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
+          flow_tracking:
+            enabled: <bool>
+
+            # Flow tracker name as defined in flow_tracking_settings.
+            name: <str>
 
         # IPv4 MSS value configured under "router path-selection" on WAN Devices.
         dps_mss_ipv4: <str; default="auto">
@@ -206,6 +225,13 @@
                 # Can be used to reserve interfaces for future parallel HA links.
                 max_ha_interfaces: <int>
 
+                # Configures flow-tracking on the interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
+                flow_tracking:
+                  enabled: <bool>
+
+                  # Flow tracker name as defined in flow_tracking_settings.
+                  name: <str>
+
               # IPv4 MSS value configured under "router path-selection" on WAN Devices.
               dps_mss_ipv4: <str; default="auto">
 
@@ -267,6 +293,13 @@
             # Number of parallel links towards HA switches.
             # Can be used to reserve interfaces for future parallel HA links.
             max_ha_interfaces: <int>
+
+            # Configures flow-tracking on the interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
+            flow_tracking:
+              enabled: <bool>
+
+              # Flow tracker name as defined in flow_tracking_settings.
+              name: <str>
 
           # IPv4 MSS value configured under "router path-selection" on WAN Devices.
           dps_mss_ipv4: <str; default="auto">
@@ -335,6 +368,13 @@
             # Number of parallel links towards HA switches.
             # Can be used to reserve interfaces for future parallel HA links.
             max_ha_interfaces: <int>
+
+            # Configures flow-tracking on the interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
+            flow_tracking:
+              enabled: <bool>
+
+              # Flow tracker name as defined in flow_tracking_settings.
+              name: <str>
 
           # IPv4 MSS value configured under "router path-selection" on WAN Devices.
           dps_mss_ipv4: <str; default="auto">

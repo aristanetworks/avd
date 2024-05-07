@@ -5496,6 +5496,26 @@
             "^_.+$": {}
           },
           "title": "DPS Interfaces"
+        },
+        "wan_ha_links": {
+          "description": "Enable flow-tracking on all non uplink WAN HA links..",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Wan Ha Links"
         }
       },
       "additionalProperties": false,
