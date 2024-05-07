@@ -24,7 +24,7 @@ keys:
           description: |-
             Internet-exit policy type.
             direct: Exit directly over wan interfaces
-            zscaler: Exit using zscaler secure web gateway service
+            zscaler: Exit using Zscaler secure web gateway service
           valid_values:
             - direct
             - zscaler
