@@ -22879,10 +22879,17 @@
           "properties": {
             "interval": {
               "type": "integer",
-              "minimum": 1,
-              "maximum": 300,
-              "description": "Maximum interval between two SPFs in seconds.",
+              "description": "Maximum interval between two SPFs in seconds or milliseconds.\nRange in seconds: <1-300>\nRange in milliseconds: <1-300000>",
               "title": "Interval"
+            },
+            "interval_unit": {
+              "type": "string",
+              "enum": [
+                "seconds",
+                "milliseconds"
+              ],
+              "description": "If interval unit is not defined EOS takes `seconds` by default.",
+              "title": "Interval Unit"
             },
             "wait_interval": {
               "type": "integer",
@@ -22890,6 +22897,13 @@
               "maximum": 300000,
               "description": "Initial wait interval for SPF in milliseconds.",
               "title": "Wait Interval"
+            },
+            "hold_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300000,
+              "description": "Hold interval between the first and second SPF runs in milliseconds.",
+              "title": "Hold Interval"
             }
           },
           "additionalProperties": false,
