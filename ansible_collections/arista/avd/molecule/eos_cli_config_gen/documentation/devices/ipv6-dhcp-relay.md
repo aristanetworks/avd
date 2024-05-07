@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [IPv6 DHCP Relay](#ipv6-dhcp-relay)
-  - [IPv6 DHCP Relay](#ipv6-dhcp-relay-1)
+  - [IPv6 DHCP Relay Summary](#ipv6-dhcp-relay-summary)
   - [IPv6 DHCP Relay Device Configuration](#ipv6-dhcp-relay-device-configuration)
 
 ## Management
@@ -38,7 +38,7 @@ interface Management1
 
 ## IPv6 DHCP Relay
 
-### IPv6 DHCP Relay
+### IPv6 DHCP Relay Summary
 
 DhcpRelay Agent is in always-on mode.
 

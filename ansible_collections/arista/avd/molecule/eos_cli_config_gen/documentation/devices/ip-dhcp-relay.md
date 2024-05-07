@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [IP DHCP Relay](#ip-dhcp-relay)
-  - [IP DHCP Relay](#ip-dhcp-relay-1)
+  - [IP DHCP Relay Summary](#ip-dhcp-relay-summary)
   - [IP DHCP Relay Device Configuration](#ip-dhcp-relay-device-configuration)
 
 ## Management
@@ -38,13 +38,13 @@ interface Management1
 
 ## IP DHCP Relay
 
-### IP DHCP Relay
+### IP DHCP Relay Summary
+
+IP DHCP Relay Option 82 is enabled.
 
 DhcpRelay Agent is in always-on mode.
 
 Forwarding requests with secondary IP addresses in the "giaddr" field is allowed.
-
-IP DHCP Relay Option 82 is enabled.
 
 ### IP DHCP Relay Device Configuration
 
