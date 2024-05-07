@@ -7,10 +7,11 @@
 {% if router_segment_security is arista.avd.defined %}
 
 ## Group-Based Multi-domain Segmentation Services (MSS-Group)
-
 {%     if router_segment_security.enabled is arista.avd.defined(true) %}
+
 MSS-G is enabled.
 {%     else %}
+
 MSS-G is disabled.
 {%     endif %}
 {%     if router_segment_security.policies is arista.avd.defined %}
