@@ -313,8 +313,13 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> dict:
     services_dict = {}
     for internet_exit_policy in internet_exit_policies:
         # We currently only support zscaler
-        if internet_exit_policy["type"] != "zscaler":
-            raise ValueError(f"Got unsupported internet exit policy: {internet_exit_policy}")
+        if internet_exit_policy.get("type") != "zscaler":
+            LOGGER.info(
+                "deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '%s' with type '%s'.",
+                internet_exit_policies.get("name"),
+                internet_exit_policy.get("type"),
+            )
+            continue
 
         policy_name = internet_exit_policy["name"]
         services_dict.setdefault("zscaler", {"locations": [], "tunnels": []})
@@ -334,7 +339,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> dict:
                         "fqdn": vpn_credential["fqdn"],
                         "comments": f"Credential for {device.hostname} internet-exit policy {policy_name}",
                         "vpnType": vpn_credential["vpn_type"],
-                        "preSharedKey": simple_7_decrypt(vpn_credential["pre_shared_key"]),
+                        "presharedKey": simple_7_decrypt(vpn_credential["pre_shared_key"]),
                     }
                     for vpn_credential in internet_exit_policy["vpn_credentials"]
                 ],
