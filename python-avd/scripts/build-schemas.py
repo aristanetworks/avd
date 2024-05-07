@@ -44,6 +44,13 @@ def combine_schemas():
 
         with SCHEMA_PATHS[schema_name].open(mode="w", encoding="UTF-8") as schema_stream:
             schema_stream.write(indent(LICENSE_HEADER, prefix="# ") + "\n")
+            schema_stream.write(
+                (
+                    "# yaml-language-server: $schema=../../../plugins/plugin_utils/schema/avd_meta_schema.json\n"
+                    "# Line above is used by RedHat's YAML Schema vscode extension\n"
+                    "# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.\n"
+                )
+            )
             schema_stream.write(yaml_dump(schema, Dumper=CSafeDumper, sort_keys=False))
 
 

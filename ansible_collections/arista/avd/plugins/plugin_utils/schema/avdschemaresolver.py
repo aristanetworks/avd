@@ -3,12 +3,15 @@
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, annotations, division, print_function
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AvdSchemaError
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 try:
     from referencing import Registry, Specification
+    from referencing.exceptions import PointerToNowhere
     from referencing.jsonschema import DRAFT7, _legacy_anchor_in_dollar_id, _legacy_dollar_id, _maybe_in_subresource_crazy_items_dependencies
 
     HAS_REFERENCING = True
@@ -72,7 +75,15 @@ class AvdSchemaResolver:
 
         In place update of supplied resolved_schema
         """
-        resolved = self.resolver.lookup(resolved_schema["$ref"])
+        try:
+            resolved = self.resolver.lookup(resolved_schema["$ref"])
+        except PointerToNowhere:
+            raise AvdSchemaError(
+                (
+                    f"Unable to resolve $ref: '{resolved_schema['$ref']}'."
+                    "Make sure to adhere to the strict format '^(eos_cli_config_gen|eos_designs)#(/[a-z$][a-z0-9_]*)*$'."
+                )
+            ) from None
         ref_schema = deepcopy(resolved.contents)
         resolved_schema.pop("$ref")
         merge(resolved_schema, ref_schema, same_key_strategy="use_existing", list_merge="replace")

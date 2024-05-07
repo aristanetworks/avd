@@ -118,10 +118,10 @@ $defs:
                     description: Outbound route-map name.
                   default_originate:
                     type: dict
-                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/default_originate/"
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/default_originate"
                   next_hop:
                     type: dict
-                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/next_hop/"
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/next_hop"
                   prefix_list_in:
                     type: str
                     description: Inbound prefix-list name.
@@ -1054,10 +1054,10 @@ $defs:
                           description: Outbound route-map name.
                         default_originate:
                           type: dict
-                          $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/default_originate/"
+                          $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/default_originate"
                         next_hop:
                           type: dict
-                          $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/next_hop/"
+                          $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/next_hop"
                         prefix_list_in:
                           type: str
                           description: Inbound prefix-list name.
