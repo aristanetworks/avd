@@ -751,7 +751,7 @@ $defs:
                       description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
                       documentation_options:
                         hide_keys: true
-                      $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
+                      $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
                     raw_eos_cli:
                       type: str
                       description: |
@@ -1017,7 +1017,7 @@ $defs:
                     description: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for eos_cli_config_gen.
                     documentation_options:
                       hide_keys: true
-                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/"
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items"
               bgp_peer_groups:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
@@ -1111,7 +1111,7 @@ $defs:
                 description: Custom structured config for eos_cli_config_gen.
                 documentation_options:
                   hide_keys: true
-                $ref: "eos_cli_config_gen#/"
+                $ref: "eos_cli_config_gen#"
         l2vlans:
           documentation_options:
             table: network-services-l2vlans-settings
@@ -1252,7 +1252,7 @@ $defs:
                       This configuration will not be applied to vlan aware bundles.
                     documentation_options:
                       hide_keys: true
-                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items/"
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items"
                   raw_eos_cli:
                     type: str
                     description: |

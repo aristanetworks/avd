@@ -13,7 +13,9 @@ from deepmerge import always_merger
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdValidationError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import DEFAULT_SCHEMA, AvdSchema
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschemaresolver import AvdSchemaResolver
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.default_schemas import DEFAULT_SCHEMAS
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.store import create_store
 
 script_dir = os.path.dirname(__file__)
 with open(f"{script_dir}/access_lists.schema.yml", "r", encoding="utf-8") as schema_file:
@@ -225,12 +227,12 @@ class TestAvdSchema:
         for id in DEFAULT_SCHEMAS:
             if id == "avd_meta_schema":
                 continue
-            test_schema["keys"][id] = {"type": "dict", "$ref": f"{id}#/"}
+            test_schema["keys"][id] = {"type": "dict", "$ref": f"{id}#"}
 
         # For performance reasons $ref is no longer supported at runtime.
         # The $ref must be resolved before loading the schema.
-        avdschema = AvdSchema(test_schema)
-        resolved_test_schema = avdschema.resolved_schema
+        store = create_store()
+        resolved_test_schema = AvdSchemaResolver("", store).resolve(test_schema)
 
         avdschema = AvdSchema(resolved_test_schema)
         for id in DEFAULT_SCHEMAS:
