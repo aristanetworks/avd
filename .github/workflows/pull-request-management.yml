@@ -213,10 +213,8 @@ jobs:
             pip_requirements: 'ansible_collections/arista/avd/requirements-minimum.txt'
           - avd_scenario: 'eos_designs_unit_tests'
             ansible_version: 'ansible-core>=2.14.0,<2.15.0 --upgrade'
-            pip_requirements: 'ansible_collections/arista/avd/requirements.txt'
           - avd_scenario: 'eos_designs_unit_tests'
             ansible_version: 'ansible-core>=2.15.0,<2.16.0 --upgrade'
-            pip_requirements: 'ansible_collections/arista/avd/requirements.txt'
     needs: [ file-changes ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:

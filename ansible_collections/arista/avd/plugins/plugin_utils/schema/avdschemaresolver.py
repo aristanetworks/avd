@@ -78,11 +78,28 @@ class AvdSchemaResolver:
         merge(resolved_schema, ref_schema, same_key_strategy="use_existing", list_merge="replace")
 
     def create_resolver(self, store: dict, base_uri=""):
+        """
+        Returns a resolver which can resolve "$ref" references across all AVD schemas.
+        The given "base_uri" can be used for relative references (currently not used in AVD).
+        """
         registry = self.create_registry(store)
         return registry.resolver(base_uri)
 
     @staticmethod
     def create_registry(store: dict) -> Registry:
+        """
+        Returns a "registry" for the "referencing" library.
+
+        The registry contains schemas that could be resolved from references. In our case it
+        contains the default jsonschema specifications + the AVD schemas.
+
+        Since AVD uses a proprietary schema format, we have to declare a custom "specification"
+        which contains functions used by the resolver to "walk" the schema.
+
+        Since the AVD schema format is largely based on DRAFT7, we reuse some builtin functions
+        from "referencing" which are also used for the builtin DRAFT7 specification.
+        """
+
         def subresources(schema: dict):
             """
             Generator of childschemas
@@ -112,6 +129,4 @@ class AvdSchemaResolver:
             ("eos_cli_config_gen", avd_meta_schema_spec.create_resource(store["eos_cli_config_gen"])),
             ("eos_designs", avd_meta_schema_spec.create_resource(store["eos_designs"])),
         ]
-        registry = Registry().with_resources(resources)
-
-        return registry
+        return Registry().with_resources(resources)
