@@ -6962,7 +6962,7 @@ keys:
               description: Size in bytes.
               convert_types:
               - str
-  monitor_telemetry_postcard:
+  monitor_telemetry_postcard_policy:
     type: dict
     keys:
       disabled:
@@ -6989,11 +6989,11 @@ keys:
                 - 2
           sample:
             type: dict
-            description: Configure sampling parameters.
+            description: Sampling parameters.
             keys:
               rate:
                 type: int
-                description: Configure sampling rate.
+                description: Sampling rate.
                 convert_types:
                 - str
                 valid_values:
@@ -7002,14 +7002,25 @@ keys:
                 - 65536
               tcp_udp_checksum:
                 type: int
-                description: Configure TCP/UDP checksum or IP ID checksum.
+                description: TCP/UDP checksum or IP ID value.
                 min: 0
                 max: 65535
                 convert_types:
                 - str
+              mask:
+                type: str
+                description: 16 bit hexadecimal mask for TCP/UDP or IP ID with atmost
+                  2 unser bits.
+      vxlan_marking_bit:
+        type: int
+        default: 0
+        min: 0
+        max: 31
+        convert_types:
+        - str
       profiles:
         type: list
-        description: Configure the postcard telemetry profile.
+        description: Postcard telemetry profile.
         primary_key: name
         items:
           type: dict
@@ -7019,29 +7030,25 @@ keys:
               description: Profile name
             ingress_sample_policy:
               type: str
-              description: Configure ingress sample policy for the profile.
       sample_policies:
         type: list
         primary_key: name
-        description: Configure sample policies.
         items:
           type: dict
           keys:
             name:
               type: str
-              description: Configure sample policy name.
             match_rules:
               type: list
-              primary_key: rule_name
-              description: Configure rules for sample policy.
+              primary_key: name
               items:
                 type: dict
                 keys:
-                  rule_name:
+                  name:
                     type: str
                   type:
                     type: str
-                    description: Select the IP address version.
+                    description: IP address version.
                     valid_values:
                     - ipv4
                     - ipv6
@@ -7053,22 +7060,23 @@ keys:
                     description: IPv4 Network/Mask or IPv6 Network/Mask.
                   ports:
                     type: list
+                    primary_key: protocol
                     items:
                       type: dict
                       keys:
                         protocol:
                           type: str
-                          description: Select TCP/UDP.
+                          description: TCP/UDP.
                           valid_values:
                           - tcp
                           - udp
-                        destination_port:
+                        destination_ports:
                           type: list
-                          description: "Enter the port name or range or  port numbers
+                          description: "Enter the port name or range or port numbers
                             in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]"
-                        source_port:
+                        source_ports:
                           type: list
-                          description: "Enter the port name or range or  port numbers
+                          description: "Enter the port name or range or port numbers
                             in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]"
   mpls:
     type: dict

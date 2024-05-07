@@ -11898,7 +11898,7 @@
       },
       "title": "Monitor Sessions"
     },
-    "monitor_telemetry_postcard": {
+    "monitor_telemetry_postcard_policy": {
       "type": "object",
       "properties": {
         "disabled": {
@@ -11941,11 +11941,11 @@
             },
             "sample": {
               "type": "object",
-              "description": "Configure sampling parameters.",
+              "description": "Sampling parameters.",
               "properties": {
                 "rate": {
                   "type": "integer",
-                  "description": "Configure sampling rate.",
+                  "description": "Sampling rate.",
                   "enum": [
                     16384,
                     32768,
@@ -11955,10 +11955,15 @@
                 },
                 "tcp_udp_checksum": {
                   "type": "integer",
-                  "description": "Configure TCP/UDP checksum or IP ID checksum.",
+                  "description": "TCP/UDP checksum or IP ID value.",
                   "minimum": 0,
                   "maximum": 65535,
                   "title": "TCP UDP Checksum"
+                },
+                "mask": {
+                  "type": "string",
+                  "description": "16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unser bits.",
+                  "title": "Mask"
                 }
               },
               "additionalProperties": false,
@@ -11974,9 +11979,16 @@
           },
           "title": "Ingress"
         },
+        "vxlan_marking_bit": {
+          "type": "integer",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 31,
+          "title": "VxLAN Marking Bit"
+        },
         "profiles": {
           "type": "array",
-          "description": "Configure the postcard telemetry profile.",
+          "description": "Postcard telemetry profile.",
           "items": {
             "type": "object",
             "properties": {
@@ -11987,7 +11999,6 @@
               },
               "ingress_sample_policy": {
                 "type": "string",
-                "description": "Configure ingress sample policy for the profile.",
                 "title": "Ingress Sample Policy"
               }
             },
@@ -12003,28 +12014,25 @@
         },
         "sample_policies": {
           "type": "array",
-          "description": "Configure sample policies.",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Configure sample policy name.",
                 "title": "Name"
               },
               "match_rules": {
                 "type": "array",
-                "description": "Configure rules for sample policy.",
                 "items": {
                   "type": "object",
                   "properties": {
-                    "rule_name": {
+                    "name": {
                       "type": "string",
-                      "title": "Rule Name"
+                      "title": "Name"
                     },
                     "type": {
                       "type": "string",
-                      "description": "Select the IP address version.",
+                      "description": "IP address version.",
                       "enum": [
                         "ipv4",
                         "ipv6"
@@ -12048,28 +12056,31 @@
                         "properties": {
                           "protocol": {
                             "type": "string",
-                            "description": "Select TCP/UDP.",
+                            "description": "TCP/UDP.",
                             "enum": [
                               "tcp",
                               "udp"
                             ],
                             "title": "Protocol"
                           },
-                          "destination_port": {
+                          "destination_ports": {
                             "type": "array",
-                            "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
-                            "title": "Destination Port"
+                            "description": "Enter the port name or range or port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                            "title": "Destination Ports"
                           },
-                          "source_port": {
+                          "source_ports": {
                             "type": "array",
-                            "description": "Enter the port name or range or  port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
-                            "title": "Source Port"
+                            "description": "Enter the port name or range or port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                            "title": "Source Ports"
                           }
                         },
                         "additionalProperties": false,
                         "patternProperties": {
                           "^_.+$": {}
-                        }
+                        },
+                        "required": [
+                          "protocol"
+                        ]
                       },
                       "title": "Ports"
                     }
@@ -12079,7 +12090,7 @@
                     "^_.+$": {}
                   },
                   "required": [
-                    "rule_name"
+                    "name"
                   ]
                 },
                 "title": "Match Rules"
@@ -12100,7 +12111,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Monitor Telemetry Postcard"
+      "title": "Monitor Telemetry Postcard Policy"
     },
     "mpls": {
       "type": "object",

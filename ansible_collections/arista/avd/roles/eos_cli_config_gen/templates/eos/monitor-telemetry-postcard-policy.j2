@@ -1,0 +1,66 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - monitor telemetry postcard policy #}
+{% if monitor_telemetry_postcard_policy is arista.avd.defined %}
+!
+monitor telemetry postcard policy
+{%     if monitor_telemetry_postcard_policy.disabled is arista.avd.defined(false) %}
+   no disabled
+{%     endif %}
+{%     if monitor_telemetry_postcard_policy.ingress.sample.rate is arista.avd.defined %}
+   ingress sample rate {{ monitor_telemetry_postcard_policy.ingress.sample.rate }}
+{%     elif monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum is arista.avd.defined %}
+   ingress sample tcp-udp-checksum {{ monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum }}
+{%     endif %}
+{%     if monitor_telemetry_postcard_policy.vxlan_marking_bit is arista.avd.defined %}
+   marker vxlan header word 0 bit {{ monitor_telemetry_postcard_policy.vxlan_marking_bit | arista.avd.default(0) }}
+{%     endif %}
+{%     if monitor_telemetry_postcard_policy.ingress is arista.avd.defined %}
+{%         if monitor_telemetry_postcard_policy.ingress.collection.source is arista.avd.defined and monitor_telemetry_postcard_policy.ingress.collection.destination is arista.avd.defined %}
+{%             set ingress_cli = "ingress collection gre source " ~ monitor_telemetry_postcard_policy.ingress.collection.source ~ " destination " ~ monitor_telemetry_postcard_policy.ingress.collection.destination %}
+{%             if monitor_telemetry_postcard_policy.ingress.collection.version is arista.avd.defined(2) %}
+   {{ ingress_cli }} version 2
+{%             elif monitor_telemetry_postcard_policy.ingress.collection.version | arista.avd.default(1) is arista.avd.defined %}
+   {{ ingress_cli }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+   !
+{%     for policy in monitor_telemetry_postcard_policy.sample_policies | arista.avd.natural_sort("name") %}
+   sample policy {{ policy.name }}
+{%         for rule in policy.match_rules | arista.avd.natural_sort("name") %}
+{%             if rule.type is arista.avd.defined %}
+      match {{ rule.name }} {{ rule.type }}
+{%                 if rule.destination_prefix is arista.avd.defined %}
+         destination prefix {{ rule.destination_prefix }}
+{%                 endif %}
+{%                 if rule.source_prefix is arista.avd.defined %}
+         source prefix {{ rule.source_prefix }}
+{%                 endif %}
+{%                 for port in rule.ports | arista.avd.natural_sort('protocol') %}
+{%                     if port.protocol is arista.avd.defined %}
+{%                         set rule_cli = "protocol " ~ port.protocol %}
+{%                         for dest_port in port.destination_ports | sort(reverse = True) %}
+         {{ rule_cli }} destination port {{ dest_port }}
+{%                         endfor %}
+{%                         for src_port in port.source_ports | arista.avd.natural_sort(reverse) %}
+         {{ rule_cli }} source port {{ src_port }}
+{%                         endfor %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+      !
+{%         endfor %}
+   !
+{%     endfor %}
+{%     for profile in monitor_telemetry_postcard_policy.profiles | arista.avd.natural_sort("name") %}
+   profile {{ profile.name }}
+{%         if profile.ingress_sample_policy is arista.avd.defined %}
+      ingress sample policy {{ profile.ingress_sample_policy }}
+{%         endif %}
+   !
+{%     endfor %}
+{% endif %}
