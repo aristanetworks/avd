@@ -312,7 +312,7 @@ router_path_selection:
     - name: Ethernet2
       stun:
         server_profiles:
-        - MPLS-cv-pathfinder-pathfinder-Ethernet2
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
     dynamic_peers:
       enabled: true
       ipsec: false
@@ -350,7 +350,7 @@ stun:
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
       ssl_profile: STUN-DTLS
-    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2_2
       ip_address: 172.16.0.1
       ssl_profile: STUN-DTLS
 application_traffic_recognition:

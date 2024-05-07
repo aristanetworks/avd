@@ -265,8 +265,12 @@ class UtilsMixin:
     def _stun_server_profile_name(self, wan_route_server_name: str, path_group_name: str, interface_name: str) -> str:
         """
         Return a string to use as the name of the stun server_profile
+
+        `/` are not allowed, `.` are allowed so
+        Ethernet1/1.1 is transformed into Ethernet1_1.1
         """
-        return f"{path_group_name}-{wan_route_server_name}-{interface_name}"
+        sanitized_interface_name = interface_name.replace("/", "_")
+        return f"{path_group_name}-{wan_route_server_name}-{sanitized_interface_name}"
 
     @cached_property
     def _stun_server_profiles(self) -> list:

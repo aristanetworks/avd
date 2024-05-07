@@ -326,6 +326,10 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
+- ip_address: 2001:db8::1
+  vrf: MGMT
+- ip_address: 2001:db8::2
+  vrf: MGMT
 spanning_tree:
   root_super: true
   mode: mstp

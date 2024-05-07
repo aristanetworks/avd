@@ -164,7 +164,7 @@ $defs:
               hide_keys: true
             description: Custom structured config for eos_cli_config_gen.
             type: dict
-            $ref: "eos_cli_config_gen#/"
+            $ref: "eos_cli_config_gen#"
           uplink_type:
             documentation_options:
               table: node-type-uplink-configuration
@@ -333,9 +333,9 @@ $defs:
               "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
               Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             # Schema ref not implemented since we do not know which of the schemas to look at.
-            # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
+            # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
           mlag_port_channel_structured_config:
-            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items/"
+            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -346,7 +346,7 @@ $defs:
               Overrides the settings on the port-channel interface level.
               "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_vlan_structured_config:
-            $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/"
+            $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -357,7 +357,7 @@ $defs:
               Overrides the settings on the vlan interface level.
               "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_l3_vlan_structured_config:
-            $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/"
+            $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true

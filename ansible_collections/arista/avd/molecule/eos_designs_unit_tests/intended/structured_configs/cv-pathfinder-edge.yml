@@ -514,7 +514,7 @@ router_path_selection:
     - name: Ethernet2
       stun:
         server_profiles:
-        - MPLS-cv-pathfinder-pathfinder-Ethernet2
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
     dynamic_peers:
       enabled: true
       ipsec: false
@@ -587,7 +587,7 @@ stun:
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
       ssl_profile: profileA
-    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2_2
       ip_address: 172.16.0.1
       ssl_profile: profileA
 application_traffic_recognition:
@@ -728,7 +728,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.37.121.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel101
   description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
@@ -737,7 +737,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.39.77.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel102
   description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
@@ -746,7 +746,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.50.9.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 monitor_connectivity:
   interface_sets:

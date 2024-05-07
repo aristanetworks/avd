@@ -43,6 +43,7 @@ router_bgp:
       interval: 1000
       min_rx: 1000
       multiplier: 10
+    route_reflector_client: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS

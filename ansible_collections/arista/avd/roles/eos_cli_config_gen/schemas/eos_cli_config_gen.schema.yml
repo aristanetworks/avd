@@ -1,7 +1,11 @@
 # Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 $id: eos_cli_config_gen
+$schema: avd_meta_schema
 type: dict
 allow_other_keys: true
 keys:
@@ -3319,9 +3323,67 @@ keys:
             '
           valid_values:
           - on-boot
+          - on-counters
+          - on-intf
           - on-logging
-          - on-startup-config
           - on-maintenance
+          - on-startup-config
+          - vm-tracer vm
+        trigger_on_counters:
+          type: dict
+          keys:
+            condition:
+              type: str
+              description: Set the logical expression to evaluate.
+            granularity_per_source:
+              type: bool
+              description: "Set the granularity of event counting for a wildcarded
+                condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100
+                ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used
+                here]"
+            poll_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 1000000
+              description: Set the polling interval in seconds.
+        trigger_on_logging:
+          type: dict
+          keys:
+            poll_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 1000000
+              description: Set the polling interval in seconds.
+            regex:
+              type: str
+              description: Regular expression to use for searching log messages.
+        trigger_on_intf:
+          type: dict
+          description: 'Trigger condition occurs on specified interface changes.
+
+            Note: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined
+            along with the `interface`.'
+          keys:
+            interface:
+              type: str
+              required: true
+              description: "Interface name.\nExample - Ethernet4\n          Loopback4-6\n
+                \         Port-channel4,7"
+            ip:
+              type: bool
+              description: Action is triggered upon changes to interface IP address
+                assignment.
+            ipv6:
+              type: bool
+              description: Action is triggered upon changes to interface ipv6 address
+                assignment.
+            operstatus:
+              type: bool
+              description: Action is triggered upon changes to interface operStatus.
         trigger_on_maintenance:
           description: Settings required for trigger 'on-maintenance'.
           type: dict
@@ -3369,6 +3431,11 @@ keys:
                 of specified unit
         regex:
           type: str
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handlers.trigger_on_logging.regex
           description: 'Regular expression to use for searching log messages. Required
             for on-logging trigger.
 
@@ -7080,7 +7147,7 @@ keys:
           keys:
             name:
               type: str
-              description: IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org.
+              description: IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org.
             burst:
               type: bool
             iburst:
@@ -8281,6 +8348,16 @@ keys:
               - ipv4
               - ipv6
               - layer2
+            mpass:
+              type: bool
+              description: 'When MPASS is enabled on an MLAG port-channel, MLAG peers
+                coordinate to function as a single PTP logical device.
+
+                Arista PTP enabled devices always place PTP messages on the same physical
+                link within the port-channel.
+
+                Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                devices.'
         ip_address:
           type: str
           description: IPv4 address/mask.
@@ -12667,6 +12744,33 @@ keys:
                       name:
                         type: str
                         description: Dynamic Prefix List Name.
+      control_functions:
+        type: dict
+        description: 'Routing control functions (RCF) used to filter and update routes
+          from a peer or during redistributions.
+
+          Warning:
+
+          This configuration cannot be pushed with `eos_config_deploy_eapi`, because
+          of limitations in `arista.eos` and `ansible.netcommon` plugins.
+
+          The configuration can be pushed via CloudVision with `eos_config_deploy_cvp`
+          or `cv_deploy`.'
+        keys:
+          code_units:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Name of the code unit.
+                content:
+                  type: str
+                  required: true
+                  description: "Content of route control function.\ne.g.\nfunction
+                    ACCEPT_ALL() {\n  return true;\n  }\nEOF"
   router_igmp:
     type: dict
     display_name: Router IGMP Configuration
@@ -13104,9 +13208,17 @@ keys:
             type: int
             convert_types:
             - str
-            min: 1
-            max: 300
-            description: Maximum interval between two SPFs in seconds.
+            description: 'Maximum interval between two SPFs in seconds or milliseconds.
+
+              Range in seconds: <1-300>
+
+              Range in milliseconds: <1-300000>'
+          interval_unit:
+            type: str
+            valid_values:
+            - seconds
+            - milliseconds
+            description: If interval unit is not defined EOS takes `seconds` by default.
           wait_interval:
             type: int
             convert_types:
@@ -13114,6 +13226,13 @@ keys:
             min: 1
             max: 300000
             description: Initial wait interval for SPF in milliseconds.
+          hold_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 300000
+            description: Hold interval between the first and second SPF runs in milliseconds.
       graceful_restart:
         type: dict
         keys:
