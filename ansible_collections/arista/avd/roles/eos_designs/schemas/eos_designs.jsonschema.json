@@ -41467,6 +41467,8 @@
                               "sequence": {
                                 "type": "integer",
                                 "description": "Sequence ID.",
+                                "minimum": 1,
+                                "maximum": 1023,
                                 "title": "Sequence"
                               },
                               "application": {
@@ -41630,15 +41632,13 @@
                                 "title": "Policies"
                               }
                             },
-                            "required": [
-                              "definition",
-                              "policies",
-                              "name"
-                            ],
                             "additionalProperties": false,
                             "patternProperties": {
                               "^_.+$": {}
-                            }
+                            },
+                            "required": [
+                              "name"
+                            ]
                           },
                           "title": "Segments"
                         }

@@ -14300,6 +14300,8 @@ keys:
                     description: Sequence ID.
                     convert_types:
                     - str
+                    min: 1
+                    max: 1023
                   application:
                     type: str
                     required: true
@@ -14348,7 +14350,6 @@ keys:
                     description: Segment name.
                   definition:
                     type: dict
-                    required: true
                     keys:
                       interfaces:
                         type: list
@@ -14389,7 +14390,6 @@ keys:
                                 prefix takes precedence.
                   policies:
                     type: list
-                    required: true
                     description: The policies controlling traffic into the segment.
                     primary_key: source
                     items:
