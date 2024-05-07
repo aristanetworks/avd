@@ -706,7 +706,7 @@ class UtilsMixin:
         """
         Return a list of connections (dicts) for the given internet_exit_policy.
 
-        These are useful for easy creation of connectivity-monitor, service-intestion connections, exit-groups, tunnels etc.
+        These are useful for easy creation of connectivity-monitor, service-insertion connections, exit-groups, tunnels etc.
         """
         policy_name = internet_exit_policy["name"]
 
@@ -740,8 +740,8 @@ class UtilsMixin:
             connections.append(
                 {
                     "type": "ethernet",
-                    "name": wan_interface["name"],
-                    "monitor_name": wan_interface["name"],
+                    "name": f"IE-{wan_interface['name']}",
+                    "monitor_name": f"IE-{wan_interface['name']}",
                     "monitor_host": wan_interface["peer_ip"],
                     "next_hop": wan_interface["peer_ip"],
                     "source_interface": wan_interface["name"],

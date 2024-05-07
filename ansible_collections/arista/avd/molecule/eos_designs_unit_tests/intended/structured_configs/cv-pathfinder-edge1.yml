@@ -639,11 +639,11 @@ ip_nat:
 router_service_insertion:
   enabled: true
   connections:
-  - name: Ethernet3
+  - name: IE-Ethernet3
     ethernet_interface:
       name: Ethernet3
       next_hop: 172.16.5.40
-    monitor_connectivity_host: Ethernet3
+    monitor_connectivity_host: IE-Ethernet3
   - name: IE-Tunnel100
     tunnel_interface:
       primary: Tunnel100
@@ -672,7 +672,7 @@ router_internet_exit:
   exit_groups:
   - name: DIRECT-EXIT-POLICY-1
     local_connections:
-    - name: Ethernet3
+    - name: IE-Ethernet3
   - name: ZSCALER-EXIT-POLICY-1_PRI
     local_connections:
     - name: IE-Tunnel100
@@ -800,7 +800,7 @@ monitor_connectivity:
   - name: SET-Tunnel112
     interfaces: Tunnel112
   hosts:
-  - name: Ethernet3
+  - name: IE-Ethernet3
     description: Internet Exit DIRECT-EXIT-POLICY-1
     ip: 172.16.5.40
     local_interfaces: SET-Ethernet3

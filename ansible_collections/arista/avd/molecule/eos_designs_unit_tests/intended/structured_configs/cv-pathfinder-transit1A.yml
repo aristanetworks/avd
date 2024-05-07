@@ -705,16 +705,16 @@ application_traffic_recognition:
 router_service_insertion:
   enabled: true
   connections:
-  - name: Ethernet2.42
+  - name: IE-Ethernet2.42
     ethernet_interface:
       name: Ethernet2.42
       next_hop: 123.12.3.4
-    monitor_connectivity_host: Ethernet2.42
+    monitor_connectivity_host: IE-Ethernet2.42
 router_internet_exit:
   exit_groups:
   - name: DIRECT-EXIT-POLICY-2
     local_connections:
-    - name: Ethernet2.42
+    - name: IE-Ethernet2.42
   policies:
   - name: DIRECT-EXIT-POLICY-2
     exit_groups:
@@ -749,7 +749,7 @@ monitor_connectivity:
   - name: SET-Ethernet2.42
     interfaces: Ethernet2.42
   hosts:
-  - name: Ethernet2.42
+  - name: IE-Ethernet2.42
     description: Internet Exit DIRECT-EXIT-POLICY-2
     ip: 123.12.3.4
     local_interfaces: SET-Ethernet2.42
