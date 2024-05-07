@@ -304,7 +304,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> dict:
     Generate internet-exit related metadata for one device.
     To be inserted into edge router metadata under "services"
     """
-    if (internet_exit_policies := get(metadata, "cv_pathfinder.internet_exit_policies")) is None:
+    if (internet_exit_policies := get(metadata, "internet_exit_policies")) is None:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Did not find 'internet_exit_policies' for device: %s", device.hostname)
         return []
 
