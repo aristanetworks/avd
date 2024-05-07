@@ -4,15 +4,19 @@
 from collections import ChainMap
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all, get_all_with_path, get_indices_of_duplicate_items
 
 try:
     import jsonschema
     import jsonschema._types
-    import jsonschema._validators
-    import jsonschema.protocols
     import jsonschema.validators
+
+    # Special handling of jsonschema <4.18 vs. >=4.18
+    try:
+        import jsonschema._validators as jsonschema_validators
+    except ImportError:
+        import jsonschema._keywords as jsonschema_validators
+
 except ImportError as imp_exc:
     JSONSCHEMA_IMPORT_ERROR = imp_exc
 else:
@@ -147,7 +151,7 @@ def _is_dict(validator, instance):
 
 
 class AvdValidator:
-    def __new__(cls, schema, store):
+    def __new__(cls, schema: dict, store: dict):
         """
         AvdSchemaValidator is used to validate AVD Data.
         It uses a combination of our own validators and builtin jsonschema validators
@@ -162,15 +166,15 @@ class AvdValidator:
             meta_schema=store["avd_meta_schema"],
             validators={
                 "$ref": _ref_validator,
-                "type": jsonschema._validators.type,
-                "max": jsonschema._validators.maximum,
-                "min": jsonschema._validators.minimum,
+                "type": jsonschema_validators.type,
+                "max": jsonschema_validators.maximum,
+                "min": jsonschema_validators.minimum,
                 "valid_values": _valid_values_validator,
-                "format": jsonschema._validators.format,
-                "max_length": jsonschema._validators.maxLength,
-                "min_length": jsonschema._validators.minLength,
-                "pattern": jsonschema._validators.pattern,
-                "items": jsonschema._validators.items,
+                "format": jsonschema_validators.format,
+                "max_length": jsonschema_validators.maxLength,
+                "min_length": jsonschema_validators.minLength,
+                "pattern": jsonschema_validators.pattern,
+                "items": jsonschema_validators.items,
                 "primary_key": _primary_key_validator,
                 "unique_keys": _unique_keys_validator,
                 "keys": _keys_validator,
@@ -196,5 +200,4 @@ class AvdValidator:
             ),
             # version="0.1",
         )
-
-        return ValidatorClass(schema, resolver=create_refresolver(schema, store))
+        return ValidatorClass(schema)

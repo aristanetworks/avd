@@ -123,9 +123,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 100.64.0.5/31
   no_autostate: true
   mtu: 9214
+  ip_address: 100.64.0.5/31
 - name: Vlan105
   tenant: INBAND_MGMT_TESTS
   description: Inband_management_vlan_ipv6
@@ -188,6 +188,8 @@ port_channel_interfaces:
   mode: trunk
   vlans: '105'
   mlag: 25
+  lacp_fallback_mode: individual
+  lacp_fallback_timeout: 30
 ethernet_interfaces:
 - name: Ethernet11
   peer: inband-mgmt-parent-dualstack1
@@ -311,6 +313,8 @@ ethernet_interfaces:
   channel_group:
     id: 25
     mode: active
+  mode: access
+  vlans: 105
 mlag_configuration:
   domain_id: inband-mgmt-parents-dualstack
   local_interface: Vlan4094

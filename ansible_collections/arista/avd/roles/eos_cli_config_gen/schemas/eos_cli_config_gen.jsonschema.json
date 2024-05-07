@@ -3243,11 +3243,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -3280,8 +3281,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -3378,11 +3378,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -3415,8 +3416,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -5536,11 +5536,97 @@
             "description": "Configure event trigger condition.\n",
             "enum": [
               "on-boot",
+              "on-counters",
+              "on-intf",
               "on-logging",
+              "on-maintenance",
               "on-startup-config",
-              "on-maintenance"
+              "vm-tracer vm"
             ],
             "title": "Trigger"
+          },
+          "trigger_on_counters": {
+            "type": "object",
+            "properties": {
+              "condition": {
+                "type": "string",
+                "description": "Set the logical expression to evaluate.",
+                "title": "Condition"
+              },
+              "granularity_per_source": {
+                "type": "boolean",
+                "description": "Set the granularity of event counting for a wildcarded condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used here]",
+                "title": "Granularity Per Source"
+              },
+              "poll_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000000,
+                "description": "Set the polling interval in seconds.",
+                "title": "Poll Interval"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Counters"
+          },
+          "trigger_on_logging": {
+            "type": "object",
+            "properties": {
+              "poll_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000000,
+                "description": "Set the polling interval in seconds.",
+                "title": "Poll Interval"
+              },
+              "regex": {
+                "type": "string",
+                "description": "Regular expression to use for searching log messages.",
+                "title": "Regex"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Logging"
+          },
+          "trigger_on_intf": {
+            "type": "object",
+            "description": "Trigger condition occurs on specified interface changes.\nNote: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`.",
+            "properties": {
+              "interface": {
+                "type": "string",
+                "description": "Interface name.\nExample - Ethernet4\n          Loopback4-6\n          Port-channel4,7",
+                "title": "Interface"
+              },
+              "ip": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface IP address assignment.",
+                "title": "IP"
+              },
+              "ipv6": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface ipv6 address assignment.",
+                "title": "IPv6"
+              },
+              "operstatus": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface operStatus.",
+                "title": "Operstatus"
+              }
+            },
+            "required": [
+              "interface"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Intf"
           },
           "trigger_on_maintenance": {
             "description": "Settings required for trigger 'on-maintenance'.",
@@ -5610,7 +5696,8 @@
           },
           "regex": {
             "type": "string",
-            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n",
+            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.",
+            "deprecated": true,
             "title": "Regex"
           },
           "asynchronous": {
@@ -7272,11 +7359,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -7309,8 +7397,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -7407,11 +7494,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -7444,8 +7532,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -11151,6 +11238,10 @@
               "type": "string",
               "title": "SSL Profile"
             },
+            "address": {
+              "type": "string",
+              "title": "Address"
+            },
             "pathfinders": {
               "type": "array",
               "items": {
@@ -11573,7 +11664,7 @@
         },
         "peer_address": {
           "type": "string",
-          "description": "IPv4 Address.",
+          "description": "IPv4 or IPv6 Address.",
           "title": "Peer Address"
         },
         "peer_address_heartbeat": {
@@ -11581,7 +11672,7 @@
           "properties": {
             "peer_ip": {
               "type": "string",
-              "description": "IPv4 Address.",
+              "description": "IPv4 or IPv6 Address.",
               "title": "Peer IP"
             },
             "vrf": {
@@ -12122,7 +12213,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org.",
+                "description": "IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org.",
                 "title": "Name"
               },
               "burst": {
@@ -13911,6 +14002,11 @@
                   "layer2"
                 ],
                 "title": "Transport"
+              },
+              "mpass": {
+                "type": "boolean",
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "Mpass"
               }
             },
             "additionalProperties": false,
@@ -14005,11 +14101,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -14042,8 +14139,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -14140,11 +14236,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -14177,8 +14274,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -18314,6 +18410,10 @@
                   "type": "boolean",
                   "title": "Import Ethernet Segment IP Mass Withdraw"
                 },
+                "import_overlay_index_gateway": {
+                  "type": "boolean",
+                  "title": "Import Overlay Index Gateway"
+                },
                 "export_ethernet_segment_ip_mass_withdraw": {
                   "type": "boolean",
                   "title": "Export Ethernet Segment IP Mass Withdraw"
@@ -18328,6 +18428,62 @@
             "next_hop_unchanged": {
               "type": "boolean",
               "title": "Next Hop Unchanged"
+            },
+            "bgp_additional_paths": {
+              "type": "object",
+              "description": "BGP additional-paths commands.",
+              "properties": {
+                "receive": {
+                  "type": "boolean",
+                  "description": "Receive multiple paths.",
+                  "title": "Receive"
+                },
+                "send": {
+                  "type": "object",
+                  "description": "Send multiple paths.",
+                  "properties": {
+                    "any": {
+                      "type": "boolean",
+                      "description": "Any eligible path.",
+                      "title": "Any"
+                    },
+                    "backup": {
+                      "type": "boolean",
+                      "description": "Best path and installed backup path.",
+                      "title": "Backup"
+                    },
+                    "ecmp": {
+                      "type": "boolean",
+                      "description": "All paths in best path ECMP group.",
+                      "title": "ECMP"
+                    },
+                    "ecmp_limit": {
+                      "type": "integer",
+                      "description": "Amount of ECMP paths to send.",
+                      "minimum": 2,
+                      "maximum": 64,
+                      "title": "ECMP Limit"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Amount of paths to send.",
+                      "minimum": 2,
+                      "maximum": 64,
+                      "title": "Limit"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Send"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP Additional Paths"
             }
           },
           "additionalProperties": false,
@@ -21728,6 +21884,44 @@
             ]
           },
           "title": "VRFs"
+        },
+        "control_functions": {
+          "type": "object",
+          "description": "Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.\nWarning:\nThis configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.\nThe configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.",
+          "properties": {
+            "code_units": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the code unit.",
+                    "title": "Name"
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "Content of route control function.\ne.g.\nfunction ACCEPT_ALL() {\n  return true;\n  }\nEOF",
+                    "title": "Content"
+                  }
+                },
+                "required": [
+                  "content",
+                  "name"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Code Units"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Control Functions"
         }
       },
       "additionalProperties": false,
@@ -22742,10 +22936,17 @@
           "properties": {
             "interval": {
               "type": "integer",
-              "minimum": 1,
-              "maximum": 300,
-              "description": "Maximum interval between two SPFs in seconds.",
+              "description": "Maximum interval between two SPFs in seconds or milliseconds.\nRange in seconds: <1-300>\nRange in milliseconds: <1-300000>",
               "title": "Interval"
+            },
+            "interval_unit": {
+              "type": "string",
+              "enum": [
+                "seconds",
+                "milliseconds"
+              ],
+              "description": "If interval unit is not defined EOS takes `seconds` by default.",
+              "title": "Interval Unit"
             },
             "wait_interval": {
               "type": "integer",
@@ -22753,6 +22954,13 @@
               "maximum": 300000,
               "description": "Initial wait interval for SPF in milliseconds.",
               "title": "Wait Interval"
+            },
+            "hold_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300000,
+              "description": "Hold interval between the first and second SPF runs in milliseconds.",
+              "title": "Hold Interval"
             }
           },
           "additionalProperties": false,
@@ -23276,6 +23484,13 @@
         "ipv4": {
           "type": "object",
           "properties": {
+            "activity_polling_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60,
+              "description": "MFIB entry activity polling interval.",
+              "title": "Activity Polling Interval"
+            },
             "counters": {
               "type": "object",
               "properties": {
@@ -23381,6 +23596,23 @@
             "^_.+$": {}
           },
           "title": "IPv4"
+        },
+        "ipv6": {
+          "type": "object",
+          "properties": {
+            "activity_polling_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60,
+              "description": "MFIB entry activity polling interval.",
+              "title": "Activity Polling Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "IPv6"
         },
         "vrfs": {
           "type": "array",
@@ -27436,11 +27668,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -27473,8 +27706,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -27571,11 +27803,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -27608,8 +27841,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {

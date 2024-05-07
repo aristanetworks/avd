@@ -62,6 +62,15 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.1.1.1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP EVPN Peer: dc1-spine1 (IP: 10.255.0.1)"
   },
   {

@@ -1,7 +1,11 @@
 # Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 $id: eos_designs
+$schema: avd_meta_schema
 type: dict
 allow_other_keys: true
 keys:
@@ -220,7 +224,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       mlag_ipv4_underlay_peer:
         type: dict
         keys:
@@ -240,7 +244,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       evpn_overlay_peers:
         type: dict
         keys:
@@ -260,7 +264,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       evpn_overlay_core:
         type: dict
         keys:
@@ -280,7 +284,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       mpls_overlay_peers:
         type: dict
         keys:
@@ -300,7 +304,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       rr_overlay_peers:
         type: dict
         keys:
@@ -320,7 +324,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       ipvpn_gateway_peers:
         type: dict
         keys:
@@ -340,7 +344,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       wan_overlay_peers:
         type: dict
         keys:
@@ -394,7 +398,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       wan_rr_overlay_peers:
         type: dict
         description: Configuration options for the peer-group created to peer between
@@ -440,7 +444,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
@@ -593,6 +597,25 @@ keys:
       existing keys will be replaced.\n"
     default:
     - custom_structured_configuration_
+  cv_pathfinder_global_sites:
+    documentation_options:
+      table: wan-cv-pathfinder-regions
+    description: 'Define sites that are outside of the CV Pathfinder hierarchy.
+
+      This is used to arrange pathfinders in the CloudVision topology layout.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: The site name.
+        description:
+          type: str
+        location:
+          type: str
+          description: Location as a string is resolved on Cloudvision.
   cv_pathfinder_internet_exit_policies:
     description: 'PREVIEW: These keys are in preview mode.
 
@@ -1335,6 +1358,15 @@ keys:
             - str
             description: IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point
               SVIs over the MLAG peer-link.
+          ipv6_prefix_length:
+            type: int
+            default: 64
+            min: 1
+            max: 127
+            convert_types:
+            - str
+            description: IPv6 prefix length used for MLAG peer-vlan and L3 point-to-point
+              SVIs over the MLAG peer-link.
       p2p_uplinks:
         type: dict
         keys:
@@ -1972,7 +2004,7 @@ keys:
     description: List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     items:
       type: str
-      description: IPv4 address.
+      description: IPv4 or IPv6 address.
   network_ports:
     type: list
     items:
@@ -2879,7 +2911,7 @@ keys:
           documentation_options:
             hide_keys: true
           description: Custom structured config for eos_cli_config_gen.
-          $ref: eos_cli_config_gen#/
+          $ref: eos_cli_config_gen#
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the root level of the final EOS
@@ -3235,6 +3267,20 @@ keys:
       For default enabling of sFlow for various interface types across the fabric
       see `fabric_sflow`.'
     keys:
+      sample:
+        type: dict
+        keys:
+          rate:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+            description: 'Packet sampling rate that defines the average number of
+              ingress packets that pass through an interface for every packet that
+              is sampled.
+
+              A rate of 16384 corresponds to an average sample of one per 16384 packets.'
       destinations:
         type: list
         items:
@@ -4402,7 +4448,7 @@ keys:
                       is used.
                   id:
                     type: int
-                    $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id
+                    $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id
                     required: false
                     min: 2
                     max: 253
@@ -5022,6 +5068,17 @@ $defs:
               Setting to false will set port to ''shutdown'' in intended configuration.
 
               '
+          ptp_mpass:
+            type: bool
+            default: false
+            description: 'When MPASS is enabled on an MLAG port-channel, MLAG peers
+              coordinate to function as a single PTP logical device.
+
+              Arista PTP enabled devices always place PTP messages on the same physical
+              link within the port-channel.
+
+              Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+              devices.'
           esi:
             type: str
             description: Format xxxx:xxxx:xxxx.
@@ -5146,7 +5203,7 @@ $defs:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items/
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
       validate_state:
         type: bool
         description: Set to false to disable interface validation by the `eos_validate_state`
@@ -5161,7 +5218,7 @@ $defs:
           for eos_cli_config_gen.
         documentation_options:
           hide_keys: true
-        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
   connected_endpoints:
     type: list
     primary_key: name
@@ -5464,6 +5521,46 @@ $defs:
                   mapped to the corresponding peer_group.
 
                   '
+              address_family_ipv4:
+                type: dict
+                keys:
+                  activate:
+                    type: bool
+                  route_map_in:
+                    type: str
+                    description: Inbound route-map name.
+                  route_map_out:
+                    type: str
+                    description: Outbound route-map name.
+                  default_originate:
+                    type: dict
+                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/default_originate
+                  next_hop:
+                    type: dict
+                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/next_hop
+                  prefix_list_in:
+                    type: str
+                    description: Inbound prefix-list name.
+                  prefix_list_out:
+                    type: str
+                    description: Outbound prefix-list name.
+              address_family_ipv6:
+                type: dict
+                keys:
+                  activate:
+                    type: bool
+                  route_map_in:
+                    type: str
+                    description: Inbound route-map name.
+                  route_map_out:
+                    type: str
+                    description: Outbound route-map name.
+                  prefix_list_in:
+                    type: str
+                    description: Inbound prefix-list name.
+                  prefix_list_out:
+                    type: str
+                    description: Outbound prefix-list name.
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -6222,7 +6319,7 @@ $defs:
                         for eos_cli_config_gen.
                       documentation_options:
                         hide_keys: true
-                      $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
+                      $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
                     raw_eos_cli:
                       type: str
                       description: 'EOS CLI rendered directly on the Ethernet interface
@@ -6535,7 +6632,7 @@ $defs:
                       for eos_cli_config_gen.
                     documentation_options:
                       hide_keys: true
-                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/
+                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items
               bgp_peer_groups:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
@@ -6569,6 +6666,46 @@ $defs:
                         a bgp_peer mapped to the corresponding peer_group.
 
                         '
+                    address_family_ipv4:
+                      type: dict
+                      keys:
+                        activate:
+                          type: bool
+                        route_map_in:
+                          type: str
+                          description: Inbound route-map name.
+                        route_map_out:
+                          type: str
+                          description: Outbound route-map name.
+                        default_originate:
+                          type: dict
+                          $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/default_originate
+                        next_hop:
+                          type: dict
+                          $ref: eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/next_hop
+                        prefix_list_in:
+                          type: str
+                          description: Inbound prefix-list name.
+                        prefix_list_out:
+                          type: str
+                          description: Outbound prefix-list name.
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        activate:
+                          type: bool
+                        route_map_in:
+                          type: str
+                          description: Inbound route-map name.
+                        route_map_out:
+                          type: str
+                          description: Outbound route-map name.
+                        prefix_list_in:
+                          type: str
+                          description: Inbound prefix-list name.
+                        prefix_list_out:
+                          type: str
+                          description: Outbound prefix-list name.
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings
@@ -6602,7 +6739,7 @@ $defs:
                 description: Custom structured config for eos_cli_config_gen.
                 documentation_options:
                   hide_keys: true
-                $ref: eos_cli_config_gen#/
+                $ref: eos_cli_config_gen#
         l2vlans:
           documentation_options:
             table: network-services-l2vlans-settings
@@ -6774,7 +6911,7 @@ $defs:
                       '
                     documentation_options:
                       hide_keys: true
-                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/vlans/items/
+                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/vlans/items
                   raw_eos_cli:
                     type: str
                     description: 'EOS cli commands rendered on router_bgp.vlans.
@@ -6931,12 +7068,20 @@ $defs:
             description: Node management interface IPv4 address.
             type: str
             format: cidr
+          mgmt_gateway:
+            type: str
+            description: This key sets the management gateway for the device. It takes
+              precedence over the global `mgmt_gateway`.
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
             description: Node management interface IPv6 address.
             type: str
             format: cidr
+          ipv6_mgmt_gateway:
+            type: str
+            description: This key sets the ipv6 management gateway for the device.
+              It takes precedence over the global `ipv6_mgmt_gateway`.
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
@@ -7046,7 +7191,7 @@ $defs:
               hide_keys: true
             description: Custom structured config for eos_cli_config_gen.
             type: dict
-            $ref: eos_cli_config_gen#/
+            $ref: eos_cli_config_gen#
           uplink_type:
             documentation_options:
               table: node-type-uplink-configuration
@@ -7258,7 +7403,7 @@ $defs:
 
               '
           mlag_port_channel_structured_config:
-            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items/
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -7275,7 +7420,7 @@ $defs:
 
               '
           mlag_peer_vlan_structured_config:
-            $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
+            $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -7292,7 +7437,7 @@ $defs:
 
               '
           mlag_peer_l3_vlan_structured_config:
-            $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
+            $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -7784,17 +7929,39 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: str
+          mlag_peer_address_family:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: 'IP address family used to establish MLAG Peer Link (control
+              link).
+
+              `ipv6` requires EOS version 4.31.1F or higher.
+
+              Note: `ipv6` is not supported in combination with a common MLAG peer
+              link VLAN (ex. `mlag_l3_peer_vlan` set to 4094).'
+            type: str
+            valid_values:
+            - ipv4
+            - ipv6
+            default: ipv4
           mlag_peer_ipv4_pool:
             documentation_options:
               table: node-type-l2-mlag-configuration
-            description: 'IP address pool used for MLAG Peer Link (control link).
+            description: 'IPv4 address pool used for MLAG Peer Link (control link).
               IP is derived from the node id.
 
-              Required when MLAG leafs present in topology.
-
-              '
+              Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).'
             type: str
             format: ipv4_cidr
+          mlag_peer_ipv6_pool:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: 'IPv6 address pool used for MLAG Peer Link (control link).
+              IP is derived from the node id.
+
+              Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.'
+            type: str
+            format: ipv6_cidr
           mlag_port_channel_id:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -8408,9 +8575,13 @@ $defs:
             type: str
             description: 'The CV Pathfinder site name.
 
-              This key is required for WAN routers but ignored for pathfinders.
+              This key is required for WAN routers but optional for pathfinders.
 
-              The site name must be defined for the relevant region under ''cv_pathfinder_regions''.'
+              For WAN routers and pathfinders with `cv_pathfinder_region`, the site
+              name must be defined for the relevant region under ''cv_pathfinder_regions''.
+
+              For pathfinders without `cv_pathfinder_region` set, the site must be
+              defined under `cv_pathfinder_global_sites`.'
           wan_ha:
             documentation_options:
               table: node-type-wan-configuration
@@ -8698,7 +8869,7 @@ $defs:
           documentation_options:
             hide_keys: true
           description: Custom structured config for the Ethernet interface.
-          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
   p2p_links:
     type: list
     items:
@@ -9222,7 +9393,7 @@ $defs:
               '
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/vlans/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/vlans/items
           raw_eos_cli:
             type: str
             description: 'EOS CLI rendered directly on the Router BGP, VLAN definition
@@ -9243,7 +9414,7 @@ $defs:
           '
         documentation_options:
           hide_keys: true
-        $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
+        $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
   virtual_topology:
     type: dict
     keys:
@@ -9252,29 +9423,29 @@ $defs:
         description: Optional name.
       traffic_class:
         type: int
-        $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/traffic_class
+        $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/traffic_class
       dscp:
         type: int
-        $ref: eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp
+        $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp
       lowest_hop_count:
         description: 'Prefer paths with lowest hop-count.
 
           Only applicable for `wan_mode: "cv-pathfinder"`.'
         type: bool
         default: false
-        $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/lowest_hop_count
+        $ref: eos_cli_config_gen#/keys/router_path_selection/keys/load_balance_policies/items/keys/lowest_hop_count
       constraints:
         type: dict
         keys:
           jitter:
             type: int
-            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/jitter
+            $ref: eos_cli_config_gen#/keys/router_path_selection/keys/load_balance_policies/items/keys/jitter
           latency:
             type: int
-            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/latency
+            $ref: eos_cli_config_gen#/keys/router_path_selection/keys/load_balance_policies/items/keys/latency
           loss_rate:
             type: str
-            $ref: eos_cli_config_gen#keys/router_path_selection/keys/load_balance_policies/items/keys/loss_rate
+            $ref: eos_cli_config_gen#/keys/router_path_selection/keys/load_balance_policies/items/keys/loss_rate
       path_groups:
         type: list
         min_length: 1
