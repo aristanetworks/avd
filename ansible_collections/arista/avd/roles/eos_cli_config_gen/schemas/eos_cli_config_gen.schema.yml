@@ -10495,6 +10495,17 @@ keys:
           keys:
             source_protocol:
               type: str
+              valid_values:
+              - attached-host
+              - bgp
+              - connected
+              - dynamic
+              - isis
+              - ospf
+              - ospfv3
+              - rip
+              - static
+              - user
             route_map:
               type: str
             rcf:
@@ -10503,8 +10514,10 @@ keys:
 
                 Example: MyFunction(myarg).
 
-                Only used if `source_protocol` is one of `connected`, `static`, `isis`,
-                `user`, `dynamic`.'
+                `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+
+                Only applicable if `source_protocol` is one of `connected`, `static`,
+                `isis`, `user`, `dynamic`.'
             include_leaked:
               type: bool
       vlan_aware_bundles:

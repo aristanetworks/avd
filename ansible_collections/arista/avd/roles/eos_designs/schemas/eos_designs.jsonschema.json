@@ -34101,6 +34101,18 @@
                       "properties": {
                         "source_protocol": {
                           "type": "string",
+                          "enum": [
+                            "attached-host",
+                            "bgp",
+                            "connected",
+                            "dynamic",
+                            "isis",
+                            "ospf",
+                            "ospfv3",
+                            "rip",
+                            "static",
+                            "user"
+                          ],
                           "title": "Source Protocol"
                         },
                         "route_map": {
@@ -34109,7 +34121,7 @@
                         },
                         "rcf": {
                           "type": "string",
-                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
                           "title": "RCF"
                         },
                         "include_leaked": {
