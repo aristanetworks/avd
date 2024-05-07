@@ -1,0 +1,12 @@
+---
+fabric_flow_tracking:
+  mlag_interfaces:
+    enabled: false
+    name: FLOW-TRACKER-3
+  uplinks:
+    enabled: true
+    name: FLOW-TRACKER-3
+  endpoints:
+    enabled: false
+  downlinks:
+    enabled: true

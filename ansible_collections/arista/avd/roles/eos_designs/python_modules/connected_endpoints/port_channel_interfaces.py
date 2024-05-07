@@ -141,6 +141,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
             "ptp": self._get_adapter_ptp(adapter),
             "sflow": self._get_adapter_sflow(adapter),
+            "flow_tracker": self._get_adapter_flow_tracking(adapter),
             "validate_state": None if adapter.get("validate_state", True) else False,
             "eos_cli": get(adapter, "port_channel.raw_eos_cli"),
             "struct_cfg": get(adapter, "port_channel.structured_config"),
@@ -173,6 +174,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
         # Set MLAG ID on port-channel if connection is multi-homed and this switch is running MLAG
         elif self.shared_utils.mlag and len(set(adapter["switches"])) > 1:
+            if get(port_channel_interface, "ptp.enable") is True and get(adapter, "port_channel.ptp_mpass") is True:
+                port_channel_interface["ptp"]["mpass"] = True
             port_channel_interface["mlag"] = channel_group_id
 
         # LACP Fallback

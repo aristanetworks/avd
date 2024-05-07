@@ -1,0 +1,669 @@
+anta.tests.aaa:
+- VerifyTacacsSourceIntf:
+    intf: Management0
+    vrf: default
+- VerifyTacacsServers:
+    servers:
+    - 1.1.1.1
+    - 2.2.2.2
+    vrf: default
+- VerifyTacacsServerGroups:
+    groups:
+    - admin
+    - user
+- VerifyAuthenMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - login
+    - enable
+    - dot1x
+- VerifyAuthzMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - commands
+    - exec
+- VerifyAcctDefaultMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - system
+    - exec
+    - commands
+    - dot1x
+- VerifyAcctConsoleMethods:
+    methods:
+    - local
+    - none
+    - logging
+    types:
+    - system
+    - exec
+    - commands
+    - dot1x
+anta.tests.configuration:
+- VerifyZeroTouch: null
+- VerifyRunningConfigDiffs: null
+anta.tests.connectivity:
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-svc-leaf1a.dc1.local
+      neighbor_port: Ethernet3
+      port: Ethernet3
+    result_overwrite:
+      custom_field: 'Local: Ethernet3 - Remote: dc1-svc-leaf1a Ethernet3'
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-svc-leaf1a.dc1.local
+      neighbor_port: Ethernet4
+      port: Ethernet4
+    result_overwrite:
+      custom_field: 'Local: Ethernet4 - Remote: dc1-svc-leaf1a Ethernet4'
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-spine1.dc1.local
+      neighbor_port: Ethernet6
+      port: Ethernet1
+    result_overwrite:
+      custom_field: 'Local: Ethernet1 - Remote: dc1-spine1 Ethernet6'
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-spine2.dc1.local
+      neighbor_port: Ethernet6
+      port: Ethernet2
+    result_overwrite:
+      custom_field: 'Local: Ethernet2 - Remote: dc1-spine2 Ethernet6'
+- VerifyReachability:
+    hosts:
+    - destination: 10.33.255.20
+      repeat: 1
+      source: 10.33.255.21
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: P2P Interface Ethernet1 (IP: 10.33.255.21) - Destination:
+        dc1-spine1 Ethernet6 (IP: 10.33.255.20)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.33.255.22
+      repeat: 1
+      source: 10.33.255.23
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: P2P Interface Ethernet2 (IP: 10.33.255.23) - Destination:
+        dc1-spine2 Ethernet6 (IP: 10.33.255.22)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.1
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc1-spine1 Loopback0
+        (IP: 10.255.0.1)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.2
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc1-spine2 Loopback0
+        (IP: 10.255.0.2)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.3
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc1-leaf1a Loopback0
+        (IP: 10.255.0.3)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.4
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc1-leaf1b Loopback0
+        (IP: 10.255.0.4)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.5
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc1-leaf2a Loopback0
+        (IP: 10.255.0.5)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.2.1
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc1-wan1 Loopback0
+        (IP: 10.255.2.1)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.2.2
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc1-wan2 Loopback0
+        (IP: 10.255.2.2)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.33.0.5
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc1-svc-leaf1a
+        Loopback0 (IP: 10.33.0.5)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.33.0.6
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc1-svc-leaf1b
+        Loopback0 (IP: 10.33.0.6)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.11
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc2-spine1 Loopback0
+        (IP: 10.255.128.11)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.12
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc2-spine2 Loopback0
+        (IP: 10.255.128.12)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.13
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc2-leaf1a Loopback0
+        (IP: 10.255.128.13)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.14
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc2-leaf1b Loopback0
+        (IP: 10.255.128.14)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.15
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc2-leaf2a Loopback0
+        (IP: 10.255.128.15)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.16
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc2-leaf2b Loopback0
+        (IP: 10.255.128.16)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.17
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc2-leaf3a.arista.com
+        Loopback0 (IP: 10.255.128.17)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.18
+      repeat: 1
+      source: 10.33.0.6
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Loopback0 (IP: 10.33.0.6) - Destination: dc2-leaf3b.arista.com
+        Loopback0 (IP: 10.255.128.18)'
+anta.tests.field_notices:
+- VerifyFieldNotice44Resolution: null
+- VerifyFieldNotice72Resolution: null
+anta.tests.greent:
+- VerifyGreenT: null
+- VerifyGreenTCounters: null
+anta.tests.hardware:
+- VerifyEnvironmentPower:
+    result_overwrite:
+      custom_field: 'Accepted States: ''ok'''
+    states:
+    - ok
+- VerifyEnvironmentCooling:
+    result_overwrite:
+      custom_field: 'Accepted States: ''ok'''
+    states:
+    - ok
+- VerifyTemperature: null
+- VerifyTransceiversManufacturers:
+    manufacturers:
+    - Arista Networks
+    - Arastra, Inc.
+    - Not Present
+    result_overwrite:
+      custom_field: 'Accepted Manufacturers: ''Arista Networks'', ''Arastra, Inc.'',
+        ''Not Present'''
+- VerifyTransceiversManufacturers:
+    manufacturers:
+    - Not Present
+    - Arista Networks
+    - Arastra, Inc.
+- VerifyTemperature: null
+- VerifyTransceiversTemperature: null
+- VerifyEnvironmentSystemCooling: null
+- VerifyEnvironmentCooling:
+    states:
+    - ok
+- VerifyEnvironmentPower:
+    states:
+    - ok
+- VerifyAdverseDrops: null
+anta.tests.interfaces:
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Ethernet3
+      status: up
+    result_overwrite:
+      custom_field: Interface Ethernet3 - MLAG_PEER_dc1-svc-leaf1a_Ethernet3 = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Ethernet4
+      status: up
+    result_overwrite:
+      custom_field: Interface Ethernet4 - MLAG_PEER_dc1-svc-leaf1a_Ethernet4 = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Ethernet1
+      status: up
+    result_overwrite:
+      custom_field: Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet6 = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Ethernet2
+      status: up
+    result_overwrite:
+      custom_field: Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet6 = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Port-Channel3
+      status: up
+    result_overwrite:
+      custom_field: Interface Port-Channel3 - MLAG_PEER_dc1-svc-leaf1a_Po3 = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Vlan4093
+      status: up
+    result_overwrite:
+      custom_field: Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Vlan4094
+      status: up
+    result_overwrite:
+      custom_field: Interface Vlan4094 - MLAG_PEER = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Loopback0
+      status: up
+    result_overwrite:
+      custom_field: Interface Loopback0 - EVPN_Overlay_Peering = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Loopback1
+      status: up
+    result_overwrite:
+      custom_field: Interface Loopback1 - VTEP_VXLAN_Tunnel_Source = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Vxlan1
+      status: up
+    result_overwrite:
+      custom_field: Interface Vxlan1 = 'up'
+anta.tests.lanz:
+- VerifyLANZ: null
+anta.tests.mlag:
+- VerifyMlagStatus: null
+anta.tests.ptp:
+- VerifyPtpModeStatus: null
+- VerifyPtpGMStatus:
+    gmid: 0xec:46:70:ff:fe:00:ff:a9
+- VerifyPtpLockStatus: null
+- VerifyPtpOffset: null
+- VerifyPtpPortModeStatus: null
+anta.tests.routing.bgp:
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.1
+    result_overwrite:
+      custom_field: 'BGP EVPN Peer: dc1-spine1 (IP: 10.255.0.1)'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.2
+    result_overwrite:
+      custom_field: 'BGP EVPN Peer: dc1-spine2 (IP: 10.255.0.2)'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.33.1.104
+      safi: unicast
+    result_overwrite:
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-svc-leaf1a (IP: 10.33.1.104)'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.33.255.20
+      safi: unicast
+    result_overwrite:
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-spine1 (IP: 10.33.255.20)'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.33.255.22
+      safi: unicast
+    result_overwrite:
+      custom_field: 'BGP IPv4 Unicast Peer: dc1-spine2 (IP: 10.33.255.22)'
+anta.tests.routing.generic:
+- VerifyRoutingProtocolModel:
+    model: multi-agent
+    result_overwrite:
+      custom_field: 'Routing protocol model: multi-agent'
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.0.1 - Peer: dc1-spine1'
+    routes:
+    - 10.255.0.1
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.0.2 - Peer: dc1-spine2'
+    routes:
+    - 10.255.0.2
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.0.3 - Peer: dc1-leaf1a'
+    routes:
+    - 10.255.0.3
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.0.4 - Peer: dc1-leaf1b'
+    routes:
+    - 10.255.0.4
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.0.5 - Peer: dc1-leaf2a'
+    routes:
+    - 10.255.0.5
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.2.1 - Peer: dc1-wan1'
+    routes:
+    - 10.255.2.1
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.2.2 - Peer: dc1-wan2'
+    routes:
+    - 10.255.2.2
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.33.0.5 - Peer: dc1-svc-leaf1a'
+    routes:
+    - 10.33.0.5
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.33.0.6 - Peer: dc1-svc-leaf1b'
+    routes:
+    - 10.33.0.6
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.128.11 - Peer: dc2-spine1'
+    routes:
+    - 10.255.128.11
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.128.12 - Peer: dc2-spine2'
+    routes:
+    - 10.255.128.12
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.128.13 - Peer: dc2-leaf1a'
+    routes:
+    - 10.255.128.13
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.128.14 - Peer: dc2-leaf1b'
+    routes:
+    - 10.255.128.14
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.128.15 - Peer: dc2-leaf2a'
+    routes:
+    - 10.255.128.15
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.128.16 - Peer: dc2-leaf2b'
+    routes:
+    - 10.255.128.16
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.128.17 - Peer: dc2-leaf3a.arista.com'
+    routes:
+    - 10.255.128.17
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.128.18 - Peer: dc2-leaf3b.arista.com'
+    routes:
+    - 10.255.128.18
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.1.3 - Peer: dc1-leaf1a'
+    routes:
+    - 10.255.1.3
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.1.5 - Peer: dc1-leaf2a'
+    routes:
+    - 10.255.1.5
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.33.1.5 - Peer: dc1-svc-leaf1a'
+    routes:
+    - 10.33.1.5
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.129.13 - Peer: dc2-leaf1a'
+    routes:
+    - 10.255.129.13
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.129.15 - Peer: dc2-leaf2a'
+    routes:
+    - 10.255.129.15
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      custom_field: 'Route: 10.255.129.17 - Peer: dc2-leaf3a.arista.com'
+    routes:
+    - 10.255.129.17
+anta.tests.security:
+- VerifyAPIHttpsSSL:
+    profile: eAPI_SSL_Profile
+    result_overwrite:
+      custom_field: 'eAPI HTTPS SSL Profile: eAPI_SSL_Profile'
+- VerifySSHStatus: null
+- VerifySSHIPv4Acl:
+    number: 3
+    vrf: default
+- VerifySSHIPv6Acl:
+    number: 3
+    vrf: default
+- VerifyTelnetStatus: null
+- VerifyAPIHttpStatus: null
+- VerifyAPIHttpsSSL:
+    profile: default
+- VerifyAPIIPv4Acl:
+    number: 3
+    vrf: default
+- VerifyAPIIPv6Acl:
+    number: 3
+    vrf: default
+- VerifyAPISSLCertificate:
+    certificates:
+    - certificate_name: ARISTA_SIGNING_CA.crt
+      common_name: AristaIT-ICA ECDSA Issuing Cert Authority
+      encryption_algorithm: ECDSA
+      expiry_threshold: 30
+      key_size: 256
+    - certificate_name: ARISTA_ROOT_CA.crt
+      common_name: Arista Networks Internal IT Root Cert Authority
+      encryption_algorithm: RSA
+      expiry_threshold: 30
+      key_size: 4096
+- VerifyBannerLogin:
+    login_banner: '# Copyright (c) 2023-2024 Arista Networks, Inc.
+
+      # Use of this source code is governed by the Apache License 2.0
+
+      # that can be found in the LICENSE file.
+
+      '
+- VerifyBannerMotd:
+    motd_banner: '# Copyright (c) 2023-2024 Arista Networks, Inc.
+
+      # Use of this source code is governed by the Apache License 2.0
+
+      # that can be found in the LICENSE file.
+
+      '
+- VerifyIPv4ACL:
+    ipv4_access_lists:
+    - entries:
+      - action: permit icmp any any
+        sequence: 10
+      - action: permit ip any any tracked
+        sequence: 20
+      - action: permit udp any any eq bfd ttl eq 255
+        sequence: 30
+      name: default-control-plane-acl
+    - entries:
+      - action: permit icmp any any
+        sequence: 10
+      - action: permit tcp any any range 5900 5910
+        sequence: 20
+      name: LabTest
+- VerifyIPSecConnHealth: null
+- VerifySpecificIPSecConn:
+    ip_security_connections:
+    - peer: 10.255.0.1
+    - connections:
+      - destination_address: 100.64.2.2
+        source_address: 100.64.3.2
+      - destination_address: 172.18.2.2
+        source_address: 172.18.3.2
+      peer: 10.255.0.2
+      vrf: default
+anta.tests.services:
+- VerifyHostname:
+    hostname: s1-spine1
+- VerifyDNSLookup:
+    domain_names:
+    - arista.com
+    - www.google.com
+    - arista.ca
+- VerifyDNSServers:
+    dns_servers:
+    - priority: 1
+      server_address: 10.14.0.1
+      vrf: default
+    - priority: 0
+      server_address: 10.14.0.11
+      vrf: MGMT
+- VerifyErrdisableRecovery:
+    reasons:
+    - interval: 30
+      reason: acl
+    - interval: 30
+      reason: bpduguard
+anta.tests.snmp:
+- VerifySnmpStatus:
+    vrf: default
+- VerifySnmpIPv4Acl:
+    number: 3
+    vrf: default
+- VerifySnmpIPv6Acl:
+    number: 3
+    vrf: default
+anta.tests.software:
+- VerifyEOSVersion:
+    versions:
+    - 4.25.4M
+    - 4.26.1F
+- VerifyTerminAttrVersion:
+    versions:
+    - v1.13.6
+    - v1.8.0
+anta.tests.stun:
+- VerifyStunClient:
+    stun_clients:
+    - public_address: 172.18.3.21
+      public_port: 6006
+      source_address: 172.18.3.2
+      source_port: 4500
+    - public_address: 100.64.3.21
+      public_port: 6006
+      source_address: 100.64.3.2
+      source_port: 4500
+anta.tests.system:
+- VerifyNTP: null
+- VerifyUptime:
+    minimum: 86400
+- VerifyReloadCause: null
+- VerifyCoredump: null
+- VerifyAgentLogs: null
+- VerifyCPUUtilization: null
+- VerifyMemoryUtilization: null
+- VerifyFileSystemUtilization: null
+- VerifyNTP: null
+anta.tests.vlan:
+- VerifyVlanInternalPolicy:
+    end_vlan_id: 4094
+    policy: ascending
+    start_vlan_id: 1006

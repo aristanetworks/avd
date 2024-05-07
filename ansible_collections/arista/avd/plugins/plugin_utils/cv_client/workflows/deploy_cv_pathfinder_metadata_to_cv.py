@@ -6,6 +6,7 @@ from __future__ import annotations
 from copy import deepcopy
 from logging import getLogger
 
+from ...password_utils.password import simple_7_decrypt
 from ...utils import get
 from ..client import CVClient
 from .models import CVDevice, CVPathfinderMetadata, DeployToCvResult
@@ -62,6 +63,8 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
                 "sslProfileName": metadata.get("ssl_profile", ""),
                 "vtepIp": metadata.get("vtep_ip", ""),
                 "region": metadata.get("region", ""),
+                "site": metadata.get("site", ""),
+                "address": metadata.get("address", ""),
                 "wanInterfaces": [
                     {
                         "inputs": {
@@ -127,6 +130,8 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
         },
         "tags": {"query": f"device:{device.serial_number}"},
     }
+    if internet_exit_metadata := generate_internet_exit_metadata(metadata, device):
+        edge_metadata["inputs"]["router"]["services"] = internet_exit_metadata
 
     found_index = None
     for index, router in enumerate(studio_inputs.get("routers", [])):
@@ -290,3 +295,61 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
         await cv_client.set_studio_inputs(studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, inputs=studio_inputs)
 
     result.deployed_cv_pathfinder_metadata.extend(pathfinders + edges)
+
+
+def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> dict:
+    """
+    Generate internet-exit related metadata for one device.
+    To be inserted into edge router metadata under "services"
+    """
+    if (internet_exit_policies := get(metadata, "internet_exit_policies")) is None:
+        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Did not find 'internet_exit_policies' for device: %s", device.hostname)
+        return []
+
+    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Found %s 'internet_exit_policies' for device: %s", len(internet_exit_policies), device.hostname)
+
+    services_dict = {}
+    for internet_exit_policy in internet_exit_policies:
+        # We currently only support zscaler
+        if internet_exit_policy.get("type") != "zscaler":
+            LOGGER.info(
+                "deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '%s' with type '%s' for device: %s.",
+                internet_exit_policies.get("name"),
+                internet_exit_policy.get("type"),
+                device.hostname,
+            )
+            continue
+
+        policy_name = internet_exit_policy["name"]
+        services_dict.setdefault("zscaler", {"locations": [], "tunnels": []})
+        services_dict["zscaler"]["locations"].append(
+            {
+                "name": f"{device.hostname}_{policy_name}",
+                "description": f"Location corresponding to {device.hostname} for internet-exit policy {policy_name}.",
+                "city": internet_exit_policy["city"],
+                "country": internet_exit_policy["country"],
+                "uploadBandwidth": internet_exit_policy.get("upload_bandwidth"),
+                "downloadBandwidth": internet_exit_policy.get("download_bandwidth"),
+                "firewallEnabled": internet_exit_policy["firewall"],
+                "ipsControl": internet_exit_policy["ips_control"],
+                "aupEnabled": internet_exit_policy["acceptable_use_policy"],
+                "vpnCredentials": [
+                    {
+                        "fqdn": vpn_credential["fqdn"],
+                        "comments": f"Credential for {device.hostname} internet-exit policy {policy_name}",
+                        "vpnType": vpn_credential["vpn_type"],
+                        "presharedKey": simple_7_decrypt(vpn_credential["pre_shared_key"]),
+                    }
+                    for vpn_credential in internet_exit_policy["vpn_credentials"]
+                ],
+            }
+        )
+        services_dict["zscaler"]["tunnels"].extend(
+            {
+                "name": tunnel["name"],
+                "preference": tunnel["preference"],
+            }
+            for tunnel in internet_exit_policy["tunnels"]
+        )
+
+    return services_dict

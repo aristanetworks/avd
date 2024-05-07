@@ -22,6 +22,9 @@ cv_pathfinder_regions:
     sites:
       - name: Site511
         id: 511
+        resolved_location: # Only used for internet exit metadata. Will probably go away again soon(ish).
+          city: BigCity
+          country: BigCountry
 
 bgp_peer_groups:
   wan_overlay_peers:
@@ -85,6 +88,8 @@ wan_router:
               wan_circuit_id: 666
               dhcp_accept_default_route: true
               ip_address: dhcp
+              flow_tracking:
+                enabled: true
             - name: Ethernet2
               wan_carrier: Colt
               wan_circuit_id: 10555
@@ -230,6 +235,7 @@ wan_rr:
   nodes:
     - name: cv-pathfinder-pathfinder
       id: 1
+      cv_pathfinder_site: Global-pathfinder-site
       l3_interfaces:
         - name: Ethernet1
           wan_carrier: Bouygues_Telecom
@@ -239,7 +245,7 @@ wan_rr:
           ip_address: 10.7.7.7/31
           public_ip: 172.17.7.7
           peer_ip: 10.7.7.6
-        - name: Ethernet2
+        - name: Ethernet2/2
           wan_carrier: Colt
           wan_circuit_id: 10000
           ip_address: 172.16.0.1/31
@@ -249,6 +255,8 @@ wan_rr:
           ip_address: 10.9.9.9/31
     - name: cv-pathfinder-pathfinder1
       id: 2
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site423
       data_plane_cpu_allocation_max: 3
       l3_interfaces:
         - name: Ethernet1
@@ -582,3 +590,7 @@ zscaler_endpoints:
     latitude: 50
     longitude: 9
     ip_address: 10.50.9.1 # Not the correct address
+
+cv_pathfinder_global_sites:
+  - name: Global-pathfinder-site
+    location: Somewhere under the rainbow

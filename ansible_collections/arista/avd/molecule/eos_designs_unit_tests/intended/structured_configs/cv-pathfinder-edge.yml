@@ -219,6 +219,8 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: ATT_666_peer3_Ethernet42
+  flow_tracker:
+    hardware: FLOW-TRACKER
   dhcp_client_accept_default_route: true
 - name: Ethernet2
   peer_type: l3_interface
@@ -319,20 +321,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -526,7 +514,7 @@ router_path_selection:
     - name: Ethernet2
       stun:
         server_profiles:
-        - MPLS-cv-pathfinder-pathfinder-Ethernet2
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
     dynamic_peers:
       enabled: true
       ipsec: false
@@ -599,7 +587,7 @@ stun:
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
       ssl_profile: profileA
-    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2_2
       ip_address: 172.16.0.1
       ssl_profile: profileA
 application_traffic_recognition:
@@ -740,7 +728,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.37.121.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel101
   description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
@@ -749,7 +737,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.39.77.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel102
   description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
@@ -758,7 +746,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.50.9.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 monitor_connectivity:
   interface_sets:
@@ -788,6 +776,47 @@ monitor_connectivity:
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
 metadata:
+  cv_pathfinder:
+    internet_exit_policies:
+    - name: ZSCALER-EXIT-POLICY-1
+      type: zscaler
+      city: BigCity
+      country: BigCountry
+      firewall: false
+      ips_control: false
+      acceptable_use_policy: false
+      vpn_credentials:
+      - fqdn: cv-pathfinder-edge_ZSCALER-EXIT-POLICY-1@test.local
+        vpn_type: UFQDN
+        pre_shared_key: 0007054B145A1F0E0928424A0C0B4812160C093B101807091F10105E222E2A351B69777F7D2D3A5547666C7F7A616A672374332B7C68263639327A3E2A3B0468
+      tunnels:
+      - name: Tunnel100
+        preference: Preferred
+      - name: Tunnel101
+        preference: Alternate
+      - name: Tunnel102
+        preference: Alternate
+    role: edge
+    ssl_profile: profileA
+    vtep_ip: 192.168.142.1
+    region: AVD_Land_East
+    zone: AVD_Land_East-ZONE
+    site: Site511
+    interfaces:
+    - name: Ethernet1
+      carrier: ATT
+      circuit_id: '666'
+      pathgroup: INET
+    - name: Ethernet2
+      carrier: Colt
+      circuit_id: '10555'
+      pathgroup: MPLS
+    - name: Ethernet3
+      carrier: Comcast-5G
+      circuit_id: AF830
+      pathgroup: LTE
+    pathfinders:
+    - vtep_ip: 192.168.144.1
   cv_tags:
     device_tags:
     - name: Role
@@ -839,25 +868,17 @@ metadata:
         value: Comcast-5G
       - name: Circuit
         value: AF830
-  cv_pathfinder:
-    role: edge
-    ssl_profile: profileA
-    vtep_ip: 192.168.142.1
-    region: AVD_Land_East
-    zone: AVD_Land_East-ZONE
-    site: Site511
-    interfaces:
-    - name: Ethernet1
-      carrier: ATT
-      circuit_id: '666'
-      pathgroup: INET
-    - name: Ethernet2
-      carrier: Colt
-      circuit_id: '10555'
-      pathgroup: MPLS
-    - name: Ethernet3
-      carrier: Comcast-5G
-      circuit_id: AF830
-      pathgroup: LTE
-    pathfinders:
-    - vtep_ip: 192.168.144.1
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false

@@ -34,6 +34,8 @@ class CvPathfinderMixin:
                 "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
                 "vtep_ip": self.shared_utils.vtep_ip,
                 "region": get(self.shared_utils.wan_region or {}, "name"),
+                "site": get(self.shared_utils.wan_site or {}, "name"),
+                "address": get(self.shared_utils.wan_site or {}, "location"),
                 "interfaces": self._metadata_interfaces(),
                 "pathgroups": self._metadata_pathgroups(),
                 "regions": self._metadata_regions(),
@@ -199,3 +201,12 @@ class CvPathfinderMixin:
             raise AristaAvdError(f"Unable to find the WAN VNI for VRF {vrf_name} during generation of cv_pathfinder metadata.")
 
         return wan_vni
+
+    def _metadata_internet_exit_policies(self: AvdStructuredConfigMetadata):
+        """
+        No-op.
+
+        This metadata is generated in the network services module,
+        since all the required data was readily available in there.
+        """
+        return NotImplemented

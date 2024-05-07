@@ -25,6 +25,10 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
+- ip_address: 2001:db8::1
+  vrf: MGMT
+- ip_address: 2001:db8::2
+  vrf: MGMT
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -69,6 +73,8 @@ ntp:
   - name: 192.168.200.5
     vrf: MGMT
     preferred: true
+  - name: 2001:db8::3
+    vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS rackE DC1.L2LEAF5B
@@ -109,9 +115,9 @@ vlan_interfaces:
 - name: Vlan4091
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.255.252.27/31
   no_autostate: true
   mtu: 1500
+  ip_address: 10.255.252.27/31
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_DC1.L2LEAF5A_Po3

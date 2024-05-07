@@ -5,7 +5,7 @@ from pyavd import validate_structured_config
 from pyavd.avd_schema_tools import AvdSchemaTools
 from pyavd.vendor.errors import AvdValidationError
 
-SCHEMA = AvdSchemaTools(schema_id="eos_cli_config_gen").avdschema.resolved_schema
+SCHEMA = AvdSchemaTools(schema_id="eos_cli_config_gen").avdschema._schema
 
 
 def test_validate_structured_config_with_valid_data(hostname: str, all_inputs: dict):

@@ -108,7 +108,7 @@ keys:
           documentation_options:
             hide_keys: true
           description: Custom structured config for eos_cli_config_gen.
-          $ref: "eos_cli_config_gen#/"
+          $ref: "eos_cli_config_gen#"
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the root level of the final EOS configuration.

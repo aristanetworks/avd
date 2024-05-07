@@ -4082,6 +4082,32 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -4330,6 +4356,32 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -4449,6 +4501,37 @@
         "custom_structured_configuration_"
       ],
       "title": "Custom Structured Configuration Prefix"
+    },
+    "cv_pathfinder_global_sites": {
+      "description": "Define sites that are outside of the CV Pathfinder hierarchy.\nThis is used to arrange pathfinders in the CloudVision topology layout.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The site name.",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location as a string is resolved on Cloudvision.",
+            "title": "Location"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Cv Pathfinder Global Sites"
     },
     "cv_pathfinder_internet_exit_policies": {
       "description": "PREVIEW: These keys are in preview mode.\n\nList of internet-exit policies used for the WAN configuration.",
@@ -5004,11 +5087,97 @@
             "description": "Configure event trigger condition.\n",
             "enum": [
               "on-boot",
+              "on-counters",
+              "on-intf",
               "on-logging",
+              "on-maintenance",
               "on-startup-config",
-              "on-maintenance"
+              "vm-tracer vm"
             ],
             "title": "Trigger"
+          },
+          "trigger_on_counters": {
+            "type": "object",
+            "properties": {
+              "condition": {
+                "type": "string",
+                "description": "Set the logical expression to evaluate.",
+                "title": "Condition"
+              },
+              "granularity_per_source": {
+                "type": "boolean",
+                "description": "Set the granularity of event counting for a wildcarded condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used here]",
+                "title": "Granularity Per Source"
+              },
+              "poll_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000000,
+                "description": "Set the polling interval in seconds.",
+                "title": "Poll Interval"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Counters"
+          },
+          "trigger_on_logging": {
+            "type": "object",
+            "properties": {
+              "poll_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000000,
+                "description": "Set the polling interval in seconds.",
+                "title": "Poll Interval"
+              },
+              "regex": {
+                "type": "string",
+                "description": "Regular expression to use for searching log messages.",
+                "title": "Regex"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Logging"
+          },
+          "trigger_on_intf": {
+            "type": "object",
+            "description": "Trigger condition occurs on specified interface changes.\nNote: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`.",
+            "properties": {
+              "interface": {
+                "type": "string",
+                "description": "Interface name.\nExample - Ethernet4\n          Loopback4-6\n          Port-channel4,7",
+                "title": "Interface"
+              },
+              "ip": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface IP address assignment.",
+                "title": "IP"
+              },
+              "ipv6": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface ipv6 address assignment.",
+                "title": "IPv6"
+              },
+              "operstatus": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface operStatus.",
+                "title": "Operstatus"
+              }
+            },
+            "required": [
+              "interface"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Intf"
           },
           "trigger_on_maintenance": {
             "description": "Settings required for trigger 'on-maintenance'.",
@@ -5078,7 +5247,8 @@
           },
           "regex": {
             "type": "string",
-            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n",
+            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.",
+            "deprecated": true,
             "title": "Regex"
           },
           "asynchronous": {
@@ -5178,7 +5348,7 @@
       "title": "EVPN Short Esi Prefix"
     },
     "evpn_vlan_aware_bundles": {
-      "description": "Enable vlan aware bundles for EVPN MAC-VRF.",
+      "description": "Enable VLAN aware bundles for every EVPN MAC-VRF.\nIf set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles using the VLAN name as the bundle name.\n\nThe `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.",
       "type": "boolean",
       "default": false,
       "title": "EVPN VLAN Aware Bundles"
@@ -5250,6 +5420,177 @@
       "type": "string",
       "title": "Fabric EVPN Encapsulation"
     },
+    "fabric_flow_tracking": {
+      "type": "object",
+      "description": "Default enabling of flow-tracking(IPFIX) for various interface types across the fabric.\nFlow Tracking can also be enabled/disabled under each of the specific data models.\nFor general flow-tracking settings see `flow_tracking_settings`.",
+      "properties": {
+        "uplinks": {
+          "description": "Enable flow-tracking on all fabric uplinks.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Uplinks"
+        },
+        "downlinks": {
+          "description": "Enable flow-tracking on all fabric downlinks.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Downlinks"
+        },
+        "endpoints": {
+          "description": "Enable flow-tracking on all endpoints ports.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Endpoints"
+        },
+        "l3_edge": {
+          "description": "Enable flow-tracking on all p2p_links defined under l3_edge.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "L3 Edge"
+        },
+        "core_interfaces": {
+          "description": "Enable flow-tracking on all p2p_links defined under core_interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Core Interfaces"
+        },
+        "mlag_interfaces": {
+          "description": "Enable flow-tracking on all MLAG peer interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MLAG Interfaces"
+        },
+        "l3_interfaces": {
+          "description": "Enable flow-tracking on all node.l3_interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "L3 Interfaces"
+        },
+        "dps_interfaces": {
+          "description": "Enable flow-tracking on all dps_interfaces.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "DPS Interfaces"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Fabric Flow Tracking"
+    },
     "fabric_ip_addressing": {
       "type": "object",
       "properties": {
@@ -5274,6 +5615,14 @@
               "maximum": 31,
               "description": "IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.",
               "title": "IPv4 Prefix Length"
+            },
+            "ipv6_prefix_length": {
+              "type": "integer",
+              "default": 64,
+              "minimum": 1,
+              "maximum": 127,
+              "description": "IPv6 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.",
+              "title": "IPv6 Prefix Length"
             }
           },
           "additionalProperties": false,
@@ -5357,61 +5706,260 @@
       "description": "PREVIEW: This key is currently not supported\n\nDefine the flow tracking parameters for this topology.",
       "type": "object",
       "properties": {
-        "flow_tracker_name": {
-          "type": "string",
-          "default": "FLOW-TRACKER",
-          "description": "Flow Tracker Name.",
-          "title": "Flow Tracker Name"
-        },
-        "record_export": {
+        "sampled": {
           "type": "object",
+          "description": "The options relevant only for flow tracker type sampled.",
           "properties": {
-            "on_inactive_timeout": {
-              "description": "Flow record inactive export timeout in milliseconds.",
-              "type": "integer",
-              "minimum": 3000,
-              "maximum": 900000,
-              "default": 70000,
-              "title": "On Inactive Timeout"
+            "encapsulation": {
+              "type": "object",
+              "properties": {
+                "ipv4_ipv6": {
+                  "type": "boolean",
+                  "title": "IPv4 IPv6"
+                },
+                "mpls": {
+                  "type": "boolean",
+                  "title": "MPLS"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Encapsulation"
             },
-            "on_interval": {
+            "sample": {
               "type": "integer",
-              "minimum": 1000,
-              "maximum": 36000000,
-              "default": 300000,
-              "description": "Flow record export interval in milliseconds.",
-              "title": "On Interval"
+              "minimum": 1,
+              "maximum": 4294967295,
+              "default": 10000,
+              "title": "Sample"
+            },
+            "hardware_offload": {
+              "type": "object",
+              "properties": {
+                "ipv4": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv4 traffic.",
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv6 traffic.",
+                  "title": "IPv6"
+                },
+                "threshold_minimum": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4294967295,
+                  "description": "Minimum number of samples.",
+                  "title": "Threshold Minimum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Hardware Offload"
             }
           },
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "Record Export"
+          "title": "Sampled"
         },
-        "exporter": {
+        "hardware": {
           "type": "object",
+          "description": "The options relevant only for flow tracker type hardware.",
           "properties": {
-            "name": {
-              "type": "string",
-              "default": "CV-TELEMETRY",
-              "description": "Exporter Name.",
-              "title": "Name"
-            },
-            "template_interval": {
-              "description": "Template interval in milliseconds.",
-              "type": "integer",
-              "minimum": 5000,
-              "maximum": 3600000,
-              "default": 3600000,
-              "title": "Template Interval"
+            "record": {
+              "type": "object",
+              "properties": {
+                "format_ipfix_standard_timestamps_counters": {
+                  "type": "boolean",
+                  "description": "Enable software export of IPFIX data records.",
+                  "title": "Format Ipfix Standard Timestamps Counters"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Record"
             }
           },
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "Exporter"
+          "title": "Hardware"
+        },
+        "trackers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Tracker Name",
+                "title": "Name"
+              },
+              "sampled": {
+                "type": "object",
+                "description": "The options relevant only for flow tracker type sampled.",
+                "properties": {
+                  "table_size": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 614400,
+                    "description": "Maximum number of entries in flow table.\n",
+                    "title": "Table Size"
+                  },
+                  "record_export": {
+                    "type": "object",
+                    "properties": {
+                      "mpls": {
+                        "type": "boolean",
+                        "description": "Export MPLS forwarding information.",
+                        "title": "MPLS"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Record Export"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sampled"
+              },
+              "record_export": {
+                "type": "object",
+                "properties": {
+                  "on_inactive_timeout": {
+                    "type": "integer",
+                    "minimum": 3000,
+                    "maximum": 900000,
+                    "description": "Flow record inactive export timeout in milliseconds",
+                    "title": "On Inactive Timeout"
+                  },
+                  "on_interval": {
+                    "type": "integer",
+                    "minimum": 1000,
+                    "maximum": 36000000,
+                    "description": "Flow record export interval in milliseconds",
+                    "title": "On Interval"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Record Export"
+              },
+              "exporters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Exporter Name",
+                      "title": "Name"
+                    },
+                    "collector": {
+                      "type": "object",
+                      "properties": {
+                        "host": {
+                          "type": "string",
+                          "description": "Collector IPv4 address or IPv6 address or fully qualified domain name",
+                          "title": "Host"
+                        },
+                        "port": {
+                          "type": "integer",
+                          "description": "Collector Port Number",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Port"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Collector"
+                    },
+                    "format": {
+                      "type": "object",
+                      "properties": {
+                        "ipfix_version": {
+                          "type": "integer",
+                          "title": "Ipfix Version"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Format"
+                    },
+                    "local_interface": {
+                      "type": "string",
+                      "description": "Local Source Interface",
+                      "title": "Local Interface"
+                    },
+                    "template_interval": {
+                      "type": "integer",
+                      "minimum": 5000,
+                      "maximum": 3600000,
+                      "description": "Template interval in milliseconds",
+                      "title": "Template Interval"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Exporters"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "default": [
+            {
+              "name": "FLOW-TRACKER",
+              "record_export": {
+                "on_inactive_timeout": 70000,
+                "on_interval": 300000
+              },
+              "exporters": [
+                {
+                  "name": "CV-TELEMETRY",
+                  "collector": {
+                    "host": "127.0.0.1"
+                  },
+                  "local_interface": "Loopback0",
+                  "template_interval": 3600000
+                }
+              ]
+            }
+          ],
+          "title": "Trackers"
         }
       },
       "additionalProperties": false,
@@ -6147,6 +6695,32 @@
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -6394,6 +6968,32 @@
                 "type": "boolean",
                 "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
+              },
+              "underlay_multicast": {
+                "type": "boolean",
+                "description": "Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.",
+                "default": false,
+                "title": "Underlay Multicast"
+              },
+              "flow_tracking": {
+                "type": "object",
+                "description": "Enable flow-tracking. Overrides `fabric_flow_tracking` setting.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Flow tracker name as defined in flow_tracking_settings.",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Flow Tracking"
               },
               "qos_profile": {
                 "type": "string",
@@ -6663,6 +7263,26 @@
             "type": "string",
             "description": "EOS CLI rendered directly on the interface in the final EOS configuration.",
             "title": "Raw EOS CLI"
+          },
+          "flow_tracking": {
+            "type": "object",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Flow tracker name as defined in flow_tracking_settings.",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracking"
           },
           "structured_config": {
             "type": "object",
@@ -7254,11 +7874,12 @@
                             },
                             "original_ip": {
                               "type": "string",
-                              "description": "IPv4 address.",
+                              "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                               "title": "Original IP"
                             },
                             "original_port": {
                               "type": "integer",
+                              "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                               "minimum": 1,
                               "maximum": 65535,
                               "title": "Original Port"
@@ -7291,8 +7912,7 @@
                             }
                           },
                           "required": [
-                            "translated_ip",
-                            "original_ip"
+                            "translated_ip"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {
@@ -7389,11 +8009,12 @@
                             },
                             "original_ip": {
                               "type": "string",
-                              "description": "IPv4 address.",
+                              "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                               "title": "Original IP"
                             },
                             "original_port": {
                               "type": "integer",
+                              "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                               "minimum": 1,
                               "maximum": 65535,
                               "title": "Original Port"
@@ -7426,8 +8047,7 @@
                             }
                           },
                           "required": [
-                            "translated_ip",
-                            "original_ip"
+                            "translated_ip"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {
@@ -9695,7 +10315,7 @@
       "description": "List of DNS servers. The VRF is set to < mgmt_interface_vrf >.",
       "items": {
         "type": "string",
-        "description": "IPv4 address."
+        "description": "IPv4 or IPv6 address."
       },
       "title": "Name Servers"
     },
@@ -9910,8 +10530,28 @@
           },
           "sflow": {
             "type": "boolean",
-            "description": "Configures sFlow on the interface. Overrides `fabric_sflow` setting.\n",
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.",
             "title": "Sflow"
+          },
+          "flow_tracking": {
+            "type": "object",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Flow tracker name as defined in flow_tracking_settings.",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracking"
           },
           "link_tracking": {
             "type": "object",
@@ -10583,6 +11223,12 @@
                 "default": true,
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
+              },
+              "ptp_mpass": {
+                "type": "boolean",
+                "default": false,
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "PTP Mpass"
               },
               "short_esi": {
                 "type": "string",
@@ -11639,6 +12285,11 @@
                           "layer2"
                         ],
                         "title": "Transport"
+                      },
+                      "mpass": {
+                        "type": "boolean",
+                        "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                        "title": "Mpass"
                       }
                     },
                     "additionalProperties": false,
@@ -11733,11 +12384,12 @@
                                 },
                                 "original_ip": {
                                   "type": "string",
-                                  "description": "IPv4 address.",
+                                  "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                   "title": "Original IP"
                                 },
                                 "original_port": {
                                   "type": "integer",
+                                  "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                   "minimum": 1,
                                   "maximum": 65535,
                                   "title": "Original Port"
@@ -11770,8 +12422,7 @@
                                 }
                               },
                               "required": [
-                                "translated_ip",
-                                "original_ip"
+                                "translated_ip"
                               ],
                               "additionalProperties": false,
                               "patternProperties": {
@@ -11868,11 +12519,12 @@
                                 },
                                 "original_ip": {
                                   "type": "string",
-                                  "description": "IPv4 address.",
+                                  "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                   "title": "Original IP"
                                 },
                                 "original_port": {
                                   "type": "integer",
+                                  "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                   "minimum": 1,
                                   "maximum": 65535,
                                   "title": "Original Port"
@@ -11905,8 +12557,7 @@
                                 }
                               },
                               "required": [
-                                "translated_ip",
-                                "original_ip"
+                                "translated_ip"
                               ],
                               "additionalProperties": false,
                               "patternProperties": {
@@ -12966,11 +13617,12 @@
                             },
                             "original_ip": {
                               "type": "string",
-                              "description": "IPv4 address.",
+                              "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                               "title": "Original IP"
                             },
                             "original_port": {
                               "type": "integer",
+                              "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                               "minimum": 1,
                               "maximum": 65535,
                               "title": "Original Port"
@@ -13003,8 +13655,7 @@
                             }
                           },
                           "required": [
-                            "translated_ip",
-                            "original_ip"
+                            "translated_ip"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {
@@ -13101,11 +13752,12 @@
                             },
                             "original_ip": {
                               "type": "string",
-                              "description": "IPv4 address.",
+                              "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                               "title": "Original IP"
                             },
                             "original_port": {
                               "type": "integer",
+                              "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                               "minimum": 1,
                               "maximum": 65535,
                               "title": "Original Port"
@@ -13138,8 +13790,7 @@
                             }
                           },
                           "required": [
-                            "translated_ip",
-                            "original_ip"
+                            "translated_ip"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {
@@ -15369,6 +16020,16 @@
             "description": "Set the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
             "title": "Default Wan Role"
           },
+          "default_flow_tracker_type": {
+            "type": "string",
+            "enum": [
+              "sampled",
+              "hardware"
+            ],
+            "description": "Set the default flow tracker type.",
+            "default": "sampled",
+            "title": "Default Flow Tracker Type"
+          },
           "mlag_support": {
             "type": "boolean",
             "default": false,
@@ -15615,7 +16276,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org.",
+                "description": "IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org.",
                 "title": "Name"
               },
               "burst": {
@@ -19261,11 +19922,12 @@
                                   },
                                   "original_ip": {
                                     "type": "string",
-                                    "description": "IPv4 address.",
+                                    "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                     "title": "Original IP"
                                   },
                                   "original_port": {
                                     "type": "integer",
+                                    "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                     "minimum": 1,
                                     "maximum": 65535,
                                     "title": "Original Port"
@@ -19298,8 +19960,7 @@
                                   }
                                 },
                                 "required": [
-                                  "translated_ip",
-                                  "original_ip"
+                                  "translated_ip"
                                 ],
                                 "additionalProperties": false,
                                 "patternProperties": {
@@ -19396,11 +20057,12 @@
                                   },
                                   "original_ip": {
                                     "type": "string",
-                                    "description": "IPv4 address.",
+                                    "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                     "title": "Original IP"
                                   },
                                   "original_port": {
                                     "type": "integer",
+                                    "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                     "minimum": 1,
                                     "maximum": 65535,
                                     "title": "Original Port"
@@ -19433,8 +20095,7 @@
                                   }
                                 },
                                 "required": [
-                                  "translated_ip",
-                                  "original_ip"
+                                  "translated_ip"
                                 ],
                                 "additionalProperties": false,
                                 "patternProperties": {
@@ -21554,11 +22215,97 @@
                       "description": "Configure event trigger condition.\n",
                       "enum": [
                         "on-boot",
+                        "on-counters",
+                        "on-intf",
                         "on-logging",
+                        "on-maintenance",
                         "on-startup-config",
-                        "on-maintenance"
+                        "vm-tracer vm"
                       ],
                       "title": "Trigger"
+                    },
+                    "trigger_on_counters": {
+                      "type": "object",
+                      "properties": {
+                        "condition": {
+                          "type": "string",
+                          "description": "Set the logical expression to evaluate.",
+                          "title": "Condition"
+                        },
+                        "granularity_per_source": {
+                          "type": "boolean",
+                          "description": "Set the granularity of event counting for a wildcarded condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used here]",
+                          "title": "Granularity Per Source"
+                        },
+                        "poll_interval": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 1000000,
+                          "description": "Set the polling interval in seconds.",
+                          "title": "Poll Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Trigger On Counters"
+                    },
+                    "trigger_on_logging": {
+                      "type": "object",
+                      "properties": {
+                        "poll_interval": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 1000000,
+                          "description": "Set the polling interval in seconds.",
+                          "title": "Poll Interval"
+                        },
+                        "regex": {
+                          "type": "string",
+                          "description": "Regular expression to use for searching log messages.",
+                          "title": "Regex"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Trigger On Logging"
+                    },
+                    "trigger_on_intf": {
+                      "type": "object",
+                      "description": "Trigger condition occurs on specified interface changes.\nNote: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`.",
+                      "properties": {
+                        "interface": {
+                          "type": "string",
+                          "description": "Interface name.\nExample - Ethernet4\n          Loopback4-6\n          Port-channel4,7",
+                          "title": "Interface"
+                        },
+                        "ip": {
+                          "type": "boolean",
+                          "description": "Action is triggered upon changes to interface IP address assignment.",
+                          "title": "IP"
+                        },
+                        "ipv6": {
+                          "type": "boolean",
+                          "description": "Action is triggered upon changes to interface ipv6 address assignment.",
+                          "title": "IPv6"
+                        },
+                        "operstatus": {
+                          "type": "boolean",
+                          "description": "Action is triggered upon changes to interface operStatus.",
+                          "title": "Operstatus"
+                        }
+                      },
+                      "required": [
+                        "interface"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Trigger On Intf"
                     },
                     "trigger_on_maintenance": {
                       "description": "Settings required for trigger 'on-maintenance'.",
@@ -21628,7 +22375,8 @@
                     },
                     "regex": {
                       "type": "string",
-                      "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n",
+                      "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.",
+                      "deprecated": true,
                       "title": "Regex"
                     },
                     "asynchronous": {
@@ -23290,11 +24038,12 @@
                                   },
                                   "original_ip": {
                                     "type": "string",
-                                    "description": "IPv4 address.",
+                                    "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                     "title": "Original IP"
                                   },
                                   "original_port": {
                                     "type": "integer",
+                                    "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                     "minimum": 1,
                                     "maximum": 65535,
                                     "title": "Original Port"
@@ -23327,8 +24076,7 @@
                                   }
                                 },
                                 "required": [
-                                  "translated_ip",
-                                  "original_ip"
+                                  "translated_ip"
                                 ],
                                 "additionalProperties": false,
                                 "patternProperties": {
@@ -23425,11 +24173,12 @@
                                   },
                                   "original_ip": {
                                     "type": "string",
-                                    "description": "IPv4 address.",
+                                    "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                     "title": "Original IP"
                                   },
                                   "original_port": {
                                     "type": "integer",
+                                    "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                     "minimum": 1,
                                     "maximum": 65535,
                                     "title": "Original Port"
@@ -23462,8 +24211,7 @@
                                   }
                                 },
                                 "required": [
-                                  "translated_ip",
-                                  "original_ip"
+                                  "translated_ip"
                                 ],
                                 "additionalProperties": false,
                                 "patternProperties": {
@@ -27169,6 +27917,10 @@
                         "type": "string",
                         "title": "SSL Profile"
                       },
+                      "address": {
+                        "type": "string",
+                        "title": "Address"
+                      },
                       "pathfinders": {
                         "type": "array",
                         "items": {
@@ -27179,6 +27931,9 @@
                               "title": "Vtep IP"
                             }
                           },
+                          "required": [
+                            "vtep_ip"
+                          ],
                           "additionalProperties": false,
                           "patternProperties": {
                             "^_.+$": {}
@@ -27263,6 +28018,9 @@
                               "title": "Imported Carriers"
                             }
                           },
+                          "required": [
+                            "name"
+                          ],
                           "additionalProperties": false,
                           "patternProperties": {
                             "^_.+$": {}
@@ -27435,6 +28193,121 @@
                           }
                         },
                         "title": "VRFs"
+                      },
+                      "internet_exit_policies": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "Name"
+                            },
+                            "type": {
+                              "type": "string",
+                              "title": "Type"
+                            },
+                            "city": {
+                              "type": "string",
+                              "title": "City"
+                            },
+                            "country": {
+                              "type": "string",
+                              "title": "Country"
+                            },
+                            "upload_bandwidth": {
+                              "type": "integer",
+                              "title": "Upload Bandwidth"
+                            },
+                            "download_bandwidth": {
+                              "type": "integer",
+                              "title": "Download Bandwidth"
+                            },
+                            "firewall": {
+                              "type": "boolean",
+                              "title": "Firewall"
+                            },
+                            "ips_control": {
+                              "type": "boolean",
+                              "title": "Ips Control"
+                            },
+                            "acceptable_use_policy": {
+                              "type": "boolean",
+                              "title": "Acceptable Use Policy"
+                            },
+                            "vpn_credentials": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "fqdn": {
+                                    "type": "string",
+                                    "title": "Fqdn"
+                                  },
+                                  "vpn_type": {
+                                    "type": "string",
+                                    "title": "VPN Type"
+                                  },
+                                  "pre_shared_key": {
+                                    "type": "string",
+                                    "title": "Pre Shared Key"
+                                  }
+                                },
+                                "required": [
+                                  "fqdn",
+                                  "vpn_type",
+                                  "pre_shared_key"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                }
+                              },
+                              "title": "VPN Credentials"
+                            },
+                            "tunnels": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "title": "Name"
+                                  },
+                                  "preference": {
+                                    "type": "string",
+                                    "title": "Preference"
+                                  }
+                                },
+                                "required": [
+                                  "name",
+                                  "preference"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                }
+                              },
+                              "title": "Tunnels"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "type",
+                            "city",
+                            "country",
+                            "firewall",
+                            "ips_control",
+                            "acceptable_use_policy",
+                            "vpn_credentials",
+                            "tunnels"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Internet Exit Policies"
                       }
                     },
                     "additionalProperties": false,
@@ -27470,7 +28343,7 @@
                   },
                   "peer_address": {
                     "type": "string",
-                    "description": "IPv4 Address.",
+                    "description": "IPv4 or IPv6 Address.",
                     "title": "Peer Address"
                   },
                   "peer_address_heartbeat": {
@@ -27478,7 +28351,7 @@
                     "properties": {
                       "peer_ip": {
                         "type": "string",
-                        "description": "IPv4 Address.",
+                        "description": "IPv4 or IPv6 Address.",
                         "title": "Peer IP"
                       },
                       "vrf": {
@@ -28246,7 +29119,7 @@
                       "properties": {
                         "name": {
                           "type": "string",
-                          "description": "IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org.",
+                          "description": "IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org.",
                           "title": "Name"
                         },
                         "burst": {
@@ -30035,6 +30908,11 @@
                             "layer2"
                           ],
                           "title": "Transport"
+                        },
+                        "mpass": {
+                          "type": "boolean",
+                          "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                          "title": "Mpass"
                         }
                       },
                       "additionalProperties": false,
@@ -30129,11 +31007,12 @@
                                   },
                                   "original_ip": {
                                     "type": "string",
-                                    "description": "IPv4 address.",
+                                    "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                     "title": "Original IP"
                                   },
                                   "original_port": {
                                     "type": "integer",
+                                    "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                     "minimum": 1,
                                     "maximum": 65535,
                                     "title": "Original Port"
@@ -30166,8 +31045,7 @@
                                   }
                                 },
                                 "required": [
-                                  "translated_ip",
-                                  "original_ip"
+                                  "translated_ip"
                                 ],
                                 "additionalProperties": false,
                                 "patternProperties": {
@@ -30264,11 +31142,12 @@
                                   },
                                   "original_ip": {
                                     "type": "string",
-                                    "description": "IPv4 address.",
+                                    "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                     "title": "Original IP"
                                   },
                                   "original_port": {
                                     "type": "integer",
+                                    "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                     "minimum": 1,
                                     "maximum": 65535,
                                     "title": "Original Port"
@@ -30301,8 +31180,7 @@
                                   }
                                 },
                                 "required": [
-                                  "translated_ip",
-                                  "original_ip"
+                                  "translated_ip"
                                 ],
                                 "additionalProperties": false,
                                 "patternProperties": {
@@ -34421,6 +35299,10 @@
                             "type": "boolean",
                             "title": "Import Ethernet Segment IP Mass Withdraw"
                           },
+                          "import_overlay_index_gateway": {
+                            "type": "boolean",
+                            "title": "Import Overlay Index Gateway"
+                          },
                           "export_ethernet_segment_ip_mass_withdraw": {
                             "type": "boolean",
                             "title": "Export Ethernet Segment IP Mass Withdraw"
@@ -34435,6 +35317,62 @@
                       "next_hop_unchanged": {
                         "type": "boolean",
                         "title": "Next Hop Unchanged"
+                      },
+                      "bgp_additional_paths": {
+                        "type": "object",
+                        "description": "BGP additional-paths commands.",
+                        "properties": {
+                          "receive": {
+                            "type": "boolean",
+                            "description": "Receive multiple paths.",
+                            "title": "Receive"
+                          },
+                          "send": {
+                            "type": "object",
+                            "description": "Send multiple paths.",
+                            "properties": {
+                              "any": {
+                                "type": "boolean",
+                                "description": "Any eligible path.",
+                                "title": "Any"
+                              },
+                              "backup": {
+                                "type": "boolean",
+                                "description": "Best path and installed backup path.",
+                                "title": "Backup"
+                              },
+                              "ecmp": {
+                                "type": "boolean",
+                                "description": "All paths in best path ECMP group.",
+                                "title": "ECMP"
+                              },
+                              "ecmp_limit": {
+                                "type": "integer",
+                                "description": "Amount of ECMP paths to send.",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "ECMP Limit"
+                              },
+                              "limit": {
+                                "type": "integer",
+                                "description": "Amount of paths to send.",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "Limit"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Send"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "BGP Additional Paths"
                       }
                     },
                     "additionalProperties": false,
@@ -37795,6 +38733,44 @@
                       ]
                     },
                     "title": "VRFs"
+                  },
+                  "control_functions": {
+                    "type": "object",
+                    "description": "Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.\nWarning:\nThis configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.\nThe configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.",
+                    "properties": {
+                      "code_units": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "Name of the code unit.",
+                              "title": "Name"
+                            },
+                            "content": {
+                              "type": "string",
+                              "description": "Content of route control function.\ne.g.\nfunction ACCEPT_ALL() {\n  return true;\n  }\nEOF",
+                              "title": "Content"
+                            }
+                          },
+                          "required": [
+                            "content",
+                            "name"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Code Units"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Control Functions"
                   }
                 },
                 "additionalProperties": false,
@@ -38809,10 +39785,17 @@
                     "properties": {
                       "interval": {
                         "type": "integer",
-                        "minimum": 1,
-                        "maximum": 300,
-                        "description": "Maximum interval between two SPFs in seconds.",
+                        "description": "Maximum interval between two SPFs in seconds or milliseconds.\nRange in seconds: <1-300>\nRange in milliseconds: <1-300000>",
                         "title": "Interval"
+                      },
+                      "interval_unit": {
+                        "type": "string",
+                        "enum": [
+                          "seconds",
+                          "milliseconds"
+                        ],
+                        "description": "If interval unit is not defined EOS takes `seconds` by default.",
+                        "title": "Interval Unit"
                       },
                       "wait_interval": {
                         "type": "integer",
@@ -38820,6 +39803,13 @@
                         "maximum": 300000,
                         "description": "Initial wait interval for SPF in milliseconds.",
                         "title": "Wait Interval"
+                      },
+                      "hold_interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 300000,
+                        "description": "Hold interval between the first and second SPF runs in milliseconds.",
+                        "title": "Hold Interval"
                       }
                     },
                     "additionalProperties": false,
@@ -39343,6 +40333,13 @@
                   "ipv4": {
                     "type": "object",
                     "properties": {
+                      "activity_polling_interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 60,
+                        "description": "MFIB entry activity polling interval.",
+                        "title": "Activity Polling Interval"
+                      },
                       "counters": {
                         "type": "object",
                         "properties": {
@@ -39448,6 +40445,23 @@
                       "^_.+$": {}
                     },
                     "title": "IPv4"
+                  },
+                  "ipv6": {
+                    "type": "object",
+                    "properties": {
+                      "activity_polling_interval": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 60,
+                        "description": "MFIB entry activity polling interval.",
+                        "title": "Activity Polling Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "IPv6"
                   },
                   "vrfs": {
                     "type": "array",
@@ -43503,11 +44517,12 @@
                                   },
                                   "original_ip": {
                                     "type": "string",
-                                    "description": "IPv4 address.",
+                                    "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                     "title": "Original IP"
                                   },
                                   "original_port": {
                                     "type": "integer",
+                                    "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                     "minimum": 1,
                                     "maximum": 65535,
                                     "title": "Original Port"
@@ -43540,8 +44555,7 @@
                                   }
                                 },
                                 "required": [
-                                  "translated_ip",
-                                  "original_ip"
+                                  "translated_ip"
                                 ],
                                 "additionalProperties": false,
                                 "patternProperties": {
@@ -43638,11 +44652,12 @@
                                   },
                                   "original_ip": {
                                     "type": "string",
-                                    "description": "IPv4 address.",
+                                    "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                     "title": "Original IP"
                                   },
                                   "original_port": {
                                     "type": "integer",
+                                    "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                     "minimum": 1,
                                     "maximum": 65535,
                                     "title": "Original Port"
@@ -43675,8 +44690,7 @@
                                   }
                                 },
                                 "required": [
-                                  "translated_ip",
-                                  "original_ip"
+                                  "translated_ip"
                                 ],
                                 "additionalProperties": false,
                                 "patternProperties": {
@@ -45405,8 +46419,28 @@
           },
           "sflow": {
             "type": "boolean",
-            "description": "Configures sFlow on the interface. Overrides `fabric_sflow` setting.\n",
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.",
             "title": "Sflow"
+          },
+          "flow_tracking": {
+            "type": "object",
+            "description": "Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Flow tracker name as defined in flow_tracking_settings.",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracking"
           },
           "link_tracking": {
             "type": "object",
@@ -46078,6 +47112,12 @@
                 "default": true,
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
+              },
+              "ptp_mpass": {
+                "type": "boolean",
+                "default": false,
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "PTP Mpass"
               },
               "short_esi": {
                 "type": "string",
@@ -47134,6 +48174,11 @@
                           "layer2"
                         ],
                         "title": "Transport"
+                      },
+                      "mpass": {
+                        "type": "boolean",
+                        "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                        "title": "Mpass"
                       }
                     },
                     "additionalProperties": false,
@@ -47228,11 +48273,12 @@
                                 },
                                 "original_ip": {
                                   "type": "string",
-                                  "description": "IPv4 address.",
+                                  "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                   "title": "Original IP"
                                 },
                                 "original_port": {
                                   "type": "integer",
+                                  "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                   "minimum": 1,
                                   "maximum": 65535,
                                   "title": "Original Port"
@@ -47265,8 +48311,7 @@
                                 }
                               },
                               "required": [
-                                "translated_ip",
-                                "original_ip"
+                                "translated_ip"
                               ],
                               "additionalProperties": false,
                               "patternProperties": {
@@ -47363,11 +48408,12 @@
                                 },
                                 "original_ip": {
                                   "type": "string",
-                                  "description": "IPv4 address.",
+                                  "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                   "title": "Original IP"
                                 },
                                 "original_port": {
                                   "type": "integer",
+                                  "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                   "minimum": 1,
                                   "maximum": 65535,
                                   "title": "Original Port"
@@ -47400,8 +48446,7 @@
                                 }
                               },
                               "required": [
-                                "translated_ip",
-                                "original_ip"
+                                "translated_ip"
                               ],
                               "additionalProperties": false,
                               "patternProperties": {
@@ -48461,11 +49506,12 @@
                             },
                             "original_ip": {
                               "type": "string",
-                              "description": "IPv4 address.",
+                              "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                               "title": "Original IP"
                             },
                             "original_port": {
                               "type": "integer",
+                              "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                               "minimum": 1,
                               "maximum": 65535,
                               "title": "Original Port"
@@ -48498,8 +49544,7 @@
                             }
                           },
                           "required": [
-                            "translated_ip",
-                            "original_ip"
+                            "translated_ip"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {
@@ -48596,11 +49641,12 @@
                             },
                             "original_ip": {
                               "type": "string",
-                              "description": "IPv4 address.",
+                              "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                               "title": "Original IP"
                             },
                             "original_port": {
                               "type": "integer",
+                              "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                               "minimum": 1,
                               "maximum": 65535,
                               "title": "Original Port"
@@ -48633,8 +49679,7 @@
                             }
                           },
                           "required": [
-                            "translated_ip",
-                            "original_ip"
+                            "translated_ip"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {
@@ -50984,6 +52029,23 @@
       "type": "object",
       "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.",
       "properties": {
+        "sample": {
+          "type": "object",
+          "properties": {
+            "rate": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4294967295,
+              "description": "Packet sampling rate that defines the average number of ingress packets that pass through an interface for every packet that is sampled.\nA rate of 16384 corresponds to an average sample of one per 16384 packets.",
+              "title": "Rate"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sample"
+        },
         "destinations": {
           "type": "array",
           "items": {
@@ -52494,11 +53556,12 @@
                                   },
                                   "original_ip": {
                                     "type": "string",
-                                    "description": "IPv4 address.",
+                                    "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                     "title": "Original IP"
                                   },
                                   "original_port": {
                                     "type": "integer",
+                                    "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                     "minimum": 1,
                                     "maximum": 65535,
                                     "title": "Original Port"
@@ -52531,8 +53594,7 @@
                                   }
                                 },
                                 "required": [
-                                  "translated_ip",
-                                  "original_ip"
+                                  "translated_ip"
                                 ],
                                 "additionalProperties": false,
                                 "patternProperties": {
@@ -52629,11 +53691,12 @@
                                   },
                                   "original_ip": {
                                     "type": "string",
-                                    "description": "IPv4 address.",
+                                    "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                                     "title": "Original IP"
                                   },
                                   "original_port": {
                                     "type": "integer",
+                                    "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                                     "minimum": 1,
                                     "maximum": 65535,
                                     "title": "Original Port"
@@ -52666,8 +53729,7 @@
                                   }
                                 },
                                 "required": [
-                                  "translated_ip",
-                                  "original_ip"
+                                  "translated_ip"
                                 ],
                                 "additionalProperties": false,
                                 "patternProperties": {
@@ -54342,11 +55404,12 @@
                             },
                             "original_ip": {
                               "type": "string",
-                              "description": "IPv4 address.",
+                              "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                               "title": "Original IP"
                             },
                             "original_port": {
                               "type": "integer",
+                              "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                               "minimum": 1,
                               "maximum": 65535,
                               "title": "Original Port"
@@ -54379,8 +55442,7 @@
                             }
                           },
                           "required": [
-                            "translated_ip",
-                            "original_ip"
+                            "translated_ip"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {
@@ -54477,11 +55539,12 @@
                             },
                             "original_ip": {
                               "type": "string",
-                              "description": "IPv4 address.",
+                              "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                               "title": "Original IP"
                             },
                             "original_port": {
                               "type": "integer",
+                              "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                               "minimum": 1,
                               "maximum": 65535,
                               "title": "Original Port"
@@ -54514,8 +55577,7 @@
                             }
                           },
                           "required": [
-                            "translated_ip",
-                            "original_ip"
+                            "translated_ip"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {

@@ -112,7 +112,7 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Bouygues_Telecom_777
-- name: Ethernet2
+- name: Ethernet2/2
   peer_type: l3_interface
   ip_address: 172.16.0.1/31
   shutdown: false
@@ -157,20 +157,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -316,7 +302,7 @@ router_path_selection:
   - name: MPLS
     id: 100
     local_interfaces:
-    - name: Ethernet2
+    - name: Ethernet2/2
     keepalive:
       interval: 300
       failure_threshold: 5
@@ -417,7 +403,7 @@ stun:
   server:
     local_interfaces:
     - Ethernet1
-    - Ethernet2
+    - Ethernet2/2
     - Ethernet3
     ssl_profile: profileA
 application_traffic_recognition:
@@ -497,6 +483,20 @@ vxlan_interface:
         vni: 66
       - name: ATTRACTED-VRF-FROM-UPLINK
         vni: 166
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
 metadata:
   cv_tags:
     device_tags:
@@ -513,7 +513,7 @@ metadata:
         value: Bouygues_Telecom
       - name: Circuit
         value: '777'
-    - interface: Ethernet2
+    - interface: Ethernet2/2
       tags:
       - name: Type
         value: wan
@@ -533,13 +533,15 @@ metadata:
     role: pathfinder
     ssl_profile: profileA
     vtep_ip: 192.168.144.1
+    site: Global-pathfinder-site
+    address: Somewhere under the rainbow
     interfaces:
     - name: Ethernet1
       carrier: Bouygues_Telecom
       circuit_id: '777'
       pathgroup: INET
       public_ip: 172.17.7.7
-    - name: Ethernet2
+    - name: Ethernet2/2
       carrier: Colt
       circuit_id: '10000'
       pathgroup: MPLS

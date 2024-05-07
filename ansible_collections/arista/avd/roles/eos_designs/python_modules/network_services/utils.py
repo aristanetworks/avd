@@ -10,6 +10,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import simple_7_encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 
@@ -664,11 +665,11 @@ class UtilsMixin:
 
         These are useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
         """
+        policy_name = internet_exit_policy["name"]
+
         # Only supporting Zscaler for now
         if get(internet_exit_policy, "type") != "zscaler":
-            raise AristaAvdError(
-                f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={internet_exit_policy['name']}]."
-            )
+            raise AristaAvdError(f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={policy_name}].")
 
         cloud_name = get(internet_exit_policy, "zscaler.cloud_name", required=True)
         connections = []
@@ -683,7 +684,6 @@ class UtilsMixin:
                 "type": "tunnel",
                 "source_interface": wan_interface["name"],
                 "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
-                "ipsec_profile": "ZSCALER-IPSEC-PROFILE",
             }
 
             tunnel_id_range = range_expand(get(interface_policy_config, "tunnel_interface_numbers", required=True))
@@ -708,9 +708,10 @@ class UtilsMixin:
                         "tunnel_id": tunnel_id,
                         "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
                         "tunnel_destination_ip": destination_ip,
-                        "description": f"Internet Exit {internet_exit_policy['name']} {suffix}",
-                        "exit_group": f"{internet_exit_policy['name']}_{suffix}",
-                        "metadata": {"zscaler_endpoint": zscaler_endpoint},
+                        "ipsec_profile": f"IE-{policy_name}-PROFILE",
+                        "description": f"Internet Exit {policy_name} {suffix}",
+                        "exit_group": f"{policy_name}_{suffix}",
+                        "preference": zscaler_endpoint_key,
                     }
                 )
 
@@ -719,3 +720,25 @@ class UtilsMixin:
     @cached_property
     def _zscaler_endpoints(self) -> dict:
         return get(self._hostvars, "zscaler_endpoints", default={})
+
+    def _get_ipsec_credentials(self, internet_exit_policy: dict) -> tuple[str, str]:
+        """
+        Returns ufqdn, shared_key based on various details from the given internet_exit_policy.
+        """
+        policy_name = internet_exit_policy["name"]
+        domain_name = get(internet_exit_policy, "zscaler.domain_name", required=True)
+        ipsec_key_salt = get(internet_exit_policy, "zscaler.ipsec_key_salt", required=True)
+        ipsec_key = self._generate_ipsec_key(name=policy_name, salt=ipsec_key_salt)
+        ufqdn = f"{self.shared_utils.hostname}_{policy_name}@{domain_name}"
+        return ufqdn, ipsec_key
+
+    def _generate_ipsec_key(self, name: str, salt: str) -> str:
+        """
+        Build a secret containing various components for this policy and device.
+        Run type-7 obfuscation using a algorithmic salt so we ensure the same key every time.
+
+        TODO: Maybe introduce some formatting with max length of each element, since the keys can be come very very long.
+        """
+        secret = "_".join((self.shared_utils.hostname, name, salt))
+        type_7_salt = sum(salt.encode("utf-8")) % 16
+        return simple_7_encrypt(secret, type_7_salt)

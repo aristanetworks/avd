@@ -298,20 +298,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -736,7 +722,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.37.121.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel101
   description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
@@ -745,7 +731,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.39.77.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel102
   description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
@@ -754,7 +740,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.50.9.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel110
   description: Internet Exit ZSCALER-EXIT-POLICY-2 PRI
@@ -763,7 +749,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.37.121.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-2-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel111
   description: Internet Exit ZSCALER-EXIT-POLICY-2 SEC
@@ -772,7 +758,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.39.77.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-2-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel112
   description: Internet Exit ZSCALER-EXIT-POLICY-2 TER
@@ -781,7 +767,7 @@ tunnel_interfaces:
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.50.9.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-2-PROFILE
   nat_profile: VRF-AWARE-NAT
 monitor_connectivity:
   interface_sets:
@@ -835,6 +821,65 @@ monitor_connectivity:
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
 metadata:
+  cv_pathfinder:
+    internet_exit_policies:
+    - name: ZSCALER-EXIT-POLICY-1
+      type: zscaler
+      city: BigCity
+      country: BigCountry
+      firewall: false
+      ips_control: false
+      acceptable_use_policy: false
+      vpn_credentials:
+      - fqdn: cv-pathfinder-edge1_ZSCALER-EXIT-POLICY-1@test.local
+        vpn_type: UFQDN
+        pre_shared_key: 0007054B145A1F0E0928424A0C0B4812160C09551511170B121907214A333B286214687C782720215B0867637B7B666B3873293274733B31233B6D2A332315696A
+      tunnels:
+      - name: Tunnel100
+        preference: Preferred
+      - name: Tunnel101
+        preference: Alternate
+      - name: Tunnel102
+        preference: Alternate
+    - name: ZSCALER-EXIT-POLICY-2
+      type: zscaler
+      city: BigCity
+      country: BigCountry
+      firewall: false
+      ips_control: false
+      acceptable_use_policy: false
+      vpn_credentials:
+      - fqdn: cv-pathfinder-edge1_ZSCALER-EXIT-POLICY-2@test.local
+        vpn_type: UFQDN
+        pre_shared_key: 0007054B145A1F0E0928424A0C0B4812160C09551511170B121907214A333B286214687C782720215B0B67637B7B666B3873293274733B31233B6D2A332315696A
+      tunnels:
+      - name: Tunnel110
+        preference: Preferred
+      - name: Tunnel111
+        preference: Alternate
+      - name: Tunnel112
+        preference: Alternate
+    role: edge
+    ssl_profile: profileA
+    vtep_ip: 192.168.142.2
+    region: AVD_Land_East
+    zone: AVD_Land_East-ZONE
+    site: Site511
+    interfaces:
+    - name: Ethernet1
+      carrier: Inmrasat
+      circuit_id: S511
+      pathgroup: Satellite
+    - name: Ethernet2
+      carrier: AWS-1
+      circuit_id: '212'
+      pathgroup: AWS
+    - name: Ethernet3
+      carrier: ATT
+      circuit_id: '404'
+      pathgroup: INET
+    pathfinders:
+    - vtep_ip: 192.168.144.1
   cv_tags:
     device_tags:
     - name: Role
@@ -886,25 +931,17 @@ metadata:
         value: ATT
       - name: Circuit
         value: '404'
-  cv_pathfinder:
-    role: edge
-    ssl_profile: profileA
-    vtep_ip: 192.168.142.2
-    region: AVD_Land_East
-    zone: AVD_Land_East-ZONE
-    site: Site511
-    interfaces:
-    - name: Ethernet1
-      carrier: Inmrasat
-      circuit_id: S511
-      pathgroup: Satellite
-    - name: Ethernet2
-      carrier: AWS-1
-      circuit_id: '212'
-      pathgroup: AWS
-    - name: Ethernet3
-      carrier: ATT
-      circuit_id: '404'
-      pathgroup: INET
-    pathfinders:
-    - vtep_ip: 192.168.144.1
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false

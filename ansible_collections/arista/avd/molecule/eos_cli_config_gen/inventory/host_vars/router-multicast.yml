@@ -2,6 +2,7 @@
 
 router_multicast:
   ipv4:
+    activity_polling_interval: 10
     rpf:
       routes:
         - source_prefix: 10.10.10.1/32
@@ -18,6 +19,8 @@ router_multicast:
     routing: true
     multipath: "deterministic router-id"
     software_forwarding: sfe
+  ipv6:
+    activity_polling_interval: 20
   vrfs:
     - name: MCAST_VRF1
       ipv4:
