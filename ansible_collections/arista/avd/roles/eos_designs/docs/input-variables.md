@@ -583,12 +583,6 @@ roles/eos_designs/docs/tables/node-type-wan-configuration.md
 roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 --8<--
 
-### IPv4 ACL Configuration
-
---8<--
-roles/eos_designs/docs/tables/ipv4-acls.md
---8<--
-
 ## Default interface settings
 
 - Set default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
@@ -725,6 +719,12 @@ roles/eos_designs/docs/tables/bfd-settings.md
 
 --8<--
 roles/eos_designs/docs/tables/bgp-settings.md
+--8<--
+
+### IPv4 ACL Configuration
+
+--8<--
+roles/eos_designs/docs/tables/ipv4-acls.md
 --8<--
 
 ## OSPF settings
