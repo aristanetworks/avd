@@ -58,3 +58,30 @@ keys:
                       name:
                         type: str
                         description: Dynamic Prefix List Name.
+      control_functions:
+        type: dict
+        description: |-
+          Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.
+          Warning:
+          This configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.
+          The configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.
+        keys:
+          code_units:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Name of the code unit.
+                content:
+                  type: str
+                  required: true
+                  description: |-
+                    Content of route control function.
+                    e.g.
+                    function ACCEPT_ALL() {
+                      return true;
+                      }
+                    EOF

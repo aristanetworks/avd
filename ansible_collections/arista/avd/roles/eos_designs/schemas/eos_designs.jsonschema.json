@@ -38506,6 +38506,44 @@
                       ]
                     },
                     "title": "VRFs"
+                  },
+                  "control_functions": {
+                    "type": "object",
+                    "description": "Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.\nWarning:\nThis configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.\nThe configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.",
+                    "properties": {
+                      "code_units": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "Name of the code unit.",
+                              "title": "Name"
+                            },
+                            "content": {
+                              "type": "string",
+                              "description": "Content of route control function.\ne.g.\nfunction ACCEPT_ALL() {\n  return true;\n  }\nEOF",
+                              "title": "Content"
+                            }
+                          },
+                          "required": [
+                            "content",
+                            "name"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Code Units"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Control Functions"
                   }
                 },
                 "additionalProperties": false,
