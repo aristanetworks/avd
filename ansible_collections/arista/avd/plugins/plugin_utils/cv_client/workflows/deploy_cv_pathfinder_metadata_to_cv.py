@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import json
 from copy import deepcopy
 from logging import getLogger
 
@@ -133,7 +132,6 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
     }
     if internet_exit_metadata := generate_internet_exit_metadata(metadata, device):
         edge_metadata["inputs"]["router"]["services"] = internet_exit_metadata
-        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Added internet-exit metadata. Complete device metadata: %s", json.dumps(edge_metadata))
 
     found_index = None
     for index, router in enumerate(studio_inputs.get("routers", [])):
@@ -315,9 +313,10 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> dict:
         # We currently only support zscaler
         if internet_exit_policy.get("type") != "zscaler":
             LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '%s' with type '%s'.",
+                "deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '%s' with type '%s' for device: %s.",
                 internet_exit_policies.get("name"),
                 internet_exit_policy.get("type"),
+                device.hostname,
             )
             continue
 
