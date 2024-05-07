@@ -299,19 +299,22 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     result.deployed_cv_pathfinder_metadata.extend(pathfinders + edges)
 
 
-def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> list:
+def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> dict:
     """
     Generate internet-exit related metadata for one device.
     To be inserted into edge router metadata under "services"
     """
     if (internet_exit_policies := get(metadata, "cv_pathfinder.internet_exit_policies")) is None:
+        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Did not find 'internet_exit_policies' for device: %s", device.hostname)
         return []
+
+    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Found %s 'internet_exit_policies' for device: %s", len(internet_exit_policies), device.hostname)
 
     services_dict = {}
     for internet_exit_policy in internet_exit_policies:
         # We currently only support zscaler
         if internet_exit_policy["type"] != "zscaler":
-            continue
+            raise ValueError(f"Got unsupported internet exit policy: {internet_exit_policy}")
 
         policy_name = internet_exit_policy["name"]
         services_dict.setdefault("zscaler", {"locations": [], "tunnels": []})
