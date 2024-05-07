@@ -40,7 +40,7 @@ class SwgMixin:
         timeout: float = 10.0,
     ) -> EndpointConfig:
         """
-        Get SWG Endpoints using arista.swg.v1.EndpointStatusService.GetOne API
+        Set SWG Endpoints using arista.swg.v1.EndpointStatusService.Set API
 
         Parameters:
             device_id: Unique identifier of the Device - typically serial number.

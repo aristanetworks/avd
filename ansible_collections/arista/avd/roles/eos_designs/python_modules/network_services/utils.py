@@ -779,8 +779,7 @@ class UtilsMixin:
             tunnel_id_range = range_expand(get(interface_policy_config, "tunnel_interface_numbers", required=True))
 
             zscaler_endpoint_keys = ("primary", "secondary", "tertiary")
-            for index in range(len(zscaler_endpoint_keys)):
-                zscaler_endpoint_key = zscaler_endpoint_keys[index]
+            for index, zscaler_endpoint_key in enumerate(zscaler_endpoint_keys):
                 if zscaler_endpoint_key not in self._zscaler_endpoints:
                     continue
 

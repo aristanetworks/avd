@@ -275,4 +275,4 @@ def simple_7_encrypt(data: str, salt: int | None = None) -> str:
     if salt is None:
         salt = random.randint(0, 15)
     cleartext = data.encode("UTF-8")
-    return f"{salt:02}" + bytearray(char ^ (SIMPLE_7_SEED[salt + i % 53]) for i, char in enumerate(cleartext)).hex().upper()
+    return f"{salt:02}" + bytearray(char ^ (SIMPLE_7_SEED[(salt + i) % 53]) for i, char in enumerate(cleartext)).hex().upper()
