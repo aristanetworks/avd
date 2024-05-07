@@ -27963,7 +27963,7 @@
                         "properties": {
                           "rate": {
                             "type": "integer",
-                            "description": "Sampling rate.",
+                            "description": "Sampling rate. Rate is preferred when both rate and tcp_udp is defined.",
                             "enum": [
                               16384,
                               32768,
@@ -27971,17 +27971,28 @@
                             ],
                             "title": "Rate"
                           },
-                          "tcp_udp_checksum": {
-                            "type": "integer",
-                            "description": "TCP/UDP checksum or IP ID value.",
-                            "minimum": 0,
-                            "maximum": 65535,
-                            "title": "TCP UDP Checksum"
-                          },
-                          "mask": {
-                            "type": "string",
-                            "description": "16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unser bits.",
-                            "title": "Mask"
+                          "tcp_udp": {
+                            "type": "object",
+                            "description": "TCP/UDP parameters.",
+                            "properties": {
+                              "checksum": {
+                                "type": "integer",
+                                "description": "TCP/UDP checksum or IP ID value.",
+                                "minimum": 0,
+                                "maximum": 65535,
+                                "title": "Checksum"
+                              },
+                              "mask": {
+                                "type": "string",
+                                "description": "16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unser bits.",
+                                "title": "Mask"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "TCP UDP"
                           }
                         },
                         "additionalProperties": false,
@@ -28103,13 +28114,14 @@
                                 "title": "Ports"
                               }
                             },
+                            "required": [
+                              "type",
+                              "name"
+                            ],
                             "additionalProperties": false,
                             "patternProperties": {
                               "^_.+$": {}
-                            },
-                            "required": [
-                              "name"
-                            ]
+                            }
                           },
                           "title": "Match Rules"
                         }
