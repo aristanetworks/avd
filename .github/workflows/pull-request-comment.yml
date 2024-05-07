@@ -27,9 +27,9 @@ jobs:
             # Activate the virtual environment
             source test-avd-pr-${{ github.event.pull_request.number }}/bin/activate
             # Install all requirements including PyAVD
-            pip install "pyavd[ansible] @ git+${{ github.event.pull_request.head.clone_url }}@${{ github.event.pull_request.head.ref }}#subdirectory=python-avd" --force
+            pip install "pyavd[ansible] @ git+${{ github.event.pull_request.head.repo.clone_url }}@${{ github.event.pull_request.head.ref }}#subdirectory=python-avd" --force
             # Install Ansible collection
-            ansible-galaxy collection install git+${{ github.event.pull_request.head.clone_url }}#/ansible_collections/arista/avd/,${{ github.event.pull_request.head.ref }} --force
+            ansible-galaxy collection install git+${{ github.event.pull_request.head.repo.clone_url }}#/ansible_collections/arista/avd/,${{ github.event.pull_request.head.ref }} --force
             # Optional: Install AVD examples
             cd test-avd-pr-${{ github.event.pull_request.number }}
             ansible-playbook arista.avd.install_examples
