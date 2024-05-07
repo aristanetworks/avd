@@ -721,7 +721,7 @@ roles/eos_designs/docs/tables/bfd-settings.md
 roles/eos_designs/docs/tables/bgp-settings.md
 --8<--
 
-## IPv4 ACL Configuration
+## IPv4 ACL settings
 
 --8<--
 roles/eos_designs/docs/tables/ipv4-acls.md
