@@ -74,3 +74,7 @@ class CVWorkspaceStateTimeout(CVClientException):
 
 class CVChangeControlFailed(CVClientException):
     """CloudVision ChangeControl failed during execution"""
+
+
+class CVDuplicateInfo(CVClientException):
+    """Duplicate info found for some devices on CV"""
