@@ -28,7 +28,7 @@ router_segment_security:
               - prefix: MATCH-LIST11
                 address_family: ipv6
           policies:
-            - source: MATCH-LIST22
+            - from: MATCH-LIST22
               policy: POLICY-TEST1
         - name: SEGMENT-TEST2
           definition:
@@ -38,11 +38,11 @@ router_segment_security:
               - prefix: MATCH-LIST3
                 address_family: ipv6
           policies:
-            - source: MATCH-LIST20
+            - from: MATCH-LIST20
               policy: policy-forward-all
-            - source: MATCH-LIST21
+            - from: MATCH-LIST21
               policy: POLICY-TEST1
-            - source: MATCH-LIST30
+            - from: MATCH-LIST30
               policy: policy-drop-all
     - name: SECURE
       segments:
@@ -57,7 +57,8 @@ router_segment_security:
               - Ethernet1
               - Ethernet2
           policies:
-            - source: MATCH-LIST20
+            - from: MATCH-LIST20
               policy: policy-forward-all
-            - source: MATCH-LIST30
+            - from: MATCH-LIST30
               policy: policy-drop-all
+          fallback_policy: policy-custom

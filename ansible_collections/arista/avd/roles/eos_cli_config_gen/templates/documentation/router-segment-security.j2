@@ -56,11 +56,15 @@ MSS-G is disabled.
 
 | Source Segment | Policy Applied |
 | -------------- | -------------- |
-{%                 for policy in segment.policies | arista.avd.natural_sort('source') %}
-{%                     if policy.source is arista.avd.defined and policy.policy is arista.avd.defined %}
-| {{ policy.source }} | {{ policy.policy }} |
+{%                 for policy in segment.policies | arista.avd.natural_sort('from') %}
+{%                     if policy.from is arista.avd.defined and policy.policy is arista.avd.defined %}
+| {{ policy.from }} | {{ policy.policy }} |
 {%                     endif %}
 {%                 endfor %}
+{%                 if segment.fallback_policy is arista.avd.defined %}
+
+Configured Fallback Policy: {{ segment.fallback_policy }}
+{%                 endif %}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}

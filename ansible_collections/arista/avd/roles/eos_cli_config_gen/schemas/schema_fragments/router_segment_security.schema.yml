@@ -113,13 +113,16 @@ keys:
                   policies:
                     type: list
                     description: The policies controlling traffic into the segment.
-                    primary_key: source
+                    primary_key: from
                     items:
                       type: dict
                       keys:
-                        source:
+                        from:
                           type: str
                           description: The name of the source segment.
                         policy:
                           type: str
                           description: The name of the policy to apply. The built-in policies are 'policy-forward-all' and 'policy-drop-all'.
+                  fallback_policy:
+                    type: str
+                    description: Only supported on the R3 series platforms, this allows a per-segment default policy to be specified by name.

@@ -57,11 +57,14 @@ router segment-security
 {%             if segment.policies is arista.avd.defined %}
          !
          policies
-{%                 for policy in segment.policies | arista.avd.natural_sort('source') %}
-{%                     if policy.source is arista.avd.defined and policy.policy is arista.avd.defined %}
-            from {{ policy.source }} policy {{ policy.policy }}
+{%                 for policy in segment.policies | arista.avd.natural_sort('from') %}
+{%                     if policy.from is arista.avd.defined and policy.policy is arista.avd.defined %}
+            from {{ policy.from }} policy {{ policy.policy }}
 {%                     endif %}
 {%                 endfor %}
+{%                 if segment.fallback_policy is arista.avd.defined %}
+            fallback policy {{ segment.fallback_policy }}
+{%                 endif %}
 {%             endif %}
 {%             if not loop.last %}
       !

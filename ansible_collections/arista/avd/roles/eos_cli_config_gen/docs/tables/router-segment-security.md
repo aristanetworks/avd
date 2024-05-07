@@ -30,8 +30,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;covered_prefix_list</samp>](## "router_segment_security.vrfs.[].segments.[].definition.match_lists.[].covered_prefix_list") | String |  |  |  | The name of the prefix-list. You can have a maximum of one per address-family. Mutually exclusive to the use of match_list.  If both are configured prefix takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix</samp>](## "router_segment_security.vrfs.[].segments.[].definition.match_lists.[].prefix") | String |  |  |  | The name of the match-list. You can have a maximum of one per address-family. Mutually exclusive to the use of covered_prefix_list. If both are configured prefix takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "router_segment_security.vrfs.[].segments.[].policies") | List, items: Dictionary |  |  |  | The policies controlling traffic into the segment. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "router_segment_security.vrfs.[].segments.[].policies.[].source") | String | Required, Unique |  |  | The name of the source segment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "router_segment_security.vrfs.[].segments.[].policies.[].from") | String | Required, Unique |  |  | The name of the source segment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "router_segment_security.vrfs.[].segments.[].policies.[].policy") | String |  |  |  | The name of the policy to apply. The built-in policies are 'policy-forward-all' and 'policy-drop-all'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fallback_policy</samp>](## "router_segment_security.vrfs.[].segments.[].fallback_policy") | String |  |  |  | Only supported on the R3 series platforms, this allows a per-segment default policy to be specified by name. |
 
 === "YAML"
 
@@ -95,8 +96,11 @@
               policies:
 
                   # The name of the source segment.
-                - source: <str; required; unique>
+                - from: <str; required; unique>
 
                   # The name of the policy to apply. The built-in policies are 'policy-forward-all' and 'policy-drop-all'.
                   policy: <str>
+
+              # Only supported on the R3 series platforms, this allows a per-segment default policy to be specified by name.
+              fallback_policy: <str>
     ```

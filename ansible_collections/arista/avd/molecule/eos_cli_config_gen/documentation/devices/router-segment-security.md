@@ -101,6 +101,8 @@ MSS-G is enabled.
 | MATCH-LIST20 | policy-forward-all |
 | MATCH-LIST30 | policy-drop-all |
 
+Configured Fallback Policy: policy-custom
+
 ### Router MSS-G Device Configuration
 
 ```eos
@@ -143,5 +145,6 @@ router segment-security
          policies
             from MATCH-LIST20 policy policy-forward-all
             from MATCH-LIST30 policy policy-drop-all
+            fallback policy policy-custom
    !
 ```

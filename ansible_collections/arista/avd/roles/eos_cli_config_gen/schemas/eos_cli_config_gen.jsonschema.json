@@ -24931,10 +24931,10 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "source": {
+                          "from": {
                             "type": "string",
                             "description": "The name of the source segment.",
-                            "title": "Source"
+                            "title": "From"
                           },
                           "policy": {
                             "type": "string",
@@ -24947,10 +24947,15 @@
                           "^_.+$": {}
                         },
                         "required": [
-                          "source"
+                          "from"
                         ]
                       },
                       "title": "Policies"
+                    },
+                    "fallback_policy": {
+                      "type": "string",
+                      "description": "Only supported on the R3 series platforms, this allows a per-segment default policy to be specified by name.",
+                      "title": "Fallback Policy"
                     }
                   },
                   "additionalProperties": false,
