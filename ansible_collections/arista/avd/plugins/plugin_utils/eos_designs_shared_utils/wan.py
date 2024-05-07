@@ -7,19 +7,9 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import (
-    AristaAvdError,
-    AristaAvdMissingVariableError,
-)
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import (
-    strip_empties_from_dict,
-)
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
-    default,
-    get,
-    get_ip_from_pool,
-    get_item,
-)
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_ip_from_pool, get_item
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
@@ -41,14 +31,10 @@ class WanMixin:
         if self.underlay_router is False:
             return None
 
-        default_wan_role = get(
-            self.node_type_key_data, "default_wan_role", default=None
-        )
+        default_wan_role = get(self.node_type_key_data, "default_wan_role", default=None)
         wan_role = get(self.switch_data_combined, "wan_role", default=default_wan_role)
         if wan_role is not None and self.overlay_routing_protocol != "ibgp":
-            raise AristaAvdError(
-                "Only 'ibgp' is supported as 'overlay_routing_protocol' for WAN nodes."
-            )
+            raise AristaAvdError("Only 'ibgp' is supported as 'overlay_routing_protocol' for WAN nodes.")
         if wan_role == "server" and self.evpn_role != "server":
             raise AristaAvdError("'wan_role' server requires 'evpn_role' server.")
         if wan_role == "client" and self.evpn_role != "client":
@@ -143,9 +129,7 @@ class WanMixin:
                     {
                         "name": get(interface, "name", required=True),
                         "public_ip": self.get_public_ip_for_wan_interface(interface),
-                        "connected_to_pathfinder": get(
-                            interface, "connected_to_pathfinder", default=True
-                        ),
+                        "connected_to_pathfinder": get(interface, "connected_to_pathfinder", default=True),
                         "wan_circuit_id": get(interface, "wan_circuit_id"),
                     }
                 )
@@ -161,9 +145,7 @@ class WanMixin:
         """
         path_groups = get(self.hostvars, "wan_path_groups", required=True)
         for path_group in path_groups:
-            path_group["default_preference"] = get(
-                path_group, "default_preference", default="preferred"
-            )
+            path_group["default_preference"] = get(path_group, "default_preference", default="preferred")
         return path_groups
 
     @cached_property
@@ -194,9 +176,7 @@ class WanMixin:
                 ).copy()
                 local_path_groups_dict[path_group_name]["interfaces"] = []
 
-            local_path_groups_dict[path_group_name]["interfaces"].extend(
-                carrier["interfaces"]
-            )
+            local_path_groups_dict[path_group_name]["interfaces"].extend(carrier["interfaces"])
 
         return list(local_path_groups_dict.values())
 
@@ -233,11 +213,7 @@ class WanMixin:
             )
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
-            if (
-                found_interface := get_item(
-                    path_group["interfaces"], "name", interface["name"]
-                )
-            ) is None:
+            if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:
                 continue
 
             if found_interface.get("public_ip") is not None:
@@ -273,7 +249,9 @@ class WanMixin:
         # Special case for cv_pathfinders without a region, we find the site details under `cv_pathfinder_global_sites` instead.
         if self.is_cv_pathfinder_server and self.wan_region is None:
             sites = get(self.hostvars, "cv_pathfinder_global_sites", required=True)
-            site_not_found_error_msg = f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'cv_pathfinder_global_sites' list"
+            site_not_found_error_msg = (
+                f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'cv_pathfinder_global_sites' list"
+            )
         else:
             sites = get(
                 self.wan_region,
@@ -326,9 +304,7 @@ class WanMixin:
         if len(site_names) != len(set(site_names)):
             # We have some site names that are not unique
             # Now find them (slow so no need to do if we don't have duplicates)
-            duplicate_site_names = [
-                site_name for site_name in site_names if site_names.count(site_name) > 1
-            ]
+            duplicate_site_names = [site_name for site_name in site_names if site_names.count(site_name) > 1]
             raise AristaAvdError(
                 "WAN Site names must be unique across all regions. "
                 f"Found the following duplicate site name(s) under 'cv_pathfinder_regions.[].sites. {duplicate_site_names}"
@@ -379,9 +355,7 @@ class WanMixin:
 
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.bgp_as:
-                    raise AristaAvdError(
-                        f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs} is different from our own: {self.bgp_as}."
-                    )
+                    raise AristaAvdError(f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs} is different from our own: {self.bgp_as}.")
 
                 # Prefer values coming from the input variables over peer facts
                 vtep_ip = get(wan_rs_dict, "vtep_ip", default=peer_facts.get("vtep_ip"))
@@ -418,11 +392,7 @@ class WanMixin:
             # Filtering wan_path_groups to only take the ones this device uses to connect to pathfinders.
             wan_rs_result_dict = {
                 "vtep_ip": vtep_ip,
-                "wan_path_groups": [
-                    path_group
-                    for path_group in wan_path_groups
-                    if self.should_connect_to_wan_rs([path_group["name"]])
-                ],
+                "wan_path_groups": [path_group for path_group in wan_path_groups if self.should_connect_to_wan_rs([path_group["name"]])],
             }
 
             # If no common path-group then skip
@@ -441,11 +411,7 @@ class WanMixin:
           `connected_to_pathfinder` is not False.
         """
         return any(
-            local_path_group["name"] in path_groups
-            and any(
-                wan_interface["connected_to_pathfinder"]
-                for wan_interface in local_path_group["interfaces"]
-            )
+            local_path_group["name"] in path_groups and any(wan_interface["connected_to_pathfinder"] for wan_interface in local_path_group["interfaces"])
             for local_path_group in self.wan_local_path_groups
         )
 
@@ -490,9 +456,7 @@ class WanMixin:
         """
         Only trigger HA if 2 cv_pathfinder clients are in the same group and wan_ha.enabled is true
         """
-        if not (
-            self.is_cv_pathfinder_client and len(self.switch_data_node_group_nodes) == 2
-        ):
+        if not (self.is_cv_pathfinder_client and len(self.switch_data_node_group_nodes) == 2):
             return False
 
         if (ha_enabled := get(self.switch_data_combined, "wan_ha.enabled")) is None:
@@ -508,9 +472,7 @@ class WanMixin:
 
     @cached_property
     def wan_ha_ipsec(self: SharedUtils) -> bool:
-        return self.wan_ha and get(
-            self.switch_data_combined, "wan_ha.ipsec", default=True
-        )
+        return self.wan_ha and get(self.switch_data_combined, "wan_ha.ipsec", default=True)
 
     @cached_property
     def wan_ha_path_group_name(self: SharedUtils) -> str:
@@ -550,27 +512,17 @@ class WanMixin:
 
         TODO handle when peer interfaces are uplinks and not here.. this is TRICKY
         """
-        vrf_default_uplinks = [
-            uplink
-            for uplink in self.get_switch_fact("uplinks")
-            if get(uplink, "vrf") is None
-        ]
+        vrf_default_uplinks = [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
         uplink_interfaces = set(uplink["interface"] for uplink in vrf_default_uplinks)
 
-        interfaces = set(
-            get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[])
-        )
+        interfaces = set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[]))
         if interfaces.issubset(uplink_interfaces):
             return True
         elif not interfaces.intersection(uplink_interfaces):
             if len(interfaces) > 1:
-                raise AristaAvdError(
-                    "AVD does not support multiple HA interfaces when not using uplinks."
-                )
+                raise AristaAvdError("AVD does not support multiple HA interfaces when not using uplinks.")
             return False
-        raise AristaAvdError(
-            "Either all `wan_ha.interfaces` must be uplinks intergaves or all of them must not be uplinks."
-        )
+        raise AristaAvdError("Either all `wan_ha.interfaces` must be uplinks intergaves or all of them must not be uplinks.")
 
     @cached_property
     def wan_ha_interfaces(self: SharedUtils) -> list:
@@ -578,11 +530,7 @@ class WanMixin:
         TODO make this better and maybe not redundant with above
         """
         if self.use_uplinks_for_wan_ha:
-            return [
-                uplink["interface"]
-                for uplink in self.get_switch_fact("uplinks")
-                if get(uplink, "vrf") is None
-            ]
+            return [uplink["interface"] for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
         else:
             # Using node values
             return natural_sort(
@@ -598,17 +546,11 @@ class WanMixin:
 
         FOR NOW ASSUME SAME AS LOCAL..
         """
-        interfaces = set(
-            get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[])
-        )
+        interfaces = set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[]))
         ip_addresses = []
         if self.use_uplinks_for_wan_ha:
             peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
-            vrf_default_peer_uplinks = [
-                uplink
-                for uplink in get(peer_facts, "uplinks", required=True)
-                if get(uplink, "vrf") is None
-            ]
+            vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
             for uplink in vrf_default_peer_uplinks:
                 # TODO this logic can be made nicer by having interfaces defaulting to uplinks if empty
                 if not interfaces or uplink["interface"] in interfaces:
@@ -624,9 +566,7 @@ class WanMixin:
                     prefix_length = uplink["prefix_length"]
                     ip_addresses.append(f"{ip_address}/{prefix_length}")
         else:
-            ip_addresses.extend(
-                self.get_wan_ha_peer_ip_address(interface) for interface in interfaces
-            )
+            ip_addresses.extend(self.get_wan_ha_peer_ip_address(interface) for interface in interfaces)
         return ip_addresses
 
     @cached_property
@@ -635,17 +575,11 @@ class WanMixin:
         Read the IP addresses/prefix length from this device uplinks used for HA.
         Used to generate the prefix list.
         """
-        interfaces = set(
-            get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[])
-        )
+        interfaces = set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[]))
         ip_addresses = []
 
         if self.use_uplinks_for_wan_ha:
-            vrf_default_uplinks = [
-                uplink
-                for uplink in self.get_switch_fact("uplinks")
-                if get(uplink, "vrf") is None
-            ]
+            vrf_default_uplinks = [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
             # Configuring all or subset of the uplinks as HA interfaces
             for uplink in vrf_default_uplinks:
                 if not interfaces or uplink["interface"] in interfaces:
@@ -659,9 +593,7 @@ class WanMixin:
                     prefix_length = uplink["prefix_length"]
                     ip_addresses.append(f"{ip_address}/{prefix_length}")
         else:
-            ip_addresses.extend(
-                self.get_wan_ha_ip_address(interface) for interface in interfaces
-            )
+            ip_addresses.extend(self.get_wan_ha_ip_address(interface) for interface in interfaces)
         return ip_addresses
 
     def get_wan_ha_ip_address(self: SharedUtils, interface: str) -> str | None:
@@ -706,10 +638,7 @@ class WanMixin:
 
     @cached_property
     def wan_stun_dtls_profile_name(self: SharedUtils) -> str | None:
-        if (
-            not self.is_wan_router
-            or get(self.hostvars, "wan_stun_dtls_disable") is True
-        ):
+        if not self.is_wan_router or get(self.hostvars, "wan_stun_dtls_disable") is True:
             return None
 
         return get(self.hostvars, "wan_stun_dtls_profile_name", default="STUN-DTLS")
