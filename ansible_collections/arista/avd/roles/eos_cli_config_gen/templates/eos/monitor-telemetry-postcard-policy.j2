@@ -22,10 +22,11 @@ monitor telemetry postcard policy
 {%         if monitor_telemetry_postcard_policy.ingress.collection.source is arista.avd.defined and monitor_telemetry_postcard_policy.ingress.collection.destination is arista.avd.defined %}
 {%             set ingress_cli = "ingress collection gre source " ~ monitor_telemetry_postcard_policy.ingress.collection.source ~ " destination " ~ monitor_telemetry_postcard_policy.ingress.collection.destination %}
 {%             if monitor_telemetry_postcard_policy.ingress.collection.version is arista.avd.defined(2) %}
-   {{ ingress_cli }} version 2
+{%                 set ingress_cli = ingress_cli ~ " version 2" %}
 {%             elif monitor_telemetry_postcard_policy.ingress.collection.version | arista.avd.default(1) is arista.avd.defined %}
-   {{ ingress_cli }}
+{%                 set ingress_cli = ingress_cli %}
 {%             endif %}
+   {{ ingress_cli }}
 {%         endif %}
 {%     endif %}
    !
@@ -43,10 +44,10 @@ monitor telemetry postcard policy
 {%                 for port in rule.ports | arista.avd.natural_sort('protocol') %}
 {%                     if port.protocol is arista.avd.defined %}
 {%                         set rule_cli = "protocol " ~ port.protocol %}
-{%                         for dest_port in port.destination_ports | sort(reverse = True) %}
+{%                         for dest_port in port.destination_ports | arista.avd.natural_sort %}
          {{ rule_cli }} destination port {{ dest_port }}
 {%                         endfor %}
-{%                         for src_port in port.source_ports | arista.avd.natural_sort(reverse) %}
+{%                         for src_port in port.source_ports | arista.avd.natural_sort %}
          {{ rule_cli }} source port {{ src_port }}
 {%                         endfor %}
 {%                     endif %}
