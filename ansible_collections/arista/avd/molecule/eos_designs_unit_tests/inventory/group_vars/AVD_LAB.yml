@@ -34,6 +34,8 @@ mgmt_gateway: 192.168.200.5
 name_servers:
   - 192.168.200.5
   - 8.8.8.8
+  - 2001:db8::1
+  - 2001:db8::2
 
 # Management api-http
 management_eapi:
@@ -45,6 +47,7 @@ ntp_settings:
   server_vrf: use_mgmt_interface_vrf
   servers:
     - name: 192.168.200.5
+    - name: 2001:db8::3
 
 # Support for per-platform automatic interface allocation
 default_interfaces:
