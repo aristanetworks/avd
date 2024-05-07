@@ -31,7 +31,7 @@
 {%                         if port.destination_ports is arista.avd.defined %}
 {%                             do destination_ports.append(port.destination_ports | join(", ")) %}
 {%                         else %}
-{%                             do destination_ports.append("-") %}                    
+{%                             do destination_ports.append("-") %}
 {%                         endif %}
 {%                     endfor %}
 {%                     if protocol == [] %}
