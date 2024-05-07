@@ -215,6 +215,7 @@ wan_router:
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site404
       wan_ha:
+        enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
         ha_interfaces: [Ethernet52]
         ha_ipv4_pool: 10.10.10.0/24
       nodes:
