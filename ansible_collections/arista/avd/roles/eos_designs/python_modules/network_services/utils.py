@@ -709,13 +709,14 @@ class UtilsMixin:
         These are useful for easy creation of connectivity-monitor, service-insertion connections, exit-groups, tunnels etc.
         """
         policy_name = internet_exit_policy["name"]
+        policy_type = internet_exit_policy["type"]
 
-        if get(internet_exit_policy, "type") == "direct":
+        if policy_type == "direct":
             return self.get_direct_internet_exit_connections(internet_exit_policy)
-        elif get(internet_exit_policy, "type") == "zscaler":
+        elif policy_type == "zscaler":
             return self.get_zscaler_internet_exit_connections(internet_exit_policy)
         else:
-            raise AristaAvdError(f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={policy_name}].")
+            raise AristaAvdError(f"Unsupported type '{policy_type}' found in cv_pathfinder_internet_exit[name={policy_name}].")
 
     def get_direct_internet_exit_connections(self, internet_exit_policy: dict) -> list:
         """
@@ -741,7 +742,6 @@ class UtilsMixin:
                 {
                     "type": "ethernet",
                     "name": f"IE-{wan_interface['name']}",
-                    "monitor_name": f"IE-{wan_interface['name']}",
                     "monitor_host": wan_interface["peer_ip"],
                     "next_hop": wan_interface["peer_ip"],
                     "source_interface": wan_interface["name"],
@@ -795,7 +795,6 @@ class UtilsMixin:
                     {
                         **connection_base,
                         "name": f"IE-Tunnel{tunnel_id}",
-                        "monitor_name": f"IE-Tunnel{tunnel_id}",
                         "monitor_host": destination_ip,
                         "tunnel_id": tunnel_id,
                         "tunnel_ip_address": f"unnumbered {wan_interface['name']}",

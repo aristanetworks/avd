@@ -36,8 +36,7 @@ class RouterServiceInsertionMixin(UtilsMixin):
                             "tunnel_interface": {
                                 "primary": f"Tunnel{connection['tunnel_id']}",
                             },
-                            # TODO this host need to match monitor connectivity, maybe centralize name generation in utils
-                            "monitor_connectivity_host": connection["monitor_name"],
+                            "monitor_connectivity_host": connection["name"],
                         }
                     )
                 elif connection["type"] == "ethernet":
@@ -48,7 +47,7 @@ class RouterServiceInsertionMixin(UtilsMixin):
                                 "name": connection["source_interface"],
                                 "next_hop": connection["next_hop"],
                             },
-                            "monitor_connectivity_host": connection["monitor_name"],
+                            "monitor_connectivity_host": connection["name"],
                         }
                     )
 
