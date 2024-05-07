@@ -63,9 +63,9 @@ interface Management1
 ##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | False | 50 | point-to-point | - | - | - |
-| Ethernet2 | - | EVPN_UNDERLAY | False | 50 | point-to-point | - | - | - |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -114,10 +114,10 @@ interface Ethernet3
 
 ##### ISIS
 
-| Interface | ISIS instance | ISIS BFD | ISIS metric | Interface mode |
-| --------- | ------------- | -------- | ----------- | -------------- |
-| Loopback0 | EVPN_UNDERLAY | False | - | passive |
-| Loopback1 | EVPN_UNDERLAY | False | - | passive |
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| --------- | ------------- | ----------- | -------------- |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
+| Loopback1 | EVPN_UNDERLAY | - | passive |
 
 #### Loopback Interfaces Device Configuration
 
@@ -158,7 +158,7 @@ interface Loopback1
 
 | Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
 | --------- | ------------- | -------- | ----------- | ---- |
-| Vlan4093 | EVPN_UNDERLAY | False | 50 | point-to-point |
+| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point |
 
 #### VLAN Interfaces Device Configuration
 

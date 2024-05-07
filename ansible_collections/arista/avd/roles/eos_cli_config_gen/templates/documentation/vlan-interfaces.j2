@@ -160,7 +160,7 @@
 {%                 else %}
 {%                     set mode = "-" %}
 {%                 endif %}
-| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("False") }} | {{ isis_metric }} | {{ mode }} |
+| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("-") }} | {{ isis_metric }} | {{ mode }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

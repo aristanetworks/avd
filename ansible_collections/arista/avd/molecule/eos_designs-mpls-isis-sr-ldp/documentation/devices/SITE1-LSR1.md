@@ -143,10 +143,10 @@ vlan internal order ascending range 1006 1199
 ##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | CORE | False | 60 | point-to-point | level-2 | False | md5 |
-| Ethernet3 | - | CORE | False | 60 | point-to-point | level-2 | False | md5 |
-| Ethernet4 | - | CORE | False | 60 | point-to-point | level-2 | False | md5 |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet1 | - | CORE | - | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet3 | - | CORE | - | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet4 | - | CORE | - | 60 | point-to-point | level-2 | False | md5 |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -234,9 +234,9 @@ interface Ethernet4
 
 ##### ISIS
 
-| Interface | ISIS instance | ISIS BFD | ISIS metric | Interface mode |
-| --------- | ------------- | -------- | ----------- | -------------- |
-| Loopback0 | CORE | False | - | passive |
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| --------- | ------------- | ----------- | -------------- |
+| Loopback0 | CORE | - | passive |
 
 #### Loopback Interfaces Device Configuration
 

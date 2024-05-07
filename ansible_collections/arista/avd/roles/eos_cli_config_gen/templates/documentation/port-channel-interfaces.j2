@@ -308,7 +308,7 @@
 | --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 {%         for port_channel_interface in port_channel_interfaces_isis | arista.avd.natural_sort('name') %}
 {%             set isis_instance = port_channel_interface.isis_enable | arista.avd.default("-") %}
-{%             set isis_bfd = port_channel_interface.isis_bfd | arista.avd.default("False") %}
+{%             set isis_bfd = port_channel_interface.isis_bfd | arista.avd.default("-") %}
 {%             set isis_metric = port_channel_interface.isis_metric | arista.avd.default("-") %}
 {%             set isis_circuit_type = port_channel_interface.isis_circuit_type | arista.avd.default("-") %}
 {%             set isis_hello_padding = port_channel_interface.isis_hello_padding | arista.avd.default("-") %}

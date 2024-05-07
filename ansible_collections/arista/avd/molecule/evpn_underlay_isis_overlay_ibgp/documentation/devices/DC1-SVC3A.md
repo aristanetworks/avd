@@ -290,7 +290,7 @@ vlan 4094
 ##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 | Ethernet1 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |
 | Ethernet2 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |
 | Ethernet3 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |
@@ -421,10 +421,10 @@ interface Port-Channel7
 
 ##### ISIS
 
-| Interface | ISIS instance | ISIS BFD | ISIS metric | Interface mode |
-| --------- | ------------- | -------- | ----------- | -------------- |
-| Loopback0 | EVPN_UNDERLAY | False | - | passive |
-| Loopback1 | EVPN_UNDERLAY | False | - | passive |
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| --------- | ------------- | ----------- | -------------- |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
+| Loopback1 | EVPN_UNDERLAY | - | passive |
 
 #### Loopback Interfaces Device Configuration
 

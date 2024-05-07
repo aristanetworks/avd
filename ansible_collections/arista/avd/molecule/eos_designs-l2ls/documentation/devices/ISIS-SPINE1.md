@@ -187,9 +187,9 @@ interface Port-Channel1
 
 ##### ISIS
 
-| Interface | ISIS instance | ISIS BFD | ISIS metric | Interface mode |
-| --------- | ------------- | -------- | ----------- | -------------- |
-| Loopback0 | EVPN_UNDERLAY | False | - | passive |
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| --------- | ------------- | ----------- | -------------- |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
 
 #### Loopback Interfaces Device Configuration
 

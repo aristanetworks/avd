@@ -453,7 +453,7 @@
 ##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
@@ -462,7 +462,7 @@
 {%                 if port_channel_interface is arista.avd.defined %}
 {%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
 {%                     set isis_instance = port_channel_interface.isis_enable | arista.avd.default("-") %}
-{%                     set isis_bfd = port_channel_interface.isis_bfd | arista.avd.default("False") %}
+{%                     set isis_bfd = port_channel_interface.isis_bfd | arista.avd.default("-") %}
 {%                     set isis_metric = port_channel_interface.isis_metric | arista.avd.default("-") %}
 {%                     set isis_circuit_type = port_channel_interface.isis_circuit_type | arista.avd.default("-") %}
 {%                     set isis_hello_padding = port_channel_interface.isis_hello_padding | arista.avd.default("-") %}
@@ -480,7 +480,7 @@
 {%                 if ethernet_interface in ethernet_interfaces_isis %}
 {%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
 {%                     set isis_instance = ethernet_interface.isis_enable | arista.avd.default("-") %}
-{%                     set isis_bfd = ethernet_interface.isis_bfd | arista.avd.default("False") %}
+{%                     set isis_bfd = ethernet_interface.isis_bfd | arista.avd.default("-") %}
 {%                     set isis_metric = ethernet_interface.isis_metric | arista.avd.default("-") %}
 {%                     set isis_circuit_type = ethernet_interface.isis_circuit_type | arista.avd.default("-") %}
 {%                     set isis_hello_padding = ethernet_interface.isis_hello_padding | arista.avd.default("-") %}
