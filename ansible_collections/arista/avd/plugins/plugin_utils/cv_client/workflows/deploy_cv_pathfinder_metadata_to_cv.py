@@ -343,4 +343,4 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> list:
             for tunnel in internet_exit_policy["tunnels"]
         )
 
-    return [{"name": key, **value} for key, value in services_dict.items()]
+    return services_dict
