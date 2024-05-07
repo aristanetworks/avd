@@ -640,34 +640,34 @@ router_service_insertion:
   enabled: true
   connections:
   - name: IE-Ethernet3
+    monitor_connectivity_host: IE-Ethernet3
     ethernet_interface:
       name: Ethernet3
       next_hop: 172.16.5.40
-    monitor_connectivity_host: IE-Ethernet3
   - name: IE-Tunnel100
+    monitor_connectivity_host: IE-Tunnel100
     tunnel_interface:
       primary: Tunnel100
-    monitor_connectivity_host: IE-Tunnel100
   - name: IE-Tunnel101
+    monitor_connectivity_host: IE-Tunnel101
     tunnel_interface:
       primary: Tunnel101
-    monitor_connectivity_host: IE-Tunnel101
   - name: IE-Tunnel102
+    monitor_connectivity_host: IE-Tunnel102
     tunnel_interface:
       primary: Tunnel102
-    monitor_connectivity_host: IE-Tunnel102
   - name: IE-Tunnel110
+    monitor_connectivity_host: IE-Tunnel110
     tunnel_interface:
       primary: Tunnel110
-    monitor_connectivity_host: IE-Tunnel110
   - name: IE-Tunnel111
+    monitor_connectivity_host: IE-Tunnel111
     tunnel_interface:
       primary: Tunnel111
-    monitor_connectivity_host: IE-Tunnel111
   - name: IE-Tunnel112
+    monitor_connectivity_host: IE-Tunnel112
     tunnel_interface:
       primary: Tunnel112
-    monitor_connectivity_host: IE-Tunnel112
 router_internet_exit:
   exit_groups:
   - name: DIRECT-EXIT-POLICY-1

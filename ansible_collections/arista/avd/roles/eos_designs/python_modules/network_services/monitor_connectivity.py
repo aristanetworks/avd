@@ -46,7 +46,7 @@ class MonitorConnectivityMixin(UtilsMixin):
                 )
 
                 host = {
-                    "name": connection["name"],
+                    "name": connection["monitor_name"],
                     "description": connection["description"],
                     "ip": connection["monitor_host"],
                     "local_interfaces": f"SET-{interfaceName}",

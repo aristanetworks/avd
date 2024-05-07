@@ -706,10 +706,10 @@ router_service_insertion:
   enabled: true
   connections:
   - name: IE-Ethernet2.42
+    monitor_connectivity_host: IE-Ethernet2.42
     ethernet_interface:
       name: Ethernet2.42
       next_hop: 123.12.3.4
-    monitor_connectivity_host: IE-Ethernet2.42
 router_internet_exit:
   exit_groups:
   - name: DIRECT-EXIT-POLICY-2

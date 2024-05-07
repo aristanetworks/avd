@@ -742,6 +742,7 @@ class UtilsMixin:
                 {
                     "type": "ethernet",
                     "name": f"IE-{wan_interface['name']}",
+                    "monitor_name": f"IE-{wan_interface['name']}",
                     "monitor_host": wan_interface["peer_ip"],
                     "next_hop": wan_interface["peer_ip"],
                     "source_interface": wan_interface["name"],
@@ -795,6 +796,7 @@ class UtilsMixin:
                     {
                         **connection_base,
                         "name": f"IE-Tunnel{tunnel_id}",
+                        "monitor_name": f"IE-Tunnel{tunnel_id}",
                         "monitor_host": destination_ip,
                         "tunnel_id": tunnel_id,
                         "tunnel_ip_address": f"unnumbered {wan_interface['name']}",

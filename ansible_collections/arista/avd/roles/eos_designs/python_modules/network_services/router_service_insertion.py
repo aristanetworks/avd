@@ -29,28 +29,22 @@ class RouterServiceInsertionMixin(UtilsMixin):
 
         for policy in self._filtered_internet_exit_policies:
             for connection in policy.get("connections", []):
+                service_connection = {
+                    "name": connection["name"],
+                    "monitor_connectivity_host": connection["monitor_name"],
+                }
+
                 if connection["type"] == "tunnel":
-                    connections.append(
-                        {
-                            "name": connection["name"],
-                            "tunnel_interface": {
+                    service_connection["tunnel_interface"] = {
                                 "primary": f"Tunnel{connection['tunnel_id']}",
-                            },
-                            "monitor_connectivity_host": connection["name"],
-                        }
-                    )
+                            }
                 elif connection["type"] == "ethernet":
-                    connections.append(
-                        {
-                            "name": connection["name"],
-                            "ethernet_interface": {
+                    service_connection["ethernet_interface"] = {
                                 "name": connection["source_interface"],
                                 "next_hop": connection["next_hop"],
-                            },
-                            "monitor_connectivity_host": connection["name"],
-                        }
-                    )
+                            }
 
+                connections.append(service_connection)
         if connections:
             router_service_insertion["enabled"] = True
             router_service_insertion["connections"] = connections
