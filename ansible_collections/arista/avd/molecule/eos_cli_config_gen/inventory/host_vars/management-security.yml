@@ -81,8 +81,8 @@ management_security:
     - profile: profile2
       secrets:
         - name: name3
-          secret: $1c$mNvaIXPetcQoGbYuwfX4Ng==
-          secret_type: 7
+          secret: $Ra3am9YZlbg5d65txucxTg==$DMoPxa9Wu5elK39pofFgaw==$zgEBfv+w/AIr1FnW
+          secret_type: "8a"
           receive_lifetime:
             start_date_time: "2024-12-20 10:00:00"
             end_date_time: "2025-12-20 10:00:00"
@@ -92,8 +92,8 @@ management_security:
     - profile: profile0
       secrets:
         - name: name1
-          secret: $1c$mNvaIXPetcQ3hy7oUnTU3w==
-          secret_type: 7
+          secret: name1_secret
+          secret_type: "0"
           receive_lifetime:
             start_date_time: "2024-12-20 10:00:00"
             end_date_time: "2025-12-20 10:00:00"
