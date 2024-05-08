@@ -258,7 +258,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     ethernet_interfaces.append(
                         {
                             "name": connection["source_interface"],
-                            "ip_nat": {"service_profile": "VRF-AWARE-NAT"},
+                            "ip_nat": {"service_profile": self.get_internet_exit_nat(internet_exit_policy["type"])[1]["name"]},
                         }
                     )
 

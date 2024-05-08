@@ -252,7 +252,7 @@ ethernet_interfaces:
   description: Colt_10666
   encapsulation_dot1q_vlan: 666
   ip_nat:
-    service_profile: VRF-AWARE-NAT
+    service_profile: IE-DIRECT-NAT
 - name: Ethernet1
   type: routed
   peer_type: l3_interface
@@ -714,7 +714,7 @@ ip_access_lists:
     destination: any
 ip_nat:
   profiles:
-  - name: VRF-AWARE-NAT
+  - name: IE-DIRECT-NAT
     source:
       dynamic:
       - access_list: ALLOW-ALL

@@ -25,49 +25,14 @@ class IpNatMixin(UtilsMixin):
 
         ip_nat = defaultdict(list)
 
-        # TODO: Make NAT configuration more centralized
-        if any(internet_exit_policy["type"] == "zscaler" for internet_exit_policy in self._filtered_internet_exit_policies):
-            ip_nat["pools"] = [
-                {
-                    "name": "PORT-ONLY-POOL",
-                    "type": "port-only",
-                    "ranges": [
-                        {
-                            "first_port": 1500,
-                            "last_port": 65535,
-                        }
-                    ],
-                }
-            ]
-            ip_nat["profiles"].append(
-                {
-                    "name": "PORT-ONLY-VRF-AWARE-NAT",
-                    "source": {
-                        "dynamic": [
-                            {
-                                "access_list": "ALLOW-ALL",
-                                "pool_name": "PORT-ONLY-POOL",
-                                "nat_type": "pool",
-                            }
-                        ]
-                    },
-                }
-            )
+        policy_types = sorted(set(internet_exit_policy["type"] for internet_exit_policy in self._filtered_internet_exit_policies))
 
-        if any(internet_exit_policy["type"] == "direct" for internet_exit_policy in self._filtered_internet_exit_policies):
-            ip_nat["profiles"].append(
-                {
-                    "name": "VRF-AWARE-NAT",
-                    "source": {
-                        "dynamic": [
-                            {
-                                "access_list": "ALLOW-ALL",
-                                "nat_type": "overload",
-                            }
-                        ]
-                    },
-                }
-            )
+        for policy_type in policy_types:
+            pool, profile = self.get_internet_exit_nat(policy_type)
+            if pool:
+                ip_nat["pools"].append(pool)
+            if profile:
+                ip_nat["profiles"].append(profile)
 
         if ip_nat:
             return ip_nat

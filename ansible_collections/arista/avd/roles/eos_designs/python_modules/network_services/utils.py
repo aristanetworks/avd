@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import ipaddress
 from functools import cached_property
+from typing import Literal, Tuple
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
@@ -590,6 +591,46 @@ class UtilsMixin:
             for path_group in self.shared_utils.wan_local_path_groups
             if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
         ]
+
+    def get_internet_exit_nat(self, internet_exit_policy_type: Literal["zscaler", "direct"]) -> Tuple[dict | None, dict | None]:
+        if internet_exit_policy_type == "zscaler":
+            pool = {
+                "name": "PORT-ONLY-POOL",
+                "type": "port-only",
+                "ranges": [
+                    {
+                        "first_port": 1500,
+                        "last_port": 65535,
+                    }
+                ],
+            }
+
+            profile = {
+                "name": "IE-ZSCALER-NAT",
+                "source": {
+                    "dynamic": [
+                        {
+                            "access_list": "ALLOW-ALL",
+                            "pool_name": "PORT-ONLY-POOL",
+                            "nat_type": "pool",
+                        }
+                    ]
+                },
+            }
+            return pool, profile
+        elif internet_exit_policy_type == "direct":
+            profile = {
+                "name": "IE-DIRECT-NAT",
+                "source": {
+                    "dynamic": [
+                        {
+                            "access_list": "ALLOW-ALL",
+                            "nat_type": "overload",
+                        }
+                    ]
+                },
+            }
+            return None, profile
 
     @cached_property
     def _svi_acls(self) -> dict[str, dict[str, dict]]:
