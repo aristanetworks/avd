@@ -1074,6 +1074,17 @@ keys:
                       - str
                     min: 2
                     max: 64
+        layer_2_fec:
+            type: dict
+            description: BGP layer-2 in-place FEC operation.
+            keys:
+              without_timeout:
+                type: bool
+              timeout:
+                type: int
+                description: In-place FEC update tracking timeout.
+                convert_types:
+                  - str
       address_family_rtc:
         type: dict
         keys:
