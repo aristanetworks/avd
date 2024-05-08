@@ -283,6 +283,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.isis_enable is arista.avd.defined %}
    isis enable {{ vlan_interface.isis_enable }}
 {%     endif %}
+{%     if vlan_interface.isis_bfd is arista.avd.defined(true) %}
+   isis bfd
+{%     endif %}
 {%     if vlan_interface.isis_passive is arista.avd.defined(true) %}
    isis passive
 {%     endif %}
