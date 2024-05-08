@@ -8444,6 +8444,11 @@
                 "description": "ISIS instance.",
                 "title": "ISIS Enable"
               },
+              "isis_bfd": {
+                "type": "boolean",
+                "description": "Enable BFD for ISIS.",
+                "title": "ISIS BFD"
+              },
               "isis_passive": {
                 "type": "boolean",
                 "title": "ISIS Passive"
@@ -12002,6 +12007,11 @@
                     "description": "ISIS instance.",
                     "title": "ISIS Enable"
                   },
+                  "isis_bfd": {
+                    "type": "boolean",
+                    "description": "Enable BFD for ISIS.",
+                    "title": "ISIS BFD"
+                  },
                   "isis_passive": {
                     "type": "boolean",
                     "title": "ISIS Passive"
@@ -14186,6 +14196,11 @@
                 "type": "string",
                 "description": "ISIS instance.",
                 "title": "ISIS Enable"
+              },
+              "isis_bfd": {
+                "type": "boolean",
+                "description": "Enable BFD for ISIS.",
+                "title": "ISIS BFD"
               },
               "isis_passive": {
                 "type": "boolean",
@@ -20492,6 +20507,11 @@
                       "description": "ISIS instance.",
                       "title": "ISIS Enable"
                     },
+                    "isis_bfd": {
+                      "type": "boolean",
+                      "description": "Enable BFD for ISIS.",
+                      "title": "ISIS BFD"
+                    },
                     "isis_passive": {
                       "type": "boolean",
                       "title": "ISIS Passive"
@@ -25889,6 +25909,50 @@
                       "^_.+$": {}
                     },
                     "title": "Event"
+                  },
+                  "level": {
+                    "type": "array",
+                    "description": "Configure logging severity.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "facility": {
+                          "type": "string",
+                          "title": "Facility"
+                        },
+                        "severity": {
+                          "type": "string",
+                          "description": "Severity of facility. Below are the supported severites.\nemergencies    System is unusable                (severity=0)\nalerts         Immediate action needed           (severity=1)\ncritical       Critical conditions               (severity=2)\nerrors         Error conditions                  (severity=3)\nwarnings       Warning conditions                (severity=4)\nnotifications  Normal but significant conditions (severity=5)\ninformational  Informational messages            (severity=6)\ndebugging      Debugging messages                (severity=7)\n<0-7>          Severity level value",
+                          "enum": [
+                            "alerts",
+                            "critical",
+                            "debugging",
+                            "emergencies",
+                            "errors",
+                            "informational",
+                            "notifications",
+                            "warnings",
+                            "0",
+                            "1",
+                            "2",
+                            "3",
+                            "4",
+                            "5",
+                            "6",
+                            "7"
+                          ],
+                          "title": "Severity"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "facility"
+                      ]
+                    },
+                    "title": "Level"
                   }
                 },
                 "additionalProperties": false,
@@ -25978,6 +26042,11 @@
                       "type": "string",
                       "description": "ISIS instance name.",
                       "title": "ISIS Enable"
+                    },
+                    "isis_bfd": {
+                      "type": "boolean",
+                      "description": "Enable BFD for ISIS.",
+                      "title": "ISIS BFD"
                     },
                     "isis_passive": {
                       "type": "boolean",
@@ -30625,6 +30694,11 @@
                       "description": "ISIS instance.",
                       "title": "ISIS Enable"
                     },
+                    "isis_bfd": {
+                      "type": "boolean",
+                      "description": "Enable BFD for ISIS.",
+                      "title": "ISIS BFD"
+                    },
                     "isis_passive": {
                       "type": "boolean",
                       "title": "ISIS Passive"
@@ -34561,11 +34635,28 @@
                       "properties": {
                         "source_protocol": {
                           "type": "string",
+                          "enum": [
+                            "attached-host",
+                            "bgp",
+                            "connected",
+                            "dynamic",
+                            "isis",
+                            "ospf",
+                            "ospfv3",
+                            "rip",
+                            "static",
+                            "user"
+                          ],
                           "title": "Source Protocol"
                         },
                         "route_map": {
                           "type": "string",
                           "title": "Route Map"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
+                          "title": "RCF"
                         },
                         "include_leaked": {
                           "type": "boolean",
@@ -36835,6 +36926,16 @@
                               "type": "string",
                               "description": "Outbound route-map name.",
                               "title": "Route Map Out"
+                            },
+                            "rcf_in": {
+                              "type": "string",
+                              "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                              "title": "RCF In"
+                            },
+                            "rcf_out": {
+                              "type": "string",
+                              "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                              "title": "RCF Out"
                             }
                           },
                           "additionalProperties": false,
@@ -36886,6 +36987,16 @@
                               "type": "string",
                               "description": "Outbound route-map name.",
                               "title": "Route Map Out"
+                            },
+                            "rcf_in": {
+                              "type": "string",
+                              "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                              "title": "RCF In"
+                            },
+                            "rcf_out": {
+                              "type": "string",
+                              "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                              "title": "RCF Out"
                             }
                           },
                           "additionalProperties": false,
@@ -36949,6 +37060,16 @@
                               "type": "string",
                               "description": "Outbound route-map name.",
                               "title": "Route Map Out"
+                            },
+                            "rcf_in": {
+                              "type": "string",
+                              "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                              "title": "RCF In"
+                            },
+                            "rcf_out": {
+                              "type": "string",
+                              "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                              "title": "RCF Out"
                             }
                           },
                           "additionalProperties": false,
@@ -37000,6 +37121,16 @@
                               "type": "string",
                               "description": "Outbound route-map name.",
                               "title": "Route Map Out"
+                            },
+                            "rcf_in": {
+                              "type": "string",
+                              "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                              "title": "RCF In"
+                            },
+                            "rcf_out": {
+                              "type": "string",
+                              "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                              "title": "RCF Out"
                             }
                           },
                           "additionalProperties": false,
@@ -45130,6 +45261,11 @@
                       "description": "ISIS instance name.",
                       "title": "ISIS Enable"
                     },
+                    "isis_bfd": {
+                      "type": "boolean",
+                      "description": "Enable BFD for ISIS.",
+                      "title": "ISIS BFD"
+                    },
                     "isis_passive": {
                       "type": "boolean",
                       "title": "ISIS Passive"
@@ -47891,6 +48027,11 @@
                     "description": "ISIS instance.",
                     "title": "ISIS Enable"
                   },
+                  "isis_bfd": {
+                    "type": "boolean",
+                    "description": "Enable BFD for ISIS.",
+                    "title": "ISIS BFD"
+                  },
                   "isis_passive": {
                     "type": "boolean",
                     "title": "ISIS Passive"
@@ -50075,6 +50216,11 @@
                 "type": "string",
                 "description": "ISIS instance.",
                 "title": "ISIS Enable"
+              },
+              "isis_bfd": {
+                "type": "boolean",
+                "description": "Enable BFD for ISIS.",
+                "title": "ISIS BFD"
               },
               "isis_passive": {
                 "type": "boolean",
@@ -54169,6 +54315,11 @@
                       "description": "ISIS instance name.",
                       "title": "ISIS Enable"
                     },
+                    "isis_bfd": {
+                      "type": "boolean",
+                      "description": "Enable BFD for ISIS.",
+                      "title": "ISIS BFD"
+                    },
                     "isis_passive": {
                       "type": "boolean",
                       "title": "ISIS Passive"
@@ -56017,6 +56168,11 @@
                 "description": "ISIS instance name.",
                 "title": "ISIS Enable"
               },
+              "isis_bfd": {
+                "type": "boolean",
+                "description": "Enable BFD for ISIS.",
+                "title": "ISIS BFD"
+              },
               "isis_passive": {
                 "type": "boolean",
                 "title": "ISIS Passive"
@@ -56533,6 +56689,12 @@
       "type": "boolean",
       "default": false,
       "title": "Underlay IPv6"
+    },
+    "underlay_isis_bfd": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable BFD for ISIS on all underlay links.",
+      "title": "Underlay ISIS BFD"
     },
     "underlay_isis_instance_name": {
       "description": "Default -> \"EVPN_UNDERLAY\" for l3ls, \"CORE\" for mpls.",
