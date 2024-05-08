@@ -7,8 +7,8 @@ monitor_telemetry_postcard_policy:
       version: 2
     sample:
       rate: 16384
-      tcp_udp:
-        checksum: 65000
+      tcp_udp_checksum:
+        value: 65000
         mask: "0xffff"
   vxlan_marking_bit: 0
   profiles:
@@ -23,7 +23,7 @@ monitor_telemetry_postcard_policy:
           type: ipv4
           destination_prefix: 10.3.3.0/24
           source_prefix: 3.4.5.0/24
-          ports:
+          protocols:
             - protocol: tcp
               destination_ports:
                 - '77'
@@ -38,7 +38,7 @@ monitor_telemetry_postcard_policy:
           type: ipv6
           destination_prefix: 4::0/128
           source_prefix: 5::0/128
-          ports:
+          protocols:
             - protocol: udp
               destination_ports:
                 - '747'
@@ -52,7 +52,7 @@ monitor_telemetry_postcard_policy:
           type: ipv4
           destination_prefix: 10.3.3.0/24
           source_prefix: 3.4.5.0/24
-          ports:
+          protocols:
             - protocol: udp
               source_ports:
                 - '77'

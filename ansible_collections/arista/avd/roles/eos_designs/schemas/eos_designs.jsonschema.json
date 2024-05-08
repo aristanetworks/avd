@@ -28836,7 +28836,7 @@
                         "properties": {
                           "rate": {
                             "type": "integer",
-                            "description": "Sampling rate. Rate is preferred when both rate and tcp_udp is defined.",
+                            "description": "Sampling rate. `rate` is preferred when both `rate` and `tcp_udp_checksum` are defined.",
                             "enum": [
                               16384,
                               32768,
@@ -28844,20 +28844,20 @@
                             ],
                             "title": "Rate"
                           },
-                          "tcp_udp": {
+                          "tcp_udp_checksum": {
                             "type": "object",
                             "description": "TCP/UDP parameters.",
                             "properties": {
-                              "checksum": {
+                              "value": {
                                 "type": "integer",
                                 "description": "TCP/UDP checksum or IP ID value.",
                                 "minimum": 0,
                                 "maximum": 65535,
-                                "title": "Checksum"
+                                "title": "Value"
                               },
                               "mask": {
                                 "type": "string",
-                                "description": "16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unser bits.",
+                                "description": "16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unset bits.",
                                 "title": "Mask"
                               }
                             },
@@ -28865,7 +28865,7 @@
                             "patternProperties": {
                               "^_.+$": {}
                             },
-                            "title": "TCP UDP"
+                            "title": "TCP UDP Checksum"
                           }
                         },
                         "additionalProperties": false,
@@ -28890,13 +28890,13 @@
                   },
                   "profiles": {
                     "type": "array",
-                    "description": "Postcard telemetry profile.",
+                    "description": "Postcard telemetry profiles.",
                     "items": {
                       "type": "object",
                       "properties": {
                         "name": {
                           "type": "string",
-                          "description": "Profile name",
+                          "description": "Profile name.",
                           "title": "Name"
                         },
                         "ingress_sample_policy": {
@@ -28943,15 +28943,15 @@
                               },
                               "destination_prefix": {
                                 "type": "string",
-                                "description": "IPv4 Network/Mask or IPv6 Network/Mask.",
+                                "description": "IPv4 Network/Mask or IPv6 Network/Mask. Host part of prefix must be zero.\neg. 10.3.3.0/24",
                                 "title": "Destination Prefix"
                               },
                               "source_prefix": {
                                 "type": "string",
-                                "description": "IPv4 Network/Mask or IPv6 Network/Mask.",
+                                "description": "IPv4 Network/Mask or IPv6 Network/Mask. Host part of prefix must be zero.\neg. 10.3.3.0/24",
                                 "title": "Source Prefix"
                               },
-                              "ports": {
+                              "protocols": {
                                 "type": "array",
                                 "items": {
                                   "type": "object",
@@ -28984,7 +28984,7 @@
                                     "protocol"
                                   ]
                                 },
-                                "title": "Ports"
+                                "title": "Protocols"
                               }
                             },
                             "required": [

@@ -18,14 +18,12 @@ monitor telemetry postcard policy
 {%     if monitor_telemetry_postcard_policy.vxlan_marking_bit is arista.avd.defined %}
    marker vxlan header word 0 bit {{ monitor_telemetry_postcard_policy.vxlan_marking_bit | arista.avd.default(0) }}
 {%     endif %}
-{%     if monitor_telemetry_postcard_policy.ingress is arista.avd.defined %}
-{%         if monitor_telemetry_postcard_policy.ingress.collection.source is arista.avd.defined and monitor_telemetry_postcard_policy.ingress.collection.destination is arista.avd.defined %}
-{%             set ingress_cli = "ingress collection gre source " ~ monitor_telemetry_postcard_policy.ingress.collection.source ~ " destination " ~ monitor_telemetry_postcard_policy.ingress.collection.destination %}
-{%             if monitor_telemetry_postcard_policy.ingress.collection.version is arista.avd.defined(2) %}
-{%                 set ingress_cli = ingress_cli ~ " version 2" %}
-{%             endif %}
-   {{ ingress_cli }}
+{%     if monitor_telemetry_postcard_policy.ingress.collection.source is arista.avd.defined and monitor_telemetry_postcard_policy.ingress.collection.destination is arista.avd.defined %}
+{%         set ingress_cli = "ingress collection gre source " ~ monitor_telemetry_postcard_policy.ingress.collection.source ~ " destination " ~ monitor_telemetry_postcard_policy.ingress.collection.destination %}
+{%         if monitor_telemetry_postcard_policy.ingress.collection.version is arista.avd.defined(2) %}
+{%             set ingress_cli = ingress_cli ~ " version 2" %}
 {%         endif %}
+   {{ ingress_cli }}
 {%     endif %}
    !
 {%     for policy in monitor_telemetry_postcard_policy.sample_policies | arista.avd.natural_sort("name") %}
@@ -39,13 +37,13 @@ monitor telemetry postcard policy
 {%                 if rule.source_prefix is arista.avd.defined %}
          source prefix {{ rule.source_prefix }}
 {%                 endif %}
-{%                 for port in rule.ports | arista.avd.natural_sort('protocol') %}
-{%                     if port.protocol is arista.avd.defined %}
-{%                         set rule_cli = "protocol " ~ port.protocol %}
-{%                         for dest_port in port.destination_ports | arista.avd.natural_sort %}
+{%                 for protocol in rule.protocols | arista.avd.natural_sort('protocol') %}
+{%                     if protocol.protocol is arista.avd.defined %}
+{%                         set rule_cli = "protocol " ~ protocol.protocol %}
+{%                         for dest_port in protocol.destination_ports | arista.avd.natural_sort %}
          {{ rule_cli }} destination port {{ dest_port }}
 {%                         endfor %}
-{%                         for src_port in port.source_ports | arista.avd.natural_sort %}
+{%                         for src_port in protocol.source_ports | arista.avd.natural_sort %}
          {{ rule_cli }} source port {{ src_port }}
 {%                         endfor %}
 {%                     endif %}

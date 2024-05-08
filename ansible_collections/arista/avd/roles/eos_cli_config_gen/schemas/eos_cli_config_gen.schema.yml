@@ -7121,19 +7121,19 @@ keys:
             keys:
               rate:
                 type: int
-                description: Sampling rate. Rate is preferred when both rate and tcp_udp
-                  is defined.
+                description: Sampling rate. `rate` is preferred when both `rate` and
+                  `tcp_udp_checksum` are defined.
                 convert_types:
                 - str
                 valid_values:
                 - 16384
                 - 32768
                 - 65536
-              tcp_udp:
+              tcp_udp_checksum:
                 type: dict
                 description: TCP/UDP parameters.
                 keys:
-                  checksum:
+                  value:
                     type: int
                     description: TCP/UDP checksum or IP ID value.
                     min: 0
@@ -7143,7 +7143,7 @@ keys:
                   mask:
                     type: str
                     description: 16 bit hexadecimal mask for TCP/UDP or IP ID with
-                      atmost 2 unser bits.
+                      atmost 2 unset bits.
       vxlan_marking_bit:
         type: int
         default: 0
@@ -7153,14 +7153,14 @@ keys:
         - str
       profiles:
         type: list
-        description: Postcard telemetry profile.
+        description: Postcard telemetry profiles.
         primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
-              description: Profile name
+              description: Profile name.
             ingress_sample_policy:
               type: str
       sample_policies:
@@ -7188,11 +7188,17 @@ keys:
                     - ipv6
                   destination_prefix:
                     type: str
-                    description: IPv4 Network/Mask or IPv6 Network/Mask.
+                    description: 'IPv4 Network/Mask or IPv6 Network/Mask. Host part
+                      of prefix must be zero.
+
+                      eg. 10.3.3.0/24'
                   source_prefix:
                     type: str
-                    description: IPv4 Network/Mask or IPv6 Network/Mask.
-                  ports:
+                    description: 'IPv4 Network/Mask or IPv6 Network/Mask. Host part
+                      of prefix must be zero.
+
+                      eg. 10.3.3.0/24'
+                  protocols:
                     type: list
                     primary_key: protocol
                     items:

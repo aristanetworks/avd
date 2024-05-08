@@ -5,9 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
-  - [Sample Policy Summary](#sample-policy-summary)
-  - [Telemetry Postcard Policy Profiles](#telemetry-postcard-policy-profiles)
-  - [Monitor Telemetry Postcard Configuration](#monitor-telemetry-postcard-configuration)
+  - [Monitor Telemetry Postcard Policy](#monitor-telemetry-postcard-policy)
 
 ## Management
 
@@ -39,11 +37,13 @@ interface Management1
 
 ## Monitoring
 
-### Sample Policy Summary
+### Monitor Telemetry Postcard Policy
 
-#### samplepo1
+#### Sample Policy Summary
 
-##### Match rules
+##### samplepo1
+
+###### Match rules
 
 | Rule Name | Rule Type | Source Prefix | Destination Prefix | Protocol | Source Ports | Destination Ports |
 | --------- | --------- | ------------- | ------------------ | -------- | ------------ | ----------------- |
@@ -51,22 +51,22 @@ interface Management1
 | rule2 | ipv6 | 5::0/128 | 4::0/128 | udp | - | 747, 748-800, ssh |
 | rule3 | ipv4 | - | - | - | - | - |
 
-#### samplepo2
+##### samplepo2
 
-##### Match rules
+###### Match rules
 
 | Rule Name | Rule Type | Source Prefix | Destination Prefix | Protocol | Source Ports | Destination Ports |
 | --------- | --------- | ------------- | ------------------ | -------- | ------------ | ----------------- |
 | rule1 | ipv4 | 3.4.5.0/24 | 10.3.3.0/24 | udp | 77, 78-80, www | 88, www |
 
-### Telemetry Postcard Policy Profiles
+#### Telemetry Postcard Policy Profiles
 
 | Profile Name | Ingress Sample Policy |
 | ------------ | --------------------- |
 | profile1 | samplepo1 |
 | profile2 | samplepo2 |
 
-### Monitor Telemetry Postcard Configuration
+#### Monitor Telemetry Postcard Configuration
 
 ```eos
 !
