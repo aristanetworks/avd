@@ -235,7 +235,8 @@ router bgp 65101
       network 10.0.0.0/8
       network 172.16.0.0/12
       network 192.168.0.0/16 route-map RM-FOO-MATCH
-      redistribute connected rcf Address_Family_IPV4_Connected()
+      redistribute bgp leaked
+      redistribute connected include leaked rcf Address_Family_IPV4_Connected()
       redistribute dynamic route-map Address_Family_IPV4_Dynamic_RM
       redistribute static rcf Address_Family_IPV4_Static()
    !
@@ -250,7 +251,7 @@ router bgp 65101
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
       redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
       redistribute connected rcf Address_Family_IPV6_Connected()
-      redistribute ospf include leaked
+      redistribute ospfv3 include leaked
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
    session tracker ST1
       recovery delay 666 seconds

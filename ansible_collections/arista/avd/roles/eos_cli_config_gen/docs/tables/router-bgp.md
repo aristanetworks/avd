@@ -338,10 +338,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_bgp.address_family_ipv4.neighbors.[].default_originate.always") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4.neighbors.[].default_originate.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv4.redistribute_routes") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].source_protocol") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].source_protocol") | String | Required, Unique |  | Valid Values:<br>- <code>attached-host</code><br>- <code>bgp</code><br>- <code>connected</code><br>- <code>dynamic</code><br>- <code>isis</code><br>- <code>ospf</code><br>- <code>ospfv3</code><br>- <code>rip</code><br>- <code>static</code><br>- <code>user</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].include_leaked") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].include_leaked") | Boolean |  |  |  | Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`. |
     | [<samp>&nbsp;&nbsp;address_family_ipv4_multicast</samp>](## "router_bgp.address_family_ipv4_multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
@@ -390,7 +390,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv6.neighbors.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.address_family_ipv6.neighbors.[].prefix_list_out") | String |  |  |  | Outbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv6.redistribute_routes") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].source_protocol") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].source_protocol") | String | Required, Unique |  | Valid Values:<br>- <code>attached-host</code><br>- <code>bgp</code><br>- <code>connected</code><br>- <code>dhcp</code><br>- <code>dynamic</code><br>- <code>isis</code><br>- <code>ospfv3</code><br>- <code>static</code><br>- <code>user</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].include_leaked") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`. |
@@ -1399,14 +1399,16 @@
               always: <bool>
               route_map: <str>
         redistribute_routes:
-          - source_protocol: <str; required; unique>
+          - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required; unique>
             route_map: <str>
+
+            # Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`.
             include_leaked: <bool>
 
             # RCF function name with parenthesis.
             # Example: MyFunction(myarg).
             # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-            # Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
+            # Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
             rcf: <str>
       address_family_ipv4_multicast:
         peer_groups:
@@ -1510,7 +1512,7 @@
             # Outbound prefix-list name.
             prefix_list_out: <str>
         redistribute_routes:
-          - source_protocol: <str; required; unique>
+          - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dhcp" | "dynamic" | "isis" | "ospfv3" | "static" | "user"; required; unique>
             route_map: <str>
             include_leaked: <bool>
 
