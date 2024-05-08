@@ -439,7 +439,7 @@ class RouterBgpMixin(UtilsMixin):
                 raise AristaAvdError("Configuring eBGP neighbor without a remote_as")
 
             neighbor["remote_as"] = remote_as
-        
+
         if name in self._avd_overlay_peers:
             peer_facts = self.shared_utils.get_peer_facts(name)
             if self.shared_utils.shutdown_bgp_towards_undeployed_peers is True and peer_facts["is_deployed"] is False:
