@@ -159,4 +159,4 @@ $defs:
             hide_keys: true
           description: |-
             Custom structured config for the Ethernet interface.
-          $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
+          $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
