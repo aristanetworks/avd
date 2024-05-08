@@ -8444,6 +8444,11 @@
                 "description": "ISIS instance.",
                 "title": "ISIS Enable"
               },
+              "isis_bfd": {
+                "type": "boolean",
+                "description": "Enable BFD for ISIS.",
+                "title": "ISIS BFD"
+              },
               "isis_passive": {
                 "type": "boolean",
                 "title": "ISIS Passive"
@@ -12002,6 +12007,11 @@
                     "description": "ISIS instance.",
                     "title": "ISIS Enable"
                   },
+                  "isis_bfd": {
+                    "type": "boolean",
+                    "description": "Enable BFD for ISIS.",
+                    "title": "ISIS BFD"
+                  },
                   "isis_passive": {
                     "type": "boolean",
                     "title": "ISIS Passive"
@@ -14186,6 +14196,11 @@
                 "type": "string",
                 "description": "ISIS instance.",
                 "title": "ISIS Enable"
+              },
+              "isis_bfd": {
+                "type": "boolean",
+                "description": "Enable BFD for ISIS.",
+                "title": "ISIS BFD"
               },
               "isis_passive": {
                 "type": "boolean",
@@ -20492,6 +20507,11 @@
                       "description": "ISIS instance.",
                       "title": "ISIS Enable"
                     },
+                    "isis_bfd": {
+                      "type": "boolean",
+                      "description": "Enable BFD for ISIS.",
+                      "title": "ISIS BFD"
+                    },
                     "isis_passive": {
                       "type": "boolean",
                       "title": "ISIS Passive"
@@ -26023,6 +26043,11 @@
                       "description": "ISIS instance name.",
                       "title": "ISIS Enable"
                     },
+                    "isis_bfd": {
+                      "type": "boolean",
+                      "description": "Enable BFD for ISIS.",
+                      "title": "ISIS BFD"
+                    },
                     "isis_passive": {
                       "type": "boolean",
                       "title": "ISIS Passive"
@@ -30441,6 +30466,11 @@
                       "type": "string",
                       "description": "ISIS instance.",
                       "title": "ISIS Enable"
+                    },
+                    "isis_bfd": {
+                      "type": "boolean",
+                      "description": "Enable BFD for ISIS.",
+                      "title": "ISIS BFD"
                     },
                     "isis_passive": {
                       "type": "boolean",
@@ -44947,6 +44977,11 @@
                       "description": "ISIS instance name.",
                       "title": "ISIS Enable"
                     },
+                    "isis_bfd": {
+                      "type": "boolean",
+                      "description": "Enable BFD for ISIS.",
+                      "title": "ISIS BFD"
+                    },
                     "isis_passive": {
                       "type": "boolean",
                       "title": "ISIS Passive"
@@ -47708,6 +47743,11 @@
                     "description": "ISIS instance.",
                     "title": "ISIS Enable"
                   },
+                  "isis_bfd": {
+                    "type": "boolean",
+                    "description": "Enable BFD for ISIS.",
+                    "title": "ISIS BFD"
+                  },
                   "isis_passive": {
                     "type": "boolean",
                     "title": "ISIS Passive"
@@ -49892,6 +49932,11 @@
                 "type": "string",
                 "description": "ISIS instance.",
                 "title": "ISIS Enable"
+              },
+              "isis_bfd": {
+                "type": "boolean",
+                "description": "Enable BFD for ISIS.",
+                "title": "ISIS BFD"
               },
               "isis_passive": {
                 "type": "boolean",
@@ -53986,6 +54031,11 @@
                       "description": "ISIS instance name.",
                       "title": "ISIS Enable"
                     },
+                    "isis_bfd": {
+                      "type": "boolean",
+                      "description": "Enable BFD for ISIS.",
+                      "title": "ISIS BFD"
+                    },
                     "isis_passive": {
                       "type": "boolean",
                       "title": "ISIS Passive"
@@ -55834,6 +55884,11 @@
                 "description": "ISIS instance name.",
                 "title": "ISIS Enable"
               },
+              "isis_bfd": {
+                "type": "boolean",
+                "description": "Enable BFD for ISIS.",
+                "title": "ISIS BFD"
+              },
               "isis_passive": {
                 "type": "boolean",
                 "title": "ISIS Passive"
@@ -56350,6 +56405,12 @@
       "type": "boolean",
       "default": false,
       "title": "Underlay IPv6"
+    },
+    "underlay_isis_bfd": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable BFD for ISIS on all underlay links.",
+      "title": "Underlay ISIS BFD"
     },
     "underlay_isis_instance_name": {
       "description": "Default -> \"EVPN_UNDERLAY\" for l3ls, \"CORE\" for mpls.",

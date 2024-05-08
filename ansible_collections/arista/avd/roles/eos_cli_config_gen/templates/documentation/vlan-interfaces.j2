@@ -148,8 +148,8 @@
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ----------- | ---- |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
+| --------- | ------------- | -------- | ----------- | ---- |
 {%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%             if vlan_interface.isis_enable is arista.avd.defined %}
 {%                 set isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
@@ -160,7 +160,7 @@
 {%                 else %}
 {%                     set mode = "-" %}
 {%                 endif %}
-| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ isis_metric }} | {{ mode }} |
+| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("-") }} | {{ isis_metric }} | {{ mode }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
