@@ -251,6 +251,8 @@ ethernet_interfaces:
   type: l3dot1q
   description: Colt_10666
   encapsulation_dot1q_vlan: 666
+  ip_nat:
+    service_profile: VRF-AWARE-NAT
 - name: Ethernet1
   type: routed
   peer_type: l3_interface
@@ -702,6 +704,13 @@ application_traffic_recognition:
     - name: PFX-PATHFINDERS
       prefix_values:
       - 192.168.144.1/32
+ip_nat:
+  profiles:
+  - name: VRF-AWARE-NAT
+    source:
+      dynamic:
+      - access_list: ALLOW-ALL
+        nat_type: overload
 router_service_insertion:
   enabled: true
   connections:

@@ -228,6 +228,8 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Colt_10555
+  ip_nat:
+    service_profile: VRF-AWARE-NAT
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
@@ -661,12 +663,17 @@ ip_nat:
     - first_port: 1500
       last_port: 65535
   profiles:
-  - name: VRF-AWARE-NAT
+  - name: PORT-ONLY-VRF-AWARE-NAT
     source:
       dynamic:
       - access_list: ALLOW-ALL
         pool_name: PORT-ONLY-POOL
         nat_type: pool
+  - name: VRF-AWARE-NAT
+    source:
+      dynamic:
+      - access_list: ALLOW-ALL
+        nat_type: overload
 router_service_insertion:
   enabled: true
   connections:
@@ -742,7 +749,7 @@ tunnel_interfaces:
   source_interface: Ethernet3
   destination: 10.37.121.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: PORT-ONLY-VRF-AWARE-NAT
 - name: Tunnel101
   description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
   mtu: 1394
@@ -751,7 +758,7 @@ tunnel_interfaces:
   source_interface: Ethernet3
   destination: 10.39.77.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: PORT-ONLY-VRF-AWARE-NAT
 - name: Tunnel102
   description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
   mtu: 1394
@@ -760,7 +767,7 @@ tunnel_interfaces:
   source_interface: Ethernet3
   destination: 10.50.9.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: PORT-ONLY-VRF-AWARE-NAT
 monitor_connectivity:
   interface_sets:
   - name: SET-Ethernet2

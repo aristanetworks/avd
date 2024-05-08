@@ -36,13 +36,13 @@ class RouterServiceInsertionMixin(UtilsMixin):
 
                 if connection["type"] == "tunnel":
                     service_connection["tunnel_interface"] = {
-                                "primary": f"Tunnel{connection['tunnel_id']}",
-                            }
+                        "primary": f"Tunnel{connection['tunnel_id']}",
+                    }
                 elif connection["type"] == "ethernet":
                     service_connection["ethernet_interface"] = {
-                                "name": connection["source_interface"],
-                                "next_hop": connection["next_hop"],
-                            }
+                        "name": connection["source_interface"],
+                        "next_hop": connection["next_hop"],
+                    }
 
                 connections.append(service_connection)
         if connections:

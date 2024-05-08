@@ -43,7 +43,7 @@ class TunnelInterfacesMixin(UtilsMixin):
                     }
 
                     if internet_exit_policy["type"] == "zscaler":
-                        tunnel_interface["nat_profile"] = "VRF-AWARE-NAT"
+                        tunnel_interface["nat_profile"] = "PORT-ONLY-VRF-AWARE-NAT"
 
                     append_if_not_duplicate(
                         list_of_dicts=tunnel_interfaces,
