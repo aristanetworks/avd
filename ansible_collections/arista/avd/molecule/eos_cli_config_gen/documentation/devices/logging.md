@@ -71,7 +71,7 @@ interface Management1
 | vrf_with_no_source_interface | 1.2.3.4 | Default | UDP |
 
 | Facility | Severity |
-| -------------- | -------- |
+| -------- | -------- |
 | AAA | warnings |
 | ACL | critical |
 | BGP | 0 |
