@@ -166,14 +166,14 @@ keys:
                 - int
               description: |-
                 Severity of facility. Below are the supported severites.
+                emergencies    System is unusable                (severity=0)
                 alerts         Immediate action needed           (severity=1)
                 critical       Critical conditions               (severity=2)
-                debugging      Debugging messages                (severity=7)
-                emergencies    System is unusable                (severity=0)
                 errors         Error conditions                  (severity=3)
-                informational  Informational messages            (severity=6)
-                notifications  Normal but significant conditions (severity=5)
                 warnings       Warning conditions                (severity=4)
+                notifications  Normal but significant conditions (severity=5)
+                informational  Informational messages            (severity=6)
+                debugging      Debugging messages                (severity=7)
                 <0-7>          Severity level value
               valid_values:
                 - alerts
