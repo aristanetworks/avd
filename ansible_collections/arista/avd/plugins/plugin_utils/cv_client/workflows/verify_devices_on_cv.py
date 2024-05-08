@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from logging import getLogger
 
-# from ..api.arista.inventory.v1 import Device, DeviceKey
+from ..api.arista.inventory.v1 import Device  # , DeviceKey
 from ..client import CVClient
 from ..client.exceptions import CVDuplicateInfo, CVResourceNotFound
 from .models import CVDevice
@@ -24,31 +24,56 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
     if not devices:
         return
 
-    # XXX: Fix me
-    # sysMacToHostname = {}
-    # serialNumToHostname = {}
-    # for e in devices:
-    #     if e.system_mac_address is not None and e.system_mac_address in sysMacToHostname:
-    #         sysMacToHostname[e.system_mac_address].append(e.hostname)
-    #         # exception = CVDuplicateInfo("Same System MAC found for ", e.hostname, "and ", sysMacToHostname[e.system_mac_address])
-    #     if e.system_mac_address is not None:
-    #         sysMacToHostname[e.system_mac_address] = [e.hostname]
+    # Finding entries with same serialNum or same mac address
+    sysMacToHostname = {}
+    serialNumToHostname = {}
+    for e in devices:
+        if e.system_mac_address:
+            if e.system_mac_address in sysMacToHostname:
+                sysMacToHostname[e.system_mac_address].append(e.hostname)
+            else:
+                sysMacToHostname[e.system_mac_address] = [e.hostname]
 
-    #     if e.serial_number is not None and e.serial_number in serialNumToHostname:
-    #         serialNumToHostname[e.serial_number].append(e.hostname)
-    #         # exception = CVDuplicateInfo("Same Serial Number found for ", e.hostname, "and ", serialNumToHostname[e.serial_number])
-    #     if e.serial_number is not None:
-    #         serialNumToHostname[e.serial_number] = [e.hostname]
-    # hostnamesSameMac = [hostnames for mac, hostnames in sysMacToHostname.items() if len(hostnames) > 1]
-    # hostnames_with_same_serial = [hostnames for mac, hostnames in serialNumToHostname.items() if len(hostnames) > 1]
-    # if hostnamesSameMac:
-    #     raise CVDuplicateInfo("Same System MAC found for ", hostnamesSameMac)
-    # if hostnames_with_same_serial:
-    #     raise CVDuplicateInfo("Same Serial Number found for ", hostnames_with_same_serial)
+        if e.serial_number:
+            if e.serial_number in serialNumToHostname:
+                serialNumToHostname[e.serial_number].append(e.hostname)
+            else:
+                serialNumToHostname[e.serial_number] = [e.hostname]
+    hostnamesSameMac = [hostnames for mac, hostnames in sysMacToHostname.items() if len(hostnames) > 1]
+    hostnames_with_same_serial = [hostnames for mac, hostnames in serialNumToHostname.items() if len(hostnames) > 1]
+    if hostnamesSameMac:
+        raise CVDuplicateInfo("Same System MAC found for ", hostnamesSameMac)
+    if hostnames_with_same_serial:
+        raise CVDuplicateInfo("Same Serial Number found for ", hostnames_with_same_serial)
 
     existing_devices = await verify_devices_in_cloudvision_inventory(devices, skip_missing_devices, warnings, cv_client)
     await verify_devices_in_topology_studio(existing_devices, workspace_id, cv_client)
     return
+
+
+def return_duplicates(found_device_dict_by_serial: dict, found_device_dict_by_system_mac: dict, found_devices: list[Device]) -> Exception:
+    if len(found_device_dict_by_serial) > len(found_device_dict_by_system_mac):
+        # duplicate mac addresses
+        macAddressHostnames = {}
+        for device in found_devices:
+            mac_address = device.system_mac_address
+            hostname = device.hostname
+            if mac_address in macAddressHostnames:
+                macAddressHostnames[mac_address].append(hostname)
+            else:
+                macAddressHostnames[mac_address] = [hostname]
+        hostnamesSameMac = [hostnames for mac, hostnames in macAddressHostnames.items() if len(hostnames) > 1]
+        return CVDuplicateInfo("Same System MAC found for ", hostnamesSameMac)
+    else:
+        serial_hostnames = {}
+        serial = device.device_id
+        hostname = device.hostname
+        if serial in serial_hostnames:
+            serial_hostnames[serial].append(hostname)
+        else:
+            serial_hostnames[serial] = [hostname]
+        hostnames_with_same_serial = [hostnames for mac, hostnames in serial_hostnames.items() if len(hostnames) > 1]
+        return CVDuplicateInfo("Same Serial number found for ", hostnames_with_same_serial)
 
 
 # XXX: check dups info from CV and error out
@@ -85,48 +110,51 @@ async def verify_devices_in_cloudvision_inventory(
     #     Device(key=DeviceKey(device_id='avd-ci-leaf1'), software_version='4.31.1F', model_name='cEOSLab',
     #           hardware_revision='', fqdn='avd-ci-leaf1', hostname='avd-ci-leaf1', domain_name='', system_mac_address='00:1c:73:c0:c4:03'),
     #     Device(key=DeviceKey(device_id='avd-ci-leaf4'), software_version='4.31.1F', model_name='cEOSLab',
-    #           hardware_revision='', fqdn='avd-ci-leaf1', hostname='avd-ci-leaf1', domain_name='', system_mac_address='00:1c:73:c0:c4:04'),
+    #           hardware_revision='', fqdn='avd-ci-leaf1', hostname='avd-ci-leaf4', domain_name='', system_mac_address='00:1c:73:c0:c4:04'),
     #     Device(key=DeviceKey(device_id='avd-ci-leaf5'), software_version='4.31.1F', model_name='cEOSLab',
-    #           hardware_revision='', fqdn='avd-ci-leaf1', hostname='avd-ci-leaf1', domain_name='', system_mac_address='00:1c:73:c0:c4:04'),
+    #           hardware_revision='', fqdn='avd-ci-leaf1', hostname='avd-ci-leaf5', domain_name='', system_mac_address='00:1c:73:c0:c4:04'),
     #     Device(key=DeviceKey(device_id='avd-ci-leaf6'), software_version='4.31.1F', model_name='cEOSLab',
-    #           hardware_revision='', fqdn='avd-ci-leaf1', hostname='avd-ci-leaf1', domain_name='', system_mac_address='00:1c:73:c0:c4:04')
+    #           hardware_revision='', fqdn='avd-ci-leaf1', hostname='avd-ci-leaf6', domain_name='', system_mac_address='00:1c:73:c0:c4:04')
     # ]
     LOGGER.info("verify_devices_in_cloudvision_inventory: got %s matching devices on CV.", len(found_devices))
     found_device_dict_by_serial = {found_device.key.device_id: found_device for found_device in found_devices}
     found_device_dict_by_system_mac = {found_device.system_mac_address: found_device for found_device in found_devices}
     found_device_dict_by_hostname = {found_device.hostname: found_device for found_device in found_devices}
+
     # XXX: quick check = see if the dicts are all the same size; if not, then dig
     # to find the duplicates
+    if not (len(found_device_dict_by_serial) == len(found_device_dict_by_system_mac) == len(found_device_dict_by_hostname)):
+        # XXX: check for the duplicates
+        raise return_duplicates(found_device_dict_by_serial, found_device_dict_by_system_mac, found_devices)
 
-    if len(found_device_dict_by_serial) == len(found_device_dict_by_system_mac) == len(found_device_dict_by_hostname):
-        for device in devices:
-            if device._exists_on_cv is not None:
-                continue
-            # Use serial_number as unique ID if set.
-            if device.serial_number is not None:
-                if device.serial_number not in found_device_dict_by_serial:
-                    device._exists_on_cv = False
-                    continue
-                device._exists_on_cv = True
-                device.system_mac_address = found_device_dict_by_serial[device.serial_number].system_mac_address
-                continue
-
-            # Use system_mac_address as unique ID if set.
-            if device.system_mac_address is not None:
-                if device.system_mac_address not in found_device_dict_by_system_mac:
-                    device._exists_on_cv = False
-                    continue
-                device._exists_on_cv = True
-                device.serial_number = found_device_dict_by_system_mac[device.system_mac_address].key.device_id
-                continue
-
-            # Finally use hostname as unique ID.
-            if device.hostname not in found_device_dict_by_hostname:
+    for device in devices:
+        if device._exists_on_cv is not None:
+            continue
+        # Use serial_number as unique ID if set.
+        if device.serial_number is not None:
+            if device.serial_number not in found_device_dict_by_serial:
                 device._exists_on_cv = False
                 continue
             device._exists_on_cv = True
-            device.serial_number = found_device_dict_by_hostname[device.hostname].key.device_id
-            device.system_mac_address = found_device_dict_by_hostname[device.hostname].system_mac_address
+            device.system_mac_address = found_device_dict_by_serial[device.serial_number].system_mac_address
+            continue
+
+        # Use system_mac_address as unique ID if set.
+        if device.system_mac_address is not None:
+            if device.system_mac_address not in found_device_dict_by_system_mac:
+                device._exists_on_cv = False
+                continue
+            device._exists_on_cv = True
+            device.serial_number = found_device_dict_by_system_mac[device.system_mac_address].key.device_id
+            continue
+
+        # Finally use hostname as unique ID.
+        if device.hostname not in found_device_dict_by_hostname:
+            device._exists_on_cv = False
+            continue
+        device._exists_on_cv = True
+        device.serial_number = found_device_dict_by_hostname[device.hostname].key.device_id
+        device.system_mac_address = found_device_dict_by_hostname[device.hostname].system_mac_address
 
         # Now we know which devices are on CV, so we can dig deeper and check for them in I&T Studio
         # If a device is found, we will ensure hostname is correct and if not, update the hostname.
@@ -145,31 +173,6 @@ async def verify_devices_in_cloudvision_inventory(
             warnings.append(missing_devices_handler(missing_devices, skip_missing_devices, "CloudVision Device Inventory"))
 
         return existing_devices
-
-    else:
-        # XXX: check for the duplicates
-        if len(found_device_dict_by_serial) > len(found_device_dict_by_system_mac):
-            # duplicate mac addresses
-            macAddressHostnames = {}
-            for device in found_devices:
-                mac_address = device.system_mac_address
-                hostname = device.hostname
-                if mac_address in macAddressHostnames:
-                    macAddressHostnames[mac_address].append(hostname)
-                else:
-                    macAddressHostnames[mac_address] = [hostname]
-            hostnamesSameMac = [hostnames for mac, hostnames in macAddressHostnames.items() if len(hostnames) > 1]
-            raise CVDuplicateInfo("Same System MAC found for ", hostnamesSameMac)
-        else:
-            serial_hostnames = {}
-            serial = device.device_id
-            hostname = device.hostname
-            if serial in serial_hostnames:
-                serial_hostnames[serial].append(hostname)
-            else:
-                serial_hostnames[serial] = [hostname]
-            hostnames_with_same_serial = [hostnames for mac, hostnames in serial_hostnames.items() if len(hostnames) > 1]
-            raise CVDuplicateInfo("Same Serial number found for ", hostnames_with_same_serial)
 
     # We may have multiple entries of in the list that point to the same CVDevice object.
     # By updating the objects in-place, we will skip duplicates by checking if _exists_on_cv was already set.
