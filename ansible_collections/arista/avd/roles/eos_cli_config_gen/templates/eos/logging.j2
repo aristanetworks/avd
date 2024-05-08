@@ -93,9 +93,9 @@ logging source-interface {{ logging.source_interface }}
 {%     for match_list in logging.policy.match.match_lists | arista.avd.natural_sort('name') %}
 logging policy match match-list {{ match_list.name }} {{ match_list.action }}
 {%     endfor %}
-{%     for level in logging.level | arista.avd.natural_sort('facility_name') %}
+{%     for level in logging.level | arista.avd.natural_sort('facility') %}
 {%         if level.severity is arista.avd.defined %}
-logging level {{ level.facility_name }} {{ level.severity }}
+logging level {{ level.facility }} {{ level.severity }}
 {%         endif %}
 {%     endfor %}
 {% endif %}

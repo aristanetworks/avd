@@ -71,11 +71,11 @@
 {%     endif %}
 {%     if logging.level is arista.avd.defined %}
 
-| Level Facility | Severity |
+| Facility | Severity |
 | -------------- | -------- |
-{%         for level in logging.level | arista.avd.natural_sort('facility_name') %}
+{%         for level in logging.level | arista.avd.natural_sort('facility') %}
 {%             if level.severity is arista.avd.defined %}
-| {{ level.facility_name }} | {{ level.severity }} |
+| {{ level.facility }} | {{ level.severity }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

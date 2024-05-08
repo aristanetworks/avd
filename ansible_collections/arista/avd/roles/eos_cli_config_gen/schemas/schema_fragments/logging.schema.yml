@@ -152,13 +152,13 @@ keys:
       level:
         type: list
         description: Configure logging severity.
-        primary_key: facility_name
+        primary_key: facility
         convert_types:
           - dict
         items:
           type: dict
           keys:
-            facility_name:
+            facility:
               type: str
             severity:
               type: str

@@ -70,7 +70,7 @@ interface Management1
 | mgt | 40.40.40.7 | 300, 400 | UDP |
 | vrf_with_no_source_interface | 1.2.3.4 | Default | UDP |
 
-| Level Facility | Severity |
+| Facility | Severity |
 | -------------- | -------- |
 | AAA | warnings |
 | ACL | critical |
