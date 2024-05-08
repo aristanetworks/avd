@@ -18,7 +18,7 @@ updates:
     # Allow up to 10 open pull requests for pip dependencies
     open-pull-requests-limit: 10
   # This next entry intends to ignore requirements-minimum.txt
-  # Need to check if it works of not
+  # Need to check if it works or not.
   - package-ecosystem: "pip"
     directory: "/ansible_collections/arista/avd/requirements-minimum.txt"
     schedule:
