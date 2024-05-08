@@ -77,6 +77,12 @@ interface Management1
 | vrf_with_no_source_interface | 1.2.3.4 | Default | UDP |
 | vrf_with_no_source_interface | 2001:db8::1:2:3:4 | Default | UDP |
 
+| Facility | Severity |
+| -------- | -------- |
+| AAA | warnings |
+| ACL | critical |
+| BGP | 0 |
+
 #### Logging Servers and Features Device Configuration
 
 ```eos
@@ -105,4 +111,7 @@ logging format timestamp traditional year timezone
 logging format rfc5424
 logging source-interface Loopback0
 logging vrf mgt source-interface Management0
+logging level AAA warnings
+logging level ACL critical
+logging level BGP 0
 ```

@@ -9215,6 +9215,50 @@
             "^_.+$": {}
           },
           "title": "Event"
+        },
+        "level": {
+          "type": "array",
+          "description": "Configure logging severity.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "facility": {
+                "type": "string",
+                "title": "Facility"
+              },
+              "severity": {
+                "type": "string",
+                "description": "Severity of facility. Below are the supported severites.\nemergencies    System is unusable                (severity=0)\nalerts         Immediate action needed           (severity=1)\ncritical       Critical conditions               (severity=2)\nerrors         Error conditions                  (severity=3)\nwarnings       Warning conditions                (severity=4)\nnotifications  Normal but significant conditions (severity=5)\ninformational  Informational messages            (severity=6)\ndebugging      Debugging messages                (severity=7)\n<0-7>          Severity level value",
+                "enum": [
+                  "alerts",
+                  "critical",
+                  "debugging",
+                  "emergencies",
+                  "errors",
+                  "informational",
+                  "notifications",
+                  "warnings",
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7"
+                ],
+                "title": "Severity"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "facility"
+            ]
+          },
+          "title": "Level"
         }
       },
       "additionalProperties": false,
