@@ -602,6 +602,8 @@ class UtilsMixin:
         Only contains interfaces with ACLs and only the ACLs that are set,
         so use `get(self._svi_acls, f"{interface_name}.ipv4_acl_in")` to get the value.
         """
+        if not self.shared_utils.network_services_l3:
+            return None
 
         svi_acls = {}
         for tenant in self.shared_utils.filtered_tenants:
