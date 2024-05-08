@@ -1,7 +1,11 @@
 # Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 $id: eos_cli_config_gen
+$schema: avd_meta_schema
 type: dict
 allow_other_keys: true
 keys:
@@ -2296,6 +2300,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -5455,6 +5462,57 @@ keys:
                     min: 10
                     max: 65535
                     description: Logging interval in seconds.
+      level:
+        type: list
+        description: Configure logging severity.
+        primary_key: facility
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            facility:
+              type: str
+            severity:
+              type: str
+              convert_types:
+              - int
+              description: 'Severity of facility. Below are the supported severites.
+
+                emergencies    System is unusable                (severity=0)
+
+                alerts         Immediate action needed           (severity=1)
+
+                critical       Critical conditions               (severity=2)
+
+                errors         Error conditions                  (severity=3)
+
+                warnings       Warning conditions                (severity=4)
+
+                notifications  Normal but significant conditions (severity=5)
+
+                informational  Informational messages            (severity=6)
+
+                debugging      Debugging messages                (severity=7)
+
+                <0-7>          Severity level value'
+              valid_values:
+              - alerts
+              - critical
+              - debugging
+              - emergencies
+              - errors
+              - informational
+              - notifications
+              - warnings
+              - '0'
+              - '1'
+              - '2'
+              - '3'
+              - '4'
+              - '5'
+              - '6'
+              - '7'
   loopback_interfaces:
     type: list
     primary_key: name
@@ -5505,6 +5563,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance name.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -8145,6 +8206,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -13005,6 +13069,33 @@ keys:
                       name:
                         type: str
                         description: Dynamic Prefix List Name.
+      control_functions:
+        type: dict
+        description: 'Routing control functions (RCF) used to filter and update routes
+          from a peer or during redistributions.
+
+          Warning:
+
+          This configuration cannot be pushed with `eos_config_deploy_eapi`, because
+          of limitations in `arista.eos` and `ansible.netcommon` plugins.
+
+          The configuration can be pushed via CloudVision with `eos_config_deploy_cvp`
+          or `cv_deploy`.'
+        keys:
+          code_units:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Name of the code unit.
+                content:
+                  type: str
+                  required: true
+                  description: "Content of route control function.\ne.g.\nfunction
+                    ACCEPT_ALL() {\n  return true;\n  }\nEOF"
   router_igmp:
     type: dict
     display_name: Router IGMP Configuration
@@ -13442,9 +13533,17 @@ keys:
             type: int
             convert_types:
             - str
-            min: 1
-            max: 300
-            description: Maximum interval between two SPFs in seconds.
+            description: 'Maximum interval between two SPFs in seconds or milliseconds.
+
+              Range in seconds: <1-300>
+
+              Range in milliseconds: <1-300000>'
+          interval_unit:
+            type: str
+            valid_values:
+            - seconds
+            - milliseconds
+            description: If interval unit is not defined EOS takes `seconds` by default.
           wait_interval:
             type: int
             convert_types:
@@ -13452,6 +13551,13 @@ keys:
             min: 1
             max: 300000
             description: Initial wait interval for SPF in milliseconds.
+          hold_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 300000
+            description: Hold interval between the first and second SPF runs in milliseconds.
       graceful_restart:
         type: dict
         keys:
@@ -16438,6 +16544,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance name.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:

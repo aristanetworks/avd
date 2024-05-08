@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from logging import getLogger
 from typing import TYPE_CHECKING, Literal
 
 from ..api.arista.swg.v1 import (
@@ -21,6 +22,9 @@ if TYPE_CHECKING:
     from .cv_client import CVClient
 
 
+LOGGER = getLogger(__name__)
+
+
 class SwgMixin:
     """
     Only to be used as mixin on CVClient class.
@@ -33,7 +37,6 @@ class SwgMixin:
         device_id: str,
         service: Literal["zscaler"],
         location: str,
-        time: datetime | None = None,
         timeout: float = 10.0,
     ) -> EndpointConfig:
         """
@@ -50,12 +53,15 @@ class SwgMixin:
             EndpointConfig including any server-generated values.
         """
         request = EndpointConfigSetRequest(
-            key=SwgKey(device_id=device_id, service=service),
-            time=time,
+            value=EndpointConfig(
+                key=SwgKey(device_id=device_id, service_name=service),
+                address=location,
+            )
         )
         client = EndpointConfigServiceStub(self._channel)
 
         try:
+            LOGGER.info("set_swg_device: Setting location for '%s': %s", device_id, location)
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
             return response.value
 
@@ -83,7 +89,7 @@ class SwgMixin:
         request = EndpointStatusStreamRequest(
             partial_eq_filter=[
                 EndpointStatus(
-                    key=SwgKey(device_id=device_id, service=service),
+                    key=SwgKey(device_id=device_id, service_name=service),
                 ),
             ],
             time=time,
@@ -93,6 +99,7 @@ class SwgMixin:
         try:
             responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
+                LOGGER.info("wait_for_swg_endpoint_status: Got SWG endpoints: %s", response.value)
                 return response.value
 
         except Exception as e:
