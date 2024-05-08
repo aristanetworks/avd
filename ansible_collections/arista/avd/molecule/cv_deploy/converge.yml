@@ -103,7 +103,7 @@
           - item.0.value == item.1.value
       loop: "{{ expected_interface_tags | zip(output_interface_tags) | list }}"
 
-    - name: convert unstructed data into yaml
+    - name: Convert unstructed data into yaml
       ansible.builtin.set_fact:
         deivces_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
         output_devices: []
