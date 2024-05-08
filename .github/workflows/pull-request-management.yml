@@ -230,7 +230,7 @@ jobs:
           pip install uv
           uv pip compile ansible_collections/arista/avd/requirements.txt --resolution=lowest-direct > /tmp/requirements-minimum.txt
           cat /tmp/requirements-minimum.txt
-        if: pip_requirements == '/tmp/requirements-minimum.txt'
+        if: ${{ matrix.pip_requirements }} == '/tmp/requirements-minimum.txt'
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
