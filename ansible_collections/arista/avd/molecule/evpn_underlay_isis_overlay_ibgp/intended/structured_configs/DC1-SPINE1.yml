@@ -132,6 +132,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.0/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -145,6 +146,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.8/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -158,6 +160,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.16/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -171,6 +174,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.24/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -184,6 +188,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.32/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -197,6 +202,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.40/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -210,6 +216,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.48/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2

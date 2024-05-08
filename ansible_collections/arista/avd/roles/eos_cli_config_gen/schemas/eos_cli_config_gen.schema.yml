@@ -2300,6 +2300,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -5459,6 +5462,57 @@ keys:
                     min: 10
                     max: 65535
                     description: Logging interval in seconds.
+      level:
+        type: list
+        description: Configure logging severity.
+        primary_key: facility
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            facility:
+              type: str
+            severity:
+              type: str
+              convert_types:
+              - int
+              description: 'Severity of facility. Below are the supported severites.
+
+                emergencies    System is unusable                (severity=0)
+
+                alerts         Immediate action needed           (severity=1)
+
+                critical       Critical conditions               (severity=2)
+
+                errors         Error conditions                  (severity=3)
+
+                warnings       Warning conditions                (severity=4)
+
+                notifications  Normal but significant conditions (severity=5)
+
+                informational  Informational messages            (severity=6)
+
+                debugging      Debugging messages                (severity=7)
+
+                <0-7>          Severity level value'
+              valid_values:
+              - alerts
+              - critical
+              - debugging
+              - emergencies
+              - errors
+              - informational
+              - notifications
+              - warnings
+              - '0'
+              - '1'
+              - '2'
+              - '3'
+              - '4'
+              - '5'
+              - '6'
+              - '7'
   loopback_interfaces:
     type: list
     primary_key: name
@@ -5509,6 +5563,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance name.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -8149,6 +8206,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -16280,6 +16340,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance name.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
