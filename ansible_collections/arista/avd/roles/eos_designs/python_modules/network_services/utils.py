@@ -592,6 +592,12 @@ class UtilsMixin:
             if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
         ]
 
+    def get_internet_exit_nat_profile(self, internet_exit_policy_type: Literal["zscaler", "direct"]) -> Tuple[dict | None, dict | None]:
+        if internet_exit_policy_type == "zscaler":
+            return "IE-ZSCALER-NAT"
+        else:
+            return "IE-DIRECT-NAT"
+
     def get_internet_exit_nat(self, internet_exit_policy_type: Literal["zscaler", "direct"]) -> Tuple[dict | None, dict | None]:
         if internet_exit_policy_type == "zscaler":
             pool = {
@@ -606,7 +612,7 @@ class UtilsMixin:
             }
 
             profile = {
-                "name": "IE-ZSCALER-NAT",
+                "name": self.get_internet_exit_nat_profile(internet_exit_policy_type),
                 "source": {
                     "dynamic": [
                         {
@@ -620,7 +626,7 @@ class UtilsMixin:
             return pool, profile
         elif internet_exit_policy_type == "direct":
             profile = {
-                "name": "IE-DIRECT-NAT",
+                "name": self.get_internet_exit_nat_profile(internet_exit_policy_type),
                 "source": {
                     "dynamic": [
                         {
