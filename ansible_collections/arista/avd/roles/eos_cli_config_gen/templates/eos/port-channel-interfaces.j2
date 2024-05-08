@@ -452,6 +452,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.isis_enable is arista.avd.defined %}
    isis enable {{ port_channel_interface.isis_enable }}
 {%     endif %}
+{%     if port_channel_interface.isis_bfd is arista.avd.defined(true) %}
+   isis bfd
+{%     endif %}
 {%     if port_channel_interface.isis_circuit_type is arista.avd.defined %}
    isis circuit-type {{ port_channel_interface.isis_circuit_type }}
 {%     endif %}

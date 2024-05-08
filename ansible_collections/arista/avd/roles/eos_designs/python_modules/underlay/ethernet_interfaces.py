@@ -101,6 +101,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     ethernet_interface.update(
                         {
                             "isis_enable": self.shared_utils.isis_instance_name,
+                            "isis_bfd": get(self._hostvars, "underlay_isis_bfd"),
                             "isis_metric": self.shared_utils.isis_default_metric,
                             "isis_network_point_to_point": True,
                             "isis_circuit_type": self.shared_utils.isis_default_circuit_type,
