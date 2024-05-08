@@ -1074,11 +1074,11 @@ keys:
                       - str
                     min: 2
                     max: 64
-        layer_2_fec:
+        layer_2_fec_in_place_update:
             type: dict
             description: BGP layer-2 in-place FEC operation.
             keys:
-              without_timeout:
+              enable:
                 type: bool
               timeout:
                 type: int
