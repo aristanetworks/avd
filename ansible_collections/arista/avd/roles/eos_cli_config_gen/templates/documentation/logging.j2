@@ -69,6 +69,16 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     if logging.level is arista.avd.defined %}
+
+| Facility | Severity |
+| -------- | -------- |
+{%         for level in logging.level | arista.avd.natural_sort('facility') %}
+{%             if level.severity is arista.avd.defined %}
+| {{ level.facility }} | {{ level.severity }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {%     if logging.facility is arista.avd.defined %}
 
 **Syslog facility value:** {{ logging.facility }}

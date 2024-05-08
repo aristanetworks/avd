@@ -177,9 +177,9 @@ interface Management1
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ----------- | ---- |
-| Vlan2002 | EVPN_UNDERLAY | - | - |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
+| --------- | ------------- | -------- | ----------- | ---- |
+| Vlan2002 | EVPN_UNDERLAY | True | - | - |
 
 ##### Multicast Routing
 
@@ -465,6 +465,7 @@ interface Vlan2002
    vrf Tenant_B
    ip verify unicast source reachable-via rx
    isis enable EVPN_UNDERLAY
+   isis bfd
    ip address virtual 10.2.2.1/24
 !
 interface Vlan4094

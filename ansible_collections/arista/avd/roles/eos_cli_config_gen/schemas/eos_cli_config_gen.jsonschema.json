@@ -3813,6 +3813,11 @@
             "description": "ISIS instance.",
             "title": "ISIS Enable"
           },
+          "isis_bfd": {
+            "type": "boolean",
+            "description": "Enable BFD for ISIS.",
+            "title": "ISIS BFD"
+          },
           "isis_passive": {
             "type": "boolean",
             "title": "ISIS Passive"
@@ -9210,6 +9215,50 @@
             "^_.+$": {}
           },
           "title": "Event"
+        },
+        "level": {
+          "type": "array",
+          "description": "Configure logging severity.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "facility": {
+                "type": "string",
+                "title": "Facility"
+              },
+              "severity": {
+                "type": "string",
+                "description": "Severity of facility. Below are the supported severites.\nemergencies    System is unusable                (severity=0)\nalerts         Immediate action needed           (severity=1)\ncritical       Critical conditions               (severity=2)\nerrors         Error conditions                  (severity=3)\nwarnings       Warning conditions                (severity=4)\nnotifications  Normal but significant conditions (severity=5)\ninformational  Informational messages            (severity=6)\ndebugging      Debugging messages                (severity=7)\n<0-7>          Severity level value",
+                "enum": [
+                  "alerts",
+                  "critical",
+                  "debugging",
+                  "emergencies",
+                  "errors",
+                  "informational",
+                  "notifications",
+                  "warnings",
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7"
+                ],
+                "title": "Severity"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "facility"
+            ]
+          },
+          "title": "Level"
         }
       },
       "additionalProperties": false,
@@ -9299,6 +9348,11 @@
             "type": "string",
             "description": "ISIS instance name.",
             "title": "ISIS Enable"
+          },
+          "isis_bfd": {
+            "type": "boolean",
+            "description": "Enable BFD for ISIS.",
+            "title": "ISIS BFD"
           },
           "isis_passive": {
             "type": "boolean",
@@ -13849,6 +13903,11 @@
             "type": "string",
             "description": "ISIS instance.",
             "title": "ISIS Enable"
+          },
+          "isis_bfd": {
+            "type": "boolean",
+            "description": "Enable BFD for ISIS.",
+            "title": "ISIS BFD"
           },
           "isis_passive": {
             "type": "boolean",
@@ -23010,10 +23069,17 @@
           "properties": {
             "interval": {
               "type": "integer",
-              "minimum": 1,
-              "maximum": 300,
-              "description": "Maximum interval between two SPFs in seconds.",
+              "description": "Maximum interval between two SPFs in seconds or milliseconds.\nRange in seconds: <1-300>\nRange in milliseconds: <1-300000>",
               "title": "Interval"
+            },
+            "interval_unit": {
+              "type": "string",
+              "enum": [
+                "seconds",
+                "milliseconds"
+              ],
+              "description": "If interval unit is not defined EOS takes `seconds` by default.",
+              "title": "Interval Unit"
             },
             "wait_interval": {
               "type": "integer",
@@ -23021,6 +23087,13 @@
               "maximum": 300000,
               "description": "Initial wait interval for SPF in milliseconds.",
               "title": "Wait Interval"
+            },
+            "hold_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300000,
+              "description": "Hold interval between the first and second SPF runs in milliseconds.",
+              "title": "Hold Interval"
             }
           },
           "additionalProperties": false,
@@ -28340,6 +28413,11 @@
             "type": "string",
             "description": "ISIS instance name.",
             "title": "ISIS Enable"
+          },
+          "isis_bfd": {
+            "type": "boolean",
+            "description": "Enable BFD for ISIS.",
+            "title": "ISIS BFD"
           },
           "isis_passive": {
             "type": "boolean",
