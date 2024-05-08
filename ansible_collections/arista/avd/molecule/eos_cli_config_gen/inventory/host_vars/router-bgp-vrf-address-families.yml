@@ -83,6 +83,8 @@ router_bgp:
             rcf: VRF_AFIPV6_RCF_CONNECTED()
           - source_protocol: static
             route_map: VRF_AFIPV6_RM_STATIC
+          - source_protocol: isis
+            include_leaked: true
       address_family_ipv4_multicast:
         bgp:
           missing_policy:

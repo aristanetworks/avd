@@ -854,10 +854,8 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%                 if redistribute_route.route_map is arista.avd.defined %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
-{%                 elif redistribute_route.source_protocol == "isis" %}
-{%                     if redistribute_route.rcf is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
-{%                     endif %}
+{%                 elif redistribute_route.source_protocol == "isis" and redistribute_route.rcf is arista.avd.defined %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
 {%                 endif %}
       {{ redistribute_route_cli }}
 {%             endif %}
@@ -1004,10 +1002,8 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%                 if redistribute_route.route_map is arista.avd.defined %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
-{%                 elif redistribute_route.source_protocol == "isis" %}
-{%                     if redistribute_route.rcf is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
-{%                     endif %}
+{%                 elif redistribute_route.source_protocol == "isis" and redistribute_route.rcf is arista.avd.defined %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
 {%                 endif %}
       {{ redistribute_route_cli }}
 {%             endif %}
@@ -1258,15 +1254,15 @@ router bgp {{ router_bgp.as }}
       route-target import {{ address_family.address_family }} {{ route_target }}
 {%                 endfor %}
 {%                 if address_family.address_family in ['evpn', 'vpn-ipv4', 'vpn-ipv6'] %}
-{%                     if address_family.route_map is arista.avd.defined %}
-      route-target import {{ address_family.address_family }} route-map {{ address_family.route_map }}
-{%                     endif %}
 {%                     if address_family.rcf is arista.avd.defined %}
 {%                         if address_family.vpn_route_filter_rcf is arista.avd.defined and address_family.address_family in ['vpn-ipv4', 'vpn-ipv6'] %}
       route-target import {{ address_family.address_family }} rcf {{ address_family.rcf }} vpn-route filter-rcf {{ address_family.vpn_route_filter_rcf }}
 {%                         else %}
       route-target import {{ address_family.address_family }} rcf {{ address_family.rcf }}
 {%                         endif %}
+{%                     endif %}
+{%                     if address_family.route_map is arista.avd.defined %}
+      route-target import {{ address_family.address_family }} route-map {{ address_family.route_map }}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}
@@ -1277,15 +1273,15 @@ router bgp {{ router_bgp.as }}
       route-target export {{ address_family.address_family }} {{ route_target }}
 {%                 endfor %}
 {%                 if address_family.address_family in ['evpn', 'vpn-ipv4', 'vpn-ipv6'] %}
-{%                     if address_family.route_map is arista.avd.defined %}
-      route-target export {{ address_family.address_family }} route-map {{ address_family.route_map }}
-{%                     endif %}
 {%                     if address_family.rcf is arista.avd.defined %}
 {%                         if address_family.vpn_route_filter_rcf is arista.avd.defined and address_family.address_family in ['vpn-ipv4', 'vpn-ipv6'] %}
       route-target export {{ address_family.address_family }} rcf {{ address_family.rcf }} vpn-route filter-rcf {{ address_family.vpn_route_filter_rcf }}
 {%                         else %}
       route-target export {{ address_family.address_family }} rcf {{ address_family.rcf }}
 {%                         endif %}
+{%                     endif %}
+{%                     if address_family.route_map is arista.avd.defined %}
+      route-target export {{ address_family.address_family }} route-map {{ address_family.route_map }}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}
