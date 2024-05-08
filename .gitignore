@@ -46,3 +46,6 @@ ansible_collections/arista/avd/plugins/plugin_utils/cv_client/cloudvision-apis/
 
 # Checksum of schemas
 *schema.sha1
+
+# Temporary files creating during CI workflow
+/tmp-requirements-minimum.txt
