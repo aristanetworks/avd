@@ -102,22 +102,22 @@ interface Management1
 
 #### profile0
 
-| Secret Name | Receive Lifetime | Transmit Lifetime |
-| ----------- | ---------------- | ----------------- |
-| name1 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 |
+| Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
+| ----------- | ---------------- | ----------------- | -------- |
+| name1 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | UTC |
 
 #### profile1
 
-| Secret Name | Receive Lifetime | Transmit Lifetime |
-| ----------- | ---------------- | ----------------- |
-| name0 | Infinite | Infinite |
-| name1 | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | Infinite |
+| Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
+| ----------- | ---------------- | ----------------- | -------- |
+| name0 | Infinite | Infinite | UTC |
+| name1 | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | Infinite | Local Time |
 
 #### profile2
 
-| Secret Name | Receive Lifetime | Transmit Lifetime |
-| ----------- | ---------------- | ----------------- |
-| name3 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 |
+| Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
+| ----------- | ---------------- | ----------------- | -------- |
+| name3 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 | UTC |
 
 ### Management Security Device Configuration
 
@@ -137,6 +137,13 @@ management security
       minimum upper 5
       maximum repetitive 6
       maximum sequential 7
+   session shared-secret profile profile0
+      secret name1 7 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00
+   session shared-secret profile profile1
+      secret name0 7 <removed> receive-lifetime infinite transmit-lifetime infinite
+      secret name1 7 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite local-time
+   session shared-secret profile profile2
+      secret name3 7 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 12/20/2024 10:00:00 12/10/2025 10:00:00
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
       crl ca.crl
@@ -163,11 +170,4 @@ management security
       tls versions 1.1
    ssl profile tls-versions-profile
       tls versions 1.0 1.1
-   session shared-secret profile profile0
-      secret name1 7 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00
-   session shared-secret profile profile1
-      secret name0 7 <removed> receive-lifetime infinite transmit-lifetime infinite
-      secret name1 7 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite
-   session shared-secret profile profile2
-      secret name3 7 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 12/20/2024 10:00:00 12/10/2025 10:00:00
 ```

@@ -10759,6 +10759,11 @@
                         "^_.+$": {}
                       },
                       "title": "Transmit Lifetime"
+                    },
+                    "local_time": {
+                      "type": "boolean",
+                      "description": "Configuring secret using the local timezone from system clock. Default is UTC.",
+                      "title": "Local Time"
                     }
                   },
                   "additionalProperties": false,

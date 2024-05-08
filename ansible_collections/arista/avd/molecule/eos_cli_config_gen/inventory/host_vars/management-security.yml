@@ -70,6 +70,7 @@ management_security:
             end_date_time: 12/20/2025 10:00:00
           transmit_lifetime:
             infinite: true
+          local_time: true
         - name: name0
           secret: $1c$mNvaIXPetcSA2UnFwIaxwA==
           secret_type: "7"

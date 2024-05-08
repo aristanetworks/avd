@@ -205,7 +205,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       mlag_ipv4_underlay_peer:
         type: dict
         keys:
@@ -225,7 +225,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       evpn_overlay_peers:
         type: dict
         keys:
@@ -245,7 +245,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       evpn_overlay_core:
         type: dict
         keys:
@@ -265,7 +265,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       mpls_overlay_peers:
         type: dict
         keys:
@@ -285,7 +285,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       rr_overlay_peers:
         type: dict
         keys:
@@ -305,7 +305,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       ipvpn_gateway_peers:
         type: dict
         keys:
@@ -325,7 +325,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
@@ -3554,7 +3554,7 @@ $defs:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items/
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final
@@ -3565,7 +3565,7 @@ $defs:
           for eos_cli_config_gen.
         documentation_options:
           hide_keys: true
-        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
   connected_endpoints:
     type: list
     primary_key: name
@@ -4490,7 +4490,7 @@ $defs:
                         for eos_cli_config_gen.
                       documentation_options:
                         hide_keys: true
-                      $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
+                      $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
                     raw_eos_cli:
                       type: str
                       description: 'EOS CLI rendered directly on the Ethernet interface
@@ -5394,7 +5394,7 @@ $defs:
 
               '
           mlag_port_channel_structured_config:
-            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items/
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true

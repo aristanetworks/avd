@@ -297,18 +297,27 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     result.deployed_cv_pathfinder_metadata.extend(pathfinders + edges)
 
 
-def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> list:
+def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> dict:
     """
     Generate internet-exit related metadata for one device.
     To be inserted into edge router metadata under "services"
     """
-    if (internet_exit_policies := get(metadata, "cv_pathfinder.internet_exit_policies")) is None:
+    if (internet_exit_policies := get(metadata, "internet_exit_policies")) is None:
+        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Did not find 'internet_exit_policies' for device: %s", device.hostname)
         return []
+
+    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Found %s 'internet_exit_policies' for device: %s", len(internet_exit_policies), device.hostname)
 
     services_dict = {}
     for internet_exit_policy in internet_exit_policies:
         # We currently only support zscaler
-        if internet_exit_policy["type"] != "zscaler":
+        if internet_exit_policy.get("type") != "zscaler":
+            LOGGER.info(
+                "deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '%s' with type '%s' for device: %s.",
+                internet_exit_policies.get("name"),
+                internet_exit_policy.get("type"),
+                device.hostname,
+            )
             continue
 
         policy_name = internet_exit_policy["name"]
@@ -329,7 +338,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> list:
                         "fqdn": vpn_credential["fqdn"],
                         "comments": f"Credential for {device.hostname} internet-exit policy {policy_name}",
                         "vpnType": vpn_credential["vpn_type"],
-                        "preSharedKey": simple_7_decrypt(vpn_credential["pre_shared_key"]),
+                        "presharedKey": simple_7_decrypt(vpn_credential["pre_shared_key"]),
                     }
                     for vpn_credential in internet_exit_policy["vpn_credentials"]
                 ],
@@ -343,4 +352,4 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> list:
             for tunnel in internet_exit_policy["tunnels"]
         )
 
-    return [{"name": key, **value} for key, value in services_dict.items()]
+    return services_dict

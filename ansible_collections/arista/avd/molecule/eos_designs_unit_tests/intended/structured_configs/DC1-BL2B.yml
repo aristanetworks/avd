@@ -60,6 +60,8 @@ router_bgp:
       activate: false
     - name: IPVPN-INTERWORKING-PEERS
       activate: false
+    - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      activate: true
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -140,6 +142,10 @@ router_bgp:
     - name: IPVPN-INTERWORKING-PEERS
       activate: true
     domain_identifier: '65000:4'
+  address_family_ipv6:
+    peer_groups:
+    - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      activate: true
   vrfs:
   - name: Tenant_A_WAN_Zone
     router_id: 192.168.255.17

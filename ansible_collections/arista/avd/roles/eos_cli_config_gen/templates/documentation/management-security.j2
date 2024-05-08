@@ -136,17 +136,18 @@
 
 #### {{ profile.profile }}
 
-| Secret Name | Receive Lifetime | Transmit Lifetime |
-| ----------- | ---------------- | ----------------- |
+| Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
+| ----------- | ---------------- | ----------------- | -------- |
 {%             for secret in profile.secrets | arista.avd.natural_sort("name") %}
+{%                 set local_time = "Local Time" if secret.local_time is arista.avd.defined(true) %}
 {%                 if secret.receive_lifetime.infinite is arista.avd.defined and secret.transmit_lifetime.infinite is arista.avd.defined %}
-| {{ secret.name }} | Infinite | Infinite |
+| {{ secret.name }} | Infinite | Infinite | {{ local_time | arista.avd.default("UTC") }} |
 {%                 elif secret.receive_lifetime.infinite is arista.avd.defined and secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
-| {{ secret.name }} | Infinite | {{ secret.transmit_lifetime.start_date_time }} - {{ secret.transmit_lifetime.end_date_time }} |
+| {{ secret.name }} | Infinite | {{ secret.transmit_lifetime.start_date_time }} - {{ secret.transmit_lifetime.end_date_time }} | {{ local_time | arista.avd.default("UTC") }} |
 {%                 elif secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined and secret.transmit_lifetime.infinite is arista.avd.defined %}
-| {{ secret.name }} | {{ secret.receive_lifetime.start_date_time }} - {{ secret.receive_lifetime.end_date_time }} | Infinite |
+| {{ secret.name }} | {{ secret.receive_lifetime.start_date_time }} - {{ secret.receive_lifetime.end_date_time }} | Infinite | {{ local_time | arista.avd.default("UTC") }} |
 {%                 elif secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined and secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
-| {{ secret.name }} | {{ secret.receive_lifetime.start_date_time }} - {{ secret.receive_lifetime.end_date_time }} | {{ secret.transmit_lifetime.start_date_time }} - {{ secret.transmit_lifetime.end_date_time }} |
+| {{ secret.name }} | {{ secret.receive_lifetime.start_date_time }} - {{ secret.receive_lifetime.end_date_time }} | {{ secret.transmit_lifetime.start_date_time }} - {{ secret.transmit_lifetime.end_date_time }} | {{ local_time | arista.avd.default("UTC") }} |
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
