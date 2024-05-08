@@ -646,8 +646,26 @@ keys:
           keys:
             source_protocol:
               type: str
+              valid_values:
+                - "attached-host"
+                - "bgp"
+                - "connected"
+                - "dynamic"
+                - "isis"
+                - "ospf"
+                - "ospfv3"
+                - "rip"
+                - "static"
+                - "user"
             route_map:
               type: str
+            rcf:
+              type: str
+              description: |-
+                RCF function name with parenthesis.
+                Example: MyFunction(myarg).
+                `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
             include_leaked:
               type: bool
       vlan_aware_bundles:
@@ -1791,6 +1809,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: |-
+                    Inbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                rcf_out:
+                  type: str
+                  description: |-
+                    Outbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
           route:
             type: dict
             keys:
@@ -1816,6 +1844,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: |-
+                    Inbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                rcf_out:
+                  type: str
+                  description: |-
+                    Outbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
@@ -1845,6 +1883,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: |-
+                    Inbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                rcf_out:
+                  type: str
+                  description: |-
+                    Outbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
           route:
             type: dict
             keys:
@@ -1870,6 +1918,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: |-
+                    Inbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                rcf_out:
+                  type: str
+                  description: |-
+                    Outbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
