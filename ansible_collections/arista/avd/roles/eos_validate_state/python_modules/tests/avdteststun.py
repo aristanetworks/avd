@@ -7,7 +7,7 @@ import logging
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 LOGGER = logging.getLogger(__name__)
 
@@ -15,6 +15,7 @@ LOGGER = logging.getLogger(__name__)
 class AvdTestStun(AvdTestBase):
     """
     AvdTestStun class for STUN tests.
+    Verifies the configuration of the STUN client, specifically the IPv4 source address and port.
     """
 
     anta_module = "anta.tests.stun"
@@ -31,35 +32,34 @@ class AvdTestStun(AvdTestBase):
 
         # Check if there are any path groups with STUN configuration
         if (path_groups := get(self.structured_config, "router_path_selection.path_groups")) is None:
-            LOGGER.info("No local interface found with STUN configuration. %s is skipped.", self.__class__.__name__)
+            LOGGER.info("Path groups are not configured to collect STUN interfaces information. %s is skipped.", self.__class__.__name__)
             return None
 
         # Get the interfaces with STUN configuration
         stun_interfaces = [
             local_interfaces.get("name")
             for path_group in path_groups
+            if self.validate_data(data=path_group, required_keys="local_interfaces")
             for local_interfaces in path_group.get("local_interfaces")
-            if get(local_interfaces, "stun.server_profiles") is not None
+            if self.validate_data(data=local_interfaces, required_keys="stun.server_profiles")
         ]
+        if not stun_interfaces:
+            LOGGER.info("No local interface found with STUN configuration. %s is skipped.", self.__class__.__name__)
+            return None
 
         # Generate the ANTA tests for each interface with STUN configuration
         for source_interface in stun_interfaces:
-            interfaces_data = get(self.structured_config, "ethernet_interfaces")
-            interface_address = get_item(interfaces_data, "name", source_interface)
-            ip_address = interface_address.get("ip_address")
-            if ip_address is None:
-                LOGGER.info("No IP address found for interface %s. Skipping this interface.", source_interface)
-                continue
+            ip_address = self.get_interface_ip("ethernet_interfaces", source_interface)
             source_address = ip_address.split("/")[0]
             source_port = 4500  # TODO: Keeping source port as default 4500. We might need to change it later.
             anta_tests.append(
                 {
                     "VerifyStunClient": {
                         "stun_clients": [{"source_address": source_address, "source_port": source_port}],
-                        "result_overwrite": {"custom_field": f"source address: {source_address} source port: {source_port}"},
+                        "result_overwrite": {"custom_field": f"Source IPv4 Address: {source_address} Source Port: {source_port}"},
                     }
                 }
             )
 
         # Return the ANTA tests as a dictionary
-        return {self.anta_module: anta_tests}
+        return {self.anta_module: anta_tests} if anta_tests else None

@@ -544,3 +544,13 @@ virtual_source_nat_vrfs:
 metadata:
   platform: vEOS-lab
 dns_domain: dc1.local
+router_path_selection:
+  path_groups:
+  - name: Test_local_interface
+    id: 110
+    dynamic_peers:
+      enabled: true
+  - name: Test_stun_server_profile
+    id: 210
+    local_interfaces:
+    - name: Ethernet3

@@ -648,7 +648,7 @@
       "stun"
     ],
     "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided.",
-    "custom_field": "source address: 100.64.4.2 source port: 4500"
+    "custom_field": "Source IPv4 Address: 100.64.4.2 Source Port: 4500"
   },
   {
     "name": "dc1-wan2",
@@ -657,7 +657,7 @@
       "stun"
     ],
     "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided.",
-    "custom_field": "source address: 172.18.4.2 source port: 4500"
+    "custom_field": "Source IPv4 Address: 172.18.4.2 Source Port: 4500"
   },
   {
     "name": "dc1-wan2",
