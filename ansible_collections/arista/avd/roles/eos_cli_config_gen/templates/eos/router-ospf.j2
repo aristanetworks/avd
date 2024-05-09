@@ -6,7 +6,7 @@
 {# eos - router ospf #}
 {% for process_id in router_ospf.process_ids | arista.avd.natural_sort('id') %}
 !
-{%     if process_id.vrf is arista.avd.defined %}
+{%     if process_id.vrf is arista.avd.defined and process_id.vrf != 'default' %}
 router ospf {{ process_id.id }} vrf {{ process_id.vrf }}
 {%     else %}
 router ospf {{ process_id.id }}

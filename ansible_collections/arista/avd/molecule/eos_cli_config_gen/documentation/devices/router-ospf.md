@@ -153,6 +153,7 @@ interface Vlan24
 | 400 | - | disabled |- | disabled | default | disabled | disabled | - | - | - | - |
 | 500 | - | disabled |- | disabled | default | disabled | disabled | - | - | - | - |
 | 600 | - | disabled |- | disabled | default | disabled | disabled | - | - | - | - |
+| 602 | 1.0.1.1 | enabled |- | disabled | default | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Distance
 
@@ -307,4 +308,8 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+!
+router ospf 602
+   router-id 1.0.1.1
+   passive-interface default
 ```

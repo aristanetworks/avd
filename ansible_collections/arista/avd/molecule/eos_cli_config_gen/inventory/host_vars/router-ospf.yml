@@ -159,7 +159,11 @@ router_ospf:
           default_information_originate:
             metric: 50
             metric_type: 1
-
+    # squash rendering the default vrf
+    - id: 602
+      vrf: default
+      passive_interface_default: true
+      router_id: 1.0.1.1
 
 ethernet_interfaces:
   - name: Ethernet1
