@@ -28885,7 +28885,7 @@
                           },
                           "version": {
                             "type": "integer",
-                            "description": "Postcard version",
+                            "description": "Postcard version.",
                             "enum": [
                               1,
                               2

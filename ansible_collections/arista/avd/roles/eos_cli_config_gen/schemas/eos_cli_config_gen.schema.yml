@@ -7168,7 +7168,7 @@ keys:
                 description: Configure destination IP address of GRE tunnel.
               version:
                 type: int
-                description: Postcard version
+                description: Postcard version.
                 valid_values:
                 - 1
                 - 2
