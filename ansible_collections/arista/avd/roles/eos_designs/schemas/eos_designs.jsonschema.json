@@ -898,6 +898,7 @@
                     },
                     "hash_algorithm": {
                       "type": "string",
+                      "description": "Warning:\n  hmac-sha-256 configuration with eapi works on EOS version 4.31 and above.",
                       "enum": [
                         "aes-128-cmac-96",
                         "hmac-sha-256",
@@ -906,6 +907,10 @@
                       "title": "Hash Algorithm"
                     }
                   },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -1268,6 +1273,7 @@
                     },
                     "hash_algorithm": {
                       "type": "string",
+                      "description": "Warning:\n  hmac-sha-256 configuration with eapi works on EOS version 4.31 and above.",
                       "enum": [
                         "aes-128-cmac-96",
                         "hmac-sha-256",
@@ -1276,6 +1282,10 @@
                       "title": "Hash Algorithm"
                     }
                   },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -1638,6 +1648,7 @@
                     },
                     "hash_algorithm": {
                       "type": "string",
+                      "description": "Warning:\n  hmac-sha-256 configuration with eapi works on EOS version 4.31 and above.",
                       "enum": [
                         "aes-128-cmac-96",
                         "hmac-sha-256",
@@ -1646,6 +1657,10 @@
                       "title": "Hash Algorithm"
                     }
                   },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -2008,6 +2023,7 @@
                     },
                     "hash_algorithm": {
                       "type": "string",
+                      "description": "Warning:\n  hmac-sha-256 configuration with eapi works on EOS version 4.31 and above.",
                       "enum": [
                         "aes-128-cmac-96",
                         "hmac-sha-256",
@@ -2016,6 +2032,10 @@
                       "title": "Hash Algorithm"
                     }
                   },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -2378,6 +2398,7 @@
                     },
                     "hash_algorithm": {
                       "type": "string",
+                      "description": "Warning:\n  hmac-sha-256 configuration with eapi works on EOS version 4.31 and above.",
                       "enum": [
                         "aes-128-cmac-96",
                         "hmac-sha-256",
@@ -2386,6 +2407,10 @@
                       "title": "Hash Algorithm"
                     }
                   },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -2748,6 +2773,7 @@
                     },
                     "hash_algorithm": {
                       "type": "string",
+                      "description": "Warning:\n  hmac-sha-256 configuration with eapi works on EOS version 4.31 and above.",
                       "enum": [
                         "aes-128-cmac-96",
                         "hmac-sha-256",
@@ -2756,6 +2782,10 @@
                       "title": "Hash Algorithm"
                     }
                   },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -3118,6 +3148,7 @@
                     },
                     "hash_algorithm": {
                       "type": "string",
+                      "description": "Warning:\n  hmac-sha-256 configuration with eapi works on EOS version 4.31 and above.",
                       "enum": [
                         "aes-128-cmac-96",
                         "hmac-sha-256",
@@ -3126,6 +3157,10 @@
                       "title": "Hash Algorithm"
                     }
                   },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -3541,6 +3576,7 @@
                     },
                     "hash_algorithm": {
                       "type": "string",
+                      "description": "Warning:\n  hmac-sha-256 configuration with eapi works on EOS version 4.31 and above.",
                       "enum": [
                         "aes-128-cmac-96",
                         "hmac-sha-256",
@@ -3549,6 +3585,10 @@
                       "title": "Hash Algorithm"
                     }
                   },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -3956,6 +3996,7 @@
                     },
                     "hash_algorithm": {
                       "type": "string",
+                      "description": "Warning:\n  hmac-sha-256 configuration with eapi works on EOS version 4.31 and above.",
                       "enum": [
                         "aes-128-cmac-96",
                         "hmac-sha-256",
@@ -3964,6 +4005,10 @@
                       "title": "Hash Algorithm"
                     }
                   },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -34310,6 +34355,7 @@
                             },
                             "hash_algorithm": {
                               "type": "string",
+                              "description": "Warning:\n  hmac-sha-256 configuration with eapi works on EOS version 4.31 and above.",
                               "enum": [
                                 "aes-128-cmac-96",
                                 "hmac-sha-256",
@@ -34318,6 +34364,10 @@
                               "title": "Hash Algorithm"
                             }
                           },
+                          "required": [
+                            "profile",
+                            "hash_algorithm"
+                          ],
                           "additionalProperties": false,
                           "patternProperties": {
                             "^_.+$": {}
