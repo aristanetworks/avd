@@ -104,6 +104,7 @@ interface Management1
 
 | Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
 | ----------- | ---------------- | ----------------- | -------- |
+| name | Infinite | Infinite | UTC |
 | name1 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | UTC |
 
 #### profile1
@@ -138,10 +139,11 @@ management security
       maximum repetitive 6
       maximum sequential 7
    session shared-secret profile profile0
+      secret name 0 <removed> receive-lifetime infinite transmit-lifetime infinite
       secret name1 0 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00
    session shared-secret profile profile1
       secret name0 7 <removed> receive-lifetime infinite transmit-lifetime infinite
-      secret name1 7 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite local-time
+      secret name1 0 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite local-time
    session shared-secret profile profile2
       secret name3 8a <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 12/20/2024 10:00:00 12/10/2025 10:00:00
    ssl profile certificate-profile

@@ -10758,7 +10758,7 @@
                     },
                     "secret_type": {
                       "type": "string",
-                      "default": "7",
+                      "default": "0",
                       "enum": [
                         "0",
                         "7",
@@ -10820,6 +10820,12 @@
                       "title": "Local Time"
                     }
                   },
+                  "required": [
+                    "secret",
+                    "receive_lifetime",
+                    "transmit_lifetime",
+                    "name"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}

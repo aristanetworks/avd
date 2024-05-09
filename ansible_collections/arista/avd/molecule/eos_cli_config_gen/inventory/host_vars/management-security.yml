@@ -100,3 +100,9 @@ management_security:
           transmit_lifetime:
             start_date_time: "2024-12-20 10:00:00"
             end_date_time: "2025-12-20 10:00:00"
+        - name: name
+          secret: secret
+          receive_lifetime:
+            infinite: true
+          transmit_lifetime:
+            infinite: true

@@ -191,6 +191,7 @@ keys:
               type: str
             secrets:
               type: list
+              primary_key: name
               items:
                 type: dict
                 keys:
@@ -198,14 +199,16 @@ keys:
                     type: str
                   secret:
                     type: str
+                    required: true
                   secret_type:
                     type: str
-                    default: "7"
+                    default: "0"
                     valid_values: [ "0", "7", "8a" ]
                     convert_types:
                     - int
                   receive_lifetime:
                     type: dict
+                    required: true
                     keys:
                       infinite:
                         type: bool
@@ -227,6 +230,7 @@ keys:
                           e.g 2024-12-20 10:00:00
                   transmit_lifetime:
                     type: dict
+                    required: true
                     keys:
                       infinite:
                         type: bool
