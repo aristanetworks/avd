@@ -78,8 +78,8 @@ monitor telemetry postcard policy
    !
    sample policy samplepo1
       match rule1 ipv4
-         destination prefix 10.3.3.0/24
          source prefix 3.4.5.0/24
+         destination prefix 10.3.3.0/24
          protocol tcp destination port 77
          protocol tcp destination port 78-80
          protocol tcp destination port www
@@ -87,8 +87,8 @@ monitor telemetry postcard policy
          protocol udp source port 98
       !
       match rule2 ipv6
-         destination prefix 4::0/128
          source prefix 5::0/128
+         destination prefix 4::0/128
          protocol udp destination port 747
          protocol udp destination port 748-800
          protocol udp destination port ssh
@@ -98,8 +98,8 @@ monitor telemetry postcard policy
    !
    sample policy samplepo2
       match rule1 ipv4
-         destination prefix 10.3.3.0/24
          source prefix 3.4.5.0/24
+         destination prefix 10.3.3.0/24
          protocol udp destination port 88
          protocol udp destination port www
          protocol udp source port 77

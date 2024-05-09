@@ -115,12 +115,12 @@ keys:
                         destination_ports:
                           type: list
                           description: |-
-                            Enter the port name or range or port numbers in a list.
+                            Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.
                             Example:
                               ["12","14-20", "www"]
                         source_ports:
                           type: list
                           description: |-
-                            Enter the port name or range or port numbers in a list.
+                            Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.
                             Example:
                               ["12","14-20", "www"]

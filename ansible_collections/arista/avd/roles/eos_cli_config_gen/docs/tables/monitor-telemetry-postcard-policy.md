@@ -32,8 +32,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_prefix</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].source_prefix") | String |  |  |  | IPv4 Network/Mask or IPv6 Network/Mask. Host part of prefix must be zero.<br>eg. 10.3.3.0/24 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;protocol</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].protocol") | String | Required, Unique |  | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_ports</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].destination_ports") | List |  |  |  | Enter the port name or range or port numbers in a list.<br>Example:<br>  ["12","14-20", "www"] |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ports</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].source_ports") | List |  |  |  | Enter the port name or range or port numbers in a list.<br>Example:<br>  ["12","14-20", "www"] |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_ports</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].destination_ports") | List |  |  |  | Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.<br>Example:<br>  ["12","14-20", "www"] |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ports</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].source_ports") | List |  |  |  | Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.<br>Example:<br>  ["12","14-20", "www"] |
 
 === "YAML"
 
@@ -96,12 +96,12 @@
               protocols:
                 - protocol: <str; "tcp" | "udp"; required; unique>
 
-                  # Enter the port name or range or port numbers in a list.
+                  # Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.
                   # Example:
                   #   ["12","14-20", "www"]
                   destination_ports: <list>
 
-                  # Enter the port name or range or port numbers in a list.
+                  # Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.
                   # Example:
                   #   ["12","14-20", "www"]
                   source_ports: <list>

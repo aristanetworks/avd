@@ -183,8 +183,6 @@
 {% include 'eos/application-traffic-recognition.j2' %}
 {# Connectivity monitor configuration #}
 {% include 'eos/monitor-connectivity.j2' %}
-{# Monitor telemetry postcard #}
-{% include 'eos/monitor-telemetry-postcard-policy.j2' %}
 {# MAC address-table aging #}
 {% include 'eos/mac-address-table-aging-time.j2' %}
 {# Router virtual mac address #}
@@ -263,6 +261,8 @@
 {% include 'eos/class-maps.j2' %}
 {# PBR policy-map #}
 {% include 'eos/policy-maps-pbr.j2' %}
+{# Monitor telemetry postcard #}
+{% include 'eos/monitor-telemetry-postcard-policy.j2' %}
 {# QOS policy-map #}
 {% include 'eos/policy-maps-qos.j2' %}
 {# ARP #}

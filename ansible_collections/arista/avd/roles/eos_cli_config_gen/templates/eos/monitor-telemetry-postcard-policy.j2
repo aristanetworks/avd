@@ -31,11 +31,11 @@ monitor telemetry postcard policy
 {%         for rule in policy.match_rules | arista.avd.natural_sort("name") %}
 {%             if rule.type is arista.avd.defined %}
       match {{ rule.name }} {{ rule.type }}
-{%                 if rule.destination_prefix is arista.avd.defined %}
-         destination prefix {{ rule.destination_prefix }}
-{%                 endif %}
 {%                 if rule.source_prefix is arista.avd.defined %}
          source prefix {{ rule.source_prefix }}
+{%                 endif %}
+{%                 if rule.destination_prefix is arista.avd.defined %}
+         destination prefix {{ rule.destination_prefix }}
 {%                 endif %}
 {%                 for protocol in rule.protocols | arista.avd.natural_sort('protocol') %}
 {%                     if protocol.protocol is arista.avd.defined %}

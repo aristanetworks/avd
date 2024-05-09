@@ -29035,12 +29035,12 @@
                                     },
                                     "destination_ports": {
                                       "type": "array",
-                                      "description": "Enter the port name or range or port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                                      "description": "Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
                                       "title": "Destination Ports"
                                     },
                                     "source_ports": {
                                       "type": "array",
-                                      "description": "Enter the port name or range or port numbers in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                                      "description": "Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
                                       "title": "Source Ports"
                                     }
                                   },

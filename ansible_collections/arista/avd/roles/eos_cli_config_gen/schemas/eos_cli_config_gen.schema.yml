@@ -7269,11 +7269,13 @@ keys:
                         destination_ports:
                           type: list
                           description: "Enter the port name or range or port numbers
-                            in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]"
+                            in a list. The port numbers should be in range of 0-65535.\nExample:\n
+                            \ [\"12\",\"14-20\", \"www\"]"
                         source_ports:
                           type: list
                           description: "Enter the port name or range or port numbers
-                            in a list.\nExample:\n  [\"12\",\"14-20\", \"www\"]"
+                            in a list. The port numbers should be in range of 0-65535.\nExample:\n
+                            \ [\"12\",\"14-20\", \"www\"]"
   mpls:
     type: dict
     keys:
