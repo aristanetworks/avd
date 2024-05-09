@@ -30017,10 +30017,10 @@
                   "copp": {
                     "type": "object",
                     "properties": {
-                      "name": {
-                        "type": "string",
-                        "description": "Name of control-plane poilcy.",
-                        "title": "Name"
+                      "enable": {
+                        "type": "boolean",
+                        "description": "Enable control-plane policy.",
+                        "title": "Enable"
                       },
                       "classes": {
                         "type": "array",
@@ -30033,8 +30033,17 @@
                             },
                             "shape": {
                               "type": "integer",
-                              "description": "Shape value in pps.",
+                              "description": "Shape value in packets per second.",
+                              "minimum": 0,
+                              "maximum": 10000000,
                               "title": "Shape"
+                            },
+                            "minimum_bandwidth": {
+                              "type": "integer",
+                              "description": "Minimum bandwidth in packets per second.",
+                              "minimum": 0,
+                              "maximum": 10000000,
+                              "title": "Minimum Bandwidth"
                             }
                           },
                           "additionalProperties": false,

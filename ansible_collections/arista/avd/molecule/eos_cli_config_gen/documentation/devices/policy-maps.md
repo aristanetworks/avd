@@ -8,9 +8,7 @@
   - [PBR Policy Maps](#pbr-policy-maps)
 - [Quality Of Service](#quality-of-service)
   - [QOS Policy Maps](#qos-policy-maps)
-- [COPP Policy Maps](#copp-policy-maps)
-  - [COPP Policy Maps Summary](#copp-policy-maps-summary)
-  - [COPP Policy Maps Device Configuration %}](#copp-policy-maps-device-configuration-)
+  - [Control-plane Policy Map](#control-plane-policy-map)
 
 ## Management
 
@@ -117,19 +115,19 @@ policy-map type quality-of-service PM_REPLICATION_LD3
       police rate 10000 bps burst-size 260 kbytes
 ```
 
-## COPP Policy Maps
+### Control-plane Policy Map
 
-### COPP Policy Maps Summary
+#### Control-plane Policy Map Summary
 
-#### copp-system-policy
+##### copp-system-policy
 
-| Class | Shape(pps) |
-| ----- | ----- |
-| a_class | 3000 |
-| cls1 | 1000 |
-| cls2 | 2000 |
+| Class | Shape(pps) | Bandwidth(pps) |
+| ----- | ---------- | -------------- |
+| a_class | 3000 | - |
+| cls1 | 1000 | 1000 |
+| cls2 | 2000 | - |
 
-### COPP Policy Maps Device Configuration %}
+#### COPP Policy Maps Device Configuration
 
 ```eos
 !

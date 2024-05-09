@@ -7899,9 +7899,9 @@ keys:
       copp:
         type: dict
         keys:
-          name:
-            type: str
-            description: Name of control-plane poilcy.
+          enable:
+            type: bool
+            description: Enable control-plane policy.
           classes:
             type: list
             primary_key: name
@@ -7912,9 +7912,14 @@ keys:
                   type: str
                 shape:
                   type: int
-                  description: Shape value in pps.
-                  convert_types:
-                  - str
+                  description: Shape value in packets per second.
+                  min: 0
+                  max: 10000000
+                minimum_bandwidth:
+                  type: int
+                  description: Minimum bandwidth in packets per second.
+                  min: 0
+                  max: 10000000
   port_channel_interfaces:
     type: list
     primary_key: name

@@ -4,25 +4,23 @@
  that can be found in the LICENSE file.
 #}
 {# doc - policy map copp #}
-{% if policy_maps.copp is arista.avd.defined %}
+{% if policy_maps.copp.enable is arista.avd.defined %}
 
-## COPP Policy Maps
+### Control-plane Policy Map
 
-### COPP Policy Maps Summary
-
-#### {{ policy_maps.copp.name }}
+#### Control-plane Policy Map Summary
 {%     if policy_maps.copp.classes is arista.avd.defined %}
 
-| Class | Shape(pps) |
-| ----- | ----- |
+##### copp-system-policy
+
+| Class | Shape(pps) | Bandwidth(pps) |
+| ----- | ---------- | -------------- |
 {%         for class in policy_maps.copp.classes | arista.avd.natural_sort('name') %}
-{%             if class.name is arista.avd.defined and class.shape is arista.avd.defined %}
-| {{ class.name }} | {{ class.shape }} |
-{%             endif %}
+| {{ class.name }} | {{ class.shape | arista.avd.default("-") }} | {{ class.minimum_bandwidth | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
 
-### COPP Policy Maps Device Configuration %}
+#### COPP Policy Maps Device Configuration
 
 ```eos
 {%     include 'eos/policy-maps-copp.j2' %}
