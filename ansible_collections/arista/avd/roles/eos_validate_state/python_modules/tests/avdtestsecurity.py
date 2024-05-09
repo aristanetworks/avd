@@ -41,6 +41,9 @@ class AvdTestAPIHttpsSSL(AvdTestBase):
 class AvdTestIPSecurity(AvdTestBase):
     """
     AvdTestIPSecurity class for IP security connection tests.
+    Verifies the state of IPv4 security connections for a specified peer as established.
+    It optionally allows for the verification of a specific path for a peer by providing source and destination addresses.
+    If these addresses are not provided, it will verify all paths for the specified peer.
     """
 
     anta_module = "anta.tests.security"
@@ -62,7 +65,10 @@ class AvdTestIPSecurity(AvdTestBase):
 
         added_peers = set()
         for path_group in path_groups:
-            static_peers = path_group.get("static_peers", [])
+            if not self.validate_data(data=path_group, required_keys="static_peers"):
+                continue
+
+            static_peers = path_group.get("static_peers")
             for peer in static_peers:
                 peer_address = peer.get("router_ip")
                 vrf = "default"  # TODO: Keeping the vrf name static for now. We may need to change later on.
@@ -71,7 +77,7 @@ class AvdTestIPSecurity(AvdTestBase):
                         {
                             "VerifySpecificIPSecConn": {
                                 "ip_security_connections": [{"peer": peer_address, "vrf": vrf}],
-                                "result_overwrite": {"custom_field": f"Peer: {peer_address} VRF: {vrf}"},
+                                "result_overwrite": {"custom_field": f"IPv4 peer: {peer_address} VRF: {vrf}"},
                             }
                         }
                     )
