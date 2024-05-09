@@ -17714,11 +17714,28 @@
             "properties": {
               "source_protocol": {
                 "type": "string",
+                "enum": [
+                  "attached-host",
+                  "bgp",
+                  "connected",
+                  "dynamic",
+                  "isis",
+                  "ospf",
+                  "ospfv3",
+                  "rip",
+                  "static",
+                  "user"
+                ],
                 "title": "Source Protocol"
               },
               "route_map": {
                 "type": "string",
                 "title": "Route Map"
+              },
+              "rcf": {
+                "type": "string",
+                "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
+                "title": "RCF"
               },
               "include_leaked": {
                 "type": "boolean",
@@ -20047,6 +20064,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -20098,6 +20125,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -20161,6 +20198,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -20212,6 +20259,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
