@@ -111,7 +111,6 @@ keys:
                       keys:
                         protocol:
                           type: str
-                          description: TCP/UDP.
                           valid_values: [ tcp, udp ]
                         destination_ports:
                           type: list

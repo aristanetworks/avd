@@ -12333,7 +12333,6 @@
                         "properties": {
                           "protocol": {
                             "type": "string",
-                            "description": "TCP/UDP.",
                             "enum": [
                               "tcp",
                               "udp"

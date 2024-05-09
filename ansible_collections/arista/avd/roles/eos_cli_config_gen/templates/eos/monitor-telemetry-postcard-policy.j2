@@ -39,12 +39,12 @@ monitor telemetry postcard policy
 {%                 endif %}
 {%                 for protocol in rule.protocols | arista.avd.natural_sort('protocol') %}
 {%                     if protocol.protocol is arista.avd.defined %}
-{%                         set rule_cli = "protocol " ~ protocol.protocol %}
+{%                         set protocol_cli = "protocol " ~ protocol.protocol %}
 {%                         for dest_port in protocol.destination_ports | arista.avd.natural_sort %}
-         {{ rule_cli }} destination port {{ dest_port }}
+         {{ protocol_cli }} destination port {{ dest_port }}
 {%                         endfor %}
 {%                         for src_port in protocol.source_ports | arista.avd.natural_sort %}
-         {{ rule_cli }} source port {{ src_port }}
+         {{ protocol_cli }} source port {{ src_port }}
 {%                         endfor %}
 {%                     endif %}
 {%                 endfor %}
