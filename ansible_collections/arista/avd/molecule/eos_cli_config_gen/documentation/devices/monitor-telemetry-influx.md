@@ -89,7 +89,6 @@ monitor telemetry influx
    source socket socket2
       url unix:///var/run/example3.sock
       connection limit 22222
-   !
    tag global tag1 value1
    tag global tag2 value2
    source group standard disabled

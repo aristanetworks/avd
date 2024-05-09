@@ -34,7 +34,9 @@ monitor telemetry influx
 {%         if socket.connection_limit is arista.avd.defined %}
       connection limit {{ socket.connection_limit }}
 {%         endif %}
+{%         if socket != monitor_telemetry_influx.source_sockets[-1] %}
    !
+{%         endif %}
 {%     endfor %}
 {%     for tag in monitor_telemetry_influx.tags | arista.avd.natural_sort('name') %}
 {%         if tag.value is arista.avd.defined %}
