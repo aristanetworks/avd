@@ -78,8 +78,9 @@ class VlanInterfacesMixin(UtilsMixin):
                     f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using {' or '.join(quoted_vars)} under 'svi'"
                 )
 
+        interface_name = f"Vlan{svi['id']}"
         vlan_interface_config = {
-            "name": f"Vlan{int(svi['id'])}",
+            "name": interface_name,
             "tenant": svi["tenant"],
             "tags": svi.get("tags"),
             "description": default(svi.get("description"), svi["name"]),
@@ -87,6 +88,8 @@ class VlanInterfacesMixin(UtilsMixin):
             "ip_address": svi.get("ip_address"),
             "ipv6_address": svi.get("ipv6_address"),
             "ipv6_enable": svi.get("ipv6_enable"),
+            "access_group_in": get(self._svi_acls, f"{interface_name}.ipv4_acl_in.name"),
+            "access_group_out": get(self._svi_acls, f"{interface_name}.ipv4_acl_out.name"),
             "mtu": svi.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
             "eos_cli": svi.get("raw_eos_cli"),
             "struct_cfg": svi.get("structured_config"),

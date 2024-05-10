@@ -80,7 +80,7 @@ $defs:
         ipv4_acl_in:
           description: |-
             Name of the IPv4 access-list to be assigned in the ingress direction.
-            The access-list must be defined under `ipv4_acls`.
+            The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.
           type: str
           convert_types:
@@ -88,7 +88,7 @@ $defs:
         ipv4_acl_out:
           description: |-
             Name of the IPv4 Access-list to be assigned in the egress direction.
-            The access-list must be defined under `ipv4_acls`.
+            The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
           type: str
           convert_types:
             - int
