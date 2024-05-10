@@ -3331,6 +3331,13 @@ keys:
 
                 If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
                 this setting will take precedence.'
+  shutdown_bgp_towards_undeployed_peers:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: 'When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers`
+      key is set to true, the BGP neighborship is shutdown on the peer.'
   shutdown_interfaces_towards_undeployed_peers:
     documentation_options:
       table: fabric-settings
