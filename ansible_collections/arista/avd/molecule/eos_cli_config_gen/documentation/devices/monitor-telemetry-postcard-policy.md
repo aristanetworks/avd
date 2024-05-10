@@ -112,5 +112,4 @@ monitor telemetry postcard policy
    !
    profile profile2
       ingress sample policy samplepo2
-   !
 ```
