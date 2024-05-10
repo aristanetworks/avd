@@ -253,6 +253,7 @@ class UtilsMixin:
                 interface_cfg.update(
                     {
                         "isis_enable": self.shared_utils.isis_instance_name,
+                        "isis_bfd": get(self._hostvars, "underlay_isis_bfd"),
                         "isis_metric": default(p2p_link.get("isis_metric"), self.shared_utils.isis_default_metric),
                         "isis_network_point_to_point": p2p_link.get("isis_network_type", "point-to-point") == "point-to-point",
                         "isis_hello_padding": p2p_link.get("isis_hello_padding", True),

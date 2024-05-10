@@ -1,0 +1,28 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ipv6_dhcp_relay:
+    type: dict
+    keys:
+      always_on:
+        type: bool
+        description: DhcpRelay Agent will be in always-on mode, off by default.
+      all_subnets:
+        type: bool
+        description: Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field.
+      option:
+        type: dict
+        description: Insert DHCP Option.
+        keys:
+          link_layer_address:
+            type: bool
+            description: Add Option 79 (Link Layer Address Option).
+          remote_id_format:
+            type: str
+            valid_values: ["%m:%i", "%m:%p"]
+            description: Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface name (`%m:%p`).

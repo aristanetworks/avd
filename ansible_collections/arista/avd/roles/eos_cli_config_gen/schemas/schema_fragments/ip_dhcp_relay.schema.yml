@@ -9,6 +9,12 @@ keys:
   ip_dhcp_relay:
     type: dict
     keys:
+      always_on:
+        type: bool
+        description: DhcpRelay Agent will be in always-on mode.
+      all_subnets:
+        type: bool
+        description: Allow forwarding requests with secondary IP addresses in the gateway address "giaddr" field.
       information_option:
         type: bool
         description: Insert Option-82 information.

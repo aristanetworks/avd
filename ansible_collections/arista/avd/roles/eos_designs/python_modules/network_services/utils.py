@@ -592,6 +592,49 @@ class UtilsMixin:
         ]
 
     @cached_property
+    def _svi_acls(self) -> dict[str, dict[str, dict]]:
+        """
+        Returns a dict of
+            <interface_name>: {
+                "ipv4_acl_in": <generated_ipv4_acl>,
+                "ipv4_acl_out": <generated_ipv4_acl>,
+            }
+        Only contains interfaces with ACLs and only the ACLs that are set,
+        so use `get(self._svi_acls, f"{interface_name}.ipv4_acl_in")` to get the value.
+        """
+        if not self.shared_utils.network_services_l3:
+            return None
+
+        svi_acls = {}
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                for svi in vrf["svis"]:
+                    ipv4_acl_in = get(svi, "ipv4_acl_in")
+                    ipv4_acl_out = get(svi, "ipv4_acl_out")
+                    if ipv4_acl_in is None and ipv4_acl_out is None:
+                        continue
+
+                    interface_name = f"Vlan{svi['id']}"
+                    interface_ip: str | None = svi.get("ip_address_virtual")
+                    if interface_ip is not None and "/" in interface_ip:
+                        interface_ip = interface_ip.split("/", maxsplit=1)[0]
+
+                    if ipv4_acl_in is not None:
+                        svi_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
+                            name=ipv4_acl_in,
+                            interface_name=interface_name,
+                            interface_ip=interface_ip,
+                        )
+                    if ipv4_acl_out is not None:
+                        svi_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
+                            name=ipv4_acl_out,
+                            interface_name=interface_name,
+                            interface_ip=interface_ip,
+                        )
+
+        return svi_acls
+
+    @cached_property
     def _filtered_internet_exit_policies(self) -> list:
         """
         - Parse self._filtered_wan_policies looking to internet_exit_policies.
@@ -665,11 +708,11 @@ class UtilsMixin:
 
         These are useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
         """
+        policy_name = internet_exit_policy["name"]
+
         # Only supporting Zscaler for now
         if get(internet_exit_policy, "type") != "zscaler":
-            raise AristaAvdError(
-                f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={internet_exit_policy['name']}]."
-            )
+            raise AristaAvdError(f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={policy_name}].")
 
         cloud_name = get(internet_exit_policy, "zscaler.cloud_name", required=True)
         connections = []
@@ -684,7 +727,6 @@ class UtilsMixin:
                 "type": "tunnel",
                 "source_interface": wan_interface["name"],
                 "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
-                "ipsec_profile": "ZSCALER-IPSEC-PROFILE",
             }
 
             tunnel_id_range = range_expand(get(interface_policy_config, "tunnel_interface_numbers", required=True))
@@ -709,8 +751,9 @@ class UtilsMixin:
                         "tunnel_id": tunnel_id,
                         "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
                         "tunnel_destination_ip": destination_ip,
-                        "description": f"Internet Exit {internet_exit_policy['name']} {suffix}",
-                        "exit_group": f"{internet_exit_policy['name']}_{suffix}",
+                        "ipsec_profile": f"IE-{policy_name}-PROFILE",
+                        "description": f"Internet Exit {policy_name} {suffix}",
+                        "exit_group": f"{policy_name}_{suffix}",
                         "preference": zscaler_endpoint_key,
                     }
                 )
