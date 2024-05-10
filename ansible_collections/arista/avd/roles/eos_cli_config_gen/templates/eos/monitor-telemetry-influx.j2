@@ -24,7 +24,7 @@ monitor telemetry influx
 {%         if destination.username is arista.avd.defined and destination.password is arista.avd.defined %}
       username {{ destination.username }} password {{ destination.password_type | arista.avd.default("0") }} {{ destination.password | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
-{%         if destination != monitor_telemetry_influx.destinations[-1] or monitor_telemetry_influx.source_sockets is arista.avd.defined %}
+{%         if not loop.last or monitor_telemetry_influx.source_sockets is arista.avd.defined %}
    !
 {%         endif %}
 {%     endfor %}
@@ -36,7 +36,7 @@ monitor telemetry influx
 {%         if socket.connection_limit is arista.avd.defined %}
       connection limit {{ socket.connection_limit }}
 {%         endif %}
-{%         if socket != monitor_telemetry_influx.source_sockets[-1] %}
+{%         if not loop.last %}
    !
 {%         endif %}
 {%     endfor %}
