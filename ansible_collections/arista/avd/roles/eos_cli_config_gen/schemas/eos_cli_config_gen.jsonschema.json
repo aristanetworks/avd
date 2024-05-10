@@ -18880,14 +18880,6 @@
                 "properties": {
                   "source_protocol": {
                     "type": "string",
-                    "enum": [
-                      "attached-host",
-                      "connected",
-                      "isis",
-                      "ospf",
-                      "ospfv3",
-                      "static"
-                    ],
                     "title": "Source Protocol"
                   },
                   "route_map": {
@@ -20867,18 +20859,6 @@
                   "properties": {
                     "source_protocol": {
                       "type": "string",
-                      "enum": [
-                        "attached-host",
-                        "bgp",
-                        "connected",
-                        "dynamic",
-                        "isis",
-                        "ospf",
-                        "ospfv3",
-                        "rip",
-                        "static",
-                        "user"
-                      ],
                       "title": "Source Protocol"
                     },
                     "route_map": {
