@@ -73,7 +73,7 @@ monitor telemetry influx
       database name test
       retention policy test
       vrf test
-      username test password 7 <removed>
+      username test password 0 <removed>
    !
    destination influxdb test1
       url https://influx_test1.localhost

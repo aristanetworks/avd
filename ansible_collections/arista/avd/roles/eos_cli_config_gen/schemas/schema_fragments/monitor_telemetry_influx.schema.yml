@@ -28,6 +28,9 @@ keys:
               type: str
             url:
               type: str
+              description: |-
+                It only accepts http(s), udp and unix domain destination URL. 
+                URL pattern: '(http(s)?|udp|unix)://.+'
             username:
               type: str
             password:
@@ -37,7 +40,7 @@ keys:
               convert_types:
                 - int
               valid_values: ["0", "7", "8a"]
-              default: "7"
+              default: "0"
       source_group_standard_disabled:
         type: bool
         description: Disable standard set of telemetry.
@@ -58,6 +61,9 @@ keys:
                 - str
             url:
               type: str
+              description: |-
+                It only accepts http(s), udp and unix domain socket URL. 
+                URL pattern: '(http(s)?|udp|unix)://.+'
       tags:
         type: list
         primary_key: name

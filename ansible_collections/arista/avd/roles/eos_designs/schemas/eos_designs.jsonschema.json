@@ -28887,6 +28887,7 @@
                         },
                         "url": {
                           "type": "string",
+                          "description": "It only accepts http(s), udp and unix domain destination URL. \nURL pattern: '(http(s)?|udp|unix)://.+'",
                           "title": "URL"
                         },
                         "username": {
@@ -28904,7 +28905,7 @@
                             "7",
                             "8a"
                           ],
-                          "default": "7",
+                          "default": "0",
                           "title": "Password Type"
                         }
                       },
@@ -28941,6 +28942,7 @@
                         },
                         "url": {
                           "type": "string",
+                          "description": "It only accepts http(s), udp and unix domain socket URL. \nURL pattern: '(http(s)?|udp|unix)://.+'",
                           "title": "URL"
                         }
                       },
