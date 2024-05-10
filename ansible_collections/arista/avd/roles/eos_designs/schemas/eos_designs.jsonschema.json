@@ -23463,6 +23463,16 @@
               "ip_dhcp_relay": {
                 "type": "object",
                 "properties": {
+                  "always_on": {
+                    "type": "boolean",
+                    "description": "DhcpRelay Agent will be in always-on mode.",
+                    "title": "Always On"
+                  },
+                  "all_subnets": {
+                    "type": "boolean",
+                    "description": "Allow forwarding requests with secondary IP addresses in the gateway address \"giaddr\" field.",
+                    "title": "All Subnets"
+                  },
                   "information_option": {
                     "type": "boolean",
                     "description": "Insert Option-82 information.",
@@ -25023,6 +25033,51 @@
                     "^_.+$": {}
                   }
                 }
+              },
+              "ipv6_dhcp_relay": {
+                "type": "object",
+                "properties": {
+                  "always_on": {
+                    "type": "boolean",
+                    "description": "DhcpRelay Agent will be in always-on mode, off by default.",
+                    "title": "Always On"
+                  },
+                  "all_subnets": {
+                    "type": "boolean",
+                    "description": "Allow forwarding requests with additional IPv6 addresses in the gateway address \"giaddr\" field.",
+                    "title": "All Subnets"
+                  },
+                  "option": {
+                    "type": "object",
+                    "description": "Insert DHCP Option.",
+                    "properties": {
+                      "link_layer_address": {
+                        "type": "boolean",
+                        "description": "Add Option 79 (Link Layer Address Option).",
+                        "title": "Link Layer Address"
+                      },
+                      "remote_id_format": {
+                        "type": "string",
+                        "enum": [
+                          "%m:%i",
+                          "%m:%p"
+                        ],
+                        "description": "Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface name (`%m:%p`).",
+                        "title": "Remote ID Format"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Option"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "IPv6 DHCP Relay"
               },
               "ipv6_hardware": {
                 "type": "object",
@@ -44348,6 +44403,11 @@
                       },
                       "title": "IP Helpers"
                     },
+                    "ip_dhcp_relay_all_subnets": {
+                      "type": "boolean",
+                      "description": "Allow forwarding requests with secondary IP addresses in the gateway address \"giaddr\" field.",
+                      "title": "IP DHCP Relay All Subnets"
+                    },
                     "ip_nat": {
                       "type": "object",
                       "properties": {
@@ -44743,6 +44803,11 @@
                         ]
                       },
                       "title": "IPv6 DHCP Relay Destinations"
+                    },
+                    "ipv6_dhcp_relay_all_subnets": {
+                      "type": "boolean",
+                      "description": "Allow forwarding requests with additional IPv6 addresses in the gateway address \"giaddr\" field.",
+                      "title": "IPv6 DHCP Relay All Subnets"
                     },
                     "access_group_in": {
                       "type": "string",
@@ -53408,6 +53473,11 @@
                       },
                       "title": "IP Helpers"
                     },
+                    "ip_dhcp_relay_all_subnets": {
+                      "type": "boolean",
+                      "description": "Allow forwarding requests with secondary IP addresses in the gateway address \"giaddr\" field.",
+                      "title": "IP DHCP Relay All Subnets"
+                    },
                     "ip_nat": {
                       "type": "object",
                       "properties": {
@@ -53803,6 +53873,11 @@
                         ]
                       },
                       "title": "IPv6 DHCP Relay Destinations"
+                    },
+                    "ipv6_dhcp_relay_all_subnets": {
+                      "type": "boolean",
+                      "description": "Allow forwarding requests with additional IPv6 addresses in the gateway address \"giaddr\" field.",
+                      "title": "IPv6 DHCP Relay All Subnets"
                     },
                     "access_group_in": {
                       "type": "string",
@@ -55261,6 +55336,11 @@
                 },
                 "title": "IP Helpers"
               },
+              "ip_dhcp_relay_all_subnets": {
+                "type": "boolean",
+                "description": "Allow forwarding requests with secondary IP addresses in the gateway address \"giaddr\" field.",
+                "title": "IP DHCP Relay All Subnets"
+              },
               "ip_nat": {
                 "type": "object",
                 "properties": {
@@ -55656,6 +55736,11 @@
                   ]
                 },
                 "title": "IPv6 DHCP Relay Destinations"
+              },
+              "ipv6_dhcp_relay_all_subnets": {
+                "type": "boolean",
+                "description": "Allow forwarding requests with additional IPv6 addresses in the gateway address \"giaddr\" field.",
+                "title": "IPv6 DHCP Relay All Subnets"
               },
               "access_group_in": {
                 "type": "string",
