@@ -71,6 +71,8 @@ interface Management1
 | Vlan334 | v6 attached host exports | default | - | - |
 | Vlan335 | v6 attached host exports | default | - | - |
 | Vlan336 | v6 attached host exports | default | - | - |
+| Vlan337 | v4 dhcp relay all-subnets | default | - | - |
+| Vlan338 | v6 dhcp relay all-subnets | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -113,6 +115,8 @@ interface Management1
 | Vlan334 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan335 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan336 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan337 |  default  |  16.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
+| Vlan338 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
 | Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
@@ -160,6 +164,7 @@ interface Management1
 | Vlan334 | default | 2a00:1::1/64 | - | - | - | - | - | - | - |
 | Vlan335 | default | 2a00:2::1/64 | - | - | - | - | - | - | - |
 | Vlan336 | default | 2a00:3::1/64 | - | - | - | - | - | - | - |
+| Vlan338 | default | 2a00:1::1/64 | - | - | - | - | - | - | - |
 | Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | True | - | - | - |
 | Vlan667 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
 | Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - |
@@ -177,9 +182,9 @@ interface Management1
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ----------- | ---- |
-| Vlan2002 | EVPN_UNDERLAY | - | - |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
+| --------- | ------------- | -------- | ----------- | ---- |
+| Vlan2002 | EVPN_UNDERLAY | True | - | - |
 
 ##### Multicast Routing
 
@@ -409,6 +414,16 @@ interface Vlan336
    ipv6 enable
    ipv6 address 2a00:3::1/64
 !
+interface Vlan337
+   description v4 dhcp relay all-subnets
+   ip address 16.0.2.2/25
+   ip dhcp relay all-subnets
+!
+interface Vlan338
+   description v6 dhcp relay all-subnets
+   ipv6 dhcp relay all-subnets
+   ipv6 address 2a00:1::1/64
+!
 interface Vlan501
    description SVI Description
    no shutdown
@@ -465,6 +480,7 @@ interface Vlan2002
    vrf Tenant_B
    ip verify unicast source reachable-via rx
    isis enable EVPN_UNDERLAY
+   isis bfd
    ip address virtual 10.2.2.1/24
 !
 interface Vlan4094

@@ -708,11 +708,11 @@ class UtilsMixin:
 
         These are useful for easy creation of connectivity-monitor, service-intersion connections, exit-groups, tunnels etc.
         """
+        policy_name = internet_exit_policy["name"]
+
         # Only supporting Zscaler for now
         if get(internet_exit_policy, "type") != "zscaler":
-            raise AristaAvdError(
-                f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={internet_exit_policy['name']}]."
-            )
+            raise AristaAvdError(f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={policy_name}].")
 
         cloud_name = get(internet_exit_policy, "zscaler.cloud_name", required=True)
         connections = []
@@ -727,7 +727,6 @@ class UtilsMixin:
                 "type": "tunnel",
                 "source_interface": wan_interface["name"],
                 "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
-                "ipsec_profile": "ZSCALER-IPSEC-PROFILE",
             }
 
             tunnel_id_range = range_expand(get(interface_policy_config, "tunnel_interface_numbers", required=True))
@@ -752,8 +751,9 @@ class UtilsMixin:
                         "tunnel_id": tunnel_id,
                         "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
                         "tunnel_destination_ip": destination_ip,
-                        "description": f"Internet Exit {internet_exit_policy['name']} {suffix}",
-                        "exit_group": f"{internet_exit_policy['name']}_{suffix}",
+                        "ipsec_profile": f"IE-{policy_name}-PROFILE",
+                        "description": f"Internet Exit {policy_name} {suffix}",
+                        "exit_group": f"{policy_name}_{suffix}",
                         "preference": zscaler_endpoint_key,
                     }
                 )

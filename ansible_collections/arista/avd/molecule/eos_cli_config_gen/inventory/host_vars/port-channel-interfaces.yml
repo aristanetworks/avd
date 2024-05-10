@@ -284,6 +284,7 @@ port_channel_interfaces:
     description: isis_interface_knobs
     type: routed
     isis_enable: ISIS_TEST
+    isis_bfd: true
     isis_passive: false
     isis_metric: 99
     isis_network_point_to_point: true

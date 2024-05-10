@@ -75,5 +75,17 @@ router general
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_2
       exit
    !
+   control-functions
+      code unit code1
+         function ACCEPT_ALL() {
+           return true;
+           }
+         EOF
+      code unit code2
+         function DENY_ALL() {
+           return true;
+           }
+         EOF
+   !
    exit
 ```
