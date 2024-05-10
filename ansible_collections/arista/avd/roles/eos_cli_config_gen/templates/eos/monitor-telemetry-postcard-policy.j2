@@ -25,8 +25,8 @@ monitor telemetry postcard policy
 {%         endif %}
    {{ ingress_cli }}
 {%     endif %}
-   !
 {%     for policy in monitor_telemetry_postcard_policy.sample_policies | arista.avd.natural_sort("name") %}
+   !
    sample policy {{ policy.name }}
 {%         for rule in policy.match_rules | arista.avd.natural_sort("name") %}
 {%             if rule.type is arista.avd.defined %}
@@ -53,9 +53,6 @@ monitor telemetry postcard policy
       !
 {%             endif %}
 {%         endfor %}
-{%         if not loop.last %}
-   !
-{%         endif %}
 {%     endfor %}
 {%     for profile in monitor_telemetry_postcard_policy.profiles | arista.avd.natural_sort("name") %}
    !
