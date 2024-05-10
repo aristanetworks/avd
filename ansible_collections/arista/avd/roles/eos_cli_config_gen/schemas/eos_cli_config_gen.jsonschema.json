@@ -13322,8 +13322,9 @@
           },
           "title": "QOS"
         },
-        "copp": {
+        "copp_system_policy": {
           "type": "object",
+          "description": "Control-plane policy configuration.",
           "properties": {
             "enable": {
               "type": "boolean",
@@ -13341,26 +13342,36 @@
                   },
                   "shape": {
                     "type": "integer",
-                    "description": "Shape value in packets per second.",
+                    "description": "Maximum rate limit.",
                     "minimum": 0,
                     "maximum": 10000000,
                     "title": "Shape"
                   },
-                  "minimum_bandwidth": {
+                  "bandwidth": {
                     "type": "integer",
-                    "description": "Minimum bandwidth in packets per second.",
+                    "description": "Minimum bandwidth.",
                     "minimum": 0,
                     "maximum": 10000000,
-                    "title": "Minimum Bandwidth"
+                    "title": "Bandwidth"
+                  },
+                  "rate_unit": {
+                    "type": "string",
+                    "description": "Rate unit for shape value and bandwidth.",
+                    "enum": [
+                      "pps",
+                      "kbps"
+                    ],
+                    "title": "Rate Unit"
                   }
                 },
+                "required": [
+                  "name",
+                  "rate_unit"
+                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
-                },
-                "required": [
-                  "name"
-                ]
+                }
               },
               "title": "Classes"
             }
@@ -13369,7 +13380,7 @@
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "Copp"
+          "title": "Copp System Policy"
         }
       },
       "additionalProperties": false,

@@ -121,21 +121,20 @@ policy-map type quality-of-service PM_REPLICATION_LD3
 
 ##### copp-system-policy
 
-| Class | Shape(pps) | Bandwidth(pps) |
-| ----- | ---------- | -------------- |
-| a_class | 3000 | - |
-| cls1 | 1000 | 1000 |
-| cls2 | 2000 | - |
+| Class | Shape | Bandwidth | Rate Unit |
+| ----- | ----- | --------- | --------- |
+| copp-system-cvx | 2000 | 2000 | pps |
+| copp-system-OspfIsis | 1000 | 1000 | kbps |
 
 #### COPP Policy Maps Device Configuration
 
 ```eos
 !
 policy-map type copp copp-system-policy
-   class a_class
-      shape pps 3000
-   class cls1
-      shape pps 1000
-   class cls2
+   class copp-system-cvx
       shape pps 2000
+      bandwidth pps 2000
+   class copp-system-OspfIsis
+      shape kbps 1000
+      bandwidth kbps 1000
 ```
