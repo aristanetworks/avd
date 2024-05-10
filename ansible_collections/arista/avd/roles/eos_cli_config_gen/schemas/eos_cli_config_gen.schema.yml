@@ -6436,6 +6436,7 @@ keys:
                       start_date_time:
                         type: str
                         description: 'Start date and time of lifetime of the secret.
+                          End date should be greater than start date.
 
                           Formats supported:
 
@@ -6447,6 +6448,7 @@ keys:
                       end_date_time:
                         type: str
                         description: 'End date and time of lifetime of the secret.
+                          End date should be greater than start date.
 
                           Formats supported:
 
@@ -10667,9 +10669,11 @@ keys:
               keys:
                 profile:
                   type: str
+                  required: true
                   description: To apply a profile, it must be created under "management-security".
                 hash_algorithm:
                   type: str
+                  required: true
                   valid_values:
                   - aes-128-cmac-96
                   - hmac-sha-256

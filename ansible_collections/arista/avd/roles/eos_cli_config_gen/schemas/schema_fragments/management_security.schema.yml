@@ -237,7 +237,7 @@ keys:
                       start_date_time:
                         type: str
                         description: |-
-                          Start date and time of lifetime of the secret.
+                          Start date and time of lifetime of the secret. End date should be greater than start date.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
@@ -245,7 +245,7 @@ keys:
                       end_date_time:
                         type: str
                         description: |-
-                          End date and time of lifetime of the secret.
+                          End date and time of lifetime of the secret. End date should be greater than start date.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss

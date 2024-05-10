@@ -156,8 +156,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;replace_as</samp>](## "router_bgp.neighbors.[].remove_private_as_ingress.replace_as") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_tracker</samp>](## "router_bgp.neighbors.[].session_tracker") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "router_bgp.neighbors.[].shared_secret") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "router_bgp.neighbors.[].shared_secret.profile") | String |  |  |  | To apply a profile, it must be created under "management-security". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "router_bgp.neighbors.[].shared_secret.hash_algorithm") | String |  |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "router_bgp.neighbors.[].shared_secret.profile") | String | Required |  |  | To apply a profile, it must be created under "management-security". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "router_bgp.neighbors.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "router_bgp.neighbors.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
     | [<samp>&nbsp;&nbsp;neighbor_interfaces</samp>](## "router_bgp.neighbor_interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.neighbor_interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
@@ -1073,8 +1073,8 @@
           shared_secret:
 
             # To apply a profile, it must be created under "management-security".
-            profile: <str>
-            hash_algorithm: <str; "aes-128-cmac-96" | "hmac-sha-256" | "hmac-sha1-96">
+            profile: <str; required>
+            hash_algorithm: <str; "aes-128-cmac-96" | "hmac-sha-256" | "hmac-sha1-96"; required>
 
           # Maximum number of hops.
           ttl_maximum_hops: <int; 0-254>
