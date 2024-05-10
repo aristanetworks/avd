@@ -655,10 +655,6 @@ keys:
 
                 Since this salt can be used to deduct the encryption key, it is recommeneded
                 to use vault.'
-            cloud_name:
-              type: str
-              required: true
-              description: Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.
             domain_name:
               type: str
               required: true
@@ -736,22 +732,6 @@ keys:
               location:
                 type: str
                 description: Location as a string is resolved on Cloudvision.
-              resolved_location:
-                type: dict
-                description: 'PREVIEW: These keys are in preview mode.
-
-
-                  The resolved location elements.
-
-                  Needed for internet-exit Zscaler integration until we can autofill
-                  it from the lookup plugin.'
-                keys:
-                  city:
-                    type: str
-                    required: true
-                  country:
-                    type: str
-                    required: true
               site_contact:
                 type: str
               site_after_hours_contact:
@@ -4546,6 +4526,24 @@ keys:
         type: dict
         $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
         required: false
+      cloud_name:
+        description: The name of the Zscaler cloud the CloudVision cluster is integrated
+          with like 'zscaler1' or 'zscalerbeta'.
+        type: str
+        required: true
+      device_location:
+        description: The location of the calling device after being resolved by Zscaler
+          location APIs. This is required since Zscaler only accepts their own variants
+          of City and Country.
+        type: dict
+        required: true
+        keys:
+          city:
+            type: str
+            required: true
+          country:
+            type: str
+            required: true
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints

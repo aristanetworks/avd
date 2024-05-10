@@ -780,8 +780,8 @@ metadata:
     internet_exit_policies:
     - name: ZSCALER-EXIT-POLICY-1
       type: zscaler
-      city: BigCity
-      country: BigCountry
+      city: Santa Clara, CA
+      country: United States
       firewall: false
       ips_control: false
       acceptable_use_policy: false

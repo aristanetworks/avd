@@ -42,10 +42,6 @@ keys:
                 "Salt" used for auto generation of encryption keys for IPsec tunnels to Zscaler.
                 The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.
                 Since this salt can be used to deduct the encryption key, it is recommeneded to use vault.
-            cloud_name: # This will not be needed later, when we get it from the lookup plugin.
-              type: str
-              required: true
-              description: Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.
             domain_name:
               type: str
               required: true
