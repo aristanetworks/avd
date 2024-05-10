@@ -35963,17 +35963,6 @@
                           "properties": {
                             "source_protocol": {
                               "type": "string",
-                              "enum": [
-                                "attached-host",
-                                "bgp",
-                                "connected",
-                                "dhcp",
-                                "dynamic",
-                                "isis",
-                                "ospfv3",
-                                "static",
-                                "user"
-                              ],
                               "title": "Source Protocol"
                             },
                             "route_map": {
