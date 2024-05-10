@@ -7169,8 +7169,10 @@ keys:
               type: str
             url:
               type: str
-              description: "It only accepts http(s), udp and unix domain destination
-                URL. \nURL pattern: '(http(s)?|udp|unix)://.+'"
+              description: 'It only accepts http(s), udp and unix domain destination
+                URL.
+
+                URL pattern: ''(http(s)?|udp|unix)://.+'''
             username:
               type: str
             password:
@@ -7204,8 +7206,9 @@ keys:
               - str
             url:
               type: str
-              description: "It only accepts http(s), udp and unix domain socket URL.
-                \nURL pattern: '(http(s)?|udp|unix)://.+'"
+              description: 'It only accepts http(s), udp and unix domain socket URL.
+
+                URL pattern: ''(http(s)?|udp|unix)://.+'''
       tags:
         type: list
         primary_key: name

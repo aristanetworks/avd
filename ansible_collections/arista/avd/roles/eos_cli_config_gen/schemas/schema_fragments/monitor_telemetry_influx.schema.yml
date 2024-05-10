@@ -29,7 +29,7 @@ keys:
             url:
               type: str
               description: |-
-                It only accepts http(s), udp and unix domain destination URL. 
+                It only accepts http(s), udp and unix domain destination URL.
                 URL pattern: '(http(s)?|udp|unix)://.+'
             username:
               type: str
@@ -62,7 +62,7 @@ keys:
             url:
               type: str
               description: |-
-                It only accepts http(s), udp and unix domain socket URL. 
+                It only accepts http(s), udp and unix domain socket URL.
                 URL pattern: '(http(s)?|udp|unix)://.+'
       tags:
         type: list

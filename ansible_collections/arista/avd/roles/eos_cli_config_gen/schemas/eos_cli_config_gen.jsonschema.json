@@ -12193,7 +12193,7 @@
               },
               "url": {
                 "type": "string",
-                "description": "It only accepts http(s), udp and unix domain destination URL. \nURL pattern: '(http(s)?|udp|unix)://.+'",
+                "description": "It only accepts http(s), udp and unix domain destination URL.\nURL pattern: '(http(s)?|udp|unix)://.+'",
                 "title": "URL"
               },
               "username": {
@@ -12248,7 +12248,7 @@
               },
               "url": {
                 "type": "string",
-                "description": "It only accepts http(s), udp and unix domain socket URL. \nURL pattern: '(http(s)?|udp|unix)://.+'",
+                "description": "It only accepts http(s), udp and unix domain socket URL.\nURL pattern: '(http(s)?|udp|unix)://.+'",
                 "title": "URL"
               }
             },
