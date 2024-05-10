@@ -14537,7 +14537,8 @@ keys:
                       keys:
                         from:
                           type: str
-                          description: The name of the source segment.
+                          description: The name of the source segment or 'forwarding-segments'
+                            for all segments.
                         policy:
                           type: str
                           description: The name of the policy to apply. The built-in
