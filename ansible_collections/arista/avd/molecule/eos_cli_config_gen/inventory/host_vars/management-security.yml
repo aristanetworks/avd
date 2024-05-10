@@ -61,7 +61,7 @@ management_security:
         requirement:
           include_root_ca: true
   shared_secret_profiles:
-    - profile: profile1
+    - profile: profile0
       secrets:
         - name: Secret1
           secret: $1c$mNvaIXPetcQ3hy7oUnTU3w==
@@ -78,7 +78,7 @@ management_security:
             infinite: true
           transmit_lifetime:
             infinite: true
-    - profile: profile2
+    - profile: profile1
       secrets:
         - name: Secret3
           secret: $Ra3am9YZlbg5d65txucxTg==$DMoPxa9Wu5elK39pofFgaw==$zgEBfv+w/AIr1FnW
@@ -89,7 +89,7 @@ management_security:
           transmit_lifetime:
             start_date_time: "12/20/2024 10:00:00"
             end_date_time: "12/10/2025 10:00:00"
-    - profile: profile0
+    - profile: profile2
       secrets:
         - name: Secret4
           secret: name1_secret

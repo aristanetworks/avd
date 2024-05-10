@@ -104,21 +104,21 @@ interface Management1
 
 | Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
 | ----------- | ---------------- | ----------------- | -------- |
-| secretfive | Infinite | Infinite | UTC |
-| secretfour | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | UTC |
+| Secret1 | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | Infinite | Local Time |
+| Secret2 | Infinite | Infinite | UTC |
 
 #### profile1
 
 | Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
 | ----------- | ---------------- | ----------------- | -------- |
-| secretone | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | Infinite | Local Time |
-| secrettwo | Infinite | Infinite | UTC |
+| Secret3 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 | UTC |
 
 #### profile2
 
 | Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
 | ----------- | ---------------- | ----------------- | -------- |
-| secretthree | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 | UTC |
+| Secret4 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | UTC |
+| Secret5 | Infinite | Infinite | UTC |
 
 ### Management Security Device Configuration
 
@@ -139,13 +139,13 @@ management security
       maximum repetitive 6
       maximum sequential 7
    session shared-secret profile profile0
-      secret secretfive 0 <removed> receive-lifetime infinite transmit-lifetime infinite
-      secret secretfour 0 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00
+      secret Secret1 0 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite local-time
+      secret Secret2 7 <removed> receive-lifetime infinite transmit-lifetime infinite
    session shared-secret profile profile1
-      secret secretone 0 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite local-time
-      secret secrettwo 7 <removed> receive-lifetime infinite transmit-lifetime infinite
+      secret Secret3 8a <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 12/20/2024 10:00:00 12/10/2025 10:00:00
    session shared-secret profile profile2
-      secret secretthree 8a <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 12/20/2024 10:00:00 12/10/2025 10:00:00
+      secret Secret4 0 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00
+      secret Secret5 0 <removed> receive-lifetime infinite transmit-lifetime infinite
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
       crl ca.crl
