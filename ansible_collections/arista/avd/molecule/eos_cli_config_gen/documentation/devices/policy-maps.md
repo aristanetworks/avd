@@ -134,6 +134,7 @@ policy-map type copp copp-system-policy
    class copp-system-cvx
       shape pps 2000
       bandwidth pps 2000
+   !
    class copp-system-OspfIsis
       shape kbps 1000
       bandwidth kbps 1000

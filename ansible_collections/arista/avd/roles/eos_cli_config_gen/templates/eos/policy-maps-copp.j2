@@ -17,5 +17,8 @@ policy-map type copp copp-system-policy
       bandwidth {{ class.rate_unit }} {{ class.bandwidth }}
 {%             endif %}
 {%         endif %}
+{%         if not loop.last %}
+   !
+{%         endif %}
 {%     endfor %}
 {% endif %}
