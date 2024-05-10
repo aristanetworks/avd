@@ -1451,16 +1451,17 @@ keys:
               keys:
                 source_protocol:
                   type: str
-                  valid_values:
-                    - "attached-host"
-                    - "bgp"
-                    - "connected"
-                    - "dhcp"
-                    - "dynamic"
-                    - "isis"
-                    - "ospfv3"
-                    - "static"
-                    - "user"
+                  # TODO AVD5.0: Add valid values and ensure we cover all options.
+                  #valid_values:
+                  #  - "attached-host"
+                  #  - "bgp"
+                  #  - "connected"
+                  #  - "dhcp"
+                  #  - "dynamic"
+                  #  - "isis"
+                  #  - "ospfv3"
+                  #  - "static"
+                  #  - "user"
                 route_map:
                   type: str
                 include_leaked:
