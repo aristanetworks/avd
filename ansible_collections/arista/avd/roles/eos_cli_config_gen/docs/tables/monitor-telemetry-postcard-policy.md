@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>monitor_telemetry_postcard_policy</samp>](## "monitor_telemetry_postcard_policy") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;disabled</samp>](## "monitor_telemetry_postcard_policy.disabled") | Boolean |  |  |  | Enable or disable the postcard telemetry feature. |
+    | [<samp>&nbsp;&nbsp;disabled</samp>](## "monitor_telemetry_postcard_policy.disabled") | Boolean |  | `True` |  | Enable or disable the postcard telemetry feature. |
     | [<samp>&nbsp;&nbsp;ingress</samp>](## "monitor_telemetry_postcard_policy.ingress") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;collection</samp>](## "monitor_telemetry_postcard_policy.ingress.collection") | Dictionary |  |  |  | Collector configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "monitor_telemetry_postcard_policy.ingress.collection.source") | String |  |  |  | Configure source IP address of GRE tunnel. |
@@ -41,7 +41,7 @@
     monitor_telemetry_postcard_policy:
 
       # Enable or disable the postcard telemetry feature.
-      disabled: <bool>
+      disabled: <bool; default=True>
       ingress:
 
         # Collector configuration.

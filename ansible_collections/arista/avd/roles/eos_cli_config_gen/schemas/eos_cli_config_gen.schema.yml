@@ -7152,6 +7152,7 @@ keys:
     keys:
       disabled:
         type: bool
+        default: true
         description: Enable or disable the postcard telemetry feature.
       ingress:
         type: dict

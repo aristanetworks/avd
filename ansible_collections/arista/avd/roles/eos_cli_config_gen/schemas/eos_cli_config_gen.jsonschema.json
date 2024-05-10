@@ -12169,6 +12169,7 @@
       "properties": {
         "disabled": {
           "type": "boolean",
+          "default": true,
           "description": "Enable or disable the postcard telemetry feature.",
           "title": "Disabled"
         },
