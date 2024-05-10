@@ -94,7 +94,6 @@ monitor telemetry postcard policy
          protocol udp destination port ssh
       !
       match rule3 ipv4
-      !
    !
    sample policy samplepo2
       match rule1 ipv4
@@ -105,7 +104,6 @@ monitor telemetry postcard policy
          protocol udp source port 77
          protocol udp source port 78-80
          protocol udp source port www
-      !
    !
    profile profile1
       ingress sample policy samplepo1

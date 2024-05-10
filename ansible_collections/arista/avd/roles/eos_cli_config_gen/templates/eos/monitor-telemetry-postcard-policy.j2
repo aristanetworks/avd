@@ -49,19 +49,19 @@ monitor telemetry postcard policy
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
+{%             if not loop.last %}
       !
+{%             endif %}
 {%         endfor %}
-{%         if policy != monitor_telemetry_postcard_policy.sample_policies[-1] or monitor_telemetry_postcard_policy.profiles is arista.avd.defined %}
+{%         if not loop.last %}
    !
 {%         endif %}
 {%     endfor %}
 {%     for profile in monitor_telemetry_postcard_policy.profiles | arista.avd.natural_sort("name") %}
+   !
    profile {{ profile.name }}
 {%         if profile.ingress_sample_policy is arista.avd.defined %}
       ingress sample policy {{ profile.ingress_sample_policy }}
-{%         endif %}
-{%         if profile != monitor_telemetry_postcard_policy.profiles[-1] %}
-   !
 {%         endif %}
 {%     endfor %}
 {% endif %}
