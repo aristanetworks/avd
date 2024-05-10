@@ -30068,6 +30068,9 @@
                         "title": "Classes"
                       }
                     },
+                    "required": [
+                      "enable"
+                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}

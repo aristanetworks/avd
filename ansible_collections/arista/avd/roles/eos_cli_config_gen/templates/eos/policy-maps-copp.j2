@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - policy map copp #}
-{% if policy_maps.copp_system_policy.enable is arista.avd.defined %}
+{% if policy_maps.copp_system_policy.enable is arista.avd.defined(true) %}
 !
 policy-map type copp copp-system-policy
 {%     for class in policy_maps.copp_system_policy.classes | arista.avd.natural_sort("name") %}

@@ -7902,6 +7902,7 @@ keys:
         keys:
           enable:
             type: bool
+            required: true
             description: Enable control-plane policy.
           classes:
             type: list

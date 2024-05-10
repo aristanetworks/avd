@@ -40,7 +40,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate_burst_size</samp>](## "policy_maps.qos.[].classes.[].police.higher_rate_burst_size") | Integer |  |  |  | Range in bytes <256-128000000>. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate_burst_size_unit</samp>](## "policy_maps.qos.[].classes.[].police.higher_rate_burst_size_unit") | String |  | `bytes` | Valid Values:<br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code><br>- <code>packets</code> |  |
     | [<samp>&nbsp;&nbsp;copp_system_policy</samp>](## "policy_maps.copp_system_policy") | Dictionary |  |  |  | Control-plane policy configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "policy_maps.copp_system_policy.enable") | Boolean |  |  |  | Enable control-plane policy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "policy_maps.copp_system_policy.enable") | Boolean | Required |  |  | Enable control-plane policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;classes</samp>](## "policy_maps.copp_system_policy.classes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "policy_maps.copp_system_policy.classes.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shape</samp>](## "policy_maps.copp_system_policy.classes.[].shape") | Integer |  |  | Min: 0<br>Max: 10000000 | Maximum rate limit. |
@@ -120,7 +120,7 @@
       copp_system_policy:
 
         # Enable control-plane policy.
-        enable: <bool>
+        enable: <bool; required>
         classes:
           - name: <str; required; unique>
 
