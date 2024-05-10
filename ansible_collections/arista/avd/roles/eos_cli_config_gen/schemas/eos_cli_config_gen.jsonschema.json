@@ -10758,7 +10758,7 @@
                     },
                     "secret_type": {
                       "type": "string",
-                      "default": "0",
+                      "default": "7",
                       "enum": [
                         "0",
                         "7",
