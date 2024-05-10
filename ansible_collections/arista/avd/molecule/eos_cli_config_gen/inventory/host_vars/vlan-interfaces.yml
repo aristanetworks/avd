@@ -440,3 +440,13 @@ vlan_interfaces:
       enabled: true
       distance: 18
       prefix_length: 64
+
+  - name: Vlan337
+    description: v4 dhcp relay all-subnets
+    ip_address: 16.0.2.2/25
+    ip_dhcp_relay_all_subnets: true
+
+  - name: Vlan338
+    description: v6 dhcp relay all-subnets
+    ipv6_address: 2a00:1::1/64
+    ipv6_dhcp_relay_all_subnets: true

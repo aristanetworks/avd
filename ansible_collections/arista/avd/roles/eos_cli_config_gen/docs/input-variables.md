@@ -821,6 +821,12 @@ roles/eos_cli_config_gen/docs/tables/ip-routing.md
 roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address.md
 --8<--
 
+### IPv6 DHCP relay
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/ipv6-dhcp-relay.md
+--8<--
+
 ### IPv6 ICMP redirects
 
 --8<--

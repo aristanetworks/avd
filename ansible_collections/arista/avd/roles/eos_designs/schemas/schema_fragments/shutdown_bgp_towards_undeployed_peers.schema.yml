@@ -6,15 +6,10 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  ip_dhcp_relay:
-    type: dict
-    keys:
-      always_on:
-        type: bool
-        description: DhcpRelay Agent will be in always-on mode.
-      all_subnets:
-        type: bool
-        description: Allow forwarding requests with secondary IP addresses in the gateway address "giaddr" field.
-      information_option:
-        type: bool
-        description: Insert Option-82 information.
+  shutdown_bgp_towards_undeployed_peers:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: |-
+      When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the peer.
