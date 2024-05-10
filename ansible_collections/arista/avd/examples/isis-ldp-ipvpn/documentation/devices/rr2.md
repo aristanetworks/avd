@@ -176,11 +176,11 @@ vlan internal order ascending range 1006 1199
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet2 | - | CORE | 50 | point-to-point | level-2 | True | md5 |
-| Ethernet3 | - | CORE | 50 | point-to-point | level-2 | True | md5 |
-| Ethernet4 | - | CORE | 50 | point-to-point | level-2 | True | md5 |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet2 | - | CORE | - | 50 | point-to-point | level-2 | True | md5 |
+| Ethernet3 | - | CORE | - | 50 | point-to-point | level-2 | True | md5 |
+| Ethernet4 | - | CORE | - | 50 | point-to-point | level-2 | True | md5 |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -436,10 +436,10 @@ ASN Notation: asplain
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| MPLS-OVERLAY-PEERS | True | - | - |
-| RR-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - |
+| RR-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP Device Configuration
 

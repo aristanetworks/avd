@@ -708,6 +708,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.isis_enable is arista.avd.defined %}
    isis enable {{ ethernet_interface.isis_enable }}
 {%     endif %}
+{%     if ethernet_interface.isis_bfd is arista.avd.defined(true) %}
+   isis bfd
+{%     endif %}
 {%     if ethernet_interface.isis_circuit_type is arista.avd.defined %}
    isis circuit-type {{ ethernet_interface.isis_circuit_type }}
 {%     endif %}

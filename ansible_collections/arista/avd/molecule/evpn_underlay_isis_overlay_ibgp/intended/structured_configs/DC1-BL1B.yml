@@ -123,6 +123,7 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.255.251.11/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
 - name: Vlan4094
@@ -171,6 +172,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.49/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -184,6 +186,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.51/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -197,6 +200,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.53/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -210,6 +214,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.55/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2

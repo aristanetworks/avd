@@ -47,6 +47,7 @@ ntp_settings:
   server_vrf: use_mgmt_interface_vrf
   servers:
     - name: 192.168.200.5
+    - name: 2001:db8::3
 
 # Support for per-platform automatic interface allocation
 default_interfaces:
