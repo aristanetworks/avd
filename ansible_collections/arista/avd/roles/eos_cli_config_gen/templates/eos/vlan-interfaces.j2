@@ -41,6 +41,17 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.arp_cache_dynamic_capacity is arista.avd.defined %}
    arp cache dynamic capacity {{ vlan_interface.arp_cache_dynamic_capacity }}
 {%     endif %}
+{%     if vlan_interface.ipv6_nd_cache is arista.avd.defined() %}
+{%         if vlan_interface.ipv6_nd_cache.expire is arista.avd.defined() %}
+   ipv6 nd cache expire {{ vlan_interface.ipv6_nd_cache.expire }}
+{%         endif %}
+{%         if vlan_interface.ipv6_nd_cache.dynamic_capacity is arista.avd.defined() %}
+   ipv6 nd cache dynamic capacity {{ vlan_interface.ipv6_nd_cache.dynamic_capacity }}
+{%         endif %}
+{%         if vlan_interface.ipv6_nd_cache.refresh_always is arista.avd.defined(true) %}
+   ipv6 nd cache refresh always
+{%         endif %}
+{%     endif %}
 {%     if vlan_interface.ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
@@ -158,6 +169,9 @@ interface {{ vlan_interface.name }}
 {%     endif %}
 {%     if vlan_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
    ipv6 nd managed-config-flag
+{%     endif %}
+{%     if vlan_interface.ipv6_nd_other_config_flag is arista.avd.defined(true) %}
+   ipv6 nd other-config-flag
 {%     endif %}
 {%     if vlan_interface.ipv6_nd_prefixes is arista.avd.defined %}
 {%         for prefix in vlan_interface.ipv6_nd_prefixes %}
