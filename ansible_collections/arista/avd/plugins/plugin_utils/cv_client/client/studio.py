@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, Literal
 
 from ..api.arista.studio.v1 import (
@@ -21,6 +22,13 @@ from ..api.arista.studio.v1 import (
     InputsStreamRequest,
     InterfaceInfo,
     InterfaceInfos,
+    Studio,
+    StudioConfig,
+    StudioConfigServiceStub,
+    StudioConfigStreamRequest,
+    StudioKey,
+    StudioRequest,
+    StudioServiceStub,
     TopologyInput,
     TopologyInputKey,
 )
@@ -29,6 +37,8 @@ from .exceptions import CVResourceNotFound, get_cv_client_exception
 
 if TYPE_CHECKING:
     from .cv_client import CVClient
+
+LOGGER = getLogger(__name__)
 
 TOPOLOGY_STUDIO_ID = "TOPOLOGY"
 
@@ -39,6 +49,79 @@ class StudioMixin:
     """
 
     studio_api_version: Literal["v1"] = "v1"
+
+    async def get_studio(
+        self: CVClient,
+        studio_id: str,
+        workspace_id: str,
+        time: datetime | None = None,
+        timeout: float = 10.0,
+    ) -> Studio:
+        """
+        Get Studio definition using arista.studio.v1.StudioService.GetOne.
+
+        The Studio GetOne API for the workspace does not return anything from mainline and does not return deletions in the workspace.
+        So to produce the Workspace Studio we need to fetch from the workspace, and if we find nothing, we need to check if the studio
+        got deleted in the workspace by retrieving config. Finally we can fetch from mainline.
+
+        Parameters:
+            studio_id: Unique identifier for the studio.
+            workspace_id: Unique identifier of the Workspace for which the information is fetched. Use "" for mainline.
+            time: Timestamp from which the information is fetched. `now()` if not set.
+            timeout: Timeout in seconds.
+
+        Returns:
+            Studio object.
+        """
+        request = StudioRequest(
+            # First attempt to fetch studio from workspace.
+            key=StudioKey(studio_id=studio_id, workspace_id=workspace_id),
+            time=time,
+        )
+        client = StudioServiceStub(self._channel)
+        try:
+            response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
+            return response.value
+        except Exception as e:
+            e = get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+            if isinstance(e, CVResourceNotFound):
+                # Continue execution if we did not find any state in the workspace.
+                # This simply means the studio itself was not changed in this workspace.
+                pass
+            else:
+                raise e
+
+        # If we get here, it means no studio was returned by the workspace call.
+        # So now we fetch the studio config from the workspace to see if the studio was deleted in this workspace.
+        request = StudioConfigStreamRequest(
+            StudioConfig(
+                key=StudioKey(studio_id=studio_id, workspace_id=workspace_id),
+                remove=True,
+            ),
+            time=time,
+        )
+        client = StudioConfigServiceStub(self._channel)
+        try:
+            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+            async for response in responses:
+                # If we get here it means we got an entry with "removed: True" so no need to look further.
+                raise CVResourceNotFound("The studio was deleted in the workspace.", f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'")
+
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+
+        # If we get here, it means there are no inputs in the workspace and they are not deleted, so we can fetch from mainline.
+        request = StudioRequest(
+            # First attempt to fetch studio from workspace.
+            key=StudioKey(studio_id=studio_id, workspace_id=""),
+            time=time,
+        )
+        client = StudioServiceStub(self._channel)
+        try:
+            response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
+            return response.value
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
 
     async def get_studio_inputs(
         self: CVClient,

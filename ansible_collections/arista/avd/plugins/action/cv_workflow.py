@@ -143,7 +143,10 @@ class ActionModule(ActionBase):
             )
             # Errors and warnings are converted to JSON compatible strings.
             result_object.errors = [str(error) for error in result_object.errors]
-            result_object.warnings = [str(warning) for warning in result_object.warnings]
+            result_object.warnings = result.get("warnings", []) + [str(warning) for warning in result_object.warnings]
+
+            # Add warnings caught by the logger
+            result_object.warnings.extend(result.get("warnings", []))
 
             # Add either all return data or only warnings, errors, failed.
             if validated_args["return_details"]:

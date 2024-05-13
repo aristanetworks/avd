@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from enum import Enum
 from logging import getLogger
+from typing import Literal
 
 from ...password_utils.password import simple_7_decrypt
 from ...utils import get
@@ -21,6 +23,45 @@ CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {
     "routers": [],
     "vrfs": [],
 }
+
+
+class StudioVersion(Enum):
+    v3_2 = 3.2
+    v3_3 = 3.3
+    v3_4 = 3.4
+
+
+FEATURE_MIN_VERSION = {
+    "pathfinder_location": StudioVersion.v3_4,
+    "internet_exit_zscaler": StudioVersion.v3_4,
+}
+FEATURE = Literal["pathfinder_location"]
+
+
+async def get_metadata_studio_version(result: DeployToCvResult, cv_client: CVClient) -> StudioVersion | None:
+    """
+    Extract the version from the metadata studio.
+    This is stored as a default value on the studioVersion field.
+    """
+    studio = await cv_client.get_studio(CV_PATHFINDER_METADATA_STUDIO_ID, result.workspace.id)
+    studio_version_field = get(studio.input_schema.fields.values, "studioVersion")
+    version = studio_version_field.string_props.default_value
+    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Found metadata studio version: %s", version)
+    try:
+        return StudioVersion(float(version))
+    except ValueError:
+        accepted_versions = [str(v.value) for v in StudioVersion]
+        warning = (
+            f"deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '{version}'."
+            f"This plugin only accepts versions '{accepted_versions}'. Skipping upload of metadata."
+        )
+        LOGGER.info(warning)
+        result.warnings.append(warning)
+        return None
+
+
+def is_feature_supported(feature: FEATURE, studio_version: StudioVersion) -> bool:
+    return studio_version.value >= FEATURE_MIN_VERSION.get(feature, 0).value
 
 
 def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
@@ -51,7 +92,7 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
     )
 
 
-def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
+def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, studio_version: StudioVersion) -> None:
     """
     In-place insert / update metadata for one pathfinder device in studio_inputs.
     """
@@ -62,9 +103,6 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
             "value": {
                 "sslProfileName": metadata.get("ssl_profile", ""),
                 "vtepIp": metadata.get("vtep_ip", ""),
-                "region": metadata.get("region", ""),
-                "site": metadata.get("site", ""),
-                "address": metadata.get("address", ""),
                 "wanInterfaces": [
                     {
                         "inputs": {
@@ -84,6 +122,20 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
         "tags": {"query": f"device:{device.serial_number}"},
     }
 
+    if is_feature_supported("pathfinder_location", studio_version):
+        pathfinder_metadata.update(
+            {
+                "region": metadata.get("region", ""),
+                "site": metadata.get("site", ""),
+                "address": metadata.get("address", ""),
+            }
+        )
+    else:
+        LOGGER.info(
+            "deploy_cv_pathfinder_metadata_to_cv: Ignoring Pathfinder location information since it is not supported by metadata studio version %s.",
+            studio_version,
+        )
+
     found_index = None
     for index, router in enumerate(studio_inputs.get("pathfinders", [])):
         if get(router, "tags.query") == f"device:{device.serial_number}":
@@ -98,7 +150,7 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> 
         studio_inputs["pathfinders"][found_index] = pathfinder_metadata
 
 
-def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
+def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_version: StudioVersion) -> None:
     """
     In-place insert / update metadata for one edge device in studio_inputs.
     """
@@ -130,7 +182,7 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
         },
         "tags": {"query": f"device:{device.serial_number}"},
     }
-    if internet_exit_metadata := generate_internet_exit_metadata(metadata, device):
+    if internet_exit_metadata := generate_internet_exit_metadata(metadata, device, studio_version):
         edge_metadata["inputs"]["router"]["services"] = internet_exit_metadata
 
     found_index = None
@@ -225,6 +277,9 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     if not cv_pathfinder_metadata:
         return
 
+    if (studio_version := await get_metadata_studio_version(result, cv_client)) is None:
+        return
+
     # Get existing studio inputs
     existing_studio_inputs = await cv_client.get_studio_inputs(
         studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS
@@ -232,14 +287,6 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
 
     # TODO: Ensure the metadata studio schema match our supported version
     # if (studio_version := existing_studio_inputs.get("version")) != "3.2":
-    #     LOGGER.warning(
-    #         (
-    #             "deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '%s'. "
-    #             "This plugin only accepts version '3.2'. Skipping upload of metadata."
-    #         ),
-    #         studio_version,
-    #     )
-    #     return
 
     studio_inputs = deepcopy(existing_studio_inputs)
 
@@ -286,10 +333,10 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
         update_general_metadata(metadata=pathfinders[0].metadata, studio_inputs=studio_inputs)
 
     for pathfinder in pathfinders:
-        upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs)
+        upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs, studio_version=studio_version)
 
     for edge in edges:
-        upsert_edge(metadata=edge.metadata, device=edge.device, studio_inputs=studio_inputs)
+        upsert_edge(metadata=edge.metadata, device=edge.device, studio_inputs=studio_inputs, studio_version=studio_version)
 
     if studio_inputs != existing_studio_inputs:
         await cv_client.set_studio_inputs(studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, inputs=studio_inputs)
@@ -297,7 +344,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     result.deployed_cv_pathfinder_metadata.extend(pathfinders + edges)
 
 
-def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> dict:
+def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_version: StudioVersion) -> dict:
     """
     Generate internet-exit related metadata for one device.
     To be inserted into edge router metadata under "services"
@@ -317,6 +364,13 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> dict:
                 internet_exit_policies.get("name"),
                 internet_exit_policy.get("type"),
                 device.hostname,
+            )
+            continue
+
+        if not is_feature_supported("internet_exit_zscaler", studio_version):
+            LOGGER.info(
+                "deploy_cv_pathfinder_metadata_to_cv: Ignoring Pathfinder location information since it is not supported by metadata studio version %s.",
+                studio_version,
             )
             continue
 
