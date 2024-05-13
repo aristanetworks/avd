@@ -80,6 +80,20 @@ $defs:
         items:
           type: str
           description: IPv6_address.
+      ipv4_acl_in:
+        description: |-
+          Name of the IPv4 access-list to be assigned in the ingress direction.
+          The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+        type: str
+        convert_types:
+          - int
+      ipv4_acl_out:
+        description: |-
+          Name of the IPv4 Access-list to be assigned in the egress direction.
+          The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+        type: str
+        convert_types:
+          - int
       ip_helpers:
         type: list
         primary_key: ip_helper

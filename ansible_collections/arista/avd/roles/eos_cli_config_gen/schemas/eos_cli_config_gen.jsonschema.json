@@ -18352,6 +18352,16 @@
                   "activate": {
                     "type": "boolean",
                     "title": "Activate"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -18387,6 +18397,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   },
                   "domain_remote": {
                     "type": "boolean",
@@ -18712,6 +18732,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
+                  },
                   "default_originate": {
                     "type": "object",
                     "properties": {
@@ -18810,6 +18840,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
+                  },
                   "prefix_list_in": {
                     "type": "string",
                     "description": "Inbound prefix-list name.",
@@ -18848,6 +18888,52 @@
                 ]
               },
               "title": "Neighbors"
+            },
+            "redistribute_routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_protocol": {
+                    "type": "string",
+                    "enum": [
+                      "attached-host",
+                      "bgp",
+                      "connected",
+                      "dynamic",
+                      "isis",
+                      "ospf",
+                      "ospfv3",
+                      "rip",
+                      "static",
+                      "user"
+                    ],
+                    "title": "Source Protocol"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map"
+                  },
+                  "include_leaked": {
+                    "type": "boolean",
+                    "description": "Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`.",
+                    "title": "Include Leaked"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
+                    "title": "RCF"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "source_protocol"
+                ]
+              },
+              "title": "Redistribute Routes"
             }
           },
           "additionalProperties": false,
@@ -18940,6 +19026,16 @@
                   "route_map": {
                     "type": "string",
                     "title": "Route Map"
+                  },
+                  "include_leaked": {
+                    "type": "boolean",
+                    "description": "Only applicable if `source_protocol` is `isis`.",
+                    "title": "Include Leaked"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
+                    "title": "RCF"
                   }
                 },
                 "additionalProperties": false,
@@ -19091,6 +19187,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
+                  },
                   "prefix_list_in": {
                     "type": "string",
                     "description": "Inbound prefix-list name.",
@@ -19135,6 +19241,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
+                  },
                   "prefix_list_in": {
                     "type": "string",
                     "description": "Inbound prefix-list name.",
@@ -19172,6 +19288,11 @@
                   "include_leaked": {
                     "type": "boolean",
                     "title": "Include Leaked"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
+                    "title": "RCF"
                   }
                 },
                 "additionalProperties": false,
@@ -19329,6 +19450,47 @@
                 ]
               },
               "title": "Networks"
+            },
+            "redistribute_routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_protocol": {
+                    "type": "string",
+                    "enum": [
+                      "connected",
+                      "isis",
+                      "ospf",
+                      "ospfv3",
+                      "static"
+                    ],
+                    "title": "Source Protocol"
+                  },
+                  "include_leaked": {
+                    "type": "boolean",
+                    "description": "Only applicable if `source_protocol` is `isis`.",
+                    "title": "Include Leaked"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
+                    "title": "RCF"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "source_protocol"
+                ]
+              },
+              "title": "Redistribute Routes"
             }
           },
           "additionalProperties": false,
@@ -20364,7 +20526,18 @@
                         },
                         "route_map": {
                           "type": "string",
+                          "description": "Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
                           "title": "Route Map"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\nOnly applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
+                          "title": "RCF"
+                        },
+                        "vpn_route_filter_rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis for filtering VPN routes. Also requires `rcf` to be set.\nExample: MyFunction(myarg).\nOnly applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.",
+                          "title": "VPN Route Filter RCF"
                         }
                       },
                       "additionalProperties": false,
@@ -20395,7 +20568,18 @@
                         },
                         "route_map": {
                           "type": "string",
+                          "description": "Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
                           "title": "Route Map"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\nOnly applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
+                          "title": "RCF"
+                        },
+                        "vpn_route_filter_rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis for filtering VPN routes. Also requires `rcf` to be set.\nExample: MyFunction(myarg).\nOnly applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.",
+                          "title": "VPN Route Filter RCF"
                         }
                       },
                       "additionalProperties": false,
@@ -20850,6 +21034,11 @@
                     "include_leaked": {
                       "type": "boolean",
                       "title": "Include Leaked"
+                    },
+                    "rcf": {
+                      "type": "string",
+                      "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
+                      "title": "RCF"
                     }
                   },
                   "additionalProperties": false,
@@ -21035,6 +21224,16 @@
                           "description": "Outbound route-map name.",
                           "title": "Route Map Out"
                         },
+                        "rcf_in": {
+                          "type": "string",
+                          "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                          "title": "RCF In"
+                        },
+                        "rcf_out": {
+                          "type": "string",
+                          "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                          "title": "RCF Out"
+                        },
                         "prefix_list_in": {
                           "type": "string",
                           "description": "Inbound prefix-list name.",
@@ -21111,6 +21310,51 @@
                       ]
                     },
                     "title": "Networks"
+                  },
+                  "redistribute_routes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "source_protocol": {
+                          "type": "string",
+                          "enum": [
+                            "attached-host",
+                            "bgp",
+                            "connected",
+                            "dynamic",
+                            "isis",
+                            "ospf",
+                            "ospfv3",
+                            "rip",
+                            "static",
+                            "user"
+                          ],
+                          "title": "Source Protocol"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        },
+                        "include_leaked": {
+                          "type": "boolean",
+                          "title": "Include Leaked"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
+                          "title": "RCF"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "source_protocol"
+                      ]
+                    },
+                    "title": "Redistribute Routes"
                   }
                 },
                 "additionalProperties": false,
@@ -21241,6 +21485,16 @@
                           "description": "Outbound route-map name.",
                           "title": "Route Map Out"
                         },
+                        "rcf_in": {
+                          "type": "string",
+                          "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                          "title": "RCF In"
+                        },
+                        "rcf_out": {
+                          "type": "string",
+                          "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                          "title": "RCF Out"
+                        },
                         "prefix_list_in": {
                           "type": "string",
                           "description": "Inbound prefix-list name.",
@@ -21286,6 +21540,50 @@
                       ]
                     },
                     "title": "Networks"
+                  },
+                  "redistribute_routes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "source_protocol": {
+                          "type": "string",
+                          "enum": [
+                            "attached-host",
+                            "bgp",
+                            "connected",
+                            "dhcp",
+                            "dynamic",
+                            "isis",
+                            "ospfv3",
+                            "static",
+                            "user"
+                          ],
+                          "title": "Source Protocol"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        },
+                        "include_leaked": {
+                          "type": "boolean",
+                          "title": "Include Leaked"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
+                          "title": "RCF"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "source_protocol"
+                      ]
+                    },
+                    "title": "Redistribute Routes"
                   }
                 },
                 "additionalProperties": false,
@@ -21407,6 +21705,48 @@
                       ]
                     },
                     "title": "Networks"
+                  },
+                  "redistribute_routes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "source_protocol": {
+                          "type": "string",
+                          "enum": [
+                            "attached-host",
+                            "connected",
+                            "isis",
+                            "ospf",
+                            "ospfv3",
+                            "static"
+                          ],
+                          "title": "Source Protocol"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        },
+                        "include_leaked": {
+                          "type": "boolean",
+                          "description": "Only applicable if `source_protocol` is `isis`.",
+                          "title": "Include Leaked"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
+                          "title": "RCF"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "source_protocol"
+                      ]
+                    },
+                    "title": "Redistribute Routes"
                   }
                 },
                 "additionalProperties": false,
@@ -21528,6 +21868,47 @@
                       ]
                     },
                     "title": "Networks"
+                  },
+                  "redistribute_routes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "source_protocol": {
+                          "type": "string",
+                          "enum": [
+                            "connected",
+                            "isis",
+                            "ospf",
+                            "ospfv3",
+                            "static"
+                          ],
+                          "title": "Source Protocol"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        },
+                        "include_leaked": {
+                          "type": "boolean",
+                          "description": "Only applicable if `source_protocol` is `isis`.",
+                          "title": "Include Leaked"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
+                          "title": "RCF"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "source_protocol"
+                      ]
+                    },
+                    "title": "Redistribute Routes"
                   }
                 },
                 "additionalProperties": false,

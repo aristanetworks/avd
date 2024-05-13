@@ -77,6 +77,9 @@ router_bgp:
         route_map_in: RM-HIDE-AS-PATH
         route_map_out: RM-HIDE-AS-PATH
         activate: true
+      - name: RCF_TEST
+        rcf_in: Address_Family_EVPN_In()
+        rcf_out: Address_Family_EVPN_Out()
   address_family_ipv4:
     peer_groups:
       - name: IPV4-UNDERLAY
@@ -85,6 +88,9 @@ router_bgp:
         route_map_out: RM-HIDE-AS-PATH
       - name: IPV4-UNDERLAY-MLAG
         activate: true
+      - name: TEST_RCF
+        rcf_in: Address_Family_IPV4_In()
+        rcf_out: Address_Family_IPV4_Out()
   address_family_ipv4_multicast:
     peer_groups:
       - name: IPV4-UNDERLAY
@@ -93,6 +99,8 @@ router_bgp:
         activate: true
     redistribute_routes:
       - source_protocol: attached-host
+      - source_protocol: isis
+        rcf: Router_BGP_Isis()
   address_family_ipv6:
     peer_groups:
       - name: IPV6-UNDERLAY
@@ -101,6 +109,9 @@ router_bgp:
         route_map_out: RM-HIDE-AS-PATH
       - name: IPV6-UNDERLAY-MLAG
         activate: true
+      - name: TEST_RCF
+        rcf_in: Address_Family_IPV6_In()
+        rcf_out: Address_Family_IPV6_Out()
   vlans:
     - id: 24
       rd: "10.50.64.15:10024"
@@ -139,10 +150,17 @@ router_bgp:
             route_targets:
               - "1:30001"
             route_map: RM-DENY-DEFAULT
+          - address_family: vpn-ipv4
+            route_targets:
+              - "1:30011"
+            rcf: RT_IMPORT_AF_RCF()
+            route_map: RT_IMPORT_AF_RM
+            vpn_route_filter_rcf: RT_IMPORT_AF_RCF_FILTER()
         export:
           - address_family: evpn
             route_targets:
               - "1:30001"
+            rcf: RT_EXPORT_AF_RCF()
       redistribute_routes:
         - source_protocol: connected
     - name: Tenant_B
