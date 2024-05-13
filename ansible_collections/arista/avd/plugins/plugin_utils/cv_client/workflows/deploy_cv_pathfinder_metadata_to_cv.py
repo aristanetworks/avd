@@ -26,6 +26,8 @@ CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {
 
 
 class StudioVersion(Enum):
+    """Supported cv-pathfinder metadata studio versions"""
+
     v3_2 = 3.2
     v3_3 = 3.3
     v3_4 = 3.4
