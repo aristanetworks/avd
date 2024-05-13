@@ -4,7 +4,6 @@ on:
   pull_request_target:
     types:
       - opened
-      - synchronize
 
 jobs:
   ###################################################
@@ -16,7 +15,7 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-      
+
     steps:
       - uses: actions/github-script@v7
         env:
