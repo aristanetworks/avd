@@ -18,15 +18,6 @@ keys:
       zscaler_endpoints: "{{ lookup('arista.avd.cv_zscaler_endpoints', cv_server="<optional servername>", cv_token="<optional token>") }}"
       ```
       The cv_server and cv_token options can be set as inventory variables instead of given as arguments. (Then they will also be used for cv_deploy)
-
-    # Future here:
-    #   cloud_name: <str; required>
-    # Future here or in another similar model:
-    #   device_location:
-    #     city: <str; required>
-    #     country: <str; required>
-    #     latitude: <str; required>
-    #     longitude: <str; required>
     keys:
       primary:
         type: dict
@@ -64,3 +55,18 @@ keys:
         type: dict
         $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
         required: false
+      cloud_name:
+        description: The name of the Zscaler cloud the CloudVision cluster is integrated with like 'zscaler1' or 'zscalerbeta'.
+        type: str
+        required: true
+      device_location:
+        description: The location of the calling device after being resolved by Zscaler location APIs. This is required since Zscaler only accepts their own variants of City and Country.
+        type: dict
+        required: true
+        keys:
+          city:
+            type: str
+            required: true
+          country:
+            type: str
+            required: true
