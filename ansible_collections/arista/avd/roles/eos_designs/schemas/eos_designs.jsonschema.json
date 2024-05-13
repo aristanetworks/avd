@@ -45335,6 +45335,41 @@
                       "type": "boolean",
                       "title": "IPv6 ND Managed Config Flag"
                     },
+                    "ipv6_nd_other_config_flag": {
+                      "type": "boolean",
+                      "description": "Set the \"other stateful configuration\" flag in IPv6 router advertisements.",
+                      "title": "IPv6 ND Other Config Flag"
+                    },
+                    "ipv6_nd_cache": {
+                      "type": "object",
+                      "description": "IPv6 neighbor cache options.",
+                      "properties": {
+                        "dynamic_capacity": {
+                          "type": "integer",
+                          "description": "Capacity of dynamic cache entries.",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Dynamic Capacity"
+                        },
+                        "expire": {
+                          "type": "integer",
+                          "description": "Cache entries expirery in seconds.",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Expire"
+                        },
+                        "refresh_always": {
+                          "type": "boolean",
+                          "description": "Force refresh on cache expiry.",
+                          "title": "Refresh Always"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IPv6 ND Cache"
+                    },
                     "ipv6_nd_prefixes": {
                       "type": "array",
                       "items": {
@@ -54415,6 +54450,41 @@
                       "type": "boolean",
                       "title": "IPv6 ND Managed Config Flag"
                     },
+                    "ipv6_nd_other_config_flag": {
+                      "type": "boolean",
+                      "description": "Set the \"other stateful configuration\" flag in IPv6 router advertisements.",
+                      "title": "IPv6 ND Other Config Flag"
+                    },
+                    "ipv6_nd_cache": {
+                      "type": "object",
+                      "description": "IPv6 neighbor cache options.",
+                      "properties": {
+                        "dynamic_capacity": {
+                          "type": "integer",
+                          "description": "Capacity of dynamic cache entries.",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Dynamic Capacity"
+                        },
+                        "expire": {
+                          "type": "integer",
+                          "description": "Cache entries expirery in seconds.",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Expire"
+                        },
+                        "refresh_always": {
+                          "type": "boolean",
+                          "description": "Force refresh on cache expiry.",
+                          "title": "Refresh Always"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IPv6 ND Cache"
+                    },
                     "ipv6_nd_prefixes": {
                       "type": "array",
                       "items": {
@@ -56287,6 +56357,41 @@
               "ipv6_nd_managed_config_flag": {
                 "type": "boolean",
                 "title": "IPv6 ND Managed Config Flag"
+              },
+              "ipv6_nd_other_config_flag": {
+                "type": "boolean",
+                "description": "Set the \"other stateful configuration\" flag in IPv6 router advertisements.",
+                "title": "IPv6 ND Other Config Flag"
+              },
+              "ipv6_nd_cache": {
+                "type": "object",
+                "description": "IPv6 neighbor cache options.",
+                "properties": {
+                  "dynamic_capacity": {
+                    "type": "integer",
+                    "description": "Capacity of dynamic cache entries.",
+                    "minimum": 0,
+                    "maximum": 4294967295,
+                    "title": "Dynamic Capacity"
+                  },
+                  "expire": {
+                    "type": "integer",
+                    "description": "Cache entries expirery in seconds.",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Expire"
+                  },
+                  "refresh_always": {
+                    "type": "boolean",
+                    "description": "Force refresh on cache expiry.",
+                    "title": "Refresh Always"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "IPv6 ND Cache"
               },
               "ipv6_nd_prefixes": {
                 "type": "array",
