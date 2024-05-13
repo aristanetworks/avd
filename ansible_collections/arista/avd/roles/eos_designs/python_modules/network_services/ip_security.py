@@ -70,6 +70,7 @@ class IpSecurityMixin(UtilsMixin):
                         "time": 60,
                         "action": "clear",
                     },
+                    "connection": "start",
                 }
             )
 
