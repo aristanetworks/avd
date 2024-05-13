@@ -284,10 +284,6 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     existing_studio_inputs = await cv_client.get_studio_inputs(
         studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS
     )
-
-    # TODO: Ensure the metadata studio schema match our supported version
-    # if (studio_version := existing_studio_inputs.get("version")) != "3.2":
-
     studio_inputs = deepcopy(existing_studio_inputs)
 
     # Walk through given metadata, skip missing devices or invalid roles.
