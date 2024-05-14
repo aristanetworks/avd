@@ -1263,9 +1263,9 @@
 | 1180 | dc1-wan1 | Security | VerifyIPSecConnHealth | Verifies all IPv4 security connections. | - | NOT RUN | - |
 | 1181 | dc1-wan1 | Security | VerifyIPv4ACL | Verifies the configuration of IPv4 ACLs. | - | NOT RUN | - |
 | 1182 | dc1-wan1 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | - | NOT RUN | - |
-| 1183 | dc1-wan1 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 peer: 10.255.1.2 VRF: default | NOT RUN | - |
-| 1184 | dc1-wan1 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 peer: 10.255.255.10 VRF: default | NOT RUN | - |
-| 1185 | dc1-wan1 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 peer: 10.255.255.20 VRF: default | NOT RUN | - |
+| 1183 | dc1-wan1 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 Peer: 10.255.1.2 VRF: default | NOT RUN | - |
+| 1184 | dc1-wan1 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 Peer: 10.255.255.10 VRF: default | NOT RUN | - |
+| 1185 | dc1-wan1 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 Peer: 10.255.255.20 VRF: default | NOT RUN | - |
 | 1186 | dc1-wan1 | Security | VerifySSHIPv4Acl | Verifies if the SSHD agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 1187 | dc1-wan1 | Security | VerifySSHIPv6Acl | Verifies if the SSHD agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
 | 1188 | dc1-wan1 | Security | VerifySSHStatus | Verifies if the SSHD agent is disabled in the default VRF. | - | NOT RUN | - |
@@ -1353,9 +1353,9 @@
 | 1270 | dc1-wan2 | Security | VerifyIPSecConnHealth | Verifies all IPv4 security connections. | - | NOT RUN | - |
 | 1271 | dc1-wan2 | Security | VerifyIPv4ACL | Verifies the configuration of IPv4 ACLs. | - | NOT RUN | - |
 | 1272 | dc1-wan2 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | - | NOT RUN | - |
-| 1273 | dc1-wan2 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 peer: 10.255.1.1 VRF: default | NOT RUN | - |
-| 1274 | dc1-wan2 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 peer: 10.255.255.10 VRF: default | NOT RUN | - |
-| 1275 | dc1-wan2 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 peer: 10.255.255.20 VRF: default | NOT RUN | - |
+| 1273 | dc1-wan2 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 Peer: 10.255.1.1 VRF: default | NOT RUN | - |
+| 1274 | dc1-wan2 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 Peer: 10.255.255.10 VRF: default | NOT RUN | - |
+| 1275 | dc1-wan2 | Security | VerifySpecificIPSecConn | Verifies IPv4 security connections for a peer. | IPv4 Peer: 10.255.255.20 VRF: default | NOT RUN | - |
 | 1276 | dc1-wan2 | Security | VerifySSHIPv4Acl | Verifies if the SSHD agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 1277 | dc1-wan2 | Security | VerifySSHIPv6Acl | Verifies if the SSHD agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
 | 1278 | dc1-wan2 | Security | VerifySSHStatus | Verifies if the SSHD agent is disabled in the default VRF. | - | NOT RUN | - |

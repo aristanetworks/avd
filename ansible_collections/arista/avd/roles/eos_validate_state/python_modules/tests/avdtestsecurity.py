@@ -41,9 +41,8 @@ class AvdTestAPIHttpsSSL(AvdTestBase):
 class AvdTestIPSecurity(AvdTestBase):
     """
     AvdTestIPSecurity class for IP security connection tests.
-    Verifies the state of IPv4 security connections for a specified peer as established.
-    It optionally allows for the verification of a specific path for a peer by providing source and destination addresses.
-    If these addresses are not provided, it will verify all paths for the specified peer.
+    It validates the state of IPv4 security connections for a specified peer as established.
+    For now, it will only validate the peer under VRF default.
     """
 
     anta_module = "anta.tests.security"
@@ -64,23 +63,25 @@ class AvdTestIPSecurity(AvdTestBase):
             return None
 
         added_peers = set()
-        for path_group in path_groups:
-            if not self.validate_data(data=path_group, required_keys="static_peers"):
+        for group_idx, path_group in enumerate(path_groups):
+            if not self.validate_data(data=path_group, data_path=f"router_path_selection.path_groups.[{group_idx}]", required_keys="static_peers"):
                 continue
 
-            static_peers = path_group.get("static_peers")
-            for peer in static_peers:
-                peer_address = peer.get("router_ip")
-                vrf = "default"  # TODO: Keeping the vrf name static for now. We may need to change later on.
-                if (peer_address, vrf) not in added_peers:
-                    anta_tests.append(
-                        {
-                            "VerifySpecificIPSecConn": {
-                                "ip_security_connections": [{"peer": peer_address, "vrf": vrf}],
-                                "result_overwrite": {"custom_field": f"IPv4 peer: {peer_address} VRF: {vrf}"},
+            for peer_idx, peer in enumerate(path_group["static_peers"]):
+                if self.validate_data(
+                    data=peer, data_path=f"router_path_selection.path_groups.[{group_idx}].static_peers.[{peer_idx}]", required_keys="router_ip"
+                ):
+                    peer_address = peer["router_ip"]
+                    vrf = "default"  # TODO: Keeping the vrf name static for now. We may need to change later on.
+                    if (peer_address, vrf) not in added_peers:
+                        anta_tests.append(
+                            {
+                                "VerifySpecificIPSecConn": {
+                                    "ip_security_connections": [{"peer": peer_address, "vrf": vrf}],
+                                    "result_overwrite": {"custom_field": f"IPv4 Peer: {peer_address} VRF: {vrf}"},
+                                }
                             }
-                        }
-                    )
-                    added_peers.add((peer_address, vrf))
+                        )
+                        added_peers.add((peer_address, vrf))
 
         return {self.anta_module: anta_tests} if anta_tests else None

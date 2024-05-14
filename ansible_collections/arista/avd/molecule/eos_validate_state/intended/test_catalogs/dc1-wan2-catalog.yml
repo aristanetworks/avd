@@ -267,19 +267,19 @@ anta.tests.security:
     - peer: 10.255.255.10
       vrf: default
     result_overwrite:
-      custom_field: 'IPv4 peer: 10.255.255.10 VRF: default'
+      custom_field: 'IPv4 Peer: 10.255.255.10 VRF: default'
 - VerifySpecificIPSecConn:
     ip_security_connections:
     - peer: 10.255.255.20
       vrf: default
     result_overwrite:
-      custom_field: 'IPv4 peer: 10.255.255.20 VRF: default'
+      custom_field: 'IPv4 Peer: 10.255.255.20 VRF: default'
 - VerifySpecificIPSecConn:
     ip_security_connections:
     - peer: 10.255.1.1
       vrf: default
     result_overwrite:
-      custom_field: 'IPv4 peer: 10.255.1.1 VRF: default'
+      custom_field: 'IPv4 Peer: 10.255.1.1 VRF: default'
 - VerifySSHStatus: null
 - VerifySSHIPv4Acl:
     number: 3
