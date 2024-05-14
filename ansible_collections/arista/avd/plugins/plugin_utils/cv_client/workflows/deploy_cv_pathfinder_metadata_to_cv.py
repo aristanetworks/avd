@@ -94,11 +94,15 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
     )
 
 
-def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, studio_version: StudioVersion) -> None:
+def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, studio_version: StudioVersion) -> list[str]:
     """
     In-place insert / update metadata for one pathfinder device in studio_inputs.
+
+    Returns any warnings raised.
     """
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_pathfinder %s", device.hostname)
+
+    warnings = []
 
     pathfinder_metadata = {
         "inputs": {
@@ -124,19 +128,17 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, stu
         "tags": {"query": f"device:{device.serial_number}"},
     }
 
-    if is_feature_supported("pathfinder_location", studio_version):
-        pathfinder_metadata.update(
-            {
-                "region": metadata.get("region", ""),
-                "site": metadata.get("site", ""),
-                "address": metadata.get("address", ""),
-            }
-        )
-    else:
-        LOGGER.info(
-            "deploy_cv_pathfinder_metadata_to_cv: Ignoring Pathfinder location information since it is not supported by metadata studio version %s.",
-            studio_version,
-        )
+    pathfinder_location = {key: metadata.get(key) for key in ("region", "site", "address")}
+    if any(pathfinder_location):
+        if is_feature_supported("pathfinder_location", studio_version):
+            pathfinder_metadata.update(pathfinder_location)
+        else:
+            warning = (
+                "deploy_cv_pathfinder_metadata_to_cv: Ignoring Pathfinder location information since it is not"
+                f"supported by metadata studio version {studio_version}."
+            )
+            LOGGER.info(warning)
+            warnings.append(warning)
 
     found_index = None
     for index, router in enumerate(studio_inputs.get("pathfinders", [])):
@@ -151,12 +153,18 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, stu
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing pathfinder device, updating %s", device.hostname)
         studio_inputs["pathfinders"][found_index] = pathfinder_metadata
 
+    return warnings
 
-def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_version: StudioVersion) -> None:
+
+def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_version: StudioVersion) -> list[str]:
     """
     In-place insert / update metadata for one edge device in studio_inputs.
+
+    Returns any warnings raised.
     """
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_edge %s", device.hostname)
+
+    warnings = []
     edge_metadata = {
         "inputs": {
             "router": {
@@ -184,7 +192,9 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_ve
         },
         "tags": {"query": f"device:{device.serial_number}"},
     }
-    if internet_exit_metadata := generate_internet_exit_metadata(metadata, device, studio_version):
+    internet_exit_metadata, ie_warnings = generate_internet_exit_metadata(metadata, device, studio_version)
+    warnings.extend(ie_warnings)
+    if internet_exit_metadata:
         edge_metadata["inputs"]["router"]["services"] = internet_exit_metadata
 
     found_index = None
@@ -199,6 +209,8 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_ve
     else:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing edge/transit device, updating %s", device.hostname)
         studio_inputs["routers"][found_index] = edge_metadata
+
+    return warnings
 
 
 async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPathfinderMetadata], result: DeployToCvResult, cv_client: CVClient) -> None:
@@ -331,10 +343,12 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
         update_general_metadata(metadata=pathfinders[0].metadata, studio_inputs=studio_inputs)
 
     for pathfinder in pathfinders:
-        upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs, studio_version=studio_version)
+        result.warnings.extend(
+            upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs, studio_version=studio_version)
+        )
 
     for edge in edges:
-        upsert_edge(metadata=edge.metadata, device=edge.device, studio_inputs=studio_inputs, studio_version=studio_version)
+        result.warnings.extend(upsert_edge(metadata=edge.metadata, device=edge.device, studio_inputs=studio_inputs, studio_version=studio_version))
 
     if studio_inputs != existing_studio_inputs:
         await cv_client.set_studio_inputs(studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, inputs=studio_inputs)
@@ -342,27 +356,31 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     result.deployed_cv_pathfinder_metadata.extend(pathfinders + edges)
 
 
-def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_version: StudioVersion) -> dict:
+def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_version: StudioVersion) -> tuple[dict, list[str]]:
     """
     Generate internet-exit related metadata for one device.
     To be inserted into edge router metadata under "services"
+
+    Returns metadata dict and list of any warnings raised.
     """
     if (internet_exit_policies := get(metadata, "internet_exit_policies")) is None:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Did not find 'internet_exit_policies' for device: %s", device.hostname)
-        return []
+        return {}, []
 
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Found %s 'internet_exit_policies' for device: %s", len(internet_exit_policies), device.hostname)
 
     services_dict = {}
+    warnings = []
+
     for internet_exit_policy in internet_exit_policies:
         # We currently only support zscaler
         if internet_exit_policy.get("type") != "zscaler":
-            LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '%s' with type '%s' for device: %s.",
-                internet_exit_policies.get("name"),
-                internet_exit_policy.get("type"),
-                device.hostname,
+            warning = (
+                f"deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '{internet_exit_policies.get('name')}' "
+                f"with type '{internet_exit_policy.get('type')}' for device: {device.hostname}."
             )
+            LOGGER.info(warning)
+            warnings.append(warning)
             continue
 
         if not is_feature_supported("internet_exit_zscaler", studio_version):
@@ -404,4 +422,4 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_ver
             for tunnel in internet_exit_policy["tunnels"]
         )
 
-    return services_dict
+    return services_dict, warnings
