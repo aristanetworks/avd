@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 class AvdTestStun(AvdTestBase):
     """
     AvdTestStun class for STUN tests.
-    Verifies the configuration of the STUN client, specifically the IPv4 source address and port.
+    Validates the configuration of the STUN client, specifically the IPv4 source address and port.
     """
 
     anta_module = "anta.tests.stun"
@@ -37,11 +37,11 @@ class AvdTestStun(AvdTestBase):
 
         # Get the interfaces with STUN configuration
         stun_interfaces = [
-            local_interfaces.get("name")
-            for path_group in path_groups
-            if self.validate_data(data=path_group, required_keys="local_interfaces")
-            for local_interfaces in path_group.get("local_interfaces")
-            if self.validate_data(data=local_interfaces, required_keys="stun.server_profiles")
+            local_interfaces["name"]
+            for group_idx, path_group in enumerate(path_groups)
+            if self.validate_data(data=path_group, data_path=f"router_path_selection.path_groups.[{group_idx}]", required_keys="local_interfaces")
+            for local_interfaces in path_group["local_interfaces"]
+            if self.validate_data(data=local_interfaces, data_path=f"router_path_selection.path_groups.[{group_idx}]", required_keys="stun.server_profiles")
         ]
         if not stun_interfaces:
             LOGGER.info("No local interface found with STUN configuration. %s is skipped.", self.__class__.__name__)
