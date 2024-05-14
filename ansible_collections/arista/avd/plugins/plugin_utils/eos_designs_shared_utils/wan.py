@@ -522,7 +522,7 @@ class WanMixin:
             if len(interfaces) > 1:
                 raise AristaAvdError("AVD does not support multiple HA interfaces when not using uplinks.")
             return False
-        raise AristaAvdError("Either all `wan_ha.interfaces` must be uplinks intergaves or all of them must not be uplinks.")
+        raise AristaAvdError("Either all `wan_ha.interfaces` must be uplinks interfaces or all of them must not be uplinks.")
 
     @cached_property
     def wan_ha_interfaces(self: SharedUtils) -> list:
