@@ -12,8 +12,8 @@ monitor telemetry postcard policy
 {%     endif %}
 {%     if monitor_telemetry_postcard_policy.ingress.sample.rate is arista.avd.defined %}
    ingress sample rate {{ monitor_telemetry_postcard_policy.ingress.sample.rate }}
-{%     elif monitor_telemetry_postcard_policy.ingress.sample.tcp_udp.checksum is arista.avd.defined and monitor_telemetry_postcard_policy.ingress.sample.tcp_udp.mask is arista.avd.defined %}
-   ingress sample tcp-udp-checksum value {{ monitor_telemetry_postcard_policy.ingress.sample.tcp_udp.checksum }} mask {{ monitor_telemetry_postcard_policy.ingress.sample.tcp_udp.mask }}
+{%     elif monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum is arista.avd.defined and monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.mask is arista.avd.defined %}
+   ingress sample tcp-udp-checksum value {{ monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.value }} mask {{ monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.mask }}
 {%     endif %}
 {%     if monitor_telemetry_postcard_policy.vxlan_marking_bit is arista.avd.defined %}
    marker vxlan header word 0 bit {{ monitor_telemetry_postcard_policy.vxlan_marking_bit | arista.avd.default(0) }}
