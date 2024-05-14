@@ -259,7 +259,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         {
                             "name": connection["source_interface"],
                             "ip_nat": {
-                                "service_profile": self.get_internet_exit_nat_profile(internet_exit_policy["type"]),
+                                "service_profile": self.get_internet_exit_nat_profile_name(internet_exit_policy["type"]),
                             },
                         }
                     )

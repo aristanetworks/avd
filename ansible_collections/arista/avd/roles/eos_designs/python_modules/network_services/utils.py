@@ -592,13 +592,13 @@ class UtilsMixin:
             if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
         ]
 
-    def get_internet_exit_nat_profile(self, internet_exit_policy_type: Literal["zscaler", "direct"]) -> Tuple[dict | None, dict | None]:
+    def get_internet_exit_nat_profile_name(self, internet_exit_policy_type: Literal["zscaler", "direct"]) -> str:
         if internet_exit_policy_type == "zscaler":
             return "IE-ZSCALER-NAT"
         else:
             return "IE-DIRECT-NAT"
 
-    def get_internet_exit_nat(self, internet_exit_policy_type: Literal["zscaler", "direct"]) -> Tuple[dict | None, dict | None]:
+    def get_internet_exit_nat_pool_and_profile(self, internet_exit_policy_type: Literal["zscaler", "direct"]) -> Tuple[dict | None, dict | None]:
         if internet_exit_policy_type == "zscaler":
             pool = {
                 "name": "PORT-ONLY-POOL",
@@ -612,7 +612,7 @@ class UtilsMixin:
             }
 
             profile = {
-                "name": self.get_internet_exit_nat_profile(internet_exit_policy_type),
+                "name": self.get_internet_exit_nat_profile_name(internet_exit_policy_type),
                 "source": {
                     "dynamic": [
                         {
@@ -626,7 +626,7 @@ class UtilsMixin:
             return pool, profile
         elif internet_exit_policy_type == "direct":
             profile = {
-                "name": self.get_internet_exit_nat_profile(internet_exit_policy_type),
+                "name": self.get_internet_exit_nat_profile_name(internet_exit_policy_type),
                 "source": {
                     "dynamic": [
                         {
@@ -637,6 +637,8 @@ class UtilsMixin:
                 },
             }
             return None, profile
+
+        return None, None
 
     @cached_property
     def _svi_acls(self) -> dict[str, dict[str, dict]]:
@@ -824,7 +826,13 @@ class UtilsMixin:
                 "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
             }
 
-            tunnel_id_range = range_expand(get(interface_policy_config, "tunnel_interface_numbers", required=True))
+            tunnel_interface_numbers = get(interface_policy_config, "tunnel_interface_numbers")
+            if tunnel_interface_numbers is None:
+                raise AristaAvdMissingVariableError(
+                    f"{wan_interface['name']}.cv_pathfinder_internet_exit.policies[{internet_exit_policy['name']}].tunnel_interface_numbers needs to be set, when using wan interface for zscaler type internet exit."
+                )
+
+            tunnel_id_range = range_expand(tunnel_interface_numbers)
 
             zscaler_endpoint_keys = ("primary", "secondary", "tertiary")
             for index, zscaler_endpoint_key in enumerate(zscaler_endpoint_keys):
