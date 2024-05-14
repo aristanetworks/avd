@@ -23,6 +23,23 @@ keys:
           type: str
         dns_domain_name_ipv6:
           type: str
+        dns_server:
+          type: dict
+          keys:
+            ipv4_servers:
+              type: list
+              description: List of IPv4 DNS servers
+              items:
+                type: str
+                required: true
+                description: 'IPv4 address of DNS server'
+            ipv6_servers:
+              type: list
+              description: List of IPv6 dns servers
+              items:
+                type: str
+                required: true
+                description: 'IPv6 address of DNS server'
         ipv4_vendor_options:
           type: list
           primary_key: vendor_id
@@ -66,6 +83,26 @@ keys:
                         The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
                       items:
                         type: str
+        tftp_server:
+          type: dict
+          keys:
+            file:
+              type: dict
+              keys:
+                ipv4_file:
+                  type: list
+                  description: List of IPv4 files
+                  items:
+                    type: str
+                    required: true
+                    description: 'Name of IPv4 file'
+                ipv6_file:
+                  type: list
+                  description: List of IPv6 files
+                  items:
+                    type: str
+                    required: true
+                    description: 'Name of IPv6 file'
         subnets:
           type: list
           primary_key: subnet

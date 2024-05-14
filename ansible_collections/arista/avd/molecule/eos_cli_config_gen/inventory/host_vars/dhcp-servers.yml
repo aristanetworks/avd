@@ -32,6 +32,20 @@ dhcp_servers:
         default_gateway: 10.0.0.1
 
   - vrf: default
+    dns_server:
+      ipv4_servers:
+        - 1.1.1.1
+        - 8.8.8.8
+      ipv6_servers:
+        - 2001:4860:4860::8888
+    tftp_server:
+      file:
+        ipv4_file:
+          - https://www.arista.io/ztp/bootstrap
+          - https://192.168.0.254/ztp/bootstrap
+        ipv6_file:
+          - https://fd00::01/64/ztp/bootstrap
+
     subnets:
       - subnet: 10.2.3.0/24
       - subnet: 2a00:2::/64

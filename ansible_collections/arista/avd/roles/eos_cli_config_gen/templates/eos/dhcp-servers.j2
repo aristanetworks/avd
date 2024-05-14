@@ -18,6 +18,34 @@
 {%         if dhcp_server.dns_domain_name_ipv6 is arista.avd.defined %}
    dns domain name ipv6 {{ dhcp_server.dns_domain_name_ipv6 }}
 {%         endif %}
+{%         if dhcp_server.dns_server.ipv4_servers is arista.avd.defined %}
+{%             set dns_servers_cli = namespace(cli="dns server ipv4") %}
+{%             for server in dhcp_server.dns_server.ipv4_servers  %}
+{%                 set dns_servers_cli.cli = dns_servers_cli.cli ~ " " ~ server %}
+{%             endfor %}
+   {{ dns_servers_cli.cli }}
+{%         endif %}
+{%         if dhcp_server.dns_server.ipv6_servers is arista.avd.defined %}
+{%             set dns_servers_cli = namespace(cli="dns server ipv6") %}
+{%             for server in dhcp_server.dns_server.ipv6_servers  %}
+{%                 set dns_servers_cli.cli = dns_servers_cli.cli ~ " " ~ server %}
+{%             endfor %}
+   {{ dns_servers_cli.cli }}
+{%         endif %}
+{%         if dhcp_server.tftp_server.file.ipv4_file is arista.avd.defined %}
+{%             set tftp_file_cli = namespace(cli="tftp server file ipv4") %}
+{%             for file in dhcp_server.tftp_server.file.ipv4_file | arista.avd.natural_sort %}
+{%                 set tftp_file_cli.cli = tftp_file_cli.cli ~ " " ~ file %}
+{%             endfor %}
+   {{ tftp_file_cli.cli }}
+{%         endif %}
+{%         if dhcp_server.tftp_server.file.ipv6_file is arista.avd.defined %}
+{%             set tftp_file_cli = namespace(cli="tftp server file ipv6") %}
+{%             for file in dhcp_server.tftp_server.file.ipv6_file  %}
+{%                 set tftp_file_cli.cli = tftp_file_cli.cli ~ " " ~ file %}
+{%             endfor %}
+   {{ tftp_file_cli.cli }}
+{%         endif %}
 {%         for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
    !
    subnet {{ subnet.subnet }}
