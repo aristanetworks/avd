@@ -829,7 +829,8 @@ class UtilsMixin:
             tunnel_interface_numbers = get(interface_policy_config, "tunnel_interface_numbers")
             if tunnel_interface_numbers is None:
                 raise AristaAvdMissingVariableError(
-                    f"{wan_interface['name']}.cv_pathfinder_internet_exit.policies[{internet_exit_policy['name']}].tunnel_interface_numbers needs to be set, when using wan interface for zscaler type internet exit."
+                    f"{wan_interface['name']}.cv_pathfinder_internet_exit.policies[{internet_exit_policy['name']}]."
+                    "tunnel_interface_numbers needs to be set, when using wan interface for zscaler type internet exit."
                 )
 
             tunnel_id_range = range_expand(tunnel_interface_numbers)
