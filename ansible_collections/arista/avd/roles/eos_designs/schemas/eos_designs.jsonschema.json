@@ -35146,6 +35146,28 @@
                           "^_.+$": {}
                         },
                         "title": "BGP Additional Paths"
+                      },
+                      "layer_2_fec_in_place_update": {
+                        "type": "object",
+                        "description": "BGP layer-2 in-place FEC operation.",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "timeout": {
+                            "type": "integer",
+                            "description": "In-place FEC update tracking timeout in seconds.",
+                            "minimum": 0,
+                            "maximum": 300,
+                            "title": "Timeout"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Layer 2 Fec In Place Update"
                       }
                     },
                     "additionalProperties": false,
