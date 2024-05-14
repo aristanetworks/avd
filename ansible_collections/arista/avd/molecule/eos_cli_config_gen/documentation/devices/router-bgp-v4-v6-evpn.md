@@ -126,6 +126,7 @@ ASN Notation: asplain
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
 | EVPN-OVERLAY | True | default |
+| RCF_TEST | False | default |
 
 #### Router BGP VLANs
 
@@ -224,29 +225,40 @@ router bgp 65100
       neighbor EVPN-OVERLAY route-map RM-HIDE-AS-PATH in
       neighbor EVPN-OVERLAY route-map RM-HIDE-AS-PATH out
       neighbor EVPN-OVERLAY activate
+      neighbor RCF_TEST rcf in Address_Family_EVPN_In()
+      neighbor RCF_TEST rcf out Address_Family_EVPN_Out()
    !
    address-family ipv4
       neighbor IPV4-UNDERLAY route-map RM-HIDE-AS-PATH in
       neighbor IPV4-UNDERLAY route-map RM-HIDE-AS-PATH out
       neighbor IPV4-UNDERLAY activate
       neighbor IPV4-UNDERLAY-MLAG activate
+      neighbor TEST_RCF rcf in Address_Family_IPV4_In()
+      neighbor TEST_RCF rcf out Address_Family_IPV4_Out()
    !
    address-family ipv4 multicast
       neighbor IPV4-UNDERLAY activate
       neighbor IPV4-UNDERLAY-MLAG activate
       redistribute attached-host
+      redistribute isis rcf Router_BGP_Isis()
    !
    address-family ipv6
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH out
       neighbor IPV6-UNDERLAY activate
       neighbor IPV6-UNDERLAY-MLAG activate
+      neighbor TEST_RCF rcf in Address_Family_IPV6_In()
+      neighbor TEST_RCF rcf out Address_Family_IPV6_Out()
    !
    vrf Tenant_A
       rd 10.50.64.15:30001
       route-target import evpn 1:30001
       route-target import evpn route-map RM-DENY-DEFAULT
+      route-target import vpn-ipv4 1:30011
+      route-target import vpn-ipv4 rcf RT_IMPORT_AF_RCF() vpn-route filter-rcf RT_IMPORT_AF_RCF_FILTER()
+      route-target import vpn-ipv4 route-map RT_IMPORT_AF_RM
       route-target export evpn 1:30001
+      route-target export evpn rcf RT_EXPORT_AF_RCF()
       redistribute connected
    !
    vrf Tenant_B

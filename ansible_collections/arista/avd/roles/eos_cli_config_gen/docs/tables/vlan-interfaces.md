@@ -48,6 +48,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "vlan_interfaces.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IP address or hostname of DHCP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "vlan_interfaces.[].ip_helpers.[].source_interface") | String |  |  |  | Interface used as source for forwarded DHCP packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "vlan_interfaces.[].ip_helpers.[].vrf") | String |  |  |  | VRF where DHCP server can be reached. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_dhcp_relay_all_subnets</samp>](## "vlan_interfaces.[].ip_dhcp_relay_all_subnets") | Boolean |  |  |  | Allow forwarding requests with secondary IP addresses in the gateway address "giaddr" field. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_nat</samp>](## "vlan_interfaces.[].ip_nat") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "vlan_interfaces.[].ip_nat.destination") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "vlan_interfaces.[].ip_nat.destination.dynamic") | List, items: Dictionary |  |  |  |  |
@@ -95,6 +96,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6 address or IPv6_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_ra_disabled</samp>](## "vlan_interfaces.[].ipv6_nd_ra_disabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_managed_config_flag</samp>](## "vlan_interfaces.[].ipv6_nd_managed_config_flag") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_other_config_flag</samp>](## "vlan_interfaces.[].ipv6_nd_other_config_flag") | Boolean |  |  |  | Set the "other stateful configuration" flag in IPv6 router advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_cache</samp>](## "vlan_interfaces.[].ipv6_nd_cache") | Dictionary |  |  |  | IPv6 neighbor cache options. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_capacity</samp>](## "vlan_interfaces.[].ipv6_nd_cache.dynamic_capacity") | Integer |  |  | Min: 0<br>Max: 4294967295 | Capacity of dynamic cache entries. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expire</samp>](## "vlan_interfaces.[].ipv6_nd_cache.expire") | Integer |  |  | Min: 1<br>Max: 65535 | Cache entries expirery in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refresh_always</samp>](## "vlan_interfaces.[].ipv6_nd_cache.refresh_always") | Boolean |  |  |  | Force refresh on cache expiry. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_prefixes</samp>](## "vlan_interfaces.[].ipv6_nd_prefixes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv6_prefix</samp>](## "vlan_interfaces.[].ipv6_nd_prefixes.[].ipv6_prefix") | String | Required, Unique |  |  | IPv6_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "vlan_interfaces.[].ipv6_nd_prefixes.[].valid_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
@@ -106,6 +112,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations.[].local_interface") | String |  |  |  | Local interface to communicate with DHCP server - mutually exclusive to source_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations.[].source_address") | String |  |  |  | Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_address</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations.[].link_address") | String |  |  |  | Override the default link address specified in the relayed DHCP packet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay_all_subnets</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_all_subnets") | Boolean |  |  |  | Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_group_in</samp>](## "vlan_interfaces.[].access_group_in") | String |  |  |  | IPv4 access-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_group_out</samp>](## "vlan_interfaces.[].access_group_out") | String |  |  |  | IPv4 access-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group_in</samp>](## "vlan_interfaces.[].ipv6_access_group_in") | String |  |  |  | IPv6 access-list name. |
@@ -284,6 +291,9 @@
 
             # VRF where DHCP server can be reached.
             vrf: <str>
+
+        # Allow forwarding requests with secondary IP addresses in the gateway address "giaddr" field.
+        ip_dhcp_relay_all_subnets: <bool>
         ip_nat:
           destination:
             dynamic:
@@ -388,6 +398,21 @@
           - <str>
         ipv6_nd_ra_disabled: <bool>
         ipv6_nd_managed_config_flag: <bool>
+
+        # Set the "other stateful configuration" flag in IPv6 router advertisements.
+        ipv6_nd_other_config_flag: <bool>
+
+        # IPv6 neighbor cache options.
+        ipv6_nd_cache:
+
+          # Capacity of dynamic cache entries.
+          dynamic_capacity: <int; 0-4294967295>
+
+          # Cache entries expirery in seconds.
+          expire: <int; 1-65535>
+
+          # Force refresh on cache expiry.
+          refresh_always: <bool>
         ipv6_nd_prefixes:
 
             # IPv6_address/Mask.
@@ -413,6 +438,9 @@
 
             # Override the default link address specified in the relayed DHCP packet.
             link_address: <str>
+
+        # Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field.
+        ipv6_dhcp_relay_all_subnets: <bool>
 
         # IPv4 access-list name.
         access_group_in: <str>

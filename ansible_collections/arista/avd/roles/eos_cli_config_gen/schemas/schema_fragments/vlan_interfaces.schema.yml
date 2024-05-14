@@ -164,6 +164,9 @@ keys:
                 description: VRF where DHCP server can be reached.
                 convert_types:
                   - int
+        ip_dhcp_relay_all_subnets:
+          type: bool
+          description: Allow forwarding requests with secondary IP addresses in the gateway address "giaddr" field.
         ip_nat:
           type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
@@ -209,6 +212,30 @@ keys:
           type: bool
         ipv6_nd_managed_config_flag:
           type: bool
+        ipv6_nd_other_config_flag:
+          type: bool
+          description: Set the "other stateful configuration" flag in IPv6 router advertisements.
+        ipv6_nd_cache:
+          type: dict
+          description: IPv6 neighbor cache options.
+          keys:
+            dynamic_capacity:
+              type: int
+              description: Capacity of dynamic cache entries.
+              convert_types:
+                - str
+              min: 0
+              max: 4294967295
+            expire:
+              type: int
+              description: Cache entries expirery in seconds.
+              convert_types:
+                - str
+              min: 1
+              max: 65535
+            refresh_always:
+              type: bool
+              description: Force refresh on cache expiry.
         ipv6_nd_prefixes:
           type: list
           convert_types:
@@ -254,6 +281,9 @@ keys:
               link_address:
                 type: str
                 description: Override the default link address specified in the relayed DHCP packet.
+        ipv6_dhcp_relay_all_subnets:
+          type: bool
+          description: Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field.
         access_group_in:
           type: str
           description: IPv4 access-list name.

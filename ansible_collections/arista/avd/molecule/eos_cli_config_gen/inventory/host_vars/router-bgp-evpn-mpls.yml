@@ -51,6 +51,9 @@ router_bgp:
     neighbors:
       - ip_address: 192.168.255.3
         activate: true
+      - ip_address: 192.168.255.4
+        rcf_in: Address_Family_EVPN_In()
+        rcf_out: Address_Family_EVPN_Out()
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
         activate: true
