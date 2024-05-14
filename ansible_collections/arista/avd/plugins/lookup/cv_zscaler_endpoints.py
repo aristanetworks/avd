@@ -21,22 +21,32 @@ options:
     type: str
     description: CV server.
     required: true
+    vars:
+      - name: cv_server
   cv_token:
     type: str
     description: CV token.
     required: true
+    vars:
+      - name: cv_token
   cv_verify_certs:
     type: bool
     description: Verify SSL certificates.
     default: true
+    vars:
+      - name: cv_verify_certs
   serial_number:
     type: str
     description: Device serial number.
     required: true
+    vars:
+      - name: serial_number
   inventory_hostname:
     type: str
     description: Device inventory hostname.
     required: true
+    vars:
+      - name: inventory_hostname
 """
 
 EXAMPLES = r"""
@@ -64,14 +74,14 @@ from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools i
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, get, get_templar
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.api.arista.swg.v1 import VpnEndpoint
+    from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.api.arista.swg.v1 import Location, VpnEndpoint
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 
 class LookupModule(LookupBase):
-    def run(self, variables=None, **kwargs):
+    def run(self, terms, variables=None, **kwargs):
 
         # Setup module logging - we don't return 'result' to just giving a dummy dict.
         setup_module_logging({})
@@ -89,6 +99,18 @@ class LookupModule(LookupBase):
         # Ensuring we don't evaluate the inline jinja.
         variables["zscaler_endpoints"] = None
 
+        # Get updated templar instance to be passed along to our simplified "templater"
+        templar = get_templar(self, variables)
+
+        # Initialize SharedUtils class to be passed to EosDesignsFacts below.
+        shared_utils = SharedUtils(hostvars=variables, templar=templar)
+
+        # Insert dynamic keys into the input data if not set.
+        # These keys are required by the schema, but the default values are set inside shared_utils.
+        variables.setdefault("node_type_keys", shared_utils.node_type_keys)
+        variables.setdefault("connected_endpoints_keys", shared_utils.connected_endpoints_keys)
+        variables.setdefault("network_services_keys", shared_utils.network_services_keys)
+
         # Load schema tools and perform conversion and validation
         avdschematools = AvdSchemaTools(
             hostname=self.get_option("inventory_hostname"),
@@ -102,15 +124,12 @@ class LookupModule(LookupBase):
         if result.get("failed"):
             raise AnsibleLookupError(result["msg"])
 
-        # Get updated templar instance to be passed along to our simplified "templater"
-        templar = get_templar(self, variables)
-
-        return SharedUtils(variables, templar)
+        return shared_utils
 
     async def get_zscaler_endpoints(self):
         serial_number = self.shared_utils.serial_number
-        location = get(self.shared_utils.wan_site or {}, "location")
-        if location is None:
+        wan_site_location = get(self.shared_utils.wan_site or {}, "location")
+        if wan_site_location is None:
             raise AnsibleLookupError("Unable to determine the WAN Site location.")
 
         cv_server = self.get_option("cv_server")
@@ -118,26 +137,39 @@ class LookupModule(LookupBase):
         cv_verify_certs = self.get_option("cv_verify_certs")
 
         async with CVClient(servers=[cv_server], token=cv_token, verify_certs=cv_verify_certs) as cv_client:
-            await cv_client.set_swg_device(device_id=serial_number, service="zscaler", location=location)
+            await cv_client.set_swg_device(device_id=serial_number, service="zscaler", location=wan_site_location)
             cv_endpoint_status = await cv_client.wait_for_swg_endpoint_status(device_id=serial_number, service="zscaler")
 
-        zscaler_endpoints = {}
-        if not getattr(cv_endpoint_status.vpn_endpoint_map, "values", None):
+        device_location: Location = cv_endpoint_status.device_location
+
+        zscaler_endpoints = {
+            "cloud_name": cv_endpoint_status.cloud_name,
+            "device_location": {
+                "city": device_location.city,
+                "country": device_location.country,
+                "latitude": device_location.latitude,
+                "longitude": device_location.longitude,
+            },
+        }
+        if not getattr(cv_endpoint_status, "vpn_endpoints", None) or not getattr(cv_endpoint_status.vpn_endpoints, "values", None):
             return zscaler_endpoints
 
         for key in ("primary", "secondary", "tertiary"):
-            if key in cv_endpoint_status.vpn_endpoint_map.values:
-                vpn_endpoint: VpnEndpoint = cv_endpoint_status.vpn_endpoint_map.values[key]
+            if key in cv_endpoint_status.vpn_endpoints.values:
+                vpn_endpoint: VpnEndpoint = cv_endpoint_status.vpn_endpoints.values[key]
+                location: Location = vpn_endpoint.endpoint_location
                 zscaler_endpoints[key] = {
-                    "ip_address": vpn_endpoint.ip_address,
+                    "ip_address": vpn_endpoint.ip_address.value,
                     "datacenter": vpn_endpoint.datacenter,
-                    "city": vpn_endpoint.city,
-                    "country": vpn_endpoint.country,
-                    "latitude": vpn_endpoint.latitude,
-                    "longitude": vpn_endpoint.longitude,
+                    "city": location.city,
+                    "country": location.country,
+                    "latitude": location.latitude,
+                    "longitude": location.longitude,
                 }
 
-        return zscaler_endpoints
+        # Lookup plugins are always expected to return an iterable,
+        # but if we only return a single item, it will be unpacked to the value by Ansible.
+        return [zscaler_endpoints]
 
 
 def setup_module_logging(result: dict) -> None:

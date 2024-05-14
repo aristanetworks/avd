@@ -36,18 +36,8 @@ class MetadataMixin(UtilsMixin):
                 {
                     "name": internet_exit_policy["name"],
                     "type": internet_exit_policy["type"],
-                    "city": get(
-                        self.shared_utils.wan_site,
-                        "resolved_location.city",
-                        required=True,
-                        org_key="cv_pathfinder_regions[].sites[].resolved_location.city",
-                    ),
-                    "country": get(
-                        self.shared_utils.wan_site,
-                        "resolved_location.country",
-                        required=True,
-                        org_key="cv_pathfinder_regions[].sites[].resolved_location.country",
-                    ),
+                    "city": get(self._zscaler_endpoints, "device_location.city", required=True, org_key="zscaler_endpoints.device_location.city"),
+                    "country": get(self._zscaler_endpoints, "device_location.country", required=True, org_key="zscaler_endpoints.device_location.country"),
                     "upload_bandwidth": get(internet_exit_policy, "zscaler.upload_bandwidth"),
                     "download_bandwidth": get(internet_exit_policy, "zscaler.download_bandwidth"),
                     "firewall": get(internet_exit_policy, "zscaler.firewall.enabled", default=False),

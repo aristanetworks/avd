@@ -43,9 +43,12 @@
 | SR MPLS Enabled | {{ router_isis.segment_routing_mpls.enabled }} |
 {%     endif %}
 {%     if router_isis.spf_interval.interval is arista.avd.defined %}
-| SPF Interval | {{ router_isis.spf_interval.interval }} |
+| SPF Interval | {{ router_isis.spf_interval.interval }} {{ router_isis.spf_interval.interval_unit | arista.avd.default("seconds") }} |
 {%         if router_isis.spf_interval.wait_interval is arista.avd.defined %}
-| SPF Interval Wait Time| {{ router_isis.spf_interval.wait_interval }} |
+| SPF Interval Wait Time| {{ router_isis.spf_interval.wait_interval }} milliseconds |
+{%             if router_isis.spf_interval.hold_interval is arista.avd.defined %}
+| SPF Interval Hold Time| {{ router_isis.spf_interval.hold_interval }} milliseconds |
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {%     if router_isis.graceful_restart is arista.avd.defined %}

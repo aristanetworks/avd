@@ -14,3 +14,16 @@ router_general:
         dynamic_prefix_lists:
           - name: DYNAMIC_TEST_PREFIX_LIST_2
           - name: DYNAMIC_TEST_PREFIX_LIST_1
+  control_functions:
+    code_units:
+      - name: code1
+        content: |-
+          function ACCEPT_ALL() {
+            return true;
+            }
+          EOF
+      - name: code2
+        content: |-
+          function DENY_ALL() {
+            return true;
+            }

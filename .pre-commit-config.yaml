@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: trailing-whitespace
         exclude: ansible_collections/arista/avd/molecule
@@ -15,7 +15,7 @@ repos:
         exclude: ansible_collections/arista/avd/molecule
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.4
+    rev: v1.5.5
     hooks:
       - name: Check and insert license on Python files
         id: insert-license
@@ -118,7 +118,7 @@ repos:
         args: [--strict, -c=.github/yamllintrc]
 
   - repo: https://github.com/aristanetworks/j2lint.git
-    rev: "742a25e"
+    rev: "v1.1.0"
     hooks:
       - id: j2lint
         name: Check for Linting errors on Jinja2 files
@@ -199,10 +199,10 @@ repos:
         language: python
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false
-        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.5.1,<4.18']
+        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.39.0
+    rev: v0.40.0
     hooks:
       - id: markdownlint
         name: Check for Linting errors on MarkDown files

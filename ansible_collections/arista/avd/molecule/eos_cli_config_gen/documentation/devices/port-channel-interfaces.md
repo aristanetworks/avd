@@ -104,9 +104,9 @@ sFlow is disabled.
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet10/10 | 110 | *ISIS_TEST | *99 | *point-to-point | *level-2 | *True | *text |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet10/10 | 110 | *ISIS_TEST | True | *99 | *point-to-point | *level-2 | *True | *text |
 
 *Inherited from Port-Channel Interface
 
@@ -235,7 +235,7 @@ interface Ethernet50
 | Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
 | Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
 | Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
-| Port-Channel131 | dot1q-tunnel mode | switched | dot1q-tunnel | - | - | - | - | - | - | - |
+| Port-Channel131 | dot1q-tunnel mode | switched | dot1q-tunnel | 115 | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q
 
@@ -339,9 +339,9 @@ interface Ethernet50
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Port-Channel110 | ISIS_TEST | 99 | point-to-point | level-2 | True | text |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Port-Channel110 | ISIS_TEST | True | 99 | point-to-point | level-2 | True | text |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -588,6 +588,7 @@ interface Port-Channel110
    description isis_interface_knobs
    no switchport
    isis enable ISIS_TEST
+   isis bfd
    isis circuit-type level-2
    isis metric 99
    isis network point-to-point
@@ -707,6 +708,7 @@ interface Port-Channel130
 interface Port-Channel131
    description dot1q-tunnel mode
    switchport
+   switchport access vlan 115
    switchport mode dot1q-tunnel
 ```
 
