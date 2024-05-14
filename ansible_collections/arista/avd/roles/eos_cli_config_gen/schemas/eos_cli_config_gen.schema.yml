@@ -7918,11 +7918,15 @@ keys:
                   description: Maximum rate limit.
                   min: 0
                   max: 10000000
+                  convert_types:
+                  - str
                 bandwidth:
                   type: int
                   description: Minimum bandwidth.
                   min: 0
                   max: 10000000
+                  convert_types:
+                  - str
                 rate_unit:
                   type: str
                   required: true
