@@ -63,6 +63,7 @@ class MonitorConnectivityMixin(UtilsMixin):
         monitor_connectivity = strip_empties_from_dict(monitor_connectivity)
 
         if monitor_connectivity:
+            monitor_connectivity["shutdown"] = False
             return monitor_connectivity
 
         return None

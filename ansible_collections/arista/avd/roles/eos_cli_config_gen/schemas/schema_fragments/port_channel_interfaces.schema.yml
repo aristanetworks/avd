@@ -410,6 +410,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -591,6 +594,12 @@ keys:
                 - ipv4
                 - ipv6
                 - layer2
+            mpass:
+              type: bool
+              description: |-
+                When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.
+                Arista PTP enabled devices always place PTP messages on the same physical link within the port-channel.
+                Hence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.
         ip_address:
           type: str
           description: IPv4 address/mask.

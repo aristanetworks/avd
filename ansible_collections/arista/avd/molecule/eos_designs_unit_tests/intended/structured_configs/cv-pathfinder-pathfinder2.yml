@@ -43,6 +43,7 @@ router_bgp:
       interval: 2020
       min_rx: 2000
       multiplier: 3
+    route_reflector_client: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS

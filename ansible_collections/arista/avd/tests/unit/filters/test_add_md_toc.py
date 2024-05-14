@@ -44,7 +44,7 @@ class TestAddMdTocFilter:
                 # Try using new md_toc api when md-toc>=9.0.0.
                 toc_input = md_toc.api.build_toc(MD_INPUT, list_marker="-", keep_header_levels=TOC_LEVEL, skip_lines=SKIP_LINES)
             except AttributeError:
-                # If that fails, use the previous version md-toc>=7.1.0,<9.0.0
+                # If that fails, use the previous version md-toc>=8.1.0,<9.0.0
                 toc_input = md_toc.build_toc(MD_INPUT, list_marker="-", keep_header_levels=TOC_LEVEL, skip_lines=SKIP_LINES)
 
             assert toc_output.strip() == toc_input.strip()

@@ -40,7 +40,7 @@ class RouterBgpMixin(UtilsMixin):
         tenant_svis_l2vlans_dict = self._router_bgp_sorted_vlans_and_svis_lists()
 
         router_bgp = {
-            "peer_groups": self._router_bgp_peer_groups,
+            **self._router_bgp_peer_groups(),
             "vrfs": self._router_bgp_vrfs,
             "vlans": self._router_bgp_vlans(tenant_svis_l2vlans_dict),
             "vlan_aware_bundles": self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict),
@@ -55,18 +55,17 @@ class RouterBgpMixin(UtilsMixin):
         router_bgp = {key: value for key, value in router_bgp.items() if value is not None}
         return router_bgp
 
-    @cached_property
-    def _router_bgp_peer_groups(self) -> list | None:
+    def _router_bgp_peer_groups(self) -> dict:
         """
         Return the structured config for router_bgp.peer_groups
 
         Covers two areas:
-        - bgp_peer_groups defined under the vrf
+        - bgp_peer_groups defined under the vrf including ipv4/ipv6 address_families.
         - adding route-map to the underlay peer-group in case of services in vrf default
         """
 
         if not self.shared_utils.network_services_l3:
-            return None
+            return {}
 
         peer_groups = []
         peer_peergroups = set()
@@ -94,12 +93,24 @@ class RouterBgpMixin(UtilsMixin):
                 ]
             )
 
-        bgp_peer_groups = []
+        router_bgp = {"peer_groups": []}
         if peer_groups:
             for peer_group in peer_groups:
+
                 peer_group.pop("nodes", None)
+                for af in ["address_family_ipv4", "address_family_ipv6"]:
+                    if not (af_peer_group := peer_group.pop(af, None)):
+                        continue
+                    af_peer_groups = router_bgp.setdefault(af, {"peer_groups": []})["peer_groups"]
+                    append_if_not_duplicate(
+                        primary_key="name",
+                        list_of_dicts=af_peer_groups,
+                        new_dict={"name": peer_group["name"], **af_peer_group},
+                        context=f"BGP Peer Groups for '{af}' defined under network services",
+                        context_keys=["name"],
+                    )
                 append_if_not_duplicate(
-                    list_of_dicts=bgp_peer_groups,
+                    list_of_dicts=router_bgp["peer_groups"],
                     primary_key="name",
                     new_dict=peer_group,
                     context="BGP Peer Groups defined under network services",
@@ -108,7 +119,7 @@ class RouterBgpMixin(UtilsMixin):
 
         # router bgp default vrf configuration for evpn
         if self._vrf_default_evpn and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]):
-            bgp_peer_groups.append(
+            router_bgp["peer_groups"].append(
                 {
                     "name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
                     "type": "ipv4",
@@ -116,10 +127,10 @@ class RouterBgpMixin(UtilsMixin):
                 }
             )
 
-        if bgp_peer_groups:
-            return bgp_peer_groups
+        if router_bgp["peer_groups"]:
+            return router_bgp
 
-        return None
+        return {}
 
     @cached_property
     def _router_bgp_vrfs(self) -> list | None:

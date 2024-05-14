@@ -236,7 +236,10 @@ wan_router:
       cv_pathfinder_site: Site11
 ```
 
-For Pathfinders (`wan_rr`), it is possible to set the `cv_pathfinder_region` key. It is not rendered in configuration but leveraged in CloudVision for the visualization.
+For Pathfinders (`wan_rr`), both `cv_pathfinder_site` and `cv_pathfinder_region` are optional but recommended for the following use cases:
+
+- To define a "global" pathfinder, only set the `cv_pathfinder_site` and define the site under `cv_pathfinder_global_sites`.
+- To define a "regional" pathfinder, set both `cv_pathfinder_region` and `cv_pathfinder_site`. The region and site must be defined under `cv_pathfinder_hierarchy`.
 
 #### WAN carriers and path-groups
 
@@ -557,24 +560,6 @@ zscaler_endpoints: "{{ lookup('arista.avd.cv_zscaler_endpoints') }}"
 
 For each `zscaler` type Internet-policies, AVD uses the `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary and the `zscaler_endpoints` in combination with the `l3_interfaces.cv_pathfinder_internet_exit.policies[name=<POLICY-NAME>].tunnel_interface_numbers` to generate the internet-exit configuration.
 
-In its current implementation, AVD also required some additional data under `cv_pathfinder_regions.resolved_location` to identify the location of each site on Cloudvision:
-
-```yaml
-cv_pathfinder_regions:
-  - name: <str; required; unique>
-    description: <str>
-        # Location as a string is resolved on Cloudvision.
-        location: <str>
-
-        # PREVIEW: These keys are in preview mode.
-        #
-        # The resolved location elements.
-        # Needed for internet-exit Zscaler integration until we can autofill it from the lookup plugin.
-        resolved_location:
-          city: <str; required>
-          country: <str; required>
-```
-
 The `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary has additonnal options to configure the policy parameters shared with Zscaler through Cloudvision.
 
 ```yaml
@@ -585,7 +570,6 @@ The `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionar
         fallback_to_system_default: <bool; default=True>
         zscaler:
           ipsec_key_salt: <str; required>
-          cloud_name: <str; required>
           domain_name: <str; required>
           encrypt_traffic: <bool; default=True>
           download_bandwidth: <int>

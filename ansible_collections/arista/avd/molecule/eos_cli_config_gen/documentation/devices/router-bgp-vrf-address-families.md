@@ -53,7 +53,7 @@ ASN Notation: asplain
 | --- | ------------------- | ------------ |
 | VRF01 | - | - |
 | VRF02 | - | - |
-| VRF03 | - | - |
+| VRF03 | - | dynamic |
 
 #### Router BGP Device Configuration
 
@@ -80,6 +80,7 @@ router bgp 65001
    !
    address-family ipv6 multicast
       no neighbor FOOBAR activate
+      redistribute isis rcf Router_BGP_Isis()
    !
    vrf VRF01
       !
@@ -103,6 +104,8 @@ router bgp 65001
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
          network 2.3.4.0/24 route-map BARFOO
+         redistribute connected rcf VRF_AFIPV4_RCF_CONNECTED_1()
+         redistribute static route-map VRF_AFIPV4_RM_STATIC_1
       !
       address-family ipv4 multicast
          bgp missing-policy direction in action permit
@@ -111,6 +114,8 @@ router bgp 65001
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
          network 239.0.0.0/24 route-map BARFOO
+         redistribute connected
+         redistribute static route-map VRF_AFIPV4MULTI_RM_STATIC
       !
       address-family ipv6
          bgp missing-policy direction in action deny-in-out
@@ -121,12 +126,20 @@ router bgp 65001
          neighbor aa::1 activate
          neighbor aa::1 route-map FOO in
          neighbor aa::1 route-map BAR out
+         neighbor aa::2 activate
+         neighbor aa::2 rcf in VRF_AFIPV6_RCF_IN()
+         neighbor aa::2 rcf out VRF_AFIPV6_RCF_OUT()
          network aa::/64
+      redistribute connected rcf VRF_AFIPV6_RCF_CONNECTED()
+      redistribute isis include leaked
+      redistribute static route-map VRF_AFIPV6_RM_STATIC
       !
       address-family ipv6 multicast
          bgp missing-policy direction in action deny
          bgp missing-policy direction out action deny
          network ff08:1::/64
+         redistribute connected
+         redistribute static route-map VRF_AFIPV6MULTI_RM_STATIC
    !
    vrf VRF02
       !
@@ -137,6 +150,7 @@ router bgp 65001
          bgp additional-paths send limit 3
    !
    vrf VRF03
+      redistribute dynamic rcf VRF_RCF_DYNAMIC()
       !
       address-family ipv4
          bgp additional-paths send ecmp

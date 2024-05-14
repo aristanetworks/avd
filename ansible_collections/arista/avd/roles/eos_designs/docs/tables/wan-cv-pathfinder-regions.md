@@ -7,6 +7,10 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>cv_pathfinder_global_sites</samp>](## "cv_pathfinder_global_sites") | List, items: Dictionary |  |  |  | Define sites that are outside of the CV Pathfinder hierarchy.<br>This is used to arrange pathfinders in the CloudVision topology layout. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_pathfinder_global_sites.[].name") | String | Required, Unique |  |  | The site name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "cv_pathfinder_global_sites.[].description") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;location</samp>](## "cv_pathfinder_global_sites.[].location") | String |  |  |  | Location as a string is resolved on Cloudvision. |
     | [<samp>cv_pathfinder_regions</samp>](## "cv_pathfinder_regions") | List, items: Dictionary |  |  |  | Define the CV Pathfinder hierarchy. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_pathfinder_regions.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "cv_pathfinder_regions.[].description") | String |  |  |  |  |
@@ -16,15 +20,23 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "cv_pathfinder_regions.[].sites.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "cv_pathfinder_regions.[].sites.[].id") | Integer | Required |  | Min: 1<br>Max: 10000 | The site ID must be unique within a zone.<br>Given that all the sites are placed in a zone named after the region, the site ID must be unique within a region. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location</samp>](## "cv_pathfinder_regions.[].sites.[].location") | String |  |  |  | Location as a string is resolved on Cloudvision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resolved_location</samp>](## "cv_pathfinder_regions.[].sites.[].resolved_location") | Dictionary |  |  |  | PREVIEW: These keys are in preview mode.<br><br>The resolved location elements.<br>Needed for internet-exit Zscaler integration until we can autofill it from the lookup plugin. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;city</samp>](## "cv_pathfinder_regions.[].sites.[].resolved_location.city") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "cv_pathfinder_regions.[].sites.[].resolved_location.country") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;site_contact</samp>](## "cv_pathfinder_regions.[].sites.[].site_contact") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;site_after_hours_contact</samp>](## "cv_pathfinder_regions.[].sites.[].site_after_hours_contact") | String |  |  |  |  |
 
 === "YAML"
 
     ```yaml
+    # Define sites that are outside of the CV Pathfinder hierarchy.
+    # This is used to arrange pathfinders in the CloudVision topology layout.
+    cv_pathfinder_global_sites:
+
+        # The site name.
+      - name: <str; required; unique>
+        description: <str>
+
+        # Location as a string is resolved on Cloudvision.
+        location: <str>
+
     # Define the CV Pathfinder hierarchy.
     cv_pathfinder_regions:
       - name: <str; required; unique>
@@ -46,14 +58,6 @@
 
             # Location as a string is resolved on Cloudvision.
             location: <str>
-
-            # PREVIEW: These keys are in preview mode.
-            #
-            # The resolved location elements.
-            # Needed for internet-exit Zscaler integration until we can autofill it from the lookup plugin.
-            resolved_location:
-              city: <str; required>
-              country: <str; required>
             site_contact: <str>
             site_after_hours_contact: <str>
     ```

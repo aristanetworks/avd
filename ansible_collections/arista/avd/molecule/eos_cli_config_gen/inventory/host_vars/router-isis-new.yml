@@ -8,7 +8,9 @@ router_isis:
   mpls_ldp_sync_default: true
   spf_interval:
     interval: 250
+    interval_unit: seconds
     wait_interval: 10
+    hold_interval: 20
   graceful_restart:
     enabled: true
     restart_hold_time: 10

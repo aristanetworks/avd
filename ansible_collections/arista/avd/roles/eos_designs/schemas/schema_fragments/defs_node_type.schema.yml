@@ -63,12 +63,18 @@ $defs:
             description: Node management interface IPv4 address.
             type: str
             format: cidr
+          mgmt_gateway:
+            type: str
+            description: This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
             description: Node management interface IPv6 address.
             type: str
             format: cidr
+          ipv6_mgmt_gateway:
+            type: str
+            description: This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
@@ -158,7 +164,7 @@ $defs:
               hide_keys: true
             description: Custom structured config for eos_cli_config_gen.
             type: dict
-            $ref: "eos_cli_config_gen#/"
+            $ref: "eos_cli_config_gen#"
           uplink_type:
             documentation_options:
               table: node-type-uplink-configuration
@@ -327,9 +333,9 @@ $defs:
               "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
               Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             # Schema ref not implemented since we do not know which of the schemas to look at.
-            # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
+            # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
           mlag_port_channel_structured_config:
-            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items/"
+            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -340,7 +346,7 @@ $defs:
               Overrides the settings on the port-channel interface level.
               "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_vlan_structured_config:
-            $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/"
+            $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -351,7 +357,7 @@ $defs:
               Overrides the settings on the vlan interface level.
               "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_l3_vlan_structured_config:
-            $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/"
+            $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -753,14 +759,34 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: str
+          mlag_peer_address_family:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: |-
+              IP address family used to establish MLAG Peer Link (control link).
+              `ipv6` requires EOS version 4.31.1F or higher.
+              Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_l3_peer_vlan` set to 4094).
+            type: str
+            valid_values:
+              - ipv4
+              - ipv6
+            default: ipv4
           mlag_peer_ipv4_pool:
             documentation_options:
               table: node-type-l2-mlag-configuration
-            description: |
-              IP address pool used for MLAG Peer Link (control link). IP is derived from the node id.
-              Required when MLAG leafs present in topology.
+            description: |-
+              IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
+              Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
             type: str
             format: ipv4_cidr
+          mlag_peer_ipv6_pool:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: |-
+              IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
+              Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+            type: str
+            format: ipv6_cidr
           mlag_port_channel_id:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -1252,8 +1278,9 @@ $defs:
             type: str
             description: |-
               The CV Pathfinder site name.
-              This key is required for WAN routers but ignored for pathfinders.
-              The site name must be defined for the relevant region under 'cv_pathfinder_regions'.
+              This key is required for WAN routers but optional for pathfinders.
+              For WAN routers and pathfinders with `cv_pathfinder_region`, the site name must be defined for the relevant region under 'cv_pathfinder_regions'.
+              For pathfinders without `cv_pathfinder_region` set, the site must be defined under `cv_pathfinder_global_sites`.
           wan_ha:
             documentation_options:
               table: node-type-wan-configuration

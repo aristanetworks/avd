@@ -65,6 +65,10 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
+- ip_address: 2001:db8::1
+  vrf: MGMT
+- ip_address: 2001:db8::2
+  vrf: MGMT
 local_users:
 - name: admin
   disabled: true
@@ -103,6 +107,8 @@ ntp:
   - name: 192.168.200.5
     vrf: MGMT
     preferred: true
+  - name: 2001:db8::3
+    vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MLAG-OSPF-L3LEAF1A
@@ -118,9 +124,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.10.255.6/31
   no_autostate: true
   mtu: 1500
+  ip_address: 10.10.255.6/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
 port_channel_interfaces:

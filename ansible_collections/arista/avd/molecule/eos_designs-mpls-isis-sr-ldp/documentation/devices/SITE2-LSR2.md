@@ -134,6 +134,7 @@ vlan internal order ascending range 1006 1199
 | Ethernet13 | P2P_LINK_TO_SITE2-LER1_Ethernet12 | *routed | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
 | Ethernet14 | P2P_LINK_TO_SITE2-LER1_Ethernet13 | *routed | 110 | *100.64.49.5/30 | **default | *9178 | *False | **- | **- |
 | Ethernet15 | P2P_LINK_TO_SITE2-LER1_Ethernet14 | *routed | 110 | *100.64.49.5/30 | **default | *9178 | *False | **- | **- |
+
 *Inherited from Port-Channel Interface
 
 ##### IPv6
@@ -145,18 +146,20 @@ vlan internal order ascending range 1006 1199
 | Ethernet13 | P2P_LINK_TO_SITE2-LER1_Ethernet12 | *routed | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
 | Ethernet14 | P2P_LINK_TO_SITE2-LER1_Ethernet13 | *routed | 110 | *- | *default | *9178 | *False | *- | *- | *- | *- |
 | Ethernet15 | P2P_LINK_TO_SITE2-LER1_Ethernet14 | *routed | 110 | *- | *default | *9178 | *False | *- | *- | *- | *- |
- *Inherited from Port-Channel Interface
+
+*Inherited from Port-Channel Interface
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet3 | - | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
-| Ethernet12 | 12 | *CUSTOM_NAME | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet13 | 12 | *CUSTOM_NAME | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet14 | 110 | *CUSTOM_NAME | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet15 | 110 | *CUSTOM_NAME | *60 | *point-to-point | *level-2 | *False | *md5 |
- *Inherited from Port-Channel Interface
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet3 | - | CUSTOM_NAME | - | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet12 | 12 | *CUSTOM_NAME | - | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet13 | 12 | *CUSTOM_NAME | - | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet14 | 110 | *CUSTOM_NAME | - | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet15 | 110 | *CUSTOM_NAME | - | *60 | *point-to-point | *level-2 | *False | *md5 |
+
+*Inherited from Port-Channel Interface
 
 #### Ethernet Interfaces Device Configuration
 
@@ -226,10 +229,10 @@ interface Ethernet15
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Port-Channel12 | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
-| Port-Channel110 | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Port-Channel12 | CUSTOM_NAME | - | 60 | point-to-point | level-2 | False | md5 |
+| Port-Channel110 | CUSTOM_NAME | - | 60 | point-to-point | level-2 | False | md5 |
 
 #### Port-Channel Interfaces Device Configuration
 

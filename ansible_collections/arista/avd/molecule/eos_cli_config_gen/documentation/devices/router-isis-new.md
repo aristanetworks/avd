@@ -62,10 +62,10 @@ interface Management1
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -156,9 +156,9 @@ interface Loopback1
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ----------- | ---- |
-| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
+| --------- | ------------- | -------- | ----------- | ---- |
+| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point |
 
 #### VLAN Interfaces Device Configuration
 
@@ -201,8 +201,9 @@ interface Vlan4094
 | Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
-| SPF Interval | 250 |
-| SPF Interval Wait Time| 10 |
+| SPF Interval | 250 seconds |
+| SPF Interval Wait Time| 10 milliseconds |
+| SPF Interval Hold Time| 20 milliseconds |
 | Graceful-restart Enabled | True |
 | Graceful-restart t2 Level-1 | 10 |
 | Graceful-restart t2 Level-2 | 20 |
@@ -281,7 +282,7 @@ router isis EVPN_UNDERLAY
    timers local-convergence-delay 15000 protected-prefixes
    set-overload-bit on-startup wait-for-bgp timeout 10
    advertise passive-only
-   spf-interval 250 10
+   spf-interval 250 seconds 10 milliseconds 20 milliseconds
    authentication mode md5 level-1
    authentication mode sha key-id 2 level-2
    graceful-restart
