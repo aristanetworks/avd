@@ -37,7 +37,7 @@ FEATURE_MIN_VERSION = {
     "pathfinder_location": StudioVersion.v3_4,
     "internet_exit_zscaler": StudioVersion.v3_4,
 }
-FEATURE = Literal["pathfinder_location"]
+FEATURE = Literal["pathfinder_location", "internet_exit_zscaler"]
 
 
 async def get_metadata_studio_version(result: DeployToCvResult, cv_client: CVClient) -> StudioVersion | None:
@@ -54,7 +54,7 @@ async def get_metadata_studio_version(result: DeployToCvResult, cv_client: CVCli
     except ValueError:
         accepted_versions = [str(v.value) for v in StudioVersion]
         warning = (
-            f"deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '{version}'."
+            f"deploy_cv_pathfinder_metadata_to_cv: Got invalid metadata studio version '{version}'. "
             f"This plugin only accepts versions '{accepted_versions}'. Skipping upload of metadata."
         )
         LOGGER.info(warning)
@@ -63,7 +63,7 @@ async def get_metadata_studio_version(result: DeployToCvResult, cv_client: CVCli
 
 
 def is_feature_supported(feature: FEATURE, studio_version: StudioVersion) -> bool:
-    return studio_version.value >= FEATURE_MIN_VERSION.get(feature, 0).value
+    return studio_version.value >= FEATURE_MIN_VERSION[feature].value
 
 
 def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
@@ -134,8 +134,8 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, stu
             pathfinder_metadata.update(pathfinder_location)
         else:
             warning = (
-                "deploy_cv_pathfinder_metadata_to_cv: Ignoring Pathfinder location information since it is not"
-                f"supported by metadata studio version {studio_version}."
+                "deploy_cv_pathfinder_metadata_to_cv: Ignoring Pathfinder location information since it is not "
+                f"supported by metadata studio version {studio_version.value}."
             )
             LOGGER.info(warning)
             warnings.append(warning)
@@ -364,7 +364,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_ver
     Returns metadata dict and list of any warnings raised.
     """
     if (internet_exit_policies := get(metadata, "internet_exit_policies")) is None:
-        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Did not find 'internet_exit_policies' for device: %s", device.hostname)
+        LOGGER.debug("deploy_cv_pathfinder_metadata_to_cv: Did not find 'internet_exit_policies' for device: %s", device.hostname)
         return {}, []
 
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Found %s 'internet_exit_policies' for device: %s", len(internet_exit_policies), device.hostname)
@@ -380,14 +380,15 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_ver
                 f"with type '{internet_exit_policy.get('type')}' for device: {device.hostname}."
             )
             LOGGER.info(warning)
-            warnings.append(warning)
             continue
 
         if not is_feature_supported("internet_exit_zscaler", studio_version):
-            LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Ignoring Pathfinder location information since it is not supported by metadata studio version %s.",
-                studio_version,
+            warning = (
+                "deploy_cv_pathfinder_metadata_to_cv: Ignoring Zscaler internet-exit information since "
+                f"it is not supported by metadata studio version {studio_version.value}."
             )
+            LOGGER.info(warning)
+            warnings.append(warning)
             continue
 
         policy_name = internet_exit_policy["name"]

@@ -143,7 +143,7 @@ class ActionModule(ActionBase):
             )
             # Errors and warnings are converted to JSON compatible strings.
             result_object.errors = [str(error) for error in result_object.errors]
-            result_object.warnings = result.get("warnings", []) + [str(warning) for warning in result_object.warnings]
+            result_object.warnings = [str(warning) for warning in result_object.warnings]
 
             # Add warnings caught by the logger
             result_object.warnings.extend(result.get("warnings", []))
@@ -155,7 +155,7 @@ class ActionModule(ActionBase):
             else:
                 result.update(
                     {
-                        "warnings": result_object.errors,
+                        "warnings": result_object.warnings,
                         "errors": result_object.errors,
                         "failed": result_object.failed,
                     }
