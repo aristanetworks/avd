@@ -29,6 +29,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "zscaler_endpoints.tertiary.country") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;latitude</samp>](## "zscaler_endpoints.tertiary.latitude") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;longitude</samp>](## "zscaler_endpoints.tertiary.longitude") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;cloud_name</samp>](## "zscaler_endpoints.cloud_name") | String | Required |  |  | The name of the Zscaler cloud the CloudVision cluster is integrated with like 'zscaler1' or 'zscalerbeta'. |
+    | [<samp>&nbsp;&nbsp;device_location</samp>](## "zscaler_endpoints.device_location") | Dictionary | Required |  |  | The location of the calling device after being resolved by Zscaler location APIs. This is required since Zscaler only accepts their own variants of City and Country. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;city</samp>](## "zscaler_endpoints.device_location.city") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "zscaler_endpoints.device_location.country") | String | Required |  |  |  |
 
 === "YAML"
 
@@ -64,4 +68,12 @@
         country: <str; required>
         latitude: <str; required>
         longitude: <str; required>
+
+      # The name of the Zscaler cloud the CloudVision cluster is integrated with like 'zscaler1' or 'zscalerbeta'.
+      cloud_name: <str; required>
+
+      # The location of the calling device after being resolved by Zscaler location APIs. This is required since Zscaler only accepts their own variants of City and Country.
+      device_location: # required
+        city: <str; required>
+        country: <str; required>
     ```

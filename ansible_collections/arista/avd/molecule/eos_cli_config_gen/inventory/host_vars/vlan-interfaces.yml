@@ -19,6 +19,7 @@ vlan_interfaces:
     ip_address_virtual: 10.2.2.1/24
     no_autostate: true
     isis_enable: "EVPN_UNDERLAY"
+    isis_bfd: true
     ip_verify_unicast_source_reachable_via: rx
 
   - name: Vlan81
@@ -348,7 +349,7 @@ vlan_interfaces:
     arp_aging_timeout: 180
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8::2/64
+    ipv6_address: 2001:db8:667::2/64
     ipv6_address_link_local: fe80::2/64
     vrrp_ids:
       - id: 1
@@ -367,7 +368,7 @@ vlan_interfaces:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8::1
+          address: 2001:db8:667::1
 
   - name: Vlan333
     description: Multiple VRIDs and tracking
@@ -375,7 +376,7 @@ vlan_interfaces:
     arp_aging_timeout: 180
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8::2/64
+    ipv6_address: 2001:db8:333::2/64
     ipv6_address_link_local: fe80::2/64
     vrrp_ids:
       - id: 1
@@ -399,7 +400,7 @@ vlan_interfaces:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8::1
+          address: 2001:db8:333::1
         tracked_object:
           - name: ID2-TrackedObjectDecrement
             decrement: 10
@@ -418,7 +419,7 @@ vlan_interfaces:
   - name: Vlan334
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2a00:1::1/64
+    ipv6_address: 2001:db8:334::1/64
     ipv6_attached_host_route_export:
       enabled: true
       distance: 19
@@ -426,7 +427,7 @@ vlan_interfaces:
   - name: Vlan335
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2a00:2::1/64
+    ipv6_address: 2001:db8:335::1/64
     ipv6_attached_host_route_export:
       enabled: true
       prefix_length: 64
@@ -434,8 +435,28 @@ vlan_interfaces:
   - name: Vlan336
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2a00:3::1/64
+    ipv6_address: 2001:db8:336::1/64
     ipv6_attached_host_route_export:
       enabled: true
       distance: 18
       prefix_length: 64
+
+  - name: Vlan337
+    description: v4 dhcp relay all-subnets
+    ip_address: 10.0.2.2/25
+    ip_dhcp_relay_all_subnets: true
+
+  - name: Vlan338
+    description: v6 dhcp relay all-subnets
+    ipv6_address: 2001:db8:338::1/64
+    ipv6_dhcp_relay_all_subnets: true
+
+  - name: Vlan339
+    description: v6 nd options
+    ipv6_enable: true
+    ipv6_address: 2001:db8:339::1/64
+    ipv6_nd_other_config_flag: true
+    ipv6_nd_cache:
+      dynamic_capacity: 900
+      expire: 250
+      refresh_always: true

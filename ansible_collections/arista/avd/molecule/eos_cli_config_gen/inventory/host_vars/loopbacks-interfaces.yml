@@ -28,6 +28,7 @@ loopback_interfaces:
     ipv6_enable: true
     ipv6_address: 2002::CAFE/64
     isis_enable: ISIS_TEST
+    isis_bfd: true
     isis_passive: true
     isis_metric: 100
     isis_network_point_to_point: true

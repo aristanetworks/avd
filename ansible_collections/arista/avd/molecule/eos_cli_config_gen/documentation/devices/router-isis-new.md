@@ -62,10 +62,10 @@ interface Management1
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -156,9 +156,9 @@ interface Loopback1
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ----------- | ---- |
-| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
+| --------- | ------------- | -------- | ----------- | ---- |
+| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point |
 
 #### VLAN Interfaces Device Configuration
 

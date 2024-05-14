@@ -22,9 +22,6 @@ cv_pathfinder_regions:
     sites:
       - name: Site511
         id: 511
-        resolved_location: # Only used for internet exit metadata. Will probably go away again soon(ish).
-          city: BigCity
-          country: BigCountry
 
 bgp_peer_groups:
   wan_overlay_peers:
@@ -557,18 +554,20 @@ cv_pathfinder_internet_exit_policies:
   - name: ZSCALER-EXIT-POLICY-1
     type: zscaler
     zscaler:
-      cloud_name: zscalerbeta
       domain_name: test.local
       ipsec_key_salt: THIS_SHOULD_BE_VAULTED
   - name: ZSCALER-EXIT-POLICY-2
     fallback_to_system_default: False
     type: zscaler
     zscaler:
-      cloud_name: zscalerbeta
       domain_name: test.local
       ipsec_key_salt: THIS_SHOULD_BE_VAULTED
 
 zscaler_endpoints:
+  cloud_name: zscalerbeta
+  device_location:
+    city: Santa Clara, CA
+    country: United States
   primary:
     city: Fremont, CA
     datacenter: FMT1
