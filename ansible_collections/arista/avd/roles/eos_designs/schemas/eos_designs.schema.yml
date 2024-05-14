@@ -655,10 +655,6 @@ keys:
 
                 Since this salt can be used to deduct the encryption key, it is recommeneded
                 to use vault.'
-            cloud_name:
-              type: str
-              required: true
-              description: Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.
             domain_name:
               type: str
               required: true
@@ -736,22 +732,6 @@ keys:
               location:
                 type: str
                 description: Location as a string is resolved on Cloudvision.
-              resolved_location:
-                type: dict
-                description: 'PREVIEW: These keys are in preview mode.
-
-
-                  The resolved location elements.
-
-                  Needed for internet-exit Zscaler integration until we can autofill
-                  it from the lookup plugin.'
-                keys:
-                  city:
-                    type: str
-                    required: true
-                  country:
-                    type: str
-                    required: true
               site_contact:
                 type: str
               site_after_hours_contact:
@@ -1706,7 +1686,7 @@ keys:
               source:
                 type: str
                 description: 'This field supports substitution of the fields "interface_ip"
-                  and "peer_ip".
+                  for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
 
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>"
                   or "<ip>".
@@ -1717,7 +1697,7 @@ keys:
               destination:
                 type: str
                 description: 'This field supports substitution of the fields "interface_ip"
-                  and "peer_ip".
+                  for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
 
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>"
                   or "<ip>".
@@ -1966,7 +1946,7 @@ keys:
     description: Configure IP routing for the OOB Management VRF.
   mlag_ibgp_peering_vrfs:
     documentation_options:
-      table: overlay-settings
+      table: network-services-vrfs-settings
     type: dict
     description: 'On mlag leafs, an SVI interface is defined per vrf, to establish
       iBGP peering (required when there are MLAG leafs in topology).
@@ -3335,6 +3315,13 @@ keys:
 
                 If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
                 this setting will take precedence.'
+  shutdown_bgp_towards_undeployed_peers:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: 'When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers`
+      key is set to true, the BGP neighborship is shutdown on the peer.'
   shutdown_interfaces_towards_undeployed_peers:
     documentation_options:
       table: fabric-settings
@@ -3837,6 +3824,12 @@ keys:
       '
     type: bool
     default: false
+  underlay_isis_bfd:
+    documentation_options:
+      table: isis-settings
+    type: bool
+    default: false
+    description: Enable BFD for ISIS on all underlay links.
   underlay_isis_instance_name:
     documentation_options:
       table: isis-settings
@@ -4544,6 +4537,24 @@ keys:
         type: dict
         $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
         required: false
+      cloud_name:
+        description: The name of the Zscaler cloud the CloudVision cluster is integrated
+          with like 'zscaler1' or 'zscalerbeta'.
+        type: str
+        required: true
+      device_location:
+        description: The location of the calling device after being resolved by Zscaler
+          location APIs. This is required since Zscaler only accepts their own variants
+          of City and Country.
+        type: dict
+        required: true
+        keys:
+          city:
+            type: str
+            required: true
+          country:
+            type: str
+            required: true
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -8820,7 +8831,8 @@ $defs:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
 
-            The access-list must be defined under `ipv4_acls`.
+            The access-list must be defined under `ipv4_acls` and supports field substitution
+            for "interface_ip" and "peer_ip".
 
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
             is marked as ''trusted'' under `wan_carriers`.'
@@ -8831,7 +8843,8 @@ $defs:
           description: 'Name of the IPv4 Access-list to be assigned in the egress
             direction.
 
-            The access-list must be defined under `ipv4_acls`.'
+            The access-list must be defined under `ipv4_acls` and supports field substitution
+            for "interface_ip" and "peer_ip".'
           type: str
           convert_types:
           - int
@@ -9223,6 +9236,22 @@ $defs:
         items:
           type: str
           description: IPv6_address.
+      ipv4_acl_in:
+        description: 'Name of the IPv4 access-list to be assigned in the ingress direction.
+
+          The access-list must be defined under `ipv4_acls` and supports substitution
+          of the field "interface_ip".'
+        type: str
+        convert_types:
+        - int
+      ipv4_acl_out:
+        description: 'Name of the IPv4 Access-list to be assigned in the egress direction.
+
+          The access-list must be defined under `ipv4_acls` and supports substitution
+          of the field "interface_ip".'
+        type: str
+        convert_types:
+        - int
       ip_helpers:
         type: list
         primary_key: ip_helper

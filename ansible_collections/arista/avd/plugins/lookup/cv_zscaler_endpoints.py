@@ -128,8 +128,8 @@ class LookupModule(LookupBase):
 
     async def get_zscaler_endpoints(self):
         serial_number = self.shared_utils.serial_number
-        location = get(self.shared_utils.wan_site or {}, "location")
-        if location is None:
+        wan_site_location = get(self.shared_utils.wan_site or {}, "location")
+        if wan_site_location is None:
             raise AnsibleLookupError("Unable to determine the WAN Site location.")
 
         cv_server = self.get_option("cv_server")
@@ -137,10 +137,20 @@ class LookupModule(LookupBase):
         cv_verify_certs = self.get_option("cv_verify_certs")
 
         async with CVClient(servers=[cv_server], token=cv_token, verify_certs=cv_verify_certs) as cv_client:
-            await cv_client.set_swg_device(device_id=serial_number, service="zscaler", location=location)
+            await cv_client.set_swg_device(device_id=serial_number, service="zscaler", location=wan_site_location)
             cv_endpoint_status = await cv_client.wait_for_swg_endpoint_status(device_id=serial_number, service="zscaler")
 
-        zscaler_endpoints = {}
+        device_location: Location = cv_endpoint_status.device_location
+
+        zscaler_endpoints = {
+            "cloud_name": cv_endpoint_status.cloud_name,
+            "device_location": {
+                "city": device_location.city,
+                "country": device_location.country,
+                "latitude": device_location.latitude,
+                "longitude": device_location.longitude,
+            },
+        }
         if not getattr(cv_endpoint_status, "vpn_endpoints", None) or not getattr(cv_endpoint_status.vpn_endpoints, "values", None):
             return zscaler_endpoints
 

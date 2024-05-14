@@ -451,6 +451,11 @@ class RouterBgpMixin(UtilsMixin):
 
             neighbor["remote_as"] = remote_as
 
+        if self.shared_utils.shutdown_bgp_towards_undeployed_peers is True and name in self._avd_overlay_peers:
+            peer_facts = self.shared_utils.get_peer_facts(name)
+            if peer_facts["is_deployed"] is False:
+                neighbor["shutdown"] = True
+
         return neighbor
 
     def _neighbors(self) -> list | None:

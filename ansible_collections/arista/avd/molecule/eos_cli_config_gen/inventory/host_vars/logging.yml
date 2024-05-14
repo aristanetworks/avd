@@ -71,3 +71,10 @@ logging:
       discards:
         global: true
         interval: 10
+  level:
+    - facility: BGP
+      severity: 0
+    - facility: AAA
+      severity: warnings
+    - facility: ACL
+      severity: critical
