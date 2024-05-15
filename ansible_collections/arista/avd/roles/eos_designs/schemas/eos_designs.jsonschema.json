@@ -4828,11 +4828,6 @@
                 "description": "\"Salt\" used for auto generation of encryption keys for IPsec tunnels to Zscaler.\nThe keys will be generated as a hash of `salt_<hostname>_<policy_name>`.\nSince this salt can be used to deduct the encryption key, it is recommeneded to use vault.",
                 "title": "Ipsec Key Salt"
               },
-              "cloud_name": {
-                "type": "string",
-                "description": "Zscaler cloud name like 'zscaler1' or 'zscalerbeta'.",
-                "title": "Cloud Name"
-              },
               "domain_name": {
                 "type": "string",
                 "description": "Domain name as configured in Zscaler for the tenant. Used as UFQDN suffix for authentication.",
@@ -4885,7 +4880,6 @@
             },
             "required": [
               "ipsec_key_salt",
-              "cloud_name",
               "domain_name"
             ],
             "additionalProperties": false,
@@ -4953,29 +4947,6 @@
                   "type": "string",
                   "description": "Location as a string is resolved on Cloudvision.",
                   "title": "Location"
-                },
-                "resolved_location": {
-                  "type": "object",
-                  "description": "PREVIEW: These keys are in preview mode.\n\nThe resolved location elements.\nNeeded for internet-exit Zscaler integration until we can autofill it from the lookup plugin.",
-                  "properties": {
-                    "city": {
-                      "type": "string",
-                      "title": "City"
-                    },
-                    "country": {
-                      "type": "string",
-                      "title": "Country"
-                    }
-                  },
-                  "required": [
-                    "city",
-                    "country"
-                  ],
-                  "additionalProperties": false,
-                  "patternProperties": {
-                    "^_.+$": {}
-                  },
-                  "title": "Resolved Location"
                 },
                 "site_contact": {
                   "type": "string",
@@ -58945,10 +58916,40 @@
             "^_.+$": {}
           },
           "title": "Tertiary"
+        },
+        "cloud_name": {
+          "description": "The name of the Zscaler cloud the CloudVision cluster is integrated with like 'zscaler1' or 'zscalerbeta'.",
+          "type": "string",
+          "title": "Cloud Name"
+        },
+        "device_location": {
+          "description": "The location of the calling device after being resolved by Zscaler location APIs. This is required since Zscaler only accepts their own variants of City and Country.",
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "title": "City"
+            },
+            "country": {
+              "type": "string",
+              "title": "Country"
+            }
+          },
+          "required": [
+            "city",
+            "country"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Device Location"
         }
       },
       "required": [
-        "primary"
+        "primary",
+        "cloud_name",
+        "device_location"
       ],
       "additionalProperties": false,
       "patternProperties": {

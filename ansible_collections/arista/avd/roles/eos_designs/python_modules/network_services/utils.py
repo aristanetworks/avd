@@ -714,7 +714,7 @@ class UtilsMixin:
         if get(internet_exit_policy, "type") != "zscaler":
             raise AristaAvdError(f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={policy_name}].")
 
-        cloud_name = get(internet_exit_policy, "zscaler.cloud_name", required=True)
+        cloud_name = get(self._zscaler_endpoints, "cloud_name", required=True)
         connections = []
 
         # Check if the policy has any local interface
