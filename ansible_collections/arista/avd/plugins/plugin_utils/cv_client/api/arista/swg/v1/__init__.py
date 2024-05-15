@@ -43,106 +43,49 @@ if TYPE_CHECKING:
 
 @dataclass(eq=False, repr=False)
 class SwgKey(aristaproto.Message):
-    """SwgKey identifies a device and a secure web gateway service"""
-
     device_id: Optional[str] = aristaproto.message_field(
         1, wraps=aristaproto.TYPE_STRING
     )
-    """device_id is id of a device"""
-
-    service_name: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
-    """
-    service_name is the name of the SWG service.
-     Valid value is "zscaler"
-    """
-
-
-@dataclass(eq=False, repr=False)
-class Location(aristaproto.Message):
-    """Location represents a device's or an endpoint's location"""
-
-    city: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """city is the city where a device or endpoint is located"""
-
-    region: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """region is the region where device or endpoint is located"""
-
-    country: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """country is the country where a device or endpoint is located"""
-
-    latitude: Optional[float] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_FLOAT
-    )
-    """latitude is the latitude of a device's or an endpoint's location"""
-
-    longitude: Optional[float] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_FLOAT
-    )
-    """longitude is the longitude of a device's or an endpoint's location"""
+    service: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
 
 
 @dataclass(eq=False, repr=False)
 class VpnEndpoint(aristaproto.Message):
-    """VpnEndpoint represents the secure web gateway endpoint"""
-
     ip_address: "___fmp__.IpAddress" = aristaproto.message_field(1)
-    """ip_address is the IP address of a SWG endpoint"""
-
     datacenter: Optional[str] = aristaproto.message_field(
         2, wraps=aristaproto.TYPE_STRING
     )
-    """datacenter of a SWG endpoint"""
-
-    endpoint_location: "Location" = aristaproto.message_field(3)
-    """endpoint_location represents the location of a SWG endpoint"""
+    city: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    country: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+    latitude: Optional[float] = aristaproto.message_field(
+        5, wraps=aristaproto.TYPE_FLOAT
+    )
+    longitude: Optional[float] = aristaproto.message_field(
+        6, wraps=aristaproto.TYPE_FLOAT
+    )
 
 
 @dataclass(eq=False, repr=False)
-class VpnEndpoints(aristaproto.Message):
-    """VpnEndpoints represents a collection of SWG endpoints"""
-
+class VpnEndpointMap(aristaproto.Message):
     values: Dict[str, "VpnEndpoint"] = aristaproto.map_field(
         1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
     )
-    """
-    values is a map of vpn endpoints.
-     Valid keys are "primary", "secondary" and "tertiary"
-    """
 
 
 @dataclass(eq=False, repr=False)
 class EndpointStatus(aristaproto.Message):
-    """EndpointStatus represents the status of a SWG endpoint"""
-
     key: "SwgKey" = aristaproto.message_field(1)
-    """key represents a device and a SWG service"""
-
-    vpn_endpoints: "VpnEndpoints" = aristaproto.message_field(2)
-    """vpn_endpoints represents a collection of SWG endpoints"""
-
-    cloud_name: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
-    """
-    cloud_name represents the cloud name assigned to the user
-     by the SWG administrator
-    """
-
-    device_location: "Location" = aristaproto.message_field(4)
-    """device_location is the location of the device"""
+    vpn_endpoint_map: "VpnEndpointMap" = aristaproto.message_field(2)
 
 
 @dataclass(eq=False, repr=False)
 class EndpointConfig(aristaproto.Message):
-    """EndpointConfig represents the configuration of a device endpoint"""
-
     key: "SwgKey" = aristaproto.message_field(1)
-    """key represents a device and a SWG service"""
+    """Endpoint Key"""
 
-    address: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """address is the physical address of a device"""
+    location: Optional[str] = aristaproto.message_field(
+        2, wraps=aristaproto.TYPE_STRING
+    )
 
 
 @dataclass(eq=False, repr=False)
