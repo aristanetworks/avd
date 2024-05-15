@@ -787,11 +787,12 @@ class UtilsMixin:
                     f"{wan_interface['name']} peer_ip needs to be set. When using wan interface "
                     "for direct type internet exit, peer_ip is used for nexthop, and connectivity monitoring."
                 )
+            sanitized_interface_name = self.shared_utils.sanitize_interface_name(wan_interface["name"])
             connections.append(
                 {
                     "type": "ethernet",
-                    "name": f"IE-{wan_interface['name']}",
-                    "monitor_name": f"IE-{wan_interface['name']}",
+                    "name": f"IE-{sanitized_interface_name}",
+                    "monitor_name": f"IE-{sanitized_interface_name}",
                     "monitor_host": wan_interface["peer_ip"],
                     "next_hop": wan_interface["peer_ip"],
                     "source_interface": wan_interface["name"],

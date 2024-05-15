@@ -230,6 +230,14 @@ ethernet_interfaces:
   description: Colt_10555
   ip_nat:
     service_profile: IE-DIRECT-NAT
+- name: Ethernet2/1
+  peer_type: l3_interface
+  ip_address: 172.15.5.6/31
+  shutdown: false
+  type: routed
+  description: Colt_10555
+  ip_nat:
+    service_profile: IE-DIRECT-NAT
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
@@ -315,6 +323,8 @@ route_maps:
 static_routes:
 - destination_address_prefix: 172.16.0.0/16
   gateway: 172.16.5.4
+- destination_address_prefix: 172.16.0.0/16
+  gateway: 172.16.5.9
 - destination_address_prefix: 66.66.66.0/24
   gateway: 172.17.0.0
   vrf: default
@@ -519,6 +529,10 @@ router_path_selection:
       stun:
         server_profiles:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
+    - name: Ethernet2/1
+      stun:
+        server_profiles:
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
     dynamic_peers:
       enabled: true
       ipsec: false
@@ -682,6 +696,11 @@ router_service_insertion:
     ethernet_interface:
       name: Ethernet2
       next_hop: 172.16.5.4
+  - name: IE-Ethernet2_1
+    monitor_connectivity_host: IE-Ethernet2_1
+    ethernet_interface:
+      name: Ethernet2/1
+      next_hop: 172.16.5.9
   - name: IE-Tunnel100
     monitor_connectivity_host: IE-Tunnel100
     tunnel_interface:
@@ -699,6 +718,7 @@ router_internet_exit:
   - name: DIRECT-EXIT-POLICY-1
     local_connections:
     - name: IE-Ethernet2
+    - name: IE-Ethernet2_1
   - name: ZSCALER-EXIT-POLICY-1_PRI
     local_connections:
     - name: IE-Tunnel100
@@ -711,6 +731,7 @@ router_internet_exit:
   policies:
   - name: DIRECT-EXIT-POLICY-1
     exit_groups:
+    - name: DIRECT-EXIT-POLICY-1
     - name: DIRECT-EXIT-POLICY-1
   - name: ZSCALER-EXIT-POLICY-1
     exit_groups:
@@ -772,6 +793,8 @@ monitor_connectivity:
   interface_sets:
   - name: SET-Ethernet2
     interfaces: Ethernet2
+  - name: SET-Ethernet2_1
+    interfaces: Ethernet2/1
   - name: SET-Tunnel100
     interfaces: Tunnel100
   - name: SET-Tunnel101
@@ -783,6 +806,11 @@ monitor_connectivity:
     description: Internet Exit DIRECT-EXIT-POLICY-1
     ip: 172.16.5.4
     local_interfaces: SET-Ethernet2
+    address_only: false
+  - name: IE-Ethernet2_1
+    description: Internet Exit DIRECT-EXIT-POLICY-1
+    ip: 172.16.5.9
+    local_interfaces: SET-Ethernet2_1
     address_only: false
   - name: IE-Tunnel100
     description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
@@ -839,6 +867,10 @@ metadata:
       carrier: Colt
       circuit_id: '10555'
       pathgroup: MPLS
+    - name: Ethernet2/1
+      carrier: Colt
+      circuit_id: '10555'
+      pathgroup: MPLS
     - name: Ethernet3
       carrier: Comcast-5G
       circuit_id: AF830
@@ -881,6 +913,14 @@ metadata:
       - name: Circuit
         value: '666'
     - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10555'
+    - interface: Ethernet2/1
       tags:
       - name: Type
         value: wan

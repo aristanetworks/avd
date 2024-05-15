@@ -38,9 +38,10 @@ class MonitorConnectivityMixin(UtilsMixin):
                 elif connection["type"] == "ethernet":
                     interfaceName = connection["source_interface"]
 
+                interface_set_name = f"SET-{self.shared_utils.sanitize_interface_name(interfaceName)}"
                 interface_sets.append(
                     {
-                        "name": f"SET-{interfaceName}",
+                        "name": interface_set_name,
                         "interfaces": interfaceName,
                     }
                 )
@@ -49,7 +50,7 @@ class MonitorConnectivityMixin(UtilsMixin):
                     "name": connection["monitor_name"],
                     "description": connection["description"],
                     "ip": connection["monitor_host"],
-                    "local_interfaces": f"SET-{interfaceName}",
+                    "local_interfaces": interface_set_name,
                     "address_only": False,
                     "url": connection.get("monitor_url"),
                 }

@@ -97,6 +97,16 @@ wan_router:
               cv_pathfinder_internet_exit:
                 policies:
                   - name: DIRECT-EXIT-POLICY-1
+            - name: Ethernet2/1
+              wan_carrier: Colt
+              wan_circuit_id: 10555
+              ip_address: 172.15.5.6/31
+              peer_ip: 172.16.5.9
+              static_routes:
+                - prefix: 172.16.0.0/16
+              cv_pathfinder_internet_exit:
+                policies:
+                  - name: DIRECT-EXIT-POLICY-1
             - name: Ethernet3
               wan_carrier: Comcast-5G
               wan_circuit_id: AF830

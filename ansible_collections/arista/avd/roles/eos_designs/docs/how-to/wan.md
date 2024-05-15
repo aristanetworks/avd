@@ -456,7 +456,7 @@ The internet-exit policies are defined as global variables for all the WAN route
 - A device is configured with an Internet-exit policy if the internet-exit policy is configured **both** under one of its WAN interfaces and under a WAN virtual topology applied on the device.
 - The internet-exit policies are not included on the Pathfinders.
 
-The policies are assigned a type, currently only `zscaler` is supported. Then additional parameters can be provided according to the type.
+The policies are assigned a type, currently `zscaler` and `direct` are supported. Then additional parameters can be provided according to the type.
 
 ```yaml
 cv_pathfinder_internet_exit_policies:
@@ -466,6 +466,9 @@ cv_pathfinder_internet_exit_policies:
   - name: ZSCALER-EXIT-POLICY-2
     fallback_to_system_default: False
     type: zscaler
+    # [...] type specific options
+  - name: DIRECT-EXIT-POLICY-1
+    type: direct
     # [...] type specific options
 ```
 
@@ -527,13 +530,16 @@ wan_router:
                 tunnel_interface_numbers: 100-102
               - name: ZSCALER-EXIT-POLICY-2
                 tunnel_interface_numbers: 110-112
+              - name: DIRECT-EXIT-POLICY-1
 ```
 
 1. Assign the `ZSCALER-EXIT-POLICY-1` and `ZSCALER-EXIT-POLICY-2` internet-exit policies to the Ethernet3 WAN interface.
 
 #### Local exit toward the ISP
 
-!!! Warning "Not currently supported in eos_designs."
+!!! Warning "Only supported in PREVIEW"
+
+Internet-exit policy type should be set to `direct` to locally exit toward the ISP.
 
 #### Local exit toward an entreprise firewall
 
