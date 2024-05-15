@@ -1118,6 +1118,7 @@ keys:
             keys:
               enabled:
                 type: bool
+                required: true
               timeout:
                 type: int
                 description: In-place FEC update tracking timeout in seconds.

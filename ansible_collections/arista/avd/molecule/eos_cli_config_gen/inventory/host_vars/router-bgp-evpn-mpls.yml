@@ -58,4 +58,5 @@ router_bgp:
       - name: EVPN-OVERLAY-PEERS
         activate: true
     layer_2_fec_in_place_update:
+      enabled: true
       timeout: 100

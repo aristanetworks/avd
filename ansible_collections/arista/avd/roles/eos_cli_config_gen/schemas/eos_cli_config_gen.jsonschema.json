@@ -18770,6 +18770,9 @@
                   "title": "Timeout"
                 }
               },
+              "required": [
+                "enabled"
+              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
