@@ -43,11 +43,9 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - WAN HA is in PREVIEW
 
   - While HA is in preview, it is required to either enable or disable HA if exactly two WAN routers are in one node group.
-  - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default.
-  - It is not yet supported to disable HA on a specific LAN interface on the device, nor is it supported to add HA configuration on a non-uplink interface.
+  - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default or the interfaces defined under `wan_ha.ha_interfaces` node settings. This key can be used either to select only some `uplink_interfaces` available for establishing the HA tunnel OR to select one interface that is not an `uplink_interfaces`, for instance for direct HA connectivity.
   - HA for AutoVPN is not supported
 - Internet-exit for Zscaler is in PREVIEW
-- `flow_tracking_settings` is in PREVIEW as the model will change in the next release.
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
     These new tests are added only in the [ANTA preview](../../../eos_validate_state/ANTA-Preview.md) mode.
 
@@ -63,7 +61,6 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 
 ### Future work
 
-- HA support out of PREVIEW
 - New LAN scenarios (L2 port-channel, HA for L2 `lan` using VRRP..)
 - HA for AutoVPN
 - WAN Internet exit for other type than Zscaler
@@ -597,24 +594,53 @@ The following LAN scenarios are supported:
 
 - Single Router L3 EBGP LAN
 - Single Router L2 LAN
-
-The following LAN scenarios are in PREVIEW:
-
 - Dual Router L3 EBGP LAN with HA
+- Dual Router using one directed connected HA interface.
+
+The following design points are used:
+
+- The Site of Origin (SOO) extended community is configured as `<router_id>:<site_id>`
+    note: site id is unique per zone (only a default zone supported today).
+    for HA site, the SOO is set as `<router1_id>:<site_id>` where `router1` is
+    the first router defined in the group.
+- HA is not supported for more than two routers for CV Pathfinders.
+- The routes to be advertised towards the WAN must be marked with the site SOO.
+    - The connected routes and static routes are marked with the SOO when
+    redistributed in BGP
+      - the routes redistributed into BGP via the route-map `RM-CONN-2-BGP` are tagged with the SOO.
+      - the routes redistributed into BGP via the route-map `RM-STATIC-2-BGP` are tagged with the SOO.
+    - the routes received from LAN are marked with the SOO when received from
+        the LAN over BGP or when redistributed into BGP from the LAN protocol.
+- For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SoO.
+- Routes received from the WAN with the local SOO are dropped.
+- Routes received from the WAN are redistributed / advertised towards the LAN.
+- For HA, an iBGP session using EVPN Gateway is used to share the routes from
+    one peer to the other.
+    - WAN, LAN and local static routes are sent to the HA peer to cater for
+        various failure scenarii.
+    - The routes received from the HA peer are made less prefered than routes
+        recevied from the LAN or from the WAN.
+
+#### Direct HA
+
+A direct link is configured between the two HA peers
+
+!!! warning
+
+    To Be Continued
 
 #### EBGP LAN
 
-- the Site of Origin (SoO) extended community is configured as <router_id>:<site_id>
-    note: site id is unique per zone (only a default zone supported today).
-- the routes redistributed into BGP via the route-map `RM-CONN-2-BGP` are tagged with the SoO.
-- the Underlay peer group (towards the LAN) is configured with two route-maps reused from existing designed but configured differently
-  - one outbound route-map `RM-BGP-UNDERLAY-PEERS-OUT`:
-    - advertised the local routes tagged with the SoO extended community.
-    - advertised the routes received from iBGP (WAN) towards the LAN also marked with the SoO community.
+- the Underlay peer group (towards the LAN) is configured with two route-maps reused from existing designs but configured differently
   - one inbound route-map `RM-BGP-UNDERLAY-PEERS-IN`:
-    - deny routes received from LAN that already contain the WAN AS in the path.
     - accept routes coming from the LAN and set the SoO extended community on them.
-- For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SoO.
+  - one outbound route-map `RM-BGP-UNDERLAY-PEERS-OUT`:
+    - advertised the local routes marked with the SOO extended community.
+    - advertised the routes received from iBGP (WAN) towards the LAN marked with the SoO community.
+
+!!! warning
+
+    To Be Continued
 
 ##### HA (PREVIEW)
 
@@ -623,6 +649,9 @@ The following LAN scenarios are in PREVIEW:
     This configuration currently in PREVIEW **will** change in future version of AVD.
 
 for eBGP LAN routing protocol the following is done to enable HA:
+
+  - one inbound route-map `RM-BGP-UNDERLAY-PEERS-IN`:
+    - deny routes received from LAN that already contain the WAN AS in the path.
 
 - the uplink interfaces are used as HA interfaces.
 - the subnets of the HA interfaces are redistributed to BGP via the `RM-CONN-2-BGP` route-map
@@ -638,6 +667,10 @@ BGP underlay peer group is configured with `allowas-in 1` to be able to learn th
     - allowing subnets of uplink interfaces.
     - allow all routes learned from iBGP (WAN)
     - Implicitly denying other routes which could be learned from BGP towards a WAN provider or redistributed without marking with SoO.
+
+!!! warning
+
+    To Be Continued
 
 #### OSPF LAN (NOT SUPPORTED)
 

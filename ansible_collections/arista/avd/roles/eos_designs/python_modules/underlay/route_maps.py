@@ -93,8 +93,6 @@ class RouteMapsMixin(UtilsMixin):
             )
 
         # Route-map IN and OUT for SOO, rendered for WAN routers
-        # TODO - by default underlay_routing_protocol is ebgp so the route-map is generated..
-        # Maybe need to change the default ?
         if self.shared_utils.underlay_routing_protocol == "ebgp" and self.shared_utils.wan_role == "client":
             # RM-BGP-UNDERLAY-PEERS-IN
             sequence_numbers = [
