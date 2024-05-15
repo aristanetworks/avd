@@ -1,4 +1,4 @@
-# monitor-layer1-a
+# monitor-layer1-enabled
 
 ## Table of Contents
 
@@ -48,5 +48,5 @@ interface Management1
 ```eos
 !
 monitor layer1
-   logging transceiver
+   logging mac fault
 ```

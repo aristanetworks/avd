@@ -16,8 +16,8 @@ monitor layer1
 {%         if monitor_layer1.logging_transceiver.communication is arista.avd.defined(true) %}
    logging transceiver communication
 {%         endif %}
-{%         if monitor_layer1.logging_mac_fault is arista.avd.defined(true) %}
+{%     endif %}
+{%     if monitor_layer1.logging_mac_fault is arista.avd.defined(true) %}
    logging mac fault
-{%         endif %}
 {%     endif %}
 {% endif %}

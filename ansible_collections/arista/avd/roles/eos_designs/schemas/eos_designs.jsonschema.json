@@ -28758,10 +28758,10 @@
                         "description": "Enable transceiver SMBus fail and reset logging.",
                         "title": "Communication"
                       },
-                      "dom_and_communication": {
+                      "enabled": {
                         "type": "boolean",
-                        "description": "Some platforms only support command `logging tranceiver'. `dom_and_communication` key configures this command.",
-                        "title": "Dom And Communication"
+                        "description": "Some platforms only support command `logging tranceiver'. `enabled` key configures this command. Both `dom` and `communication` are enabled with this key.",
+                        "title": "Enabled"
                       }
                     },
                     "additionalProperties": false,
