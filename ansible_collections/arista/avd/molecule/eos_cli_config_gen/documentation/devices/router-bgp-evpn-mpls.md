@@ -90,6 +90,7 @@ ASN Notation: asplain
 - Next-hop MPLS resolution Primary-RIB : tunnel-rib-colored system-colored-tunnel-rib
 - Next-hop MPLS resolution Secondary-RIB : tunnel-rib test-rib
 - Next-hop MPLS resolution Tertiary-RIB : system-connected
+- Layer-2 In-place FEC update tracking timeout: 100 seconds
 
 ##### EVPN Peer Groups
 

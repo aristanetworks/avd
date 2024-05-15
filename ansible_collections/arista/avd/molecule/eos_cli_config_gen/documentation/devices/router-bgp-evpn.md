@@ -103,6 +103,7 @@ ASN Notation: asplain
 
 - Next-hop resolution is **disabled**
 - Next-hop-unchanged is explicitly configured (default behaviour)
+- Layer-2 In-place FEC update operation enabled
 
 ##### EVPN Peer Groups
 

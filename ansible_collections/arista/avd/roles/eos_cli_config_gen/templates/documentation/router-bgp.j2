@@ -542,6 +542,11 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 - Next-hop MPLS resolution {{ rib_position[loop.index0] }}-RIB : {{ evpn_mpls_resolution_rib }}
 {%             endfor %}
 {%         endif %}
+{%         if router_bgp.address_family_evpn.layer_2_fec_in_place_update.enabled is arista.avd.defined(true) and router_bgp.address_family_evpn.layer_2_fec_in_place_update.timeout is arista.avd.defined %}
+- Layer-2 In-place FEC update tracking timeout: {{ router_bgp.address_family_evpn.layer_2_fec_in_place_update.timeout }} seconds
+{%         elif router_bgp.address_family_evpn.layer_2_fec_in_place_update.enabled is arista.avd.defined(true) %}
+- Layer-2 In-place FEC update operation enabled
+{%         endif %}
 {%         if router_bgp.address_family_evpn.peer_groups is arista.avd.defined %}
 
 ##### EVPN Peer Groups
