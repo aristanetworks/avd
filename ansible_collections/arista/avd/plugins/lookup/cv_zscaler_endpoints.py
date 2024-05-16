@@ -89,9 +89,9 @@ class LookupModule(LookupBase):
         setup_module_logging({})
 
         self.set_options(var_options=variables, direct=kwargs)
+        self.hostname = self.get_option("inventory_hostname")
 
         self.shared_utils = self.get_avd_shared_utils(variables)
-        self.hostname = self.get_option("inventory_hostname")
 
         # Running asyncio coroutine to deploy everything.
         return run(self.get_zscaler_endpoints())
