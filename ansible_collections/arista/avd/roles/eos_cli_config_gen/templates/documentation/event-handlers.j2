@@ -13,8 +13,8 @@
 | Handler | Action Type | Action | Trigger | Trigger Config |
 | ------- | ----------- | ------ | ------- | -------------- |
 {%     for handler in event_handlers | arista.avd.natural_sort('name') %}
-{%         set action = handler.action | replace('|', '\|') %}
-{%         if handler.action_type == 'bash' %}
+{%         if handler.action_type is arista.avd.defined('bash') and handler.action is arista.avd.defined %}
+{%             set action = handler.action | replace('|', '\|') %}
 {%             set action = '<code>' ~ action ~ '</code>' %}
 {%         endif %}
 {%         if handler.trigger is arista.avd.defined("on-maintenance")
@@ -73,7 +73,7 @@
 {%                 endif %}
 {%             endif %}
 {%         endif %}
-| {{ handler.name }} | {{ handler.action_type }} | {{ action }} | {{ handler.trigger }} | {{ trigger_config | arista.avd.default("-") }} |
+| {{ handler.name }} | {{ handler.action_type | arista.avd.default("-") }} | {{ action | arista.avd.default("-") }} | {{ handler.trigger }} | {{ trigger_config | arista.avd.default("-") }} |
 {%     endfor %}
 
 #### Event Handler Device Configuration

@@ -44,7 +44,7 @@ interface Management1
 | Handler | Action Type | Action | Trigger | Trigger Config |
 | ------- | ----------- | ------ | ------- | -------------- |
 | CONFIG_VERSIONING | bash | <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config | - |
-| trigger-on-boot | bash | <code>echo "on-boot"</code> | on-boot | - |
+| trigger-on-boot | - | - | on-boot | - |
 | trigger-on-counters | bash | <code>echo "on-counters"</code> | on-counters | poll interval 10<br>condition( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )<br>granularity per-source |
 | trigger-on-intf | bash | <code>echo "on-intf"</code> | on-intf | trigger on-intf Ethernet4 operstatus ip ip6 |
 | trigger-on-logging | bash | <code>echo "on-logging"</code> | on-logging | poll interval 10<br>regex ab* |
@@ -64,7 +64,10 @@ event-handler CONFIG_VERSIONING
 !
 event-handler trigger-on-boot
    trigger on-boot
-   action bash echo "on-boot"
+   action bash
+      echo "shivani\n"
+      hello
+      EOF
 !
 event-handler trigger-on-counters
    trigger on-counters

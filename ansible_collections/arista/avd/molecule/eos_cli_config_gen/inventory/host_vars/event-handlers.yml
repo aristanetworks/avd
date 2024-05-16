@@ -6,8 +6,10 @@ event_handlers:
     trigger: on-startup-config
   - name: trigger-on-boot
     trigger: on-boot
-    action_type: bash
-    action: echo "on-boot"
+    event_handler_action:
+      bash_command: |
+        echo "shivani\n"
+        hello
   - name: trigger-on-maintenance1
     trigger: on-maintenance
     trigger_on_maintenance:

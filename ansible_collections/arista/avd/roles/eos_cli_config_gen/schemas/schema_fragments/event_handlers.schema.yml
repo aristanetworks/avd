@@ -24,10 +24,31 @@ keys:
         action_type:
           type: str
           valid_values: ["bash", "increment", "log"]
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handler_action
         action:
           type: str
           description: |
             Command to execute.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handler_action
+        event_handler_action:
+          type: dict
+          keys:
+            bash_command:
+              type: str
+            log:
+              type: bool
+              description: Log a message when the event is triggered.
+            increment_device_health_metric:
+              type: str
+              description: Name of device-health metric.
         delay:
           type: int
           convert_types:

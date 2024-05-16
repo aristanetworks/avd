@@ -75,8 +75,25 @@ event-handler {{ handler.name }}
       regex {{ handler.regex }}
 {%             endif %}
 {%         endif %}
-{%         if handler.action is arista.avd.defined and handler.action_type is arista.avd.defined %}
+{%         if handler.action_type is arista.avd.defined("bash") and handler.action is arista.avd.defined %}
    action {{ handler.action_type }} {{ handler.action }}
+{%         endif %}
+{%         if handler.event_handler_action.bash_command is arista.avd.defined %}
+{%             set bash_command = handler.event_handler_action.bash_command%}
+{%             if bash_command.count('\n') > 0 %}
+{%                 if not bash_command.rstrip().endswith('\nEOF') %}
+{%                     set bash_command = bash_command.rstrip() ~ "\nEOF" %}
+{%                 endif %}
+   action bash
+      {{ bash_command | indent(width=6, first=False) }}
+{%             else %}
+   action bash {{ bash_command }}
+{%             endif %}
+{%         elif handler.event_handler_action.log is arista.avd.defined(true) %}
+   action log
+{%         endif %}
+{%         if handler.event_handler_action.increment_device_health_metric is arista.avd.defined %}
+   action increment device-health metric {{ handler.event_handler_action.increment_device_health_metric }}
 {%         endif %}
 {%         if handler.delay is arista.avd.defined %}
    delay {{ handler.delay }}

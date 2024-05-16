@@ -5045,8 +5045,33 @@
           },
           "action": {
             "type": "string",
-            "description": "Command to execute.\n",
+            "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handler_action</samp> instead.",
+            "deprecated": true,
             "title": "Action"
+          },
+          "event_handler_action": {
+            "type": "object",
+            "properties": {
+              "bash_command": {
+                "type": "string",
+                "title": "Bash Command"
+              },
+              "log": {
+                "type": "boolean",
+                "description": "Log a message when the event is triggered.",
+                "title": "Log"
+              },
+              "increment_device_health_metric": {
+                "type": "string",
+                "description": "Name of device-health metric.",
+                "title": "Increment Device Health Metric"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Event Handler Action"
           },
           "delay": {
             "type": "integer",
@@ -22233,8 +22258,33 @@
                     },
                     "action": {
                       "type": "string",
-                      "description": "Command to execute.\n",
+                      "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handler_action</samp> instead.",
+                      "deprecated": true,
                       "title": "Action"
+                    },
+                    "event_handler_action": {
+                      "type": "object",
+                      "properties": {
+                        "bash_command": {
+                          "type": "string",
+                          "title": "Bash Command"
+                        },
+                        "log": {
+                          "type": "boolean",
+                          "description": "Log a message when the event is triggered.",
+                          "title": "Log"
+                        },
+                        "increment_device_health_metric": {
+                          "type": "string",
+                          "description": "Name of device-health metric.",
+                          "title": "Increment Device Health Metric"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Event Handler Action"
                     },
                     "delay": {
                       "type": "integer",
