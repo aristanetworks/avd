@@ -41,8 +41,9 @@ class AvdTestAPIHttpsSSL(AvdTestBase):
 class AvdTestIPSecurity(AvdTestBase):
     """
     AvdTestIPSecurity class for IP security connection tests.
-    It validates the state of IPv4 security connections for a specified peer as established.
-    For now, it will only validate the peer under VRF default.
+    It validates the state of IPv4 security connections for a specified peer, ensuring they are established.
+    It specifically focuses on IPv4 security connections within the default VRF and examines connections defined in the router's path selection configuration.
+
     """
 
     anta_module = "anta.tests.security"
