@@ -40,13 +40,13 @@ interface Management1
 | Layer 1 Event | Logging |
 | ------------- | ------- |
 | MAC fault | True |
-| Transceiver DOM | True |
-| Transceiver communication | True |
+| Logging Transceiver | True |
 
 ### Monitor Layer 1 Device Configuration
 
 ```eos
 !
 monitor layer1
+   logging transceiver
    logging mac fault
 ```
