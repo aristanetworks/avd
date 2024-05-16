@@ -173,7 +173,7 @@ sFlow is disabled.
 ##### Transceiver Frequency
 
 | Interface | Transceiver Frequency |
-| --------- | ---------------------- |
+| --------- | --------------------- |
 | Ethernet67 | 190050 |
 
 ##### Link Tracking Groups

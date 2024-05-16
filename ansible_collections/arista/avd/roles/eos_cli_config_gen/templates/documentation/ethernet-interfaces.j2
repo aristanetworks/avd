@@ -177,7 +177,7 @@
 ##### Transceiver Frequency
 
 | Interface | Transceiver Frequency |
-| --------- | ---------------------- |
+| --------- | --------------------- |
 {%         for custom_transceiver_frequency_interface in custom_transceiver_frequency_interfaces | arista.avd.natural_sort('name') %}
 | {{ custom_transceiver_frequency_interface.name }} | {{ custom_transceiver_frequency_interface.transceiver.frequency }} |
 {%         endfor %}
