@@ -19,7 +19,11 @@ PREVIEW - Fetch Zscaler endpoints used for CV Pathfinder internet-exit integrati
 
 Use this to autofill the `zscaler_endpoints` data model.
 
-The arguments are optional. If not set the same vars must be set.
+The arguments are optional. If not set the same group/hostvars must be set.
+
+The plugin will only return data when the device is a CV Pathfinder edge router.
+
+{&#39;Roadmap&#39;: &#39;Remove requirement for serial_number.&#39;}
 
 ## Requirements
 

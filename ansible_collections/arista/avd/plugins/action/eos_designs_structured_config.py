@@ -47,7 +47,7 @@ class ActionModule(ActionBase):
 
         # Read ansible variables and perform templating to support inline jinja2
         for var in task_vars:
-            if str(var).startswith(("ansible", "molecule", "hostvars", "vars", "avd_switch_facts")):
+            if str(var).startswith(("ansible", "molecule", "hostvars", "vars", "avd_switch_facts", "zscaler_endpoints")):
                 continue
             if self._templar.is_template(task_vars[var]):
                 # Var contains a jinja2 template.

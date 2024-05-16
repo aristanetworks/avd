@@ -15,7 +15,9 @@ requirements:
 short_description: PREVIEW - Fetch Zscaler endpoints used for CV Pathfinder internet-exit integration.
 description:
   - Use this to autofill the `zscaler_endpoints` data model.
-  - The arguments are optional. If not set the same vars must be set.
+  - The arguments are optional. If not set the same group/hostvars must be set.
+  - The plugin will only return data when the device is a CV Pathfinder edge router.
+  - Roadmap: Remove requirement for serial_number.
 options:
   cv_server:
     type: str
@@ -96,6 +98,9 @@ class LookupModule(LookupBase):
     def get_avd_shared_utils(self, variables) -> SharedUtils:
         # TODO: Figure out what to do with templating of vars, mapping switch.*
 
+        # Copy variables so we don't touch the original inputs during templating.
+        variables = variables.copy()
+
         # Ensuring we don't evaluate the inline jinja.
         variables["zscaler_endpoints"] = None
 
@@ -127,6 +132,10 @@ class LookupModule(LookupBase):
         return shared_utils
 
     async def get_zscaler_endpoints(self):
+        # Silently return None if this is not a pathfinder client.
+        if not self.shared_utils.is_cv_pathfinder_client:
+            return None
+
         serial_number = self.shared_utils.serial_number
         wan_site_location = get(self.shared_utils.wan_site or {}, "location")
         if wan_site_location is None:
