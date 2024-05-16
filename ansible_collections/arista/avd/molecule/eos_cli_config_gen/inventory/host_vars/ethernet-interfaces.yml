@@ -998,3 +998,9 @@ ethernet_interfaces:
         ipv4:
           address: 100.64.0.1
           version: 3
+# Transceiver Frequency
+  - name: Ethernet67
+    description: Custom_Transceiver_Frequency
+    shutdown: false
+    transceiver:
+      frequency: 190050

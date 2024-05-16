@@ -135,6 +135,7 @@ sFlow is disabled.
 | Ethernet60 |  IP NAT Testing | access | - | - | - | - |
 | Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 | Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet67 |  Custom_Transceiver_Frequency | access | - | - | - | - |
 | Ethernet69 |  IP NAT service-profile | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
@@ -168,6 +169,12 @@ sFlow is disabled.
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
 | Ethernet16 | 111-112 | 110 | out |
+
+##### Transceiver Frequency
+
+| Interface | Transceiver Frequency |
+| --------- | ---------------------- |
+| Ethernet67 | 190050 |
 
 ##### Link Tracking Groups
 
@@ -976,6 +983,12 @@ interface Ethernet66
    vrrp 3 timers delay reload 900
    vrrp 3 ipv4 100.64.0.1
    vrrp 3 ipv4 version 3
+!
+interface Ethernet67
+   description Custom_Transceiver_Frequency
+   no shutdown
+   switchport
+   transceiver frequency 190050 ghz
 !
 interface Ethernet69
    description IP NAT service-profile
