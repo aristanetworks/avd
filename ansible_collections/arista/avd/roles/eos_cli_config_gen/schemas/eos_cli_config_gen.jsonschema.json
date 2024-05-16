@@ -13326,11 +13326,6 @@
           "type": "object",
           "description": "Control-plane policy configuration.",
           "properties": {
-            "enable": {
-              "type": "boolean",
-              "description": "Enable control-plane policy.",
-              "title": "Enable"
-            },
             "classes": {
               "type": "array",
               "items": {
@@ -13356,7 +13351,7 @@
                   },
                   "rate_unit": {
                     "type": "string",
-                    "description": "Rate unit for shape value and bandwidth.",
+                    "description": "`rate_unit` must be defined for `shape` and `bandwidth`.",
                     "enum": [
                       "pps",
                       "kbps"
@@ -13364,21 +13359,17 @@
                     "title": "Rate Unit"
                   }
                 },
-                "required": [
-                  "name",
-                  "rate_unit"
-                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
-                }
+                },
+                "required": [
+                  "name"
+                ]
               },
               "title": "Classes"
             }
           },
-          "required": [
-            "enable"
-          ],
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}

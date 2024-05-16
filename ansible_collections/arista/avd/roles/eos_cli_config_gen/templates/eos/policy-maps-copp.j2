@@ -4,10 +4,10 @@
  that can be found in the LICENSE file.
 #}
 {# eos - policy map copp #}
-{% if policy_maps.copp_system_policy.enable is arista.avd.defined(true) %}
+{% if policy_maps.copp_system_policy is arista.avd.defined %}
 !
 policy-map type copp copp-system-policy
-{%     for class in policy_maps.copp_system_policy.classes | arista.avd.natural_sort("name") %}
+{%     for class in policy_maps.copp_system_policy.classes %}
    class {{ class.name }}
 {%         if class.rate_unit is arista.avd.defined %}
 {%             if class.shape is arista.avd.defined %}

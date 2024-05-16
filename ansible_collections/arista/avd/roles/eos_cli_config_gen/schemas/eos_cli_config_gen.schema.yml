@@ -7900,10 +7900,6 @@ keys:
         type: dict
         description: Control-plane policy configuration.
         keys:
-          enable:
-            type: bool
-            required: true
-            description: Enable control-plane policy.
           classes:
             type: list
             primary_key: name
@@ -7912,7 +7908,6 @@ keys:
               keys:
                 name:
                   type: str
-                  required: true
                 shape:
                   type: int
                   description: Maximum rate limit.
@@ -7929,8 +7924,7 @@ keys:
                   - str
                 rate_unit:
                   type: str
-                  required: true
-                  description: Rate unit for shape value and bandwidth.
+                  description: '`rate_unit` must be defined for `shape` and `bandwidth`.'
                   valid_values:
                   - pps
                   - kbps

@@ -40,12 +40,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate_burst_size</samp>](## "policy_maps.qos.[].classes.[].police.higher_rate_burst_size") | Integer |  |  |  | Range in bytes <256-128000000>. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;higher_rate_burst_size_unit</samp>](## "policy_maps.qos.[].classes.[].police.higher_rate_burst_size_unit") | String |  | `bytes` | Valid Values:<br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code><br>- <code>packets</code> |  |
     | [<samp>&nbsp;&nbsp;copp_system_policy</samp>](## "policy_maps.copp_system_policy") | Dictionary |  |  |  | Control-plane policy configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "policy_maps.copp_system_policy.enable") | Boolean | Required |  |  | Enable control-plane policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;classes</samp>](## "policy_maps.copp_system_policy.classes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "policy_maps.copp_system_policy.classes.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shape</samp>](## "policy_maps.copp_system_policy.classes.[].shape") | Integer |  |  | Min: 0<br>Max: 10000000 | Maximum rate limit. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bandwidth</samp>](## "policy_maps.copp_system_policy.classes.[].bandwidth") | Integer |  |  | Min: 0<br>Max: 10000000 | Minimum bandwidth. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_unit</samp>](## "policy_maps.copp_system_policy.classes.[].rate_unit") | String | Required |  | Valid Values:<br>- <code>pps</code><br>- <code>kbps</code> | Rate unit for shape value and bandwidth. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_unit</samp>](## "policy_maps.copp_system_policy.classes.[].rate_unit") | String |  |  | Valid Values:<br>- <code>pps</code><br>- <code>kbps</code> | `rate_unit` must be defined for `shape` and `bandwidth`. |
 
 === "YAML"
 
@@ -118,9 +117,6 @@
 
       # Control-plane policy configuration.
       copp_system_policy:
-
-        # Enable control-plane policy.
-        enable: <bool; required>
         classes:
           - name: <str; required; unique>
 
@@ -130,6 +126,6 @@
             # Minimum bandwidth.
             bandwidth: <int; 0-10000000>
 
-            # Rate unit for shape value and bandwidth.
-            rate_unit: <str; "pps" | "kbps"; required>
+            # `rate_unit` must be defined for `shape` and `bandwidth`.
+            rate_unit: <str; "pps" | "kbps">
     ```

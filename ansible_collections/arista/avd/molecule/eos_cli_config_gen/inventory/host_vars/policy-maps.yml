@@ -58,7 +58,6 @@ policy_maps:
               ip_address: 192.168.4.2
               recursive: true
   copp_system_policy:
-    enable: true
     classes:
       - name: copp-system-OspfIsis
         shape: 1000
