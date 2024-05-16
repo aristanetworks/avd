@@ -44,7 +44,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "policy_maps.copp_system_policy.classes.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shape</samp>](## "policy_maps.copp_system_policy.classes.[].shape") | Integer |  |  | Min: 0<br>Max: 10000000 | Maximum rate limit. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bandwidth</samp>](## "policy_maps.copp_system_policy.classes.[].bandwidth") | Integer |  |  | Min: 0<br>Max: 10000000 | Minimum bandwidth. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_unit</samp>](## "policy_maps.copp_system_policy.classes.[].rate_unit") | String |  |  | Valid Values:<br>- <code>pps</code><br>- <code>kbps</code> | `rate_unit` must be defined for `shape` and `bandwidth`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_unit</samp>](## "policy_maps.copp_system_policy.classes.[].rate_unit") | String |  |  | Valid Values:<br>- <code>pps</code><br>- <code>kbps</code> | The `rate_unit` must be defined for `shape` and `bandwidth`. |
 
 === "YAML"
 
@@ -126,6 +126,6 @@
             # Minimum bandwidth.
             bandwidth: <int; 0-10000000>
 
-            # `rate_unit` must be defined for `shape` and `bandwidth`.
+            # The `rate_unit` must be defined for `shape` and `bandwidth`.
             rate_unit: <str; "pps" | "kbps">
     ```

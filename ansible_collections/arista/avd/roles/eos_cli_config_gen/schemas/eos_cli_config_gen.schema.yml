@@ -7924,7 +7924,7 @@ keys:
                   - str
                 rate_unit:
                   type: str
-                  description: '`rate_unit` must be defined for `shape` and `bandwidth`.'
+                  description: The `rate_unit` must be defined for `shape` and `bandwidth`.
                   valid_values:
                   - pps
                   - kbps

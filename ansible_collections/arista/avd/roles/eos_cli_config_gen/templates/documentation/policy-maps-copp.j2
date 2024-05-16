@@ -16,7 +16,7 @@
 | Class | Shape | Bandwidth | Rate Unit |
 | ----- | ----- | --------- | --------- |
 {%         for class in policy_maps.copp_system_policy.classes | arista.avd.natural_sort('name') %}
-| {{ class.name }} | {{ class.shape | arista.avd.default("-") }} | {{ class.bandwidth | arista.avd.default("-") }} | {{ class.rate_unit }} |
+| {{ class.name }} | {{ class.shape | arista.avd.default("-") }} | {{ class.bandwidth | arista.avd.default("-") }} | {{ class.rate_unit | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
 

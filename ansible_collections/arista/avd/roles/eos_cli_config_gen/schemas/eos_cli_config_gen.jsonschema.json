@@ -13351,7 +13351,7 @@
                   },
                   "rate_unit": {
                     "type": "string",
-                    "description": "`rate_unit` must be defined for `shape` and `bandwidth`.",
+                    "description": "The `rate_unit` must be defined for `shape` and `bandwidth`.",
                     "enum": [
                       "pps",
                       "kbps"

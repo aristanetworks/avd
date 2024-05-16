@@ -123,6 +123,7 @@ policy-map type quality-of-service PM_REPLICATION_LD3
 
 | Class | Shape | Bandwidth | Rate Unit |
 | ----- | ----- | --------- | --------- |
+| copp-system-aaa | - | - | - |
 | copp-system-cvx | 2000 | 2000 | pps |
 | copp-system-OspfIsis | 1000 | 1000 | kbps |
 
@@ -138,4 +139,6 @@ policy-map type copp copp-system-policy
    class copp-system-cvx
       shape pps 2000
       bandwidth pps 2000
+   !
+   class copp-system-aaa
 ```
