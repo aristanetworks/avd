@@ -60,13 +60,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.shared_secret_profiles.[].secrets.[].secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive_lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infinite</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.infinite") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.start_date_time") | String |  |  |  | Start date and time of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.end_date_time") | String |  |  |  | End date and time of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.start_date_time") | String |  |  |  | Start date and time(UTC) of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].receive_lifetime.end_date_time") | String |  |  |  | End date and time(UTC) of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transmit_lifetime</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infinite</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.infinite") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.start_date_time") | String |  |  |  | Start date and time of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.end_date_time") | String |  |  |  | End date and time of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].local_time") | Boolean |  |  |  | Configuring secret using the local timezone from system clock. Default is UTC. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.start_date_time") | String |  |  |  | Start date and time(UTC) of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_date_time</samp>](## "management_security.shared_secret_profiles.[].secrets.[].transmit_lifetime.end_date_time") | String |  |  |  | End date and time(UTC) of lifetime of the secret. End date should be greater than start date.<br>Formats supported:<br>1. mm/dd/yyyy hh:mm:ss<br>2. yyyy-mm-dd hh:mm:ss<br>e.g 2024-12-20 10:00:00 |
 
 === "YAML"
 
@@ -163,14 +162,14 @@
               receive_lifetime: # required
                 infinite: <bool>
 
-                # Start date and time of lifetime of the secret. End date should be greater than start date.
+                # Start date and time(UTC) of lifetime of the secret. End date should be greater than start date.
                 # Formats supported:
                 # 1. mm/dd/yyyy hh:mm:ss
                 # 2. yyyy-mm-dd hh:mm:ss
                 # e.g 2024-12-20 10:00:00
                 start_date_time: <str>
 
-                # End date and time of lifetime of the secret. End date should be greater than start date.
+                # End date and time(UTC) of lifetime of the secret. End date should be greater than start date.
                 # Formats supported:
                 # 1. mm/dd/yyyy hh:mm:ss
                 # 2. yyyy-mm-dd hh:mm:ss
@@ -179,20 +178,17 @@
               transmit_lifetime: # required
                 infinite: <bool>
 
-                # Start date and time of lifetime of the secret. End date should be greater than start date.
+                # Start date and time(UTC) of lifetime of the secret. End date should be greater than start date.
                 # Formats supported:
                 # 1. mm/dd/yyyy hh:mm:ss
                 # 2. yyyy-mm-dd hh:mm:ss
                 # e.g 2024-12-20 10:00:00
                 start_date_time: <str>
 
-                # End date and time of lifetime of the secret. End date should be greater than start date.
+                # End date and time(UTC) of lifetime of the secret. End date should be greater than start date.
                 # Formats supported:
                 # 1. mm/dd/yyyy hh:mm:ss
                 # 2. yyyy-mm-dd hh:mm:ss
                 # e.g 2024-12-20 10:00:00
                 end_date_time: <str>
-
-              # Configuring secret using the local timezone from system clock. Default is UTC.
-              local_time: <bool>
     ```

@@ -215,7 +215,7 @@ keys:
                       start_date_time:
                         type: str
                         description: |-
-                          Start date and time of lifetime of the secret. End date should be greater than start date.
+                          Start date and time(UTC) of lifetime of the secret. End date should be greater than start date.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
@@ -223,7 +223,7 @@ keys:
                       end_date_time:
                         type: str
                         description: |-
-                          End date and time of lifetime of the secret. End date should be greater than start date.
+                          End date and time(UTC) of lifetime of the secret. End date should be greater than start date.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
@@ -237,7 +237,7 @@ keys:
                       start_date_time:
                         type: str
                         description: |-
-                          Start date and time of lifetime of the secret. End date should be greater than start date.
+                          Start date and time(UTC) of lifetime of the secret. End date should be greater than start date.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
@@ -245,11 +245,8 @@ keys:
                       end_date_time:
                         type: str
                         description: |-
-                          End date and time of lifetime of the secret. End date should be greater than start date.
+                          End date and time(UTC) of lifetime of the secret. End date should be greater than start date.
                           Formats supported:
                           1. mm/dd/yyyy hh:mm:ss
                           2. yyyy-mm-dd hh:mm:ss
                           e.g 2024-12-20 10:00:00
-                  local_time:
-                    type: bool
-                    description: Configuring secret using the local timezone from system clock. Default is UTC.

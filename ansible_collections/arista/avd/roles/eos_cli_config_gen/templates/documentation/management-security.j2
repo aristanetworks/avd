@@ -136,13 +136,20 @@
 
 #### {{ profile.profile }}
 
-| Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
-| ----------- | ---------------- | ----------------- | -------- |
+| Secret Name | Receive Lifetime | Transmit Lifetime |
+| ----------- | ---------------- | ----------------- |
 {%             for secret in profile.secrets | arista.avd.natural_sort("name") %}
-{%                 set local_time = "Local Time" if secret.local_time is arista.avd.defined(true) %}
-{%                 set receive_lifetime = "Infinite" if secret.receive_lifetime.infinite is arista.avd.defined(true) else secret.receive_lifetime.start_date_time ~ " - " ~ secret.receive_lifetime.end_date_time %}
-{%                 set transmit_lifetime = "Infinite" if secret.transmit_lifetime.infinite is arista.avd.defined(true) else secret.transmit_lifetime.start_date_time ~ " - " ~ secret.transmit_lifetime.end_date_time %}
-| {{ secret.name }} | {{ receive_lifetime }} | {{ transmit_lifetime }} | {{ local_time | arista.avd.default("UTC") }} |
+{%                 if secret.receive_lifetime.infinite is arista.avd.defined(true) %}
+{%                     set receive_lifetime = "Infinite"  %}
+{%                 elif secret.receive_lifetime.start_date_time is arista.avd.defined and secret.receive_lifetime.end_date_time is arista.avd.defined %}
+{%                     set receive_lifetime = secret.receive_lifetime.start_date_time ~ " - " ~ secret.receive_lifetime.end_date_time %}
+{%                 endif %}
+{%                 if secret.transmit_lifetime.infinite is arista.avd.defined(true) %}
+{%                     set transmit_lifetime = "Infinite" %}
+{%                 elif secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
+{%                     set transmit_lifetime = secret.transmit_lifetime.start_date_time ~ " - " ~ secret.transmit_lifetime.end_date_time %}
+{%                 endif %}
+| {{ secret.name }} | {{ receive_lifetime }} | {{ transmit_lifetime }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}

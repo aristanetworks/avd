@@ -102,22 +102,22 @@ interface Management1
 
 #### profile0
 
-| Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
-| ----------- | ---------------- | ----------------- | -------- |
-| Secret1 | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | Infinite | Local Time |
-| Secret2 | Infinite | Infinite | UTC |
+| Secret Name | Receive Lifetime | Transmit Lifetime |
+| ----------- | ---------------- | ----------------- |
+| Secret1 | 12/20/2024 10:00:00 - 12/20/2025 10:00:00 | Infinite |
+| Secret2 | Infinite | Infinite |
 
 #### profile1
 
-| Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
-| ----------- | ---------------- | ----------------- | -------- |
-| Secret3 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 | UTC |
+| Secret Name | Receive Lifetime | Transmit Lifetime |
+| ----------- | ---------------- | ----------------- |
+| Secret3 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 12/20/2024 10:00:00 - 12/10/2025 10:00:00 |
 
 #### profile2
 
-| Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
-| ----------- | ---------------- | ----------------- | -------- |
-| Secret4 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | UTC |
+| Secret Name | Receive Lifetime | Transmit Lifetime |
+| ----------- | ---------------- | ----------------- |
+| Secret4 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 | 2024-12-20 10:00:00 - 2025-12-20 10:00:00 |
 
 ### Management Security Device Configuration
 
@@ -138,7 +138,7 @@ management security
       maximum repetitive 6
       maximum sequential 7
    session shared-secret profile profile0
-      secret Secret1 7 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite local-time
+      secret Secret1 7 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite
       secret Secret2 7 <removed> receive-lifetime infinite transmit-lifetime infinite
    session shared-secret profile profile1
       secret Secret3 8a <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 12/20/2024 10:00:00 12/10/2025 10:00:00

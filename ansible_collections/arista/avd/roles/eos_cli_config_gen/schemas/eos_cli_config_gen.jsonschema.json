@@ -10830,12 +10830,12 @@
                         },
                         "start_date_time": {
                           "type": "string",
-                          "description": "Start date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "description": "Start date and time(UTC) of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
                           "title": "Start Date Time"
                         },
                         "end_date_time": {
                           "type": "string",
-                          "description": "End date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "description": "End date and time(UTC) of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
                           "title": "End Date Time"
                         }
                       },
@@ -10854,12 +10854,12 @@
                         },
                         "start_date_time": {
                           "type": "string",
-                          "description": "Start date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "description": "Start date and time(UTC) of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
                           "title": "Start Date Time"
                         },
                         "end_date_time": {
                           "type": "string",
-                          "description": "End date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "description": "End date and time(UTC) of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
                           "title": "End Date Time"
                         }
                       },
@@ -10868,11 +10868,6 @@
                         "^_.+$": {}
                       },
                       "title": "Transmit Lifetime"
-                    },
-                    "local_time": {
-                      "type": "boolean",
-                      "description": "Configuring secret using the local timezone from system clock. Default is UTC.",
-                      "title": "Local Time"
                     }
                   },
                   "required": [
@@ -17590,7 +17585,7 @@
                   },
                   "hash_algorithm": {
                     "type": "string",
-                    "description": "Note:\n  Algorithm hmac-sha-256 requires EOS version 4.31F and above to deploy the config via eAPI.",
+                    "description": "Note:\n  Algorithm hmac-sha-256 requires EOS version 4.31F and above.",
                     "enum": [
                       "aes-128-cmac-96",
                       "hmac-sha-256",
