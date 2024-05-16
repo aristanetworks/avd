@@ -2867,6 +2867,13 @@ keys:
         transceiver:
           type: dict
           keys:
+            frequency:
+              type: int
+              convert_types:
+              - str
+              min: 190000
+              max: 200000
+              description: Transceiver Laser Frequency for 400GBASE-ZR in GHz.
             media:
               type: dict
               keys:

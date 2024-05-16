@@ -4762,6 +4762,13 @@
           "transceiver": {
             "type": "object",
             "properties": {
+              "frequency": {
+                "type": "integer",
+                "minimum": 190000,
+                "maximum": 200000,
+                "description": "Transceiver Laser Frequency for 400GBASE-ZR in GHz.",
+                "title": "Frequency"
+              },
               "media": {
                 "type": "object",
                 "properties": {

@@ -777,6 +777,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.vmtracer is arista.avd.defined(true) %}
    vmtracer vmware-esx
 {%     endif %}
+{%     if ethernet_interface.transceiver.frequency is arista.avd.defined %}
+   transceiver frequency {{ ethernet_interface.transceiver.frequency }} ghz
+{%     endif %}
 {%     if ethernet_interface.transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interface.transceiver.media.override }}
 {%     endif %}

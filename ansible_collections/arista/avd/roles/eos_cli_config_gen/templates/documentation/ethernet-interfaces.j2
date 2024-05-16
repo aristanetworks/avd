@@ -165,6 +165,23 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# Transceiver Frequency #}
+{%     set custom_transceiver_frequency_interfaces = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.transceiver.frequency is arista.avd.defined %}
+{%             do custom_transceiver_frequency_interfaces.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if custom_transceiver_frequency_interfaces | length > 0 %}
+
+##### Transceiver Frequency
+
+| Interface | Transceiver Frequency |
+| --------- | ---------------------- |
+{%         for custom_transceiver_frequency_interface in custom_transceiver_frequency_interfaces | arista.avd.natural_sort('name') %}
+| {{ custom_transceiver_frequency_interface.name }} | {{ custom_transceiver_frequency_interface.transceiver.frequency }} |
+{%         endfor %}
+{%     endif %}
 {# Link Tracking Groups #}
 {%     set link_tracking_interfaces = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
