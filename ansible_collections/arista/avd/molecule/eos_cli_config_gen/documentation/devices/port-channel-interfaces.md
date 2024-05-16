@@ -88,6 +88,12 @@ sFlow is disabled.
 
 *Inherited from Port-Channel Interface
 
+##### Transceiver Settings
+
+| Interface | Transceiver Frequency | Media Override |
+| --------- | --------------------- | -------------- |
+| Ethernet5 |  - | 100gbase-ar4 |
+
 ##### Phone Interfaces
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |

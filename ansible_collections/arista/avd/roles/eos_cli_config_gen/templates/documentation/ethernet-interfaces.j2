@@ -165,21 +165,31 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{# Transceiver Frequency #}
-{%     set custom_transceiver_frequency_interfaces = [] %}
+{# Transceiver Settings #}
+{%     set transceiver_settings = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.transceiver.frequency is arista.avd.defined %}
-{%             do custom_transceiver_frequency_interfaces.append(ethernet_interface) %}
+{%         if ethernet_interface.transceiver is arista.avd.defined %}
+{%             do transceiver_settings.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     if custom_transceiver_frequency_interfaces | length > 0 %}
+{%     if transceiver_settings | length > 0 %}
 
-##### Transceiver Frequency
+##### Transceiver Settings
 
-| Interface | Transceiver Frequency |
-| --------- | --------------------- |
-{%         for custom_transceiver_frequency_interface in custom_transceiver_frequency_interfaces | arista.avd.natural_sort('name') %}
-| {{ custom_transceiver_frequency_interface.name }} | {{ custom_transceiver_frequency_interface.transceiver.frequency }} |
+| Interface | Transceiver Frequency | Media Override |
+| --------- | --------------------- | -------------- |
+{%         for transceiver_setting in transceiver_settings | arista.avd.natural_sort('name') %}
+{%             set interface = transceiver_setting.name | arista.avd.default('-') %}
+{%             if transceiver_setting.transceiver.frequency is arista.avd.defined %}
+{%                 set frequency = "%.3f" | format(transceiver_setting.transceiver.frequency | float) %}
+{%                 if transceiver_setting.transceiver.frequency_unit is arista.avd.defined %}
+{%                     set frequency = frequency ~ ' ' ~ transceiver_setting.transceiver.frequency_unit %}
+{%                 endif %}
+{%             else %}
+{%                 set frequency = '-' %}
+{%             endif %}
+{%             set m_override = transceiver_setting.transceiver.media.override | arista.avd.default('-') %}
+| {{ interface }} |  {{ frequency }} | {{ m_override }} |
 {%         endfor %}
 {%     endif %}
 {# Link Tracking Groups #}
