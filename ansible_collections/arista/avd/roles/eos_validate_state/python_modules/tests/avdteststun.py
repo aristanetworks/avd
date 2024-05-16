@@ -15,7 +15,8 @@ LOGGER = logging.getLogger(__name__)
 class AvdTestStun(AvdTestBase):
     """
     AvdTestStun class for STUN tests.
-    Validates the configuration of the STUN client, specifically the IPv4 source address and port.
+    Validates the configuration of the STUN client, focusing specifically on the IPv4 source address and port,
+    exclusively for WAN scenarios by inspecting the path-groups.
     """
 
     anta_module = "anta.tests.stun"
@@ -47,11 +48,11 @@ class AvdTestStun(AvdTestBase):
             LOGGER.info("No local interface found with STUN configuration. %s is skipped.", self.__class__.__name__)
             return None
 
-        # Generate the ANTA tests for each interface with STUN configuration
+        # Generate the ANTA tests for each identified local interface.
         for source_interface in stun_interfaces:
             ip_address = self.get_interface_ip("ethernet_interfaces", source_interface)
             source_address = ip_address.split("/")[0]
-            source_port = 4500  # TODO: Keeping source port as default 4500. We might need to change it later.
+            source_port = 4500
             anta_tests.append(
                 {
                     "VerifyStunClient": {
