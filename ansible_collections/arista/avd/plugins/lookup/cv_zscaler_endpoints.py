@@ -91,6 +91,7 @@ class LookupModule(LookupBase):
         self.set_options(var_options=variables, direct=kwargs)
 
         self.shared_utils = self.get_avd_shared_utils(variables)
+        self.hostname = self.get_option("inventory_hostname")
 
         # Running asyncio coroutine to deploy everything.
         return run(self.get_zscaler_endpoints())
@@ -118,7 +119,7 @@ class LookupModule(LookupBase):
 
         # Load schema tools and perform conversion and validation
         avdschematools = AvdSchemaTools(
-            hostname=self.get_option("inventory_hostname"),
+            hostname=self.hostname,
             ansible_display=display,
             schema_id="eos_designs",
             conversion_mode="debug",
@@ -127,7 +128,7 @@ class LookupModule(LookupBase):
         )
         result = avdschematools.convert_and_validate_data(variables)
         if result.get("failed"):
-            raise AnsibleLookupError(result["msg"])
+            raise AnsibleLookupError(f"[{self.hostname}] {result['msg']}")
 
         return shared_utils
 
@@ -139,7 +140,7 @@ class LookupModule(LookupBase):
         serial_number = self.shared_utils.serial_number
         wan_site_location = get(self.shared_utils.wan_site or {}, "location")
         if wan_site_location is None:
-            raise AnsibleLookupError("Unable to determine the WAN Site location.")
+            raise AnsibleLookupError(f"[{self.hostname}] Unable to determine the WAN Site location.")
 
         cv_server = self.get_option("cv_server")
         cv_token = self.get_option("cv_token")
