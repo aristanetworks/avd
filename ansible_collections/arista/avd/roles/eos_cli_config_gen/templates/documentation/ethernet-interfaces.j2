@@ -189,7 +189,7 @@
 {%                 set frequency = '-' %}
 {%             endif %}
 {%             set m_override = transceiver_setting.transceiver.media.override | arista.avd.default('-') %}
-| {{ interface }} |  {{ frequency }} | {{ m_override }} |
+| {{ interface }} | {{ frequency }} | {{ m_override }} |
 {%         endfor %}
 {%     endif %}
 {# Link Tracking Groups #}

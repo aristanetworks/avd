@@ -175,9 +175,9 @@ sFlow is disabled.
 
 | Interface | Transceiver Frequency | Media Override |
 | --------- | --------------------- | -------------- |
-| Ethernet7 |  - | 100gbase-ar4 |
-| Ethernet67 |  190050.000 | - |
-| Ethernet68 |  190080.000 ghz | 100gbase-ar4 |
+| Ethernet7 | - | 100gbase-ar4 |
+| Ethernet67 | 190050.000 | - |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 |
 
 ##### Link Tracking Groups
 

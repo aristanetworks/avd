@@ -92,7 +92,7 @@ sFlow is disabled.
 
 | Interface | Transceiver Frequency | Media Override |
 | --------- | --------------------- | -------------- |
-| Ethernet5 |  - | 100gbase-ar4 |
+| Ethernet5 | - | 100gbase-ar4 |
 
 ##### Phone Interfaces
 
