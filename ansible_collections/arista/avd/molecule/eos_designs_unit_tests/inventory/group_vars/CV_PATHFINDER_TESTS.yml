@@ -22,6 +22,7 @@ cv_pathfinder_regions:
     sites:
       - name: Site511
         id: 511
+        location: Miami
 
 bgp_peer_groups:
   wan_overlay_peers:

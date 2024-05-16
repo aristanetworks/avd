@@ -59225,11 +59225,6 @@
           "title": "Device Location"
         }
       },
-      "required": [
-        "primary",
-        "cloud_name",
-        "device_location"
-      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}

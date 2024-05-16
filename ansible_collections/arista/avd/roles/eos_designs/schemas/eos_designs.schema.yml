@@ -4503,7 +4503,6 @@ keys:
     keys:
       primary:
         type: dict
-        required: true
         keys:
           ip_address:
             type: str
@@ -4541,13 +4540,11 @@ keys:
         description: The name of the Zscaler cloud the CloudVision cluster is integrated
           with like 'zscaler1' or 'zscalerbeta'.
         type: str
-        required: true
       device_location:
         description: The location of the calling device after being resolved by Zscaler
           location APIs. This is required since Zscaler only accepts their own variants
           of City and Country.
         type: dict
-        required: true
         keys:
           city:
             type: str

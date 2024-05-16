@@ -133,14 +133,20 @@ class LookupModule(LookupBase):
         return shared_utils
 
     async def get_zscaler_endpoints(self):
-        # Silently return None if this is not a pathfinder client.
+        # Silently return empty dict if this is not a pathfinder client.
         if not self.shared_utils.is_cv_pathfinder_client:
-            return None
+            return [{}]
 
         serial_number = self.shared_utils.serial_number
         wan_site_location = get(self.shared_utils.wan_site or {}, "location")
         if wan_site_location is None:
-            raise AnsibleLookupError(f"[{self.hostname}] Unable to determine the WAN Site location.")
+            # Log and return empty dict if we cannot find a location
+            # Since vars are templated during facts phase, we cannot prevent the lookup plugin to run on all devices having the groupvar even with limit.
+            LOGGER.info(
+                "lookup arista.avd.cv_zscaler_endpoint for [%s] Unable to determine the WAN Site location. Make sure 'location' is set under the WAN Site.",
+                self.hostname,
+            )
+            return [{}]
 
         cv_server = self.get_option("cv_server")
         cv_token = self.get_option("cv_token")
@@ -157,8 +163,6 @@ class LookupModule(LookupBase):
             "device_location": {
                 "city": device_location.city,
                 "country": device_location.country,
-                "latitude": device_location.latitude,
-                "longitude": device_location.longitude,
             },
         }
         if not getattr(cv_endpoint_status, "vpn_endpoints", None) or not getattr(cv_endpoint_status.vpn_endpoints, "values", None):

@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>zscaler_endpoints</samp>](## "zscaler_endpoints") | Dictionary |  |  |  | PREVIEW: These keys are in preview mode.<br><br>Special data model used for WAN internet-exit integration with Zscaler.<br>The model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints` Ansible lookup plugin.<br>Example:<br>```yaml<br>zscaler_endpoints: "{{ lookup('arista.avd.cv_zscaler_endpoints', cv_server="<optional servername>", cv_token="<optional token>") }}"<br>```<br>The cv_server and cv_token options can be set as inventory variables instead of given as arguments. (Then they will also be used for cv_deploy) |
-    | [<samp>&nbsp;&nbsp;primary</samp>](## "zscaler_endpoints.primary") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;primary</samp>](## "zscaler_endpoints.primary") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "zscaler_endpoints.primary.ip_address") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;datacenter</samp>](## "zscaler_endpoints.primary.datacenter") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;city</samp>](## "zscaler_endpoints.primary.city") | String | Required |  |  |  |
@@ -29,8 +29,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "zscaler_endpoints.tertiary.country") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;latitude</samp>](## "zscaler_endpoints.tertiary.latitude") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;longitude</samp>](## "zscaler_endpoints.tertiary.longitude") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;cloud_name</samp>](## "zscaler_endpoints.cloud_name") | String | Required |  |  | The name of the Zscaler cloud the CloudVision cluster is integrated with like 'zscaler1' or 'zscalerbeta'. |
-    | [<samp>&nbsp;&nbsp;device_location</samp>](## "zscaler_endpoints.device_location") | Dictionary | Required |  |  | The location of the calling device after being resolved by Zscaler location APIs. This is required since Zscaler only accepts their own variants of City and Country. |
+    | [<samp>&nbsp;&nbsp;cloud_name</samp>](## "zscaler_endpoints.cloud_name") | String |  |  |  | The name of the Zscaler cloud the CloudVision cluster is integrated with like 'zscaler1' or 'zscalerbeta'. |
+    | [<samp>&nbsp;&nbsp;device_location</samp>](## "zscaler_endpoints.device_location") | Dictionary |  |  |  | The location of the calling device after being resolved by Zscaler location APIs. This is required since Zscaler only accepts their own variants of City and Country. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;city</samp>](## "zscaler_endpoints.device_location.city") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "zscaler_endpoints.device_location.country") | String | Required |  |  |  |
 
@@ -47,7 +47,7 @@
     # ```
     # The cv_server and cv_token options can be set as inventory variables instead of given as arguments. (Then they will also be used for cv_deploy)
     zscaler_endpoints:
-      primary: # required
+      primary:
         ip_address: <str; required>
         datacenter: <str; required>
         city: <str; required>
@@ -70,10 +70,10 @@
         longitude: <str; required>
 
       # The name of the Zscaler cloud the CloudVision cluster is integrated with like 'zscaler1' or 'zscalerbeta'.
-      cloud_name: <str; required>
+      cloud_name: <str>
 
       # The location of the calling device after being resolved by Zscaler location APIs. This is required since Zscaler only accepts their own variants of City and Country.
-      device_location: # required
+      device_location:
         city: <str; required>
         country: <str; required>
     ```
