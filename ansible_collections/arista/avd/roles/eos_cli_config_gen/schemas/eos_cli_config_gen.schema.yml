@@ -3727,6 +3727,7 @@ keys:
               - route
               - routed-port
               - subinterface
+              - segment-security
               - tapagg
               - traffic-class
               - traffic-policy
