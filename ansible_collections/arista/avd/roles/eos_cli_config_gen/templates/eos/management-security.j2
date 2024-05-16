@@ -66,7 +66,7 @@ management security
 {%     for profile in management_security.shared_secret_profiles | arista.avd.natural_sort("profile") %}
    session shared-secret profile {{ profile.profile }}
 {%         for secret in profile.secrets | arista.avd.natural_sort("name") %}
-{%             if secret.secret is arista.avd.defined and secret.name is arista.avd.defined and (secret.receive_lifetime.infinite is arista.avd.defined or (secret.receive_lifetime.start_date_time and secret.receive_lifetime.end_date_time is arista.avd.defined)) and (secret.transmit_lifetime.infinite is arista.avd.defined or (secret.transmit_lifetime.start_date_time and secret.transmit_lifetime.end_date_time is arista.avd.defined)) %}
+{%             if secret.secret is arista.avd.defined and (secret.receive_lifetime.infinite is arista.avd.defined or (secret.receive_lifetime.start_date_time and secret.receive_lifetime.end_date_time is arista.avd.defined)) and (secret.transmit_lifetime.infinite is arista.avd.defined or (secret.transmit_lifetime.start_date_time and secret.transmit_lifetime.end_date_time is arista.avd.defined)) %}
 {%                 set secret_cli = "secret " ~ secret.name ~ " " ~ secret.secret_type | arista.avd.default("7") ~ " " ~ secret.secret | arista.avd.hide_passwords(hide_passwords) %}
 {%                 if secret.receive_lifetime.infinite is arista.avd.defined(true) %}
 {%                     if secret.transmit_lifetime.start_date_time is arista.avd.defined and secret.transmit_lifetime.end_date_time is arista.avd.defined %}
