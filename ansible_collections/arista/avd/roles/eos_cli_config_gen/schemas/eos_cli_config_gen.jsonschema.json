@@ -12068,7 +12068,7 @@
             },
             "enabled": {
               "type": "boolean",
-              "description": "Some platforms only support command `logging tranceiver'. `enabled` key configures this command. Both `dom` and `communication` are enabled with this key.",
+              "description": "Some platforms only support command `logging transceiver'. `enabled` key configures this command.",
               "title": "Enabled"
             }
           },
