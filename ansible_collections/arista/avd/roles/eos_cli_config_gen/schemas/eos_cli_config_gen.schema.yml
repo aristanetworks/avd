@@ -2867,6 +2867,18 @@ keys:
         transceiver:
           type: dict
           keys:
+            frequency:
+              type: str
+              convert_types:
+              - int
+              - float
+              description: Transceiver Laser Frequency in GHz (min 190000, max 200000).
+            frequency_unit:
+              type: str
+              required: false
+              valid_values:
+              - ghz
+              description: Unit of Transceiver Laser Frequency.
             media:
               type: dict
               keys:

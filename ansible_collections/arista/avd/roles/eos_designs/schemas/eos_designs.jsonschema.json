@@ -9365,6 +9365,19 @@
               "transceiver": {
                 "type": "object",
                 "properties": {
+                  "frequency": {
+                    "type": "string",
+                    "description": "Transceiver Laser Frequency in GHz (min 190000, max 200000).",
+                    "title": "Frequency"
+                  },
+                  "frequency_unit": {
+                    "type": "string",
+                    "enum": [
+                      "ghz"
+                    ],
+                    "description": "Unit of Transceiver Laser Frequency.",
+                    "title": "Frequency Unit"
+                  },
                   "media": {
                     "type": "object",
                     "properties": {
@@ -15118,6 +15131,19 @@
               "transceiver": {
                 "type": "object",
                 "properties": {
+                  "frequency": {
+                    "type": "string",
+                    "description": "Transceiver Laser Frequency in GHz (min 190000, max 200000).",
+                    "title": "Frequency"
+                  },
+                  "frequency_unit": {
+                    "type": "string",
+                    "enum": [
+                      "ghz"
+                    ],
+                    "description": "Unit of Transceiver Laser Frequency.",
+                    "title": "Frequency Unit"
+                  },
                   "media": {
                     "type": "object",
                     "properties": {
@@ -21428,6 +21454,19 @@
                     "transceiver": {
                       "type": "object",
                       "properties": {
+                        "frequency": {
+                          "type": "string",
+                          "description": "Transceiver Laser Frequency in GHz (min 190000, max 200000).",
+                          "title": "Frequency"
+                        },
+                        "frequency_unit": {
+                          "type": "string",
+                          "enum": [
+                            "ghz"
+                          ],
+                          "description": "Unit of Transceiver Laser Frequency.",
+                          "title": "Frequency Unit"
+                        },
                         "media": {
                           "type": "object",
                           "properties": {
@@ -51778,6 +51817,19 @@
               "transceiver": {
                 "type": "object",
                 "properties": {
+                  "frequency": {
+                    "type": "string",
+                    "description": "Transceiver Laser Frequency in GHz (min 190000, max 200000).",
+                    "title": "Frequency"
+                  },
+                  "frequency_unit": {
+                    "type": "string",
+                    "enum": [
+                      "ghz"
+                    ],
+                    "description": "Unit of Transceiver Laser Frequency.",
+                    "title": "Frequency Unit"
+                  },
                   "media": {
                     "type": "object",
                     "properties": {
