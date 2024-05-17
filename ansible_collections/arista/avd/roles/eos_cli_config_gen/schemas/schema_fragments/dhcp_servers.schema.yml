@@ -98,6 +98,7 @@ keys:
                     description: 'Name of IPv4 file'
                 ipv6_file:
                   type: list
+                  min_length: 1
                   description: List of IPv6 files
                   items:
                     type: str
