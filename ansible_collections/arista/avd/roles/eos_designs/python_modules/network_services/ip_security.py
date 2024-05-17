@@ -23,7 +23,7 @@ class IpSecurityMixin(UtilsMixin):
         ip_security set based on cv_pathfinder_internet_exit_policies
         """
 
-        if not self.shared_utils.is_cv_pathfinder_client:
+        if not self._filtered_internet_exit_policies:
             return None
 
         ip_security = {"ike_policies": [], "sa_policies": [], "profiles": []}
@@ -74,4 +74,4 @@ class IpSecurityMixin(UtilsMixin):
                 }
             )
 
-        return strip_null_from_data(ip_security)
+        return strip_null_from_data(ip_security) or None

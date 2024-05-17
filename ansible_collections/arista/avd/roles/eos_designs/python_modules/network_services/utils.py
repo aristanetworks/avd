@@ -637,13 +637,14 @@ class UtilsMixin:
     @cached_property
     def _filtered_internet_exit_policies(self) -> list:
         """
+        Only supported for CV Pathfinder Edge routers. Returns an empty list for pathfinders.
+
         - Parse self._filtered_wan_policies looking to internet_exit_policies.
         - Verify each internet_exit_policy is present in inputs `cv_pathfinder_internet_exit_policies`.
         - get_internet_exit_connections and insert into the policy dict.
         - Return the list of relevant internet_exit_policies.
         """
-        # Only supported for CV Pathfinder
-        if not self.shared_utils.is_cv_pathfinder_router:
+        if not self.shared_utils.is_cv_pathfinder_client:
             return []
 
         internet_exit_policy_names = set()
