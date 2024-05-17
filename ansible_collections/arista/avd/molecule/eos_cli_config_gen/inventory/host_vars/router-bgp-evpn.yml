@@ -114,6 +114,8 @@ router_bgp:
       receive: true
       send:
         any: true
+    layer_2_fec_in_place_update:
+      enabled: true
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
