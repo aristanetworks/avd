@@ -1,5 +1,6 @@
 hostname: cv-pathfinder-edge1
 is_deployed: true
+serial_number: mockZscaler
 router_bgp:
   as: '65000'
   router_id: 192.168.42.2
@@ -723,7 +724,7 @@ tunnel_interfaces:
   ip_address: unnumbered Ethernet3
   tunnel_mode: ipsec
   source_interface: Ethernet3
-  destination: 10.37.121.1
+  destination: 104.129.194.39
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel101
@@ -732,7 +733,7 @@ tunnel_interfaces:
   ip_address: unnumbered Ethernet3
   tunnel_mode: ipsec
   source_interface: Ethernet3
-  destination: 10.39.77.1
+  destination: 199.168.148.132
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel102
@@ -741,7 +742,7 @@ tunnel_interfaces:
   ip_address: unnumbered Ethernet3
   tunnel_mode: ipsec
   source_interface: Ethernet3
-  destination: 10.50.9.1
+  destination: 165.225.72.39
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel110
@@ -750,7 +751,7 @@ tunnel_interfaces:
   ip_address: unnumbered Ethernet3
   tunnel_mode: ipsec
   source_interface: Ethernet3
-  destination: 10.37.121.1
+  destination: 104.129.194.39
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-2-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel111
@@ -759,7 +760,7 @@ tunnel_interfaces:
   ip_address: unnumbered Ethernet3
   tunnel_mode: ipsec
   source_interface: Ethernet3
-  destination: 10.39.77.1
+  destination: 199.168.148.132
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-2-PROFILE
   nat_profile: VRF-AWARE-NAT
 - name: Tunnel112
@@ -768,7 +769,7 @@ tunnel_interfaces:
   ip_address: unnumbered Ethernet3
   tunnel_mode: ipsec
   source_interface: Ethernet3
-  destination: 10.50.9.1
+  destination: 165.225.72.39
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-2-PROFILE
   nat_profile: VRF-AWARE-NAT
 monitor_connectivity:
@@ -788,37 +789,37 @@ monitor_connectivity:
   hosts:
   - name: IE-Tunnel100
     description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
-    ip: 10.37.121.1
+    ip: 104.129.194.39
     local_interfaces: SET-Tunnel100
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
   - name: IE-Tunnel101
     description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
-    ip: 10.39.77.1
+    ip: 199.168.148.132
     local_interfaces: SET-Tunnel101
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
   - name: IE-Tunnel102
     description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
-    ip: 10.50.9.1
+    ip: 165.225.72.39
     local_interfaces: SET-Tunnel102
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
   - name: IE-Tunnel110
     description: Internet Exit ZSCALER-EXIT-POLICY-2 PRI
-    ip: 10.37.121.1
+    ip: 104.129.194.39
     local_interfaces: SET-Tunnel110
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
   - name: IE-Tunnel111
     description: Internet Exit ZSCALER-EXIT-POLICY-2 SEC
-    ip: 10.39.77.1
+    ip: 199.168.148.132
     local_interfaces: SET-Tunnel111
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
   - name: IE-Tunnel112
     description: Internet Exit ZSCALER-EXIT-POLICY-2 TER
-    ip: 10.50.9.1
+    ip: 165.225.72.39
     local_interfaces: SET-Tunnel112
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
@@ -828,8 +829,8 @@ metadata:
     internet_exit_policies:
     - name: ZSCALER-EXIT-POLICY-1
       type: zscaler
-      city: Santa Clara, CA
-      country: United States
+      city: ''
+      country: ''
       firewall: false
       ips_control: false
       acceptable_use_policy: false
@@ -846,8 +847,8 @@ metadata:
         preference: Alternate
     - name: ZSCALER-EXIT-POLICY-2
       type: zscaler
-      city: Santa Clara, CA
-      country: United States
+      city: ''
+      country: ''
       firewall: false
       ips_control: false
       acceptable_use_policy: false

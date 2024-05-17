@@ -13,8 +13,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import simple_7_encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
+from .utils_zscaler import UtilsZscalerMixin
 
-class UtilsMixin:
+
+class UtilsMixin(UtilsZscalerMixin):
     """
     Mixin Class with internal functions.
     Class should only be used as Mixin to a AvdStructuredConfig class
@@ -760,10 +762,6 @@ class UtilsMixin:
                 )
 
         return connections
-
-    @cached_property
-    def _zscaler_endpoints(self) -> dict:
-        return get(self._hostvars, "zscaler_endpoints", default={})
 
     def _get_ipsec_credentials(self, internet_exit_policy: dict) -> tuple[str, str]:
         """

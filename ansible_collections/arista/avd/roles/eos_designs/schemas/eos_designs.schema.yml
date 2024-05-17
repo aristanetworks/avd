@@ -740,6 +740,22 @@ keys:
                 type: str
               site_after_hours_contact:
                 type: str
+  cv_server:
+    documentation_options:
+      table: wan-cv-pathfinder-zscaler-integration
+    description: 'PREVIEW: These keys are in preview mode.
+
+
+      Hostname or IP address of CloudVision host. Ex. "www.arista.io" for CVaaS.
+
+      For `eos_designs` this variable is only used for the WAN Internet-exit integration
+      with Zscaler.
+
+      The same variable name is also used by the `cv_deploy` role, and will override
+      the value of `ansible_host` on inventory ''cloudvision'' host.
+
+      Make sure to set it in a common group_vars file.'
+    type: str
   cv_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
@@ -753,6 +769,23 @@ keys:
     - spine
     - core
     - edge
+  cv_token:
+    documentation_options:
+      table: wan-cv-pathfinder-zscaler-integration
+    description: 'PREVIEW: These keys are in preview mode.
+
+
+      Service account token as defined on CloudVision. This value should be using
+      Ansible Vault.
+
+      For `eos_designs` this variable is only used for the WAN Internet-exit integration
+      with Zscaler.
+
+      The same variable name is also used by the `cv_deploy` role, and will override
+      the value of `ansible_password` on inventory ''cloudvision'' host.
+
+      Make sure to set it in a common group_vars file.'
+    type: str
   cv_topology:
     documentation_options:
       table: cv-topology
@@ -4484,25 +4517,14 @@ keys:
     description: 'PREVIEW: These keys are in preview mode.
 
 
-      Special data model used for WAN internet-exit integration with Zscaler.
+      Special data model used for testing the WAN internet-exit integration with Zscaler.
 
-      The model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints`
-      Ansible lookup plugin.
-
-      Example:
-
-      ```yaml
-
-      zscaler_endpoints: "{{ lookup(''arista.avd.cv_zscaler_endpoints'', cv_server="<optional
-      servername>", cv_token="<optional token>") }}"
-
-      ```
-
-      The cv_server and cv_token options can be set as inventory variables instead
-      of given as arguments. (Then they will also be used for cv_deploy)'
+      The model is supposed to be autofilled per-device by `eos_designs`, but when
+      CloudVision is not available, it is possible to provide the settings manually.'
     keys:
       primary:
         type: dict
+        required: true
         keys:
           ip_address:
             type: str
@@ -4540,11 +4562,13 @@ keys:
         description: The name of the Zscaler cloud the CloudVision cluster is integrated
           with like 'zscaler1' or 'zscalerbeta'.
         type: str
+        required: true
       device_location:
         description: The location of the calling device after being resolved by Zscaler
           location APIs. This is required since Zscaler only accepts their own variants
           of City and Country.
         type: dict
+        required: true
         keys:
           city:
             type: str

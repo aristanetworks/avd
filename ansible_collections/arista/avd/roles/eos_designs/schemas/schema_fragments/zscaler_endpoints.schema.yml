@@ -11,16 +11,12 @@ keys:
     description: |-
       PREVIEW: These keys are in preview mode.
 
-      Special data model used for WAN internet-exit integration with Zscaler.
-      The model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints` Ansible lookup plugin.
-      Example:
-      ```yaml
-      zscaler_endpoints: "{{ lookup('arista.avd.cv_zscaler_endpoints', cv_server="<optional servername>", cv_token="<optional token>") }}"
-      ```
-      The cv_server and cv_token options can be set as inventory variables instead of given as arguments. (Then they will also be used for cv_deploy)
+      Special data model used for testing the WAN internet-exit integration with Zscaler.
+      The model is supposed to be autofilled per-device by `eos_designs`, but when CloudVision is not available, it is possible to provide the settings manually.
     keys:
       primary:
         type: dict
+        required: true
         keys:
           ip_address:
             type: str
@@ -57,9 +53,11 @@ keys:
       cloud_name:
         description: The name of the Zscaler cloud the CloudVision cluster is integrated with like 'zscaler1' or 'zscalerbeta'.
         type: str
+        required: true
       device_location:
         description: The location of the calling device after being resolved by Zscaler location APIs. This is required since Zscaler only accepts their own variants of City and Country.
         type: dict
+        required: true
         keys:
           city:
             type: str
