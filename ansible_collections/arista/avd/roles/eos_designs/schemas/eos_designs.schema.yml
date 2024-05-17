@@ -1942,7 +1942,7 @@ keys:
     description: Configure IP routing for the OOB Management VRF.
   mlag_ibgp_peering_vrfs:
     documentation_options:
-      table: overlay-settings
+      table: network-services-vrfs-settings
     type: dict
     description: 'On mlag leafs, an SVI interface is defined per vrf, to establish
       iBGP peering (required when there are MLAG leafs in topology).
