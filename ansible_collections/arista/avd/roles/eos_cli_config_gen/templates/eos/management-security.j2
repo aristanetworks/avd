@@ -86,6 +86,9 @@ management security
       {{ secret_cli }}
 {%             endif %}
 {%         endfor %}
+{%         if not loop.last %}
+   !
+{%         endif %}
 {%     endfor %}
 {%     for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
    ssl profile {{ ssl_profile.name }}

@@ -393,7 +393,7 @@ keys:
                   type: str
                   required: true
                   description: |-
-                    Note: Algorithm hmac-sha-256 requires EOS version 4.31F and above.
+                    Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.
                   valid_values:
                     - "aes-128-cmac-96"
                     - "hmac-sha-256"
@@ -596,6 +596,8 @@ keys:
                 hash_algorithm:
                   type: str
                   required: true
+                  description: |-
+                    Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.
                   valid_values:
                     - "aes-128-cmac-96"
                     - "hmac-sha-256"

@@ -17604,7 +17604,7 @@
                   },
                   "hash_algorithm": {
                     "type": "string",
-                    "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31F and above.",
+                    "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
                     "enum": [
                       "aes-128-cmac-96",
                       "hmac-sha-256",
@@ -17944,6 +17944,7 @@
                   },
                   "hash_algorithm": {
                     "type": "string",
+                    "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
                     "enum": [
                       "aes-128-cmac-96",
                       "hmac-sha-256",
