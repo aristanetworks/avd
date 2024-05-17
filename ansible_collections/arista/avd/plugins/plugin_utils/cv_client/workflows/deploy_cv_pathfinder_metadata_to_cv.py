@@ -369,6 +369,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
                 f"with type '{internet_exit_policy.get('type')}' for device: {device.hostname}."
             )
             LOGGER.info(warning)
+            warnings.append(warning)
             continue
 
         if internet_exit_policy["type"] == "direct":
