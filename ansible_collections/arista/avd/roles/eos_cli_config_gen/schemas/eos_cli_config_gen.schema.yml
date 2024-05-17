@@ -3726,8 +3726,8 @@ keys:
               - qos dual-rate-policer
               - route
               - routed-port
-              - subinterface
               - segment-security
+              - subinterface
               - tapagg
               - traffic-class
               - traffic-policy
