@@ -18,29 +18,17 @@
 {%         if dhcp_server.dns_domain_name_ipv6 is arista.avd.defined %}
    dns domain name ipv6 {{ dhcp_server.dns_domain_name_ipv6 }}
 {%         endif %}
-{%         if dhcp_server.dns_server.ipv4_servers is arista.avd.defined %}
-{%             set dns_servers_cli = namespace(cli="dns server ipv4") %}
-{%             for server in dhcp_server.dns_server.ipv4_servers  %}
-{%                 set dns_servers_cli.cli = dns_servers_cli.cli ~ " " ~ server %}
-{%             endfor %}
-   {{ dns_servers_cli.cli }}
+{%         if dhcp_server.dns_servers_ipv4 is arista.avd.defined %}
+   dns server ipv4 {{ dhcp_server.dns_servers_ipv4 | arista.avd.natural_sort | join(" ") }}
 {%         endif %}
-{%         if dhcp_server.dns_server.ipv6_servers is arista.avd.defined %}
-{%             set dns_servers_cli = namespace(cli="dns server ipv6") %}
-{%             for server in dhcp_server.dns_server.ipv6_servers  %}
-{%                 set dns_servers_cli.cli = dns_servers_cli.cli ~ " " ~ server %}
-{%             endfor %}
-   {{ dns_servers_cli.cli }}
+{%         if dhcp_server.dns_servers_ipv6 is arista.avd.defined %}
+   dns server ipv6 {{ dhcp_server.dns_servers_ipv6 | arista.avd.natural_sort | join(" ") }}
 {%         endif %}
-{%         if dhcp_server.tftp_server.file.ipv4_file is arista.avd.defined %}
-   tftp server file ipv4 {{ dhcp_server.tftp_server.file.ipv4_file | arista.avd.natural_sort | join(" ") }}
+{%         if dhcp_server.tftp_server.files_ipv4 is arista.avd.defined %}
+   tftp server file ipv4 {{ dhcp_server.tftp_server.files_ipv4 | arista.avd.natural_sort | join(" ") }}
 {%         endif %}
-{%         if dhcp_server.tftp_server.file.ipv6_file is arista.avd.defined %}
-{%             set tftp_file_cli = namespace(cli="tftp server file ipv6") %}
-{%             for file in dhcp_server.tftp_server.file.ipv6_file  %}
-{%                 set tftp_file_cli.cli = tftp_file_cli.cli ~ " " ~ file %}
-{%             endfor %}
-   {{ tftp_file_cli.cli }}
+{%         if dhcp_server.tftp_server.files_ipv6 is arista.avd.defined %}
+   tftp server file ipv6 {{ dhcp_server.tftp_server.files_ipv6 | arista.avd.natural_sort | join(" ") }}
 {%         endif %}
 {%         for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
    !

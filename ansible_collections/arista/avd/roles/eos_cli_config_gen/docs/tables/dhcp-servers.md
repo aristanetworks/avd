@@ -12,11 +12,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "dhcp_servers.[].vrf") | String | Required, Unique |  |  | VRF in which to configure the DHCP server, use `default` to indicate default VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain_name_ipv4</samp>](## "dhcp_servers.[].dns_domain_name_ipv4") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain_name_ipv6</samp>](## "dhcp_servers.[].dns_domain_name_ipv6") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_server</samp>](## "dhcp_servers.[].dns_server") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_servers</samp>](## "dhcp_servers.[].dns_server.ipv4_servers") | List, items: String |  |  |  | List of IPv4 DNS servers |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].dns_server.ipv4_servers.[]") | String | Required |  |  | IPv4 address of DNS server |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_servers</samp>](## "dhcp_servers.[].dns_server.ipv6_servers") | List, items: String |  |  |  | List of IPv6 dns servers |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].dns_server.ipv6_servers.[]") | String | Required |  |  | IPv6 address of DNS server |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_ipv4</samp>](## "dhcp_servers.[].dns_servers_ipv4") | List, items: String |  |  | Min Length: 1 | List of IPv4 DNS servers |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].dns_servers_ipv4.[]") | String | Required |  |  | IPv4 address of DNS server |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_ipv6</samp>](## "dhcp_servers.[].dns_servers_ipv6") | List, items: String |  |  | Min Length: 1 | List of IPv6 dns servers |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].dns_servers_ipv6.[]") | String | Required |  |  | IPv6 address of DNS server |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tftp_server</samp>](## "dhcp_servers.[].tftp_server") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;files_ipv4</samp>](## "dhcp_servers.[].tftp_server.files_ipv4") | List, items: String |  |  | Min Length: 1 | List of IPv4 files |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].tftp_server.files_ipv4.[]") | String | Required |  |  | Name of IPv4 file |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;files_ipv6</samp>](## "dhcp_servers.[].tftp_server.files_ipv6") | List, items: String |  |  | Min Length: 1 | List of IPv6 files |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].tftp_server.files_ipv6.[]") | String | Required |  |  | Name of IPv6 file |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_vendor_options</samp>](## "dhcp_servers.[].ipv4_vendor_options") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vendor_id</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].vendor_id") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sub_options</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options") | List, items: Dictionary |  |  |  |  |
@@ -25,12 +29,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_address</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].ipv4_address") | String |  |  |  | IPv4 address value for suboption data.<br>Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.<br>The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array_ipv4_address</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].array_ipv4_address") | List, items: String |  |  |  | Array of IPv4 addresses for suboption data.<br>Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.<br>The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].array_ipv4_address.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tftp_server</samp>](## "dhcp_servers.[].tftp_server") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file</samp>](## "dhcp_servers.[].tftp_server.file") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_file</samp>](## "dhcp_servers.[].tftp_server.file.ipv4_file") | List, items: String |  |  |  | List of IPv4 files |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].tftp_server.file.ipv4_file.[]") | String | Required |  |  | Name of IPv4 file |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_file</samp>](## "dhcp_servers.[].tftp_server.file.ipv6_file") | List, items: String |  |  |  | List of IPv6 files |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].tftp_server.file.ipv6_file.[]") | String | Required |  |  | Name of IPv6 file |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;subnets</samp>](## "dhcp_servers.[].subnets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;subnet</samp>](## "dhcp_servers.[].subnets.[].subnet") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "dhcp_servers.[].subnets.[].name") | String |  |  |  |  |
@@ -55,18 +53,30 @@
         vrf: <str; required; unique>
         dns_domain_name_ipv4: <str>
         dns_domain_name_ipv6: <str>
-        dns_server:
 
-          # List of IPv4 DNS servers
-          ipv4_servers:
+        # List of IPv4 DNS servers
+        dns_servers_ipv4: # >=1 items
 
-              # IPv4 address of DNS server
+            # IPv4 address of DNS server
+          - <str; required>
+
+        # List of IPv6 dns servers
+        dns_servers_ipv6: # >=1 items
+
+            # IPv6 address of DNS server
+          - <str; required>
+        tftp_server:
+
+          # List of IPv4 files
+          files_ipv4: # >=1 items
+
+              # Name of IPv4 file
             - <str; required>
 
-          # List of IPv6 dns servers
-          ipv6_servers:
+          # List of IPv6 files
+          files_ipv6: # >=1 items
 
-              # IPv6 address of DNS server
+              # Name of IPv6 file
             - <str; required>
         ipv4_vendor_options:
           - vendor_id: <str; required; unique>
@@ -88,20 +98,6 @@
                 # The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
                 array_ipv4_address:
                   - <str>
-        tftp_server:
-          file:
-
-            # List of IPv4 files
-            ipv4_file:
-
-                # Name of IPv4 file
-              - <str; required>
-
-            # List of IPv6 files
-            ipv6_file:
-
-                # Name of IPv6 file
-              - <str; required>
         subnets:
           - subnet: <str; required; unique>
             name: <str>

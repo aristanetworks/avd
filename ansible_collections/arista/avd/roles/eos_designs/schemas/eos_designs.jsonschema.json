@@ -18632,33 +18632,55 @@
                       "type": "string",
                       "title": "DNS Domain Name IPv6"
                     },
-                    "dns_server": {
+                    "dns_servers_ipv4": {
+                      "type": "array",
+                      "minItems": 1,
+                      "description": "List of IPv4 DNS servers",
+                      "items": {
+                        "type": "string",
+                        "description": "IPv4 address of DNS server"
+                      },
+                      "title": "DNS Servers IPv4"
+                    },
+                    "dns_servers_ipv6": {
+                      "type": "array",
+                      "minItems": 1,
+                      "description": "List of IPv6 dns servers",
+                      "items": {
+                        "type": "string",
+                        "description": "IPv6 address of DNS server"
+                      },
+                      "title": "DNS Servers IPv6"
+                    },
+                    "tftp_server": {
                       "type": "object",
                       "properties": {
-                        "ipv4_servers": {
+                        "files_ipv4": {
                           "type": "array",
-                          "description": "List of IPv4 DNS servers",
+                          "minItems": 1,
+                          "description": "List of IPv4 files",
                           "items": {
                             "type": "string",
-                            "description": "IPv4 address of DNS server"
+                            "description": "Name of IPv4 file"
                           },
-                          "title": "IPv4 Servers"
+                          "title": "Files IPv4"
                         },
-                        "ipv6_servers": {
+                        "files_ipv6": {
                           "type": "array",
-                          "description": "List of IPv6 dns servers",
+                          "minItems": 1,
+                          "description": "List of IPv6 files",
                           "items": {
                             "type": "string",
-                            "description": "IPv6 address of DNS server"
+                            "description": "Name of IPv6 file"
                           },
-                          "title": "IPv6 Servers"
+                          "title": "Files IPv6"
                         }
                       },
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
                       },
-                      "title": "DNS Server"
+                      "title": "Tftp Server"
                     },
                     "ipv4_vendor_options": {
                       "type": "array",
@@ -18719,44 +18741,6 @@
                         ]
                       },
                       "title": "IPv4 Vendor Options"
-                    },
-                    "tftp_server": {
-                      "type": "object",
-                      "properties": {
-                        "file": {
-                          "type": "object",
-                          "properties": {
-                            "ipv4_file": {
-                              "type": "array",
-                              "description": "List of IPv4 files",
-                              "items": {
-                                "type": "string",
-                                "description": "Name of IPv4 file"
-                              },
-                              "title": "IPv4 File"
-                            },
-                            "ipv6_file": {
-                              "type": "array",
-                              "description": "List of IPv6 files",
-                              "items": {
-                                "type": "string",
-                                "description": "Name of IPv6 file"
-                              },
-                              "title": "IPv6 File"
-                            }
-                          },
-                          "additionalProperties": false,
-                          "patternProperties": {
-                            "^_.+$": {}
-                          },
-                          "title": "File"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "title": "Tftp Server"
                     },
                     "subnets": {
                       "type": "array",
