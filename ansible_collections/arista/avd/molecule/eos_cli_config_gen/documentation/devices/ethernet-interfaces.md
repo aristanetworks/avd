@@ -997,8 +997,8 @@ interface Ethernet68
    description Custom_Transceiver_Frequency
    no shutdown
    switchport
-   transceiver frequency 190080.000 ghz
    transceiver media override 100gbase-ar4
+   transceiver frequency 190080.000 ghz
 !
 interface Ethernet69
    description IP NAT service-profile

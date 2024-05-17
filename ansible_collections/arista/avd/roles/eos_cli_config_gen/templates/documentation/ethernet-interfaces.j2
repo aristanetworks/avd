@@ -179,7 +179,7 @@
 | Interface | Transceiver Frequency | Media Override |
 | --------- | --------------------- | -------------- |
 {%         for transceiver_setting in transceiver_settings | arista.avd.natural_sort('name') %}
-{%             set interface = transceiver_setting.name | arista.avd.default('-') %}
+{%             set interface = transceiver_setting.name %}
 {%             if transceiver_setting.transceiver.frequency is arista.avd.defined %}
 {%                 set frequency = "%.3f" | format(transceiver_setting.transceiver.frequency | float) %}
 {%                 if transceiver_setting.transceiver.frequency_unit is arista.avd.defined %}

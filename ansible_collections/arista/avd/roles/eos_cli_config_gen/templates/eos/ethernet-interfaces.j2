@@ -777,15 +777,15 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.vmtracer is arista.avd.defined(true) %}
    vmtracer vmware-esx
 {%     endif %}
+{%     if ethernet_interface.transceiver.media.override is arista.avd.defined %}
+   transceiver media override {{ ethernet_interface.transceiver.media.override }}
+{%     endif %}
 {%     if ethernet_interface.transceiver.frequency is arista.avd.defined %}
 {%         set frequency_cli = 'transceiver frequency ' ~ "%.3f" | format(ethernet_interface.transceiver.frequency | float) %}
 {%         if ethernet_interface.transceiver.frequency_unit is arista.avd.defined %}
 {%             set frequency_cli = frequency_cli ~ ' ' ~ ethernet_interface.transceiver.frequency_unit %}
 {%         endif %}
    {{ frequency_cli }}
-{%     endif %}
-{%     if ethernet_interface.transceiver.media.override is arista.avd.defined %}
-   transceiver media override {{ ethernet_interface.transceiver.media.override }}
 {%     endif %}
 {%     for link_tracking_group in ethernet_interface.link_tracking_groups | arista.avd.natural_sort %}
 {%         if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}
