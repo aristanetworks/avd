@@ -371,6 +371,10 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
             LOGGER.info(warning)
             continue
 
+        if internet_exit_policy["type"] == "direct":
+            # No metadata needed for direct internet-exit.
+            continue
+
         if not is_internet_exit_zscaler_supported(studio_schema):
             warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring Zscaler internet-exit information since it is not supported by metadata studio."
             LOGGER.info(warning)
