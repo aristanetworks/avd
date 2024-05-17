@@ -11,9 +11,9 @@
 | Layer 1 Event | Logging |
 | ------------- | ------- |
 | MAC fault | {{ monitor_layer1.logging_mac_fault | arista.avd.default(false) }} |
-| Logging Transceiver | {{ monitor_layer1.logging_transceiver.enabled | arista.avd.default("-") }} |
-| Transceiver DOM | {{ monitor_layer1.logging_transceiver.dom | arista.avd.default("-") }} |
-| Transceiver communication | {{ monitor_layer1.logging_transceiver.communication | arista.avd.default("-") }} |
+| Logging Transceiver | {{ monitor_layer1.logging_transceiver.enabled | arista.avd.default(false) }} |
+| Transceiver DOM | {{ monitor_layer1.logging_transceiver.dom | arista.avd.default(false) }} |
+| Transceiver communication | {{ monitor_layer1.logging_transceiver.communication | arista.avd.default(false) }} |
 
 ### Monitor Layer 1 Device Configuration
 
