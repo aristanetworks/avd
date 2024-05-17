@@ -42,7 +42,7 @@ def is_internet_exit_zscaler_supported(studio_schema: InputSchema) -> bool:
 async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClient) -> InputSchema | None:
     """
     Extract and return the input schema from the metadata studio.
-    Returns None if the metaschema studio is not found.
+    Returns None if the metadata studio is not found.
     """
     try:
         studio = await cv_client.get_studio(CV_PATHFINDER_METADATA_STUDIO_ID, result.workspace.id)
