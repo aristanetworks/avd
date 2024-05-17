@@ -104,21 +104,37 @@ def add_md_toc(md_input, skip_lines=0, toc_levels=3, toc_marker="<!-- toc -->"):
         MD with added TOC
     """
 
+    if not isinstance(skip_lines, int):
+        raise AnsibleFilterError(f"add_md_toc 'skip_lines' argument must be an integer. Got '{skip_lines}'({type(skip_lines)}).")
+
+    if not isinstance(toc_levels, int) or toc_levels < 1:
+        raise AnsibleFilterError(f"add_md_toc 'toc_levels' argument must be >0. Got '{toc_levels}'({type(skip_lines)}).")
+
+    if not isinstance(toc_marker, str) or not toc_marker:
+        raise AnsibleFilterError(f"add_md_toc 'toc_marker' argument must be a non-empty string. Got '{toc_marker}'({type(skip_lines)}).")
+
     if not isinstance(md_input, str):
-        raise AnsibleFilterError(f"add_md_toc expects a string. Got {type(md_input)}")
+        raise AnsibleFilterError(f"add_md_toc expects a string. Got {type(md_input)}.")
 
     md_lines = md_input.split("\n")
     toc_marker_positions = []
     toc_lines = []
     all_anchor_ids = []
+
+    # toc_level_offset ensures we start the TOC at the lowest level within the unskipped lines.
+    toc_level_offset = 99
+
     for line_num, line in enumerate(md_lines):
         if line == toc_marker:
             toc_marker_positions.append(line_num)
             continue
         if re.match(HEADING_PATTERN, line):
-            level, prefix, text, anchor_id = _get_line_info(line, all_anchor_ids)
+            level, text, anchor_id = _get_line_info(line, all_anchor_ids)
             if line_num < skip_lines or level > toc_levels:
                 continue
+
+            toc_level_offset = min(toc_level_offset, level)
+            prefix = ("  " * (level - toc_level_offset)) + "- "
             toc_lines.append(f"{prefix}[{text}](#{anchor_id})")
 
     if len(toc_marker_positions) != 2:
@@ -135,14 +151,10 @@ def _get_line_info(line, all_anchor_ids):
     Since we know the line is already a heading, we can assume correct formatting.
     """
     pounds, text = line.split(" ", maxsplit=1)
-    if level := len(pounds):
-        prefix = ("  " * (level - 2)) + "- "
-    else:
-        prefix = ""
-
+    level = len(pounds)
     anchor_id = _get_anchor_id(text, all_anchor_ids)
 
-    return level, prefix, text, anchor_id
+    return level, text, anchor_id
 
 
 def _get_anchor_id(text, all_anchor_ids):
