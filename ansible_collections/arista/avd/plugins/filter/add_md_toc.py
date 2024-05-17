@@ -8,19 +8,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import re
-import sys
-from io import StringIO
-
-from jinja2.runtime import Undefined
-
-try:
-    import md_toc
-
-    HAS_MD_TOC = True
-except ImportError:
-    HAS_MD_TOC = False
-
 DOCUMENTATION = r"""
 ---
 name: add_md_toc
@@ -74,6 +61,13 @@ _value:
   type: string
 """
 
+import re
+from unicodedata import normalize
+
+from ansible.errors import AnsibleFilterError
+
+HEADING_PATTERN = re.compile(r"#+ ")
+
 
 def add_md_toc(md_input, skip_lines=0, toc_levels=3, toc_marker="<!-- toc -->"):
     """
@@ -110,27 +104,62 @@ def add_md_toc(md_input, skip_lines=0, toc_levels=3, toc_marker="<!-- toc -->"):
         MD with added TOC
     """
 
-    if isinstance(md_input, Undefined) or md_input is None or HAS_MD_TOC is False:
-        # Return None
-        return
+    if not isinstance(md_input, str):
+        raise AnsibleFilterError(f"add_md_toc expects a string. Got {type(md_input)}")
 
-    # Generate TOC from variable
-    with StringIO(md_input) as md:
-        stdin = sys.stdin
-        sys.stdin = md
-        try:
-            # Try using new md_toc api when md-toc>=9.0.0.
-            toc = md_toc.api.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
-        except AttributeError:
-            # If that fails, use the previous version md-toc>=8.1.0,<9.0.0
-            toc = md_toc.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
-        sys.stdin = stdin
+    md_lines = md_input.split("\n")
+    toc_marker_positions = []
+    toc_lines = []
+    all_anchor_ids = []
+    for line_num, line in enumerate(md_lines):
+        if line == toc_marker:
+            toc_marker_positions.append(line_num)
+            continue
+        if re.match(HEADING_PATTERN, line):
+            level, prefix, text, anchor_id = _get_line_info(line, all_anchor_ids)
+            if line_num < skip_lines or level > toc_levels:
+                continue
+            toc_lines.append(f"{prefix}[{text}](#{anchor_id})")
 
-    # Insert TOC between markers
-    toc_marker = re.escape(toc_marker)
-    toc_pattern = re.compile(rf"{toc_marker}[\S\s]*?{toc_marker}")
+    if len(toc_marker_positions) != 2:
+        raise AnsibleFilterError(
+            f"add_md_toc expects exactly two occurrences of the toc marker '{toc_marker}' on their own lines. Found {len(toc_marker_positions)} occurrences."
+        )
 
-    return toc_pattern.sub(toc, md_input, count=1)
+    return "\n".join(md_lines[0 : toc_marker_positions[0]] + toc_lines + md_lines[toc_marker_positions[1] + 1 :])
+
+
+def _get_line_info(line, all_anchor_ids):
+    """
+    Split heading and return level, text and anchor_id.
+    Since we know the line is already a heading, we can assume correct formatting.
+    """
+    pounds, text = line.split(" ", maxsplit=1)
+    if level := len(pounds):
+        prefix = ("  " * (level - 2)) + "- "
+    else:
+        prefix = ""
+
+    anchor_id = _get_anchor_id(text, all_anchor_ids)
+
+    return level, prefix, text, anchor_id
+
+
+def _get_anchor_id(text, all_anchor_ids):
+    """
+    Construct unique anchor_id.
+    """
+    tmp_anchor_id = normalize("NFKD", text).encode("ascii", "ignore")
+    tmp_anchor_id = re.sub(r"[^\w\s-]", "", tmp_anchor_id.decode("ascii")).strip().lower()
+    tmp_anchor_id = re.sub(r"[-\s]+", "-", tmp_anchor_id)
+
+    anchor_id = tmp_anchor_id
+    counter = 0
+    while anchor_id in all_anchor_ids:
+        counter += 1
+        anchor_id = f"{tmp_anchor_id}-{counter}"
+    all_anchor_ids.append(anchor_id)
+    return anchor_id
 
 
 class FilterModule(object):

@@ -9,7 +9,7 @@
 - [Monitoring](#monitoring)
   - [SFlow](#sflow)
 - [Interfaces](#interfaces)
-  - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces-1)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
 - [MPLS](#mpls)
