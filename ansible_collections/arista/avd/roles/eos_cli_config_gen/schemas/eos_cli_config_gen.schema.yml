@@ -6437,8 +6437,8 @@ keys:
                         type: bool
                       start_date_time:
                         type: str
-                        description: 'Start date and time(UTC) of lifetime of the
-                          secret. End date should be greater than start date.
+                        description: 'Start date and time of lifetime of the secret.
+                          End date should be greater than start date.
 
                           Formats supported:
 
@@ -6449,7 +6449,7 @@ keys:
                           e.g 2024-12-20 10:00:00'
                       end_date_time:
                         type: str
-                        description: 'End date and time(UTC) of lifetime of the secret.
+                        description: 'End date and time of lifetime of the secret.
                           End date should be greater than start date.
 
                           Formats supported:
@@ -6467,8 +6467,8 @@ keys:
                         type: bool
                       start_date_time:
                         type: str
-                        description: 'Start date and time(UTC) of lifetime of the
-                          secret. End date should be greater than start date.
+                        description: 'Start date and time of lifetime of the secret.
+                          End date should be greater than start date.
 
                           Formats supported:
 
@@ -6479,7 +6479,7 @@ keys:
                           e.g 2024-12-20 10:00:00'
                       end_date_time:
                         type: str
-                        description: 'End date and time(UTC) of lifetime of the secret.
+                        description: 'End date and time of lifetime of the secret.
                           End date should be greater than start date.
 
                           Formats supported:
@@ -6489,6 +6489,10 @@ keys:
                           2. yyyy-mm-dd hh:mm:ss
 
                           e.g 2024-12-20 10:00:00'
+                  local_time:
+                    type: bool
+                    description: Configuring secret using the local timezone from
+                      system clock. Default is UTC.
   management_ssh:
     type: dict
     keys:
@@ -10564,8 +10568,8 @@ keys:
                 hash_algorithm:
                   type: str
                   required: true
-                  description: "Note:\n  Algorithm hmac-sha-256 requires EOS version
-                    4.31F and above."
+                  description: 'Note: Algorithm hmac-sha-256 requires EOS version
+                    4.31F and above.'
                   valid_values:
                   - aes-128-cmac-96
                   - hmac-sha-256

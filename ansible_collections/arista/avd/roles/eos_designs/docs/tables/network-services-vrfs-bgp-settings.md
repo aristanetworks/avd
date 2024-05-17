@@ -86,7 +86,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_tracker</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].session_tracker") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].shared_secret") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note:<br>  Algorithm hmac-sha-256 requires EOS version 4.31F and above. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note: Algorithm hmac-sha-256 requires EOS version 4.31F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "<network_services_keys.name>.[].vrfs") | List, items: Dictionary |  |  |  | VRFs will only be configured on a node if any of the underlying objects like `svis` or `l3_interfaces` apply to the node.<br><br>It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants<br>are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.<br><br>VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,<br>route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.<br>Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].name") | String | Required, Unique |  |  |  |
@@ -194,7 +194,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_tracker</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].session_tracker") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].shared_secret") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note:<br>  Algorithm hmac-sha-256 requires EOS version 4.31F and above. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note: Algorithm hmac-sha-256 requires EOS version 4.31F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
 
 === "YAML"
@@ -378,8 +378,7 @@
               # Name of profile defined under `management_security`.
               profile: <str; required>
 
-              # Note:
-              #   Algorithm hmac-sha-256 requires EOS version 4.31F and above.
+              # Note: Algorithm hmac-sha-256 requires EOS version 4.31F and above.
               hash_algorithm: <str; "aes-128-cmac-96" | "hmac-sha-256" | "hmac-sha1-96"; required>
 
             # Maximum number of hops.
@@ -640,8 +639,7 @@
                   # Name of profile defined under `management_security`.
                   profile: <str; required>
 
-                  # Note:
-                  #   Algorithm hmac-sha-256 requires EOS version 4.31F and above.
+                  # Note: Algorithm hmac-sha-256 requires EOS version 4.31F and above.
                   hash_algorithm: <str; "aes-128-cmac-96" | "hmac-sha-256" | "hmac-sha1-96"; required>
 
                 # Maximum number of hops.
