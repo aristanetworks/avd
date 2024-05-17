@@ -19,7 +19,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_udp_checksum</samp>](## "monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum") | Dictionary |  |  |  | TCP/UDP parameters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.value") | Integer |  |  | Min: 0<br>Max: 65535 | TCP/UDP checksum or IP ID value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mask</samp>](## "monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.mask") | String |  |  |  | 16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unset bits. |
-    | [<samp>&nbsp;&nbsp;vxlan_marking_bit</samp>](## "monitor_telemetry_postcard_policy.vxlan_marking_bit") | Integer |  | `0` | Min: 0<br>Max: 31 |  |
+    | [<samp>&nbsp;&nbsp;marker_vxlan</samp>](## "monitor_telemetry_postcard_policy.marker_vxlan") | Boolean |  |  |  | Enable vxlan marking using default bit 0. |
+    | [<samp>&nbsp;&nbsp;vxlan_marking_bit</samp>](## "monitor_telemetry_postcard_policy.vxlan_marking_bit") | Integer |  |  | Min: 1<br>Max: 31 |  |
     | [<samp>&nbsp;&nbsp;profiles</samp>](## "monitor_telemetry_postcard_policy.profiles") | List, items: Dictionary |  |  |  | Postcard telemetry profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_telemetry_postcard_policy.profiles.[].name") | String | Required, Unique |  |  | Profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ingress_sample_policy</samp>](## "monitor_telemetry_postcard_policy.profiles.[].ingress_sample_policy") | String |  |  |  |  |
@@ -70,7 +71,10 @@
 
             # 16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unset bits.
             mask: <str>
-      vxlan_marking_bit: <int; 0-31; default=0>
+
+      # Enable vxlan marking using default bit 0.
+      marker_vxlan: <bool>
+      vxlan_marking_bit: <int; 1-31>
 
       # Postcard telemetry profiles.
       profiles:

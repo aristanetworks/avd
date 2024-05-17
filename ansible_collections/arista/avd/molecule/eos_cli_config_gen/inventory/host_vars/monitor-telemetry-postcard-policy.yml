@@ -10,7 +10,8 @@ monitor_telemetry_postcard_policy:
       tcp_udp_checksum:
         value: 65000
         mask: "0xffff"
-  vxlan_marking_bit: 0
+  marker_vxlan: true
+  vxlan_marking_bit: 2
   profiles:
     - name: profile1
       ingress_sample_policy: samplepo1

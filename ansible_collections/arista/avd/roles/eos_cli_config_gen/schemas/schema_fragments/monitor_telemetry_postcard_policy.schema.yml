@@ -54,10 +54,12 @@ keys:
                   mask:
                     type: str
                     description: 16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unset bits.
+      marker_vxlan:
+        type: bool
+        description: Enable vxlan marking using default bit 0.
       vxlan_marking_bit:
         type: int
-        default: 0
-        min: 0
+        min: 1
         max: 31
         convert_types:
         - str

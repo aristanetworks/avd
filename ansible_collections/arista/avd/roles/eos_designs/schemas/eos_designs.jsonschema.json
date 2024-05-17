@@ -29112,10 +29112,14 @@
                     },
                     "title": "Ingress"
                   },
+                  "marker_vxlan": {
+                    "type": "boolean",
+                    "description": "Enable vxlan marking using default bit 0.",
+                    "title": "Marker VxLAN"
+                  },
                   "vxlan_marking_bit": {
                     "type": "integer",
-                    "default": 0,
-                    "minimum": 0,
+                    "minimum": 1,
                     "maximum": 31,
                     "title": "VxLAN Marking Bit"
                   },
