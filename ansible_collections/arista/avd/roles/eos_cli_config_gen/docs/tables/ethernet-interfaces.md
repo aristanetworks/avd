@@ -314,6 +314,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "ethernet_interfaces.[].lacp_timer.multiplier") | Integer |  |  | Min: 3<br>Max: 3000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lacp_port_priority</samp>](## "ethernet_interfaces.[].lacp_port_priority") | Integer |  |  | Min: 0<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver</samp>](## "ethernet_interfaces.[].transceiver") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frequency</samp>](## "ethernet_interfaces.[].transceiver.frequency") | String |  |  |  | Transceiver Laser Frequency in GHz (min 190000, max 200000). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frequency_unit</samp>](## "ethernet_interfaces.[].transceiver.frequency_unit") | String |  |  | Valid Values:<br>- <code>ghz</code> | Unit of Transceiver Laser Frequency. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "ethernet_interfaces.[].transceiver.media") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.media.override") | String |  |  |  | Transceiver type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_proxy_arp</samp>](## "ethernet_interfaces.[].ip_proxy_arp") | Boolean |  |  |  |  |
@@ -946,6 +948,12 @@
           multiplier: <int; 3-3000>
         lacp_port_priority: <int; 0-65535>
         transceiver:
+
+          # Transceiver Laser Frequency in GHz (min 190000, max 200000).
+          frequency: <str>
+
+          # Unit of Transceiver Laser Frequency.
+          frequency_unit: <str; "ghz">
           media:
 
             # Transceiver type.
