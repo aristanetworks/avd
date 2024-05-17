@@ -5049,11 +5049,12 @@
             "deprecated": true,
             "title": "Action"
           },
-          "event_handler_action": {
+          "actions": {
             "type": "object",
             "properties": {
               "bash_command": {
                 "type": "string",
+                "description": "Define BASH command action. Command could be multiline also.",
                 "title": "Bash Command"
               },
               "log": {
@@ -5071,7 +5072,7 @@
             "patternProperties": {
               "^_.+$": {}
             },
-            "title": "Event Handler Action"
+            "title": "Actions"
           },
           "delay": {
             "type": "integer",
@@ -22262,11 +22263,12 @@
                       "deprecated": true,
                       "title": "Action"
                     },
-                    "event_handler_action": {
+                    "actions": {
                       "type": "object",
                       "properties": {
                         "bash_command": {
                           "type": "string",
+                          "description": "Define BASH command action. Command could be multiline also.",
                           "title": "Bash Command"
                         },
                         "log": {
@@ -22284,7 +22286,7 @@
                       "patternProperties": {
                         "^_.+$": {}
                       },
-                      "title": "Event Handler Action"
+                      "title": "Actions"
                     },
                     "delay": {
                       "type": "integer",

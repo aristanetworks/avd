@@ -38,11 +38,12 @@ keys:
             removed: false
             remove_in_version: 5.0.0
             new_key: event_handler_action
-        event_handler_action:
+        actions:
           type: dict
           keys:
             bash_command:
               type: str
+              description: Define BASH command action. Command could be multiline also.
             log:
               type: bool
               description: Log a message when the event is triggered.

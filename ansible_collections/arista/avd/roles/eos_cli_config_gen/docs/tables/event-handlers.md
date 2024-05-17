@@ -11,10 +11,10 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  | Event Handler Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>bash</code><br>- <code>increment</code><br>- <code>log</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handler_action</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") <span style="color:red">deprecated</span> | String |  |  |  | Command to execute.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handler_action</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;event_handler_action</samp>](## "event_handlers.[].event_handler_action") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bash_command</samp>](## "event_handlers.[].event_handler_action.bash_command") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "event_handlers.[].event_handler_action.log") | Boolean |  |  |  | Log a message when the event is triggered. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;increment_device_health_metric</samp>](## "event_handlers.[].event_handler_action.increment_device_health_metric") | String |  |  |  | Name of device-health metric. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;actions</samp>](## "event_handlers.[].actions") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bash_command</samp>](## "event_handlers.[].actions.bash_command") | String |  |  |  | Define BASH command action. Command could be multiline also. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "event_handlers.[].actions.log") | Boolean |  |  |  | Log a message when the event is triggered. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;increment_device_health_metric</samp>](## "event_handlers.[].actions.increment_device_health_metric") | String |  |  |  | Name of device-health metric. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "event_handlers.[].delay") | Integer |  |  |  | Event-handler delay in seconds.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger</samp>](## "event_handlers.[].trigger") | String |  |  | Valid Values:<br>- <code>on-boot</code><br>- <code>on-counters</code><br>- <code>on-intf</code><br>- <code>on-logging</code><br>- <code>on-maintenance</code><br>- <code>on-startup-config</code><br>- <code>vm-tracer vm</code> | Configure event trigger condition.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger_on_counters</samp>](## "event_handlers.[].trigger_on_counters") | Dictionary |  |  |  |  |
@@ -60,7 +60,9 @@
         # Support will be removed in AVD version 5.0.0.
         # Use <samp>event_handler_action</samp> instead.
         action: <str>
-        event_handler_action:
+        actions:
+
+          # Define BASH command action. Command could be multiline also.
           bash_command: <str>
 
           # Log a message when the event is triggered.
