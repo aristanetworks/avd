@@ -17925,7 +17925,7 @@
                 "properties": {
                   "profile": {
                     "type": "string",
-                    "description": "To apply a profile, it must be created under \"management-security\".",
+                    "description": "Name of profile defined under `management_security`.",
                     "title": "Profile"
                   },
                   "hash_algorithm": {

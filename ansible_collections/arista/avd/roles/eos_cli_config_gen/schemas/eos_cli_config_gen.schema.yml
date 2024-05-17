@@ -10776,7 +10776,7 @@ keys:
                 profile:
                   type: str
                   required: true
-                  description: To apply a profile, it must be created under "management-security".
+                  description: Name of profile defined under `management_security`.
                 hash_algorithm:
                   type: str
                   required: true
