@@ -6339,6 +6339,7 @@
                   "qos dual-rate-policer",
                   "route",
                   "routed-port",
+                  "segment-security",
                   "subinterface",
                   "tapagg",
                   "traffic-class",

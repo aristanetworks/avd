@@ -23,3 +23,5 @@ hardware_counters:
     - name: route
       address_type: ipv6
       prefix: 2001:db8:cafe::/64
+    - name: segment-security
+      direction: in
