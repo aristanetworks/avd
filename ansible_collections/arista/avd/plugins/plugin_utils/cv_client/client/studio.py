@@ -94,10 +94,12 @@ class StudioMixin:
         # If we get here, it means no studio was returned by the workspace call.
         # So now we fetch the studio config from the workspace to see if the studio was deleted in this workspace.
         request = StudioConfigStreamRequest(
-            StudioConfig(
-                key=StudioKey(studio_id=studio_id, workspace_id=workspace_id),
-                remove=True,
-            ),
+            partial_eq_filter=[
+                StudioConfig(
+                    key=StudioKey(studio_id=studio_id, workspace_id=workspace_id),
+                    remove=True,
+                )
+            ],
             time=time,
         )
         client = StudioConfigServiceStub(self._channel)
@@ -184,10 +186,12 @@ class StudioMixin:
         # If we get here, it means no inputs were returned by the workspace call.
         # So now we fetch the inputs config from the workspace to see if the inputs were deleted in this workspace.
         request = InputsConfigStreamRequest(
-            partial_eq_filter=InputsConfig(
-                key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
-                remove=True,
-            ),
+            partial_eq_filter=[
+                InputsConfig(
+                    key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
+                    remove=True,
+                )
+            ],
             time=time,
         )
         client = InputsConfigServiceStub(self._channel)
