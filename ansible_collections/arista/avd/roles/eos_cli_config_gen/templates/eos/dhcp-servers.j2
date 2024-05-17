@@ -33,11 +33,7 @@
    {{ dns_servers_cli.cli }}
 {%         endif %}
 {%         if dhcp_server.tftp_server.file.ipv4_file is arista.avd.defined %}
-{%             set tftp_file_cli = namespace(cli="tftp server file ipv4") %}
-{%             for file in dhcp_server.tftp_server.file.ipv4_file | arista.avd.natural_sort %}
-{%                 set tftp_file_cli.cli = tftp_file_cli.cli ~ " " ~ file %}
-{%             endfor %}
-   {{ tftp_file_cli.cli }}
+   tftp server file ipv4 {{ dhcp_server.tftp_server.file.ipv4_file | arista.avd.natural_sort | join(" ") }}
 {%         endif %}
 {%         if dhcp_server.tftp_server.file.ipv6_file is arista.avd.defined %}
 {%             set tftp_file_cli = namespace(cli="tftp server file ipv6") %}
