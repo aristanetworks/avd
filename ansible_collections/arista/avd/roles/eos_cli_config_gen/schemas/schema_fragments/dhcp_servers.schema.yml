@@ -91,6 +91,7 @@ keys:
               keys:
                 ipv4_file:
                   type: list
+                  min_length: 1
                   description: List of IPv4 files
                   items:
                     type: str
