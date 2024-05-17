@@ -44,7 +44,7 @@ dhcp_servers:
           - https://www.arista.io/ztp/bootstrap
           - https://192.168.0.254/ztp/bootstrap
         ipv6_file:
-          - https://fd00::01/64/ztp/bootstrap
+          - https://fd00::01/ztp/bootstrap
 
     subnets:
       - subnet: 10.2.3.0/24
