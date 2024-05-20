@@ -7106,7 +7106,7 @@ keys:
             description: Enable transceiver SMBus fail and reset logging.
           enabled:
             type: bool
-            description: Some platforms only support command `logging transceiver'.
+            description: Some platforms support only the `logging transceiver` command.
               `enabled` key configures this command.
   monitor_sessions:
     type: list

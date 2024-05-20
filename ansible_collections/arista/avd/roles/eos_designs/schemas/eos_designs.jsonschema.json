@@ -28760,7 +28760,7 @@
                       },
                       "enabled": {
                         "type": "boolean",
-                        "description": "Some platforms only support command `logging transceiver'. `enabled` key configures this command.",
+                        "description": "Some platforms support only the `logging transceiver` command. `enabled` key configures this command.",
                         "title": "Enabled"
                       }
                     },
