@@ -19042,6 +19042,12 @@
                           "^_.+$": {}
                         },
                         "title": "Unresponsive"
+                      },
+                      "accounting_update_interval": {
+                        "type": "integer",
+                        "minimum": 5,
+                        "maximum": 65535,
+                        "title": "Accounting Update Interval"
                       }
                     },
                     "additionalProperties": false,

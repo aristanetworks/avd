@@ -140,3 +140,9 @@ keys:
                     type: bool
               recovery_action_reauthenticate:
                 type: bool
+          accounting_update_interval:
+              type: int
+              convert_types:
+                - str
+              min: 5
+              max: 65535
