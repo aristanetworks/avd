@@ -171,6 +171,15 @@ sFlow is disabled.
 | --------- | --------------- | -----------| --------- |
 | Ethernet16 | 111-112 | 110 | out |
 
+##### TCP MSS Clamping
+
+| Interface | Ipv4 Segment Size | Ipv6 Segment Size | Egress | Ingress |
+| --------- | ----------------- | ----------------- | ------ | ------- |
+| Ethernet1 | 70 | 75 | True | - |
+| Ethernet2 | 70 | - | - | True |
+| Ethernet3 | - | 65 | - | - |
+| Ethernet4 | 65 | - | - | - |
+
 ##### Transceiver Settings
 
 | Interface | Transceiver Frequency | Media Override |
@@ -369,6 +378,7 @@ interface Ethernet1
    ip igmp host-proxy access-list ACL2
    ip igmp host-proxy report-interval 2
    ip igmp host-proxy version 2
+   tcp mss ceiling ipv4 70 ipv6 75 egress
    switchport port-security
    priority-flow-control on
    priority-flow-control priority 5 drop
@@ -383,6 +393,7 @@ interface Ethernet2
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   tcp mss ceiling ipv4 70 ingress
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
    multicast ipv4 static
@@ -407,6 +418,7 @@ interface Ethernet3
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
    ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
    ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
+   tcp mss ceiling ipv6 65
    switchport port-security
    no switchport port-security mac-address maximum disabled
    switchport port-security vlan 1 mac-address maximum 3
@@ -428,6 +440,7 @@ interface Ethernet4
    ipv6 address FE80:FEA::AB65/64 link-local
    ipv6 nd ra disabled
    ipv6 nd managed-config-flag
+   tcp mss ceiling ipv4 65
    ipv6 access-group IPv6_ACL_IN in
    ipv6 access-group IPv6_ACL_OUT out
    multicast ipv4 boundary 224.0.1.0/24 out

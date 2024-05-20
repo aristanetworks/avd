@@ -165,6 +165,35 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# TCP MSS Clamping #}
+{%     set tcp_mss_clampings = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.tcp_mss_ceiling is arista.avd.defined %}
+{%             do tcp_mss_clampings.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if tcp_mss_clampings | length > 0 %}
+
+##### TCP MSS Clamping
+
+| Interface | Ipv4 Segment Size | Ipv6 Segment Size | Egress | Ingress |
+| --------- | ----------------- | ----------------- | ------ | ------- |
+{%         for tcp_mss_clamping in tcp_mss_clampings | arista.avd.natural_sort('name') %}
+{%             set interface = tcp_mss_clamping.name %}
+{%             if tcp_mss_clamping.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
+{%                 set ipv4_segment_size = tcp_mss_clamping.tcp_mss_ceiling.ipv4_segment_size %}
+{%             endif %}
+{%             if tcp_mss_clamping.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
+{%                 set ipv6_segment_size = tcp_mss_clamping.tcp_mss_ceiling.ipv6_segment_size %}
+{%             endif %}
+{%             if tcp_mss_clamping.tcp_mss_ceiling.egress is arista.avd.defined(true) %}
+{%                 set egress = "True" %}
+{%             elif tcp_mss_clamping.tcp_mss_ceiling.ingress is arista.avd.defined(true) %}
+{%                 set ingress = "True" %}
+{%             endif %}
+| {{ interface }} | {{ ipv4_segment_size | arista.avd.default("-") }} | {{ ipv6_segment_size | arista.avd.default("-") }} | {{ egress | arista.avd.default("-") }} | {{ ingress | arista.avd.default("-") }} |
+{%         endfor %}
+{%     endif %}
 {# Transceiver Settings #}
 {%     set transceiver_settings = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
