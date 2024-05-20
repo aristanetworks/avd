@@ -6,16 +6,9 @@
 
 # Arista Validated Designs
 
-![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/avd) ![License](https://img.shields.io/github/license/aristanetworks/avd)
-
-<center><img src="ansible_collections/arista/avd/media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
+<center><img src="media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
 
 Arista Validated Designs (AVD) is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
-
-AVD Documentation:
-
-- [Stable version](https://avd.arista.com/stable/)
-- [Development version](https://avd.arista.com/devel/)
 
 ## Features
 
@@ -34,24 +27,24 @@ AVD Documentation:
 Full documentation for the collection:
 
 - [stable version](https://avd.arista.com/stable/)
-- [development version](https://www.avd.sh/en/devel/)
+- [development version](https://avd.arista.com/devel/)
 
 ### Roles overview
 
 This repository provides content for Arista's **arista.avd** collection. The following roles are included.
 
-- [**arista.avd.eos_designs**](ansible_collections/arista/avd/roles/eos_designs/README.md) - Opinionated Data model to assist with the deployment of Arista Validated Designs.
-- [**arista.avd.eos_cli_config_gen**](ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) - Generate Arista EOS cli syntax and device documentation.
-- [**arista.avd.eos_config_deploy_cvp**](ansible_collections/arista/avd/roles/eos_config_deploy_cvp/README.md) - Deploys intended configuration via CloudVision.
-- [**arista.avd.eos_config_deploy_eapi**](ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md) - Deploys intended configuration via eAPI.
-- [**arista.avd.cvp_configlet_upload**](ansible_collections/arista/avd/roles/cvp_configlet_upload/README.md) - Uploads configlets from a local folder to CloudVision Server.
-- [**arista.avd.eos_validate_state**](ansible_collections/arista/avd/roles/eos_validate_state/README.md) - Validate operational states of Arista EOS devices.
-- [**arista.avd.eos_snapshot**](ansible_collections/arista/avd/roles/eos_snapshot/README.md) - Collect commands on EOS devices and generate reports.
-- [**arista.avd.dhcp_provisioner**](ansible_collections/arista/avd/roles/dhcp_provisioner/README.md) - Configure an ISC-DHCP server to provide ZTP services and CloudVision registration.
-- [**arista.avd.cv_deploy**](ansible_collections/arista/avd/roles/cv_deploy/README.md) - Deploys EOS device configurations and tags to the CloudVision management platform.
+- [**arista.avd.eos_designs**](roles/eos_designs/README.md) - Opinionated Data model to assist with the deployment of Arista Validated Designs.
+- [**arista.avd.eos_cli_config_gen**](roles/eos_cli_config_gen/README.md) - Generate Arista EOS cli syntax and device documentation.
+- [**arista.avd.eos_config_deploy_cvp**](roles/eos_config_deploy_cvp/README.md) - Deploys intended configuration via CloudVision.
+- [**arista.avd.eos_config_deploy_eapi**](roles/eos_config_deploy_eapi/README.md) - Deploys intended configuration via eAPI.
+- [**arista.avd.cvp_configlet_upload**](roles/cvp_configlet_upload/README.md) - Uploads configlets from a local folder to CloudVision Server.
+- [**arista.avd.eos_validate_state**](roles/eos_validate_state/README.md) - Validate operational states of Arista EOS devices.
+- [**arista.avd.eos_snapshot**](roles/eos_snapshot/README.md) - Collect commands on EOS devices and generate reports.
+- [**arista.avd.dhcp_provisioner**](roles/dhcp_provisioner/README.md) - Configure an ISC-DHCP server to provide ZTP services and CloudVision registration.
+- [**arista.avd.cv_deploy**](roles/cv_deploy/README.md) - Deploys EOS device configurations and tags to the CloudVision management platform.
 
-![Arista AVD Overview](ansible_collections/arista/avd/docs/_media/avd_roles_dark.svg#only-dark)
-![Arista AVD Overview](ansible_collections/arista/avd/docs/_media/avd_roles_light.svg#only-light)
+![Arista AVD Overview](docs/_media/avd_roles_dark.svg#only-dark)
+![Arista AVD Overview](docs/_media/avd_roles_light.svg#only-light)
 
 ### Collection installation
 
