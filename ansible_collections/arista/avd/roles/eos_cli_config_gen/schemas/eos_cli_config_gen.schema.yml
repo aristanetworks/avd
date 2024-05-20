@@ -1575,6 +1575,7 @@ keys:
             - str
             min: 5
             max: 65535
+            description: Interval period in seconds.
   dps_interfaces:
     type: list
     primary_key: name

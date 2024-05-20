@@ -2355,6 +2355,7 @@
               "type": "integer",
               "minimum": 5,
               "maximum": 65535,
+              "description": "Interval period in seconds.",
               "title": "Accounting Update Interval"
             }
           },
