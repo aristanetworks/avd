@@ -3336,6 +3336,8 @@ keys:
             new_key: event_handlers.actions
         actions:
           type: dict
+          description: 'Note: `bash_command` and `log` are mutually exclusive. `bash_command`
+            takes precedence over `log`.'
           keys:
             bash_command:
               type: str

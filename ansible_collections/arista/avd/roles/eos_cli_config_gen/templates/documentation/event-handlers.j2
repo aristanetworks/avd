@@ -92,7 +92,7 @@
 {%                 endif %}
 {%             endif %}
 {%         endif %}
-| {{ handler.name }} | {{ actions | arista.avd.default("-") }} | {{ handler.trigger }} | {{ trigger_config | arista.avd.default("-") }} |
+| {{ handler.name }} | {{ actions | arista.avd.default("-") }} | {{ handler.trigger | arista.avd.default("-") }} | {{ trigger_config | arista.avd.default("-") }} |
 {%     endfor %}
 
 #### Event Handler Device Configuration

@@ -5547,6 +5547,7 @@
           },
           "actions": {
             "type": "object",
+            "description": "Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.",
             "properties": {
               "bash_command": {
                 "type": "string",
