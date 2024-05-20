@@ -11,7 +11,7 @@ event_handlers:
         if [ 15 -gt 10 ]
         then
           echo "a is greater than 10"
-        fi 
+        fi
       increment_device_health_metric: Metric1
   - name: trigger-on-maintenance1
     trigger: on-maintenance

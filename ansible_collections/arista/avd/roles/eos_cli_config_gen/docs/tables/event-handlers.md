@@ -9,8 +9,8 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  | Gives the ability to monitor and react to Syslog messages.<br>Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,<br>customize the system behavior, and implement workarounds to problems discovered in the field.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  | Event Handler Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>bash</code><br>- <code>increment</code><br>- <code>log</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handler_action</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") <span style="color:red">deprecated</span> | String |  |  |  | Command to execute.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handler_action</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>bash</code><br>- <code>increment</code><br>- <code>log</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") <span style="color:red">deprecated</span> | String |  |  |  | Command to execute.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;actions</samp>](## "event_handlers.[].actions") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bash_command</samp>](## "event_handlers.[].actions.bash_command") | String |  |  |  | Define BASH command action. Command could be multiline also. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "event_handlers.[].actions.log") | Boolean |  |  |  | Log a message when the event is triggered. |
@@ -52,13 +52,13 @@
       - name: <str; required; unique>
         # This key is deprecated.
         # Support will be removed in AVD version 5.0.0.
-        # Use <samp>event_handler_action</samp> instead.
+        # Use <samp>event_handlers.actions</samp> instead.
         action_type: <str; "bash" | "increment" | "log">
 
         # Command to execute.
         # This key is deprecated.
         # Support will be removed in AVD version 5.0.0.
-        # Use <samp>event_handler_action</samp> instead.
+        # Use <samp>event_handlers.actions</samp> instead.
         action: <str>
         actions:
 

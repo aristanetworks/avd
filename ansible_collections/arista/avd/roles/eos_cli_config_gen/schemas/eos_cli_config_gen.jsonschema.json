@@ -5541,7 +5541,7 @@
           },
           "action": {
             "type": "string",
-            "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handler_action</samp> instead.",
+            "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.",
             "deprecated": true,
             "title": "Action"
           },

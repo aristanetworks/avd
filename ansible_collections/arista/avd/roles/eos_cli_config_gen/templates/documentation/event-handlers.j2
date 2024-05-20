@@ -13,6 +13,13 @@
 | Handler | Actions | Trigger | Trigger Config |
 | ------- | ------- | ------- | -------------- |
 {%     for handler in event_handlers | arista.avd.natural_sort('name') %}
+{%         if handler.action_type is arista.avd.defined %}
+{%             set actions = handler.action_type %}
+{%             if  handler.action is arista.avd.defined %}
+{%                 set action = handler.action | replace('|', '\|') %}
+{%                 set actions = actions ~ ' <code>' ~ action ~ '</code>' %}
+{%             endif %}
+{%         endif %}
 {%         if handler.actions is arista.avd.defined %}
 {%             set actions = [] %}
 {%             if handler.actions.bash_command is arista.avd.defined %}
