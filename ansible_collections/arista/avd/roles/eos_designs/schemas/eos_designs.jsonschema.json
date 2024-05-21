@@ -19042,6 +19042,13 @@
                           "^_.+$": {}
                         },
                         "title": "Unresponsive"
+                      },
+                      "accounting_update_interval": {
+                        "type": "integer",
+                        "minimum": 5,
+                        "maximum": 65535,
+                        "description": "Interval period in seconds.",
+                        "title": "Accounting Update Interval"
                       }
                     },
                     "additionalProperties": false,
