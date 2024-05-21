@@ -317,14 +317,14 @@ static_routes:
   gateway: 172.17.0.0
   vrf: default
 - destination_address_prefix: 10.37.121.1/32
-  name: IE-ZSCALER
-  interface: Ethernet3
+  name: IE-ZSCALER-PRI
+  gateway: 172.20.20.21
 - destination_address_prefix: 10.39.77.1/32
-  name: IE-ZSCALER
-  interface: Ethernet3
+  name: IE-ZSCALER-SEC
+  gateway: 172.20.20.21
 - destination_address_prefix: 10.50.9.1/32
-  name: IE-ZSCALER
-  interface: Ethernet3
+  name: IE-ZSCALER-TER
+  gateway: 172.20.20.21
 agents:
 - name: KernelFib
   environment_variables:

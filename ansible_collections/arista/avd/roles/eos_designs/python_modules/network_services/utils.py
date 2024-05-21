@@ -729,6 +729,12 @@ class UtilsMixin(UtilsZscalerMixin):
             connection_base = {
                 "type": "tunnel",
                 "source_interface": wan_interface["name"],
+                "next_hop": get(
+                    wan_interface,
+                    "peer_ip",
+                    required=True,
+                    org_key=f"The configured internet-exit policy requires `peer_ip` configured under the WAN Interface {wan_interface['name']}",
+                ),
                 "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
             }
 
@@ -759,6 +765,7 @@ class UtilsMixin(UtilsZscalerMixin):
                         "description": f"Internet Exit {policy_name} {suffix}",
                         "exit_group": f"{policy_name}_{suffix}",
                         "preference": zscaler_endpoint_key,
+                        "suffix": suffix,
                     }
                 )
 

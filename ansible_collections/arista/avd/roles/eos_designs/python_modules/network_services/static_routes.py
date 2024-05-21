@@ -66,11 +66,10 @@ class StaticRoutesMixin(UtilsMixin):
                 if connection["type"] == "tunnel":
                     static_route = {
                         "destination_address_prefix": f"{connection['tunnel_destination_ip']}/32",
-                        "name": "IE-ZSCALER",
-                        "interface": connection["source_interface"],
+                        "name": f"IE-ZSCALER-{connection['suffix']}",
+                        "gateway": connection["next_hop"],
                     }
-
-                    # Ignore duplicate items in case of duplicate VRF definitions across multiple tenants.
+                    # Ignore duplicate items in case of multiple connections generating the same route
                     if static_route not in static_routes:
                         static_routes.append(static_route)
 
