@@ -28764,6 +28764,11 @@
                         "type": "boolean",
                         "description": "Enable transceiver SMBus fail and reset logging.",
                         "title": "Communication"
+                      },
+                      "enabled": {
+                        "type": "boolean",
+                        "description": "Some platforms support only the `logging transceiver` command. `enabled` key configures this command.",
+                        "title": "Enabled"
                       }
                     },
                     "additionalProperties": false,
