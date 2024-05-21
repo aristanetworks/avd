@@ -75,7 +75,7 @@ event-handler {{ handler.name }}
       regex {{ handler.regex }}
 {%             endif %}
 {%         endif %}
-{%         if handler.action_type is arista.avd.defined("bash") and handler.action is arista.avd.defined %}
+{%         if handler.action is arista.avd.defined and handler.action_type is arista.avd.defined %}
    action {{ handler.action_type }} {{ handler.action }}
 {%         endif %}
 {%         if handler.actions.bash_command is arista.avd.defined %}
