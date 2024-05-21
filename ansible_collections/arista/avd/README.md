@@ -108,4 +108,4 @@ Please see the [release notes](https://github.com/aristanetworks/avd/releases) f
 
 ## License Information
 
-The project is published under [Apache 2.0 License]([./LICENSE](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/LICENSE))
+The project is published under [Apache 2.0 License](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/LICENSE)
