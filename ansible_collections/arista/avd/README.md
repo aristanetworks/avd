@@ -19,7 +19,7 @@ AVD Documentation:
 
 ## Requirements
 
-The AVD collection has the following collections:
+The AVD collection has the following requirements:
 
 - Python 3.9+
 - Ansible Core 2.14.0 to 2.16.x
