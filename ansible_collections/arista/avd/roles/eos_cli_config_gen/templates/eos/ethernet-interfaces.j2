@@ -446,10 +446,8 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
 {%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv6 " ~ ethernet_interface.tcp_mss_ceiling.ipv6_segment_size %}
 {%         endif %}
-{%         if ethernet_interface.tcp_mss_ceiling.egress is arista.avd.defined(true) %}
-{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " egress" %}
-{%         elif ethernet_interface.tcp_mss_ceiling.ingress is arista.avd.defined(true) %}
-{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ingress" %}
+{%         if ethernet_interface.tcp_mss_ceiling.direction is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " " ~ ethernet_interface.tcp_mss_ceiling.direction %}
 {%         endif %}
    {{ tcp_mss_ceiling_cli }}
 {%     endif %}

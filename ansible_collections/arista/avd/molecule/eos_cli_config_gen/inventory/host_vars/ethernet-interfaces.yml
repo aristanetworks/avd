@@ -32,7 +32,7 @@ ethernet_interfaces:
     tcp_mss_ceiling:
       ipv4_segment_size: 70
       ipv6_segment_size: 75
-      egress: true
+      direction: egress
     switchport:
       port_security:
         enabled: true
@@ -72,7 +72,7 @@ ethernet_interfaces:
     vlans: 110-111,210-211
     tcp_mss_ceiling:
       ipv4_segment_size: 70
-      ingress: true
+      direction: ingress
     multicast:
       ipv4:
         static: true

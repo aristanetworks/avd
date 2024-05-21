@@ -2304,12 +2304,11 @@ keys:
               - str
               min: 64
               max: 65475
-            egress:
-              type: bool
-              description: Enforce on packets forwarded to the network.
-            ingress:
-              type: bool
-              description: Enforce on packets arriving from the network.
+            direction:
+              type: str
+              valid_values:
+              - egress
+              - ingress
         channel_group:
           type: dict
           keys:

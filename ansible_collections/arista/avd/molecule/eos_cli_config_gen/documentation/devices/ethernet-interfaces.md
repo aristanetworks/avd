@@ -173,12 +173,12 @@ sFlow is disabled.
 
 ##### TCP MSS Clamping
 
-| Interface | Ipv4 Segment Size | Ipv6 Segment Size | Egress | Ingress |
-| --------- | ----------------- | ----------------- | ------ | ------- |
-| Ethernet1 | 70 | 75 | True | - |
-| Ethernet2 | 70 | - | - | True |
-| Ethernet3 | - | 65 | - | - |
-| Ethernet4 | 65 | - | - | - |
+| Interface | Ipv4 Segment Size | Ipv6 Segment Size | Direction |
+| --------- | ----------------- | ----------------- | --------- |
+| Ethernet1 | 70 | 75 | egress |
+| Ethernet2 | 70 | - | ingress |
+| Ethernet3 | - | 65 | - |
+| Ethernet4 | 65 | - | - |
 
 ##### Transceiver Settings
 

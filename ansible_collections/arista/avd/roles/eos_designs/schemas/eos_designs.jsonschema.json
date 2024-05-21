@@ -8404,15 +8404,13 @@
                     "maximum": 65475,
                     "title": "IPv6 Segment Size"
                   },
-                  "egress": {
-                    "type": "boolean",
-                    "description": "Enforce on packets forwarded to the network.",
-                    "title": "Egress"
-                  },
-                  "ingress": {
-                    "type": "boolean",
-                    "description": "Enforce on packets arriving from the network.",
-                    "title": "Ingress"
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
                   }
                 },
                 "additionalProperties": false,
@@ -14203,15 +14201,13 @@
                     "maximum": 65475,
                     "title": "IPv6 Segment Size"
                   },
-                  "egress": {
-                    "type": "boolean",
-                    "description": "Enforce on packets forwarded to the network.",
-                    "title": "Egress"
-                  },
-                  "ingress": {
-                    "type": "boolean",
-                    "description": "Enforce on packets arriving from the network.",
-                    "title": "Ingress"
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
                   }
                 },
                 "additionalProperties": false,
@@ -20559,15 +20555,13 @@
                           "maximum": 65475,
                           "title": "IPv6 Segment Size"
                         },
-                        "egress": {
-                          "type": "boolean",
-                          "description": "Enforce on packets forwarded to the network.",
-                          "title": "Egress"
-                        },
-                        "ingress": {
-                          "type": "boolean",
-                          "description": "Enforce on packets arriving from the network.",
-                          "title": "Ingress"
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "title": "Direction"
                         }
                       },
                       "additionalProperties": false,
@@ -50955,15 +50949,13 @@
                     "maximum": 65475,
                     "title": "IPv6 Segment Size"
                   },
-                  "egress": {
-                    "type": "boolean",
-                    "description": "Enforce on packets forwarded to the network.",
-                    "title": "Egress"
-                  },
-                  "ingress": {
-                    "type": "boolean",
-                    "description": "Enforce on packets arriving from the network.",
-                    "title": "Ingress"
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
                   }
                 },
                 "additionalProperties": false,
