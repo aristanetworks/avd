@@ -1,13 +1,18 @@
 event_handlers:
   - name: CONFIG_VERSIONING
-    action_type: bash
-    action: FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* | tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* | tail -n +11 | xargs -I % rm %; fi
+    actions:
+      bash_command: FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* | tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* | tail -n +11 | xargs -I % rm %; fi
     delay: 0
     trigger: on-startup-config
   - name: trigger-on-boot
     trigger: on-boot
-    action_type: bash
-    action: echo "on-boot"
+    actions:
+      bash_command: |-
+        if [ 15 -gt 10 ]
+        then
+          echo "a is greater than 10"
+        fi
+      increment_device_health_metric: Metric1
   - name: trigger-on-maintenance1
     trigger: on-maintenance
     trigger_on_maintenance:
@@ -15,8 +20,6 @@ event_handlers:
       interface: Management3
       action: after
       stage: linkdown
-    action_type: bash
-    action: echo "on-maintenance"
   - name: trigger-on-maintenance2
     trigger: on-maintenance
     trigger_on_maintenance:
@@ -24,8 +27,8 @@ event_handlers:
       unit: unit1
       action: before
       stage: bgp
-    action_type: bash
-    action: echo "on-maintenance"
+    actions:
+      bash_command: echo "on-maintenance"
   - name: trigger-on-maintenance3
     trigger: on-maintenance
     trigger_on_maintenance:
@@ -33,23 +36,23 @@ event_handlers:
       bgp_peer: 10.0.0.2
       vrf: vrf1
       action: all
-    action_type: bash
-    action: echo "on-maintenance"
+    actions:
+      bash_command: echo "on-maintenance"
   - name: trigger-on-logging
     trigger: on-logging
     trigger_on_logging:
       poll_interval: 10
       regex: "ab*"
-    action_type: bash
-    action: echo "on-logging"
+    actions:
+      increment_device_health_metric: Metric2
   - name: trigger-on-counters
     trigger: on-counters
     trigger_on_counters:
       poll_interval: 10
       condition: ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )
       granularity_per_source: true
-    action_type: bash
-    action: echo "on-counters"
+    actions:
+      log: true
   - name: trigger-on-intf
     trigger: on-intf
     trigger_on_intf:
@@ -57,9 +60,7 @@ event_handlers:
       ip: true
       ipv6: true
       operstatus: true
-    action_type: bash
-    action: echo "on-intf"
   - name: trigger-vm-tracer
     trigger: "vm-tracer vm"
-    action_type: bash
-    action: echo "vm-tracer vm"
+    actions:
+      bash_command: echo "vm-tracer vm"
