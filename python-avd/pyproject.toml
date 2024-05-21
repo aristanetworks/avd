@@ -77,7 +77,7 @@ include = [
   "pyavd/*"
 ]
 omit = [
-  "pyavd/vendor/cv_client"
+  "pyavd/vendor/cv_client/*"
 ]
 # Regexes for lines to exclude from consideration
 exclude_also = [
