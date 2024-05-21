@@ -605,19 +605,19 @@ The following design points are used:
     the first router defined in the group.
 - HA is not supported for more than two routers for CV Pathfinders.
 - The routes to be advertised towards the WAN must be marked with the site SOO.
-    - The connected routes and static routes are marked with the SOO when
+  - The connected routes and static routes are marked with the SOO when
     redistributed in BGP
-      - the routes redistributed into BGP via the route-map `RM-CONN-2-BGP` are tagged with the SOO.
-      - the routes redistributed into BGP via the route-map `RM-STATIC-2-BGP` are tagged with the SOO.
-    - the routes received from LAN are marked with the SOO when received from
+    - the routes redistributed into BGP via the route-map `RM-CONN-2-BGP` are tagged with the SOO.
+    - the routes redistributed into BGP via the route-map `RM-STATIC-2-BGP` are tagged with the SOO.
+  - the routes received from LAN are marked with the SOO when received from
         the LAN over BGP or when redistributed into BGP from the LAN protocol.
 - For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SoO.
 - Routes received from the WAN with the local SOO are dropped.
 - Routes received from the WAN are redistributed / advertised towards the LAN.
 - For HA, an iBGP session using EVPN Gateway is used to share the routes from
     one peer to the other.
-    - WAN, LAN and local static routes are sent to the HA peer to cater for various failure scenarii.
-    - The routes received from the HA peer are made less preferred than routes recieved from the LAN or from the WAN.
+  - WAN, LAN and local static routes are sent to the HA peer to cater for various failure scenarii.
+  - The routes received from the HA peer are made less preferred than routes recieved from the LAN or from the WAN.
 
 #### Direct HA
 
@@ -648,8 +648,8 @@ A direct link is configured between the two HA peers
 
 for eBGP LAN routing protocol the following is done to enable HA:
 
-  - one inbound route-map `RM-BGP-UNDERLAY-PEERS-IN`:
-    - deny routes received from LAN that already contain the WAN AS in the path.
+- one inbound route-map `RM-BGP-UNDERLAY-PEERS-IN`:
+  - deny routes received from LAN that already contain the WAN AS in the path.
 
 - the uplink interfaces are used as HA interfaces.
 - the subnets of the HA interfaces are redistributed to BGP via the `RM-CONN-2-BGP` route-map
