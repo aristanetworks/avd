@@ -575,7 +575,7 @@ The `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionar
             enabled: <bool; default=False>
             ips: <bool; default=False>
           acceptable_use_policy: <bool; default=False>
-    ```
+```
 
 !!! tip "IPsec"
 

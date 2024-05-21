@@ -5045,8 +5045,35 @@
           },
           "action": {
             "type": "string",
-            "description": "Command to execute.\n",
+            "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.",
+            "deprecated": true,
             "title": "Action"
+          },
+          "actions": {
+            "type": "object",
+            "description": "Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.",
+            "properties": {
+              "bash_command": {
+                "type": "string",
+                "description": "Define BASH command action. Command could be multiline also.",
+                "title": "Bash Command"
+              },
+              "log": {
+                "type": "boolean",
+                "description": "Log a message when the event is triggered.",
+                "title": "Log"
+              },
+              "increment_device_health_metric": {
+                "type": "string",
+                "description": "Name of device-health metric.",
+                "title": "Increment Device Health Metric"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Actions"
           },
           "delay": {
             "type": "integer",
@@ -19062,6 +19089,13 @@
                           "^_.+$": {}
                         },
                         "title": "Unresponsive"
+                      },
+                      "accounting_update_interval": {
+                        "type": "integer",
+                        "minimum": 5,
+                        "maximum": 65535,
+                        "description": "Interval period in seconds.",
+                        "title": "Accounting Update Interval"
                       }
                     },
                     "additionalProperties": false,
@@ -22253,8 +22287,35 @@
                     },
                     "action": {
                       "type": "string",
-                      "description": "Command to execute.\n",
+                      "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.",
+                      "deprecated": true,
                       "title": "Action"
+                    },
+                    "actions": {
+                      "type": "object",
+                      "description": "Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.",
+                      "properties": {
+                        "bash_command": {
+                          "type": "string",
+                          "description": "Define BASH command action. Command could be multiline also.",
+                          "title": "Bash Command"
+                        },
+                        "log": {
+                          "type": "boolean",
+                          "description": "Log a message when the event is triggered.",
+                          "title": "Log"
+                        },
+                        "increment_device_health_metric": {
+                          "type": "string",
+                          "description": "Name of device-health metric.",
+                          "title": "Increment Device Health Metric"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Actions"
                     },
                     "delay": {
                       "type": "integer",
@@ -28777,6 +28838,11 @@
                         "type": "boolean",
                         "description": "Enable transceiver SMBus fail and reset logging.",
                         "title": "Communication"
+                      },
+                      "enabled": {
+                        "type": "boolean",
+                        "description": "Some platforms support only the `logging transceiver` command. `enabled` key configures this command.",
+                        "title": "Enabled"
                       }
                     },
                     "additionalProperties": false,
