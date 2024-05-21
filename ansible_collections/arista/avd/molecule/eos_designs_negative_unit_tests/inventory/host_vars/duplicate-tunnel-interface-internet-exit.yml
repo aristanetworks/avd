@@ -54,6 +54,7 @@ wan_router:
           wan_circuit_id: 666
           dhcp_accept_default_route: true
           ip_address: dhcp
+          peer_ip: 10.254.254.1
           cv_pathfinder_internet_exit:
             policies:
               - name: ZSCALER-EXIT-POLICY-1
@@ -63,6 +64,7 @@ wan_router:
           wan_circuit_id: 777
           dhcp_accept_default_route: true
           ip_address: dhcp
+          peer_ip: 10.254.254.5
           cv_pathfinder_internet_exit:
             policies:
               - name: ZSCALER-EXIT-POLICY-2
