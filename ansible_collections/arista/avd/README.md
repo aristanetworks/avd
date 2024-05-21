@@ -4,11 +4,13 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# arista.avd - A Complete Network Automation Solution
+# arista.avd - Design Driven Network Automation
 
 ## Description
 
-Arista Validated Designs (AVD) is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
+- **Flexibility with Open Data Models:** Extensible fabric-wide network models, simplifying configuration, delivering consistency, and reducing errors
+- **Simplification through Multi-Domain Automation:** A framework that can automate the data center, campus or wide area network, enabled by a consistent EOS software image and management platform
+- **Comprehensive Workflows:** Automating the full life cycle of network provisioning from config generation to pre and post-deployment validation, and self-documentation of the network
 
 AVD Documentation:
 
