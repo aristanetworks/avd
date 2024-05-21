@@ -90,6 +90,7 @@ ASN Notation: asplain
 - Next-hop MPLS resolution Primary-RIB : tunnel-rib-colored system-colored-tunnel-rib
 - Next-hop MPLS resolution Secondary-RIB : tunnel-rib test-rib
 - Next-hop MPLS resolution Tertiary-RIB : system-connected
+- Layer-2 In-place FEC update tracking timeout: 100 seconds
 
 ##### EVPN Peer Groups
 
@@ -137,4 +138,5 @@ router bgp 65101
       neighbor 192.168.255.3 activate
       neighbor 192.168.255.4 rcf in Address_Family_EVPN_In()
       neighbor 192.168.255.4 rcf out Address_Family_EVPN_Out()
+      layer-2 fec in-place update timeout 100 seconds
 ```

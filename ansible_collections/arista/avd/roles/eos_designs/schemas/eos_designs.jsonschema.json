@@ -6073,6 +6073,7 @@
                   "qos dual-rate-policer",
                   "route",
                   "routed-port",
+                  "segment-security",
                   "subinterface",
                   "tapagg",
                   "traffic-class",
@@ -9384,6 +9385,19 @@
               "transceiver": {
                 "type": "object",
                 "properties": {
+                  "frequency": {
+                    "type": "string",
+                    "description": "Transceiver Laser Frequency in GHz (min 190000, max 200000).",
+                    "title": "Frequency"
+                  },
+                  "frequency_unit": {
+                    "type": "string",
+                    "enum": [
+                      "ghz"
+                    ],
+                    "description": "Unit of Transceiver Laser Frequency.",
+                    "title": "Frequency Unit"
+                  },
                   "media": {
                     "type": "object",
                     "properties": {
@@ -15137,6 +15151,19 @@
               "transceiver": {
                 "type": "object",
                 "properties": {
+                  "frequency": {
+                    "type": "string",
+                    "description": "Transceiver Laser Frequency in GHz (min 190000, max 200000).",
+                    "title": "Frequency"
+                  },
+                  "frequency_unit": {
+                    "type": "string",
+                    "enum": [
+                      "ghz"
+                    ],
+                    "description": "Unit of Transceiver Laser Frequency.",
+                    "title": "Frequency Unit"
+                  },
                   "media": {
                     "type": "object",
                     "properties": {
@@ -21447,6 +21474,19 @@
                     "transceiver": {
                       "type": "object",
                       "properties": {
+                        "frequency": {
+                          "type": "string",
+                          "description": "Transceiver Laser Frequency in GHz (min 190000, max 200000).",
+                          "title": "Frequency"
+                        },
+                        "frequency_unit": {
+                          "type": "string",
+                          "enum": [
+                            "ghz"
+                          ],
+                          "description": "Unit of Transceiver Laser Frequency.",
+                          "title": "Frequency Unit"
+                        },
                         "media": {
                           "type": "object",
                           "properties": {
@@ -23024,6 +23064,7 @@
                             "qos dual-rate-policer",
                             "route",
                             "routed-port",
+                            "segment-security",
                             "subinterface",
                             "tapagg",
                             "traffic-class",
@@ -35438,6 +35479,31 @@
                           "^_.+$": {}
                         },
                         "title": "BGP Additional Paths"
+                      },
+                      "layer_2_fec_in_place_update": {
+                        "type": "object",
+                        "description": "BGP layer-2 in-place FEC operation.",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "timeout": {
+                            "type": "integer",
+                            "description": "In-place FEC update tracking timeout in seconds.",
+                            "minimum": 0,
+                            "maximum": 300,
+                            "title": "Timeout"
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Layer 2 Fec In Place Update"
                       }
                     },
                     "additionalProperties": false,
@@ -51771,6 +51837,19 @@
               "transceiver": {
                 "type": "object",
                 "properties": {
+                  "frequency": {
+                    "type": "string",
+                    "description": "Transceiver Laser Frequency in GHz (min 190000, max 200000).",
+                    "title": "Frequency"
+                  },
+                  "frequency_unit": {
+                    "type": "string",
+                    "enum": [
+                      "ghz"
+                    ],
+                    "description": "Unit of Transceiver Laser Frequency.",
+                    "title": "Frequency Unit"
+                  },
                   "media": {
                     "type": "object",
                     "properties": {
