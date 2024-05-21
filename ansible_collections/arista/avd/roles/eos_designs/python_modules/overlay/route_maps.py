@@ -67,19 +67,34 @@ class RouteMapsMixin(UtilsMixin):
                     ],
                 }
             )
-            route_maps.append(
-                {
-                    "name": "RM-EVPN-SOO-OUT",
-                    "sequence_numbers": [
-                        {
-                            "sequence": 10,
-                            "type": "permit",
-                            "match": ["extcommunity ECL-EVPN-SOO"],
-                            # "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
-                        },
-                    ],
-                }
-            )
+            if not self.shared_utils.is_wan_router:
+                # For none WAN routers, setting the SOO on the outgoing EVPN routes
+                route_maps.append(
+                    {
+                        "name": "RM-EVPN-SOO-OUT",
+                        "sequence_numbers": [
+                            {
+                                "sequence": 10,
+                                "type": "permit",
+                                "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                            },
+                        ],
+                    }
+                )
+            else:
+                # For WAN routers, matching on the SOO to select routes to send over EVPN
+                route_maps.append(
+                    {
+                        "name": "RM-EVPN-SOO-OUT",
+                        "sequence_numbers": [
+                            {
+                                "sequence": 10,
+                                "type": "permit",
+                                "match": ["extcommunity ECL-EVPN-SOO"],
+                            },
+                        ],
+                    }
+                )
             if self.shared_utils.wan_ha:
                 route_maps.append(
                     {

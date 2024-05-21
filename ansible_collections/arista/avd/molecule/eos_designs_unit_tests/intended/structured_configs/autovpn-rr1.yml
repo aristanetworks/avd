@@ -137,6 +137,12 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 20
+    type: permit
+    set:
+    - extcommunity soo 192.168.31.1:0 additive
 agents:
 - name: KernelFib
   environment_variables:

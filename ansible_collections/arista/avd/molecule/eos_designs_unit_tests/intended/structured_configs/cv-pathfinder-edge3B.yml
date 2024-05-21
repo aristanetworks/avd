@@ -114,6 +114,7 @@ router_bgp:
         - 1000:1000
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
   - name: PROD
     router_id: 192.168.42.7
     rd: 192.168.42.7:142
@@ -128,6 +129,7 @@ router_bgp:
         - 142:142
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
 service_routing_protocols_model: multi-agent
 ip_routing: true
 transceiver_qsfp_default_mode_4x10: false
@@ -158,7 +160,7 @@ ethernet_interfaces:
   peer_type: l3_interface
   peer: TODO-MY-HA-PEER
   shutdown: false
-  description: LAN HA OMG
+  description: DIRECT LAN HA LINK
   ip_address: 10.10.10.1/31
   flow_tracker: null
 loopback_interfaces:
@@ -274,6 +276,12 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 20
+    type: permit
+    set:
+    - extcommunity soo 192.168.42.6:404 additive
 agents:
 - name: KernelFib
   environment_variables:

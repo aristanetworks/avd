@@ -72,8 +72,12 @@ class RouteMapsMixin(UtilsMixin):
         if self._configure_bgp_mlag_peer_group and self.shared_utils.mlag_ibgp_origin_incomplete:
             route_maps.append(self._bgp_mlag_peer_group_route_map())
 
-        if self._mlag_ibgp_peering_subnets_without_redistribution:
+        if self._mlag_ibgp_peering_subnets_without_redistribution or self._any_non_default_wan_vrf:
             route_maps.append(self._connected_to_bgp_vrfs_route_map())
+
+        if self.shared_utils.is_wan_router:
+            if (route_map := self._static_to_bgp_vrfs_route_map()) is not None:
+                route_maps.append(route_map)
 
         if route_maps:
             return route_maps
@@ -129,21 +133,61 @@ class RouteMapsMixin(UtilsMixin):
         """
         Return dict with one route-map
         Filter MLAG peer subnets for redistribute connected for overlay VRFs
+        If WAN router, tag all the routes with SOO.
         """
-        return {
-            "name": "RM-CONN-2-BGP-VRFS",
-            "sequence_numbers": [
+        sequence_numbers = []
+        if self._mlag_ibgp_peering_subnets_without_redistribution:
+            sequence_numbers.append(
                 {
                     "sequence": 10,
                     "type": "deny",
                     "match": ["ip address prefix-list PL-MLAG-PEER-VRFS"],
                 },
+            )
+        if self._any_non_default_wan_vrf:
+            sequence_numbers.append(
+                {
+                    "sequence": 20,
+                    "type": "permit",
+                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                },
+            )
+        elif self._mlag_ibgp_peering_subnets_without_redistribution:
+            sequence_numbers.append(
                 {
                     "sequence": 20,
                     "type": "permit",
                 },
-            ],
+            )
+
+        return {
+            "name": "RM-CONN-2-BGP-VRFS",
+            "sequence_numbers": sequence_numbers,
         }
+
+    def _static_to_bgp_vrfs_route_map(self) -> dict | None:
+        """
+        Return dict with one route-map
+        If WAN router, tag all the routes with SOO.
+        """
+        # TODO: Make this a bit more efficient as it recomputes things from router_bgp.py
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                vrf_name = vrf["name"]
+                if vrf_name != "default":
+                    bgp_vrf_redistribute_static = vrf.get("redistribute_static")
+                    if bgp_vrf_redistribute_static is True or (vrf["static_routes"] and bgp_vrf_redistribute_static is not False):
+                        return {
+                            "name": "RM-STATIC-2-BGP-VRFS",
+                            "sequence_numbers": [
+                                {
+                                    "sequence": 10,
+                                    "type": "permit",
+                                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                                },
+                            ],
+                        }
+        return None
 
     def _evpn_export_vrf_default_route_map(self) -> dict | None:
         """

@@ -263,7 +263,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "peer_type": "l3_interface",
                     "peer": "TODO-MY-HA-PEER",
                     "shutdown": False,
-                    "description": "LAN HA OMG",
+                    "description": "DIRECT LAN HA LINK",
                     "ip_address": self.shared_utils.wan_ha_ip_addresses[index],
                     "flow_tracker": wan_ha_links_flow_tracker,
                 }

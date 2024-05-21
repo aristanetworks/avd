@@ -177,6 +177,12 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 20
+    type: permit
+    set:
+    - extcommunity soo 192.168.44.1:0 additive
 static_routes:
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.7.7.6
