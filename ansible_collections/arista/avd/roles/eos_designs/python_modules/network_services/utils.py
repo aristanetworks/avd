@@ -752,7 +752,8 @@ class UtilsMixin(UtilsZscalerMixin):
                     {
                         **connection_base,
                         "tunnel_id": tunnel_id,
-                        "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
+                        # Using Loopback0 as source interface as using the WAN interface causes issues for DPS.
+                        "tunnel_ip_address": "unnumbered Loopback0",
                         "tunnel_destination_ip": destination_ip,
                         "ipsec_profile": f"IE-{policy_name}-PROFILE",
                         "description": f"Internet Exit {policy_name} {suffix}",

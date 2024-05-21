@@ -316,6 +316,15 @@ static_routes:
 - destination_address_prefix: 66.66.66.0/24
   gateway: 172.17.0.0
   vrf: default
+- destination_address_prefix: 10.37.121.1/32
+  name: IE-ZSCALER
+  interface: Ethernet3
+- destination_address_prefix: 10.39.77.1/32
+  name: IE-ZSCALER
+  interface: Ethernet3
+- destination_address_prefix: 10.50.9.1/32
+  name: IE-ZSCALER
+  interface: Ethernet3
 agents:
 - name: KernelFib
   environment_variables:
@@ -725,7 +734,7 @@ tunnel_interfaces:
 - name: Tunnel100
   description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.37.121.1
@@ -734,7 +743,7 @@ tunnel_interfaces:
 - name: Tunnel101
   description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.39.77.1
@@ -743,7 +752,7 @@ tunnel_interfaces:
 - name: Tunnel102
   description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.50.9.1

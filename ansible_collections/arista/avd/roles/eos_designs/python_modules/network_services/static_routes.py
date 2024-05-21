@@ -61,6 +61,19 @@ class StaticRoutesMixin(UtilsMixin):
                         if static_route not in static_routes:
                             static_routes.append(static_route)
 
+        for internet_exit_policy in self._filtered_internet_exit_policies:
+            for connection in internet_exit_policy.get("connections", []):
+                if connection["type"] == "tunnel":
+                    static_route = {
+                        "destination_address_prefix": f"{connection['tunnel_destination_ip']}/32",
+                        "name": "IE-ZSCALER",
+                        "interface": connection["source_interface"],
+                    }
+
+                    # Ignore duplicate items in case of duplicate VRF definitions across multiple tenants.
+                    if static_route not in static_routes:
+                        static_routes.append(static_route)
+
         if static_routes:
             return static_routes
 
