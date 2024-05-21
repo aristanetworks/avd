@@ -12,7 +12,7 @@
   - [SSL profile test2-chain-cert Certificates Summary](#ssl-profile-test2-chain-cert-certificates-summary)
   - [SSL profile test2-trust-cert Certificates Summary](#ssl-profile-test2-trust-cert-certificates-summary)
   - [Password Policies](#password-policies)
-  - [Secret Profiles](#secret-profiles)
+  - [Session Shared-secret Profiles](#session-shared-secret-profiles)
   - [Management Security Device Configuration](#management-security-device-configuration)
 
 ## Management
@@ -98,7 +98,7 @@ interface Management1
 |-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
 | AVD_POLICY | > 1 | > 2 | > 3 | > 4 | > 5 | < 6 | < 7 |
 
-### Secret Profiles
+### Session Shared-secret Profiles
 
 #### profile0
 
