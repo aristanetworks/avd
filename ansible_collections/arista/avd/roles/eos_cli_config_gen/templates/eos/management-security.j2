@@ -64,6 +64,7 @@ management security
 {%         endfor %}
 {%     endif %}
 {%     for profile in management_security.shared_secret_profiles | arista.avd.natural_sort("profile") %}
+   !
    session shared-secret profile {{ profile.profile }}
 {%         for secret in profile.secrets | arista.avd.natural_sort("name") %}
 {%             if secret.secret is arista.avd.defined and
@@ -86,9 +87,6 @@ management security
       {{ secret_cli }}
 {%             endif %}
 {%         endfor %}
-{%         if not loop.last %}
-   !
-{%         endif %}
 {%     endfor %}
 {%     for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
    ssl profile {{ ssl_profile.name }}

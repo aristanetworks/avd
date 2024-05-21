@@ -137,6 +137,7 @@ management security
       minimum upper 5
       maximum repetitive 6
       maximum sequential 7
+   !
    session shared-secret profile profile0
       secret Secret1 7 <removed> receive-lifetime 12/20/2024 10:00:00 12/20/2025 10:00:00 transmit-lifetime infinite local-time
       secret Secret2 7 <removed> receive-lifetime infinite transmit-lifetime infinite
