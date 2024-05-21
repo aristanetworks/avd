@@ -506,6 +506,13 @@ class WanMixin:
         raise AristaAvdError("Unable to find WAN HA peer within same node group")
 
     @cached_property
+    def configured_wan_ha_interfaces(self) -> list:
+        """
+        Read the device wan_ha.ha_interfaces node settings
+        """
+        return get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[])
+
+    @cached_property
     def use_uplinks_for_wan_ha(self: SharedUtils) -> bool:
         """
         Return true or false
@@ -515,7 +522,7 @@ class WanMixin:
         vrf_default_uplinks = [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
         uplink_interfaces = set(uplink["interface"] for uplink in vrf_default_uplinks)
 
-        interfaces = set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[]))
+        interfaces = set(self.configured_wan_ha_interfaces)
         if interfaces.issubset(uplink_interfaces):
             return True
         elif not interfaces.intersection(uplink_interfaces):
@@ -533,10 +540,7 @@ class WanMixin:
             return [uplink["interface"] for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
         else:
             # Using node values
-            return natural_sort(
-                set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[])),
-                "name",
-            )
+            return natural_sort(set(self.configured_wan_ha_interfaces), "name")
 
     @cached_property
     def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:
@@ -546,7 +550,7 @@ class WanMixin:
 
         FOR NOW ASSUME SAME AS LOCAL..
         """
-        interfaces = set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[]))
+        interfaces = set(self.configured_wan_ha_interfaces)
         ip_addresses = []
         if self.use_uplinks_for_wan_ha:
             peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
@@ -575,7 +579,7 @@ class WanMixin:
         Read the IP addresses/prefix length from this device uplinks used for HA.
         Used to generate the prefix list.
         """
-        interfaces = set(get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[]))
+        interfaces = set(self.configured_wan_ha_interfaces)
         ip_addresses = []
 
         if self.use_uplinks_for_wan_ha:

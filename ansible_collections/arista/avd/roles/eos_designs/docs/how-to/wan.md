@@ -617,7 +617,7 @@ The following design points are used:
 - For HA, an iBGP session using EVPN Gateway is used to share the routes from
     one peer to the other.
   - WAN, LAN and local static routes are sent to the HA peer to cater for various failure scenarii.
-  - The routes received from the HA peer are made less preferred than routes recieved from the LAN or from the WAN.
+  - The routes received from the HA peer are made less preferred than routes received from the LAN or from the WAN.
 
 #### Direct HA
 
