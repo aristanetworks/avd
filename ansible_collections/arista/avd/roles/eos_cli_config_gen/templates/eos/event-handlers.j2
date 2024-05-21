@@ -85,7 +85,7 @@ event-handler {{ handler.name }}
 {%                     set bash_command = bash_command.rstrip() ~ "\nEOF" %}
 {%                 endif %}
    action bash
-      {{ bash_command | indent(width=6, first=False) }}
+      {{ bash_command | indent(width=6, first=false) }}
 {%             else %}
    action bash {{ bash_command }}
 {%             endif %}
