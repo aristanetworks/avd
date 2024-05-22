@@ -6384,7 +6384,7 @@ keys:
               description: 'cipher_list syntax follows the openssl cipher strings
                 format.
 
-                Colon (:) separated list of allowed ciphers as a string
+                Colon (:) separated list of allowed ciphers as a string.
 
                 '
             trust_certificate:
@@ -6446,6 +6446,98 @@ keys:
                 '
               items:
                 type: str
+      shared_secret_profiles:
+        type: list
+        primary_key: profile
+        items:
+          type: dict
+          keys:
+            profile:
+              type: str
+            secrets:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  secret:
+                    type: str
+                    required: true
+                  secret_type:
+                    type: str
+                    default: '7'
+                    valid_values:
+                    - '0'
+                    - '7'
+                    - 8a
+                    convert_types:
+                    - int
+                  receive_lifetime:
+                    type: dict
+                    required: true
+                    keys:
+                      infinite:
+                        type: bool
+                      start_date_time:
+                        type: str
+                        description: 'Start date and time of lifetime of the secret.
+                          End date should be greater than start date.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024-12-20 10:00:00'
+                      end_date_time:
+                        type: str
+                        description: 'End date and time of lifetime of the secret.
+                          End date should be greater than start date.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024-12-20 10:00:00'
+                  transmit_lifetime:
+                    type: dict
+                    required: true
+                    keys:
+                      infinite:
+                        type: bool
+                      start_date_time:
+                        type: str
+                        description: 'Start date and time of lifetime of the secret.
+                          End date should be greater than start date.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024-12-20 10:00:00'
+                      end_date_time:
+                        type: str
+                        description: 'End date and time of lifetime of the secret.
+                          End date should be greater than start date.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024-12-20 10:00:00'
+                  local_time:
+                    type: bool
+                    description: Configuring secret using the local timezone from
+                      system clock. Default is UTC.
   management_ssh:
     type: dict
     keys:
@@ -10515,6 +10607,22 @@ keys:
                 new_key: listen_ranges
             session_tracker:
               type: str
+            shared_secret:
+              type: dict
+              keys:
+                profile:
+                  type: str
+                  required: true
+                  description: Name of profile defined under `management_security`.
+                hash_algorithm:
+                  type: str
+                  required: true
+                  description: 'Note: Algorithm hmac-sha-256 requires EOS version
+                    4.31.1F and above.'
+                  valid_values:
+                  - aes-128-cmac-96
+                  - hmac-sha-256
+                  - hmac-sha1-96
             ttl_maximum_hops:
               type: int
               convert_types:
@@ -10711,6 +10819,22 @@ keys:
                   type: bool
             session_tracker:
               type: str
+            shared_secret:
+              type: dict
+              keys:
+                profile:
+                  type: str
+                  required: true
+                  description: Name of profile defined under `management_security`.
+                hash_algorithm:
+                  type: str
+                  required: true
+                  description: 'Note: Algorithm hmac-sha-256 requires EOS version
+                    4.31.1F and above.'
+                  valid_values:
+                  - aes-128-cmac-96
+                  - hmac-sha-256
+                  - hmac-sha1-96
             ttl_maximum_hops:
               type: int
               convert_types:
