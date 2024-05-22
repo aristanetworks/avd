@@ -121,7 +121,7 @@ keys:
                         source_ports:
                           type: list
                           description: |-
-                            A list of ports or port range or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.
+                            A list of port numbers or port range or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.
                             e.g.
                               [ "12", "14-20" ]
                               [ "www" ]
@@ -132,7 +132,7 @@ keys:
                         destination_ports:
                           type: list
                           description: |-
-                            A list of range of ports or port range or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.
+                            A list of port numbers or port range or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.
                             e.g.
                               [ "12", "14-20", "80" ]
                               [ "https" ]
