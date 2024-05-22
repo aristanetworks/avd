@@ -56,3 +56,11 @@ interface Management1
 | Service type | Framed MTU |
 | ------------ | ---------- |
 | True | 1500 |
+
+#### 802.1X Captive-portal Authentication
+
+| Authentication Attribute | Value |
+| ------------------------ | ----- |
+| URL | http://portal-nacm08/captiveredirect/ |
+| SSL profile | Profile1 |
+| Access-list IPv4 | ACL |

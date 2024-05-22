@@ -38,6 +38,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_action_reauthenticate</samp>](## "dot1x.aaa.unresponsive.recovery_action_reauthenticate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accounting_update_interval</samp>](## "dot1x.aaa.accounting_update_interval") | Integer |  |  | Min: 5<br>Max: 65535 | Interval period in seconds. |
+    | [<samp>&nbsp;&nbsp;captive_portal</samp>](## "dot1x.captive_portal") | Dictionary |  |  |  | Web authentication feature that authenticates a supplicant through a web page, referred to as a captive portal. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "dot1x.captive_portal.url") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x.captive_portal.ssl_profile") | String |  |  |  | SSL profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv4</samp>](## "dot1x.captive_portal.access_list_ipv4") | String |  |  |  | Standard access-list name. |
+    | [<samp>&nbsp;&nbsp;supplicant</samp>](## "dot1x.supplicant") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "dot1x.supplicant.logging") | Boolean |  |  |  | Enable supplicant logging. |
 
 === "YAML"
 
@@ -111,4 +117,18 @@
 
         # Interval period in seconds.
         accounting_update_interval: <int; 5-65535>
+
+      # Web authentication feature that authenticates a supplicant through a web page, referred to as a captive portal.
+      captive_portal:
+        url: <str>
+
+        # SSL profile name.
+        ssl_profile: <str>
+
+        # Standard access-list name.
+        access_list_ipv4: <str>
+      supplicant:
+
+        # Enable supplicant logging.
+        logging: <bool>
     ```

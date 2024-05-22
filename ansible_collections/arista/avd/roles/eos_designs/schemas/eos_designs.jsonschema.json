@@ -19466,6 +19466,46 @@
                       "^_.+$": {}
                     },
                     "title": "AAA"
+                  },
+                  "captive_portal": {
+                    "type": "object",
+                    "description": "Web authentication feature that authenticates a supplicant through a web page, referred to as a captive portal.",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "title": "URL"
+                      },
+                      "ssl_profile": {
+                        "type": "string",
+                        "description": "SSL profile name.",
+                        "title": "SSL Profile"
+                      },
+                      "access_list_ipv4": {
+                        "type": "string",
+                        "description": "Standard access-list name.",
+                        "title": "Access List IPv4"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Captive Portal"
+                  },
+                  "supplicant": {
+                    "type": "object",
+                    "properties": {
+                      "logging": {
+                        "type": "boolean",
+                        "description": "Enable supplicant logging.",
+                        "title": "Logging"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Supplicant"
                   }
                 },
                 "additionalProperties": false,

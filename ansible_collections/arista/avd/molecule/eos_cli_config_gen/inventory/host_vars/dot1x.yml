@@ -24,3 +24,9 @@ dot1x:
         apply_alternate: true
       recovery_action_reauthenticate: true
     accounting_update_interval: 6
+  captive_portal:
+    url: http://portal-nacm08/captiveredirect/
+    ssl_profile: Profile1
+    access_list_ipv4: ACL
+  supplicant:
+    logging: true

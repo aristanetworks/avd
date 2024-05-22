@@ -1605,6 +1605,25 @@ keys:
             min: 5
             max: 65535
             description: Interval period in seconds.
+      captive_portal:
+        type: dict
+        description: Web authentication feature that authenticates a supplicant through
+          a web page, referred to as a captive portal.
+        keys:
+          url:
+            type: str
+          ssl_profile:
+            type: str
+            description: SSL profile name.
+          access_list_ipv4:
+            type: str
+            description: Standard access-list name.
+      supplicant:
+        type: dict
+        keys:
+          logging:
+            type: bool
+            description: Enable supplicant logging.
   dps_interfaces:
     type: list
     primary_key: name
