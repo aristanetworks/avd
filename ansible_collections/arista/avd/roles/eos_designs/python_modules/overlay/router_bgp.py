@@ -522,16 +522,16 @@ class RouterBgpMixin(UtilsMixin):
                     neighbors.append(neighbor)
 
                 if self.shared_utils.wan_ha:
-                    neighbor = self._create_neighbor(self._wan_ha_peer_vtep_ip(), self.shared_utils.wan_ha_peer, None)
-                    neighbor.update(
-                        {
-                            "remote_as": self.shared_utils.bgp_as,
-                            "update_source": "Dps1",
-                            "route_reflector_client": True,
-                            "send_community": "all",
-                            "route_map_in": "RM-WAN-HA-LOCAL-PREF-IN",
-                        }
-                    )
+                    neighbor = {
+                        "ip_address": self._wan_ha_peer_vtep_ip(),
+                        "peer": self.shared_utils.wan_ha_peer,
+                        "description": self.shared_utils.wan_ha_peer,
+                        "remote_as": self.shared_utils.bgp_as,
+                        "update_source": "Dps1",
+                        "route_reflector_client": True,
+                        "send_community": "all",
+                        "route_map_in": "RM-WAN-HA-LOCAL-PREF-IN",
+                    }
                     neighbors.append(neighbor)
 
             if self.shared_utils.is_wan_server:
