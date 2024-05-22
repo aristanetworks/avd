@@ -16580,6 +16580,7 @@
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
               "title": "Name"
             },
             "id": {
@@ -16605,6 +16606,7 @@
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
               "title": "Name"
             },
             "id": {
@@ -16630,6 +16632,7 @@
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
               "title": "Name"
             },
             "id": {

@@ -9904,6 +9904,7 @@ keys:
           name:
             type: str
             required: true
+            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
           id:
             type: int
             convert_types:
@@ -9918,6 +9919,7 @@ keys:
           name:
             type: str
             required: true
+            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
           id:
             type: int
             convert_types:
@@ -9932,6 +9934,7 @@ keys:
           name:
             type: str
             required: true
+            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
           id:
             type: int
             convert_types:

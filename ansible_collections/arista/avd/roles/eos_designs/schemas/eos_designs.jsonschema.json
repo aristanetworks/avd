@@ -4647,6 +4647,7 @@
         "properties": {
           "name": {
             "type": "string",
+            "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
             "title": "Name"
           },
           "description": {
@@ -4669,6 +4670,7 @@
                 "name": {
                   "type": "string",
                   "description": "The site name.",
+                  "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                   "title": "Name"
                 },
                 "description": {
@@ -33299,6 +33301,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -33324,6 +33327,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -33349,6 +33353,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
