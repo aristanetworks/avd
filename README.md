@@ -83,7 +83,7 @@ AVD version 4.x releases with full support from Arista TAC. If your organization
 
 ## Contributing
 
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](https://avd.arista.com/stable/docs/contribution/overview.html) for additional details.
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see the [contribution guide](ansible_collections/arista/avd/docs/contribution/overview.md) for additional details.
 
 You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit enhancements.
 
