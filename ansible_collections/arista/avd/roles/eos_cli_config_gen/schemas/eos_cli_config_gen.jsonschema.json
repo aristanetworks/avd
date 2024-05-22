@@ -3792,6 +3792,37 @@
             },
             "title": "MAC Security"
           },
+          "tcp_mss_ceiling": {
+            "type": "object",
+            "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+            "properties": {
+              "ipv4_segment_size": {
+                "type": "integer",
+                "minimum": 64,
+                "maximum": 65475,
+                "title": "IPv4 Segment Size"
+              },
+              "ipv6_segment_size": {
+                "type": "integer",
+                "minimum": 64,
+                "maximum": 65475,
+                "title": "IPv6 Segment Size"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "egress",
+                  "ingress"
+                ],
+                "title": "Direction"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "TCP Mss Ceiling"
+          },
           "channel_group": {
             "type": "object",
             "properties": {
