@@ -1994,14 +1994,14 @@
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 255,
-                "description": "Name of IPv4 file.  If multiple IPv4 tftp files are needed, enter each separated by a space.",
+                "description": "Name of IPv4 tftp file.  If multiple IPv4 tftp files are needed, enter each separated by a space.",
                 "title": "Files IPv4"
               },
               "files_ipv6": {
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 255,
-                "description": "Name of IPv6 file.  If multiple IPv4 tftp files are needed, enter each separated by a space.",
+                "description": "Name of IPv6 tftp file.  If multiple IPv6 tftp files are needed, enter each separated by a space.",
                 "title": "Files IPv6"
               }
             },

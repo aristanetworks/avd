@@ -46,12 +46,12 @@ keys:
               type: str
               min_length: 1
               max_length: 255
-              description: Name of IPv4 file.  If multiple IPv4 tftp files are needed, enter each separated by a space.
+              description: Name of IPv4 tftp file.  If multiple IPv4 tftp files are needed, enter each separated by a space.
             files_ipv6:
               type: str
               min_length: 1
               max_length: 255
-              description: Name of IPv6 file.  If multiple IPv4 tftp files are needed, enter each separated by a space.
+              description: Name of IPv6 tftp file.  If multiple IPv6 tftp files are needed, enter each separated by a space.
         ipv4_vendor_options:
           type: list
           primary_key: vendor_id
