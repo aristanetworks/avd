@@ -47,8 +47,8 @@ interface Management1
 
 | Rule Name | Rule Type | Source Prefix | Destination Prefix | Protocol | Source Ports | Destination Ports |
 | --------- | --------- | ------------- | ------------------ | -------- | ------------ | ----------------- |
-| rule1 | ipv4 | 3.4.5.0/24 | 10.3.3.0/24 | tcp<br>udp | -<br>98 | 77, 78-80, www<br>99 |
-| rule2 | ipv6 | 5::0/128 | 4::0/128 | udp | - | 747, 748-800, ssh |
+| rule1 | ipv4 | 3.4.5.0/24 | 10.3.3.0/24 | tcp<br>udp | -<br>98 | 77, 78-80, 82<br>99 |
+| rule2 | ipv6 | 5::0/128 | 4::0/128 | udp | - | 747, 748-800 |
 | rule3 | ipv4 | - | - | - | - | - |
 
 ##### samplepo2
@@ -57,7 +57,7 @@ interface Management1
 
 | Rule Name | Rule Type | Source Prefix | Destination Prefix | Protocol | Source Ports | Destination Ports |
 | --------- | --------- | ------------- | ------------------ | -------- | ------------ | ----------------- |
-| rule1 | ipv4 | 3.4.5.0/24 | 10.3.3.0/24 | udp | 77, 78-80, www | 88, www |
+| rule1 | ipv4 | 3.4.5.0/24 | 10.3.3.0/24 | udp | bgp | https |
 
 #### Telemetry Postcard Policy Profiles
 
@@ -73,25 +73,20 @@ interface Management1
 monitor telemetry postcard policy
    no disabled
    ingress sample rate 16384
-   marker vxlan
+   marker vxlan header word 0 bit 30
    ingress collection gre source 10.3.3.3 destination 10.3.3.4 version 2
    !
    sample policy samplepo1
       match rule1 ipv4
          source prefix 3.4.5.0/24
          destination prefix 10.3.3.0/24
-         protocol tcp destination port 77
-         protocol tcp destination port 78-80
-         protocol tcp destination port www
-         protocol udp destination port 99
-         protocol udp source port 98
+         protocol tcp destination port 77, 78-80, 82
+         protocol udp source port 98 destination port 99
       !
       match rule2 ipv6
          source prefix 5::0/128
          destination prefix 4::0/128
-         protocol udp destination port 747
-         protocol udp destination port 748-800
-         protocol udp destination port ssh
+         protocol udp destination port 747, 748-800
       !
       match rule3 ipv4
    !
@@ -99,11 +94,7 @@ monitor telemetry postcard policy
       match rule1 ipv4
          source prefix 3.4.5.0/24
          destination prefix 10.3.3.0/24
-         protocol udp destination port 88
-         protocol udp destination port www
-         protocol udp source port 77
-         protocol udp source port 78-80
-         protocol udp source port www
+         protocol udp source port bgp destination port https
    !
    profile profile1
       ingress sample policy samplepo1

@@ -19,8 +19,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_udp_checksum</samp>](## "monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum") | Dictionary |  |  |  | TCP/UDP parameters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.value") | Integer |  |  | Min: 0<br>Max: 65535 | TCP/UDP checksum or IP ID value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mask</samp>](## "monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.mask") | String |  |  |  | 16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unset bits. |
-    | [<samp>&nbsp;&nbsp;marker_vxlan</samp>](## "monitor_telemetry_postcard_policy.marker_vxlan") | Boolean |  |  |  | Enable vxlan marking using default bit 0. |
-    | [<samp>&nbsp;&nbsp;vxlan_marking_bit</samp>](## "monitor_telemetry_postcard_policy.vxlan_marking_bit") | Integer |  |  | Min: 1<br>Max: 31 |  |
+    | [<samp>&nbsp;&nbsp;marker_vxlan</samp>](## "monitor_telemetry_postcard_policy.marker_vxlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "monitor_telemetry_postcard_policy.marker_vxlan.enabled") | Boolean |  |  |  | Enable vxlan marking using default bit 0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;header_word_zero_bit</samp>](## "monitor_telemetry_postcard_policy.marker_vxlan.header_word_zero_bit") | Integer |  |  | Min: 1<br>Max: 31 |  |
     | [<samp>&nbsp;&nbsp;profiles</samp>](## "monitor_telemetry_postcard_policy.profiles") | List, items: Dictionary |  |  |  | Postcard telemetry profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_telemetry_postcard_policy.profiles.[].name") | String | Required, Unique |  |  | Profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ingress_sample_policy</samp>](## "monitor_telemetry_postcard_policy.profiles.[].ingress_sample_policy") | String |  |  |  |  |
@@ -33,8 +34,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_prefix</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].source_prefix") | String |  |  |  | IPv4 Network/Mask or IPv6 Network/Mask. Host part of prefix must be zero.<br>eg. 10.3.3.0/24 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;protocol</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].protocol") | String | Required, Unique |  | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_ports</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].destination_ports") | List |  |  |  | Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.<br>Example:<br>  ["12","14-20", "www"] |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ports</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].source_ports") | List |  |  |  | Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.<br>Example:<br>  ["12","14-20", "www"] |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ports</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].source_ports") | List, items: String |  |  |  | A list of ports or port numbers or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.<br>e.g.<br>  [ "12", "14-20" ]<br>  [ "www" ] |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].source_ports.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_ports</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].destination_ports") | List, items: String |  |  |  | A list of range of ports or port numbers or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.<br>e.g.<br>  [ "12", "14-20", "80" ]<br>  [ "https" ] |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "monitor_telemetry_postcard_policy.sample_policies.[].match_rules.[].protocols.[].destination_ports.[]") | String |  |  |  |  |
 
 === "YAML"
 
@@ -71,10 +74,11 @@
 
             # 16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unset bits.
             mask: <str>
+      marker_vxlan:
 
-      # Enable vxlan marking using default bit 0.
-      marker_vxlan: <bool>
-      vxlan_marking_bit: <int; 1-31>
+        # Enable vxlan marking using default bit 0.
+        enabled: <bool>
+        header_word_zero_bit: <int; 1-31>
 
       # Postcard telemetry profiles.
       profiles:
@@ -100,13 +104,17 @@
               protocols:
                 - protocol: <str; "tcp" | "udp"; required; unique>
 
-                  # Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.
-                  # Example:
-                  #   ["12","14-20", "www"]
-                  destination_ports: <list>
+                  # A list of ports or port numbers or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.
+                  # e.g.
+                  #   [ "12", "14-20" ]
+                  #   [ "www" ]
+                  source_ports:
+                    - <str>
 
-                  # Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.
-                  # Example:
-                  #   ["12","14-20", "www"]
-                  source_ports: <list>
+                  # A list of range of ports or port numbers or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.
+                  # e.g.
+                  #   [ "12", "14-20", "80" ]
+                  #   [ "https" ]
+                  destination_ports:
+                    - <str>
     ```

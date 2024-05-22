@@ -10,8 +10,8 @@ monitor_telemetry_postcard_policy:
       tcp_udp_checksum:
         value: 65000
         mask: "0xffff"
-  marker_vxlan: true
-  vxlan_marking_bit: 2
+  marker_vxlan:
+    header_word_zero_bit: 30
   profiles:
     - name: profile1
       ingress_sample_policy: samplepo1
@@ -29,7 +29,7 @@ monitor_telemetry_postcard_policy:
               destination_ports:
                 - '77'
                 - 78-80
-                - www
+                - 82
             - protocol: udp
               destination_ports:
                 - "99"
@@ -44,7 +44,6 @@ monitor_telemetry_postcard_policy:
               destination_ports:
                 - '747'
                 - 748-800
-                - ssh
         - name: rule3
           type: ipv4
     - name: samplepo2
@@ -56,9 +55,6 @@ monitor_telemetry_postcard_policy:
           protocols:
             - protocol: udp
               source_ports:
-                - '77'
-                - 78-80
-                - www
+                - bgp
               destination_ports:
-                - '88'
-                - www
+                - https

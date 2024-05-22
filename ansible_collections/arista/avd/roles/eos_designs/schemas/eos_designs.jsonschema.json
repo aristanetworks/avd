@@ -29113,15 +29113,25 @@
                     "title": "Ingress"
                   },
                   "marker_vxlan": {
-                    "type": "boolean",
-                    "description": "Enable vxlan marking using default bit 0.",
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "description": "Enable vxlan marking using default bit 0.",
+                        "title": "Enabled"
+                      },
+                      "header_word_zero_bit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 31,
+                        "title": "Header Word Zero Bit"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
                     "title": "Marker VxLAN"
-                  },
-                  "vxlan_marking_bit": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 31,
-                    "title": "VxLAN Marking Bit"
                   },
                   "profiles": {
                     "type": "array",
@@ -29199,15 +29209,21 @@
                                       ],
                                       "title": "Protocol"
                                     },
-                                    "destination_ports": {
-                                      "type": "array",
-                                      "description": "Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
-                                      "title": "Destination Ports"
-                                    },
                                     "source_ports": {
                                       "type": "array",
-                                      "description": "Enter the port name or range or port numbers in a list. The port numbers should be in range of 0-65535.\nExample:\n  [\"12\",\"14-20\", \"www\"]",
+                                      "description": "A list of ports or port numbers or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\" ]\n  [ \"www\" ]",
+                                      "items": {
+                                        "type": "string"
+                                      },
                                       "title": "Source Ports"
+                                    },
+                                    "destination_ports": {
+                                      "type": "array",
+                                      "description": "A list of range of ports or port numbers or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\", \"80\" ]\n  [ \"https\" ]",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "title": "Destination Ports"
                                     }
                                   },
                                   "additionalProperties": false,

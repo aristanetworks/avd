@@ -7308,14 +7308,17 @@ keys:
                     description: 16 bit hexadecimal mask for TCP/UDP or IP ID with
                       atmost 2 unset bits.
       marker_vxlan:
-        type: bool
-        description: Enable vxlan marking using default bit 0.
-      vxlan_marking_bit:
-        type: int
-        min: 1
-        max: 31
-        convert_types:
-        - str
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable vxlan marking using default bit 0.
+          header_word_zero_bit:
+            type: int
+            min: 1
+            max: 31
+            convert_types:
+            - str
       profiles:
         type: list
         description: Postcard telemetry profiles.
@@ -7374,16 +7377,28 @@ keys:
                           valid_values:
                           - tcp
                           - udp
-                        destination_ports:
-                          type: list
-                          description: "Enter the port name or range or port numbers
-                            in a list. The port numbers should be in range of 0-65535.\nExample:\n
-                            \ [\"12\",\"14-20\", \"www\"]"
                         source_ports:
                           type: list
-                          description: "Enter the port name or range or port numbers
-                            in a list. The port numbers should be in range of 0-65535.\nExample:\n
-                            \ [\"12\",\"14-20\", \"www\"]"
+                          description: "A list of ports or port numbers or port name
+                            in the list. Combination of port numbers or range and
+                            port name is not supported on EOS. The port numbers should
+                            be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\" ]\n
+                            \ [ \"www\" ]"
+                          items:
+                            type: str
+                            convert_types:
+                            - int
+                        destination_ports:
+                          type: list
+                          description: "A list of range of ports or port numbers or
+                            port name in the list. Combination of port numbers or
+                            range and port name is not supported on EOS. The port
+                            numbers should be in range of 0-65535.\ne.g.\n  [ \"12\",
+                            \"14-20\", \"80\" ]\n  [ \"https\" ]"
+                          items:
+                            type: str
+                            convert_types:
+                            - int
   mpls:
     type: dict
     keys:
