@@ -283,7 +283,6 @@ class RouterBgpMixin(UtilsMixin):
 
         # Activitating HA iBGP session for WAN HA
         if self.shared_utils.wan_ha:
-            # TODO: @gmuloc duplicate with EVPN gateway VXLAN
             address_family_evpn["neighbor_default"] = {
                 "next_hop_self_received_evpn_routes": {
                     "enable": True,
@@ -441,7 +440,7 @@ class RouterBgpMixin(UtilsMixin):
 
         return address_family_vpn_ipvx
 
-    def _create_neighbor(self, ip_address: str, name: str, peer_group: str, remote_as: str = None) -> dict:
+    def _create_neighbor(self, ip_address: str, name: str, peer_group: str, remote_as: str | None = None) -> dict:
         """ """
         neighbor = {"ip_address": ip_address, "peer_group": peer_group, "peer": name, "description": name}
 

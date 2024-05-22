@@ -158,7 +158,7 @@ ethernet_interfaces:
 - name: Ethernet52
   type: routed
   peer_type: l3_interface
-  peer: TODO-MY-HA-PEER
+  peer: cv-pathfinder-edge3A
   shutdown: false
   description: DIRECT LAN HA LINK
   ip_address: 10.10.10.1/31

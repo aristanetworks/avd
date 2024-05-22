@@ -251,7 +251,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                 )
 
         # WAN HA interfaces for direct connection
-        # TODO: make this nicer
         if self.shared_utils.use_uplinks_for_wan_ha is False:
             wan_ha_links_flow_tracker = get(
                 self.shared_utils.switch_data_combined, "wan_ha.flow_tracker", default=self.shared_utils.get_flow_tracker(None, "wan_ha_links")
@@ -261,7 +260,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "name": interface,
                     "type": "routed",
                     "peer_type": "l3_interface",
-                    "peer": "TODO-MY-HA-PEER",
+                    "peer": self.shared_utils.wan_ha_peer,
                     "shutdown": False,
                     "description": "DIRECT LAN HA LINK",
                     "ip_address": self.shared_utils.wan_ha_ip_addresses[index],
