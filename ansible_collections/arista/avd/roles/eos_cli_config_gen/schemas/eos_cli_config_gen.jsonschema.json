@@ -12546,7 +12546,7 @@
                           },
                           "source_ports": {
                             "type": "array",
-                            "description": "A list of port numbers or port range or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\" ]\n  [ \"www\" ]",
+                            "description": "A list of port numbers or port range or port name. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\" ]\n  [ \"www\" ]",
                             "items": {
                               "type": "string"
                             },
@@ -12554,7 +12554,7 @@
                           },
                           "destination_ports": {
                             "type": "array",
-                            "description": "A list of port numbers or port range or port name in the list. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\", \"80\" ]\n  [ \"https\" ]",
+                            "description": "A list of port numbers or port range or port name. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\", \"80\" ]\n  [ \"https\" ]",
                             "items": {
                               "type": "string"
                             },
