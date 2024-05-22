@@ -18,7 +18,7 @@ Arista Validated Designs (AVD) is an extensible data model that defines Arista's
 
 ## Reference designs
 
-- [L3LS VXLAN-EVPN, L2LS, and MPLS](https://avd.arista.com/stable/roles/eos_designs/index.html)
+- [L3LS VXLAN-EVPN, L2LS, and MPLS](roles/eos_designs/README.md)
 
 ## AVD Ansible Collection
 
@@ -48,11 +48,11 @@ This repository provides content for Arista's **arista.avd** collection. The fol
 
 ### Collection installation
 
-Ansible galaxy hosts all stable versions of the `arista.avd` collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](https://avd.arista.com/stable/docs/installation/collection-installation.html).
+Ansible galaxy hosts all stable versions of the `arista.avd` collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](docs/installation/collection-installation.md).
 
 ### Examples
 
-- [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
+- [Getting started](docs/getting-started/intro-to-ansible-and-avd.md)
 - [Arista NetDevOps GitHub repository](https://github.com/aristanetworks/netdevops-examples)
 
 ### Custom plugins & modules
@@ -76,7 +76,7 @@ AVD version 4.x releases with full support from Arista TAC. If your organization
 
 ## Contributing
 
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](https://avd.arista.com/stable/docs/contribution/overview.html) for additional details.
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](docs/contribution/overview.md) for additional details.
 
 You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit enhancements.
 
