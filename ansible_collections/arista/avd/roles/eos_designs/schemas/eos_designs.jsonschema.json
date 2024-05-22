@@ -4546,7 +4546,7 @@
           },
           "type": {
             "type": "string",
-            "description": "Internet-exit policy type.\ndirect: Exit directly over wan interfaces\nzscaler: Exit using zscaler secure web gateway service",
+            "description": "Internet-exit policy type.\ndirect: Exit directly over wan interfaces\nzscaler: Exit using Zscaler secure web gateway service",
             "enum": [
               "direct",
               "zscaler"
