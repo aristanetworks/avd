@@ -161,16 +161,14 @@ jobs:
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v4
-      - name: Downgrade requests library to 2.31 # Due to bug in 2.32 with docker https://github.com/docker/docker-py/pull/3257
-        run: |
-          pip install 'requests==2.31.0'
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.7
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
+          # Temp requirements to ovecome bug in requests library with docker: https://github.com/docker/docker-py/pull/3257
+          pip_file: ansible_collections/arista/avd/requirements-dhcp.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
