@@ -25,10 +25,10 @@
    dns server ipv6 {{ dhcp_server.dns_servers_ipv6 | arista.avd.natural_sort | join(" ") }}
 {%         endif %}
 {%         if dhcp_server.tftp_server.files_ipv4 is arista.avd.defined %}
-   tftp server file ipv4 {{ dhcp_server.tftp_server.files_ipv4 | arista.avd.natural_sort | join(" ") }}
+   tftp server file ipv4 {{ dhcp_server.tftp_server.files_ipv4 }}
 {%         endif %}
 {%         if dhcp_server.tftp_server.files_ipv6 is arista.avd.defined %}
-   tftp server file ipv6 {{ dhcp_server.tftp_server.files_ipv6 | arista.avd.natural_sort | join(" ") }}
+   tftp server file ipv6 {{ dhcp_server.tftp_server.files_ipv6 }}
 {%         endif %}
 {%         for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
    !

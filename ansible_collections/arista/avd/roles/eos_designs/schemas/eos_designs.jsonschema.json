@@ -18656,23 +18656,17 @@
                       "type": "object",
                       "properties": {
                         "files_ipv4": {
-                          "type": "array",
-                          "minItems": 1,
-                          "description": "List of IPv4 files",
-                          "items": {
-                            "type": "string",
-                            "description": "Name of IPv4 file"
-                          },
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255,
+                          "description": "Name of IPv4 file.  If multiple IPv4 tftp files are needed, enter each separated by a space.",
                           "title": "Files IPv4"
                         },
                         "files_ipv6": {
-                          "type": "array",
-                          "minItems": 1,
-                          "description": "List of IPv6 files",
-                          "items": {
-                            "type": "string",
-                            "description": "Name of IPv6 file"
-                          },
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255,
+                          "description": "Name of IPv6 file.  If multiple IPv4 tftp files are needed, enter each separated by a space.",
                           "title": "Files IPv6"
                         }
                       },

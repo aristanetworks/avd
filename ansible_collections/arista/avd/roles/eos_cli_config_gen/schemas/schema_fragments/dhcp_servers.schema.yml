@@ -43,21 +43,15 @@ keys:
           type: dict
           keys:
             files_ipv4:
-              type: list
+              type: str
               min_length: 1
-              description: List of IPv4 files
-              items:
-                type: str
-                required: true
-                description: 'Name of IPv4 file'
+              max_length: 255
+              description: Name of IPv4 file.  If multiple IPv4 tftp files are needed, enter each separated by a space.
             files_ipv6:
-              type: list
+              type: str
               min_length: 1
-              description: List of IPv6 files
-              items:
-                type: str
-                required: true
-                description: 'Name of IPv6 file'
+              max_length: 255
+              description: Name of IPv6 file.  If multiple IPv4 tftp files are needed, enter each separated by a space.
         ipv4_vendor_options:
           type: list
           primary_key: vendor_id

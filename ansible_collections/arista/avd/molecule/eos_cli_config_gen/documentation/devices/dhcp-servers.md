@@ -110,7 +110,7 @@ dhcp server vrf defauls
 dhcp server
    dns server ipv4 10.0.0.1 192.168.255.254
    dns server ipv6 2001:db8::1 2001:db8::2
-   tftp server file ipv4 https://192.168.0.254/ztp/bootstrap https://www.arista.io/ztp/bootstrap
+   tftp server file ipv4 https://www.arista.io/ztp/bootstrap https://192.168.0.254/ztp/bootstrap
    tftp server file ipv6 https://2001:0db8:fe/ztp/bootstrap
    !
    subnet 2a00:2::/64
