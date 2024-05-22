@@ -732,7 +732,6 @@ router_internet_exit:
   - name: DIRECT-EXIT-POLICY-1
     exit_groups:
     - name: DIRECT-EXIT-POLICY-1
-    - name: DIRECT-EXIT-POLICY-1
   - name: ZSCALER-EXIT-POLICY-1
     exit_groups:
     - name: ZSCALER-EXIT-POLICY-1_PRI

@@ -34,15 +34,15 @@ class MonitorConnectivityMixin(UtilsMixin):
         for policy in self._filtered_internet_exit_policies:
             for connection in policy["connections"]:
                 if connection["type"] == "tunnel":
-                    interfaceName = f"Tunnel{connection['tunnel_id']}"
+                    interface_name = f"Tunnel{connection['tunnel_id']}"
                 elif connection["type"] == "ethernet":
-                    interfaceName = connection["source_interface"]
+                    interface_name = connection["source_interface"]
 
-                interface_set_name = f"SET-{self.shared_utils.sanitize_interface_name(interfaceName)}"
+                interface_set_name = f"SET-{self.shared_utils.sanitize_interface_name(interface_name)}"
                 interface_sets.append(
                     {
                         "name": interface_set_name,
-                        "interfaces": interfaceName,
+                        "interfaces": interface_name,
                     }
                 )
 
