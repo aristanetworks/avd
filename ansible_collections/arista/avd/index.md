@@ -10,6 +10,12 @@
 
 Arista Validated Designs (AVD) is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
 
+**[Documentation](https://avd.arista.com)**
+
+**[Source Code](https://github.com/aristanetworks/avd)**
+
+**[Examples](https://github.com/aristanetworks/avd/tree/devel/ansible_collections/arista/avd/examples)**
+
 ## Features
 
 - **Flexibility with Open Data Models:** Extensible fabric-wide network models, simplifying configuration, delivering consistency, and reducing errors
@@ -24,40 +30,28 @@ Arista Validated Designs (AVD) is an extensible data model that defines Arista's
 
 [Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
 
-Full documentation for the collection:
-
-- [stable version](https://avd.arista.com/stable/)
-- [development version](https://avd.arista.com/devel/)
-
-### Roles overview
-
-This repository provides content for Arista's **arista.avd** collection. The following roles are included.
-
-- [**arista.avd.eos_designs**](roles/eos_designs/README.md) - Opinionated Data model to assist with the deployment of Arista Validated Designs.
-- [**arista.avd.eos_cli_config_gen**](roles/eos_cli_config_gen/README.md) - Generate Arista EOS cli syntax and device documentation.
-- [**arista.avd.eos_config_deploy_cvp**](roles/eos_config_deploy_cvp/README.md) - Deploys intended configuration via CloudVision.
-- [**arista.avd.eos_config_deploy_eapi**](roles/eos_config_deploy_eapi/README.md) - Deploys intended configuration via eAPI.
-- [**arista.avd.cvp_configlet_upload**](roles/cvp_configlet_upload/README.md) - Uploads configlets from a local folder to CloudVision Server.
-- [**arista.avd.eos_validate_state**](roles/eos_validate_state/README.md) - Validate operational states of Arista EOS devices.
-- [**arista.avd.eos_snapshot**](roles/eos_snapshot/README.md) - Collect commands on EOS devices and generate reports.
-- [**arista.avd.dhcp_provisioner**](roles/dhcp_provisioner/README.md) - Configure an ISC-DHCP server to provide ZTP services and CloudVision registration.
-- [**arista.avd.cv_deploy**](roles/cv_deploy/README.md) - Deploys EOS device configurations and tags to the CloudVision management platform.
-
-![Arista AVD Overview](docs/_media/avd_roles_dark.svg#only-dark)
-![Arista AVD Overview](docs/_media/avd_roles_light.svg#only-light)
-
 ### Collection installation
 
 Ansible galaxy hosts all stable versions of the `arista.avd` collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](docs/installation/collection-installation.md).
 
-### Examples
+```shell
+ansible-galaxy collection install arista.avd
+```
+
+## PyAVD
+
+PyAVD is a python package providing some of the features from the arista.avd Ansible collection without requiring Ansible. PyAVD leverages the same logic as the Ansible collection, so the generated outputs should be exactly the same based on the same inputs.
+
+PyAVD does not provide any inventory or variable management, so PyAVD cannot replace a full Ansible based solution by itself. PyAVD could serve as an element in larger framework.
+
+```shell
+pip3 install pyavd
+```
+
+## Examples
 
 - [Getting started](docs/getting-started/intro-to-ansible-and-avd.md)
 - [Arista NetDevOps GitHub repository](https://github.com/aristanetworks/netdevops-examples)
-
-### Custom plugins & modules
-
-See the section "Ansible Collection Plugins" on the menu to the left.
 
 ## Additional resources
 
