@@ -244,4 +244,28 @@
           reload_delay:
             mlag: 300
             non_mlag: 330
+        - feature_support:
+            bgp_update_wait_for_convergence: true
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+          management_interface: Management1/1
+          platforms:
+          - AWE-5x10
+          - AWE-7250R
+          - AWE-7230R
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - feature_support:
+            bgp_update_wait_for_convergence: true
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+          management_interface: Management1
+          platforms:
+          - AWE-7220R
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
         ```
