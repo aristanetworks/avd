@@ -7379,7 +7379,7 @@ keys:
                           - udp
                         source_ports:
                           type: list
-                          description: "A list of ports or port numbers or port name
+                          description: "A list of ports or port range or port name
                             in the list. Combination of port numbers or range and
                             port name is not supported on EOS. The port numbers should
                             be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\" ]\n
@@ -7390,7 +7390,7 @@ keys:
                             - int
                         destination_ports:
                           type: list
-                          description: "A list of range of ports or port numbers or
+                          description: "A list of range of ports or port range or
                             port name in the list. Combination of port numbers or
                             range and port name is not supported on EOS. The port
                             numbers should be in range of 0-65535.\ne.g.\n  [ \"12\",
