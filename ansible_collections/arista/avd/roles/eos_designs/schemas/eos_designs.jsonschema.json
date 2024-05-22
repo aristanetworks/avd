@@ -4647,6 +4647,8 @@
         "properties": {
           "name": {
             "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
             "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
             "title": "Name"
           },
@@ -4670,6 +4672,8 @@
                 "name": {
                   "type": "string",
                   "description": "The site name.",
+                  "minLength": 1,
+                  "maxLength": 128,
                   "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                   "title": "Name"
                 },
