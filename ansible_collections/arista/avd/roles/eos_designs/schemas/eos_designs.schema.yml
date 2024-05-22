@@ -704,6 +704,8 @@ keys:
       keys:
         name:
           type: str
+          min_length: 1
+          max_length: 128
         description:
           type: str
         id:
@@ -721,6 +723,8 @@ keys:
               name:
                 type: str
                 description: The site name.
+                min_length: 1
+                max_length: 128
               description:
                 type: str
               id:

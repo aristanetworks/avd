@@ -438,6 +438,19 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ destination_cli }}
 {%     endfor %}
+{%     if ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
+{%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
+{%         if ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv4 " ~ ethernet_interface.tcp_mss_ceiling.ipv4_segment_size %}
+{%         endif %}
+{%         if ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv6 " ~ ethernet_interface.tcp_mss_ceiling.ipv6_segment_size %}
+{%         endif %}
+{%         if ethernet_interface.tcp_mss_ceiling.direction is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " " ~ ethernet_interface.tcp_mss_ceiling.direction %}
+{%         endif %}
+   {{ tcp_mss_ceiling_cli }}
+{%     endif %}
 {%     if ethernet_interface.channel_group.id is arista.avd.defined and ethernet_interface.channel_group.mode is arista.avd.defined %}
    channel-group {{ ethernet_interface.channel_group.id }} mode {{ ethernet_interface.channel_group.mode }}
 {%         if ethernet_interface.lacp_timer.mode is arista.avd.defined %}
@@ -779,6 +792,13 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interface.transceiver.media.override }}
+{%     endif %}
+{%     if ethernet_interface.transceiver.frequency is arista.avd.defined %}
+{%         set frequency_cli = 'transceiver frequency ' ~ "%.3f" | format(ethernet_interface.transceiver.frequency | float) %}
+{%         if ethernet_interface.transceiver.frequency_unit is arista.avd.defined %}
+{%             set frequency_cli = frequency_cli ~ ' ' ~ ethernet_interface.transceiver.frequency_unit %}
+{%         endif %}
+   {{ frequency_cli }}
 {%     endif %}
 {%     for link_tracking_group in ethernet_interface.link_tracking_groups | arista.avd.natural_sort %}
 {%         if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}

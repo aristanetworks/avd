@@ -52,7 +52,7 @@ See the following examples using the `l3ls-evpn` design:
 
 ### 5-stage clos topology support (Super Spine)
 
-- The **eos_designs** role support lager deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
+- The **eos_designs** role support larger deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
 - 5 stage Clos fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
 - The logic to deploy every leaf-spine POD fabric remains unchanged.
 - Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
@@ -1055,6 +1055,7 @@ Both data models support variable inheritance from profiles defined under [`port
             port_channel:
               description: PortChanne1
               mode: active
+            ethernet_segment:
               short_esi: 0303:0202:0101
     ```
 
