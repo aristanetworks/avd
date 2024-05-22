@@ -29037,12 +29037,12 @@
                         "properties": {
                           "source": {
                             "type": "string",
-                            "description": "Configure source IP address of GRE tunnel.",
+                            "description": "Source IP address of GRE tunnel.",
                             "title": "Source"
                           },
                           "destination": {
                             "type": "string",
-                            "description": "Configure destination IP address of GRE tunnel.",
+                            "description": "Destination IP address of GRE tunnel.",
                             "title": "Destination"
                           },
                           "version": {

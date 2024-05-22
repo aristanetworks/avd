@@ -66,7 +66,7 @@ interface Management1
 | profile1 | samplepo1 |
 | profile2 | samplepo2 |
 
-#### Monitor Telemetry Postcard Configuration
+#### Monitor Telemetry Postcard Policy Configuration
 
 ```eos
 !

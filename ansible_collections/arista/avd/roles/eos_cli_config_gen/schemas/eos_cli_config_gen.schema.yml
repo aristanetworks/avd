@@ -7268,16 +7268,18 @@ keys:
             keys:
               source:
                 type: str
-                description: Configure source IP address of GRE tunnel.
+                description: Source IP address of GRE tunnel.
               destination:
                 type: str
-                description: Configure destination IP address of GRE tunnel.
+                description: Destination IP address of GRE tunnel.
               version:
                 type: int
                 description: Postcard version.
                 valid_values:
                 - 1
                 - 2
+                convert_types:
+                - str
           sample:
             type: dict
             description: Sampling parameters.

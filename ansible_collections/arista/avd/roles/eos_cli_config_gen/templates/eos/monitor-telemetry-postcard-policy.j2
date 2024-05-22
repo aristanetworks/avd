@@ -24,10 +24,8 @@ monitor telemetry postcard policy
 {%     endif %}
 {%     if monitor_telemetry_postcard_policy.ingress.collection.source is arista.avd.defined and monitor_telemetry_postcard_policy.ingress.collection.destination is arista.avd.defined %}
 {%         set ingress_cli = "ingress collection gre source " ~ monitor_telemetry_postcard_policy.ingress.collection.source ~ " destination " ~ monitor_telemetry_postcard_policy.ingress.collection.destination %}
-{%         if monitor_telemetry_postcard_policy.ingress.collection.version is arista.avd.defined(2) %}
-{%             set ingress_cli = ingress_cli ~ " version 2" %}
-{%         elif monitor_telemetry_postcard_policy.ingress.collection.version is arista.avd.defined(1) %}
-{%             set ingress_cli = ingress_cli ~ " version 1" %}
+{%         if monitor_telemetry_postcard_policy.ingress.collection.version is arista.avd.defined %}
+{%             set ingress_cli = ingress_cli ~ " version " ~ monitor_telemetry_postcard_policy.ingress.collection.version %}
 {%         endif %}
    {{ ingress_cli }}
 {%     endif %}
