@@ -208,6 +208,17 @@ router_bgp:
         all: true
       # Testing bfd false OUTSIDE a peer group that should NOT render
       bfd: false
+      missing_policy:
+        address_family_all:
+          direction_in_action:
+            action: deny
+            include:
+              - community-list
+              - prefix-list
+          direction_out_action:
+            action: permit
+            include:
+              - community-list
     - ip_address: 192.0.3.3
       remote_as: 65434
       send_community: standard

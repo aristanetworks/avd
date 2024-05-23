@@ -18027,6 +18027,94 @@
                 "type": "boolean",
                 "title": "Maximum Routes Warning Only"
               },
+              "missing_policy": {
+                "type": "object",
+                "description": "Missing policy override configuration commands",
+                "properties": {
+                  "address_family_all": {
+                    "description": "Include all address families for missing policy configuration",
+                    "type": "object",
+                    "properties": {
+                      "direction_in_action": {
+                        "type": "object",
+                        "properties": {
+                          "action": {
+                            "description": "Missing policy in direction options",
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Action"
+                          },
+                          "include": {
+                            "description": "Include route map references in missing policy decision",
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "community-list",
+                                "prefix-list",
+                                "sub-route-map"
+                              ]
+                            },
+                            "title": "Include"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Direction In Action"
+                      },
+                      "direction_out_action": {
+                        "type": "object",
+                        "properties": {
+                          "action": {
+                            "description": "Missing policy out direction options",
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Action"
+                          },
+                          "include": {
+                            "description": "Include route map references in missing policy decision",
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "community-list",
+                                "prefix-list",
+                                "sub-route-map"
+                              ]
+                            },
+                            "title": "Include"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Direction Out Action"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Address Family All"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Missing Policy"
+              },
               "link_bandwidth": {
                 "type": "object",
                 "properties": {
@@ -18341,6 +18429,94 @@
               "maximum_routes_warning_only": {
                 "type": "boolean",
                 "title": "Maximum Routes Warning Only"
+              },
+              "missing_policy": {
+                "type": "object",
+                "description": "Missing policy override configuration commands",
+                "properties": {
+                  "address_family_all": {
+                    "description": "Include all address families for missing policy configuration",
+                    "type": "object",
+                    "properties": {
+                      "direction_in_action": {
+                        "type": "object",
+                        "properties": {
+                          "action": {
+                            "description": "Missing policy in direction options",
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Action"
+                          },
+                          "include": {
+                            "description": "Include route map references in missing policy decision",
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "community-list",
+                                "prefix-list",
+                                "sub-route-map"
+                              ]
+                            },
+                            "title": "Include"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Direction In Action"
+                      },
+                      "direction_out_action": {
+                        "type": "object",
+                        "properties": {
+                          "action": {
+                            "description": "Missing policy out direction options",
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Action"
+                          },
+                          "include": {
+                            "description": "Include route map references in missing policy decision",
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "community-list",
+                                "prefix-list",
+                                "sub-route-map"
+                              ]
+                            },
+                            "title": "Include"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Direction Out Action"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Address Family All"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Missing Policy"
               },
               "allowas_in": {
                 "type": "object",

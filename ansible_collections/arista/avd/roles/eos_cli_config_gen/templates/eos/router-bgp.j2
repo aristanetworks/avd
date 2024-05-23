@@ -219,6 +219,20 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
    {{ maximum_routes_cli }}
 {%         endif %}
+{%         if peer_group.missing_policy.address_family_all.direction_in_action.action is arista.avd.defined %}
+{%             if peer_group.missing_policy.address_family_all.direction_in_action.include is arista.avd.defined %}
+   neighbor {{ peer_group.name }} missing-policy address-family all include {{ peer_group.missing_policy.address_family_all.direction_in_action.include | arista.avd.natural_sort | join(" ") }} direction in action {{ peer_group.missing_policy.address_family_all.direction_in_action.action }}
+{%             else %}
+   neighbor {{ peer_group.name }} missing-policy address-family all direction in action {{ peer_group.missing_policy.address_family_all.direction_in_action.action }}
+{%             endif %}
+{%         endif %}
+{%         if peer_group.missing_policy.address_family_all.direction_out_action.action is arista.avd.defined %}
+{%             if peer_group.missing_policy.address_family_all.direction_out_action.include is arista.avd.defined %}
+   neighbor {{ peer_group.name }} missing-policy address-family all include {{ peer_group.missing_policy.address_family_all.direction_out_action.include | arista.avd.natural_sort | join(" ") }} direction out action {{ peer_group.missing_policy.address_family_all.direction_out_action.action }}
+{%             else %}
+   neighbor {{ peer_group.name }} missing-policy address-family all direction in action {{ peer_group.missing_policy.address_family_all.direction_out_action.action }}
+{%             endif %}
+{%         endif %}
 {%         if peer_group.link_bandwidth.enabled is arista.avd.defined(true) %}
 {%             set link_bandwidth_cli = "neighbor " ~ peer_group.name ~ " link-bandwidth" %}
 {%             if peer_group.link_bandwidth.default is arista.avd.defined %}
@@ -381,6 +395,20 @@ router bgp {{ router_bgp.as }}
 {%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
 {%             endif %}
    {{ maximum_routes_cli }}
+{%         endif %}
+{%         if neighbor.missing_policy.address_family_all.direction_in_action.action is arista.avd.defined %}
+{%             if neighbor.missing_policy.address_family_all.direction_in_action.include is arista.avd.defined %}
+   neighbor {{ neighbor.ip_address }} missing-policy address-family all include {{ neighbor.missing_policy.address_family_all.direction_in_action.include | arista.avd.natural_sort | join(" ") }} direction in action {{ neighbor.missing_policy.address_family_all.direction_in_action.action }}
+{%             else %}
+   neighbor {{ neighbor.ip_address }} missing-policy address-family all direction in action {{ neighbor.missing_policy.address_family_all.direction_in_action.action }}
+{%             endif %}
+{%         endif %}
+{%         if neighbor.missing_policy.address_family_all.direction_out_action.action is arista.avd.defined %}
+{%             if neighbor.missing_policy.address_family_all.direction_out_action.include is arista.avd.defined %}
+   neighbor {{ neighbor.ip_address }} missing-policy address-family all include {{ neighbor.missing_policy.address_family_all.direction_out_action.include | arista.avd.natural_sort | join(" ") }} direction out action {{ neighbor.missing_policy.address_family_all.direction_out_action.action }}
+{%             else %}
+   neighbor {{ neighbor.ip_address }} missing-policy address-family all direction in action {{ neighbor.missing_policy.address_family_all.direction_out_action.action }}
+{%             endif %}
 {%         endif %}
 {%         if neighbor.link_bandwidth.enabled is arista.avd.defined(true) %}
 {%             set link_bandwidth_cli = "neighbor " ~ neighbor.ip_address ~ " link-bandwidth" %}

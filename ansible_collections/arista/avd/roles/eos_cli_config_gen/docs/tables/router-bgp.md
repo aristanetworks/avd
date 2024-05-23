@@ -86,6 +86,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "router_bgp.peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "router_bgp.peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "router_bgp.peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy override configuration commands |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_all</samp>](## "router_bgp.peer_groups.[].missing_policy.address_family_all") | Dictionary |  |  |  | Include all address families for missing policy configuration |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in_action</samp>](## "router_bgp.peer_groups.[].missing_policy.address_family_all.direction_in_action") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.peer_groups.[].missing_policy.address_family_all.direction_in_action.action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> | Missing policy in direction options |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include</samp>](## "router_bgp.peer_groups.[].missing_policy.address_family_all.direction_in_action.include") | List, items: String |  |  |  | Include route map references in missing policy decision |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.peer_groups.[].missing_policy.address_family_all.direction_in_action.include.[]") | String |  |  | Valid Values:<br>- <code>community-list</code><br>- <code>prefix-list</code><br>- <code>sub-route-map</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out_action</samp>](## "router_bgp.peer_groups.[].missing_policy.address_family_all.direction_out_action") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.peer_groups.[].missing_policy.address_family_all.direction_out_action.action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> | Missing policy out direction options |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include</samp>](## "router_bgp.peer_groups.[].missing_policy.address_family_all.direction_out_action.include") | List, items: String |  |  |  | Include route map references in missing policy decision |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.peer_groups.[].missing_policy.address_family_all.direction_out_action.include.[]") | String |  |  | Valid Values:<br>- <code>community-list</code><br>- <code>prefix-list</code><br>- <code>sub-route-map</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_bandwidth</samp>](## "router_bgp.peer_groups.[].link_bandwidth") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.peer_groups.[].link_bandwidth.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "router_bgp.peer_groups.[].link_bandwidth.default") | String |  |  |  | nn.nn(K|M|G) link speed in bits/second. |
@@ -137,6 +147,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "router_bgp.neighbors.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "router_bgp.neighbors.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "router_bgp.neighbors.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.neighbors.[].missing_policy") | Dictionary |  |  |  | Missing policy override configuration commands |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_all</samp>](## "router_bgp.neighbors.[].missing_policy.address_family_all") | Dictionary |  |  |  | Include all address families for missing policy configuration |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in_action</samp>](## "router_bgp.neighbors.[].missing_policy.address_family_all.direction_in_action") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.neighbors.[].missing_policy.address_family_all.direction_in_action.action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> | Missing policy in direction options |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include</samp>](## "router_bgp.neighbors.[].missing_policy.address_family_all.direction_in_action.include") | List, items: String |  |  |  | Include route map references in missing policy decision |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.neighbors.[].missing_policy.address_family_all.direction_in_action.include.[]") | String |  |  | Valid Values:<br>- <code>community-list</code><br>- <code>prefix-list</code><br>- <code>sub-route-map</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out_action</samp>](## "router_bgp.neighbors.[].missing_policy.address_family_all.direction_out_action") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.neighbors.[].missing_policy.address_family_all.direction_out_action.action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> | Missing policy out direction options |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include</samp>](## "router_bgp.neighbors.[].missing_policy.address_family_all.direction_out_action.include") | List, items: String |  |  |  | Include route map references in missing policy decision |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.neighbors.[].missing_policy.address_family_all.direction_out_action.include.[]") | String |  |  | Valid Values:<br>- <code>community-list</code><br>- <code>prefix-list</code><br>- <code>sub-route-map</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowas_in</samp>](## "router_bgp.neighbors.[].allowas_in") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.neighbors.[].allowas_in.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;times</samp>](## "router_bgp.neighbors.[].allowas_in.times") | Integer |  |  | Min: 1<br>Max: 10 | Number of local ASNs allowed in a BGP update. |
@@ -1010,6 +1030,28 @@
           # Percentage of maximum number of routes at which to warn ("<1-100> percent").
           maximum_routes_warning_limit: <str>
           maximum_routes_warning_only: <bool>
+
+          # Missing policy override configuration commands
+          missing_policy:
+
+            # Include all address families for missing policy configuration
+            address_family_all:
+              direction_in_action:
+
+                # Missing policy in direction options
+                action: <str; "deny" | "deny-in-out" | "permit">
+
+                # Include route map references in missing policy decision
+                include:
+                  - <str; "community-list" | "prefix-list" | "sub-route-map">
+              direction_out_action:
+
+                # Missing policy out direction options
+                action: <str; "deny" | "deny-in-out" | "permit">
+
+                # Include route map references in missing policy decision
+                include:
+                  - <str; "community-list" | "prefix-list" | "sub-route-map">
           link_bandwidth:
             enabled: <bool>
 
@@ -1121,6 +1163,28 @@
           # Percentage of maximum number of routes at which to warn ("<1-100> percent").
           maximum_routes_warning_limit: <str>
           maximum_routes_warning_only: <bool>
+
+          # Missing policy override configuration commands
+          missing_policy:
+
+            # Include all address families for missing policy configuration
+            address_family_all:
+              direction_in_action:
+
+                # Missing policy in direction options
+                action: <str; "deny" | "deny-in-out" | "permit">
+
+                # Include route map references in missing policy decision
+                include:
+                  - <str; "community-list" | "prefix-list" | "sub-route-map">
+              direction_out_action:
+
+                # Missing policy out direction options
+                action: <str; "deny" | "deny-in-out" | "permit">
+
+                # Include route map references in missing policy decision
+                include:
+                  - <str; "community-list" | "prefix-list" | "sub-route-map">
           allowas_in:
             enabled: <bool>
 
