@@ -660,7 +660,7 @@ router_service_insertion:
     monitor_connectivity_host: IE-Ethernet3
     ethernet_interface:
       name: Ethernet3
-      next_hop: 172.16.5.40
+      next_hop: 172.31.0.1
   - name: IE-Tunnel100
     monitor_connectivity_host: IE-Tunnel100
     tunnel_interface:
@@ -819,7 +819,7 @@ monitor_connectivity:
   hosts:
   - name: IE-Ethernet3
     description: Internet Exit DIRECT-EXIT-POLICY-1
-    ip: 172.16.5.40
+    ip: 172.31.0.1
     local_interfaces: SET-Ethernet3
     address_only: false
   - name: IE-Tunnel100

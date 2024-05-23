@@ -134,7 +134,6 @@ wan_router:
               ip_address: dhcp
               connected_to_pathfinder: false
             - name: Ethernet3
-              peer_ip: 172.16.5.40
               wan_carrier: ATT
               wan_circuit_id: 404
               dhcp_accept_default_route: true
