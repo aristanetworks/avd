@@ -9,7 +9,6 @@ from logging import getLogger
 from typing import TYPE_CHECKING, Any, Literal
 
 from ..api.arista.studio.v1 import (
-    DeviceInfo,
     Inputs,
     InputsConfig,
     InputsConfigServiceStub,
@@ -20,8 +19,6 @@ from ..api.arista.studio.v1 import (
     InputsRequest,
     InputsServiceStub,
     InputsStreamRequest,
-    InterfaceInfo,
-    InterfaceInfos,
     Studio,
     StudioConfig,
     StudioConfigServiceStub,
@@ -29,8 +26,6 @@ from ..api.arista.studio.v1 import (
     StudioKey,
     StudioRequest,
     StudioServiceStub,
-    TopologyInput,
-    TopologyInputKey,
 )
 from ..api.fmp import RepeatedString
 from .exceptions import CVResourceNotFound, get_cv_client_exception
@@ -380,7 +375,7 @@ class StudioMixin:
         device_ids: list[str] | None = None,
         time: datetime | None = None,
         timeout: float = 10.0,
-    ) -> list[TopologyInput]:
+    ) -> list[dict]:
         """
         TODO: Once the topology studio inputs API is public, this function can be replaced by the _future variant.
               It will probably need some version detection to see if the API is supported.
@@ -396,7 +391,7 @@ class StudioMixin:
         Returns:
             TopologyInput objects for the requested devices.
         """
-        topology_inputs: list[TopologyInput] = []
+        topology_inputs: list[dict] = []
         studio_inputs: dict = await self.get_studio_inputs(
             studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={}, time=time, timeout=timeout
         )
@@ -412,28 +407,20 @@ class StudioMixin:
             device_info: dict = device_entry.get("inputs", {}).get("device", {})
             interfaces: list[dict] = device_info.get("interfaces", [])
             topology_inputs.append(
-                TopologyInput(
-                    key=TopologyInputKey(
-                        workspace_id=workspace_id,
-                        device_id=device_id,
-                    ),
-                    device_info=DeviceInfo(
-                        device_id=device_id,
-                        model_name=device_info.get("modelName"),
-                        hostname=device_info.get("hostname"),
-                        mac_address=device_info.get("macAddress"),
-                        interface_infos=InterfaceInfos(
-                            [
-                                InterfaceInfo(
-                                    name=str(interface.get("tags", {}).get("query", "")).removeprefix("interface:").split("@", maxsplit=1)[0],
-                                    neighbor_device_id=interface.get("inputs", {}).get("interface", {}).get("neighborDeviceId"),
-                                    neighbor_interface_name=interface.get("inputs", {}).get("interface", {}).get("neighborInterfaceName"),
-                                )
-                                for interface in interfaces
-                            ]
-                        ),
-                    ),
-                )
+                {
+                    "device_id": device_id,
+                    "hostname": device_info.get("hostname"),
+                    "mac_address": device_info.get("macAddress"),
+                    "model_name": device_info.get("modelName"),
+                    "interfaces": [
+                        {
+                            "name": str(interface.get("tags", {}).get("query", "")).removeprefix("interface:").split("@", maxsplit=1)[0],
+                            "neighbor_device_id": interface.get("inputs", {}).get("interface", {}).get("neighborDeviceId"),
+                            "neighbor_interface_name": interface.get("inputs", {}).get("interface", {}).get("neighborInterfaceName"),
+                        }
+                        for interface in interfaces
+                    ],
+                }
             )
         return topology_inputs
 

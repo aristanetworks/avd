@@ -2350,6 +2350,13 @@
                 "^_.+$": {}
               },
               "title": "Unresponsive"
+            },
+            "accounting_update_interval": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 65535,
+              "description": "Interval period in seconds.",
+              "title": "Accounting Update Interval"
             }
           },
           "additionalProperties": false,
@@ -3784,6 +3791,37 @@
               "^_.+$": {}
             },
             "title": "MAC Security"
+          },
+          "tcp_mss_ceiling": {
+            "type": "object",
+            "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+            "properties": {
+              "ipv4_segment_size": {
+                "type": "integer",
+                "minimum": 64,
+                "maximum": 65475,
+                "title": "IPv4 Segment Size"
+              },
+              "ipv6_segment_size": {
+                "type": "integer",
+                "minimum": 64,
+                "maximum": 65475,
+                "title": "IPv6 Segment Size"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "egress",
+                  "ingress"
+                ],
+                "title": "Direction"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "TCP Mss Ceiling"
           },
           "channel_group": {
             "type": "object",
@@ -5541,8 +5579,35 @@
           },
           "action": {
             "type": "string",
-            "description": "Command to execute.\n",
+            "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.",
+            "deprecated": true,
             "title": "Action"
+          },
+          "actions": {
+            "type": "object",
+            "description": "Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.",
+            "properties": {
+              "bash_command": {
+                "type": "string",
+                "description": "Define BASH command action. Command could be multiline also.",
+                "title": "Bash Command"
+              },
+              "log": {
+                "type": "boolean",
+                "description": "Log a message when the event is triggered.",
+                "title": "Log"
+              },
+              "increment_device_health_metric": {
+                "type": "string",
+                "description": "Name of device-health metric.",
+                "title": "Increment Device Health Metric"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Actions"
           },
           "delay": {
             "type": "integer",
@@ -10684,7 +10749,7 @@
               },
               "cipher_list": {
                 "type": "string",
-                "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string\n",
+                "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string.\n",
                 "title": "Cipher List"
               },
               "trust_certificate": {
@@ -10802,6 +10867,116 @@
             }
           },
           "title": "SSL Profiles"
+        },
+        "shared_secret_profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "profile": {
+                "type": "string",
+                "title": "Profile"
+              },
+              "secrets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    },
+                    "secret": {
+                      "type": "string",
+                      "title": "Secret"
+                    },
+                    "secret_type": {
+                      "type": "string",
+                      "default": "7",
+                      "enum": [
+                        "0",
+                        "7",
+                        "8a"
+                      ],
+                      "title": "Secret Type"
+                    },
+                    "receive_lifetime": {
+                      "type": "object",
+                      "properties": {
+                        "infinite": {
+                          "type": "boolean",
+                          "title": "Infinite"
+                        },
+                        "start_date_time": {
+                          "type": "string",
+                          "description": "Start date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "title": "Start Date Time"
+                        },
+                        "end_date_time": {
+                          "type": "string",
+                          "description": "End date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "title": "End Date Time"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Receive Lifetime"
+                    },
+                    "transmit_lifetime": {
+                      "type": "object",
+                      "properties": {
+                        "infinite": {
+                          "type": "boolean",
+                          "title": "Infinite"
+                        },
+                        "start_date_time": {
+                          "type": "string",
+                          "description": "Start date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "title": "Start Date Time"
+                        },
+                        "end_date_time": {
+                          "type": "string",
+                          "description": "End date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "title": "End Date Time"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Transmit Lifetime"
+                    },
+                    "local_time": {
+                      "type": "boolean",
+                      "description": "Configuring secret using the local timezone from system clock. Default is UTC.",
+                      "title": "Local Time"
+                    }
+                  },
+                  "required": [
+                    "secret",
+                    "receive_lifetime",
+                    "transmit_lifetime",
+                    "name"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Secrets"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "profile"
+            ]
+          },
+          "title": "Shared Secret Profiles"
         }
       },
       "additionalProperties": false,
@@ -12065,6 +12240,11 @@
               "type": "boolean",
               "description": "Enable transceiver SMBus fail and reset logging.",
               "title": "Communication"
+            },
+            "enabled": {
+              "type": "boolean",
+              "description": "Some platforms support only the `logging transceiver` command. `enabled` key configures this command.",
+              "title": "Enabled"
             }
           },
           "additionalProperties": false,
@@ -16541,6 +16721,7 @@
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
               "title": "Name"
             },
             "id": {
@@ -16566,6 +16747,7 @@
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
               "title": "Name"
             },
             "id": {
@@ -16591,6 +16773,7 @@
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
               "title": "Name"
             },
             "id": {
@@ -17484,6 +17667,35 @@
                 "type": "string",
                 "title": "Session Tracker"
               },
+              "shared_secret": {
+                "type": "object",
+                "properties": {
+                  "profile": {
+                    "type": "string",
+                    "description": "Name of profile defined under `management_security`.",
+                    "title": "Profile"
+                  },
+                  "hash_algorithm": {
+                    "type": "string",
+                    "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                    "enum": [
+                      "aes-128-cmac-96",
+                      "hmac-sha-256",
+                      "hmac-sha1-96"
+                    ],
+                    "title": "Hash Algorithm"
+                  }
+                },
+                "required": [
+                  "profile",
+                  "hash_algorithm"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Shared Secret"
+              },
               "ttl_maximum_hops": {
                 "type": "integer",
                 "minimum": 0,
@@ -17794,6 +18006,35 @@
               "session_tracker": {
                 "type": "string",
                 "title": "Session Tracker"
+              },
+              "shared_secret": {
+                "type": "object",
+                "properties": {
+                  "profile": {
+                    "type": "string",
+                    "description": "Name of profile defined under `management_security`.",
+                    "title": "Profile"
+                  },
+                  "hash_algorithm": {
+                    "type": "string",
+                    "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                    "enum": [
+                      "aes-128-cmac-96",
+                      "hmac-sha-256",
+                      "hmac-sha1-96"
+                    ],
+                    "title": "Hash Algorithm"
+                  }
+                },
+                "required": [
+                  "profile",
+                  "hash_algorithm"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Shared Secret"
               },
               "ttl_maximum_hops": {
                 "type": "integer",

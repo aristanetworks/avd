@@ -19,7 +19,7 @@ class IpNatMixin(UtilsMixin):
         """
         Returns structured config for ip_nat
         """
-        if not self.shared_utils.is_cv_pathfinder_router:
+        if not self.shared_utils.is_cv_pathfinder_client:
             return None
 
         ip_nat = {}
