@@ -35,7 +35,7 @@ class MonitorConnectivityMixin(UtilsMixin):
             for connection in policy["connections"]:
                 if connection["type"] == "tunnel":
                     interface_name = f"Tunnel{connection['tunnel_id']}"
-                elif connection["type"] == "ethernet":
+                else:
                     interface_name = connection["source_interface"]
 
                 interface_set_name = f"SET-{self.shared_utils.sanitize_interface_name(interface_name)}"
