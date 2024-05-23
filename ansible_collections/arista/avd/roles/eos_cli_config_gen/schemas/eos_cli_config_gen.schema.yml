@@ -1612,6 +1612,8 @@ keys:
         keys:
           url:
             type: str
+            description: "Supported URL type -\n  http: http[s]://<hostname>[:<port>]\n
+              \ https: http[s]://<hostname>[:<port>]"
           ssl_profile:
             type: str
             description: SSL profile name.

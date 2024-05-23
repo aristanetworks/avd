@@ -2415,6 +2415,7 @@
           "properties": {
             "url": {
               "type": "string",
+              "description": "Supported URL type -\n  http: http[s]://<hostname>[:<port>]\n  https: http[s]://<hostname>[:<port>]",
               "title": "URL"
             },
             "ssl_profile": {
