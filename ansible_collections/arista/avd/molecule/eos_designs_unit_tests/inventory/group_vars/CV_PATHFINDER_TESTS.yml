@@ -22,6 +22,7 @@ cv_pathfinder_regions:
     sites:
       - name: Site511
         id: 511
+        location: Miami
 
 bgp_peer_groups:
   wan_overlay_peers:
@@ -98,6 +99,7 @@ wan_router:
               wan_carrier: Comcast-5G
               wan_circuit_id: AF830
               ip_address: 172.20.20.20/31
+              peer_ip: 172.20.20.21
               connected_to_pathfinder: false
               cv_pathfinder_internet_exit:
                 policies:
@@ -123,6 +125,7 @@ wan_router:
               wan_circuit_id: 404
               dhcp_accept_default_route: true
               ip_address: dhcp
+              peer_ip: 172.31.0.1
               cv_pathfinder_internet_exit:
                 policies:
                   - name: ZSCALER-EXIT-POLICY-1

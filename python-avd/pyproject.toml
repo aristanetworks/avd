@@ -75,6 +75,9 @@ fail_under = 89
 include = [
   "pyavd/*"
 ]
+omit = [
+  "pyavd/vendor/cv_client/*"
+]
 # Regexes for lines to exclude from consideration
 exclude_also = [
     # Have to re-enable the standard pragma
