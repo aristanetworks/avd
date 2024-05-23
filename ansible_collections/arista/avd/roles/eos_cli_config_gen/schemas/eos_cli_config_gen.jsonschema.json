@@ -9841,6 +9841,39 @@
                   "^_.+$": {}
                 },
                 "title": "L2 Protocols"
+              },
+              "traffic_unprotected": {
+                "type": "object",
+                "properties": {
+                  "allow": {
+                    "type": "object",
+                    "description": "Allow transmit/receive of unprotected traffic.",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "active_sak": {
+                        "type": "boolean",
+                        "description": "Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.",
+                        "title": "Active Sak"
+                      }
+                    },
+                    "required": [
+                      "enabled"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Allow"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Traffic Unprotected"
               }
             },
             "additionalProperties": false,

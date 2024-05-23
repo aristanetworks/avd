@@ -5862,6 +5862,20 @@ keys:
                       valid_values:
                       - bypass
                       - bypass unauthorized
+            traffic_unprotected:
+              type: dict
+              keys:
+                allow:
+                  type: dict
+                  description: Allow transmit/receive of unprotected traffic.
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    active_sak:
+                      type: bool
+                      description: Allow transmit/receive of encrypted traffic using
+                        operational SAK and block otherwise.
   maintenance:
     type: dict
     display_name: Maintenance Mode
