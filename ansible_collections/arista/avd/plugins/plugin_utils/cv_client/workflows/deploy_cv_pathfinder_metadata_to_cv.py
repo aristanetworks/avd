@@ -41,7 +41,7 @@ def is_internet_exit_zscaler_supported(studio_schema: InputSchema) -> bool:
 
 async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClient) -> InputSchema | None:
     """
-    Extract and return the input schema from the metadata studio.
+    Download and return the input schema for the cv pathfinder metadata studio.
     Returns None if the metadata studio is not found.
     """
     try:
