@@ -38,9 +38,7 @@ class MonitorConnectivityMixin(UtilsMixin):
                 else:
                     interface_name = connection["source_interface"]
 
-                interface_set_name = (
-                    f"SET-{self.shared_utils.sanitize_interface_name(interface_name)}"  # pylint: disable=possibly-used-before-assignment,unknown-option-value
-                )
+                interface_set_name = f"SET-{self.shared_utils.sanitize_interface_name(interface_name)}"
                 interface_sets.append(
                     {
                         "name": interface_set_name,
