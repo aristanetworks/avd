@@ -12,7 +12,9 @@ keys:
       PREVIEW: These keys are in preview mode.
 
       Special data model used for testing the WAN internet-exit integration with Zscaler.
-      The model is supposed to be autofilled per-device by `eos_designs`, but when CloudVision is not available, it is possible to provide the settings manually.
+      The model is supposed to be autofilled per-device by `eos_designs`.
+      Manually setting this model will take precedence and prevent `eos_designs` from trying to contact CloudVision.
+      This can be useful for offline testing or if CloudVision is not available or not configured for Zscaler integration.
     keys:
       primary:
         type: dict
