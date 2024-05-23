@@ -670,6 +670,7 @@ keys:
       redistribute_routes:
         type: list
         primary_key: source_protocol
+        allow_duplicate_primary_key: True
         convert_types:
           - dict
           - list
@@ -700,6 +701,19 @@ keys:
                 Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
             include_leaked:
               type: bool
+            ospf_match_internal:
+              type: bool
+              description: OSPF routes learned from internal sources.
+            ospf_match_external:
+              type: bool
+              description: OSPF routes learned from external sources.
+            ospf_match_nssa_external:
+              type: str
+              description: OSPF routes learned from external NSSA sources.
+              valid_values:
+                - "nssa-external"
+                - "nssa-external 1"
+                - "nssa-external 2"
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -1303,6 +1317,7 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
+            allow_duplicate_primary_key: True
             items:
               type: dict
               keys:
@@ -1331,6 +1346,19 @@ keys:
                     Example: MyFunction(myarg).
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                     Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
+                ospf_match_internal:
+                  type: bool
+                  description: OSPF routes learned from internal sources.
+                ospf_match_external:
+                  type: bool
+                  description: OSPF routes learned from external sources.
+                ospf_match_nssa_external:
+                  type: str
+                  description: OSPF routes learned from external NSSA sources.
+                  valid_values:
+                    - "nssa-external"
+                    - "nssa-external 1"
+                    - "nssa-external 2"
       address_family_ipv4_multicast:
         type: dict
         keys:
@@ -1374,6 +1402,7 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
+            allow_duplicate_primary_key: true
             convert_types:
               - dict
             items:
@@ -1401,6 +1430,19 @@ keys:
                     Example: MyFunction(myarg).
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                     Only applicable if `source_protocol` is `isis`.
+                ospf_match_internal:
+                  type: bool
+                  description: OSPF routes learned from internal sources.
+                ospf_match_external:
+                  type: bool
+                  description: OSPF routes learned from external sources.
+                ospf_match_nssa_external:
+                  type: str
+                  description: OSPF routes learned from external NSSA sources.
+                  valid_values:
+                    - "nssa-external"
+                    - "nssa-external 1"
+                    - "nssa-external 2"
       address_family_ipv4_sr_te:
         type: dict
         keys:
@@ -1526,6 +1568,7 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
+            allow_duplicate_primary_key: True
             convert_types:
               - dict
             items:
@@ -1555,6 +1598,19 @@ keys:
                     Example: MyFunction(myarg).
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                     Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
+                ospf_match_internal:
+                  type: bool
+                  description: OSPF routes learned from internal sources.
+                ospf_match_external:
+                  type: bool
+                  description: OSPF routes learned from external sources.
+                ospf_match_nssa_external:
+                  type: str
+                  description: OSPF routes learned from external NSSA sources.
+                  valid_values:
+                    - "nssa-external"
+                    - "nssa-external 1"
+                    - "nssa-external 2"
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -1628,6 +1684,7 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
+            allow_duplicate_primary_key: true
             convert_types:
               - dict
             items:
@@ -1653,6 +1710,19 @@ keys:
                     Example: MyFunction(myarg).
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                     Only applicable if `source_protocol` is `isis`.
+                ospf_match_internal:
+                  type: bool
+                  description: OSPF routes learned from internal sources.
+                ospf_match_external:
+                  type: bool
+                  description: OSPF routes learned from external sources.
+                ospf_match_nssa_external:
+                  type: str
+                  description: OSPF routes learned from external NSSA sources.
+                  valid_values:
+                    - "nssa-external"
+                    - "nssa-external 1"
+                    - "nssa-external 2"
       address_family_ipv6_sr_te:
         type: dict
         keys:
@@ -2491,6 +2561,7 @@ keys:
             redistribute_routes:
               type: list
               primary_key: source_protocol
+              allow_duplicate_primary_key: true
               convert_types:
                 - dict
                 - list
@@ -2522,6 +2593,19 @@ keys:
                       Example: MyFunction(myarg).
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                       Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
+                  ospf_match_internal:
+                    type: bool
+                    description: OSPF routes learned from internal sources.
+                  ospf_match_external:
+                    type: bool
+                    description: OSPF routes learned from external sources.
+                  ospf_match_nssa_external:
+                    type: str
+                    description: OSPF routes learned from external NSSA sources.
+                    valid_values:
+                      - "nssa-external"
+                      - "nssa-external 1"
+                      - "nssa-external 2"
             aggregate_addresses:
               type: list
               primary_key: prefix
@@ -2663,6 +2747,7 @@ keys:
                 redistribute_routes:
                   type: list
                   primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   convert_types:
                     - dict
                   items:
@@ -2692,6 +2777,19 @@ keys:
                           Example: MyFunction(myarg).
                           `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                           Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
+                      ospf_match_internal:
+                        type: bool
+                        description: OSPF routes learned from internal sources.
+                      ospf_match_external:
+                        type: bool
+                        description: OSPF routes learned from external sources.
+                      ospf_match_nssa_external:
+                        type: str
+                        description: OSPF routes learned from external NSSA sources.
+                        valid_values:
+                          - "nssa-external"
+                          - "nssa-external 1"
+                          - "nssa-external 2"
             address_family_ipv6:
               type: dict
               keys:
@@ -2795,6 +2893,7 @@ keys:
                 redistribute_routes:
                   type: list
                   primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   convert_types:
                     - dict
                   items:
@@ -2823,6 +2922,19 @@ keys:
                           Example: MyFunction(myarg).
                           `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                           Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
+                      ospf_match_internal:
+                        type: bool
+                        description: OSPF routes learned from internal sources.
+                      ospf_match_external:
+                        type: bool
+                        description: OSPF routes learned from external sources.
+                      ospf_match_nssa_external:
+                        type: str
+                        description: OSPF routes learned from external NSSA sources.
+                        valid_values:
+                          - "nssa-external"
+                          - "nssa-external 1"
+                          - "nssa-external 2"
             address_family_ipv4_multicast:
               type: dict
               keys:
@@ -2883,6 +2995,7 @@ keys:
                 redistribute_routes:
                   type: list
                   primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   convert_types:
                     - dict
                   items:
@@ -2909,6 +3022,19 @@ keys:
                           Example: MyFunction(myarg).
                           `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                           Only applicable if `source_protocol` is `isis`.
+                      ospf_match_internal:
+                        type: bool
+                        description: OSPF routes learned from internal sources.
+                      ospf_match_external:
+                        type: bool
+                        description: OSPF routes learned from external sources.
+                      ospf_match_nssa_external:
+                        type: str
+                        description: OSPF routes learned from external NSSA sources.
+                        valid_values:
+                          - "nssa-external"
+                          - "nssa-external 1"
+                          - "nssa-external 2"
             address_family_ipv6_multicast:
               type: dict
               keys:
@@ -2969,6 +3095,7 @@ keys:
                 redistribute_routes:
                   type: list
                   primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   convert_types:
                     - dict
                   items:
@@ -2994,6 +3121,19 @@ keys:
                           Example: MyFunction(myarg).
                           `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                           Only applicable if `source_protocol` is `isis`.
+                      ospf_match_internal:
+                        type: bool
+                        description: OSPF routes learned from internal sources.
+                      ospf_match_external:
+                        type: bool
+                        description: OSPF routes learned from external sources.
+                      ospf_match_nssa_external:
+                        type: str
+                        description: OSPF routes learned from external NSSA sources.
+                        valid_values:
+                          - "nssa-external"
+                          - "nssa-external 1"
+                          - "nssa-external 2"
             address_family_flow_spec_ipv4:
               type: dict
               keys:

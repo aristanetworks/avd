@@ -98,6 +98,12 @@ router_bgp:
       - name: IPV4-UNDERLAY-MLAG
         activate: true
     redistribute_routes:
+      - source_protocol: ospf
+        ospf_match_external: true
+      - source_protocol: ospf
+        ospf_match_internal: true
+      - source_protocol: ospf
+        ospf_match_nssa_external: nssa-external 2
       - source_protocol: attached-host
       - source_protocol: isis
         rcf: Router_BGP_Isis()
@@ -162,6 +168,13 @@ router_bgp:
               - "1:30001"
             rcf: RT_EXPORT_AF_RCF()
       redistribute_routes:
+        - source_protocol: ospf
+          include_leaked: true
+          ospf_match_external: true
+        - source_protocol: ospfv3
+          ospf_match_internal: true
+        - source_protocol: ospfv3
+          ospf_match_nssa_external: nssa-external
         - source_protocol: connected
     - name: Tenant_B
       rd: "10.50.64.15:30002"

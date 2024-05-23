@@ -22,6 +22,12 @@ router_bgp:
       - name: FOOBAR
         activate: false
     redistribute_routes:
+      - source_protocol: ospfv3
+        ospf_match_external: true
+      - source_protocol: ospf
+        ospf_match_internal: true
+      - source_protocol: ospfv3
+        ospf_match_nssa_external: nssa-external 2
       - source_protocol: isis
         rcf: Router_BGP_Isis()
   address_family_flow_spec_ipv4:
@@ -53,6 +59,12 @@ router_bgp:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
         redistribute_routes:
+          - source_protocol: ospf
+            ospf_match_external: true
+          - source_protocol: ospfv3
+            ospf_match_internal: true
+          - source_protocol: ospf
+            ospf_match_nssa_external: nssa-external 1
           - source_protocol: connected
             rcf: VRF_AFIPV4_RCF_CONNECTED_1()
           - source_protocol: static
@@ -79,6 +91,13 @@ router_bgp:
         networks:
           - prefix: aa::/64
         redistribute_routes:
+          - source_protocol: ospfv3
+            ospf_match_external: true
+          - source_protocol: ospfv3
+            include_leaked: true
+            ospf_match_internal: true
+          - source_protocol: ospfv3
+            ospf_match_nssa_external: nssa-external
           - source_protocol: connected
             rcf: VRF_AFIPV6_RCF_CONNECTED()
           - source_protocol: static
@@ -101,6 +120,12 @@ router_bgp:
           - prefix: 239.0.0.0/24
             route_map: BARFOO
         redistribute_routes:
+          - source_protocol: ospfv3
+            ospf_match_external: true
+          - source_protocol: ospf
+            ospf_match_internal: true
+          - source_protocol: ospf
+            ospf_match_nssa_external: nssa-external 2
           - source_protocol: connected
             rcf: VRF_AFIPV4MULTI_RCF_CONNECTED()
           - source_protocol: static
@@ -116,6 +141,12 @@ router_bgp:
         networks:
           - prefix: ff08:1::/64
         redistribute_routes:
+          - source_protocol: ospf
+            ospf_match_external: true
+          - source_protocol: ospfv3
+            ospf_match_internal: true
+          - source_protocol: ospf
+            ospf_match_nssa_external: nssa-external
           - source_protocol: connected
             rcf: VRF_AFIPV6MULTI_RCF_CONNECTED()
           - source_protocol: static
