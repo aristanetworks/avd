@@ -1,0 +1,128 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_segment_security:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      policies:
+        type: list
+        description: |-
+          Customised application policies.
+          Using the Application Traffic Recognition L4 profiles, custom policies can be defined. The built-in application 'app-match-all' can be used to match any packets.
+          Note that this is stateless, so both the source and destination flows need to be considered.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy name.
+            sequence_numbers:
+              type: list
+              required: true
+              primary_key: sequence
+              items:
+                type: dict
+                keys:
+                  sequence:
+                    type: int
+                    description: Sequence ID.
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 1023
+                  application:
+                    type: str
+                    required: true
+                    description: The name of the application.
+                  action:
+                    type: str
+                    required: true
+                    description: The action to take - note that platform support for the redirect action is limited. The "redirect" action also requires the 'next_hop' to be configured.
+                    valid_values:
+                      - "forward"
+                      - "drop"
+                      - "redirect"
+                  log:
+                    type: bool
+                    description: Enable logging - note that platform support is limited.
+                  stateless:
+                    type: bool
+                    description: Take action, regardless of state. Should be set to 'true' for MSS-G.
+                    default: true
+                  next_hop:
+                    type: str
+                    description: When the action is 'redirect', this indicates the IPv4 next hop to redirect to.
+      vrfs:
+        type: list
+        description: The name of the VRF that the segments and policies are defined in.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            segments:
+              type: list
+              primary_key: name
+              required: true
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Segment name.
+                  definition:
+                    type: dict
+                    keys:
+                      interfaces:
+                        type: list
+                        description: The names of the source interface e.g. Port-Channel1 - note that platform support is limited.
+                        min_length: 1
+                        items:
+                          type: str
+                      match_lists:
+                        type: list
+                        description: The set of lists that define the segment. These can be a mix of IPv4 and IPv6 prefix or match lists.
+                        max_length: 2
+                        min_length: 1
+                        primary_key: address_family
+                        items:
+                          type: dict
+                          keys:
+                            address_family:
+                              type: str
+                              required: true
+                              description: Indicate which address-family the match list belongs to e.g. ipv4 or ipv6.
+                              valid_values:
+                                - "ipv4"
+                                - "ipv6"
+                            covered_prefix_list:
+                              type: str
+                              description: The name of the prefix-list. You can have a maximum of one per address-family. Mutually exclusive to the use of match_list.  If both are configured prefix takes precedence.
+                            prefix:
+                              type: str
+                              description: The name of the match-list. You can have a maximum of one per address-family. Mutually exclusive to the use of covered_prefix_list. If both are configured prefix takes precedence.
+                  policies:
+                    type: list
+                    description: The policies controlling traffic into the segment.
+                    primary_key: from
+                    items:
+                      type: dict
+                      keys:
+                        from:
+                          type: str
+                          description: The name of the source segment or 'forwarding-segments' for all segments.
+                        policy:
+                          type: str
+                          description: The name of the policy to apply. The built-in policies are 'policy-forward-all' and 'policy-drop-all'.
+                  fallback_policy:
+                    type: str
+                    description: Only supported on the R3 series platforms, this allows a per-segment default policy to be specified by name.

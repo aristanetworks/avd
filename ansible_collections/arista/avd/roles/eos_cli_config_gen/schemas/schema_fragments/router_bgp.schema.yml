@@ -382,6 +382,22 @@ keys:
                 new_key: listen_ranges
             session_tracker:
               type: str
+            shared_secret:
+              type: dict
+              keys:
+                profile:
+                  type: str
+                  required: true
+                  description: Name of profile defined under `management_security`.
+                hash_algorithm:
+                  type: str
+                  required: true
+                  description: |-
+                    Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.
+                  valid_values:
+                    - "aes-128-cmac-96"
+                    - "hmac-sha-256"
+                    - "hmac-sha1-96"
             ttl_maximum_hops:
               type: int
               convert_types:
@@ -570,6 +586,22 @@ keys:
                   type: bool
             session_tracker:
               type: str
+            shared_secret:
+              type: dict
+              keys:
+                profile:
+                  type: str
+                  required: true
+                  description: Name of profile defined under `management_security`.
+                hash_algorithm:
+                  type: str
+                  required: true
+                  description: |-
+                    Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.
+                  valid_values:
+                    - "aes-128-cmac-96"
+                    - "hmac-sha-256"
+                    - "hmac-sha1-96"
             ttl_maximum_hops:
               type: int
               convert_types:
@@ -958,6 +990,16 @@ keys:
                   type: str
                 activate:
                   type: bool
+                rcf_in:
+                  type: str
+                  description: |-
+                    Inbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                rcf_out:
+                  type: str
+                  description: |-
+                    Outbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
           peer_groups:
             type: list
             primary_key: name
@@ -977,6 +1019,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: |-
+                    Inbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                rcf_out:
+                  type: str
+                  description: |-
+                    Outbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
                 domain_remote:
                   type: bool
                 encapsulation:
@@ -1092,6 +1144,20 @@ keys:
                       - str
                     min: 2
                     max: 64
+          layer_2_fec_in_place_update:
+            type: dict
+            description: BGP layer-2 in-place FEC operation.
+            keys:
+              enabled:
+                type: bool
+                required: true
+              timeout:
+                type: int
+                description: In-place FEC update tracking timeout in seconds.
+                convert_types:
+                  - str
+                min: 0
+                max: 300
       address_family_rtc:
         type: dict
         keys:
@@ -1151,6 +1217,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: |-
+                    Inbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                rcf_out:
+                  type: str
+                  description: |-
+                    Outbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
                 default_originate:
                   type: dict
                   keys:
@@ -1201,6 +1277,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: |-
+                    Inbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                rcf_out:
+                  type: str
+                  description: |-
+                    Outbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -1214,6 +1300,37 @@ keys:
                       type: bool
                     route_map:
                       type: str
+          redistribute_routes:
+            type: list
+            primary_key: source_protocol
+            items:
+              type: dict
+              keys:
+                source_protocol:
+                  type: str
+                  valid_values:
+                    - "attached-host"
+                    - "bgp"
+                    - "connected"
+                    - "dynamic"
+                    - "isis"
+                    - "ospf"
+                    - "ospfv3"
+                    - "rip"
+                    - "static"
+                    - "user"
+                route_map:
+                  type: str
+                include_leaked:
+                  type: bool
+                  description: Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`.
+                rcf:
+                  type: str
+                  description: |-
+                    RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                    Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
       address_family_ipv4_multicast:
         type: dict
         keys:
@@ -1264,8 +1381,26 @@ keys:
               keys:
                 source_protocol:
                   type: str
+                  # TODO AVD5.0: Add valid values and ensure we cover all options.
+                  # valid_values:
+                  #   - "attached-host"
+                  #   - "connected"
+                  #   - "isis"
+                  #   - "ospf"
+                  #   - "ospfv3"
+                  #   - "static"
                 route_map:
                   type: str
+                include_leaked:
+                  type: bool
+                  description: Only applicable if `source_protocol` is `isis`.
+                rcf:
+                  type: str
+                  description: |-
+                    RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                    Only applicable if `source_protocol` is `isis`.
       address_family_ipv4_sr_te:
         type: dict
         keys:
@@ -1338,6 +1473,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: |-
+                    Inbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                rcf_out:
+                  type: str
+                  description: |-
+                    Outbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -1362,6 +1507,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: |-
+                    Inbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                rcf_out:
+                  type: str
+                  description: |-
+                    Outbound RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -1378,10 +1533,28 @@ keys:
               keys:
                 source_protocol:
                   type: str
+                  # TODO AVD5.0: Add valid values and ensure we cover all options.
+                  #valid_values:
+                  #  - "attached-host"
+                  #  - "bgp"
+                  #  - "connected"
+                  #  - "dhcp"
+                  #  - "dynamic"
+                  #  - "isis"
+                  #  - "ospfv3"
+                  #  - "static"
+                  #  - "user"
                 route_map:
                   type: str
                 include_leaked:
                   type: bool
+                rcf:
+                  type: str
+                  description: |-
+                    RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                    Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -1452,6 +1625,34 @@ keys:
                   description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                 route_map:
                   type: str
+          redistribute_routes:
+            type: list
+            primary_key: source_protocol
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                source_protocol:
+                  type: str
+                  valid_values:
+                    - "connected"
+                    - "isis"
+                    - "ospf"
+                    - "ospfv3"
+                    - "static"
+                include_leaked:
+                  type: bool
+                  description: Only applicable if `source_protocol` is `isis`.
+                route_map:
+                  type: str
+                rcf:
+                  type: str
+                  description: |-
+                    RCF function name with parenthesis.
+                    Example: MyFunction(myarg).
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                    Only applicable if `source_protocol` is `isis`.
       address_family_ipv6_sr_te:
         type: dict
         keys:
@@ -1981,6 +2182,19 @@ keys:
                           type: str
                       route_map:
                         type: str
+                        description: Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.
+                      rcf:
+                        type: str
+                        description: |-
+                          RCF function name with parenthesis.
+                          Example: MyFunction(myarg).
+                          Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.
+                      vpn_route_filter_rcf:
+                        type: str
+                        description: |-
+                          RCF function name with parenthesis for filtering VPN routes. Also requires `rcf` to be set.
+                          Example: MyFunction(myarg).
+                          Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.
                 export:
                   type: list
                   primary_key: address_family
@@ -1998,6 +2212,19 @@ keys:
                           type: str
                       route_map:
                         type: str
+                        description: Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.
+                      rcf:
+                        type: str
+                        description: |-
+                          RCF function name with parenthesis.
+                          Example: MyFunction(myarg).
+                          Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.
+                      vpn_route_filter_rcf:
+                        type: str
+                        description: |-
+                          RCF function name with parenthesis for filtering VPN routes. Also requires `rcf` to be set.
+                          Example: MyFunction(myarg).
+                          Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.
             router_id:
               description: in IP address format A.B.C.D.
               type: str
@@ -2272,10 +2499,29 @@ keys:
                 keys:
                   source_protocol:
                     type: str
+                    # TODO AVD5.0: Add valid values and ensure we cover all options.
+                    # valid_values:
+                    #   - "attached-host"
+                    #   - "bgp"
+                    #   - "connected"
+                    #   - "dynamic"
+                    #   - "isis"
+                    #   - "ospf"
+                    #   - "ospfv3"
+                    #   - "rip"
+                    #   - "static"
+                    #   - "user"
                   route_map:
                     type: str
                   include_leaked:
                     type: bool
+                  rcf:
+                    type: str
+                    description: |-
+                      RCF function name with parenthesis.
+                      Example: MyFunction(myarg).
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                      Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
             aggregate_addresses:
               type: list
               primary_key: prefix
@@ -2374,6 +2620,16 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      rcf_in:
+                        type: str
+                        description: |-
+                          Inbound RCF function name with parenthesis.
+                          Example: MyFunction(myarg).
+                      rcf_out:
+                        type: str
+                        description: |-
+                          Outbound RCF function name with parenthesis.
+                          Example: MyFunction(myarg).
                       prefix_list_in:
                         type: str
                         description: Inbound prefix-list name.
@@ -2404,6 +2660,38 @@ keys:
                         description: IPv4 prefix "A.B.C.D/E".
                       route_map:
                         type: str
+                redistribute_routes:
+                  type: list
+                  primary_key: source_protocol
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      source_protocol:
+                        type: str
+                        valid_values:
+                          - "attached-host"
+                          - "bgp"
+                          - "connected"
+                          - "dynamic"
+                          - "isis"
+                          - "ospf"
+                          - "ospfv3"
+                          - "rip"
+                          - "static"
+                          - "user"
+                      route_map:
+                        type: str
+                      include_leaked:
+                        type: bool
+                      rcf:
+                        type: str
+                        description: |-
+                          RCF function name with parenthesis.
+                          Example: MyFunction(myarg).
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                          Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
             address_family_ipv6:
               type: dict
               keys:
@@ -2475,6 +2763,16 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      rcf_in:
+                        type: str
+                        description: |-
+                          Inbound RCF function name with parenthesis.
+                          Example: MyFunction(myarg).
+                      rcf_out:
+                        type: str
+                        description: |-
+                          Outbound RCF function name with parenthesis.
+                          Example: MyFunction(myarg).
                       prefix_list_in:
                         type: str
                         description: Inbound prefix-list name.
@@ -2494,6 +2792,37 @@ keys:
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
                         type: str
+                redistribute_routes:
+                  type: list
+                  primary_key: source_protocol
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      source_protocol:
+                        type: str
+                        valid_values:
+                          - "attached-host"
+                          - "bgp"
+                          - "connected"
+                          - "dhcp"
+                          - "dynamic"
+                          - "isis"
+                          - "ospfv3"
+                          - "static"
+                          - "user"
+                      route_map:
+                        type: str
+                      include_leaked:
+                        type: bool
+                      rcf:
+                        type: str
+                        description: |-
+                          RCF function name with parenthesis.
+                          Example: MyFunction(myarg).
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                          Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
             address_family_ipv4_multicast:
               type: dict
               keys:
@@ -2551,6 +2880,35 @@ keys:
                         description: IPv6 prefix "A.B.C.D/E".
                       route_map:
                         type: str
+                redistribute_routes:
+                  type: list
+                  primary_key: source_protocol
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      source_protocol:
+                        type: str
+                        valid_values:
+                          - "attached-host"
+                          - "connected"
+                          - "isis"
+                          - "ospf"
+                          - "ospfv3"
+                          - "static"
+                      route_map:
+                        type: str
+                      include_leaked:
+                        type: bool
+                        description: Only applicable if `source_protocol` is `isis`.
+                      rcf:
+                        type: str
+                        description: |-
+                          RCF function name with parenthesis.
+                          Example: MyFunction(myarg).
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                          Only applicable if `source_protocol` is `isis`.
             address_family_ipv6_multicast:
               type: dict
               keys:
@@ -2608,6 +2966,34 @@ keys:
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
                         type: str
+                redistribute_routes:
+                  type: list
+                  primary_key: source_protocol
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      source_protocol:
+                        type: str
+                        valid_values:
+                          - "connected"
+                          - "isis"
+                          - "ospf"
+                          - "ospfv3"
+                          - "static"
+                      route_map:
+                        type: str
+                      include_leaked:
+                        type: bool
+                        description: Only applicable if `source_protocol` is `isis`.
+                      rcf:
+                        type: str
+                        description: |-
+                          RCF function name with parenthesis.
+                          Example: MyFunction(myarg).
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                          Only applicable if `source_protocol` is `isis`.
             address_family_flow_spec_ipv4:
               type: dict
               keys:

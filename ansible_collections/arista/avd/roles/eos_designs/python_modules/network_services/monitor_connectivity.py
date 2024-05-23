@@ -22,9 +22,9 @@ class MonitorConnectivityMixin(UtilsMixin):
         """
         Return structured config for monitor_connectivity
 
-        Only used for CV Pathfinder routers today
+        Only used for CV Pathfinder edge routers today
         """
-        if not self.shared_utils.is_cv_pathfinder_router:
+        if not self._filtered_internet_exit_policies:
             return None
 
         monitor_connectivity = {}
@@ -63,6 +63,7 @@ class MonitorConnectivityMixin(UtilsMixin):
         monitor_connectivity = strip_empties_from_dict(monitor_connectivity)
 
         if monitor_connectivity:
+            monitor_connectivity["shutdown"] = False
             return monitor_connectivity
 
         return None

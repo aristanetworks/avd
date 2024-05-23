@@ -13,8 +13,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import simple_7_encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
+from .utils_zscaler import UtilsZscalerMixin
 
-class UtilsMixin:
+
+class UtilsMixin(UtilsZscalerMixin):
     """
     Mixin Class with internal functions.
     Class should only be used as Mixin to a AvdStructuredConfig class
@@ -592,15 +594,59 @@ class UtilsMixin:
         ]
 
     @cached_property
+    def _svi_acls(self) -> dict[str, dict[str, dict]]:
+        """
+        Returns a dict of
+            <interface_name>: {
+                "ipv4_acl_in": <generated_ipv4_acl>,
+                "ipv4_acl_out": <generated_ipv4_acl>,
+            }
+        Only contains interfaces with ACLs and only the ACLs that are set,
+        so use `get(self._svi_acls, f"{interface_name}.ipv4_acl_in")` to get the value.
+        """
+        if not self.shared_utils.network_services_l3:
+            return None
+
+        svi_acls = {}
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                for svi in vrf["svis"]:
+                    ipv4_acl_in = get(svi, "ipv4_acl_in")
+                    ipv4_acl_out = get(svi, "ipv4_acl_out")
+                    if ipv4_acl_in is None and ipv4_acl_out is None:
+                        continue
+
+                    interface_name = f"Vlan{svi['id']}"
+                    interface_ip: str | None = svi.get("ip_address_virtual")
+                    if interface_ip is not None and "/" in interface_ip:
+                        interface_ip = interface_ip.split("/", maxsplit=1)[0]
+
+                    if ipv4_acl_in is not None:
+                        svi_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
+                            name=ipv4_acl_in,
+                            interface_name=interface_name,
+                            interface_ip=interface_ip,
+                        )
+                    if ipv4_acl_out is not None:
+                        svi_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
+                            name=ipv4_acl_out,
+                            interface_name=interface_name,
+                            interface_ip=interface_ip,
+                        )
+
+        return svi_acls
+
+    @cached_property
     def _filtered_internet_exit_policies(self) -> list:
         """
+        Only supported for CV Pathfinder Edge routers. Returns an empty list for pathfinders.
+
         - Parse self._filtered_wan_policies looking to internet_exit_policies.
         - Verify each internet_exit_policy is present in inputs `cv_pathfinder_internet_exit_policies`.
         - get_internet_exit_connections and insert into the policy dict.
         - Return the list of relevant internet_exit_policies.
         """
-        # Only supported for CV Pathfinder
-        if not self.shared_utils.is_cv_pathfinder_router:
+        if not self.shared_utils.is_cv_pathfinder_client:
             return []
 
         internet_exit_policy_names = set()
@@ -671,7 +717,7 @@ class UtilsMixin:
         if get(internet_exit_policy, "type") != "zscaler":
             raise AristaAvdError(f"Unsupported type '{internet_exit_policy['type']}' found in cv_pathfinder_internet_exit[name={policy_name}].")
 
-        cloud_name = get(internet_exit_policy, "zscaler.cloud_name", required=True)
+        cloud_name = get(self._zscaler_endpoints, "cloud_name", required=True)
         connections = []
 
         # Check if the policy has any local interface
@@ -683,6 +729,12 @@ class UtilsMixin:
             connection_base = {
                 "type": "tunnel",
                 "source_interface": wan_interface["name"],
+                "next_hop": get(
+                    wan_interface,
+                    "peer_ip",
+                    required=True,
+                    org_key=f"The configured internet-exit policy requires `peer_ip` configured under the WAN Interface {wan_interface['name']}",
+                ),
                 "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
             }
 
@@ -706,20 +758,18 @@ class UtilsMixin:
                     {
                         **connection_base,
                         "tunnel_id": tunnel_id,
-                        "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
+                        # Using Loopback0 as source interface as using the WAN interface causes issues for DPS.
+                        "tunnel_ip_address": "unnumbered Loopback0",
                         "tunnel_destination_ip": destination_ip,
                         "ipsec_profile": f"IE-{policy_name}-PROFILE",
                         "description": f"Internet Exit {policy_name} {suffix}",
                         "exit_group": f"{policy_name}_{suffix}",
                         "preference": zscaler_endpoint_key,
+                        "suffix": suffix,
                     }
                 )
 
         return connections
-
-    @cached_property
-    def _zscaler_endpoints(self) -> dict:
-        return get(self._hostvars, "zscaler_endpoints", default={})
 
     def _get_ipsec_credentials(self, internet_exit_policy: dict) -> tuple[str, str]:
         """

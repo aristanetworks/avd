@@ -159,7 +159,7 @@ class UtilsMixin:
         """
 
         uplink_pool = self.shared_utils.uplink_ipv4_pool
-        if self.shared_utils.uplink_ipv4_pool:
+        if uplink_pool is not None:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
 
         downlink_pool, downlink_offset = self._get_downlink_ipv4_pool_and_offset(uplink_switch_index)
@@ -175,7 +175,7 @@ class UtilsMixin:
                 "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches"
             )
 
-        if downlink_pool is None:
+        if uplink_pool is not None:
             return (uplink_pool, uplink_offset)
 
         return (downlink_pool, downlink_offset)

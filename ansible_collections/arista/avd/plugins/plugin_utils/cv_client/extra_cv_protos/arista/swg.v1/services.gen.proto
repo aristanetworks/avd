@@ -117,6 +117,45 @@ message EndpointConfigStreamResponse {
 	arista.subscriptions.Operation type = 3;
 };
 
+message EndpointConfigBatchedStreamRequest {
+	// PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+	// This requires all provided fields to be equal to the response.
+	//
+	// While transparent to users, this field also allows services to optimize internal
+	// subscriptions if filter(s) are sufficiently specific.
+	repeated EndpointConfig partial_eq_filter = 1;
+
+	// TimeRange allows limiting response data to within a specified time window.
+	// If this field is populated, at least one of the two time fields are required.
+	//
+	// For GetAll, the fields start and end can be used as follows:
+	//
+	//   * end: Returns the state of each EndpointConfig at end.
+	//     * Each EndpointConfig response is fully-specified (all fields set).
+	//   * start: Returns the state of each EndpointConfig at start, followed by updates until now.
+	//     * Each EndpointConfig response at start is fully-specified, but updates may be partial.
+	//   * start and end: Returns the state of each EndpointConfig at start, followed by updates
+	//     until end.
+	//     * Each EndpointConfig response at start is fully-specified, but updates until end may
+	//       be partial.
+	//
+	// This field is not allowed in the Subscribe RPC.
+	arista.time.TimeBounds time = 3;
+
+	// MaxMessages limits the maximum number of messages that can be contained in one batch.
+	// MaxMessages is required to be at least 1.
+	// The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+	// INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+	google.protobuf.UInt32Value max_messages = 4;
+};
+
+message EndpointConfigBatchedStreamResponse {
+	// Values are the values deemed relevant to the initiating request.
+	// The length of this structure is guaranteed to be between (inclusive) 1 and
+	// min(req.max_messages, INTERNAL_BATCH_LIMIT).
+	repeated EndpointConfigStreamResponse responses = 1;
+};
+
 message EndpointConfigSetRequest {
 	// EndpointConfig carries the value to set into the datastore.
 	// See the documentation on the EndpointConfig struct for which fields are required.
@@ -213,6 +252,8 @@ service EndpointConfigService {
 	rpc Delete (EndpointConfigDeleteRequest) returns (EndpointConfigDeleteResponse);
 	rpc DeleteSome (EndpointConfigDeleteSomeRequest) returns (stream EndpointConfigDeleteSomeResponse);
 	rpc DeleteAll (EndpointConfigDeleteAllRequest) returns (stream EndpointConfigDeleteAllResponse);
+	rpc GetAllBatched (EndpointConfigBatchedStreamRequest) returns (stream EndpointConfigBatchedStreamResponse);
+	rpc SubscribeBatched (EndpointConfigBatchedStreamRequest) returns (stream EndpointConfigBatchedStreamResponse);
 }
 
 message EndpointStatusRequest {
@@ -300,6 +341,45 @@ message EndpointStatusStreamResponse {
 	arista.subscriptions.Operation type = 3;
 };
 
+message EndpointStatusBatchedStreamRequest {
+	// PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+	// This requires all provided fields to be equal to the response.
+	//
+	// While transparent to users, this field also allows services to optimize internal
+	// subscriptions if filter(s) are sufficiently specific.
+	repeated EndpointStatus partial_eq_filter = 1;
+
+	// TimeRange allows limiting response data to within a specified time window.
+	// If this field is populated, at least one of the two time fields are required.
+	//
+	// For GetAll, the fields start and end can be used as follows:
+	//
+	//   * end: Returns the state of each EndpointStatus at end.
+	//     * Each EndpointStatus response is fully-specified (all fields set).
+	//   * start: Returns the state of each EndpointStatus at start, followed by updates until now.
+	//     * Each EndpointStatus response at start is fully-specified, but updates may be partial.
+	//   * start and end: Returns the state of each EndpointStatus at start, followed by updates
+	//     until end.
+	//     * Each EndpointStatus response at start is fully-specified, but updates until end may
+	//       be partial.
+	//
+	// This field is not allowed in the Subscribe RPC.
+	arista.time.TimeBounds time = 3;
+
+	// MaxMessages limits the maximum number of messages that can be contained in one batch.
+	// MaxMessages is required to be at least 1.
+	// The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+	// INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+	google.protobuf.UInt32Value max_messages = 4;
+};
+
+message EndpointStatusBatchedStreamResponse {
+	// Values are the values deemed relevant to the initiating request.
+	// The length of this structure is guaranteed to be between (inclusive) 1 and
+	// min(req.max_messages, INTERNAL_BATCH_LIMIT).
+	repeated EndpointStatusStreamResponse responses = 1;
+};
+
 service EndpointStatusService {
 	rpc GetOne (EndpointStatusRequest) returns (EndpointStatusResponse);
 	rpc GetSome (EndpointStatusSomeRequest) returns (stream EndpointStatusSomeResponse);
@@ -307,4 +387,6 @@ service EndpointStatusService {
 	rpc Subscribe (EndpointStatusStreamRequest) returns (stream EndpointStatusStreamResponse);
 	rpc GetMeta (EndpointStatusStreamRequest) returns (MetaResponse);
 	rpc SubscribeMeta (EndpointStatusStreamRequest) returns (stream MetaResponse);
+	rpc GetAllBatched (EndpointStatusBatchedStreamRequest) returns (stream EndpointStatusBatchedStreamResponse);
+	rpc SubscribeBatched (EndpointStatusBatchedStreamRequest) returns (stream EndpointStatusBatchedStreamResponse);
 }
