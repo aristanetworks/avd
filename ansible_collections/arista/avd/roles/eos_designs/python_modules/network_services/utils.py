@@ -14,8 +14,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import simple_7_encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
+from .utils_zscaler import UtilsZscalerMixin
 
-class UtilsMixin:
+
+class UtilsMixin(UtilsZscalerMixin):
     """
     Mixin Class with internal functions.
     Class should only be used as Mixin to a AvdStructuredConfig class
@@ -686,13 +688,14 @@ class UtilsMixin:
     @cached_property
     def _filtered_internet_exit_policies(self) -> list:
         """
+        Only supported for CV Pathfinder Edge routers. Returns an empty list for pathfinders.
+
         - Parse self._filtered_wan_policies looking to internet_exit_policies.
         - Verify each internet_exit_policy is present in inputs `cv_pathfinder_internet_exit_policies`.
         - get_internet_exit_connections and insert into the policy dict.
         - Return the list of relevant internet_exit_policies.
         """
-        # Only supported for CV Pathfinder
-        if not self.shared_utils.is_cv_pathfinder_router:
+        if not self.shared_utils.is_cv_pathfinder_client:
             return []
 
         internet_exit_policy_names = set()
@@ -824,6 +827,12 @@ class UtilsMixin:
             connection_base = {
                 "type": "tunnel",
                 "source_interface": wan_interface["name"],
+                "next_hop": get(
+                    wan_interface,
+                    "peer_ip",
+                    required=True,
+                    org_key=f"The configured internet-exit policy requires `peer_ip` configured under the WAN Interface {wan_interface['name']}",
+                ),
                 "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
             }
 
@@ -856,20 +865,18 @@ class UtilsMixin:
                         "monitor_name": f"IE-Tunnel{tunnel_id}",
                         "monitor_host": destination_ip,
                         "tunnel_id": tunnel_id,
-                        "tunnel_ip_address": f"unnumbered {wan_interface['name']}",
+                        # Using Loopback0 as source interface as using the WAN interface causes issues for DPS.
+                        "tunnel_ip_address": "unnumbered Loopback0",
                         "tunnel_destination_ip": destination_ip,
                         "ipsec_profile": f"IE-{policy_name}-PROFILE",
                         "description": f"Internet Exit {policy_name} {suffix}",
                         "exit_group": f"{policy_name}_{suffix}",
                         "preference": zscaler_endpoint_key,
+                        "suffix": suffix,
                     }
                 )
 
         return connections
-
-    @cached_property
-    def _zscaler_endpoints(self) -> dict:
-        return get(self._hostvars, "zscaler_endpoints", default={})
 
     def _get_ipsec_credentials(self, internet_exit_policy: dict) -> tuple[str, str]:
         """

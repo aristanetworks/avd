@@ -21,9 +21,9 @@ class TunnelInterfacesMixin(UtilsMixin):
         """
         Return structured config for tunnel_interfaces
 
-        Only used for CV Pathfinder routers today
+        Only used for CV Pathfinder edge routers today
         """
-        if not self.shared_utils.is_cv_pathfinder_router:
+        if not self._filtered_internet_exit_policies:
             return None
 
         tunnel_interfaces = []
