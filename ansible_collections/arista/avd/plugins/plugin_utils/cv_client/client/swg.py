@@ -16,7 +16,7 @@ from ..api.arista.swg.v1 import (
     ServiceName,
     SwgKey,
 )
-from .constants import DEFAULT_TIMEOUT
+from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
@@ -42,7 +42,7 @@ class SwgMixin:
         device_id: str,
         service: Literal["zscaler"],
         location: str,
-        timeout: float = DEFAULT_TIMEOUT,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> EndpointConfig:
         """
         Get SWG Endpoints using arista.swg.v1.EndpointStatusService.GetOne API
@@ -77,7 +77,7 @@ class SwgMixin:
         self: CVClient,
         device_id: str,
         service: Literal["zscaler"],
-        timeout: float = DEFAULT_TIMEOUT,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> EndpointStatus:
         """
         Subscribe and wait for one SWG Endpoint using arista.swg.v1.EndpointStatusService.Subscribe API
