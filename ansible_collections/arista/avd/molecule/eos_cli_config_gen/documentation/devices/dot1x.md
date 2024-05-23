@@ -64,3 +64,9 @@ interface Management1
 | URL | http://portal-nacm08/captiveredirect/ |
 | SSL profile | Profile1 |
 | Access-list IPv4 | ACL |
+
+#### 802.1X Dot1x supplicant commands
+
+| Attribute | Value |
+| --------- | ----- |
+| Logging | True |

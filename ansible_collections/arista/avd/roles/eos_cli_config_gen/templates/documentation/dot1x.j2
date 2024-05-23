@@ -61,6 +61,16 @@
 | Access-list IPv4 | {{ dot1x.captive_portal.access_list_ipv4 }} |
 {%             endif %}
 {%         endif %}
+{%         if dot1x.supplicant is arista.avd.defined %}
+
+#### 802.1X Dot1x supplicant commands
+
+| Attribute | Value |
+| --------- | ----- |
+{%             if dot1x.supplicant.logging is arista.avd.defined(true) %}
+| Logging | True |
+{%             endif %}
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interfaces_dot1x | length > 0 %}
 
