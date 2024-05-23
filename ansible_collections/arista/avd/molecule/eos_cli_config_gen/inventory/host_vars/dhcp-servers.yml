@@ -39,8 +39,8 @@ dhcp_servers:
       - 2001:db8::1
       - 2001:db8::2
     tftp_server:
-      files_ipv4: "https://www.arista.io/ztp/bootstrap https://192.168.0.254/ztp/bootstrap"
-      files_ipv6: "https://2001:0db8:fe/ztp/bootstrap"
+      file_ipv4: "https://www.arista.io/ztp/bootstrap"
+      file_ipv6: "https://2001:0db8:fe/ztp/bootstrap"
     subnets:
       - subnet: 10.2.3.0/24
       - subnet: 2a00:2::/64

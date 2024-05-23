@@ -1313,34 +1313,32 @@ keys:
         dns_servers_ipv4:
           type: list
           min_length: 1
-          description: List of IPv4 DNS servers
+          description: List of DNS server for IPv4 clients
           items:
             type: str
             required: true
-            description: IPv4 address of DNS server
+            description: IPv4 address for DNS server
         dns_servers_ipv6:
           type: list
           min_length: 1
-          description: List of IPv6 dns servers
+          description: List of DNS server for IPv6 clients
           items:
             type: str
             required: true
-            description: IPv6 address of DNS server
+            description: IPv6 address for DNS server
         tftp_server:
           type: dict
           keys:
-            files_ipv4:
+            file_ipv4:
               type: str
               min_length: 1
               max_length: 255
-              description: Name of IPv4 tftp file.  If multiple IPv4 tftp files are
-                needed, enter each separated by a space.
-            files_ipv6:
+              description: Name of TFTP file for IPv4 clients.
+            file_ipv6:
               type: str
               min_length: 1
               max_length: 255
-              description: Name of IPv6 tftp file.  If multiple IPv6 tftp files are
-                needed, enter each separated by a space.
+              description: Name of TFTP file for IPv6 clients.
         ipv4_vendor_options:
           type: list
           primary_key: vendor_id

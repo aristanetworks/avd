@@ -1970,39 +1970,39 @@
           "dns_servers_ipv4": {
             "type": "array",
             "minItems": 1,
-            "description": "List of IPv4 DNS servers",
+            "description": "List of DNS server for IPv4 clients",
             "items": {
               "type": "string",
-              "description": "IPv4 address of DNS server"
+              "description": "IPv4 address for DNS server"
             },
             "title": "DNS Servers IPv4"
           },
           "dns_servers_ipv6": {
             "type": "array",
             "minItems": 1,
-            "description": "List of IPv6 dns servers",
+            "description": "List of DNS server for IPv6 clients",
             "items": {
               "type": "string",
-              "description": "IPv6 address of DNS server"
+              "description": "IPv6 address for DNS server"
             },
             "title": "DNS Servers IPv6"
           },
           "tftp_server": {
             "type": "object",
             "properties": {
-              "files_ipv4": {
+              "file_ipv4": {
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 255,
-                "description": "Name of IPv4 tftp file.  If multiple IPv4 tftp files are needed, enter each separated by a space.",
-                "title": "Files IPv4"
+                "description": "Name of TFTP file for IPv4 clients.",
+                "title": "File IPv4"
               },
-              "files_ipv6": {
+              "file_ipv6": {
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 255,
-                "description": "Name of IPv6 tftp file.  If multiple IPv6 tftp files are needed, enter each separated by a space.",
-                "title": "Files IPv6"
+                "description": "Name of TFTP file for IPv6 clients.",
+                "title": "File IPv6"
               }
             },
             "additionalProperties": false,
