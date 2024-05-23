@@ -59078,7 +59078,7 @@
     },
     "zscaler_endpoints": {
       "type": "object",
-      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for testing the WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device by `eos_designs`, but when CloudVision is not available, it is possible to provide the settings manually.",
+      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for testing the WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device by `eos_designs`.\nManually setting this model will take precedence and prevent `eos_designs` from trying to contact CloudVision.\nThis can be useful for offline testing or if CloudVision is not available or not configured for Zscaler integration.",
       "properties": {
         "primary": {
           "type": "object",
