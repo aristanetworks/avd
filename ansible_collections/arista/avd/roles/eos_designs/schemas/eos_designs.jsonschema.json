@@ -4908,6 +4908,9 @@
         "properties": {
           "name": {
             "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
             "title": "Name"
           },
           "description": {
@@ -4930,6 +4933,9 @@
                 "name": {
                   "type": "string",
                   "description": "The site name.",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                   "title": "Name"
                 },
                 "description": {
@@ -4982,6 +4988,11 @@
       },
       "title": "Cv Pathfinder Regions"
     },
+    "cv_server": {
+      "description": "PREVIEW: These keys are in preview mode.\n\nHostname or IP address of CloudVision host. Ex. \"www.arista.io\" for CVaaS.\nFor `eos_designs` this variable is only used for the WAN Internet-exit integration with Zscaler.\nThe same variable name is also used by the `cv_deploy` role, and will override the value of `ansible_host` on inventory 'cloudvision' host.\nMake sure to set it in a common group_vars file.",
+      "type": "string",
+      "title": "Cv Server"
+    },
     "cv_tags_topology_type": {
       "description": "PREVIEW: This key is currently not supported\nDevice type that CloudVision should use when generating the Topology. Defaults to the setting under node_type_keys.",
       "type": "string",
@@ -4992,6 +5003,11 @@
         "edge"
       ],
       "title": "Cv Tags Topology Type"
+    },
+    "cv_token": {
+      "description": "PREVIEW: These keys are in preview mode.\n\nService account token as defined on CloudVision. This value should be using Ansible Vault.\nFor `eos_designs` this variable is only used for the WAN Internet-exit integration with Zscaler.\nThe same variable name is also used by the `cv_deploy` role, and will override the value of `ansible_password` on inventory 'cloudvision' host.\nMake sure to set it in a common group_vars file.",
+      "type": "string",
+      "title": "Cv Token"
     },
     "cv_topology": {
       "type": "array",
@@ -8675,6 +8691,37 @@
                   "^_.+$": {}
                 },
                 "title": "MAC Security"
+              },
+              "tcp_mss_ceiling": {
+                "type": "object",
+                "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                "properties": {
+                  "ipv4_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv4 Segment Size"
+                  },
+                  "ipv6_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv6 Segment Size"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "TCP Mss Ceiling"
               },
               "channel_group": {
                 "type": "object",
@@ -14441,6 +14488,37 @@
                   "^_.+$": {}
                 },
                 "title": "MAC Security"
+              },
+              "tcp_mss_ceiling": {
+                "type": "object",
+                "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                "properties": {
+                  "ipv4_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv4 Segment Size"
+                  },
+                  "ipv6_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv6 Segment Size"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "TCP Mss Ceiling"
               },
               "channel_group": {
                 "type": "object",
@@ -20771,6 +20849,37 @@
                         "^_.+$": {}
                       },
                       "title": "MAC Security"
+                    },
+                    "tcp_mss_ceiling": {
+                      "type": "object",
+                      "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                      "properties": {
+                        "ipv4_segment_size": {
+                          "type": "integer",
+                          "minimum": 64,
+                          "maximum": 65475,
+                          "title": "IPv4 Segment Size"
+                        },
+                        "ipv6_segment_size": {
+                          "type": "integer",
+                          "minimum": 64,
+                          "maximum": 65475,
+                          "title": "IPv6 Segment Size"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "title": "Direction"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "TCP Mss Ceiling"
                     },
                     "channel_group": {
                       "type": "object",
@@ -33670,6 +33779,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -33695,6 +33805,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -33720,6 +33831,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -51369,6 +51481,37 @@
                 },
                 "title": "MAC Security"
               },
+              "tcp_mss_ceiling": {
+                "type": "object",
+                "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                "properties": {
+                  "ipv4_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv4 Segment Size"
+                  },
+                  "ipv6_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv6 Segment Size"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "TCP Mss Ceiling"
+              },
               "channel_group": {
                 "type": "object",
                 "properties": {
@@ -58969,7 +59112,7 @@
     },
     "zscaler_endpoints": {
       "type": "object",
-      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints` Ansible lookup plugin.\nExample:\n```yaml\nzscaler_endpoints: \"{{ lookup('arista.avd.cv_zscaler_endpoints', cv_server=\"<optional servername>\", cv_token=\"<optional token>\") }}\"\n```\nThe cv_server and cv_token options can be set as inventory variables instead of given as arguments. (Then they will also be used for cv_deploy)",
+      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for testing the WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device by `eos_designs`.\nManually setting this model will take precedence and prevent `eos_designs` from trying to contact CloudVision.\nThis can be useful for offline testing or if CloudVision is not available or not configured for Zscaler integration.",
       "properties": {
         "primary": {
           "type": "object",
