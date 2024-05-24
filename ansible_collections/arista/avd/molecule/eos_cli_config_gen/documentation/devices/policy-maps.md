@@ -8,6 +8,7 @@
   - [PBR Policy Maps](#pbr-policy-maps)
 - [Quality Of Service](#quality-of-service)
   - [QOS Policy Maps](#qos-policy-maps)
+  - [Control-plane Policy Map](#control-plane-policy-map)
 
 ## Management
 
@@ -112,4 +113,32 @@ policy-map type quality-of-service PM_REPLICATION_LD3
       set dscp af11
       set cos 6
       police rate 10000 bps burst-size 260 kbytes
+```
+
+### Control-plane Policy Map
+
+#### Control-plane Policy Map Summary
+
+##### copp-system-policy
+
+| Class | Shape | Bandwidth | Rate Unit |
+| ----- | ----- | --------- | --------- |
+| copp-system-aaa | - | - | - |
+| copp-system-cvx | 2000 | 2000 | pps |
+| copp-system-OspfIsis | 1000 | 1000 | kbps |
+
+#### COPP Policy Maps Device Configuration
+
+```eos
+!
+policy-map type copp copp-system-policy
+   class copp-system-OspfIsis
+      shape kbps 1000
+      bandwidth kbps 1000
+   !
+   class copp-system-cvx
+      shape pps 2000
+      bandwidth pps 2000
+   !
+   class copp-system-aaa
 ```

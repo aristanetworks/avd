@@ -57,3 +57,14 @@ policy_maps:
             nexthop:
               ip_address: 192.168.4.2
               recursive: true
+  copp_system_policy:
+    classes:
+      - name: copp-system-OspfIsis
+        shape: 1000
+        bandwidth: 1000
+        rate_unit: kbps
+      - name: copp-system-cvx
+        shape: 2000
+        bandwidth: 2000
+        rate_unit: pps
+      - name: copp-system-aaa

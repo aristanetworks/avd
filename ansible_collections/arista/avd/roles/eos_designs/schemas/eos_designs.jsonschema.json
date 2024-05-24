@@ -30559,6 +30559,60 @@
                       ]
                     },
                     "title": "QOS"
+                  },
+                  "copp_system_policy": {
+                    "type": "object",
+                    "description": "Control-plane policy configuration.",
+                    "properties": {
+                      "classes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "Name"
+                            },
+                            "shape": {
+                              "type": "integer",
+                              "description": "Maximum rate limit.",
+                              "minimum": 0,
+                              "maximum": 10000000,
+                              "title": "Shape"
+                            },
+                            "bandwidth": {
+                              "type": "integer",
+                              "description": "Minimum bandwidth.",
+                              "minimum": 0,
+                              "maximum": 10000000,
+                              "title": "Bandwidth"
+                            },
+                            "rate_unit": {
+                              "type": "string",
+                              "description": "The `rate_unit` must be defined for `shape` and `bandwidth`.",
+                              "enum": [
+                                "pps",
+                                "kbps"
+                              ],
+                              "title": "Rate Unit"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "title": "Classes"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Copp System Policy"
                   }
                 },
                 "additionalProperties": false,

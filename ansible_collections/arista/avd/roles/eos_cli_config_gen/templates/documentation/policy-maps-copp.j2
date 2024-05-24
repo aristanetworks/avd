@@ -1,0 +1,28 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - policy map copp #}
+{% if policy_maps.copp_system_policy is arista.avd.defined %}
+
+### Control-plane Policy Map
+
+#### Control-plane Policy Map Summary
+{%     if policy_maps.copp_system_policy.classes is arista.avd.defined %}
+
+##### copp-system-policy
+
+| Class | Shape | Bandwidth | Rate Unit |
+| ----- | ----- | --------- | --------- |
+{%         for class in policy_maps.copp_system_policy.classes | arista.avd.natural_sort('name') %}
+| {{ class.name }} | {{ class.shape | arista.avd.default("-") }} | {{ class.bandwidth | arista.avd.default("-") }} | {{ class.rate_unit | arista.avd.default("-") }} |
+{%         endfor %}
+{%     endif %}
+
+#### COPP Policy Maps Device Configuration
+
+```eos
+{%     include 'eos/policy-maps-copp.j2' %}
+```
+{% endif %}
