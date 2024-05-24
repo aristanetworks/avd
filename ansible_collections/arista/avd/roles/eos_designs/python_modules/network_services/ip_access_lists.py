@@ -28,8 +28,7 @@ class IpAccesslistsMixin(UtilsMixin):
                 for acl in interface_acls.values():
                     append_if_not_duplicate(ip_access_lists, "name", acl, context="IPv4 Access lists for SVI", context_keys=["name"])
 
-        # Currently only needed for Zscaler
-        if any(internet_exit_policy["type"] == "zscaler" for internet_exit_policy in self._filtered_internet_exit_policies):
+        if self._filtered_internet_exit_policies:
             ip_access_lists.append(
                 {
                     "name": "ALLOW-ALL",
