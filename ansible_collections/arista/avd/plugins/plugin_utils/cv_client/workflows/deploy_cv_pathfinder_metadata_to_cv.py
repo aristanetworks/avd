@@ -362,7 +362,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
     warnings = []
 
     for internet_exit_policy in internet_exit_policies:
-        # We currently only support zscaler
+        # We currently only support "zscaler" and ignore "direct".
         if internet_exit_policy.get("type") not in ["zscaler", "direct"]:
             warning = (
                 f"deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '{internet_exit_policies.get('name')}' "
