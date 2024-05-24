@@ -52,7 +52,7 @@ See the following examples using the `l3ls-evpn` design:
 
 ### 5-stage clos topology support (Super Spine)
 
-- The **eos_designs** role support lager deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
+- The **eos_designs** role support larger deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
 - 5 stage Clos fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
 - The logic to deploy every leaf-spine POD fabric remains unchanged.
 - Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
@@ -326,7 +326,9 @@ mlag_ip_primary & mlag_ip_secondary:
 
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
+- `{{ switch_data.combined.mlag_peer_address_family }}`
 - `{{ switch_data.combined.mlag_peer_ipv4_pool }}`
+- `{{ switch_data.combined.mlag_peer_ipv6_pool }}`
 - All group/hostvars
 
 mlag_l3_ip_primary & mlag_l3_ip_secondary:
@@ -719,6 +721,12 @@ roles/eos_designs/docs/tables/bfd-settings.md
 roles/eos_designs/docs/tables/bgp-settings.md
 --8<--
 
+## IPv4 ACL settings
+
+--8<--
+roles/eos_designs/docs/tables/ipv4-acls.md
+--8<--
+
 ## OSPF settings
 
 --8<--
@@ -1047,6 +1055,7 @@ Both data models support variable inheritance from profiles defined under [`port
             port_channel:
               description: PortChanne1
               mode: active
+            ethernet_segment:
               short_esi: 0303:0202:0101
     ```
 

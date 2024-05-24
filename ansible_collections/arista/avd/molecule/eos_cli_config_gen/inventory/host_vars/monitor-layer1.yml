@@ -5,3 +5,4 @@ monitor_layer1:
   logging_transceiver:
     dom: true
     communication: true
+    enabled: true

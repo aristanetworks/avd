@@ -41,12 +41,20 @@ class UtilsMixin:
         return self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length
 
     @cached_property
+    def _fabric_ip_addressing_mlag_ipv6_prefix_length(self: "AvdIpAddressing") -> int:
+        return self.shared_utils.fabric_ip_addressing_mlag_ipv6_prefix_length
+
+    @cached_property
     def _fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length(self: "AvdIpAddressing") -> int:
         return self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
 
     @cached_property
     def _mlag_peer_ipv4_pool(self: "AvdIpAddressing") -> str:
         return self.shared_utils.mlag_peer_ipv4_pool
+
+    @cached_property
+    def _mlag_peer_ipv6_pool(self: "AvdIpAddressing") -> str:
+        return self.shared_utils.mlag_peer_ipv6_pool
 
     @cached_property
     def _mlag_peer_l3_ipv4_pool(self: "AvdIpAddressing") -> str:
@@ -151,7 +159,7 @@ class UtilsMixin:
         """
 
         uplink_pool = self.shared_utils.uplink_ipv4_pool
-        if self.shared_utils.uplink_ipv4_pool:
+        if uplink_pool is not None:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
 
         downlink_pool, downlink_offset = self._get_downlink_ipv4_pool_and_offset(uplink_switch_index)
@@ -167,7 +175,7 @@ class UtilsMixin:
                 "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches"
             )
 
-        if downlink_pool is None:
+        if uplink_pool is not None:
             return (uplink_pool, uplink_offset)
 
         return (downlink_pool, downlink_offset)

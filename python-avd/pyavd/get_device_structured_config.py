@@ -5,8 +5,6 @@ from collections import ChainMap
 
 from .avd_schema_tools import AvdSchemaTools
 from .constants import EOS_CLI_CONFIG_GEN_SCHEMA_ID
-from .vendor.eos_designs.get_structured_config import get_structured_config
-from .vendor.errors import AristaAvdError
 
 
 def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -> dict:
@@ -22,7 +20,12 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -
     Returns:
         Device Structured Configuration as a dictionary
     """
+    # pylint: disable=import-outside-toplevel
+    from .vendor.eos_designs.get_structured_config import get_structured_config
+    from .vendor.errors import AristaAvdError
 
+    # pylint: enable=import-outside-toplevel
+    #
     # Set 'inventory_hostname' on the input hostvars, to keep compatibility with Ansible focused code.
     # Also map in avd_facts without touching the hostvars
     mapped_hostvars = ChainMap(

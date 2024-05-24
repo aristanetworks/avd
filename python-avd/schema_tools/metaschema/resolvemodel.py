@@ -65,7 +65,7 @@ def walk_schema(schema: dict, path: list[str]) -> dict | None:
     """
     Paths the dictionary along the given path. Empty steps are ignored.
 
-    If the path is invalid it will return None, sso the calling function can raise an error with the original schema ref.
+    If the path is invalid it will return None, so the calling function can raise an error with the original schema ref.
     """
     if not path:
         return schema

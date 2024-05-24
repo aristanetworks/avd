@@ -58,6 +58,7 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 192.168.0.2/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 60
   isis_network_point_to_point: true
   isis_hello_padding: false
@@ -74,6 +75,7 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 192.168.0.4/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_hello_padding: true
@@ -88,6 +90,7 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 192.168.0.6/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_hello_padding: true
