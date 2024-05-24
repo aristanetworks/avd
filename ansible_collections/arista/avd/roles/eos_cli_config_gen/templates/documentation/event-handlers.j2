@@ -10,12 +10,31 @@
 
 #### Event Handler Summary
 
-| Handler | Action Type | Action | Trigger | Trigger Config |
-| ------- | ----------- | ------ | ------- | -------------- |
+| Handler | Actions | Trigger | Trigger Config |
+| ------- | ------- | ------- | -------------- |
 {%     for handler in event_handlers | arista.avd.natural_sort('name') %}
-{%         set action = handler.action | replace('|', '\|') %}
-{%         if handler.action_type == 'bash' %}
-{%             set action = '<code>' ~ action ~ '</code>' %}
+{%         if handler.action_type is arista.avd.defined %}
+{%             set actions = handler.action_type %}
+{%             if handler.action is arista.avd.defined %}
+{%                 set action = handler.action | replace('|', '\|') %}
+{%                 set actions = actions ~ ' <code>' ~ action ~ '</code>' %}
+{%             endif %}
+{%         endif %}
+{%         if handler.actions is arista.avd.defined %}
+{%             set actions = [] %}
+{%             if handler.actions.bash_command is arista.avd.defined %}
+{%                 set bash_command = handler.actions.bash_command | replace('\n', '\\n') | replace('|', '\|') %}
+{%                 set bash_command = '<code>' ~ bash_command ~ '</code>' %}
+{%                 set bash_command = "bash " ~ bash_command %}
+{%                 do actions.append(bash_command) %}
+{%             elif handler.actions.log is arista.avd.defined %}
+{%                 do actions.append("log") %}
+{%             endif %}
+{%             if handler.actions.increment_device_health_metric is arista.avd.defined %}
+{%                 set metric = "increment device health metric " ~ handler.actions.increment_device_health_metric %}
+{%                 do actions.append(metric) %}
+{%             endif %}
+{%             set actions = actions | join("<br>") %}
 {%         endif %}
 {%         if handler.trigger is arista.avd.defined("on-maintenance")
             and handler.trigger_on_maintenance.operation is arista.avd.defined
@@ -73,7 +92,7 @@
 {%                 endif %}
 {%             endif %}
 {%         endif %}
-| {{ handler.name }} | {{ handler.action_type }} | {{ action }} | {{ handler.trigger }} | {{ trigger_config | arista.avd.default("-") }} |
+| {{ handler.name }} | {{ actions | arista.avd.default("-") }} | {{ handler.trigger | arista.avd.default("-") }} | {{ trigger_config | arista.avd.default("-") }} |
 {%     endfor %}
 
 #### Event Handler Device Configuration

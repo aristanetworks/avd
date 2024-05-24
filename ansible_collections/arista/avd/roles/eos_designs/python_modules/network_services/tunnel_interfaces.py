@@ -21,9 +21,9 @@ class TunnelInterfacesMixin(UtilsMixin):
         """
         Return structured config for tunnel_interfaces
 
-        Only used for CV Pathfinder routers today
+        Only used for CV Pathfinder edge routers today
         """
-        if not self.shared_utils.is_cv_pathfinder_router:
+        if not self._filtered_internet_exit_policies:
             return None
 
         tunnel_interfaces = []
@@ -43,7 +43,7 @@ class TunnelInterfacesMixin(UtilsMixin):
                     }
 
                     if internet_exit_policy["type"] == "zscaler":
-                        tunnel_interface["nat_profile"] = "VRF-AWARE-NAT"
+                        tunnel_interface["nat_profile"] = self.get_internet_exit_nat_profile_name(internet_exit_policy["type"])
 
                     append_if_not_duplicate(
                         list_of_dicts=tunnel_interfaces,

@@ -314,7 +314,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice) -> dict:
         if internet_exit_policy.get("type") != "zscaler":
             LOGGER.info(
                 "deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '%s' with type '%s' for device: %s.",
-                internet_exit_policies.get("name"),
+                internet_exit_policy.get("name"),
                 internet_exit_policy.get("type"),
                 device.hostname,
             )

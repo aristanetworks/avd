@@ -122,13 +122,13 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
     "mocked_running_version, deprecated_version, expected_return",
     [
         pytest.param(
-            "2.14",
+            "2.16",
             False,
             True,
             id="valid ansible version",
         ),
         pytest.param(
-            "2.11.0",
+            "2.14.0",
             True,
             False,
             id="invalid ansible version",

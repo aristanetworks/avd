@@ -41,6 +41,16 @@ if TYPE_CHECKING:
     from grpclib.metadata import Deadline
 
 
+class ServiceName(aristaproto.Enum):
+    """ServiceName represents the name of the secure web gateway service"""
+
+    UNSPECIFIED = 0
+    """SERVICE_NAME_UNSPECIFIED indicates service name is unknown"""
+
+    ZSCALER = 1
+    """SERVICE_NAME_ZSCALER indicates service name as "zscaler"""
+
+
 @dataclass(eq=False, repr=False)
 class SwgKey(aristaproto.Message):
     """SwgKey identifies a device and a secure web gateway service"""
@@ -50,13 +60,8 @@ class SwgKey(aristaproto.Message):
     )
     """device_id is id of a device"""
 
-    service_name: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
-    """
-    service_name is the name of the SWG service.
-     Valid value is "zscaler"
-    """
+    service_name: "ServiceName" = aristaproto.enum_field(2)
+    """service_name is the name of the secure web gateway service."""
 
 
 @dataclass(eq=False, repr=False)
@@ -276,6 +281,57 @@ class EndpointConfigStreamResponse(aristaproto.Message):
      Under non-subscribe requests, this value should always be INITIAL. In a subscription,
      once all initial data is streamed and the client begins to receive modification updates,
      you should not see INITIAL again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class EndpointConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: List["EndpointConfig"] = aristaproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+     This requires all provided fields to be equal to the response.
+
+     While transparent to users, this field also allows services to optimize internal
+     subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+     If this field is populated, at least one of the two time fields are required.
+
+     For GetAll, the fields start and end can be used as follows:
+
+       * end: Returns the state of each EndpointConfig at end.
+         * Each EndpointConfig response is fully-specified (all fields set).
+       * start: Returns the state of each EndpointConfig at start, followed by updates until now.
+         * Each EndpointConfig response at start is fully-specified, but updates may be partial.
+       * start and end: Returns the state of each EndpointConfig at start, followed by updates
+         until end.
+         * Each EndpointConfig response at start is fully-specified, but updates until end may
+           be partial.
+
+     This field is not allowed in the Subscribe RPC.
+    """
+
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+     MaxMessages is required to be at least 1.
+     The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+     INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class EndpointConfigBatchedStreamResponse(aristaproto.Message):
+    responses: List["EndpointConfigStreamResponse"] = aristaproto.message_field(1)
+    """
+    Values are the values deemed relevant to the initiating request.
+     The length of this structure is guaranteed to be between (inclusive) 1 and
+     min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 
 
@@ -508,6 +564,57 @@ class EndpointStatusStreamResponse(aristaproto.Message):
     """
 
 
+@dataclass(eq=False, repr=False)
+class EndpointStatusBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: List["EndpointStatus"] = aristaproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+     This requires all provided fields to be equal to the response.
+
+     While transparent to users, this field also allows services to optimize internal
+     subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+     If this field is populated, at least one of the two time fields are required.
+
+     For GetAll, the fields start and end can be used as follows:
+
+       * end: Returns the state of each EndpointStatus at end.
+         * Each EndpointStatus response is fully-specified (all fields set).
+       * start: Returns the state of each EndpointStatus at start, followed by updates until now.
+         * Each EndpointStatus response at start is fully-specified, but updates may be partial.
+       * start and end: Returns the state of each EndpointStatus at start, followed by updates
+         until end.
+         * Each EndpointStatus response at start is fully-specified, but updates until end may
+           be partial.
+
+     This field is not allowed in the Subscribe RPC.
+    """
+
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+     MaxMessages is required to be at least 1.
+     The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+     INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class EndpointStatusBatchedStreamResponse(aristaproto.Message):
+    responses: List["EndpointStatusStreamResponse"] = aristaproto.message_field(1)
+    """
+    Values are the values deemed relevant to the initiating request.
+     The length of this structure is guaranteed to be between (inclusive) 1 and
+     min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
 class EndpointConfigServiceStub(aristaproto.ServiceStub):
     async def get_one(
         self,
@@ -703,6 +810,42 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         ):
             yield response
 
+    async def get_all_batched(
+        self,
+        endpoint_config_batched_stream_request: "EndpointConfigBatchedStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["EndpointConfigBatchedStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.swg.v1.EndpointConfigService/GetAllBatched",
+            endpoint_config_batched_stream_request,
+            EndpointConfigBatchedStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        endpoint_config_batched_stream_request: "EndpointConfigBatchedStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["EndpointConfigBatchedStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.swg.v1.EndpointConfigService/SubscribeBatched",
+            endpoint_config_batched_stream_request,
+            EndpointConfigBatchedStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
 
 class EndpointStatusServiceStub(aristaproto.ServiceStub):
     async def get_one(
@@ -811,6 +954,42 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         ):
             yield response
 
+    async def get_all_batched(
+        self,
+        endpoint_status_batched_stream_request: "EndpointStatusBatchedStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["EndpointStatusBatchedStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.swg.v1.EndpointStatusService/GetAllBatched",
+            endpoint_status_batched_stream_request,
+            EndpointStatusBatchedStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        endpoint_status_batched_stream_request: "EndpointStatusBatchedStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["EndpointStatusBatchedStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.swg.v1.EndpointStatusService/SubscribeBatched",
+            endpoint_status_batched_stream_request,
+            EndpointStatusBatchedStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
 
 class EndpointConfigServiceBase(ServiceBase):
 
@@ -867,6 +1046,18 @@ class EndpointConfigServiceBase(ServiceBase):
     async def delete_all(
         self, endpoint_config_delete_all_request: "EndpointConfigDeleteAllRequest"
     ) -> AsyncIterator["EndpointConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all_batched(
+        self,
+        endpoint_config_batched_stream_request: "EndpointConfigBatchedStreamRequest",
+    ) -> AsyncIterator["EndpointConfigBatchedStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def subscribe_batched(
+        self,
+        endpoint_config_batched_stream_request: "EndpointConfigBatchedStreamRequest",
+    ) -> AsyncIterator["EndpointConfigBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(
@@ -976,6 +1167,28 @@ class EndpointConfigServiceBase(ServiceBase):
             request,
         )
 
+    async def __rpc_get_all_batched(
+        self,
+        stream: "grpclib.server.Stream[EndpointConfigBatchedStreamRequest, EndpointConfigBatchedStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all_batched,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe_batched(
+        self,
+        stream: "grpclib.server.Stream[EndpointConfigBatchedStreamRequest, EndpointConfigBatchedStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe_batched,
+            stream,
+            request,
+        )
+
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
             "/arista.swg.v1.EndpointConfigService/GetOne": grpclib.const.Handler(
@@ -1044,6 +1257,18 @@ class EndpointConfigServiceBase(ServiceBase):
                 EndpointConfigDeleteAllRequest,
                 EndpointConfigDeleteAllResponse,
             ),
+            "/arista.swg.v1.EndpointConfigService/GetAllBatched": grpclib.const.Handler(
+                self.__rpc_get_all_batched,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                EndpointConfigBatchedStreamRequest,
+                EndpointConfigBatchedStreamResponse,
+            ),
+            "/arista.swg.v1.EndpointConfigService/SubscribeBatched": grpclib.const.Handler(
+                self.__rpc_subscribe_batched,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                EndpointConfigBatchedStreamRequest,
+                EndpointConfigBatchedStreamResponse,
+            ),
         }
 
 
@@ -1077,6 +1302,18 @@ class EndpointStatusServiceBase(ServiceBase):
     async def subscribe_meta(
         self, endpoint_status_stream_request: "EndpointStatusStreamRequest"
     ) -> AsyncIterator["MetaResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all_batched(
+        self,
+        endpoint_status_batched_stream_request: "EndpointStatusBatchedStreamRequest",
+    ) -> AsyncIterator["EndpointStatusBatchedStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def subscribe_batched(
+        self,
+        endpoint_status_batched_stream_request: "EndpointStatusBatchedStreamRequest",
+    ) -> AsyncIterator["EndpointStatusBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(
@@ -1137,6 +1374,28 @@ class EndpointStatusServiceBase(ServiceBase):
             request,
         )
 
+    async def __rpc_get_all_batched(
+        self,
+        stream: "grpclib.server.Stream[EndpointStatusBatchedStreamRequest, EndpointStatusBatchedStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all_batched,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe_batched(
+        self,
+        stream: "grpclib.server.Stream[EndpointStatusBatchedStreamRequest, EndpointStatusBatchedStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe_batched,
+            stream,
+            request,
+        )
+
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
             "/arista.swg.v1.EndpointStatusService/GetOne": grpclib.const.Handler(
@@ -1174,5 +1433,17 @@ class EndpointStatusServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_STREAM,
                 EndpointStatusStreamRequest,
                 MetaResponse,
+            ),
+            "/arista.swg.v1.EndpointStatusService/GetAllBatched": grpclib.const.Handler(
+                self.__rpc_get_all_batched,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                EndpointStatusBatchedStreamRequest,
+                EndpointStatusBatchedStreamResponse,
+            ),
+            "/arista.swg.v1.EndpointStatusService/SubscribeBatched": grpclib.const.Handler(
+                self.__rpc_subscribe_batched,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                EndpointStatusBatchedStreamRequest,
+                EndpointStatusBatchedStreamResponse,
             ),
         }
