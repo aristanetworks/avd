@@ -34743,6 +34743,11 @@
                           "^_.+$": {}
                         },
                         "title": "Bestpath"
+                      },
+                      "redistribute_internal": {
+                        "type": "boolean",
+                        "description": "Redistribute internal BGP routes.",
+                        "title": "Redistribute Internal"
                       }
                     },
                     "additionalProperties": false,
@@ -36565,6 +36570,21 @@
                         },
                         "title": "Networks"
                       },
+                      "bgp": {
+                        "type": "object",
+                        "properties": {
+                          "redistribute_internal": {
+                            "type": "boolean",
+                            "description": "Redistribute internal BGP routes.",
+                            "title": "Redistribute Internal"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "BGP"
+                      },
                       "peer_groups": {
                         "type": "array",
                         "items": {
@@ -37043,6 +37063,21 @@
                           ]
                         },
                         "title": "Networks"
+                      },
+                      "bgp": {
+                        "type": "object",
+                        "properties": {
+                          "redistribute_internal": {
+                            "type": "boolean",
+                            "description": "Redistribute internal BGP routes.",
+                            "title": "Redistribute Internal"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "BGP"
                       },
                       "peer_groups": {
                         "type": "array",

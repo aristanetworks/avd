@@ -150,6 +150,9 @@ keys:
             keys:
               d_path:
                 type: bool
+          redistribute_internal:
+            type: bool
+            description: Redistribute internal BGP routes.
       listen_ranges:
         type: list
         description: |
@@ -1210,6 +1213,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+          bgp:
+            type: dict
+            keys:
+              redistribute_internal:
+                type: bool
+                description: Redistribute internal BGP routes.
           peer_groups:
             type: list
             primary_key: name
@@ -1490,6 +1499,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+          bgp:
+            type: dict
+            keys:
+              redistribute_internal:
+                type: bool
+                description: Redistribute internal BGP routes.
           peer_groups:
             type: list
             primary_key: name
