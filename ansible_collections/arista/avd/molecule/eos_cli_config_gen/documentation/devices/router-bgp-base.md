@@ -58,6 +58,7 @@ ASN Notation: asplain
 | update wait-install |
 | no bgp default ipv4-unicast |
 | no bgp default ipv4-unicast transport ipv6 |
+| no bgp redistribute-internal |
 | distance bgp 20 200 200 |
 | maximum-paths 32 ecmp 32 |
 | bgp route-reflector preserve-attributes always |

@@ -54,6 +54,7 @@ ASN Notation: asplain
 | graceful-restart restart-time 300 |
 | graceful-restart |
 | maximum-paths 2 ecmp 2 |
+| no bgp redistribute-internal |
 
 #### Router BGP Peer Groups
 

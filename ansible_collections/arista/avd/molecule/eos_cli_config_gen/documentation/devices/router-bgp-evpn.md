@@ -55,6 +55,7 @@ ASN Notation: asplain
 | maximum-paths 2 ecmp 2 |
 | bgp default ipv4-unicast |
 | bgp default ipv4-unicast transport ipv6 |
+| no bgp redistribute-internal |
 
 #### Router BGP Peer Groups
 
