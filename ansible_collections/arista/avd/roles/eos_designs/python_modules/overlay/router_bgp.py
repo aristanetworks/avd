@@ -530,7 +530,8 @@ class RouterBgpMixin(UtilsMixin):
                         "update_source": "Dps1",
                         "route_reflector_client": True,
                         "send_community": "all",
-                        "route_map_in": "RM-WAN-HA-LOCAL-PREF-IN",
+                        "route_map_in": "RM-WAN-HA-PEER-IN",
+                        "route_map_out": "RM-WAN-HA-PEER-OUT",
                     }
                     neighbors.append(neighbor)
 

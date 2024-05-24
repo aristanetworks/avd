@@ -67,50 +67,50 @@ class RouteMapsMixin(UtilsMixin):
                     ],
                 }
             )
-            if not self.shared_utils.is_wan_router:
-                # For none WAN routers, setting the SOO on the outgoing EVPN routes
-                route_maps.append(
-                    {
-                        "name": "RM-EVPN-SOO-OUT",
-                        "sequence_numbers": [
-                            {
-                                "sequence": 10,
-                                "type": "permit",
-                                "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
-                            },
-                        ],
-                    }
-                )
-            else:
-                # For WAN routers, matching on the SOO to select routes to send over EVPN
-                route_maps.append(
-                    {
-                        "name": "RM-EVPN-SOO-OUT",
-                        "sequence_numbers": [
-                            {
-                                "sequence": 10,
-                                "type": "permit",
-                                "match": ["extcommunity ECL-EVPN-SOO"],
-                            },
-                        ],
-                    }
-                )
+
+            route_maps.append(
+                {
+                    "name": "RM-EVPN-SOO-OUT",
+                    "sequence_numbers": [
+                        {
+                            "sequence": 10,
+                            "type": "permit",
+                            "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                        },
+                    ],
+                }
+            )
+
             if self.shared_utils.wan_ha:
                 route_maps.append(
                     {
-                        "name": "RM-WAN-HA-LOCAL-PREF-IN",
+                        "name": "RM-WAN-HA-PEER-IN",
                         "sequence_numbers": [
                             {
                                 "sequence": 10,
                                 "type": "permit",
-                                "description": "Make EVPN routes originated from WAN HA peer less preferred and tag them",
-                                "set": ["local-preference 75", "tag 50"],
+                                "description": "Set tag 50 on routes received from HA peer over EVPN",
+                                "set": ["tag 50"],
+                            },
+                        ],
+                    }
+                )
+                route_maps.append(
+                    {
+                        "name": "RM-WAN-HA-PEER-OUT",
+                        "sequence_numbers": [
+                            {
+                                "sequence": 10,
+                                "type": "permit",
+                                "description": "Make EVPN routes received from WAN less preferred when sending them to peer.",
+                                "match": ["route-type internal"],
+                                "set": ["local-preference 50"],
                             },
                             {
                                 "sequence": 20,
                                 "type": "permit",
-                                "description": "Make EVPN routes received by WAN HA peer less preferred and tag them",
-                                "set": ["local-preference 50", "tag 50"],
+                                "description": "Make locally injected routes less preferred when sending them to peer over EVPN.",
+                                "set": ["local-preference 75"],
                             },
                         ],
                     }

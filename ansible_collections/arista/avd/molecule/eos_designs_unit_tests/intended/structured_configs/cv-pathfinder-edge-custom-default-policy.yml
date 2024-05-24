@@ -156,8 +156,8 @@ route_maps:
   sequence_numbers:
   - sequence: 10
     type: permit
-    match:
-    - extcommunity ECL-EVPN-SOO
+    set:
+    - extcommunity soo 192.168.42.1:1 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
