@@ -35342,25 +35342,17 @@
                           "type": "boolean",
                           "title": "Include Leaked"
                         },
-                        "ospf_match_internal": {
-                          "type": "boolean",
-                          "description": "OSPF routes learned from internal sources.",
-                          "title": "OSPF Match Internal"
-                        },
-                        "ospf_match_external": {
-                          "type": "boolean",
-                          "description": "OSPF routes learned from external sources.",
-                          "title": "OSPF Match External"
-                        },
-                        "ospf_match_nssa_external": {
+                        "ospf_route_type": {
                           "type": "string",
-                          "description": "OSPF routes learned from external NSSA sources.",
                           "enum": [
+                            "external",
+                            "internal",
                             "nssa-external",
                             "nssa-external 1",
                             "nssa-external 2"
                           ],
-                          "title": "OSPF Match Nssa External"
+                          "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                          "title": "OSPF Route Type"
                         }
                       },
                       "additionalProperties": false,
@@ -36515,25 +36507,17 @@
                               "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
                               "title": "RCF"
                             },
-                            "ospf_match_internal": {
-                              "type": "boolean",
-                              "description": "OSPF routes learned from internal sources.",
-                              "title": "OSPF Match Internal"
-                            },
-                            "ospf_match_external": {
-                              "type": "boolean",
-                              "description": "OSPF routes learned from external sources.",
-                              "title": "OSPF Match External"
-                            },
-                            "ospf_match_nssa_external": {
+                            "ospf_route_type": {
                               "type": "string",
-                              "description": "OSPF routes learned from external NSSA sources.",
                               "enum": [
+                                "external",
+                                "internal",
                                 "nssa-external",
                                 "nssa-external 1",
                                 "nssa-external 2"
                               ],
-                              "title": "OSPF Match Nssa External"
+                              "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                              "title": "OSPF Route Type"
                             }
                           },
                           "additionalProperties": false,
@@ -36648,25 +36632,17 @@
                               "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
                               "title": "RCF"
                             },
-                            "ospf_match_internal": {
-                              "type": "boolean",
-                              "description": "OSPF routes learned from internal sources.",
-                              "title": "OSPF Match Internal"
-                            },
-                            "ospf_match_external": {
-                              "type": "boolean",
-                              "description": "OSPF routes learned from external sources.",
-                              "title": "OSPF Match External"
-                            },
-                            "ospf_match_nssa_external": {
+                            "ospf_route_type": {
                               "type": "string",
-                              "description": "OSPF routes learned from external NSSA sources.",
                               "enum": [
+                                "external",
+                                "internal",
                                 "nssa-external",
                                 "nssa-external 1",
                                 "nssa-external 2"
                               ],
-                              "title": "OSPF Match Nssa External"
+                              "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                              "title": "OSPF Route Type"
                             }
                           },
                           "additionalProperties": false,
@@ -36925,25 +36901,17 @@
                               "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
                               "title": "RCF"
                             },
-                            "ospf_match_internal": {
-                              "type": "boolean",
-                              "description": "OSPF routes learned from internal sources.",
-                              "title": "OSPF Match Internal"
-                            },
-                            "ospf_match_external": {
-                              "type": "boolean",
-                              "description": "OSPF routes learned from external sources.",
-                              "title": "OSPF Match External"
-                            },
-                            "ospf_match_nssa_external": {
+                            "ospf_route_type": {
                               "type": "string",
-                              "description": "OSPF routes learned from external NSSA sources.",
                               "enum": [
+                                "external",
+                                "internal",
                                 "nssa-external",
                                 "nssa-external 1",
                                 "nssa-external 2"
                               ],
-                              "title": "OSPF Match Nssa External"
+                              "description": "The `ospf_route_type` is required with source_protocols 'ospfv3'.",
+                              "title": "OSPF Route Type"
                             }
                           },
                           "additionalProperties": false,
@@ -37132,25 +37100,17 @@
                               "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
                               "title": "RCF"
                             },
-                            "ospf_match_internal": {
-                              "type": "boolean",
-                              "description": "OSPF routes learned from internal sources.",
-                              "title": "OSPF Match Internal"
-                            },
-                            "ospf_match_external": {
-                              "type": "boolean",
-                              "description": "OSPF routes learned from external sources.",
-                              "title": "OSPF Match External"
-                            },
-                            "ospf_match_nssa_external": {
+                            "ospf_route_type": {
                               "type": "string",
-                              "description": "OSPF routes learned from external NSSA sources.",
                               "enum": [
+                                "external",
+                                "internal",
                                 "nssa-external",
                                 "nssa-external 1",
                                 "nssa-external 2"
                               ],
-                              "title": "OSPF Match Nssa External"
+                              "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                              "title": "OSPF Route Type"
                             }
                           },
                           "additionalProperties": false,
@@ -38711,25 +38671,17 @@
                                 "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
                                 "title": "RCF"
                               },
-                              "ospf_match_internal": {
-                                "type": "boolean",
-                                "description": "OSPF routes learned from internal sources.",
-                                "title": "OSPF Match Internal"
-                              },
-                              "ospf_match_external": {
-                                "type": "boolean",
-                                "description": "OSPF routes learned from external sources.",
-                                "title": "OSPF Match External"
-                              },
-                              "ospf_match_nssa_external": {
+                              "ospf_route_type": {
                                 "type": "string",
-                                "description": "OSPF routes learned from external NSSA sources.",
                                 "enum": [
+                                  "external",
+                                  "internal",
                                   "nssa-external",
                                   "nssa-external 1",
                                   "nssa-external 2"
                                 ],
-                                "title": "OSPF Match Nssa External"
+                                "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                                "title": "OSPF Route Type"
                               }
                             },
                             "additionalProperties": false,
@@ -39036,25 +38988,17 @@
                                     "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
                                     "title": "RCF"
                                   },
-                                  "ospf_match_internal": {
-                                    "type": "boolean",
-                                    "description": "OSPF routes learned from internal sources.",
-                                    "title": "OSPF Match Internal"
-                                  },
-                                  "ospf_match_external": {
-                                    "type": "boolean",
-                                    "description": "OSPF routes learned from external sources.",
-                                    "title": "OSPF Match External"
-                                  },
-                                  "ospf_match_nssa_external": {
+                                  "ospf_route_type": {
                                     "type": "string",
-                                    "description": "OSPF routes learned from external NSSA sources.",
                                     "enum": [
+                                      "external",
+                                      "internal",
                                       "nssa-external",
                                       "nssa-external 1",
                                       "nssa-external 2"
                                     ],
-                                    "title": "OSPF Match Nssa External"
+                                    "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                                    "title": "OSPF Route Type"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -39285,25 +39229,17 @@
                                     "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
                                     "title": "RCF"
                                   },
-                                  "ospf_match_internal": {
-                                    "type": "boolean",
-                                    "description": "OSPF routes learned from internal sources.",
-                                    "title": "OSPF Match Internal"
-                                  },
-                                  "ospf_match_external": {
-                                    "type": "boolean",
-                                    "description": "OSPF routes learned from external sources.",
-                                    "title": "OSPF Match External"
-                                  },
-                                  "ospf_match_nssa_external": {
+                                  "ospf_route_type": {
                                     "type": "string",
-                                    "description": "OSPF routes learned from external NSSA sources.",
                                     "enum": [
+                                      "external",
+                                      "internal",
                                       "nssa-external",
                                       "nssa-external 1",
                                       "nssa-external 2"
                                     ],
-                                    "title": "OSPF Match Nssa External"
+                                    "description": "The `ospf_route_type` is required with source_protocols 'ospfv3'.",
+                                    "title": "OSPF Route Type"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -39468,25 +39404,17 @@
                                     "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
                                     "title": "RCF"
                                   },
-                                  "ospf_match_internal": {
-                                    "type": "boolean",
-                                    "description": "OSPF routes learned from internal sources.",
-                                    "title": "OSPF Match Internal"
-                                  },
-                                  "ospf_match_external": {
-                                    "type": "boolean",
-                                    "description": "OSPF routes learned from external sources.",
-                                    "title": "OSPF Match External"
-                                  },
-                                  "ospf_match_nssa_external": {
+                                  "ospf_route_type": {
                                     "type": "string",
-                                    "description": "OSPF routes learned from external NSSA sources.",
                                     "enum": [
+                                      "external",
+                                      "internal",
                                       "nssa-external",
                                       "nssa-external 1",
                                       "nssa-external 2"
                                     ],
-                                    "title": "OSPF Match Nssa External"
+                                    "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                                    "title": "OSPF Route Type"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -39650,25 +39578,17 @@
                                     "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
                                     "title": "RCF"
                                   },
-                                  "ospf_match_internal": {
-                                    "type": "boolean",
-                                    "description": "OSPF routes learned from internal sources.",
-                                    "title": "OSPF Match Internal"
-                                  },
-                                  "ospf_match_external": {
-                                    "type": "boolean",
-                                    "description": "OSPF routes learned from external sources.",
-                                    "title": "OSPF Match External"
-                                  },
-                                  "ospf_match_nssa_external": {
+                                  "ospf_route_type": {
                                     "type": "string",
-                                    "description": "OSPF routes learned from external NSSA sources.",
                                     "enum": [
+                                      "external",
+                                      "internal",
                                       "nssa-external",
                                       "nssa-external 1",
                                       "nssa-external 2"
                                     ],
-                                    "title": "OSPF Match Nssa External"
+                                    "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                                    "title": "OSPF Route Type"
                                   }
                                 },
                                 "additionalProperties": false,
