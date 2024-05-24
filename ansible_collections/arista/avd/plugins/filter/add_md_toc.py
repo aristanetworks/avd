@@ -119,6 +119,8 @@ def add_md_toc(md_input, skip_lines=0, toc_levels=3, toc_marker="<!-- toc -->"):
     md_lines = md_input.split("\n")
     toc_marker_positions = []
     toc_lines = []
+
+    # all_anchor_ids is used to hold anchors for the full MD document even if we are skipping lines or levels for the TOC.
     all_anchor_ids = []
 
     # toc_level_offset ensures we start the TOC at the lowest level within the unskipped lines.
@@ -126,13 +128,20 @@ def add_md_toc(md_input, skip_lines=0, toc_levels=3, toc_marker="<!-- toc -->"):
 
     for line_num, line in enumerate(md_lines):
         if line == toc_marker:
+            # Register line number or the TOC marker.
             toc_marker_positions.append(line_num)
             continue
         if re.match(HEADING_PATTERN, line):
+            # This is a heading.
+            # First get info for this line, including building an anchor and adding this anchor to all_anchor_ids.
+            # This is important, since skipped headings will still be associated with an anchor-id during parsing of the final MarkDown file.
             level, text, anchor_id = _get_line_info(line, all_anchor_ids)
+
+            # Do not create a TOC line if we are skipping or at a deeper level than we want.
             if line_num < skip_lines or level > toc_levels:
                 continue
 
+            # Create the TOC line
             toc_level_offset = min(toc_level_offset, level)
             prefix = ("  " * (level - toc_level_offset)) + "- "
             toc_lines.append(f"{prefix}[{text}](#{anchor_id})")
@@ -159,7 +168,8 @@ def _get_line_info(line, all_anchor_ids):
 
 def _get_anchor_id(text, all_anchor_ids):
     """
-    Construct unique anchor_id.
+    Returns a unique anchor_id after adding it to 'all_anchor_ids'.
+    The logic here follow the auto-id generation algorithm of the MarkDown spec.
     """
     tmp_anchor_id = normalize("NFKD", text).encode("ascii", "ignore")
     tmp_anchor_id = re.sub(r"[^\w\s-]", "", tmp_anchor_id.decode("ascii")).strip().lower()
