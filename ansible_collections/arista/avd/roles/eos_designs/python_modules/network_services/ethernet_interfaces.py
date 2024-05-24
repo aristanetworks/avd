@@ -27,7 +27,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         Only used with L3 or L1 network services
         """
 
-        if not (self.shared_utils.network_services_l3 or self.shared_utils.network_services_l1):
+        if not (self.shared_utils.network_services_l3 or self.shared_utils.network_services_l1 or self.shared_utils.l3_interfaces):
             return None
 
         # Using temp variables to keep the order of interfaces from Jinja
@@ -251,6 +251,19 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "shutdown": False,
                     }
                 )
+
+        for internet_exit_policy in self._filtered_internet_exit_policies:
+            for connection in internet_exit_policy.get("connections", []):
+                if connection["type"] == "ethernet":
+                    ethernet_interfaces.append(
+                        {
+                            "name": connection["source_interface"],
+                            "ip_nat": {
+                                "service_profile": self.get_internet_exit_nat_profile_name(internet_exit_policy["type"]),
+                            },
+                        }
+                    )
+
         if ethernet_interfaces:
             return ethernet_interfaces
 
