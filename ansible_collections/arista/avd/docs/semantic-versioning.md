@@ -29,7 +29,7 @@ Inputs:
 Outputs:
 
 - eos_designs `structured_configuration` may change between minor releases.
-  - Structure config can change to use new keys when keys are deprecated in the eos_cli_config_gen role.
+  - Structured configuration can change to use new keys when keys are deprecated in the `eos_cli_config_gen` role.
   - The resulting EOS CLI configuration generated from eos_cli_config_gen will be maintained, unless in rare cases when addressing a bug.
   - Breaking changes will be communicated in the release notes.
 - Fabric documentation artifacts may change between minor releases.
