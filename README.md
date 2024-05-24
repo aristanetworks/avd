@@ -89,4 +89,6 @@ You can also open an [issue](https://github.com/aristanetworks/avd/issues) to re
 
 ## License
 
+Copyright (c) 2019-2024 Arista Networks, Inc.
+
 The project is published under [Apache 2.0 License](LICENSE)
