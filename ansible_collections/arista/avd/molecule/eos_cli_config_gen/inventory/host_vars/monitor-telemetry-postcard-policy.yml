@@ -11,6 +11,7 @@ monitor_telemetry_postcard_policy:
         value: 65000
         mask: "0xffff"
   marker_vxlan:
+    enabled: true
     header_word_zero_bit: 30
   profiles:
     - name: profile1
