@@ -21,11 +21,10 @@ AVD Documentation:
 
 The AVD collection has the following requirements:
 
-- Python 3.9+
-- Ansible Core 2.14.0 to 2.16.x
-- Install the arista.avd collection
-- [Additional Python packages](#additional-python-dependencies)
-- Modify the `ansible.cfg` file to support additional jinja2 extensions
+- Python 3.9 or above
+- Ansible Core 2.15.0 to 2.17.x
+- [Additional Python Dependencies](#additional-python-dependencies)
+- Modify the `ansible.cfg` file to support additional Jinja2 extensions
 
 ## Installations
 
@@ -35,7 +34,7 @@ Before using this collection, you need to install it with the Ansible Galaxy com
 ansible-galaxy collection install arista.avd
 ```
 
-You can also include it in a requirements.yml file and install it with ansible-galaxy collection install -r requirements.yml, using the format:
+You can also include it in a `requirements.yml` file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
 
 ```yaml
 collections:
@@ -67,25 +66,26 @@ export ARISTA_AVD_DIR=$(ansible-galaxy collection list arista.avd --format yaml 
 pip3 install -r ${ARISTA_AVD_DIR}/arista/avd/requirements.txt
 ```
 
-### Enable jinja2 extensions
+### Enable Jinja2 Extensions
 
 In your `ansible.cfg` file, add the following modifications:
 
-```shell
+```ini
+[defaults]
 jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
 duplicate_dict_key=error
 ```
 
 ## Use Cases
 
-Please see the official documentation for examples in data center, campus, and WAN environments.
+Please see the documentation for examples in data center, campus, and wide area network environments.
 
 - [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
-- [Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
+- [Examples](https://avd.arista.com/stable/examples/single-dc-l3ls/index.html)
 
 ### Testing
 
-Please see our [pipeline workflows](https://github.com/aristanetworks/avd/actions) to view the in-depth testing performed against the collection.
+Every pull request is thoroughly tested by our extensive CI pipeline and reviewed by the AVD Maintainer team.
 
 ## Contributing
 
@@ -95,15 +95,16 @@ You can also open an [issue](https://github.com/aristanetworks/avd/issues) to re
 
 ## Support
 
-Support for this `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions).
+- AVD version 4.x releases with full support from Arista TAC. If your organization has the [A-Care subscription](https://www.arista.com/assets/data/pdf/AVD-A-Care-TAC-Support-Overview.pdf) please don't hesitate to contact TAC with any questions or issues.
+- Community support is provided via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ## Release Notes and Roadmap
 
-Please see the [release notes](https://github.com/aristanetworks/avd/releases) for the latest updates to the AVD collection.
+Please see the [release notes](https://avd.arista.com) for the latest updates to the AVD collection.
 
 ## Related Information
 
-- [Official arista.avd documentation](https://avd.arista.com)
+- [arista.avd documentation](https://avd.arista.com)
 - [Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## License Information
