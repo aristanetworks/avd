@@ -19,7 +19,6 @@ from .groupby import groupby
 from .load_python_class import load_python_class
 from .log_message import log_message
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
-from .range_expand import range_expand
 from .replace_or_append_item import replace_or_append_item
 from .template import template
 from .template_var import template_var
@@ -43,7 +42,6 @@ __all__ = [
     "groupby",
     "load_python_class",
     "log_message",
-    "range_expand",
     "replace_or_append_item",
     "template",
     "template_var",

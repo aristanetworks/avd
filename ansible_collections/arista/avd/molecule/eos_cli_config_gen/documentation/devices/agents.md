@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Management](#management)
-  - [Agents](#agents)
+  - [Agents](#agents-1)
   - [Management Interfaces](#management-interfaces)
 
 ## Management

@@ -24,10 +24,34 @@ keys:
         action_type:
           type: str
           valid_values: ["bash", "increment", "log"]
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handlers.actions
         action:
           type: str
           description: |
             Command to execute.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handlers.actions
+        actions:
+          type: dict
+          description: |-
+            Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.
+          keys:
+            bash_command:
+              type: str
+              description: Define BASH command action. Command could be multiline also.
+            log:
+              type: bool
+              description: Log a message when the event is triggered.
+            increment_device_health_metric:
+              type: str
+              description: Name of device-health metric.
         delay:
           type: int
           convert_types:

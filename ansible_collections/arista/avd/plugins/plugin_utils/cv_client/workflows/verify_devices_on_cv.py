@@ -126,7 +126,7 @@ async def verify_devices_in_topology_studio(existing_devices: list[CVDevice], wo
     )
     LOGGER.info("verify_devices_in_topology_studio: %s unique devices for %s device objects.", len(existing_device_tuples), len(existing_devices))
     LOGGER.info("verify_devices_in_topology_studio: got %s devices from I&T Studio.", len(cv_topology_inputs))
-    topology_inputs_dict_by_serial = {topology_input.key.device_id: topology_input for topology_input in cv_topology_inputs}
+    topology_inputs_dict_by_serial = {topology_input["device_id"]: topology_input for topology_input in cv_topology_inputs}
 
     # List of tuples holding the info we need to update in I&T Studio
     # [(<device_id>, <hostname>, <system_mac>)]
@@ -136,8 +136,8 @@ async def verify_devices_in_topology_studio(existing_devices: list[CVDevice], wo
         if serial_number not in topology_inputs_dict_by_serial:
             update_topology_inputs.append((serial_number, hostname, system_mac_address))
         elif (
-            hostname != topology_inputs_dict_by_serial[serial_number].device_info.hostname
-            or system_mac_address != topology_inputs_dict_by_serial[serial_number].device_info.mac_address
+            hostname != topology_inputs_dict_by_serial[serial_number]["hostname"]
+            or system_mac_address != topology_inputs_dict_by_serial[serial_number]["mac_address"]
         ):
             update_topology_inputs.append((serial_number, hostname, system_mac_address))
 

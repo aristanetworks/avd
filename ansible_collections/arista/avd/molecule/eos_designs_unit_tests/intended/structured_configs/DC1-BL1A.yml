@@ -318,8 +318,8 @@ vlan_internal_order:
     ending: 1199
 event_handlers:
 - name: evpn-blacklist-recovery
-  action_type: bash
-  action: FastCli -p 15 -c "clear bgp evpn host-flap"
+  actions:
+    bash_command: FastCli -p 15 -c "clear bgp evpn host-flap"
   delay: 300
   trigger: on-logging
   trigger_on_logging:

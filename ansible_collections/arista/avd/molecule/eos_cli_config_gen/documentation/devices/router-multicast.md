@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Multicast](#multicast)
-  - [Router Multicast](#router-multicast)
+  - [Router Multicast](#router-multicast-1)
 
 ## Management
 

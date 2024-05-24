@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [IP DHCP Snooping](#ip-dhcp-snooping)
+- [IP DHCP Snooping](#ip-dhcp-snooping-1)
   - [IP DHCP Snooping Device Configuration](#ip-dhcp-snooping-device-configuration)
 
 ## Management

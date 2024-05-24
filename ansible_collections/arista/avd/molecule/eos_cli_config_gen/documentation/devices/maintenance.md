@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Maintenance Mode](#maintenance-mode)
-  - [Maintenance](#maintenance)
+  - [Maintenance](#maintenance-1)
 
 ## Management
 

@@ -6,7 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
   - [Switchport Default](#switchport-default)
-  - [Interface Defaults](#interface-defaults)
+  - [Interface Defaults](#interface-defaults-1)
 
 ## Management
 

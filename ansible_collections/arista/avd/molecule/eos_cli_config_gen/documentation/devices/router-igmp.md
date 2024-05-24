@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Multicast](#multicast)
-  - [Router IGMP](#router-igmp)
+  - [Router IGMP](#router-igmp-1)
 
 ## Management
 
