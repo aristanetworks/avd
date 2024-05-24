@@ -1667,17 +1667,17 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | True |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected |
+| ------ | ------------------- | ------------ | --- | ------------------- |
+| - | - | - | True | - |
 
 ##### Profile A2
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | - |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected |
+| ------ | ------------------- | ------------ | --- | ------------------- |
+| - | - | - | - | - |
 
 ###### Keys
 

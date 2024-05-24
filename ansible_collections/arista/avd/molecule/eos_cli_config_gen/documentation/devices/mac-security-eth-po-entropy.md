@@ -140,9 +140,9 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| aes128-gcm | 100 | 30 | True |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected |
+| ------ | ------------------- | ------------ | --- | ------------------- |
+| aes128-gcm | 100 | 30 | True | allow |
 
 ###### Keys
 
@@ -161,9 +161,9 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | - |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected |
+| ------ | ------------------- | ------------ | --- | ------------------- |
+| - | - | - | - | allow active-sak |
 
 ###### Keys
 
@@ -175,9 +175,9 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| aes256-gcm-xpn | - | - | - |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected |
+| ------ | ------------------- | ------------ | --- | ------------------- |
+| aes256-gcm-xpn | - | - | - | drop |
 
 ###### Keys
 
@@ -208,4 +208,5 @@ mac security
    profile A3
       cipher aes256-gcm-xpn
       key ab 7 <removed>
+      traffic unprotected drop
 ```

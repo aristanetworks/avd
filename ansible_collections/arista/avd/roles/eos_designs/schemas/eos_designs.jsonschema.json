@@ -26903,30 +26903,24 @@
                         "traffic_unprotected": {
                           "type": "object",
                           "properties": {
-                            "allow": {
-                              "type": "object",
-                              "description": "Allow transmit/receive of unprotected traffic.",
-                              "properties": {
-                                "enabled": {
-                                  "type": "boolean",
-                                  "title": "Enabled"
-                                },
-                                "active_sak": {
-                                  "type": "boolean",
-                                  "description": "Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.",
-                                  "title": "Active Sak"
-                                }
-                              },
-                              "required": [
-                                "enabled"
+                            "action": {
+                              "type": "string",
+                              "description": "Allow/drop the transmit/receive of unprotected traffic.",
+                              "enum": [
+                                "allow",
+                                "drop"
                               ],
-                              "additionalProperties": false,
-                              "patternProperties": {
-                                "^_.+$": {}
-                              },
-                              "title": "Allow"
+                              "title": "Action"
+                            },
+                            "allow_active_sak": {
+                              "type": "boolean",
+                              "description": "Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.",
+                              "title": "Allow Active Sak"
                             }
                           },
+                          "required": [
+                            "action"
+                          ],
                           "additionalProperties": false,
                           "patternProperties": {
                             "^_.+$": {}
