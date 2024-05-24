@@ -32,9 +32,23 @@ dhcp_servers:
         default_gateway: 10.0.0.1
 
   - vrf: default
+    dns_servers_ipv4:
+      - 10.0.0.1
+      - 192.168.255.254
+    dns_servers_ipv6:
+      - 2001:db8::1
+      - 2001:db8::2
+    tftp_server:
+      file_ipv4: "https://www.arista.io/ztp/bootstrap"
+      file_ipv6: "https://2001:0db8:fe/ztp/bootstrap"
     subnets:
       - subnet: 10.2.3.0/24
       - subnet: 2a00:2::/64
+    ipv4_vendor_options:
+      - vendor_id: NTP
+        sub_options:
+          - code: 42
+            ipv4_address: "10.1.1.1"
 
   - vrf: VRF01
     subnets:

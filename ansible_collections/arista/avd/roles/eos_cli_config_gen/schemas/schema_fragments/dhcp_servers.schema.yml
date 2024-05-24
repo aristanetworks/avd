@@ -23,6 +23,35 @@ keys:
           type: str
         dns_domain_name_ipv6:
           type: str
+        dns_servers_ipv4:
+          type: list
+          min_length: 1
+          description: List of DNS servers for IPv4 clients.
+          items:
+            type: str
+            required: true
+            description: IPv4 address of DNS server.
+        dns_servers_ipv6:
+          type: list
+          min_length: 1
+          description: List of DNS servers for IPv6 clients.
+          items:
+            type: str
+            required: true
+            description: IPv6 address of DNS server.
+        tftp_server:
+          type: dict
+          keys:
+            file_ipv4:
+              type: str
+              min_length: 1
+              max_length: 255
+              description: Name of TFTP file for IPv4 clients.
+            file_ipv6:
+              type: str
+              min_length: 1
+              max_length: 255
+              description: Name of TFTP file for IPv6 clients.
         ipv4_vendor_options:
           type: list
           primary_key: vendor_id
