@@ -419,14 +419,8 @@ router bgp {{ router_bgp.as }}
 {%         if redistribute_route.source_protocol is arista.avd.defined %}
 {%             set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%             if redistribute_route.source_protocol in ["ospf", "ospfv3"] %}
-{%                 if redistribute_route.ospf_match_internal is arista.avd.defined %}
-{%                     set redistribute_route_cli = redistribute_route_cli ~ " match internal" %}
-{%                 endif %}
-{%                 if redistribute_route.ospf_match_external is arista.avd.defined %}
-{%                     set redistribute_route_cli = redistribute_route_cli ~ " match external" %}
-{%                 endif %}
-{%                 if redistribute_route.ospf_match_nssa_external is arista.avd.defined %}
-{%                     set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_match_nssa_external %}
+{%                 if redistribute_route.ospf_route_type is arista.avd.defined %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                 endif %}
 {%             endif %}
 {%             if redistribute_route.source_protocol == "bgp" %}
@@ -871,14 +865,8 @@ router bgp {{ router_bgp.as }}
 {%             if redistribute_route.source_protocol is arista.avd.defined %}
 {%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%                 if redistribute_route.source_protocol in ["ospf", "ospfv3"] %}
-{%                     if redistribute_route.ospf_match_internal is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match internal" %}
-{%                     endif %}
-{%                     if redistribute_route.ospf_match_external is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match external" %}
-{%                     endif %}
-{%                     if redistribute_route.ospf_match_nssa_external is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_match_nssa_external %}
+{%                     if redistribute_route.ospf_route_type is arista.avd.defined %}
+{%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                     endif %}
 {%                 endif %}
 {%                 if redistribute_route.source_protocol == "bgp" %}
@@ -931,14 +919,8 @@ router bgp {{ router_bgp.as }}
 {%             if redistribute_route.source_protocol is arista.avd.defined %}
 {%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%                 if redistribute_route.source_protocol in ["ospf", "ospfv3"] %}
-{%                     if redistribute_route.ospf_match_internal is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match internal" %}
-{%                     endif %}
-{%                     if redistribute_route.ospf_match_external is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match external" %}
-{%                     endif %}
-{%                     if redistribute_route.ospf_match_nssa_external is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_match_nssa_external %}
+{%                     if redistribute_route.ospf_route_type is arista.avd.defined %}
+{%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                     endif %}
 {%                 endif %}
 {%                 if redistribute_route.include_leaked is arista.avd.defined and redistribute_route.source_protocol == "isis" %}
@@ -1049,14 +1031,8 @@ router bgp {{ router_bgp.as }}
 {%             if redistribute_route.source_protocol is arista.avd.defined %}
 {%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%                 if redistribute_route.source_protocol == "ospfv3" %}
-{%                     if redistribute_route.ospf_match_internal is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match internal" %}
-{%                     endif %}
-{%                     if redistribute_route.ospf_match_external is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match external" %}
-{%                     endif %}
-{%                     if redistribute_route.ospf_match_nssa_external is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_match_nssa_external %}
+{%                     if redistribute_route.ospf_route_type is arista.avd.defined %}
+{%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                     endif %}
 {%                 endif %}
 {%                 if redistribute_route.source_protocol == "bgp" %}
@@ -1117,14 +1093,8 @@ router bgp {{ router_bgp.as }}
 {%             if redistribute_route.source_protocol is arista.avd.defined %}
 {%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%                 if redistribute_route.source_protocol in ["ospf", "ospfv3"] %}
-{%                     if redistribute_route.ospf_match_internal is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match internal" %}
-{%                     endif %}
-{%                     if redistribute_route.ospf_match_external is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match external" %}
-{%                     endif %}
-{%                     if redistribute_route.ospf_match_nssa_external is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_match_nssa_external %}
+{%                     if redistribute_route.ospf_route_type is arista.avd.defined %}
+{%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                     endif %}
 {%                 endif %}
 {%                 if redistribute_route.include_leaked is arista.avd.defined and redistribute_route.source_protocol == "isis" %}
@@ -1659,14 +1629,8 @@ router bgp {{ router_bgp.as }}
 {%             if redistribute_route.source_protocol is arista.avd.defined %}
 {%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%                 if redistribute_route.source_protocol in ["ospf", "ospfv3"] %}
-{%                     if redistribute_route.ospf_match_internal is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match internal" %}
-{%                     endif %}
-{%                     if redistribute_route.ospf_match_external is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match external" %}
-{%                     endif %}
-{%                     if redistribute_route.ospf_match_nssa_external is arista.avd.defined %}
-{%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_match_nssa_external %}
+{%                     if redistribute_route.ospf_route_type is arista.avd.defined %}
+{%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                     endif %}
 {%                 endif %}
 {%                 if redistribute_route.source_protocol == "bgp" %}
@@ -1806,14 +1770,8 @@ router bgp {{ router_bgp.as }}
 {%                 if redistribute_route.source_protocol is arista.avd.defined %}
 {%                     set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%                     if redistribute_route.source_protocol in ["ospf", "ospfv3"] %}
-{%                         if redistribute_route.ospf_match_internal is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match internal" %}
-{%                         endif %}
-{%                         if redistribute_route.ospf_match_external is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match external" %}
-{%                         endif %}
-{%                         if redistribute_route.ospf_match_nssa_external is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_match_nssa_external %}
+{%                         if redistribute_route.ospf_route_type is arista.avd.defined %}
+{%                             set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                         endif %}
 {%                     endif %}
 {%                     if redistribute_route.source_protocol == "bgp" %}
@@ -1866,14 +1824,8 @@ router bgp {{ router_bgp.as }}
 {%                 if redistribute_route.source_protocol is arista.avd.defined %}
 {%                     set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%                     if redistribute_route.source_protocol in ["ospf", "ospfv3"] %}
-{%                         if redistribute_route.ospf_match_internal is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match internal" %}
-{%                         endif %}
-{%                         if redistribute_route.ospf_match_external is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match external" %}
-{%                         endif %}
-{%                         if redistribute_route.ospf_match_nssa_external is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_match_nssa_external %}
+{%                         if redistribute_route.ospf_route_type is arista.avd.defined %}
+{%                             set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                         endif %}
 {%                     endif %}
 {%                     if redistribute_route.include_leaked is arista.avd.defined and redistribute_route.source_protocol == "isis" %}
@@ -1952,14 +1904,8 @@ router bgp {{ router_bgp.as }}
 {%                 if redistribute_route.source_protocol is arista.avd.defined %}
 {%                     set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%                     if redistribute_route.source_protocol == "ospfv3" %}
-{%                         if redistribute_route.ospf_match_internal is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match internal" %}
-{%                         endif %}
-{%                         if redistribute_route.ospf_match_external is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match external" %}
-{%                         endif %}
-{%                         if redistribute_route.ospf_match_nssa_external is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_match_nssa_external %}
+{%                         if redistribute_route.ospf_route_type is arista.avd.defined %}
+{%                             set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                         endif %}
 {%                     endif %}
 {%                     if redistribute_route.source_protocol == "bgp" %}
@@ -2012,14 +1958,8 @@ router bgp {{ router_bgp.as }}
 {%                 if redistribute_route.source_protocol is arista.avd.defined %}
 {%                     set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%                     if redistribute_route.source_protocol in ["ospf", "ospfv3"] %}
-{%                         if redistribute_route.ospf_match_internal is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match internal" %}
-{%                         endif %}
-{%                         if redistribute_route.ospf_match_external is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match external" %}
-{%                         endif %}
-{%                         if redistribute_route.ospf_match_nssa_external is arista.avd.defined %}
-{%                             set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_match_nssa_external %}
+{%                         if redistribute_route.ospf_route_type is arista.avd.defined %}
+{%                             set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                         endif %}
 {%                     endif %}
 {%                     if redistribute_route.include_leaked is arista.avd.defined and redistribute_route.source_protocol == "isis" %}

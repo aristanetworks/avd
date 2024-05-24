@@ -701,19 +701,15 @@ keys:
                 Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
             include_leaked:
               type: bool
-            ospf_match_internal:
-              type: bool
-              description: OSPF routes learned from internal sources.
-            ospf_match_external:
-              type: bool
-              description: OSPF routes learned from external sources.
-            ospf_match_nssa_external:
+            ospf_route_type:
               type: str
-              description: OSPF routes learned from external NSSA sources.
               valid_values:
+                - "external"
+                - "internal"
                 - "nssa-external"
                 - "nssa-external 1"
                 - "nssa-external 2"
+              description: The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -1346,19 +1342,15 @@ keys:
                     Example: MyFunction(myarg).
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                     Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
-                ospf_match_internal:
-                  type: bool
-                  description: OSPF routes learned from internal sources.
-                ospf_match_external:
-                  type: bool
-                  description: OSPF routes learned from external sources.
-                ospf_match_nssa_external:
+                ospf_route_type:
                   type: str
-                  description: OSPF routes learned from external NSSA sources.
                   valid_values:
+                    - "external"
+                    - "internal"
                     - "nssa-external"
                     - "nssa-external 1"
                     - "nssa-external 2"
+                  description: The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.
       address_family_ipv4_multicast:
         type: dict
         keys:
@@ -1430,19 +1422,15 @@ keys:
                     Example: MyFunction(myarg).
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                     Only applicable if `source_protocol` is `isis`.
-                ospf_match_internal:
-                  type: bool
-                  description: OSPF routes learned from internal sources.
-                ospf_match_external:
-                  type: bool
-                  description: OSPF routes learned from external sources.
-                ospf_match_nssa_external:
+                ospf_route_type:
                   type: str
-                  description: OSPF routes learned from external NSSA sources.
                   valid_values:
+                    - "external"
+                    - "internal"
                     - "nssa-external"
                     - "nssa-external 1"
                     - "nssa-external 2"
+                  description: The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.
       address_family_ipv4_sr_te:
         type: dict
         keys:
@@ -1598,19 +1586,15 @@ keys:
                     Example: MyFunction(myarg).
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                     Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
-                ospf_match_internal:
-                  type: bool
-                  description: OSPF routes learned from internal sources.
-                ospf_match_external:
-                  type: bool
-                  description: OSPF routes learned from external sources.
-                ospf_match_nssa_external:
+                ospf_route_type:
                   type: str
-                  description: OSPF routes learned from external NSSA sources.
                   valid_values:
+                    - "external"
+                    - "internal"
                     - "nssa-external"
                     - "nssa-external 1"
                     - "nssa-external 2"
+                  description: The `ospf_route_type` is required with source_protocols 'ospfv3'.
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -1710,19 +1694,15 @@ keys:
                     Example: MyFunction(myarg).
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                     Only applicable if `source_protocol` is `isis`.
-                ospf_match_internal:
-                  type: bool
-                  description: OSPF routes learned from internal sources.
-                ospf_match_external:
-                  type: bool
-                  description: OSPF routes learned from external sources.
-                ospf_match_nssa_external:
+                ospf_route_type:
                   type: str
-                  description: OSPF routes learned from external NSSA sources.
                   valid_values:
+                    - "external"
+                    - "internal"
                     - "nssa-external"
                     - "nssa-external 1"
                     - "nssa-external 2"
+                  description: The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.
       address_family_ipv6_sr_te:
         type: dict
         keys:
@@ -2593,19 +2573,15 @@ keys:
                       Example: MyFunction(myarg).
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                       Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
-                  ospf_match_internal:
-                    type: bool
-                    description: OSPF routes learned from internal sources.
-                  ospf_match_external:
-                    type: bool
-                    description: OSPF routes learned from external sources.
-                  ospf_match_nssa_external:
+                  ospf_route_type:
                     type: str
-                    description: OSPF routes learned from external NSSA sources.
                     valid_values:
+                      - "external"
+                      - "internal"
                       - "nssa-external"
                       - "nssa-external 1"
                       - "nssa-external 2"
+                    description: The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.
             aggregate_addresses:
               type: list
               primary_key: prefix
@@ -2777,19 +2753,15 @@ keys:
                           Example: MyFunction(myarg).
                           `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                           Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
-                      ospf_match_internal:
-                        type: bool
-                        description: OSPF routes learned from internal sources.
-                      ospf_match_external:
-                        type: bool
-                        description: OSPF routes learned from external sources.
-                      ospf_match_nssa_external:
+                      ospf_route_type:
                         type: str
-                        description: OSPF routes learned from external NSSA sources.
                         valid_values:
+                          - "external"
+                          - "internal"
                           - "nssa-external"
                           - "nssa-external 1"
                           - "nssa-external 2"
+                        description: The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.
             address_family_ipv6:
               type: dict
               keys:
@@ -2922,19 +2894,15 @@ keys:
                           Example: MyFunction(myarg).
                           `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                           Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
-                      ospf_match_internal:
-                        type: bool
-                        description: OSPF routes learned from internal sources.
-                      ospf_match_external:
-                        type: bool
-                        description: OSPF routes learned from external sources.
-                      ospf_match_nssa_external:
+                      ospf_route_type:
                         type: str
-                        description: OSPF routes learned from external NSSA sources.
                         valid_values:
+                          - "external"
+                          - "internal"
                           - "nssa-external"
                           - "nssa-external 1"
                           - "nssa-external 2"
+                        description: The `ospf_route_type` is required with source_protocols 'ospfv3'.
             address_family_ipv4_multicast:
               type: dict
               keys:
@@ -3022,19 +2990,15 @@ keys:
                           Example: MyFunction(myarg).
                           `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                           Only applicable if `source_protocol` is `isis`.
-                      ospf_match_internal:
-                        type: bool
-                        description: OSPF routes learned from internal sources.
-                      ospf_match_external:
-                        type: bool
-                        description: OSPF routes learned from external sources.
-                      ospf_match_nssa_external:
+                      ospf_route_type:
                         type: str
-                        description: OSPF routes learned from external NSSA sources.
                         valid_values:
+                          - "external"
+                          - "internal"
                           - "nssa-external"
                           - "nssa-external 1"
                           - "nssa-external 2"
+                        description: The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.
             address_family_ipv6_multicast:
               type: dict
               keys:
@@ -3121,19 +3085,15 @@ keys:
                           Example: MyFunction(myarg).
                           `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                           Only applicable if `source_protocol` is `isis`.
-                      ospf_match_internal:
-                        type: bool
-                        description: OSPF routes learned from internal sources.
-                      ospf_match_external:
-                        type: bool
-                        description: OSPF routes learned from external sources.
-                      ospf_match_nssa_external:
+                      ospf_route_type:
                         type: str
-                        description: OSPF routes learned from external NSSA sources.
                         valid_values:
+                          - "external"
+                          - "internal"
                           - "nssa-external"
                           - "nssa-external 1"
                           - "nssa-external 2"
+                        description: The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.
             address_family_flow_spec_ipv4:
               type: dict
               keys:

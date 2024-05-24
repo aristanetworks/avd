@@ -99,11 +99,11 @@ router_bgp:
         activate: true
     redistribute_routes:
       - source_protocol: ospf
-        ospf_match_external: true
+        ospf_route_type: external
       - source_protocol: ospf
-        ospf_match_internal: true
+        ospf_route_type: internal
       - source_protocol: ospf
-        ospf_match_nssa_external: nssa-external 2
+        ospf_route_type: nssa-external 2
       - source_protocol: attached-host
       - source_protocol: isis
         rcf: Router_BGP_Isis()
@@ -170,11 +170,11 @@ router_bgp:
       redistribute_routes:
         - source_protocol: ospf
           include_leaked: true
-          ospf_match_external: true
+          ospf_route_type: external
         - source_protocol: ospfv3
-          ospf_match_internal: true
+          ospf_route_type: internal
         - source_protocol: ospfv3
-          ospf_match_nssa_external: nssa-external
+          ospf_route_type: nssa-external
         - source_protocol: connected
     - name: Tenant_B
       rd: "10.50.64.15:30002"
