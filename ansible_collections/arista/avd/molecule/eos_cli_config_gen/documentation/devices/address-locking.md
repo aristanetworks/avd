@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Address Locking](#address-locking)
+- [Address Locking](#address-locking-1)
   - [Address Locking Summary](#address-locking-summary)
   - [DHCP Servers](#dhcp-servers)
   - [Leases](#leases)

@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
-  - [Enable Password](#enable-password)
+  - [Enable Password](#enable-password-1)
 
 ## Management
 

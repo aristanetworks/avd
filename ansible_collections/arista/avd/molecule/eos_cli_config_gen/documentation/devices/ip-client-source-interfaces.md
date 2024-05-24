@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [IP Client Source Interfaces](#ip-client-source-interfaces)
+  - [IP Client Source Interfaces](#ip-client-source-interfaces-1)
 
 ## Management
 

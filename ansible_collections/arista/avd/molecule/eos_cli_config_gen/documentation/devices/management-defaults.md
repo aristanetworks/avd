@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
-  - [Management defaults](#management-defaults)
+  - [Management defaults](#management-defaults-1)
 
 ## Management
 

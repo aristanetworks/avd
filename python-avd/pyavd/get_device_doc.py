@@ -18,7 +18,6 @@ def get_device_doc(structured_config: dict, add_md_toc: bool = False) -> str:
         Device documentation in Markdown format.
     """
     # pylint: disable=import-outside-toplevel
-    from .vendor.j2.filter.add_md_toc import HAS_MD_TOC
     from .vendor.j2.filter.add_md_toc import add_md_toc as filter_add_md_toc
 
     # pylint: enable=import-outside-toplevel
@@ -26,9 +25,6 @@ def get_device_doc(structured_config: dict, add_md_toc: bool = False) -> str:
     templar = Templar()
     result: str = templar.render_template_from_file(JINJA2_DOCUMENTAITON_TEMPLATE, structured_config)
     if add_md_toc:
-        if not HAS_MD_TOC:
-            raise ModuleNotFoundError("The python library 'md-toc' is not installed. Install using 'pip3 install pyavd[mdtoc]'")
-
         return filter_add_md_toc(result, skip_lines=3)
 
     return result
