@@ -251,6 +251,18 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             if peer_group.passive is arista.avd.defined(true) %}
 | Passive | True |
 {%             endif %}
+{%             if peer_group.missing_policy.address_family_all.direction_in_action.action is arista.avd.defined %}
+| Missing Policy In Action | {{ peer_group.missing_policy.address_family_all.direction_in_action.action }} |
+{%                 if peer_group.missing_policy.address_family_all.direction_in_action.include is arista.avd.defined %}
+| Missing Policy In Decision | {{ peer_group.missing_policy.address_family_all.direction_in_action.include }} |
+{%                 endif %}
+{%             endif %}
+{%             if peer_group.missing_policy.address_family_all.direction_out_action.action is arista.avd.defined %}
+| Missing Policy Out Action | {{ peer_group.missing_policy.address_family_all.direction_out_action.action }} |
+{%                 if peer_group.missing_policy.address_family_all.direction_out_action.include is arista.avd.defined %}
+| Missing Policy Out Decision | {{ peer_group.missing_policy.address_family_all.direction_out_action.include }} |
+{%                 endif %}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     set temp = namespace() %}
@@ -267,8 +279,8 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops | Missing Policy In Action | Missing Policy Out Action | Missing Policy In Decision | Missing Policy Out Decision |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ | ------------------------ | ------------------------- | -------------------------- | --------------------------- |
 {%         for neighbor in router_bgp.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.peer_group is arista.avd.defined %}
 {%                 set inherited = namespace() %}
@@ -366,7 +378,20 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             endif %}
 {%             set ttl_maximum_hops = neighbor.ttl_maximum_hops | arista.avd.default(inherited.ttl_maximum_hops, "-") %}
 {%             set active_parameter.allowas_in = value_allowas | arista.avd.default(inherited.allowas_in, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} | {{ active_parameter.route_reflector_client }} | {{ active_parameter.passive }} | {{ ttl_maximum_hops }} |
+{%             set missing_policy = neighbor.missing_policy.address_family_all %}
+{%             set missing_policy_in_action = missing_policy.direction_in_action.action | arista.avd.default("-") %}
+{%             set missing_policy_out_action = missing_policy.direction_out_action.action | arista.avd.default("-") %}
+{%             if missing_policy.direction_in_action.include is defined %}
+{%                 set missing_policy_in_decision = (missing_policy.direction_in_action.include | arista.avd.natural_sort | join(", ")) %}
+{%             else %}
+{%                 set missing_policy_in_decision = "-" %}
+{%             endif %}
+{%             if missing_policy.direction_out_action.include is defined %}
+{%                 set missing_policy_out_decision = (missing_policy.direction_out_action.include | arista.avd.natural_sort | join(", ")) %}
+{%             else %}
+{%                 set missing_policy_out_decision = "-" %}
+{%             endif %}
+| {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} | {{ active_parameter.route_reflector_client }} | {{ active_parameter.passive }} | {{ ttl_maximum_hops }} | {{ missing_policy_in_action }} | {{ missing_policy_out_action }} | {{ missing_policy_in_decision }} | {{ missing_policy_out_decision }} |
 {%         endfor %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.neighbors is arista.avd.defined %}
@@ -459,7 +484,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf.rib_in_pre_policy_retain = neighbor_rib_in_pre_policy_retain | arista.avd.default(inherited_vrf.rib_in_pre_policy_retain, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} | {{ active_parameter_vrf.route_reflector_client }} | {{ active_parameter_vrf.passive }} | - |
+| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} | {{ active_parameter_vrf.route_reflector_client }} | {{ active_parameter_vrf.passive }} | - | - | - | - | - |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
