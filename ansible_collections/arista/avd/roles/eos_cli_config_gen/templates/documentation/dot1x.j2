@@ -47,7 +47,7 @@
 {%         endif %}
 {%         if dot1x.captive_portal is arista.avd.defined %}
 
-#### 802.1X Captive-portal Authentication
+#### 802.1X Captive-portal authentication
 
 | Authentication Attribute | Value |
 | ------------------------ | ----- |
@@ -63,12 +63,32 @@
 {%         endif %}
 {%         if dot1x.supplicant is arista.avd.defined %}
 
-#### 802.1X Dot1x supplicant commands
+#### 802.1X Dot1x supplicant
 
 | Attribute | Value |
 | --------- | ----- |
 {%             if dot1x.supplicant.logging is arista.avd.defined(true) %}
 | Logging | True |
+{%             endif %}
+{%             if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
+| Disconnect cached_results timeout | {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds |
+{%             endif %}
+{%             if dot1x.supplicant.profiles is arista.avd.defined %}
+
+##### 802.1X Dot1x supplicant profiles
+
+| Profile | EAP Method | Identity | SSL Profile |
+| ------- | ---------- | -------- | ----------- |
+{%                 for profile in dot1x.supplicant.profiles | arista.avd.natural_sort("name") %}
+{%                     set profile_name = profile.name %}
+{%                     if profile.identity is arista.avd.defined %}
+{%                         set identity = profile.identity %}
+{%                     endif %}
+{%                     if profile.eap_method is arista.avd.defined %}
+{%                         set eap_method = profile.eap_method %}
+{%                     endif %}
+| {{ profile_name }} | {{ eap_method | arista.avd.default("-") }} | {{ identity | arista.avd.default("-") }} | {{ ssl_profile | arista.avd.default("-") }} |
+{%                 endfor %}
 {%             endif %}
 {%         endif %}
 {%     endif %}

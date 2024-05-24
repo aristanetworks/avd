@@ -1607,13 +1607,13 @@ keys:
             description: Interval period in seconds.
       captive_portal:
         type: dict
-        description: Web authentication feature that authenticates a supplicant through
+        description: Web authentication feature authenticates a supplicant through
           a web page, referred to as a captive portal.
         keys:
           url:
             type: str
-            description: "Supported URL type -\n  http: http[s]://<hostname>[:<port>]\n
-              \ https: http[s]://<hostname>[:<port>]"
+            description: "Supported URL type:\n  - http: http[s]://<hostname>[:<port>]\n
+              \ - https: http[s]://<hostname>[:<port>]"
           ssl_profile:
             type: str
             description: SSL profile name.
@@ -1623,9 +1623,51 @@ keys:
       supplicant:
         type: dict
         keys:
+          profiles:
+            description: Dot1x supplicant profiles.
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                eap_method:
+                  type: str
+                  description: "Extensible Authentication Protocol method:\n  - EAP
+                    Flexible Authentication via Secure Tunneling.\n  - EAP with Transport
+                    Layer Security."
+                  valid_values:
+                  - fast
+                  - tls
+                identity:
+                  type: str
+                  description: User identity.
+                passphrase_type:
+                  type: str
+                  convert_types:
+                  - int
+                  valid_values:
+                  - '0'
+                  - '7'
+                  - 8a
+                  default: '7'
+                passphrase:
+                  type: str
+                  description: Extensible Authentication Protocol password.
+                ssl_profile:
+                  type: str
+                  description: SSL profile name.
           logging:
             type: bool
             description: Enable supplicant logging.
+          disconnect_cached_results_timeout:
+            type: int
+            convert_types:
+            - str
+            min: 60
+            max: 65535
+            description: Timeout period in seconds.
   dps_interfaces:
     type: list
     primary_key: name

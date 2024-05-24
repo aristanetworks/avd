@@ -57,7 +57,7 @@ interface Management1
 | ------------ | ---------- |
 | True | 1500 |
 
-#### 802.1X Captive-portal Authentication
+#### 802.1X Captive-portal authentication
 
 | Authentication Attribute | Value |
 | ------------------------ | ----- |
@@ -65,8 +65,16 @@ interface Management1
 | SSL profile | Profile1 |
 | Access-list IPv4 | ACL |
 
-#### 802.1X Dot1x supplicant commands
+#### 802.1X Dot1x supplicant
 
 | Attribute | Value |
 | --------- | ----- |
 | Logging | True |
+| Disconnect cached_results timeout | 79 seconds |
+
+##### 802.1X Dot1x supplicant profiles
+
+| Profile | EAP Method | Identity | SSL Profile |
+| ------- | ---------- | -------- | ----------- |
+| Profile1 | tls | <user_id> | - |
+| Profile2 | - | <user_id> | - |

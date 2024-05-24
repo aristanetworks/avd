@@ -29,4 +29,15 @@ dot1x:
     ssl_profile: Profile1
     access_list_ipv4: ACL
   supplicant:
+    profiles:
+      - name: Profile1
+        eap_method: tls
+        identity: <user_id>
+        passphrase_type: 0
+        passphrase: <password>
+        ssl_profile: PF1
+      - name: Profile2
+        identity: <user_id>
+        passphrase: <password>
     logging: true
+    disconnect_cached_results_timeout: 79

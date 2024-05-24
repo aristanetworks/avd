@@ -2411,11 +2411,11 @@
         },
         "captive_portal": {
           "type": "object",
-          "description": "Web authentication feature that authenticates a supplicant through a web page, referred to as a captive portal.",
+          "description": "Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.",
           "properties": {
             "url": {
               "type": "string",
-              "description": "Supported URL type -\n  http: http[s]://<hostname>[:<port>]\n  https: http[s]://<hostname>[:<port>]",
+              "description": "Supported URL type:\n  - http: http[s]://<hostname>[:<port>]\n  - https: http[s]://<hostname>[:<port>]",
               "title": "URL"
             },
             "ssl_profile": {
@@ -2438,10 +2438,72 @@
         "supplicant": {
           "type": "object",
           "properties": {
+            "profiles": {
+              "description": "Dot1x supplicant profiles.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "eap_method": {
+                    "type": "string",
+                    "description": "Extensible Authentication Protocol method:\n  - EAP Flexible Authentication via Secure Tunneling.\n  - EAP with Transport Layer Security.",
+                    "enum": [
+                      "fast",
+                      "tls"
+                    ],
+                    "title": "Eap Method"
+                  },
+                  "identity": {
+                    "type": "string",
+                    "description": "User identity.",
+                    "title": "Identity"
+                  },
+                  "passphrase_type": {
+                    "type": "string",
+                    "enum": [
+                      "0",
+                      "7",
+                      "8a"
+                    ],
+                    "default": "7",
+                    "title": "Passphrase Type"
+                  },
+                  "passphrase": {
+                    "type": "string",
+                    "description": "Extensible Authentication Protocol password.",
+                    "title": "Passphrase"
+                  },
+                  "ssl_profile": {
+                    "type": "string",
+                    "description": "SSL profile name.",
+                    "title": "SSL Profile"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Profiles"
+            },
             "logging": {
               "type": "boolean",
               "description": "Enable supplicant logging.",
               "title": "Logging"
+            },
+            "disconnect_cached_results_timeout": {
+              "type": "integer",
+              "minimum": 60,
+              "maximum": 65535,
+              "description": "Timeout period in seconds.",
+              "title": "Disconnect Cached Results Timeout"
             }
           },
           "additionalProperties": false,

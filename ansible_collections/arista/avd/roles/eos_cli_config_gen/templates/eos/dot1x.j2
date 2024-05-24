@@ -22,6 +22,22 @@ dot1x dynamic-authorization
          dot1x.aaa.unresponsive is arista.avd.defined or dot1x.captive_portal is arista.avd.defined
          or dot1x.supplicant is arista.avd.defined %}
 dot1x
+{%         for profile in dot1x.supplicant.profiles | arista.avd.natural_sort("name") %}
+   !
+   supplicant profile {{ profile.name }}
+{%             if profile.identity is arista.avd.defined %}
+      identity {{ profile.identity }}
+{%             endif %}
+{%             if profile.eap_method is arista.avd.defined %}
+      eap-method {{ profile.eap_method }}
+{%             endif %}
+{%             if profile.passphrase is arista.avd.defined %}
+      passphrase {{ profile.passphrase_type | arista.avd.default("7") }} {{ profile.passphrase | arista.avd.hide_passwords(hide_passwords) }}
+{%             endif %}
+{%             if profile.ssl_profile is arista.avd.defined %}
+      ssl profile {{ profile.ssl_profile }}
+{%             endif %}
+{%         endfor %}
 {%         if dot1x.aaa.unresponsive is arista.avd.defined %}
 {%             set aaa_config = "aaa unresponsive" %}
 {%             if dot1x.aaa.unresponsive.phone_action is arista.avd.defined or dot1x.aaa.unresponsive.action is arista.avd.defined %}
@@ -80,6 +96,9 @@ dot1x
 {%             if dot1x.radius_av_pair.framed_mtu is arista.avd.defined %}
    radius av-pair framed-mtu {{ dot1x.radius_av_pair.framed_mtu }}
 {%             endif %}
+{%         endif %}
+{%         if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
+   supplicant disconnect cached-results timeout {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds
 {%         endif %}
 {%         if dot1x.captive_portal.url is arista.avd.defined or dot1x.captive_portal.ssl_profile is arista.avd.defined %}
 {%             set captive_portal_cli = "captive-portal" %}
