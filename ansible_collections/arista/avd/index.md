@@ -6,16 +6,15 @@
 
 # Arista Validated Designs
 
-![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/avd) ![License](https://img.shields.io/github/license/aristanetworks/avd)
-
-<center><img src="ansible_collections/arista/avd/media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
+<center><img src="media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
 
 Arista Validated Designs (AVD) is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
 
-AVD Documentation:
+**[Documentation](https://avd.arista.com)**
 
-- [Stable version](https://avd.arista.com/stable/)
-- [Development version](https://avd.arista.com/devel/)
+**[Source Code](https://github.com/aristanetworks/avd)**
+
+**[Examples](https://github.com/aristanetworks/avd/tree/devel/ansible_collections/arista/avd/examples)**
 
 ## Features
 
@@ -25,16 +24,34 @@ AVD Documentation:
 
 ## Reference designs
 
-- [L3LS VXLAN-EVPN, L2LS, and MPLS](https://avd.arista.com/stable/roles/eos_designs/index.html)
+- [L3LS VXLAN-EVPN, L2LS, and MPLS](roles/eos_designs/README.md)
 
 ## AVD Ansible Collection
 
 [Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
 
-### Examples
+### Collection installation
 
-- [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
-- [Examples](https://avd.arista.com/stable/examples/single-dc-l3ls/index.html)
+Ansible galaxy hosts all stable versions of the `arista.avd` collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](docs/installation/collection-installation.md).
+
+```shell
+ansible-galaxy collection install arista.avd
+```
+
+## PyAVD
+
+PyAVD is a python package providing some of the features from the arista.avd Ansible collection without requiring Ansible. PyAVD leverages the same logic as the Ansible collection, so the generated outputs should be exactly the same based on the same inputs.
+
+PyAVD does not provide any inventory or variable management, so PyAVD cannot replace a full Ansible based solution by itself. PyAVD could serve as an element in larger framework.
+
+```shell
+pip3 install pyavd
+```
+
+## Examples
+
+- [Getting started](docs/getting-started/intro-to-ansible-and-avd.md)
+- [Arista NetDevOps GitHub repository](https://github.com/aristanetworks/netdevops-examples)
 
 ## Additional resources
 
@@ -50,7 +67,7 @@ AVD Documentation:
 
 ## Contributing
 
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see the [contribution guide](ansible_collections/arista/avd/docs/contribution/overview.md) for additional details.
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](docs/contribution/overview.md) for additional details.
 
 You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit enhancements.
 
