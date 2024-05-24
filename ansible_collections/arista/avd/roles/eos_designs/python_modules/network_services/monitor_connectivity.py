@@ -22,9 +22,9 @@ class MonitorConnectivityMixin(UtilsMixin):
         """
         Return structured config for monitor_connectivity
 
-        Only used for CV Pathfinder routers today
+        Only used for CV Pathfinder edge routers today
         """
-        if not self.shared_utils.is_cv_pathfinder_router:
+        if not self._filtered_internet_exit_policies:
             return None
 
         monitor_connectivity = {}
@@ -34,28 +34,33 @@ class MonitorConnectivityMixin(UtilsMixin):
         for policy in self._filtered_internet_exit_policies:
             for connection in policy["connections"]:
                 if connection["type"] == "tunnel":
-                    interface_sets.append(
-                        {
-                            "name": f"SET-Tunnel{connection['tunnel_id']}",
-                            "interfaces": f"Tunnel{connection['tunnel_id']}",
-                        }
-                    )
+                    interface_name = f"Tunnel{connection['tunnel_id']}"
+                else:
+                    interface_name = connection["source_interface"]
 
-                    host = {
-                        "name": f"IE-Tunnel{connection['tunnel_id']}",
-                        "description": connection["description"],
-                        "ip": connection["tunnel_destination_ip"],
-                        "local_interfaces": f"SET-Tunnel{connection['tunnel_id']}",
-                        "address_only": False,
-                        "url": connection["monitor_url"],
+                interface_set_name = f"SET-{self.shared_utils.sanitize_interface_name(interface_name)}"
+                interface_sets.append(
+                    {
+                        "name": interface_set_name,
+                        "interfaces": interface_name,
                     }
-                    append_if_not_duplicate(
-                        list_of_dicts=hosts,
-                        primary_key="name",
-                        new_dict=host,
-                        context="Monitor connectivity host for Internet Exit policy",
-                        context_keys=["name"],
-                    )
+                )
+
+                host = {
+                    "name": connection["monitor_name"],
+                    "description": connection["description"],
+                    "ip": connection["monitor_host"],
+                    "local_interfaces": interface_set_name,
+                    "address_only": False,
+                    "url": connection.get("monitor_url"),
+                }
+                append_if_not_duplicate(
+                    list_of_dicts=hosts,
+                    primary_key="name",
+                    new_dict=host,
+                    context="Monitor connectivity host for Internet Exit policy",
+                    context_keys=["name"],
+                )
 
         monitor_connectivity["interface_sets"] = interface_sets
         monitor_connectivity["hosts"] = hosts

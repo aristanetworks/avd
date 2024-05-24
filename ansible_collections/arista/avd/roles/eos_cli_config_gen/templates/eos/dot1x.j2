@@ -60,6 +60,9 @@ dot1x
    {{ aaa_config }} recovery action reauthenticate
 {%             endif %}
 {%         endif %}
+{%         if dot1x.aaa.accounting_update_interval is arista.avd.defined %}
+   aaa accounting update interval {{ dot1x.aaa.accounting_update_interval }} seconds
+{%         endif %}
 {%         if dot1x.mac_based_authentication is arista.avd.defined %}
 {%             if dot1x.mac_based_authentication.delay is arista.avd.defined %}
    mac based authentication delay {{ dot1x.mac_based_authentication.delay }} seconds

@@ -54,6 +54,7 @@ wan_router:
           wan_circuit_id: 666
           dhcp_accept_default_route: true
           ip_address: dhcp
+          peer_ip: 10.254.254.1
           cv_pathfinder_internet_exit:
             policies:
               - name: ZSCALER-EXIT-POLICY-1
@@ -63,6 +64,7 @@ wan_router:
           wan_circuit_id: 777
           dhcp_accept_default_route: true
           ip_address: dhcp
+          peer_ip: 10.254.254.5
           cv_pathfinder_internet_exit:
             policies:
               - name: ZSCALER-EXIT-POLICY-2
@@ -141,6 +143,6 @@ zscaler_endpoints:
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Tunnel interface for Internet Exit policy.
-  {'name': 'Tunnel100', 'description': 'Internet Exit ZSCALER-EXIT-POLICY-2 PRI', 'ip_address': 'unnumbered Ethernet2', 'ipsec_profile': 'IE-ZSCALER-EXIT-POLICY-2-PROFILE', 'source_interface': 'Ethernet2'}
+  {'name': 'Tunnel100', 'description': 'Internet Exit ZSCALER-EXIT-POLICY-2 PRI', 'ipsec_profile': 'IE-ZSCALER-EXIT-POLICY-2-PROFILE', 'source_interface': 'Ethernet2'}
   conflicts with
-  {'name': 'Tunnel100', 'description': 'Internet Exit ZSCALER-EXIT-POLICY-1 PRI', 'ip_address': 'unnumbered Ethernet1', 'ipsec_profile': 'IE-ZSCALER-EXIT-POLICY-1-PROFILE', 'source_interface': 'Ethernet1'}.
+  {'name': 'Tunnel100', 'description': 'Internet Exit ZSCALER-EXIT-POLICY-1 PRI', 'ipsec_profile': 'IE-ZSCALER-EXIT-POLICY-1-PROFILE', 'source_interface': 'Ethernet1'}.
