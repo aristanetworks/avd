@@ -19028,20 +19028,20 @@
                     "dns_servers_ipv4": {
                       "type": "array",
                       "minItems": 1,
-                      "description": "List of DNS server for IPv4 clients",
+                      "description": "List of DNS servers for IPv4 clients.",
                       "items": {
                         "type": "string",
-                        "description": "IPv4 address for DNS server"
+                        "description": "IPv4 address of DNS server."
                       },
                       "title": "DNS Servers IPv4"
                     },
                     "dns_servers_ipv6": {
                       "type": "array",
                       "minItems": 1,
-                      "description": "List of DNS server for IPv6 clients",
+                      "description": "List of DNS servers for IPv6 clients.",
                       "items": {
                         "type": "string",
-                        "description": "IPv6 address for DNS server"
+                        "description": "IPv6 address of DNS server."
                       },
                       "title": "DNS Servers IPv6"
                     },
