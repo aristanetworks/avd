@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Management Accounts](#management-accounts)
+  - [Management Accounts](#management-accounts-1)
 
 ## Management
 

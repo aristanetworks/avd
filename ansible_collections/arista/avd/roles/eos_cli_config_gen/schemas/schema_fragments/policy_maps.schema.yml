@@ -168,3 +168,33 @@ keys:
                           - "mbytes"
                           - "packets"
                         default: "bytes"
+      copp_system_policy:
+        type: dict
+        description: Control-plane policy configuration.
+        keys:
+          classes:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                shape:
+                  type: int
+                  description: Maximum rate limit.
+                  min: 0
+                  max: 10000000
+                  convert_types:
+                    - str
+                bandwidth:
+                  type: int
+                  description: Minimum bandwidth.
+                  min: 0
+                  max: 10000000
+                  convert_types:
+                    - str
+                rate_unit:
+                  type: str
+                  description: The `rate_unit` must be defined for `shape` and `bandwidth`.
+                  valid_values: [ 'pps', 'kbps' ]

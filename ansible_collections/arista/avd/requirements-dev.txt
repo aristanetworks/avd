@@ -14,7 +14,6 @@ molecule>=6.0
 molecule-plugins[docker]>=23.4.0
 yamllint
 treelib>=1.5.5
-md-toc>=8.1.0
 natsort
 jsonschema>=4.10.3
 referencing>=0.35.0
