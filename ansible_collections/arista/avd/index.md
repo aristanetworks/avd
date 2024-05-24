@@ -60,13 +60,10 @@ pip3 install pyavd
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
 
-## Ask a question
+## Support
 
-Support for the `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions).
-
-### Official Arista support
-
-AVD version 4.x releases with full support from Arista TAC. If your organization has the appropriate support agreement, please don't hesitate to contact TAC with any questions or issues.
+- AVD version 4.x releases with full support from Arista TAC. If your organization has the [A-Care subscription](https://www.arista.com/assets/data/pdf/AVD-A-Care-TAC-Support-Overview.pdf) please don't hesitate to contact TAC with any questions or issues.
+- Community support is provided via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ## Contributing
 
