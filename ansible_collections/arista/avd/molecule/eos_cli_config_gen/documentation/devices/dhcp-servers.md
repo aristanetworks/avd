@@ -40,14 +40,14 @@ interface Management1
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv6 DNS Domain |
-| ------------------- | --- | --------------- | --------------- |
-| True | AVRF | - | - |
-| True | defauls | - | - |
-| True | default | - | - |
-| True | defaulu | - | - |
-| True | TEST | testv4.com | testv6.com |
-| False | VRF01 | - | - |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile |
+| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | ---------------- | ------------- |
+| True | AVRF | - | - | - | - | - | - |
+| True | defauls | - | - | - | - | - | - |
+| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap |
+| True | defaulu | - | - | - | - | - | - |
+| True | TEST | testv4.com | - | - | testv6.com | - | - |
+| False | VRF01 | - | - | - | - | - | - |
 
 #### VRF AVRF DHCP Server
 
