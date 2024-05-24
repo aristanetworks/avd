@@ -120,7 +120,7 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
 
     TODO: Refactor to set_some on supported CV versions
     """
-    if existing_device_container_ids := get_existing_device_container_ids_from_root_container(workspace_id, cv_client):
+    if existing_device_container_ids := await get_existing_device_container_ids_from_root_container(workspace_id, cv_client):
         existing_device_containers = await cv_client.get_configlet_containers(
             workspace_id=workspace_id,
             container_ids=existing_device_container_ids,
