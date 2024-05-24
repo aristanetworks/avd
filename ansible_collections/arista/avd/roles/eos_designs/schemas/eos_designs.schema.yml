@@ -3064,7 +3064,8 @@ keys:
         mlag: 300
         non_mlag: 330
     - platforms:
-      - AWE-5x10
+      - AWE-5310
+      - AWE-5510
       - AWE-7250R
       - AWE-7230R
       feature_support:
@@ -3073,9 +3074,6 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
       management_interface: Management1/1
-      reload_delay:
-        mlag: 300
-        non_mlag: 330
     - platforms:
       - AWE-7220R
       feature_support:
@@ -3083,10 +3081,8 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        poe: true
       management_interface: Management1
-      reload_delay:
-        mlag: 300
-        non_mlag: 330
   platform_speed_groups:
     documentation_options:
       table: platform-settings
