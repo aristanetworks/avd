@@ -7322,7 +7322,7 @@ $defs:
           uplink_mtu:
             documentation_options:
               table: node-type-uplink-configuration
-            description: Point to Point uplinks MTU. This configuration will over-ride
+            description: Point-to-Point uplinks MTU in bytes. This configuration over-rides
               `p2p_uplinks_mtu` configuration.
             type: int
             convert_types:
