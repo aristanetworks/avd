@@ -8,7 +8,7 @@
   - [SFlow](#sflow)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
-  - [Port-Channel Interfaces](#port-channel-interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces-1)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
 - [MPLS](#mpls)

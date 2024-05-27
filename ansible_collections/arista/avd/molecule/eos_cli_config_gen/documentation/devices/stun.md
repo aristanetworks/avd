@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [STUN](#stun)
+- [STUN](#stun-1)
   - [STUN Client](#stun-client)
   - [STUN Server](#stun-server)
   - [STUN Device Configuration](#stun-device-configuration)

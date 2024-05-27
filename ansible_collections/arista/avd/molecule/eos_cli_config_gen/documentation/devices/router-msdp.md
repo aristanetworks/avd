@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Multicast](#multicast)
-  - [Router MSDP](#router-msdp)
+  - [Router MSDP](#router-msdp-1)
 
 ## Management
 

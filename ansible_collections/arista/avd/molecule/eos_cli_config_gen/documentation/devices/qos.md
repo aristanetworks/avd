@@ -11,7 +11,7 @@
   - [Extended Access-lists](#extended-access-lists)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 - [Quality Of Service](#quality-of-service)
-  - [QOS](#qos)
+  - [QOS](#qos-1)
   - [QOS Class Maps](#qos-class-maps)
   - [QOS Policy Maps](#qos-policy-maps)
   - [QOS Profiles](#qos-profiles)

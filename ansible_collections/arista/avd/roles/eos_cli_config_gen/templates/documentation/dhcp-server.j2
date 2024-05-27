@@ -17,10 +17,17 @@
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv6 DNS Domain |
-| ------------------- | --- | --------------- | --------------- |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile |
+| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | ---------------- | ------------- |
 {%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
-| {{ not dhcp_server.disabled | arista.avd.default(false) }} | {{ dhcp_server.vrf }} | {{ dhcp_server.dns_domain_name_ipv4 | arista.avd.default("-") }} | {{ dhcp_server.dns_domain_name_ipv6 | arista.avd.default("-") }} |
+{%             set enabled = not dhcp_server.disabled | arista.avd.default(false) %}
+{%             set dns_domain_ipv4 = dhcp_server.dns_domain_name_ipv4 | arista.avd.default("-") %}
+{%             set dns_servers_ipv4 = dhcp_server.dns_servers_ipv4 | arista.avd.default(["-"]) | join(", ") %}
+{%             set tftp_server_file_ipv4 = dhcp_server.tftp_server.file_ipv4 | arista.avd.default("-") %}
+{%             set dns_domain_ipv6 = dhcp_server.dns_domain_name_ipv6 | arista.avd.default("-") %}
+{%             set dns_servers_ipv6 = dhcp_server.dns_servers_ipv6 | arista.avd.default(["-"]) | join(", ") %}
+{%             set tftp_server_file_ipv6 = dhcp_server.tftp_server.file_ipv6 | arista.avd.default("-") %}
+| {{ enabled }} | {{ dhcp_server.vrf }} | {{ dns_domain_ipv4 }} | {{ dns_servers_ipv4 }} | {{ tftp_server_file_ipv4 }} | {{ dns_domain_ipv6 }} | {{ dns_servers_ipv6 }} | {{ tftp_server_file_ipv6 }} |
 {%         endfor %}
 {%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
 {%             set dhcp_server_subnets = [] %}

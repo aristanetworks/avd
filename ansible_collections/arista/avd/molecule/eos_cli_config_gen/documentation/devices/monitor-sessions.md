@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
-  - [Monitor Sessions](#monitor-sessions)
+  - [Monitor Sessions](#monitor-sessions-1)
 
 ## Management
 
