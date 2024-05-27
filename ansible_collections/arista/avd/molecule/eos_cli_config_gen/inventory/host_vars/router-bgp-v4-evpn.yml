@@ -8,8 +8,6 @@ router_bgp:
     - graceful-restart restart-time 300
     - graceful-restart
     - maximum-paths 2 ecmp 2
-  bgp:
-    redistribute_internal: false
   peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       type: ipv4

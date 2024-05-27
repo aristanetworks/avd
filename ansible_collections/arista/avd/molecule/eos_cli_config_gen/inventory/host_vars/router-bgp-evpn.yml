@@ -10,7 +10,6 @@ router_bgp:
     default:
       ipv4_unicast: true
       ipv4_unicast_transport_ipv6: true
-    redistribute_internal: false
   peer_groups:
     - name: EVPN-OVERLAY-PEERS
       type: evpn

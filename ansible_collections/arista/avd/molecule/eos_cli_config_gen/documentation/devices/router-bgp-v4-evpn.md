@@ -54,7 +54,6 @@ ASN Notation: asplain
 | graceful-restart restart-time 300 |
 | graceful-restart |
 | maximum-paths 2 ecmp 2 |
-| no bgp redistribute-internal |
 
 #### Router BGP Peer Groups
 
@@ -224,7 +223,6 @@ router bgp 65101
    neighbor 172.31.255.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
-   no bgp redistribute-internal
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle B-ELAN-201

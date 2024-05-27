@@ -55,7 +55,6 @@ ASN Notation: asplain
 | maximum-paths 2 ecmp 2 |
 | bgp default ipv4-unicast |
 | bgp default ipv4-unicast transport ipv6 |
-| no bgp redistribute-internal |
 
 #### Router BGP Peer Groups
 
@@ -197,7 +196,6 @@ router bgp 65101
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 allowas-in 5
    neighbor 192.168.255.3 maximum-routes 52000 warning-limit 2000 warning-only
-   no bgp redistribute-internal
    !
    vlan 2488
       rd 145.245.21.0:1
