@@ -4807,10 +4807,11 @@
           },
           "type": {
             "type": "string",
+            "description": "Internet-exit policy type.\ndirect: Exit directly over wan interfaces\nzscaler: Exit using Zscaler secure web gateway service",
             "enum": [
+              "direct",
               "zscaler"
             ],
-            "description": "Internet-exit policy type.\nOnly Zscaler supported.",
             "title": "Type"
           },
           "fallback_to_system_default": {
@@ -4908,6 +4909,9 @@
         "properties": {
           "name": {
             "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
             "title": "Name"
           },
           "description": {
@@ -4930,6 +4934,9 @@
                 "name": {
                   "type": "string",
                   "description": "The site name.",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                   "title": "Name"
                 },
                 "description": {
@@ -4982,6 +4989,11 @@
       },
       "title": "Cv Pathfinder Regions"
     },
+    "cv_server": {
+      "description": "PREVIEW: These keys are in preview mode.\n\nHostname or IP address of CloudVision host. Ex. \"www.arista.io\" for CVaaS.\nFor `eos_designs` this variable is only used for the WAN Internet-exit integration with Zscaler.\nThe same variable name is also used by the `cv_deploy` role, and will override the value of `ansible_host` on inventory 'cloudvision' host.\nMake sure to set it in a common group_vars file.",
+      "type": "string",
+      "title": "Cv Server"
+    },
     "cv_tags_topology_type": {
       "description": "PREVIEW: This key is currently not supported\nDevice type that CloudVision should use when generating the Topology. Defaults to the setting under node_type_keys.",
       "type": "string",
@@ -4992,6 +5004,11 @@
         "edge"
       ],
       "title": "Cv Tags Topology Type"
+    },
+    "cv_token": {
+      "description": "PREVIEW: These keys are in preview mode.\n\nService account token as defined on CloudVision. This value should be using Ansible Vault.\nFor `eos_designs` this variable is only used for the WAN Internet-exit integration with Zscaler.\nThe same variable name is also used by the `cv_deploy` role, and will override the value of `ansible_password` on inventory 'cloudvision' host.\nMake sure to set it in a common group_vars file.",
+      "type": "string",
+      "title": "Cv Token"
     },
     "cv_topology": {
       "type": "array",
@@ -7521,14 +7538,13 @@
                       "title": "Tunnel Interface Numbers"
                     }
                   },
-                  "required": [
-                    "tunnel_interface_numbers",
-                    "name"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Policies"
               }
@@ -8695,6 +8711,37 @@
                   "^_.+$": {}
                 },
                 "title": "MAC Security"
+              },
+              "tcp_mss_ceiling": {
+                "type": "object",
+                "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                "properties": {
+                  "ipv4_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv4 Segment Size"
+                  },
+                  "ipv6_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv6 Segment Size"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "TCP Mss Ceiling"
               },
               "channel_group": {
                 "type": "object",
@@ -14462,6 +14509,37 @@
                 },
                 "title": "MAC Security"
               },
+              "tcp_mss_ceiling": {
+                "type": "object",
+                "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                "properties": {
+                  "ipv4_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv4 Segment Size"
+                  },
+                  "ipv6_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv6 Segment Size"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "TCP Mss Ceiling"
+              },
               "channel_group": {
                 "type": "object",
                 "properties": {
@@ -18967,6 +19045,50 @@
                       "type": "string",
                       "title": "DNS Domain Name IPv6"
                     },
+                    "dns_servers_ipv4": {
+                      "type": "array",
+                      "minItems": 1,
+                      "description": "List of DNS servers for IPv4 clients.",
+                      "items": {
+                        "type": "string",
+                        "description": "IPv4 address of DNS server."
+                      },
+                      "title": "DNS Servers IPv4"
+                    },
+                    "dns_servers_ipv6": {
+                      "type": "array",
+                      "minItems": 1,
+                      "description": "List of DNS servers for IPv6 clients.",
+                      "items": {
+                        "type": "string",
+                        "description": "IPv6 address of DNS server."
+                      },
+                      "title": "DNS Servers IPv6"
+                    },
+                    "tftp_server": {
+                      "type": "object",
+                      "properties": {
+                        "file_ipv4": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255,
+                          "description": "Name of TFTP file for IPv4 clients.",
+                          "title": "File IPv4"
+                        },
+                        "file_ipv6": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255,
+                          "description": "Name of TFTP file for IPv6 clients.",
+                          "title": "File IPv6"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Tftp Server"
+                    },
                     "ipv4_vendor_options": {
                       "type": "array",
                       "items": {
@@ -20791,6 +20913,37 @@
                         "^_.+$": {}
                       },
                       "title": "MAC Security"
+                    },
+                    "tcp_mss_ceiling": {
+                      "type": "object",
+                      "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                      "properties": {
+                        "ipv4_segment_size": {
+                          "type": "integer",
+                          "minimum": 64,
+                          "maximum": 65475,
+                          "title": "IPv4 Segment Size"
+                        },
+                        "ipv6_segment_size": {
+                          "type": "integer",
+                          "minimum": 64,
+                          "maximum": 65475,
+                          "title": "IPv6 Segment Size"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "title": "Direction"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "TCP Mss Ceiling"
                     },
                     "channel_group": {
                       "type": "object",
@@ -30470,6 +30623,60 @@
                       ]
                     },
                     "title": "QOS"
+                  },
+                  "copp_system_policy": {
+                    "type": "object",
+                    "description": "Control-plane policy configuration.",
+                    "properties": {
+                      "classes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "Name"
+                            },
+                            "shape": {
+                              "type": "integer",
+                              "description": "Maximum rate limit.",
+                              "minimum": 0,
+                              "maximum": 10000000,
+                              "title": "Shape"
+                            },
+                            "bandwidth": {
+                              "type": "integer",
+                              "description": "Minimum bandwidth.",
+                              "minimum": 0,
+                              "maximum": 10000000,
+                              "title": "Bandwidth"
+                            },
+                            "rate_unit": {
+                              "type": "string",
+                              "description": "The `rate_unit` must be defined for `shape` and `bandwidth`.",
+                              "enum": [
+                                "pps",
+                                "kbps"
+                              ],
+                              "title": "Rate Unit"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "title": "Classes"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Copp System Policy"
                   }
                 },
                 "additionalProperties": false,
@@ -33690,6 +33897,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -33715,6 +33923,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -33740,6 +33949,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -51355,6 +51565,37 @@
                 },
                 "title": "MAC Security"
               },
+              "tcp_mss_ceiling": {
+                "type": "object",
+                "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                "properties": {
+                  "ipv4_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv4 Segment Size"
+                  },
+                  "ipv6_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv6 Segment Size"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "TCP Mss Ceiling"
+              },
               "channel_group": {
                 "type": "object",
                 "properties": {
@@ -58955,7 +59196,7 @@
     },
     "zscaler_endpoints": {
       "type": "object",
-      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints` Ansible lookup plugin.\nExample:\n```yaml\nzscaler_endpoints: \"{{ lookup('arista.avd.cv_zscaler_endpoints', cv_server=\"<optional servername>\", cv_token=\"<optional token>\") }}\"\n```\nThe cv_server and cv_token options can be set as inventory variables instead of given as arguments. (Then they will also be used for cv_deploy)",
+      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for testing the WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device by `eos_designs`.\nManually setting this model will take precedence and prevent `eos_designs` from trying to contact CloudVision.\nThis can be useful for offline testing or if CloudVision is not available or not configured for Zscaler integration.",
       "properties": {
         "primary": {
           "type": "object",

@@ -1,5 +1,5 @@
 ---
-requires_ansible: '>=2.14.0,<2.17.0'
+requires_ansible: '>=2.15.0,<2.18.0'
 plugin_routing:
   filter:
     hash_passphrase:

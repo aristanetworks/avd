@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Switchport Port-security](#switchport-port-security)
+- [Switchport Port-security](#switchport-port-security-1)
   - [Switchport Port-security Summary](#switchport-port-security-summary)
   - [Switchport Port-security Device Configuration](#switchport-port-security-device-configuration)
 

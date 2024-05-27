@@ -269,7 +269,7 @@ class UtilsMixin:
         `/` are not allowed, `.` are allowed so
         Ethernet1/1.1 is transformed into Ethernet1_1.1
         """
-        sanitized_interface_name = interface_name.replace("/", "_")
+        sanitized_interface_name = self.shared_utils.sanitize_interface_name(interface_name)
         return f"{path_group_name}-{wan_route_server_name}-{sanitized_interface_name}"
 
     @cached_property

@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Management API Models](#management-api-models)
+  - [Management API Models](#management-api-models-1)
 
 ## Management
 

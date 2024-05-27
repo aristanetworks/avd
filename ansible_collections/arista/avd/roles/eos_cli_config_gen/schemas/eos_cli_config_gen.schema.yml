@@ -1310,6 +1310,35 @@ keys:
           type: str
         dns_domain_name_ipv6:
           type: str
+        dns_servers_ipv4:
+          type: list
+          min_length: 1
+          description: List of DNS servers for IPv4 clients.
+          items:
+            type: str
+            required: true
+            description: IPv4 address of DNS server.
+        dns_servers_ipv6:
+          type: list
+          min_length: 1
+          description: List of DNS servers for IPv6 clients.
+          items:
+            type: str
+            required: true
+            description: IPv6 address of DNS server.
+        tftp_server:
+          type: dict
+          keys:
+            file_ipv4:
+              type: str
+              min_length: 1
+              max_length: 255
+              description: Name of TFTP file for IPv4 clients.
+            file_ipv6:
+              type: str
+              min_length: 1
+              max_length: 255
+              description: Name of TFTP file for IPv6 clients.
         ipv4_vendor_options:
           type: list
           primary_key: vendor_id
@@ -2291,6 +2320,31 @@ keys:
           keys:
             profile:
               type: str
+        tcp_mss_ceiling:
+          type: dict
+          description: 'The TCP MSS clamping feature involves clamping the maximum
+            segment size (MSS) in the TCP header
+
+            of TCP SYN packets if it exceeds the configured MSS ceiling limit for
+            the interface.'
+          keys:
+            ipv4_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+            ipv6_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+            direction:
+              type: str
+              valid_values:
+              - egress
+              - ingress
         channel_group:
           type: dict
           keys:
@@ -8024,6 +8078,38 @@ keys:
                         - mbytes
                         - packets
                         default: bytes
+      copp_system_policy:
+        type: dict
+        description: Control-plane policy configuration.
+        keys:
+          classes:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                shape:
+                  type: int
+                  description: Maximum rate limit.
+                  min: 0
+                  max: 10000000
+                  convert_types:
+                  - str
+                bandwidth:
+                  type: int
+                  description: Minimum bandwidth.
+                  min: 0
+                  max: 10000000
+                  convert_types:
+                  - str
+                rate_unit:
+                  type: str
+                  description: The `rate_unit` must be defined for `shape` and `bandwidth`.
+                  valid_values:
+                  - pps
+                  - kbps
   port_channel_interfaces:
     type: list
     primary_key: name
@@ -9996,6 +10082,7 @@ keys:
           name:
             type: str
             required: true
+            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
           id:
             type: int
             convert_types:
@@ -10010,6 +10097,7 @@ keys:
           name:
             type: str
             required: true
+            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
           id:
             type: int
             convert_types:
@@ -10024,6 +10112,7 @@ keys:
           name:
             type: str
             required: true
+            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
           id:
             type: int
             convert_types:

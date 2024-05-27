@@ -34,7 +34,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_internet_exit</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].cv_pathfinder_internet_exit") | Dictionary |  |  |  | PREVIEW: This key is in preview mode |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].cv_pathfinder_internet_exit.policies") | List, items: Dictionary |  |  |  | List of Internet-exit policies using this interface as exit. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String | Required |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String |  |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].flow_tracking.enabled") | Boolean |  |  |  |  |
@@ -69,7 +69,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_internet_exit</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit") | Dictionary |  |  |  | PREVIEW: This key is in preview mode |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies") | List, items: Dictionary |  |  |  | List of Internet-exit policies using this interface as exit. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String | Required |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String |  |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].flow_tracking.enabled") | Boolean |  |  |  |  |
@@ -100,7 +100,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_internet_exit</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].cv_pathfinder_internet_exit") | Dictionary |  |  |  | PREVIEW: This key is in preview mode |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies") | List, items: Dictionary |  |  |  | List of Internet-exit policies using this interface as exit. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String | Required |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String |  |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].flow_tracking.enabled") | Boolean |  |  |  |  |
@@ -133,7 +133,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_internet_exit</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit") | Dictionary |  |  |  | PREVIEW: This key is in preview mode |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies") | List, items: Dictionary |  |  |  | List of Internet-exit policies using this interface as exit. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String | Required |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String |  |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].flow_tracking.enabled") | Boolean |  |  |  |  |
@@ -164,7 +164,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_internet_exit</samp>](## "l3_interface_profiles.[].cv_pathfinder_internet_exit") | Dictionary |  |  |  | PREVIEW: This key is in preview mode |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "l3_interface_profiles.[].cv_pathfinder_internet_exit.policies") | List, items: Dictionary |  |  |  | List of Internet-exit policies using this interface as exit. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "l3_interface_profiles.[].cv_pathfinder_internet_exit.policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "l3_interface_profiles.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String | Required |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_interface_numbers</samp>](## "l3_interface_profiles.[].cv_pathfinder_internet_exit.policies.[].tunnel_interface_numbers") | String |  |  |  | Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.<br>Examples: '1-3' or '100,200,300' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_interface_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "l3_interface_profiles.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_interface_profiles.[].flow_tracking.enabled") | Boolean |  |  |  |  |
@@ -277,7 +277,7 @@
 
                   # Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
                   # Examples: '1-3' or '100,200,300'
-                  tunnel_interface_numbers: <str; required>
+                  tunnel_interface_numbers: <str>
 
             # EOS CLI rendered directly on the interface in the final EOS configuration.
             raw_eos_cli: <str>
@@ -403,7 +403,7 @@
 
                         # Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
                         # Examples: '1-3' or '100,200,300'
-                        tunnel_interface_numbers: <str; required>
+                        tunnel_interface_numbers: <str>
 
                   # EOS CLI rendered directly on the interface in the final EOS configuration.
                   raw_eos_cli: <str>
@@ -516,7 +516,7 @@
 
                     # Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
                     # Examples: '1-3' or '100,200,300'
-                    tunnel_interface_numbers: <str; required>
+                    tunnel_interface_numbers: <str>
 
               # EOS CLI rendered directly on the interface in the final EOS configuration.
               raw_eos_cli: <str>
@@ -635,7 +635,7 @@
 
                     # Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
                     # Examples: '1-3' or '100,200,300'
-                    tunnel_interface_numbers: <str; required>
+                    tunnel_interface_numbers: <str>
 
               # EOS CLI rendered directly on the interface in the final EOS configuration.
               raw_eos_cli: <str>
@@ -748,7 +748,7 @@
 
               # Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
               # Examples: '1-3' or '100,200,300'
-              tunnel_interface_numbers: <str; required>
+              tunnel_interface_numbers: <str>
 
         # EOS CLI rendered directly on the interface in the final EOS configuration.
         raw_eos_cli: <str>
