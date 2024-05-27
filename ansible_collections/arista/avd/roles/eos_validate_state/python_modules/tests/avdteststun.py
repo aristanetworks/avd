@@ -15,8 +15,8 @@ LOGGER = logging.getLogger(__name__)
 class AvdTestStun(AvdTestBase):
     """
     AvdTestStun class for STUN tests.
-    Validates the configuration of the STUN client, focusing specifically on the IPv4 source address and port,
-    exclusively for WAN scenarios by inspecting the path-groups.
+    Validates the presence of a STUN client translation for a given source IPv4 address and port for WAN scenarios.
+    The list of expected translations for each device is built by searching through router_path_selection.path_groups.local_interfaces.
     """
 
     anta_module = "anta.tests.stun"

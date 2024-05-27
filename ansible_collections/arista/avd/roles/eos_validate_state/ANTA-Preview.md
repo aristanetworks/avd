@@ -152,7 +152,7 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
   - VerifyAPIHttpsSSL: Validate eAPI HTTPS SSL profile status.
 
 - (New) AvdTestStun (No Ansible tags, use the new `skipped_tests` variable instead)
-  - VerifyStunClient: Validate the STUN client is configured with the specified IPv4 source address and port exclusively for WAN scenarios. Additionally, validate the public IP and port if provided. Please add the test in a custom ANTA catalog to validate public IP and port.
+  - VerifyStunClient: Validates the presence of a STUN client translation for a given source IPv4 address and port for WAN scenarios. The list of expected translations for each device is built by searching local interfaces in each path-group.
 
 ## Input variables
 
