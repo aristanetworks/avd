@@ -18293,7 +18293,7 @@
                   "nssa-external 1",
                   "nssa-external 2"
                 ],
-                "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
                 "title": "OSPF Route Type"
               }
             },
@@ -19458,7 +19458,7 @@
                       "nssa-external 1",
                       "nssa-external 2"
                     ],
-                    "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
                     "title": "OSPF Route Type"
                   }
                 },
@@ -19583,7 +19583,7 @@
                       "nssa-external 1",
                       "nssa-external 2"
                     ],
-                    "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
                     "title": "OSPF Route Type"
                   }
                 },
@@ -19852,7 +19852,7 @@
                       "nssa-external 1",
                       "nssa-external 2"
                     ],
-                    "description": "The `ospf_route_type` is required with source_protocols 'ospfv3'.",
+                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospfv3'.\n",
                     "title": "OSPF Route Type"
                   }
                 },
@@ -20051,7 +20051,7 @@
                       "nssa-external 1",
                       "nssa-external 2"
                     ],
-                    "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
                     "title": "OSPF Route Type"
                   }
                 },
@@ -21622,7 +21622,7 @@
                         "nssa-external 1",
                         "nssa-external 2"
                       ],
-                      "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                      "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
                       "title": "OSPF Route Type"
                     }
                   },
@@ -21939,7 +21939,7 @@
                             "nssa-external 1",
                             "nssa-external 2"
                           ],
-                          "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                          "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
                           "title": "OSPF Route Type"
                         }
                       },
@@ -22180,7 +22180,7 @@
                             "nssa-external 1",
                             "nssa-external 2"
                           ],
-                          "description": "The `ospf_route_type` is required with source_protocols 'ospfv3'.",
+                          "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospfv3'.\n",
                           "title": "OSPF Route Type"
                         }
                       },
@@ -22355,7 +22355,7 @@
                             "nssa-external 1",
                             "nssa-external 2"
                           ],
-                          "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                          "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
                           "title": "OSPF Route Type"
                         }
                       },
@@ -22529,7 +22529,7 @@
                             "nssa-external 1",
                             "nssa-external 2"
                           ],
-                          "description": "The `ospf_route_type` is required with source_protocols 'ospf' and 'ospfv3'.",
+                          "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
                           "title": "OSPF Route Type"
                         }
                       },

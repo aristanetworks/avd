@@ -11035,8 +11035,11 @@ keys:
               - nssa-external
               - nssa-external 1
               - nssa-external 2
-              description: The `ospf_route_type` is required with source_protocols
-                'ospf' and 'ospfv3'.
+              description: 'Routes learned by the OSPF protocol.
+
+                The `ospf_route_type` is valid for source_protocols ''ospf'' and ''ospfv3''.
+
+                '
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -11688,8 +11691,12 @@ keys:
                   - nssa-external
                   - nssa-external 1
                   - nssa-external 2
-                  description: The `ospf_route_type` is required with source_protocols
-                    'ospf' and 'ospfv3'.
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
+                    ''ospfv3''.
+
+                    '
       address_family_ipv4_multicast:
         type: dict
         keys:
@@ -11764,8 +11771,12 @@ keys:
                   - nssa-external
                   - nssa-external 1
                   - nssa-external 2
-                  description: The `ospf_route_type` is required with source_protocols
-                    'ospf' and 'ospfv3'.
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
+                    ''ospfv3''.
+
+                    '
       address_family_ipv4_sr_te:
         type: dict
         keys:
@@ -11922,8 +11933,11 @@ keys:
                   - nssa-external
                   - nssa-external 1
                   - nssa-external 2
-                  description: The `ospf_route_type` is required with source_protocols
-                    'ospfv3'.
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospfv3''.
+
+                    '
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -12034,8 +12048,12 @@ keys:
                   - nssa-external
                   - nssa-external 1
                   - nssa-external 2
-                  description: The `ospf_route_type` is required with source_protocols
-                    'ospf' and 'ospfv3'.
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
+                    ''ospfv3''.
+
+                    '
       address_family_ipv6_sr_te:
         type: dict
         keys:
@@ -12949,8 +12967,12 @@ keys:
                     - nssa-external
                     - nssa-external 1
                     - nssa-external 2
-                    description: The `ospf_route_type` is required with source_protocols
-                      'ospf' and 'ospfv3'.
+                    description: 'Routes learned by the OSPF protocol.
+
+                      The `ospf_route_type` is valid for source_protocols ''ospf''
+                      and ''ospfv3''.
+
+                      '
             aggregate_addresses:
               type: list
               primary_key: prefix
@@ -13134,8 +13156,12 @@ keys:
                         - nssa-external
                         - nssa-external 1
                         - nssa-external 2
-                        description: The `ospf_route_type` is required with source_protocols
-                          'ospf' and 'ospfv3'.
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospf''
+                          and ''ospfv3''.
+
+                          '
             address_family_ipv6:
               type: dict
               keys:
@@ -13280,8 +13306,11 @@ keys:
                         - nssa-external
                         - nssa-external 1
                         - nssa-external 2
-                        description: The `ospf_route_type` is required with source_protocols
-                          'ospfv3'.
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospfv3''.
+
+                          '
             address_family_ipv4_multicast:
               type: dict
               keys:
@@ -13380,8 +13409,12 @@ keys:
                         - nssa-external
                         - nssa-external 1
                         - nssa-external 2
-                        description: The `ospf_route_type` is required with source_protocols
-                          'ospf' and 'ospfv3'.
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospf''
+                          and ''ospfv3''.
+
+                          '
             address_family_ipv6_multicast:
               type: dict
               keys:
@@ -13479,8 +13512,12 @@ keys:
                         - nssa-external
                         - nssa-external 1
                         - nssa-external 2
-                        description: The `ospf_route_type` is required with source_protocols
-                          'ospf' and 'ospfv3'.
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospf''
+                          and ''ospfv3''.
+
+                          '
             address_family_flow_spec_ipv4:
               type: dict
               keys:
