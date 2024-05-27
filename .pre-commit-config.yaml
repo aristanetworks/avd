@@ -96,7 +96,7 @@ repos:
         exclude: ^ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/
 
   - repo: https://github.com/pycqa/pylint
-    rev: "v3.1.1"
+    rev: "v3.2.2"
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files
@@ -124,7 +124,7 @@ repos:
         name: Check for Linting errors on Jinja2 files
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.6
+    rev: v2.3.0
     hooks:
       - id: codespell
         name: Check for common misspellings in text files.
@@ -202,7 +202,7 @@ repos:
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.40.0
+    rev: v0.41.0
     hooks:
       - id: markdownlint
         name: Check for Linting errors on MarkDown files
