@@ -70,7 +70,7 @@ interface Management1
 | Attribute | Value |
 | --------- | ----- |
 | Logging | True |
-| Disconnect cached_results timeout | 79 seconds |
+| Disconnect cached-results timeout | 79 seconds |
 
 ##### 802.1X Dot1x supplicant profiles
 
