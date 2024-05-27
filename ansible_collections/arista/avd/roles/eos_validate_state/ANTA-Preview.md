@@ -152,7 +152,7 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
   - VerifyAPIHttpsSSL: Validate eAPI HTTPS SSL profile status.
 
 - (New) AvdTestIPSecurity (No Ansible tags, use the new `skipped_tests` variable instead)
-  - VerifySpecificIPSecConn: Validates the establishment of IP security connections for a peer within the default VRF. This test exclusively examines IPsec connections defined in the router's path selection configuration.
+  - VerifySpecificIPSecConn: Validates the establishment of IP security connections for a peer within the default VRF. In its current state, the test validates only IPsec connections defined as static peers under the `router path-selection` section of the configuration.
 
 ## Input variables
 

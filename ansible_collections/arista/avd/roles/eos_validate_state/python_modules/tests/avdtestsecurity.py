@@ -42,7 +42,8 @@ class AvdTestIPSecurity(AvdTestBase):
     """
     AvdTestIPSecurity class for IP security connection tests.
     It validates the state of IPv4 security connections for a specified peer, ensuring they are established.
-    It specifically focuses on IPv4 security connections within the default VRF and examines connections defined in the router's path selection configuration.
+    It specifically focuses on IPv4 security connections within the default VRF.
+    In its current state, the test validates only IPsec connections defined as static peers under the `router path-selection` section of the configuration.
 
     """
 
