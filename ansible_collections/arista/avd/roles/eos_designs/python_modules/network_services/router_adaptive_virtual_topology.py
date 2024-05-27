@@ -105,8 +105,6 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
     def _cv_pathfinder_profiles(self) -> list:
         """
         Return a list of router adaptive-virtual-topology profiles for this router.
-
-        TODO: add internet exit once supported
         """
         profiles = []
         for policy in self._filtered_wan_policies:

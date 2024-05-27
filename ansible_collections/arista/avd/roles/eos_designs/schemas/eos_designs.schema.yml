@@ -631,11 +631,14 @@ keys:
           description: Internet-exit policy name.
         type:
           type: str
-          valid_values:
-          - zscaler
           description: 'Internet-exit policy type.
 
-            Only Zscaler supported.'
+            direct: Exit directly over wan interfaces
+
+            zscaler: Exit using Zscaler secure web gateway service'
+          valid_values:
+          - direct
+          - zscaler
           required: true
         fallback_to_system_default:
           type: bool
@@ -704,6 +707,8 @@ keys:
       keys:
         name:
           type: str
+          min_length: 1
+          max_length: 128
         description:
           type: str
         id:
@@ -721,6 +726,8 @@ keys:
               name:
                 type: str
                 description: The site name.
+                min_length: 1
+                max_length: 128
               description:
                 type: str
               id:
@@ -736,6 +743,22 @@ keys:
                 type: str
               site_after_hours_contact:
                 type: str
+  cv_server:
+    documentation_options:
+      table: wan-cv-pathfinder-zscaler-integration
+    description: 'PREVIEW: These keys are in preview mode.
+
+
+      Hostname or IP address of CloudVision host. Ex. "www.arista.io" for CVaaS.
+
+      For `eos_designs` this variable is only used for the WAN Internet-exit integration
+      with Zscaler.
+
+      The same variable name is also used by the `cv_deploy` role, and will override
+      the value of `ansible_host` on inventory ''cloudvision'' host.
+
+      Make sure to set it in a common group_vars file.'
+    type: str
   cv_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
@@ -749,6 +772,23 @@ keys:
     - spine
     - core
     - edge
+  cv_token:
+    documentation_options:
+      table: wan-cv-pathfinder-zscaler-integration
+    description: 'PREVIEW: These keys are in preview mode.
+
+
+      Service account token as defined on CloudVision. This value should be using
+      Ansible Vault.
+
+      For `eos_designs` this variable is only used for the WAN Internet-exit integration
+      with Zscaler.
+
+      The same variable name is also used by the `cv_deploy` role, and will override
+      the value of `ansible_password` on inventory ''cloudvision'' host.
+
+      Make sure to set it in a common group_vars file.'
+    type: str
   cv_topology:
     documentation_options:
       table: cv-topology
@@ -4480,22 +4520,15 @@ keys:
     description: 'PREVIEW: These keys are in preview mode.
 
 
-      Special data model used for WAN internet-exit integration with Zscaler.
+      Special data model used for testing the WAN internet-exit integration with Zscaler.
 
-      The model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints`
-      Ansible lookup plugin.
+      The model is supposed to be autofilled per-device by `eos_designs`.
 
-      Example:
+      Manually setting this model will take precedence and prevent `eos_designs` from
+      trying to contact CloudVision.
 
-      ```yaml
-
-      zscaler_endpoints: "{{ lookup(''arista.avd.cv_zscaler_endpoints'', cv_server="<optional
-      servername>", cv_token="<optional token>") }}"
-
-      ```
-
-      The cv_server and cv_token options can be set as inventory variables instead
-      of given as arguments. (Then they will also be used for cv_deploy)'
+      This can be useful for offline testing or if CloudVision is not available or
+      not configured for Zscaler integration.'
     keys:
       primary:
         type: dict
@@ -8863,7 +8896,6 @@ $defs:
                     description: Internet-exit policy name.
                   tunnel_interface_numbers:
                     type: str
-                    required: true
                     description: 'Number range to use for Tunnel interfaces to an
                       internet-exit service provider using this local interface.
 

@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [MAC Address Table](#mac-address-table)
+- [MAC Address Table](#mac-address-table-1)
   - [MAC Address Table Summary](#mac-address-table-summary)
   - [MAC Address Table Device Configuration](#mac-address-table-device-configuration)
 

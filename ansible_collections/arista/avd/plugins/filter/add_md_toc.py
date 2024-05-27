@@ -8,19 +8,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import re
-import sys
-from io import StringIO
-
-from jinja2.runtime import Undefined
-
-try:
-    import md_toc
-
-    HAS_MD_TOC = True
-except ImportError:
-    HAS_MD_TOC = False
-
 DOCUMENTATION = r"""
 ---
 name: add_md_toc
@@ -74,6 +61,13 @@ _value:
   type: string
 """
 
+import re
+from unicodedata import normalize
+
+from ansible.errors import AnsibleFilterError
+
+HEADING_PATTERN = re.compile(r"#+ ")
+
 
 def add_md_toc(md_input, skip_lines=0, toc_levels=3, toc_marker="<!-- toc -->"):
     """
@@ -110,27 +104,84 @@ def add_md_toc(md_input, skip_lines=0, toc_levels=3, toc_marker="<!-- toc -->"):
         MD with added TOC
     """
 
-    if isinstance(md_input, Undefined) or md_input is None or HAS_MD_TOC is False:
-        # Return None
-        return
+    if not isinstance(skip_lines, int):
+        raise AnsibleFilterError(f"add_md_toc 'skip_lines' argument must be an integer. Got '{skip_lines}'({type(skip_lines)}).")
 
-    # Generate TOC from variable
-    with StringIO(md_input) as md:
-        stdin = sys.stdin
-        sys.stdin = md
-        try:
-            # Try using new md_toc api when md-toc>=9.0.0.
-            toc = md_toc.api.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
-        except AttributeError:
-            # If that fails, use the previous version md-toc>=8.1.0,<9.0.0
-            toc = md_toc.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
-        sys.stdin = stdin
+    if not isinstance(toc_levels, int) or toc_levels < 1:
+        raise AnsibleFilterError(f"add_md_toc 'toc_levels' argument must be >0. Got '{toc_levels}'({type(skip_lines)}).")
 
-    # Insert TOC between markers
-    toc_marker = re.escape(toc_marker)
-    toc_pattern = re.compile(rf"{toc_marker}[\S\s]*?{toc_marker}")
+    if not isinstance(toc_marker, str) or not toc_marker:
+        raise AnsibleFilterError(f"add_md_toc 'toc_marker' argument must be a non-empty string. Got '{toc_marker}'({type(skip_lines)}).")
 
-    return toc_pattern.sub(toc, md_input, count=1)
+    if not isinstance(md_input, str):
+        raise AnsibleFilterError(f"add_md_toc expects a string. Got {type(md_input)}.")
+
+    md_lines = md_input.split("\n")
+    toc_marker_positions = []
+    toc_lines = []
+
+    # all_anchor_ids is used to hold anchors for the full MD document even if we are skipping lines or levels for the TOC.
+    all_anchor_ids = []
+
+    # toc_level_offset ensures we start the TOC at the lowest level within the unskipped lines.
+    toc_level_offset = 99
+
+    for line_num, line in enumerate(md_lines):
+        if line == toc_marker:
+            # Register line number or the TOC marker.
+            toc_marker_positions.append(line_num)
+            continue
+        if re.match(HEADING_PATTERN, line):
+            # This is a heading.
+            # First get info for this line, including building an anchor and adding this anchor to all_anchor_ids.
+            # This is important, since skipped headings will still be associated with an anchor-id during parsing of the final MarkDown file.
+            level, text, anchor_id = _get_line_info(line, all_anchor_ids)
+
+            # Do not create a TOC line if we are skipping or at a deeper level than we want.
+            if line_num < skip_lines or level > toc_levels:
+                continue
+
+            # Create the TOC line
+            toc_level_offset = min(toc_level_offset, level)
+            prefix = ("  " * (level - toc_level_offset)) + "- "
+            toc_lines.append(f"{prefix}[{text}](#{anchor_id})")
+
+    if len(toc_marker_positions) != 2:
+        raise AnsibleFilterError(
+            f"add_md_toc expects exactly two occurrences of the toc marker '{toc_marker}' on their own lines. Found {len(toc_marker_positions)} occurrences."
+        )
+
+    return "\n".join(md_lines[0 : toc_marker_positions[0]] + toc_lines + md_lines[toc_marker_positions[1] + 1 :])
+
+
+def _get_line_info(line, all_anchor_ids):
+    """
+    Split heading and return level, text and anchor_id.
+    Since we know the line is already a heading, we can assume correct formatting.
+    """
+    pounds, text = line.split(" ", maxsplit=1)
+    level = len(pounds)
+    anchor_id = _get_anchor_id(text, all_anchor_ids)
+
+    return level, text, anchor_id
+
+
+def _get_anchor_id(text, all_anchor_ids):
+    """
+    Returns a unique anchor_id after adding it to 'all_anchor_ids'.
+    The logic here follow the auto-id generation algorithm of the MarkDown spec.
+    """
+    tmp_anchor_id = normalize("NFKD", text).encode("ascii", "ignore")
+    tmp_anchor_id = re.sub(r"[^\w\s-]", "", tmp_anchor_id.decode("ascii")).strip().lower()
+    tmp_anchor_id = re.sub(r"[-\s]+", "-", tmp_anchor_id)
+
+    anchor_id = tmp_anchor_id
+    counter = 0
+    while anchor_id in all_anchor_ids:
+        counter += 1
+        anchor_id = f"{tmp_anchor_id}-{counter}"
+    all_anchor_ids.append(anchor_id)
+    return anchor_id
 
 
 class FilterModule(object):

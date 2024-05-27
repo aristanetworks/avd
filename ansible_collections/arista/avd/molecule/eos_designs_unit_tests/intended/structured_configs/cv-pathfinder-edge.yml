@@ -228,6 +228,16 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Colt_10555
+  ip_nat:
+    service_profile: IE-DIRECT-NAT
+- name: Ethernet2/1
+  peer_type: l3_interface
+  ip_address: 172.15.5.6/31
+  shutdown: false
+  type: routed
+  description: Colt_10555
+  ip_nat:
+    service_profile: IE-DIRECT-NAT
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
@@ -313,9 +323,20 @@ route_maps:
 static_routes:
 - destination_address_prefix: 172.16.0.0/16
   gateway: 172.16.5.4
+- destination_address_prefix: 172.16.0.0/16
+  gateway: 172.16.5.9
 - destination_address_prefix: 66.66.66.0/24
   gateway: 172.17.0.0
   vrf: default
+- destination_address_prefix: 10.37.121.1/32
+  name: IE-ZSCALER-PRI
+  gateway: 172.20.20.21
+- destination_address_prefix: 10.39.77.1/32
+  name: IE-ZSCALER-SEC
+  gateway: 172.20.20.21
+- destination_address_prefix: 10.50.9.1/32
+  name: IE-ZSCALER-TER
+  gateway: 172.20.20.21
 agents:
 - name: KernelFib
   environment_variables:
@@ -408,6 +429,7 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
   - name: DEFAULT-AVT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
+    internet_exit_policy: DIRECT-EXIT-POLICY-1
   - name: DEFAULT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY-VOICE
@@ -513,6 +535,10 @@ router_path_selection:
     id: 100
     local_interfaces:
     - name: Ethernet2
+      stun:
+        server_profiles:
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
+    - name: Ethernet2/1
       stun:
         server_profiles:
         - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
@@ -653,36 +679,55 @@ ip_access_lists:
     source: any
     destination: any
 ip_nat:
+  profiles:
+  - name: IE-DIRECT-NAT
+    source:
+      dynamic:
+      - access_list: ALLOW-ALL
+        nat_type: overload
+  - name: IE-ZSCALER-NAT
+    source:
+      dynamic:
+      - access_list: ALLOW-ALL
+        pool_name: PORT-ONLY-POOL
+        nat_type: pool
   pools:
   - name: PORT-ONLY-POOL
     type: port-only
     ranges:
     - first_port: 1500
       last_port: 65535
-  profiles:
-  - name: VRF-AWARE-NAT
-    source:
-      dynamic:
-      - access_list: ALLOW-ALL
-        pool_name: PORT-ONLY-POOL
-        nat_type: pool
 router_service_insertion:
   enabled: true
   connections:
+  - name: IE-Ethernet2
+    monitor_connectivity_host: IE-Ethernet2
+    ethernet_interface:
+      name: Ethernet2
+      next_hop: 172.16.5.4
+  - name: IE-Ethernet2_1
+    monitor_connectivity_host: IE-Ethernet2_1
+    ethernet_interface:
+      name: Ethernet2/1
+      next_hop: 172.16.5.9
   - name: IE-Tunnel100
+    monitor_connectivity_host: IE-Tunnel100
     tunnel_interface:
       primary: Tunnel100
-    monitor_connectivity_host: IE-Tunnel100
   - name: IE-Tunnel101
+    monitor_connectivity_host: IE-Tunnel101
     tunnel_interface:
       primary: Tunnel101
-    monitor_connectivity_host: IE-Tunnel101
   - name: IE-Tunnel102
+    monitor_connectivity_host: IE-Tunnel102
     tunnel_interface:
       primary: Tunnel102
-    monitor_connectivity_host: IE-Tunnel102
 router_internet_exit:
   exit_groups:
+  - name: DIRECT-EXIT-POLICY-1
+    local_connections:
+    - name: IE-Ethernet2
+    - name: IE-Ethernet2_1
   - name: ZSCALER-EXIT-POLICY-1_PRI
     local_connections:
     - name: IE-Tunnel100
@@ -693,6 +738,9 @@ router_internet_exit:
     local_connections:
     - name: IE-Tunnel102
   policies:
+  - name: DIRECT-EXIT-POLICY-1
+    exit_groups:
+    - name: DIRECT-EXIT-POLICY-1
   - name: ZSCALER-EXIT-POLICY-1
     exit_groups:
     - name: ZSCALER-EXIT-POLICY-1_PRI
@@ -725,32 +773,36 @@ tunnel_interfaces:
 - name: Tunnel100
   description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.37.121.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: IE-ZSCALER-NAT
 - name: Tunnel101
   description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.39.77.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: IE-ZSCALER-NAT
 - name: Tunnel102
   description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.50.9.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: IE-ZSCALER-NAT
 monitor_connectivity:
   interface_sets:
+  - name: SET-Ethernet2
+    interfaces: Ethernet2
+  - name: SET-Ethernet2_1
+    interfaces: Ethernet2/1
   - name: SET-Tunnel100
     interfaces: Tunnel100
   - name: SET-Tunnel101
@@ -758,6 +810,16 @@ monitor_connectivity:
   - name: SET-Tunnel102
     interfaces: Tunnel102
   hosts:
+  - name: IE-Ethernet2
+    description: Internet Exit DIRECT-EXIT-POLICY-1
+    ip: 172.16.5.4
+    local_interfaces: SET-Ethernet2
+    address_only: false
+  - name: IE-Ethernet2_1
+    description: Internet Exit DIRECT-EXIT-POLICY-1
+    ip: 172.16.5.9
+    local_interfaces: SET-Ethernet2_1
+    address_only: false
   - name: IE-Tunnel100
     description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
     ip: 10.37.121.1
@@ -813,6 +875,10 @@ metadata:
       carrier: Colt
       circuit_id: '10555'
       pathgroup: MPLS
+    - name: Ethernet2/1
+      carrier: Colt
+      circuit_id: '10555'
+      pathgroup: MPLS
     - name: Ethernet3
       carrier: Comcast-5G
       circuit_id: AF830
@@ -855,6 +921,14 @@ metadata:
       - name: Circuit
         value: '666'
     - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10555'
+    - interface: Ethernet2/1
       tags:
       - name: Type
         value: wan

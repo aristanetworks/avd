@@ -888,6 +888,35 @@
                   "type": "string",
                   "title": "Session Tracker"
                 },
+                "shared_secret": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Name of profile defined under `management_security`.",
+                      "title": "Profile"
+                    },
+                    "hash_algorithm": {
+                      "type": "string",
+                      "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                      "enum": [
+                        "aes-128-cmac-96",
+                        "hmac-sha-256",
+                        "hmac-sha1-96"
+                      ],
+                      "title": "Hash Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
                 "ttl_maximum_hops": {
                   "type": "integer",
                   "minimum": 0,
@@ -1233,6 +1262,35 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Name of profile defined under `management_security`.",
+                      "title": "Profile"
+                    },
+                    "hash_algorithm": {
+                      "type": "string",
+                      "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                      "enum": [
+                        "aes-128-cmac-96",
+                        "hmac-sha-256",
+                        "hmac-sha1-96"
+                      ],
+                      "title": "Hash Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
                 },
                 "ttl_maximum_hops": {
                   "type": "integer",
@@ -1580,6 +1638,35 @@
                   "type": "string",
                   "title": "Session Tracker"
                 },
+                "shared_secret": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Name of profile defined under `management_security`.",
+                      "title": "Profile"
+                    },
+                    "hash_algorithm": {
+                      "type": "string",
+                      "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                      "enum": [
+                        "aes-128-cmac-96",
+                        "hmac-sha-256",
+                        "hmac-sha1-96"
+                      ],
+                      "title": "Hash Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
                 "ttl_maximum_hops": {
                   "type": "integer",
                   "minimum": 0,
@@ -1925,6 +2012,35 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Name of profile defined under `management_security`.",
+                      "title": "Profile"
+                    },
+                    "hash_algorithm": {
+                      "type": "string",
+                      "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                      "enum": [
+                        "aes-128-cmac-96",
+                        "hmac-sha-256",
+                        "hmac-sha1-96"
+                      ],
+                      "title": "Hash Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
                 },
                 "ttl_maximum_hops": {
                   "type": "integer",
@@ -2272,6 +2388,35 @@
                   "type": "string",
                   "title": "Session Tracker"
                 },
+                "shared_secret": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Name of profile defined under `management_security`.",
+                      "title": "Profile"
+                    },
+                    "hash_algorithm": {
+                      "type": "string",
+                      "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                      "enum": [
+                        "aes-128-cmac-96",
+                        "hmac-sha-256",
+                        "hmac-sha1-96"
+                      ],
+                      "title": "Hash Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
                 "ttl_maximum_hops": {
                   "type": "integer",
                   "minimum": 0,
@@ -2618,6 +2763,35 @@
                   "type": "string",
                   "title": "Session Tracker"
                 },
+                "shared_secret": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Name of profile defined under `management_security`.",
+                      "title": "Profile"
+                    },
+                    "hash_algorithm": {
+                      "type": "string",
+                      "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                      "enum": [
+                        "aes-128-cmac-96",
+                        "hmac-sha-256",
+                        "hmac-sha1-96"
+                      ],
+                      "title": "Hash Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
                 "ttl_maximum_hops": {
                   "type": "integer",
                   "minimum": 0,
@@ -2963,6 +3137,35 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Name of profile defined under `management_security`.",
+                      "title": "Profile"
+                    },
+                    "hash_algorithm": {
+                      "type": "string",
+                      "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                      "enum": [
+                        "aes-128-cmac-96",
+                        "hmac-sha-256",
+                        "hmac-sha1-96"
+                      ],
+                      "title": "Hash Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
                 },
                 "ttl_maximum_hops": {
                   "type": "integer",
@@ -3363,6 +3566,35 @@
                   "type": "string",
                   "title": "Session Tracker"
                 },
+                "shared_secret": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Name of profile defined under `management_security`.",
+                      "title": "Profile"
+                    },
+                    "hash_algorithm": {
+                      "type": "string",
+                      "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                      "enum": [
+                        "aes-128-cmac-96",
+                        "hmac-sha-256",
+                        "hmac-sha1-96"
+                      ],
+                      "title": "Hash Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
+                },
                 "ttl_maximum_hops": {
                   "type": "integer",
                   "minimum": 0,
@@ -3753,6 +3985,35 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "shared_secret": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Name of profile defined under `management_security`.",
+                      "title": "Profile"
+                    },
+                    "hash_algorithm": {
+                      "type": "string",
+                      "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                      "enum": [
+                        "aes-128-cmac-96",
+                        "hmac-sha-256",
+                        "hmac-sha1-96"
+                      ],
+                      "title": "Hash Algorithm"
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "hash_algorithm"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Shared Secret"
                 },
                 "ttl_maximum_hops": {
                   "type": "integer",
@@ -4546,10 +4807,11 @@
           },
           "type": {
             "type": "string",
+            "description": "Internet-exit policy type.\ndirect: Exit directly over wan interfaces\nzscaler: Exit using Zscaler secure web gateway service",
             "enum": [
+              "direct",
               "zscaler"
             ],
-            "description": "Internet-exit policy type.\nOnly Zscaler supported.",
             "title": "Type"
           },
           "fallback_to_system_default": {
@@ -4647,6 +4909,9 @@
         "properties": {
           "name": {
             "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
             "title": "Name"
           },
           "description": {
@@ -4669,6 +4934,9 @@
                 "name": {
                   "type": "string",
                   "description": "The site name.",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                   "title": "Name"
                 },
                 "description": {
@@ -4721,6 +4989,11 @@
       },
       "title": "Cv Pathfinder Regions"
     },
+    "cv_server": {
+      "description": "PREVIEW: These keys are in preview mode.\n\nHostname or IP address of CloudVision host. Ex. \"www.arista.io\" for CVaaS.\nFor `eos_designs` this variable is only used for the WAN Internet-exit integration with Zscaler.\nThe same variable name is also used by the `cv_deploy` role, and will override the value of `ansible_host` on inventory 'cloudvision' host.\nMake sure to set it in a common group_vars file.",
+      "type": "string",
+      "title": "Cv Server"
+    },
     "cv_tags_topology_type": {
       "description": "PREVIEW: This key is currently not supported\nDevice type that CloudVision should use when generating the Topology. Defaults to the setting under node_type_keys.",
       "type": "string",
@@ -4731,6 +5004,11 @@
         "edge"
       ],
       "title": "Cv Tags Topology Type"
+    },
+    "cv_token": {
+      "description": "PREVIEW: These keys are in preview mode.\n\nService account token as defined on CloudVision. This value should be using Ansible Vault.\nFor `eos_designs` this variable is only used for the WAN Internet-exit integration with Zscaler.\nThe same variable name is also used by the `cv_deploy` role, and will override the value of `ansible_password` on inventory 'cloudvision' host.\nMake sure to set it in a common group_vars file.",
+      "type": "string",
+      "title": "Cv Token"
     },
     "cv_topology": {
       "type": "array",
@@ -5045,8 +5323,35 @@
           },
           "action": {
             "type": "string",
-            "description": "Command to execute.\n",
+            "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.",
+            "deprecated": true,
             "title": "Action"
+          },
+          "actions": {
+            "type": "object",
+            "description": "Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.",
+            "properties": {
+              "bash_command": {
+                "type": "string",
+                "description": "Define BASH command action. Command could be multiline also.",
+                "title": "Bash Command"
+              },
+              "log": {
+                "type": "boolean",
+                "description": "Log a message when the event is triggered.",
+                "title": "Log"
+              },
+              "increment_device_health_metric": {
+                "type": "string",
+                "description": "Name of device-health metric.",
+                "title": "Increment Device Health Metric"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Actions"
           },
           "delay": {
             "type": "integer",
@@ -7213,14 +7518,13 @@
                       "title": "Tunnel Interface Numbers"
                     }
                   },
-                  "required": [
-                    "tunnel_interface_numbers",
-                    "name"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Policies"
               }
@@ -8387,6 +8691,37 @@
                   "^_.+$": {}
                 },
                 "title": "MAC Security"
+              },
+              "tcp_mss_ceiling": {
+                "type": "object",
+                "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                "properties": {
+                  "ipv4_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv4 Segment Size"
+                  },
+                  "ipv6_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv6 Segment Size"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "TCP Mss Ceiling"
               },
               "channel_group": {
                 "type": "object",
@@ -14154,6 +14489,37 @@
                 },
                 "title": "MAC Security"
               },
+              "tcp_mss_ceiling": {
+                "type": "object",
+                "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                "properties": {
+                  "ipv4_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv4 Segment Size"
+                  },
+                  "ipv6_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv6 Segment Size"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "TCP Mss Ceiling"
+              },
               "channel_group": {
                 "type": "object",
                 "properties": {
@@ -18659,6 +19025,50 @@
                       "type": "string",
                       "title": "DNS Domain Name IPv6"
                     },
+                    "dns_servers_ipv4": {
+                      "type": "array",
+                      "minItems": 1,
+                      "description": "List of DNS servers for IPv4 clients.",
+                      "items": {
+                        "type": "string",
+                        "description": "IPv4 address of DNS server."
+                      },
+                      "title": "DNS Servers IPv4"
+                    },
+                    "dns_servers_ipv6": {
+                      "type": "array",
+                      "minItems": 1,
+                      "description": "List of DNS servers for IPv6 clients.",
+                      "items": {
+                        "type": "string",
+                        "description": "IPv6 address of DNS server."
+                      },
+                      "title": "DNS Servers IPv6"
+                    },
+                    "tftp_server": {
+                      "type": "object",
+                      "properties": {
+                        "file_ipv4": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255,
+                          "description": "Name of TFTP file for IPv4 clients.",
+                          "title": "File IPv4"
+                        },
+                        "file_ipv6": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255,
+                          "description": "Name of TFTP file for IPv6 clients.",
+                          "title": "File IPv6"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Tftp Server"
+                    },
                     "ipv4_vendor_options": {
                       "type": "array",
                       "items": {
@@ -19042,6 +19452,13 @@
                           "^_.+$": {}
                         },
                         "title": "Unresponsive"
+                      },
+                      "accounting_update_interval": {
+                        "type": "integer",
+                        "minimum": 5,
+                        "maximum": 65535,
+                        "description": "Interval period in seconds.",
+                        "title": "Accounting Update Interval"
                       }
                     },
                     "additionalProperties": false,
@@ -20476,6 +20893,37 @@
                         "^_.+$": {}
                       },
                       "title": "MAC Security"
+                    },
+                    "tcp_mss_ceiling": {
+                      "type": "object",
+                      "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                      "properties": {
+                        "ipv4_segment_size": {
+                          "type": "integer",
+                          "minimum": 64,
+                          "maximum": 65475,
+                          "title": "IPv4 Segment Size"
+                        },
+                        "ipv6_segment_size": {
+                          "type": "integer",
+                          "minimum": 64,
+                          "maximum": 65475,
+                          "title": "IPv6 Segment Size"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "title": "Direction"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "TCP Mss Ceiling"
                     },
                     "channel_group": {
                       "type": "object",
@@ -22233,8 +22681,35 @@
                     },
                     "action": {
                       "type": "string",
-                      "description": "Command to execute.\n",
+                      "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.",
+                      "deprecated": true,
                       "title": "Action"
+                    },
+                    "actions": {
+                      "type": "object",
+                      "description": "Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.",
+                      "properties": {
+                        "bash_command": {
+                          "type": "string",
+                          "description": "Define BASH command action. Command could be multiline also.",
+                          "title": "Bash Command"
+                        },
+                        "log": {
+                          "type": "boolean",
+                          "description": "Log a message when the event is triggered.",
+                          "title": "Log"
+                        },
+                        "increment_device_health_metric": {
+                          "type": "string",
+                          "description": "Name of device-health metric.",
+                          "title": "Increment Device Health Metric"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Actions"
                     },
                     "delay": {
                       "type": "integer",
@@ -27376,7 +27851,7 @@
                         },
                         "cipher_list": {
                           "type": "string",
-                          "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string\n",
+                          "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string.\n",
                           "title": "Cipher List"
                         },
                         "trust_certificate": {
@@ -27494,6 +27969,116 @@
                       }
                     },
                     "title": "SSL Profiles"
+                  },
+                  "shared_secret_profiles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "profile": {
+                          "type": "string",
+                          "title": "Profile"
+                        },
+                        "secrets": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "secret": {
+                                "type": "string",
+                                "title": "Secret"
+                              },
+                              "secret_type": {
+                                "type": "string",
+                                "default": "7",
+                                "enum": [
+                                  "0",
+                                  "7",
+                                  "8a"
+                                ],
+                                "title": "Secret Type"
+                              },
+                              "receive_lifetime": {
+                                "type": "object",
+                                "properties": {
+                                  "infinite": {
+                                    "type": "boolean",
+                                    "title": "Infinite"
+                                  },
+                                  "start_date_time": {
+                                    "type": "string",
+                                    "description": "Start date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                                    "title": "Start Date Time"
+                                  },
+                                  "end_date_time": {
+                                    "type": "string",
+                                    "description": "End date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                                    "title": "End Date Time"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Receive Lifetime"
+                              },
+                              "transmit_lifetime": {
+                                "type": "object",
+                                "properties": {
+                                  "infinite": {
+                                    "type": "boolean",
+                                    "title": "Infinite"
+                                  },
+                                  "start_date_time": {
+                                    "type": "string",
+                                    "description": "Start date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                                    "title": "Start Date Time"
+                                  },
+                                  "end_date_time": {
+                                    "type": "string",
+                                    "description": "End date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                                    "title": "End Date Time"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Transmit Lifetime"
+                              },
+                              "local_time": {
+                                "type": "boolean",
+                                "description": "Configuring secret using the local timezone from system clock. Default is UTC.",
+                                "title": "Local Time"
+                              }
+                            },
+                            "required": [
+                              "secret",
+                              "receive_lifetime",
+                              "transmit_lifetime",
+                              "name"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Secrets"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "profile"
+                      ]
+                    },
+                    "title": "Shared Secret Profiles"
                   }
                 },
                 "additionalProperties": false,
@@ -28757,6 +29342,11 @@
                         "type": "boolean",
                         "description": "Enable transceiver SMBus fail and reset logging.",
                         "title": "Communication"
+                      },
+                      "enabled": {
+                        "type": "boolean",
+                        "description": "Some platforms support only the `logging transceiver` command. `enabled` key configures this command.",
+                        "title": "Enabled"
                       }
                     },
                     "additionalProperties": false,
@@ -30013,6 +30603,60 @@
                       ]
                     },
                     "title": "QOS"
+                  },
+                  "copp_system_policy": {
+                    "type": "object",
+                    "description": "Control-plane policy configuration.",
+                    "properties": {
+                      "classes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "Name"
+                            },
+                            "shape": {
+                              "type": "integer",
+                              "description": "Maximum rate limit.",
+                              "minimum": 0,
+                              "maximum": 10000000,
+                              "title": "Shape"
+                            },
+                            "bandwidth": {
+                              "type": "integer",
+                              "description": "Minimum bandwidth.",
+                              "minimum": 0,
+                              "maximum": 10000000,
+                              "title": "Bandwidth"
+                            },
+                            "rate_unit": {
+                              "type": "string",
+                              "description": "The `rate_unit` must be defined for `shape` and `bandwidth`.",
+                              "enum": [
+                                "pps",
+                                "kbps"
+                              ],
+                              "title": "Rate Unit"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "title": "Classes"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Copp System Policy"
                   }
                 },
                 "additionalProperties": false,
@@ -33233,6 +33877,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -33258,6 +33903,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -33283,6 +33929,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
+                        "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
                         "title": "Name"
                       },
                       "id": {
@@ -34176,6 +34823,35 @@
                           "type": "string",
                           "title": "Session Tracker"
                         },
+                        "shared_secret": {
+                          "type": "object",
+                          "properties": {
+                            "profile": {
+                              "type": "string",
+                              "description": "Name of profile defined under `management_security`.",
+                              "title": "Profile"
+                            },
+                            "hash_algorithm": {
+                              "type": "string",
+                              "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                              "enum": [
+                                "aes-128-cmac-96",
+                                "hmac-sha-256",
+                                "hmac-sha1-96"
+                              ],
+                              "title": "Hash Algorithm"
+                            }
+                          },
+                          "required": [
+                            "profile",
+                            "hash_algorithm"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Shared Secret"
+                        },
                         "ttl_maximum_hops": {
                           "type": "integer",
                           "minimum": 0,
@@ -34486,6 +35162,35 @@
                         "session_tracker": {
                           "type": "string",
                           "title": "Session Tracker"
+                        },
+                        "shared_secret": {
+                          "type": "object",
+                          "properties": {
+                            "profile": {
+                              "type": "string",
+                              "description": "Name of profile defined under `management_security`.",
+                              "title": "Profile"
+                            },
+                            "hash_algorithm": {
+                              "type": "string",
+                              "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                              "enum": [
+                                "aes-128-cmac-96",
+                                "hmac-sha-256",
+                                "hmac-sha1-96"
+                              ],
+                              "title": "Hash Algorithm"
+                            }
+                          },
+                          "required": [
+                            "profile",
+                            "hash_algorithm"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Shared Secret"
                         },
                         "ttl_maximum_hops": {
                           "type": "integer",
@@ -50840,6 +51545,37 @@
                 },
                 "title": "MAC Security"
               },
+              "tcp_mss_ceiling": {
+                "type": "object",
+                "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+                "properties": {
+                  "ipv4_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv4 Segment Size"
+                  },
+                  "ipv6_segment_size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 65475,
+                    "title": "IPv6 Segment Size"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "egress",
+                      "ingress"
+                    ],
+                    "title": "Direction"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "TCP Mss Ceiling"
+              },
               "channel_group": {
                 "type": "object",
                 "properties": {
@@ -58440,7 +59176,7 @@
     },
     "zscaler_endpoints": {
       "type": "object",
-      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device using the `arista.avd.cv_zscaler_endpoints` Ansible lookup plugin.\nExample:\n```yaml\nzscaler_endpoints: \"{{ lookup('arista.avd.cv_zscaler_endpoints', cv_server=\"<optional servername>\", cv_token=\"<optional token>\") }}\"\n```\nThe cv_server and cv_token options can be set as inventory variables instead of given as arguments. (Then they will also be used for cv_deploy)",
+      "description": "PREVIEW: These keys are in preview mode.\n\nSpecial data model used for testing the WAN internet-exit integration with Zscaler.\nThe model is supposed to be autofilled per-device by `eos_designs`.\nManually setting this model will take precedence and prevent `eos_designs` from trying to contact CloudVision.\nThis can be useful for offline testing or if CloudVision is not available or not configured for Zscaler integration.",
       "properties": {
         "primary": {
           "type": "object",

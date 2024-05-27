@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [IP Security](#ip-security)
+- [IP Security](#ip-security-1)
   - [IKE policies](#ike-policies)
   - [Security Association policies](#security-association-policies)
   - [IPSec profiles](#ipsec-profiles)
