@@ -1,0 +1,50 @@
+# Testing "core_interfaces.p2p_links_profiles.[].as" not defined error
+
+# Fabric node type keys
+node_type_keys:
+  - key: core_router
+    type: core_router
+    default_evpn_role: none
+    mpls_lsr: true
+
+bgp_as: 65000
+
+# Nodes
+type: core_router
+core_router:
+  defaults:
+    loopback_ipv4_pool: 10.0.0.0/24
+    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    node_sid_base: 200
+    isis_system_id_prefix: "0000.0001"
+  nodes:
+    - name: core-interfaces-p2p-links-as
+      id: 1
+
+core_interfaces:
+  p2p_links_ip_pools:
+    - name: underlay_pool
+      ipv4_pool: 100.64.48.0/24
+    - name: some_other_pool
+      ipv4_pool: 100.123.123.0/24
+  p2p_links_profiles:
+    - name: isis_bb_profile
+      speed: "forced 1000full"
+      mtu: 1500
+      isis_hello_padding: false
+      isis_metric: 60
+      ip_pool: underlay_pool
+      isis_circuit_type: level-2
+      ipv6_enable: true
+      isis_authentication_mode: md5
+      isis_authentication_key: $1c$sTNAlR6rKSw=
+  p2p_links:
+    # P2P core links with underlay_multicast(pim-sparse) enabled.
+    - nodes: [ core-interfaces-p2p-links-as, peer1 ]
+      id: 10
+      interfaces: [ Ethernet1, Ethernet1 ]
+      include_in_underlay_protocol: true
+      underlay_multicast: true
+      ip_pool: underlay_pool
+
+expected_error_message: "core_interfaces.p2p_links.[].as or core_interfaces.p2p_links_profiles.[].as"

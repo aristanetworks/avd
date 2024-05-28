@@ -151,8 +151,8 @@ class UtilsMixin:
             "peer_type": peer_type,
             "ip": ip[index],
             "peer_ip": ip[peer_index],
-            "bgp_as": str(bgp_as[index]),
-            "peer_bgp_as": str(bgp_as[peer_index]),
+            "bgp_as": (str(bgp_as[index]) if bgp_as[index] is not None else None),
+            "peer_bgp_as": str(bgp_as[peer_index] if bgp_as[peer_index] is not None else None),
             "description": descriptions[index],
         }
 
