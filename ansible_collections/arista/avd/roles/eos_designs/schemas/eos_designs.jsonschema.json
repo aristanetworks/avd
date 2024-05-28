@@ -38410,6 +38410,21 @@
                           "description": "VRF name.",
                           "title": "Name"
                         },
+                        "bgp": {
+                          "type": "object",
+                          "properties": {
+                            "redistribute_internal": {
+                              "type": "boolean",
+                              "description": "Redistribute internal BGP routes.",
+                              "title": "Redistribute Internal"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "BGP"
+                        },
                         "rd": {
                           "type": "string",
                           "description": "Route distinguisher.",
@@ -39145,6 +39160,11 @@
                                     "^_.+$": {}
                                   },
                                   "title": "Additional Paths"
+                                },
+                                "redistribute_internal": {
+                                  "type": "boolean",
+                                  "description": "Redistribute internal BGP routes.",
+                                  "title": "Redistribute Internal"
                                 }
                               },
                               "additionalProperties": false,
@@ -39418,6 +39438,11 @@
                                     "^_.+$": {}
                                   },
                                   "title": "Additional Paths"
+                                },
+                                "redistribute_internal": {
+                                  "type": "boolean",
+                                  "description": "Redistribute internal BGP routes.",
+                                  "title": "Redistribute Internal"
                                 }
                               },
                               "additionalProperties": false,

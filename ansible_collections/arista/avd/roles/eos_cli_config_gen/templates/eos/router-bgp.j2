@@ -1615,6 +1615,11 @@ router bgp {{ router_bgp.as }}
       network {{ network.prefix }}
 {%             endif %}
 {%         endfor %}
+{%         if vrf.bgp.redistribute_internal is arista.avd.defined(true) %}
+      bgp redistribute-internal
+{%         elif vrf.bgp.redistribute_internal is arista.avd.defined(false) %}
+      no bgp redistribute-internal
+{%         endif %}
 {%         for aggregate_address in vrf.aggregate_addresses | arista.avd.natural_sort('prefix') %}
 {%             set aggregate_address_cli = "aggregate-address " ~ aggregate_address.prefix %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}
@@ -1781,6 +1786,11 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
          {{ network_cli }}
 {%             endfor %}
+{%             if vrf.address_family_ipv4.bgp.redistribute_internal is arista.avd.defined(true) %}
+         bgp redistribute-internal
+{%             elif vrf.address_family_ipv4.bgp.redistribute_internal is arista.avd.defined(false) %}
+         no bgp redistribute-internal
+{%             endif %}
 {%             for redistribute_route in vrf.address_family_ipv4.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
 {%                 if redistribute_route.source_protocol is arista.avd.defined %}
 {%                     set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
@@ -1915,6 +1925,11 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
          {{ network_cli }}
 {%             endfor %}
+{%             if vrf.address_family_ipv6.bgp.redistribute_internal is arista.avd.defined(true) %}
+         bgp redistribute-internal
+{%             elif vrf.address_family_ipv6.bgp.redistribute_internal is arista.avd.defined(false) %}
+         no bgp redistribute-internal
+{%             endif %}
 {%             for redistribute_route in vrf.address_family_ipv6.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
 {%                 if redistribute_route.source_protocol is arista.avd.defined %}
 {%                     set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}

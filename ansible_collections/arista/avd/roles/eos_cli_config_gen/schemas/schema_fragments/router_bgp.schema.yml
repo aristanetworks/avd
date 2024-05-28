@@ -2222,6 +2222,12 @@ keys:
               description: VRF name.
               convert_types:
                 - int
+            bgp:
+              type: dict
+              keys:
+                redistribute_internal:
+                  type: bool
+                  description: Redistribute internal BGP routes.
             rd:
               type: str
               description: Route distinguisher.
@@ -2689,6 +2695,9 @@ keys:
                                 - str
                               min: 2
                               max: 64
+                    redistribute_internal:
+                      type: bool
+                      description: Redistribute internal BGP routes.
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -2844,6 +2853,9 @@ keys:
                                 - str
                               min: 2
                               max: 64
+                    redistribute_internal:
+                      type: bool
+                      description: Redistribute internal BGP routes.
                 neighbors:
                   type: list
                   primary_key: ip_address
