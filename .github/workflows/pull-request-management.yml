@@ -362,6 +362,8 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
       - uses: actions/checkout@v4
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
       - name: 'Install Python requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
