@@ -138,10 +138,10 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
-        if not self._inband_mgmt_ipv4_parent:
-            return None
+        # if self.shared_utils.overlay_routing_protocol == "none":
+        #     return None
 
-        if not self.shared_utils.overlay_evpn or not self.shared_utils.overlay_vtep:
+        if not self._inband_mgmt_ipv4_parent:
             return None
 
         sequence_numbers = [
@@ -203,8 +203,8 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
-        if not self.shared_utils.overlay_evpn or not self.shared_utils.overlay_vtep:
-            return None
+        # if self.shared_utils.overlay_routing_protocol == "none":
+        #     return None
 
         route_map = {"name": "RM-CONN-2-BGP", "sequence_numbers": []}
 
