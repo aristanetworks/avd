@@ -4,9 +4,9 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Arista Validated Design Development
+# Arista Validated Designs Development
 
-**Arista Validated Design (AVD)** is maintained as a [GitHub project](https://github.com/aristanetworks/avd) under the Apache 2 license. Users are encouraged to submit GitHub issues for feature requests and bug reports.
+**Arista Validated Designs (AVD)** is maintained as a [GitHub project](https://github.com/aristanetworks/avd) under the Apache 2 license. Users are encouraged to submit GitHub issues for feature requests and bug reports.
 
 ## Governance
 
@@ -41,10 +41,6 @@ GitHub's discussions are the best place to get help or propose rough ideas for n
 - **Ideas** - Ideas for new functionality that still needs to be prepared for a formal feature request.
 - **Q&A** - Request help with installing or using AVD.
 
-#### Slack
-
-- [**#arista** on Network to Code Slack](http://slack.networktocode.com/) - Good for quick chats. Avoid any discussion that might need to be referenced later, as the chat history isn't retained long.
-
 ### Deprecation Policy
 
 The deprecation policy will be such that at least one release will inform users of a feature that will be deprecated in the next release.
@@ -55,21 +51,22 @@ Semantic Versioning ([SemVer](https://semver.org/)) is used for AVD versioning.
 
 ### Contributor Workflow
 
+The AVD repository follows a [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow) to collaborate on the project with personal fork.
+
 The following documents the lifecycle of work within AVD:
 
 1. Open/request a feature enhancement or file a bug
   a. If bug, see [here](#reporting-bugs)
   b. If feature request or enhancement, continue.
 2. Open a GitHub Issue
-  a. The issue will be reviewed. Based on the request, it will get labeled as  `current`, `near-term`, or `future`.
-  b. It will likely only stay in *current* if it's trivial and quick work.
-  c. If it gets labeled as *future*, the issue will be closed in the next batch of issues that get migrated and converted to GitHub discussions.
+  a. The issue will be reviewed approved by a maintainer.
+3. Submit a [Pull Request (PR)](#submitting-pull-requests) referencing the issue with `Fixes #<issue number>`.
 
-If you follow these steps, there **will** be a GitHub Issue opened before submitting a Pull Request (PR). However, a PR may come in without being discussed in an Issue or Discussion. While we don't advocate for this, you should be aware of the process that will be followed for those circumstances.
+If you follow these steps, there **will** be a GitHub Issue opened before submitting a PR. However, a PR may come in without being discussed in an Issue or Discussion. While we don't advocate for this, you should be aware of the process that will be followed for those circumstances.
 
 Should this happen, and if you followed the project guidelines, have sample tests, and code quality, you will first be acknowledged for your work; thank you in advance. After that, the PR will be quickly reviewed to ensure that it makes sense as a contribution to the project and to gauge the work effort or issues with merging into *devel*. If the effort required by the core team is manageable, it'll likely still be a few weeks before it gets thoroughly reviewed and merged. After that, it will just depend on the current backlog.
 
-### Contributing to Arista Validated Design
+### Contributing to Arista Validated Designs
 
 Contributing pull requests are gladly welcomed for this repository. If you are planning a significant change, please start a discussion first to ensure we can merge it.
 
@@ -77,8 +74,11 @@ Contributing pull requests are gladly welcomed for this repository. If you are p
 
 - The **`devel`** branch corresponds to the release actively under development.
 - The [release tags](https://github.com/aristanetworks/avd/tags) correspond to stable releases.
+  - For major and minor releases, release tags are applied directly on `devel` branch.
+  - For bug fix release, release tags are applied to releases/vX.X.X branch.
 - Fork the repository and create a branch based on **`devel`** to set up a dev environment if you want to open a PR.
-- See the AVD release for information about active branches.
+  - We do not enforce any branch naming convention.
+  - All PRs should be submitted towards the `devel` branch.
 
 #### Reporting Bugs
 
@@ -128,7 +128,7 @@ The issue will be reviewed by a moderator after submission, and the appropriate 
 
 - When submitting a pull request, please work off the `devel` branch rather than `releases/*`. The `devel` branch is used for ongoing development, while `releases/*` is used for tagging stable releases.
 
-- In most cases, adding a changelog entry is unnecessary: A maintainer will take care of this when the PR is merged. (This helps avoid merge conflicts resulting from multiple PRs being submitted simultaneously.)
+- In most cases, adding a changelog entry is unnecessary: A maintainer will take care of this when the PR is merged. This helps avoid merge conflicts resulting from multiple PRs being submitted simultaneously.
 
 - All code submissions should meet the following criteria (CI will enforce these checks):
   - Jinja2 templates follow our [guidelines](style-guide.md).
@@ -136,7 +136,6 @@ The issue will be reviewed by a moderator after submission, and the appropriate 
   - Molecule artifacts are updated with your coverage.
   - Python syntax is valid.
   - All unit tests pass successfully.
-  - PEP 8 compliance is enforced, with the exception that lines may be greater than 80 characters in length.
 
 - A PR can be opened before all the work is complete. The PR state should be set to **draft** in this situation. The maintainer team will review PRs marked as ready for review (not in draft).
 
@@ -162,7 +161,3 @@ The issue will be reviewed by a moderator after submission, and the appropriate 
 
     !!! info "Scopes"
         The scope is optional and can be ignored safely if your PR covers an undefined scope.
-
-## Project Structure
-
-All development of the current AVD release occurs in the `devel` branch; releases are packaged from the `releases/*` branches. A `releases/v*` branch should *always* represent a stable release in its entirety, such that installing AVD by either downloading a packaged release or cloning the `releases/v*` branch provides the same code base.

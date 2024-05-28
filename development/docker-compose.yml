@@ -1,18 +1,5 @@
 version: "3"
 services:
-  ansible:
-    image: avdteam/base:3.8-v2.0
-    container_name: ansible_avd
-    environment:
-      - AVD_UID=${AVD_UID}
-      - AVD_GIT_USER=${GIT_USER}
-      - AVD_GIT_EMAIL=${GIT_EMAIL}
-    volumes:
-      - ./../../:/projects:delegated
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${HOME}/.gitconfig:/home/avd/.gitconfig
-      - ${HOME}/.ssh:/home/avd/.ssh/
-    command: [ "/bin/sh", "-c", "while true; do sleep 30; done;" ]
 
   webdoc_avd:
     image: python:3.11.0-alpine3.17

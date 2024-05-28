@@ -7,92 +7,93 @@
 # Development Tooling
 
 - To assist the AVD development community, we provide guidance to develop with two primary methods: VSCode dev containers or local Python environment.
-- You may choose your also choose your own development methodology, however we may not be able to provide assistance in a timely manner.
+  - You may choose your also choose your own development methodology, however we may not be able to provide assistance in a timely manner.
+- This guide provides additional information about the development tools leverage in the project: pre-commit, Molecule, ansible-test
 - Please report any issues and optimization suggestions regarding the development workflow via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ## Development environments
 
-### VSCode Containers
+### VSCode Dev Containers
 
 - To facilitate onboarding of development the AVD project builds [Dev Containers](../containers/overview.md) with all the required tools to get started.
 - Before you can leverage the Dev Container ensure to have [Docker](https://docs.docker.com/engine/install/) and [Visual Studio Code](https://code.visualstudio.com/) installed.
 - Follow the instruction to customize a and leverage the [AVD Dev Container](../containers/overview.md#how-to-use-dev-containers)
 
-### Python Environments
+### Python environments
 
-Developing with you local Python environment requires you to configure and install the AVD project development tools and dependencies.
-In additional to Ansible collection [requirements](../installation/collection-installation.md), your development environment must support the following tools: Git, Make, Docker and [Python development requirements](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements-dev.txt)
+- Developing with your local Python environment requires you to configure and install the AVD project development tools and dependencies.
+- The development environment requires a minimum version of **Python 3.10**.
+- Additionally to Python you must have the following Git, Make, Docker and additional Python requirements dependencies.
 
 Recommend steps with Python virtual environment:
 
 1. Create and activate a Python virtual environment.
-2. Clone the AVD repository.
-3. Install Python requirements located in the AVD repository: [requirements-dev.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements-dev.txt) and [requirements.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements.txt).
-4. Configure pre-commit git hook, to automatically run pre-commit (optional, highly recommended!).
+2. Install Python requirements located in the AVD repository: [requirements-dev.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements-dev.txt) and [requirements.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements.txt).
 
 ```shell
+# Create virtual environment `python -m venv <virtual-environment-name>`.
 python -m venv avd-development
+
+# Activate virtual environment `source <virtual-environment-name>/bin/activate`.
 source avd-development/bin/activate
-git clone https://github.com/aristanetworks/avd.git
-cd avd
-pip install -r ansible_collections/arista/avd/requirements-dev.txt
-pip install -r ansible_collections/arista/avd/requirements.txt
-pre-commit install
+
+# Install AVD project requirements-dev.txt and requirements.txt
+# Requirements files are located in `ansible_collections/arista/avd` of the avd repository.
+pip install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade
 ```
+
+!!! note
+    It is important to confirm the Python interpreter Ansible is using.
+    You may be required to set `ansible_python_interpreter` in your Ansible inventory.
+    For more information consult with the [Ansible documentation](https://docs.ansible.com/ansible/latest/reference_appendices/python_3_support.html#using-python-3-on-the-managed-machines-with-commands-and-playbooks)
 
 ## Pre-commit
 
-[pre-commit](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. Pointing these issues out before code review allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
-Additionally the AVD project leverages pre-commit hooks to build and update the AVD schemas and documentation artifacts.
+- [pre-commit](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements.
+- Pointing these issues out before code review allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
+- Additionally, the AVD project leverages pre-commit hooks to build and update the AVD schemas and documentation artifacts.
 
-The AVD repository implements the following hooks:
+### Install pre-commit hook
 
-- `trailing-whitespace`: Fix trailing whitespace.
-- `end-of-file-fixer`: Fixes the wrong end of the file and stops your commit.
-- `check-added-large-files`: Check if no large file is included in the repository.
-- `check-merge-conflict`: Validate there is no `MERGE` syntax related to an invalid merge process.
-- `insert-license`: Check and insert license on Python, YAML, Jinja2 and Markdown files.
-- `isort`: Check for changes when running isort on all python files.
-- `black`: Check for changes when running Black on all python files.
-- `flake8`: Check for Flake8 errors on Python files.
-- `pylint`: Run Python linting with settings defined in [pylintrc](https://github.com/aristanetworks/avd/blob/devel/pylintrc).
-- `yamllint`: Validate all YAML files using configuration from [yamllintrc](https://github.com/aristanetworks/avd/blob/devel/.github/yamllintrc).
-- `j2lint`: Check for Linting errors on Jinja2 files [j2lint](https://github.com/aristanetworks/j2lint).
-- `codespell`: Check for common misspellings in text files.
-- `docs-plugin-modules`: Build documentation for collection modules and action plugins.
-- `docs-plugin-filter`: Build documentation for collection filter plugins.
-- `docs-plugin-lookup`: Build documentation for collection lookup plugins.
-- `docs-plugin-test`: Build documentation for collection test plugins.
-- `docs-plugin-vars`: Build documentation for collection var plugins.
-- `schemas`: Build AVD schemas and documentation from schema fragments.
-- `markdownlint`: Validates markdown files for common errors as referenced [here](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md).
+Configure pre-commit git hook, to automatically run pre-commit. This is optional, but highly recommended!
+
+```shell
+# Change to directory to your cloned avd repository.
+cd avd
+
+# Install pre-commit hooks to run automatically.
+pre-commit install
+```
 
 ### Run pre-commit manually
 
 To run `pre-commit` manually before you commit, use this command:
 
 ```shell
-# Run pre-commit hooks on all staged files. The command will automatically detect changed files using `git status` and run tests according to their type.
+# Run pre-commit hooks on all staged files.
+# The command will automatically detect changed files using `git status` and run tests according to their type.
 pre-commit run
+
 # Run pre-commit hooks on all un-staged and staged files.
 pre-commit run --all
+
 # Run specific pre-commit schemas hook on all un-staged and staged files.
 pre-commit run schemas --all
 ```
 
 !!! note
-    This process is also implemented in project CI to ensure code quality and compliance.
+    This process is also implemented in the project CI to ensure code quality and compliance.
 
 ## Molecule
 
-- [Molecule](https://ansible.readthedocs.io/projects/molecule/) project is designed to aid in the development and testing of Ansible roles.
+- [Molecule](https://ansible.readthedocs.io/projects/molecule/) project is designed to aid developing and testing of Ansible roles.
 - The AVD project leverages Molecule for:
   - Static integration test on the following Ansible roles:
     - `eos_designs`
     - `eos_cli_config_gen`
     - `eos_validate_state`
     - `eos_config_deploy_cvp`
-    - `dhcp_provisionner`
+    - `dhcp_provisioner`
   - End-to-end systems integration tests on the following CloudVision role and module:
     - `cv_deploy`
     - `cv_workflow`
@@ -106,52 +107,82 @@ To run the Molecule tests locally to generate the new expected configuration and
 The Makefile supports the following targets:
 
 - `help`: Display available make target and descriptions.
-- `converge`: Execute molecule "converge" sequence. Specify scenario name (default: eos_cli_config_gen) with MOLECULE= and Ansible options (default none) with ANSIBLE_OPTIONS=.
-- `test`: Execute molecule "test" sequence. Specify scenario name (default: eos_cli_config_gen) with MOLECULE= and Ansible options (default none) with ANSIBLE_OPTIONS=.
+- `converge`: Execute molecule "converge" sequence. Specify scenario name with `MOLECULE=<scenario_name>` (default: `eos_cli_config_gen`) and Ansible options with `ANSIBLE_OPTIONS=<options>` (default: `--forks 5`).
+  - This is the recommend way for development, as it is quicker and does not execute idempotency checks.
+- `test`: Execute molecule "test" sequence. Specify scenario name with `MOLECULE=<scenario_name>` (default: `eos_cli_config_gen`) and Ansible options with `ANSIBLE_OPTIONS=<options>` (default: `--forks 5`).
+  - This is executed as part of the CI and tests for idempotency
 - `refresh-facts`: Run all "eos_designs" and "eos_cli_config_gen" [molecule scenarios](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/molecule/MOLECULE_SCENARIOS.txt).
-- `commit-facts`: Commit updated facts for CI with the following message: 'CI(molecule): Update Molecule artifacts'.
-- `sync-facts`: Run `refresh-facts` and `commit-facts` to update all CI artifacts.
-- `cleanup`: Execute molecule "cleanup" sequence on all scenarios located in the molecule directory.
 
 !!! info
     `make refresh-facts` can be useful when your change common template or structured configuration output.
-    Note that it will take significant amount of local resources and can take several minutes/hours to execute.
+    Note that it will take a significant amount of local resources and several minutes/hours to execute.
 
 In the majority of new features or bug fixes, the process is the following:
 
 1. Update scenario inventory when required. It is ok to extend an existing host to cover a new test. When in doubt consult with a maintainer.
-2. Update group and or host variables in the scenario and ensure to cover all use case of the feature.
+2. Update group and or host variables in the scenario and ensure to cover all use cases of the feature.
 3. Run `make converge` target within the molecule directory to generate artifacts. Examples:
 
     ```shell
+    # Change to molecule directory
+    cd ansible_collections/arista/avd/molecule
+
     # Run eos_designs_unit_tests scenario to generate artifacts
     make converge MOLECULE=eos_designs_unit_tests
-    # Run eos_designs_unit_tests scenario with verbosity `-vvv` and limit `--limit DC1-SPINE1`
-    make converge MOLECULE=eos_designs_unit_tests ANSIBLE_OPTIONS="-vvv --limit DC1-SPINE1"
-    #Run eos_cli_config_gen scenario with limit
+
+    # Run eos_designs_unit_tests scenario with verbosity `-vvv` and max forks of 10 `--forks 10`.
+    make converge MOLECULE=eos_designs_unit_tests ANSIBLE_OPTIONS="-vvv --forks 10"
+
+    # Run eos_cli_config_gen scenario with limit.
     make converge ANSIBLE_OPTIONS="--limit logging"
     ```
 
 4. Review generated artifacts and test results on an EOS device to confirm syntax and working configuration.
-5. Commit artifacts with `make commit-facts`.
+5. Commit generated artifacts.
 
 !!! info
-    Molecule scenario are also executed in project CI to ensure code quality and compliance and tested against various ansible-core versions.
+    Molecule scenarios are also executed in the project CI to ensure code quality and compliance and tested against various versions of ansible-core and other Python dependencies.
 
-### CLI syntax
+### Advanced CLI syntax
 
-You may also run Molecule by leveraging its CLI syntax directly from the root of the collection path: `ansible_collections/arista/avd/`.
+You may also run Molecule by leveraging its CLI syntax directly from the root of the collection path: `ansible_collections/arista/avd`.
 
 Examples:
 
 ```shell
+# Change to root collection directory
+cd ansible_collections/arista/avd
+
 # Run eos_cli_config_gen scenario
+
 molecule converge -s eos_cli_config_gen
+
 # Run eos_cli_config_gen scenario limiting to "logging" host only
+
 molecule converge -s eos_cli_config_gen -- --limit logging
+
 # Run eos_designs)unit_test scenario with verbosity
 molecule converge -s eos_designs_unit_tests -- -vvv
 ```
 
-## Pytest
-<!---To Do -->
+## Ansible-test
+
+- The AVD project leverages [ansible-test](https://www.ansible.com/blog/introduction-to-ansible-test/) to test the asrista.avd Ansible Collection for sanity, unit and integration tests.
+- Testing is performed automatically as part of the CI pipeline.
+- If troubleshooting is required, a Makefile at the root of the avd repository supports the following targets to execute ansible-test:
+  - `sanity`: Run ansible-test sanity validation.
+  - `unit-tests`: Run unit test cases using ansible-test. Specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
+  - `integration-tests`: Run integration test cases using ansible-test. Specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
+
+Examples:
+
+```shell
+# Run ansible-test sanity validation.
+make sanity
+
+# Run unit test cases using ansible-test with docker (default)
+make unit-test
+
+# Run integration test cases using ansible-test with venv.
+make integration-tests ANSIBLE_TEST_MODE=venv
+```
