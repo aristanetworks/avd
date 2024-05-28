@@ -4,38 +4,26 @@
 from jinja2.runtime import Undefined
 
 
-def default(primary_value, *default_values):
+def default(*values):
     """
     default will test value if defined and is not none.
 
-    Arista.avd.default will test value if defined and is not none. If true
-    return value else test default_value1.
-    Test of default_value1 if defined and is not none. If true return
-    default_value1 else test default_value2.
-    If we run out of default values we return none.
+    Arista.avd.default will test if the first value is defined and is not none.
+    If true return value else repeat for the next value.
+    If we run out of values we return None.
 
-    Example
+    Example when used as a jinja filter
     -------
     priority: {{ spanning_tree_priority | arista.avd.default("32768") }}
 
-    Parameters
-    ----------
-    primary_value : any
-        Ansible default value to look for
+    Args:
+        *values: One or more values to test.
 
-    Returns
-    -------
-    any
-        Default value
+    Returns:
+        First value that is defined and not None. Otherwise returns None.
     """
-    if isinstance(primary_value, Undefined) or primary_value is None:
-        # Invalid value - try defaults
-        if len(default_values) >= 1:
-            # Return the result of another loop
-            return default(default_values[0], *default_values[1:])
-        else:
-            # Return None since no valid default values are found.
-            return None
-    else:
-        # Return the valid value
-        return primary_value
+    for value in values:
+        if value is not None and not isinstance(value, Undefined):
+            return value
+
+    return None
