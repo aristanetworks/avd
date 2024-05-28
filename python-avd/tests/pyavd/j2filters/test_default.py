@@ -1,19 +1,12 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-
 import pytest
 from jinja2.runtime import Undefined
-
-from ansible_collections.arista.avd.plugins.filter.default import FilterModule, default
+from pyavd.j2filters.default import default
 
 PRIMARY_VALUE_LIST = [1, "ABC", None, Undefined, {}, {"key": "value"}, [1, 2]]
 DEFAULT_VALUE_LIST = [["default"], [None, 1], [None, "abc"], [None, None, "2"], [{"key": "value"}]]
-
-f = FilterModule()
 
 
 class TestDefaultFilter:
@@ -28,8 +21,3 @@ class TestDefaultFilter:
                 assert i == resp
         else:
             assert resp == PRIMARY_VALUE
-
-    def test_default_filter(self):
-        resp = f.filters()
-        assert isinstance(resp, dict)
-        assert "default" in resp.keys()
