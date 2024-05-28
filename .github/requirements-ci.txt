@@ -1,5 +1,5 @@
 # Installing PyAVD as editable install.
 # Providing config-settings in a requirements file is only supported by pip from version 23.1.
 # The editable_mode=compat is required for pylance to work correctly.
--e ../python-avd --config-settings editable_mode=compat
+-e python-avd --config-settings editable_mode=compat
 -r ../ansible_collections/arista/avd/requirements.txt
