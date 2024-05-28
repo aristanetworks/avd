@@ -169,28 +169,13 @@ class RouterBgpMixin(UtilsMixin):
                     continue
 
                 if vrf_name != "default":
-                    bgp_vrf["router_id"] = self.shared_utils.router_id
-                    redistribute_routes = []
-
-                    # Connected
-                    redist_connected = {"source_protocol": "connected"}
-
-                    if self.shared_utils.is_wan_router:
-                        # For WAN routers, the outgoing route-maps expect routes to be tagged with SOO.
-                        redist_connected["route_map"] = "RM-CONN-2-BGP-VRFS"
-
-                    redistribute_routes.append(redist_connected)
-
+                    bgp_vrf |= {
+                        "router_id": self.shared_utils.router_id,
+                        "redistribute_routes": [{"source_protocol": "connected"}],
+                    }
                     bgp_vrf_redistribute_static = vrf.get("redistribute_static")
                     if bgp_vrf_redistribute_static is True or (vrf["static_routes"] and bgp_vrf_redistribute_static is not False):
-                        redist_static = {"source_protocol": "static"}
-                        if self.shared_utils.is_wan_router:
-                            # For WAN routers, the outgoing route-maps expect routes to be tagged with SOO.
-                            redist_static["route_map"] = "RM-STATIC-2-BGP-VRFS"
-
-                        redistribute_routes.append(redist_static)
-
-                    bgp_vrf["redistribute_routes"] = redistribute_routes
+                        bgp_vrf.setdefault("redistribute_routes", []).append({"source_protocol": "static"})
 
                     # MLAG IBGP Peering VLANs per VRF (except VRF default)
                     if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:

@@ -284,12 +284,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-- name: RM-CONN-2-BGP-VRFS
-  sequence_numbers:
-  - sequence: 20
-    type: permit
-    set:
-    - extcommunity soo 192.168.255.2:1 additive
 router_bfd:
   multihop:
     interval: 300

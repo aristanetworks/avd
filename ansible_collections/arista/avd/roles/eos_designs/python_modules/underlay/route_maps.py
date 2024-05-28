@@ -123,13 +123,12 @@ class RouteMapsMixin(UtilsMixin):
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-IN", "sequence_numbers": sequence_numbers})
 
             # RM-BGP-UNDERLAY-PEERS-OUT
-            # TODO - could mark everything with the community
             sequence_numbers = [
                 {
                     "sequence": 20,
                     "type": "permit",
                     "description": "Advertise local routes towards LAN",
-                    "match": ["extcommunity ECL-EVPN-SOO"],
+                    "match": ["route-type local"],
                 },
                 {
                     "sequence": 30,

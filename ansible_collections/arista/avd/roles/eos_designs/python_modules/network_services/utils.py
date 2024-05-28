@@ -230,13 +230,6 @@ class UtilsMixin(UtilsZscalerMixin):
         return wan_vrfs
 
     @cached_property
-    def _any_non_default_wan_vrf(self) -> bool:
-        """
-        Returns True if there is any non default WAN VRF.
-        """
-        return len(self._filtered_wan_vrfs) > 1
-
-    @cached_property
     def _wan_virtual_topologies_policies(self) -> list:
         """
         This function parses the input data and append the default-policy if not already present

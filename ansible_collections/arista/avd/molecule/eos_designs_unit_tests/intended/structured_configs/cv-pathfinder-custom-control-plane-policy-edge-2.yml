@@ -97,7 +97,6 @@ router_bgp:
         - 1000:1000
     redistribute_routes:
     - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
   - name: PROD
     router_id: 192.168.42.2
     rd: 192.168.42.2:142
@@ -112,7 +111,6 @@ router_bgp:
         - 142:142
     redistribute_routes:
     - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
 service_routing_protocols_model: multi-agent
 ip_routing: true
 transceiver_qsfp_default_mode_4x10: false
@@ -179,7 +177,7 @@ route_maps:
     type: permit
     description: Advertise local routes towards LAN
     match:
-    - extcommunity ECL-EVPN-SOO
+    - route-type local
   - sequence: 30
     type: permit
     description: Advertise routes received from WAN iBGP towards LAN
@@ -205,12 +203,6 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
-- name: RM-CONN-2-BGP-VRFS
-  sequence_numbers:
-  - sequence: 20
-    type: permit
-    set:
-    - extcommunity soo 192.168.42.2:511 additive
 agents:
 - name: KernelFib
   environment_variables:
