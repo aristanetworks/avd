@@ -31,7 +31,6 @@
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
-  - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
@@ -500,33 +499,9 @@ router bgp 65001
 
 ## Filters
 
-### Prefix-lists
-
-#### Prefix-lists Summary
-
-##### PL-L2LEAF-INBAND-MGMT
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 172.23.254.0/24 |
-
-#### Prefix-lists Device Configuration
-
-```eos
-!
-ip prefix-list PL-L2LEAF-INBAND-MGMT
-   seq 10 permit 172.23.254.0/24
-```
-
 ### Route-maps
 
 #### Route-maps Summary
-
-##### RM-CONN-2-BGP
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 20 | permit | ip address prefix-list PL-L2LEAF-INBAND-MGMT | - | - | - |
 
 ##### RM-MLAG-PEER-IN
 
@@ -537,9 +512,6 @@ ip prefix-list PL-L2LEAF-INBAND-MGMT
 #### Route-maps Device Configuration
 
 ```eos
-!
-route-map RM-CONN-2-BGP permit 20
-   match ip address prefix-list PL-L2LEAF-INBAND-MGMT
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
