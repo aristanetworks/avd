@@ -10,14 +10,14 @@ DEFAULT_VALUE_LIST = [["default"], [None, 1], [None, "abc"], [None, None, "2"], 
 
 
 class TestDefaultFilter:
-    @pytest.mark.parametrize("PRIMARY_VALUE", PRIMARY_VALUE_LIST)
-    @pytest.mark.parametrize("DEFAULT_VALUE", DEFAULT_VALUE_LIST)
-    def test_default(self, PRIMARY_VALUE, DEFAULT_VALUE):
-        resp = default(PRIMARY_VALUE, *DEFAULT_VALUE)
-        if isinstance(PRIMARY_VALUE, Undefined) or PRIMARY_VALUE is None and len(DEFAULT_VALUE_LIST) >= 1:
-            for i in DEFAULT_VALUE:
+    @pytest.mark.parametrize("primary_value", PRIMARY_VALUE_LIST)
+    @pytest.mark.parametrize("default_value", DEFAULT_VALUE_LIST)
+    def test_default(self, primary_value, default_value):
+        resp = default(primary_value, *default_value)
+        if isinstance(primary_value, Undefined) or primary_value is None and len(DEFAULT_VALUE_LIST) >= 1:
+            for i in default_value:
                 if isinstance(i, Undefined) or i is None or i == "":
                     continue
                 assert i == resp
         else:
-            assert resp == PRIMARY_VALUE
+            assert resp == primary_value
