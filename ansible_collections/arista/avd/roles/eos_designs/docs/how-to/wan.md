@@ -38,6 +38,13 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - VRF `default` is being configured by default on all WAN devices with a `wan_vni` of 1. To override this, it is necessary to configure VRF `default` in a tenant in `network_services`.
 - Path-group ID `65535` is reserved for the path-group called `LAN_HA`.
 
+!!! info "CV Pathfinder & CloudVision"
+
+    When deploying CV Pathfinder with CloudVision, it is necessary to leverage
+    `arista.avd.cv_deploy` role and not `arista.avd.eos_config_deploy_cvp` as
+    CloudVision relies on metadata sent by AVD for visualization and to generate
+    and deliver to devices certificates for STUN.
+
 ### Features in PREVIEW
 
 - WAN HA is in PREVIEW
