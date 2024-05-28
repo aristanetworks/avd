@@ -103,7 +103,7 @@ class RouteMapsMixin(UtilsMixin):
                     "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                 },
             ]
-            if self.shared_utils.wan_ha:
+            if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
                 sequence_numbers.extend(
                     [
                         {
@@ -137,7 +137,7 @@ class RouteMapsMixin(UtilsMixin):
                     "match": ["route-type internal"],
                 },
             ]
-            if self.shared_utils.wan_ha:
+            if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
                 sequence_numbers.extend(
                     [
                         {

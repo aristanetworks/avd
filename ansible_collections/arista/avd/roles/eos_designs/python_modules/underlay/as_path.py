@@ -23,7 +23,7 @@ class AsPathMixin(UtilsMixin):
             return None
 
         access_lists = []
-        if self.shared_utils.is_cv_pathfinder_client:
+        if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
             access_lists.append(
                 {
                     "name": "ASPATH-WAN",

@@ -17,9 +17,6 @@ router_bgp:
     send_community: all
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
-    allowas_in:
-      enabled: true
-      times: 1
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
@@ -168,25 +165,11 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.42.6/32
-as_path:
-  access_lists:
-  - name: ASPATH-WAN
-    entries:
-    - type: permit
-      match: '65000'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.42.0/24 eq 32
-- name: PL-WAN-HA-PREFIXES
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.10.10.0/31
-- name: PL-WAN-HA-PEER-PREFIXES
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.10.10.0/31
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -207,16 +190,6 @@ route_maps:
     description: Set SOO on prefixes from the site.
     set:
     - extcommunity soo 192.168.42.6:404 additive
-  - sequence: 10
-    type: permit
-    description: Allow WAN HA peer interface prefixes
-    match:
-    - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
-  - sequence: 20
-    type: deny
-    description: Deny other routes from the HA peer
-    match:
-    - as-path ASPATH-WAN
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 20
@@ -229,19 +202,6 @@ route_maps:
     description: Advertise routes received from WAN iBGP towards LAN
     match:
     - route-type internal
-  - sequence: 10
-    type: permit
-    description: Make tagged routes received from WAN HA peer less preferred for LAN router
-    match:
-    - tag 50
-    - route-type internal
-    set:
-    - metric 50
-  - sequence: 40
-    type: permit
-    description: Advertise WAN HA prefixes towards LAN
-    match:
-    - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
