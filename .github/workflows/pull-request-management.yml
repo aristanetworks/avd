@@ -132,7 +132,7 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
+          pip_file: .github/requirements-ci.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
@@ -167,7 +167,7 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
+          pip_file: .github/requirements-ci.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
@@ -206,7 +206,7 @@ jobs:
           # Testing all scenario with 2.16.x, due to bug with in 2.17.0 with and the way we test eos_designs_negative_unit_tests https://github.com/ansible/ansible/issues/83292
           - 'ansible-core>=2.16.0,<2.17.0 --upgrade'
         pip_requirements:
-          - 'ansible_collections/arista/avd/requirements.txt'
+          - '.github/requirements-ci.txt'
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: 'eos_designs_unit_tests'
@@ -214,10 +214,10 @@ jobs:
             pip_requirements: 'tmp-requirements-minimum.txt'
           - avd_scenario: 'eos_designs_unit_tests'
             ansible_version: 'ansible-core>=2.15.0,<2.16.0 --upgrade'
-            pip_requirements: 'ansible_collections/arista/avd/requirements.txt'
+            pip_requirements: '.github/requirements-ci.txt'
           - avd_scenario: 'eos_designs_unit_tests'
             ansible_version: 'ansible-core<2.18.0 --upgrade'
-            pip_requirements: 'ansible_collections/arista/avd/requirements.txt'
+            pip_requirements: '.github/requirements-ci.txt'
     needs: [ file-changes ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
@@ -229,7 +229,7 @@ jobs:
       - name: Build minimum requirements
         run: |
           pip install uv
-          uv pip compile ansible_collections/arista/avd/requirements.txt --resolution=lowest-direct > ${{ matrix.pip_requirements }}
+          uv pip compile .github/requirements-ci.txt --resolution=lowest-direct > ${{ matrix.pip_requirements }}
           cat ${{ matrix.pip_requirements }}
         if: matrix.pip_requirements == 'tmp-requirements-minimum.txt'
       - name: Run molecule action
