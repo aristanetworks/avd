@@ -30,10 +30,6 @@ We welcome many forms of contributions to AVD. While we understand most contribu
 
 Communication among the contributors should always occur via public channels. The following outlines the best ways to communicate and engage on all things AVD:
 
-#### Slack
-
-- [**#arista** on Network to Code Slack](http://slack.networktocode.com/) - Good for quick chats. Avoid any discussion that might need to be referenced later, as the chat history isn't retained long.
-
 #### GitHub
 
 - [GitHub issues](https://github.com/aristanetworks/avd/issues) - All feature requests, bug reports, and other substantial changes should be documented in an issue.
@@ -44,6 +40,10 @@ GitHub's discussions are the best place to get help or propose rough ideas for n
 - **General** - General community discussion.
 - **Ideas** - Ideas for new functionality that still needs to be prepared for a formal feature request.
 - **Q&A** - Request help with installing or using AVD.
+
+#### Slack
+
+- [**#arista** on Network to Code Slack](http://slack.networktocode.com/) - Good for quick chats. Avoid any discussion that might need to be referenced later, as the chat history isn't retained long.
 
 ### Deprecation Policy
 
@@ -118,7 +118,7 @@ The issue will be reviewed by a moderator after submission, and the appropriate 
 
 #### Submitting Pull Requests
 
-- If you're interested in contributing to AVD, check out our [getting started](getting-started.md) documentation for tips on setting up your development environment.
+- If you're interested in contributing to AVD, check out our [getting started](development-tooling.md) documentation for tips on setting up your development environment.
 
 - It's recommended to open an issue **before** starting work on a pull request and discuss your idea with the AVD maintainers before beginning work. This will save time on something we might be unable to implement. When suggesting a new feature, ensure it will be consistent with any work already in progress.
 
@@ -131,7 +131,6 @@ The issue will be reviewed by a moderator after submission, and the appropriate 
 - In most cases, adding a changelog entry is unnecessary: A maintainer will take care of this when the PR is merged. (This helps avoid merge conflicts resulting from multiple PRs being submitted simultaneously.)
 
 - All code submissions should meet the following criteria (CI will enforce these checks):
-
   - Jinja2 templates follow our [guidelines](style-guide.md).
   - Molecule is updated with data covering your fix.
   - Molecule artifacts are updated with your coverage.
