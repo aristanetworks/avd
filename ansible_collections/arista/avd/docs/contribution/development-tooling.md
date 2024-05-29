@@ -39,6 +39,10 @@ This will be executed automatically by VSCode by following these steps:
 1. Start VSCode on your worksation
 2. Select "File/Open Folder..." and open the cloned avd GitHub repository (Your fork).
 3. A pop up will appear with "Folder contains a Dev Container configuration file. Reopen folder to develop in a container." Select "Reopen in Container".
+4. VScode will re-open and start in the AVD Dev Container.
+
+!!! Warning
+    Note, at this time the AVD Dev Container doesn't support docker-in-docker, therefore some of the tests that rely on Docker can not be performed locally. Please rely on the CI pipeline results and logs for troubleshooting.
 
 ### Local Python environments
 
