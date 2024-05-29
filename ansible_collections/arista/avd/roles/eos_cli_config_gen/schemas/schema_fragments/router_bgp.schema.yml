@@ -2227,7 +2227,9 @@ keys:
               keys:
                 redistribute_internal:
                   type: bool
-                  description: Redistribute internal BGP routes.
+                  description: Allow redistribution of iBGP routes into
+an Interior Gateway Protocol (IGP). EOS default is true.
+                    
             rd:
               type: str
               description: Route distinguisher.
