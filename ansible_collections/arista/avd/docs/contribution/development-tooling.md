@@ -129,7 +129,7 @@ In the majority of new features or bug fixes, the process is the following:
 
 1. Update scenario inventory when required. It is ok to extend an existing host to cover a new test. When in doubt consult with a maintainer.
 2. Update group and or host variables in the scenario and ensure to cover all use cases of the feature.
-3. Run `make converge` target within the molecule directory to generate artifacts. Examples:
+3. Run `make converge` target within the `molecule` directory to generate artifacts. Examples:
 
     ```shell
     # Change to molecule directory
@@ -149,7 +149,7 @@ In the majority of new features or bug fixes, the process is the following:
 5. Commit generated artifacts.
 
 !!! info
-    Molecule scenarios are also executed in the project CI to ensure code quality and compliance and tested against various versions of ansible-core and other Python dependencies.
+    Molecule scenarios are also executed in the project CI to ensure code quality and compliance and tested against various versions of `ansible-core` and other Python dependencies.
 
 ### Executing Molecule with advanced CLI syntax
 
