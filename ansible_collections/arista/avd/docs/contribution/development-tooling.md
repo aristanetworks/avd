@@ -104,7 +104,7 @@ pre-commit run schemas --all
 - The molecule scenarios are located under the [molecule directory](https://github.com/aristanetworks/avd/tree/devel/ansible_collections/arista/avd/molecule) at the root of the collection.
   - The directory name is the molecule `--scenario-name` leveraged when executing Molecule, i.e: `eos_cli_config_gen`, `eos_designs_unit_tests`.
 
-### Makefile method
+### Executing Molecule with makefile method
 
 To run the Molecule tests locally to generate the new expected configuration and documentation leverage Makefile located in the `ansible_collections/arista/avd/molecule` directory.
 
@@ -147,7 +147,7 @@ In the majority of new features or bug fixes, the process is the following:
 !!! info
     Molecule scenarios are also executed in the project CI to ensure code quality and compliance and tested against various versions of ansible-core and other Python dependencies.
 
-### Advanced CLI syntax
+### Executing Molecule with advanced CLI syntax
 
 You may also run Molecule by leveraging its CLI syntax directly from the root of the collection path: `ansible_collections/arista/avd`.
 
