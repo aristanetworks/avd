@@ -20,29 +20,32 @@
 
 - To facilitate onboarding of development the AVD project builds [Dev Containers](../containers/overview.md) with all the required tools to get started.
 - Before you can leverage the Dev Container ensure to have [Docker](https://docs.docker.com/engine/install/) and [Visual Studio Code](https://code.visualstudio.com/) installed.
-- Follow the instruction to customize a and leverage the [AVD Dev Container](../containers/overview.md#how-to-use-dev-containers)
+- Follow the instruction to customize and leverage the [AVD Dev Container](../containers/overview.md#how-to-use-dev-containers).
 
 ### Local Python environments
 
-- Developing with your local Python environment requires you to configure and install the AVD project development tools and dependencies.
+- Developing with your local Python environment requires configuring and installing the AVD project development tools and dependencies.
 - The development environment requires a minimum version of **Python 3.10**.
-- Additionally to Python you must have the following tools installed on your workstation: Git, Make, Docker, Python virtualenv and additional Python dependencies required by the AVD project.
+- In addition to Python, you must have the following tools installed on your workstation: Git, Make, Docker, Python virtualenv and additional Python dependencies required by the AVD project.
 
 Recommend steps with Python virtual environment:
 
 1. Create and activate a Python virtual environment.
 2. Install Python requirements located in the AVD repository: [requirements-dev.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements-dev.txt) and [requirements.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements.txt).
 
+!!! note
+    Ensure the virtual environment is located outside of the AVD project directory.
+
 ```shell
-# Create a Python virtual environment `python -m venv <virtual-environment-name>`.
-python -m venv avd-development
+# Create a Python virtual environment `python3 -m venv <virtual-environment-name>`.
+python3 -m venv avd-development
 
 # Activate Python virtual environment `source <virtual-environment-name>/bin/activate`.
 source avd-development/bin/activate
 
 # Install AVD project requirements-dev.txt and requirements.txt in your Python Virtual environment.
 # Requirements files are located in `ansible_collections/arista/avd` of the avd repository.
-pip install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade
+pip3 install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade
 ```
 
 !!! note
@@ -104,7 +107,7 @@ The AVD project leverages Molecule for:
   - `cv_deploy`
   - `cv_workflow`
 
-The Molecule scenarios are located under the [`molecule` directory](https://github.com/aristanetworks/avd/tree/devel/ansible_collections/arista/avd/molecule) at the root of the collection.
+The Molecule scenarios are located under the `molecule` directory at the root of the collection (`ansible_collections/arista/avd/molecule`).
 
 The directory name of each Molecule scenario folder is used as the `--scenario-name` when executing Molecule, i.e: `eos_cli_config_gen`, `eos_designs_unit_tests`.
 
@@ -127,8 +130,8 @@ The Makefile supports the following targets:
 
 In the majority of new features or bug fixes, the process is the following:
 
-1. Update scenario inventory when required. It is ok to extend an existing host to cover a new test. When in doubt consult with a maintainer.
-2. Update group and or host variables in the scenario and ensure to cover all use cases of the feature.
+1. Update scenario inventory when required. It is ok to extend an existing host to cover a new test. When in doubt, consult with a maintainer.
+2. Update group and host variables in the scenario and ensure to cover all use cases of the feature.
 3. Run `make converge` target within the `molecule` directory to generate artifacts. Examples:
 
     ```shell
@@ -167,7 +170,7 @@ molecule converge -s eos_cli_config_gen
 # Run eos_cli_config_gen scenario limiting to "logging" host only
 molecule converge -s eos_cli_config_gen -- --limit logging
 
-# Run eos_designs)unit_test scenario with verbosity
+# Run eos_designs unit_test scenario with verbosity
 molecule converge -s eos_designs_unit_tests -- -vvv
 ```
 
