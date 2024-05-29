@@ -90,19 +90,23 @@ pre-commit run schemas --all
 
 ## Molecule
 
-- [Molecule](https://ansible.readthedocs.io/projects/molecule/) project is designed to aid developing and testing of Ansible roles.
-- The AVD project leverages Molecule for:
-  - Static integration test on the following Ansible roles:
-    - `eos_designs`
-    - `eos_cli_config_gen`
-    - `eos_validate_state`
-    - `eos_config_deploy_cvp`
-    - `dhcp_provisioner`
-  - End-to-end systems integration tests on the following CloudVision role and module:
-    - `cv_deploy`
-    - `cv_workflow`
-- The molecule scenarios are located under the [molecule directory](https://github.com/aristanetworks/avd/tree/devel/ansible_collections/arista/avd/molecule) at the root of the collection.
-  - The directory name is the molecule `--scenario-name` leveraged when executing Molecule, i.e: `eos_cli_config_gen`, `eos_designs_unit_tests`.
+The [Molecule](https://ansible.readthedocs.io/projects/molecule/) project is designed to aid in developing and testing of Ansible roles.
+
+The AVD project leverages Molecule for:
+
+- Static integration test on the following Ansible roles:
+  - `eos_designs`
+  - `eos_cli_config_gen`
+  - `eos_validate_state`
+  - `eos_config_deploy_cvp`
+  - `dhcp_provisioner`
+- End-to-end systems integration tests on the following CloudVision role and module:
+  - `cv_deploy`
+  - `cv_workflow`
+
+The Molecule scenarios are located under the [`molecule` directory](https://github.com/aristanetworks/avd/tree/devel/ansible_collections/arista/avd/molecule) at the root of the collection.
+
+The directory name of each Molecule scenario folder is used as the `--scenario-name` when executing Molecule, i.e: `eos_cli_config_gen`, `eos_designs_unit_tests`.
 
 ### Executing Molecule with makefile method
 
