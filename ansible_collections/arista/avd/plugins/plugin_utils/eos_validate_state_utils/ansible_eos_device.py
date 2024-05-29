@@ -84,6 +84,9 @@ class AnsibleEOSDevice(AntaDevice):
 
         super().__init__(name, tags, disable_cache=False)
         self.check_mode = check_mode
+        # Check the ansible connection is defined
+        if not hasattr(connection, "_sub_plugin"):
+            raise AristaAvdError(message="Unable to determine ansible connection. Please manually configure ansible_connection as `httpapi` for this host.")
         # In check_mode we don't care that we cannot connect to the device
         if self.check_mode or (plugin_name := connection._sub_plugin.get("name")) == ANSIBLE_EOS_PLUGIN_NAME:
             self._connection = connection
