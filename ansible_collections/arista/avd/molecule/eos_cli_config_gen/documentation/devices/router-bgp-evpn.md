@@ -103,6 +103,7 @@ ASN Notation: asplain
 
 - Next-hop resolution is **disabled**
 - Next-hop-unchanged is explicitly configured (default behaviour)
+- Layer-2 In-place FEC update operation enabled
 
 ##### EVPN Peer Groups
 
@@ -178,6 +179,7 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS allowas-in
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
    neighbor EVPN-OVERLAY-PEERS password 7 <removed>
+   neighbor EVPN-OVERLAY-PEERS password shared-secret profile profile2 algorithm aes-128-cmac-96
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
@@ -190,6 +192,7 @@ router bgp 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-OUT out
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 allowas-in 5
+   neighbor 192.168.255.1 password shared-secret profile profile1 algorithm aes-128-cmac-96
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 allowas-in 5
    neighbor 192.168.255.3 maximum-routes 52000 warning-limit 2000 warning-only
@@ -271,6 +274,7 @@ router bgp 65101
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
       route import ethernet-segment ip mass-withdraw
       route export ethernet-segment ip mass-withdraw
+      layer-2 fec in-place update
       route import overlay-index gateway
    !
    address-family ipv4

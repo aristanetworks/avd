@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Platform](#platform)
+- [Platform](#platform-1)
   - [Platform Summary](#platform-summary)
   - [Platform Device Configuration](#platform-device-configuration)
 

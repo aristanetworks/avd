@@ -497,6 +497,29 @@ keys:
           keys:
             profile:
               type: str
+        tcp_mss_ceiling:
+          type: dict
+          description: |-
+            The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header
+            of TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.
+          keys:
+            ipv4_segment_size:
+              type: int
+              convert_types:
+                - str
+              min: 64
+              max: 65475
+            ipv6_segment_size:
+              type: int
+              convert_types:
+                - str
+              min: 64
+              max: 65475
+            direction:
+              type: str
+              valid_values:
+                - egress
+                - ingress
         channel_group:
           type: dict
           keys:
@@ -996,6 +1019,17 @@ keys:
         transceiver:
           type: dict
           keys:
+            frequency:
+              type: str
+              convert_types:
+                - int
+                - float
+              description: Transceiver Laser Frequency in GHz (min 190000, max 200000).
+            frequency_unit:
+              type: str
+              required: false
+              valid_values: ["ghz"]
+              description: Unit of Transceiver Laser Frequency.
             media:
               type: dict
               keys:

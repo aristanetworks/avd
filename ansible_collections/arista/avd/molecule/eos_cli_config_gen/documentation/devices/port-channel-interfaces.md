@@ -8,7 +8,7 @@
   - [SFlow](#sflow)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
-  - [Port-Channel Interfaces](#port-channel-interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces-1)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
 - [MPLS](#mpls)
@@ -87,6 +87,12 @@ sFlow is disabled.
 | Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
+
+##### Transceiver Settings
+
+| Interface | Transceiver Frequency | Media Override |
+| --------- | --------------------- | -------------- |
+| Ethernet5 | - | 100gbase-ar4 |
 
 ##### Phone Interfaces
 

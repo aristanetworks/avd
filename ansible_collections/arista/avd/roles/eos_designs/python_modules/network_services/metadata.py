@@ -60,4 +60,4 @@ class MetadataMixin(UtilsMixin):
                 }
             )
 
-        return {"cv_pathfinder": {"internet_exit_policies": strip_empties_from_list(internet_exit_polices)}}
+        return {"cv_pathfinder": {"internet_exit_policies": strip_empties_from_list(internet_exit_polices, (None, [], {}))}}

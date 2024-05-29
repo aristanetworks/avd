@@ -21,11 +21,13 @@ keys:
           description: Internet-exit policy name.
         type:
           type: str
-          valid_values:
-            - zscaler
           description: |-
             Internet-exit policy type.
-            Only Zscaler supported.
+            direct: Exit directly over wan interfaces
+            zscaler: Exit using Zscaler secure web gateway service
+          valid_values:
+            - direct
+            - zscaler
           required: true
         fallback_to_system_default:
           type: bool

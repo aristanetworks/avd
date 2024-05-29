@@ -251,6 +251,8 @@ ethernet_interfaces:
   type: l3dot1q
   description: Colt_10666
   encapsulation_dot1q_vlan: 666
+  ip_nat:
+    service_profile: IE-DIRECT-NAT
 - name: Ethernet1
   type: routed
   peer_type: l3_interface
@@ -442,6 +444,7 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
   - name: CUSTOM-VOICE-PROFILE-NAME
     load_balance_policy: LB-CUSTOM-VOICE-PROFILE-NAME
+    internet_exit_policy: DIRECT-EXIT-POLICY-2
   - name: TRANSIT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-TRANSIT-AVT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-DEFAULT
@@ -701,6 +704,39 @@ application_traffic_recognition:
     - name: PFX-PATHFINDERS
       prefix_values:
       - 192.168.144.1/32
+ip_access_lists:
+- name: ALLOW-ALL
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
+ip_nat:
+  profiles:
+  - name: IE-DIRECT-NAT
+    source:
+      dynamic:
+      - access_list: ALLOW-ALL
+        nat_type: overload
+router_service_insertion:
+  enabled: true
+  connections:
+  - name: IE-Ethernet2.42
+    monitor_connectivity_host: IE-Ethernet2.42
+    ethernet_interface:
+      name: Ethernet2.42
+      next_hop: 123.12.3.4
+router_internet_exit:
+  exit_groups:
+  - name: DIRECT-EXIT-POLICY-2
+    local_connections:
+    - name: IE-Ethernet2.42
+  policies:
+  - name: DIRECT-EXIT-POLICY-2
+    exit_groups:
+    - name: DIRECT-EXIT-POLICY-2
+    - name: system-default-exit-group
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -725,21 +761,36 @@ vxlan_interface:
         vni: 66
       - name: ATTRACTED-VRF-FROM-UPLINK
         vni: 166
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
+monitor_connectivity:
+  interface_sets:
+  - name: SET-Ethernet2.42
+    interfaces: Ethernet2.42
+  hosts:
+  - name: IE-Ethernet2.42
+    description: Internet Exit DIRECT-EXIT-POLICY-2
+    ip: 123.12.3.4
+    local_interfaces: SET-Ethernet2.42
+    address_only: false
+  shutdown: false
 metadata:
+  cv_pathfinder:
+    internet_exit_policies: []
+    role: transit region
+    ssl_profile: profileA
+    vtep_ip: 192.168.143.1
+    region: AVD_Land_West
+    zone: AVD_Land_West-ZONE
+    site: Site422
+    interfaces:
+    - name: Ethernet1.42
+      carrier: Comcast
+      pathgroup: INET
+    - name: Ethernet2.42
+      carrier: Colt
+      circuit_id: '10666'
+      pathgroup: MPLS
+    pathfinders:
+    - vtep_ip: 192.168.144.1
   cv_tags:
     device_tags:
     - name: Role
@@ -789,20 +840,17 @@ metadata:
       tags:
       - name: Type
         value: lan
-  cv_pathfinder:
-    role: transit region
-    ssl_profile: profileA
-    vtep_ip: 192.168.143.1
-    region: AVD_Land_West
-    zone: AVD_Land_West-ZONE
-    site: Site422
-    interfaces:
-    - name: Ethernet1.42
-      carrier: Comcast
-      pathgroup: INET
-    - name: Ethernet2.42
-      carrier: Colt
-      circuit_id: '10666'
-      pathgroup: MPLS
-    pathfinders:
-    - vtep_ip: 192.168.144.1
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false

@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from collections import defaultdict
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
@@ -21,13 +22,13 @@ class RouterInternetExitMixin(UtilsMixin):
         """
         Return structured config for router_internet_exit
 
-        Only used for CV Pathfinder routers today
+        Only used for CV Pathfinder edge routers today
         """
-        if not self.shared_utils.is_cv_pathfinder_router:
+        if not self._filtered_internet_exit_policies:
             return None
 
         router_internet_exit = {}
-        exit_groups_dict = {}
+        exit_groups_dict = defaultdict(lambda: {"local_connections": []})
         policies = []
 
         for policy in self._filtered_internet_exit_policies:
@@ -35,12 +36,10 @@ class RouterInternetExitMixin(UtilsMixin):
             # TODO: Today we use the order of the connection list to order the exit-groups inside the policy.
             #       This works for zscaler but later we may need to use some sorting intelligence as order matters.
             for connection in policy.get("connections", []):
-                if connection["type"] == "tunnel":
-                    exit_group_name = connection["exit_group"]
-                    exit_groups_dict.setdefault(exit_group_name, {"local_connections": []})["local_connections"].append(
-                        {"name": f"IE-Tunnel{connection['tunnel_id']}"}
-                    )
-                    # Recording the exit_group in the policy
+                exit_group_name = connection["exit_group"]
+                exit_groups_dict[exit_group_name]["local_connections"].append({"name": connection["name"]})
+                # Recording the exit_group in the policy
+                if exit_group_name not in policy_exit_groups:
                     policy_exit_groups.append(exit_group_name)
 
             if get(policy, "fallback_to_system_default", default=True):

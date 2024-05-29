@@ -40,14 +40,14 @@ interface Management1
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv6 DNS Domain |
-| ------------------- | --- | --------------- | --------------- |
-| True | AVRF | - | - |
-| True | defauls | - | - |
-| True | default | - | - |
-| True | defaulu | - | - |
-| True | TEST | testv4.com | testv6.com |
-| False | VRF01 | - | - |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile |
+| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | ---------------- | ------------- |
+| True | AVRF | - | - | - | - | - | - |
+| True | defauls | - | - | - | - | - | - |
+| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap |
+| True | defaulu | - | - | - | - | - | - |
+| True | TEST | testv4.com | - | - | testv6.com | - | - |
+| False | VRF01 | - | - | - | - | - | - |
 
 #### VRF AVRF DHCP Server
 
@@ -65,6 +65,12 @@ interface Management1
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
 | 2a00:2::/64 | - | - | - | - | - |
 | 10.2.3.0/24 | - | - | - | - | - |
+
+##### IPv4 Vendor Options
+
+| Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
+| --------- | ----------------| --------------- | --------------- |
+| NTP | 42 | ipv4-address | 10.1.1.1 |
 
 #### VRF TEST DHCP Server
 
@@ -102,10 +108,17 @@ dhcp server vrf AVRF
 dhcp server vrf defauls
 !
 dhcp server
+   dns server ipv4 10.0.0.1 192.168.255.254
+   dns server ipv6 2001:db8::1 2001:db8::2
+   tftp server file ipv4 https://www.arista.io/ztp/bootstrap
+   tftp server file ipv6 https://2001:0db8:fe/ztp/bootstrap
    !
    subnet 2a00:2::/64
    !
    subnet 10.2.3.0/24
+   !
+   vendor-option ipv4 NTP
+      sub-option 42 type ipv4-address data 10.1.1.1
 !
 dhcp server vrf defaulu
 !

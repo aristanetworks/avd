@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>cv_pathfinder_internet_exit_policies</samp>](## "cv_pathfinder_internet_exit_policies") | List, items: Dictionary |  |  |  | PREVIEW: These keys are in preview mode.<br><br>List of internet-exit policies used for the WAN configuration. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_pathfinder_internet_exit_policies.[].name") | String | Required, Unique |  |  | Internet-exit policy name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "cv_pathfinder_internet_exit_policies.[].type") | String | Required |  | Valid Values:<br>- <code>zscaler</code> | Internet-exit policy type.<br>Only Zscaler supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "cv_pathfinder_internet_exit_policies.[].type") | String | Required |  | Valid Values:<br>- <code>direct</code><br>- <code>zscaler</code> | Internet-exit policy type.<br>direct: Exit directly over wan interfaces<br>zscaler: Exit using Zscaler secure web gateway service |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fallback_to_system_default</samp>](## "cv_pathfinder_internet_exit_policies.[].fallback_to_system_default") | Boolean |  | `True` |  | Add system default exit-group at the end of the policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;zscaler</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler") | Dictionary |  |  |  | Zscaler information. Only used if `type` is 'zscaler'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec_key_salt</samp>](## "cv_pathfinder_internet_exit_policies.[].zscaler.ipsec_key_salt") | String | Required |  |  | "Salt" used for auto generation of encryption keys for IPsec tunnels to Zscaler.<br>The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.<br>Since this salt can be used to deduct the encryption key, it is recommeneded to use vault. |
@@ -34,8 +34,9 @@
       - name: <str; required; unique>
 
         # Internet-exit policy type.
-        # Only Zscaler supported.
-        type: <str; "zscaler"; required>
+        # direct: Exit directly over wan interfaces
+        # zscaler: Exit using Zscaler secure web gateway service
+        type: <str; "direct" | "zscaler"; required>
 
         # Add system default exit-group at the end of the policy.
         fallback_to_system_default: <bool; default=True>
