@@ -11142,6 +11142,7 @@ keys:
       redistribute_routes:
         type: list
         primary_key: source_protocol
+        allow_duplicate_primary_key: true
         convert_types:
         - dict
         - list
@@ -11175,6 +11176,19 @@ keys:
                 `isis`, `user`, `dynamic`.'
             include_leaked:
               type: bool
+            ospf_route_type:
+              type: str
+              valid_values:
+              - external
+              - internal
+              - nssa-external
+              - nssa-external 1
+              - nssa-external 2
+              description: 'Routes learned by the OSPF protocol.
+
+                The `ospf_route_type` is valid for source_protocols ''ospf'' and ''ospfv3''.
+
+                '
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -11784,6 +11798,7 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
+            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
@@ -11817,6 +11832,20 @@ keys:
 
                     Only applicable if `source_protocol` is one of `connected`, `static`,
                     `isis`, `user`, `dynamic`.'
+                ospf_route_type:
+                  type: str
+                  valid_values:
+                  - external
+                  - internal
+                  - nssa-external
+                  - nssa-external 1
+                  - nssa-external 2
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
+                    ''ospfv3''.
+
+                    '
       address_family_ipv4_multicast:
         type: dict
         keys:
@@ -11860,6 +11889,7 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
+            allow_duplicate_primary_key: true
             convert_types:
             - dict
             items:
@@ -11882,6 +11912,20 @@ keys:
                     precedence.
 
                     Only applicable if `source_protocol` is `isis`.'
+                ospf_route_type:
+                  type: str
+                  valid_values:
+                  - external
+                  - internal
+                  - nssa-external
+                  - nssa-external 1
+                  - nssa-external 2
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
+                    ''ospfv3''.
+
+                    '
       address_family_ipv4_sr_te:
         type: dict
         keys:
@@ -12007,6 +12051,7 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
+            allow_duplicate_primary_key: true
             convert_types:
             - dict
             items:
@@ -12029,6 +12074,19 @@ keys:
 
                     Only used if `source_protocol` is one of `connected`, `static`,
                     `isis`, `user`, `dynamic`.'
+                ospf_route_type:
+                  type: str
+                  valid_values:
+                  - external
+                  - internal
+                  - nssa-external
+                  - nssa-external 1
+                  - nssa-external 2
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospfv3''.
+
+                    '
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -12102,6 +12160,7 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
+            allow_duplicate_primary_key: true
             convert_types:
             - dict
             items:
@@ -12130,6 +12189,20 @@ keys:
                     precedence.
 
                     Only applicable if `source_protocol` is `isis`.'
+                ospf_route_type:
+                  type: str
+                  valid_values:
+                  - external
+                  - internal
+                  - nssa-external
+                  - nssa-external 1
+                  - nssa-external 2
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
+                    ''ospfv3''.
+
+                    '
       address_family_ipv6_sr_te:
         type: dict
         keys:
@@ -13011,6 +13084,7 @@ keys:
             redistribute_routes:
               type: list
               primary_key: source_protocol
+              allow_duplicate_primary_key: true
               convert_types:
               - dict
               - list
@@ -13034,6 +13108,20 @@ keys:
 
                       Only applicable if `source_protocol` is one of `connected`,
                       `dynamic`, `isis`, `static` and `user`.'
+                  ospf_route_type:
+                    type: str
+                    valid_values:
+                    - external
+                    - internal
+                    - nssa-external
+                    - nssa-external 1
+                    - nssa-external 2
+                    description: 'Routes learned by the OSPF protocol.
+
+                      The `ospf_route_type` is valid for source_protocols ''ospf''
+                      and ''ospfv3''.
+
+                      '
             aggregate_addresses:
               type: list
               primary_key: prefix
@@ -13175,6 +13263,7 @@ keys:
                 redistribute_routes:
                   type: list
                   primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   convert_types:
                   - dict
                   items:
@@ -13208,6 +13297,20 @@ keys:
 
                           Only applicable if `source_protocol` is one of `connected`,
                           `dynamic`, `isis`, `static` and `user`.'
+                      ospf_route_type:
+                        type: str
+                        valid_values:
+                        - external
+                        - internal
+                        - nssa-external
+                        - nssa-external 1
+                        - nssa-external 2
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospf''
+                          and ''ospfv3''.
+
+                          '
             address_family_ipv6:
               type: dict
               keys:
@@ -13311,6 +13414,7 @@ keys:
                 redistribute_routes:
                   type: list
                   primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   convert_types:
                   - dict
                   items:
@@ -13343,6 +13447,19 @@ keys:
 
                           Only applicable if `source_protocol` is one of `connected`,
                           `dynamic`, `isis`, `static` and `user`.'
+                      ospf_route_type:
+                        type: str
+                        valid_values:
+                        - external
+                        - internal
+                        - nssa-external
+                        - nssa-external 1
+                        - nssa-external 2
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospfv3''.
+
+                          '
             address_family_ipv4_multicast:
               type: dict
               keys:
@@ -13403,6 +13520,7 @@ keys:
                 redistribute_routes:
                   type: list
                   primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   convert_types:
                   - dict
                   items:
@@ -13432,6 +13550,20 @@ keys:
                           takes precedence.
 
                           Only applicable if `source_protocol` is `isis`.'
+                      ospf_route_type:
+                        type: str
+                        valid_values:
+                        - external
+                        - internal
+                        - nssa-external
+                        - nssa-external 1
+                        - nssa-external 2
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospf''
+                          and ''ospfv3''.
+
+                          '
             address_family_ipv6_multicast:
               type: dict
               keys:
@@ -13492,6 +13624,7 @@ keys:
                 redistribute_routes:
                   type: list
                   primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   convert_types:
                   - dict
                   items:
@@ -13520,6 +13653,20 @@ keys:
                           takes precedence.
 
                           Only applicable if `source_protocol` is `isis`.'
+                      ospf_route_type:
+                        type: str
+                        valid_values:
+                        - external
+                        - internal
+                        - nssa-external
+                        - nssa-external 1
+                        - nssa-external 2
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospf''
+                          and ''ospfv3''.
+
+                          '
             address_family_flow_spec_ipv4:
               type: dict
               keys:
