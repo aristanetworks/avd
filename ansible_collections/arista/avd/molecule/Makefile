@@ -6,9 +6,9 @@ ANSIBLE_OPTIONS ?= --forks 5
 help: ## Display help message.
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-###############################################################################
-# 			Molecule Execution and Git Helpers  						      #
-###############################################################################
+################################################################
+#                      Molecule Execution                      #
+################################################################
 
 .PHONY: test
 test: ## Execute molecule "converge" sequence. Specify scenario name with `MOLECULE=<scenario_name>` (default: `eos_cli_config_gen`) and Ansible options with `ANSIBLE_OPTIONS=<options>` (default: `--forks 5`).
