@@ -41,9 +41,9 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 !!! info "CV Pathfinder & CloudVision"
 
     When deploying CV Pathfinder with CloudVision, it is necessary to leverage
-    `arista.avd.cv_deploy` role and not `arista.avd.eos_config_deploy_cvp` as
-    CloudVision relies on metadata sent by AVD for visualization and to generate
-    and deliver to devices certificates for STUN.
+    the `arista.avd.cv_deploy` role and not the `arista.avd.eos_config_deploy_cvp`
+    role, as CloudVision relies on metadata sent by AVD for visualization and to
+    generate and deliver certificates for STUN to devices.
 
 ### Features in PREVIEW
 
