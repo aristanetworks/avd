@@ -28,7 +28,7 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
 | ------ | ------------------- | ------------ | --- | ------------------- |
 {%             set cipher = profile.cipher | arista.avd.default('-') %}
 {%             set key_server_priority = profile.mka.key_server_priority | arista.avd.default('-') %}
