@@ -74,15 +74,15 @@ Contributing pull requests are gladly welcomed for this repository. If you are p
 
 - The **`devel`** branch corresponds to the release actively under development.
 - The [release tags](https://github.com/aristanetworks/avd/tags) correspond to stable releases.
-  - For major and minor releases, release tags are applied directly on `devel` branch.
-  - For bug fix release, release tags are applied to releases/vX.X.X branch.
+  - For major and minor releases, release tags are applied directly on the `devel` branch.
+  - For bug fix release, release tags are applied to `releases/*` branch.
 - Fork the repository and create a branch based on **`devel`** to set up a dev environment if you want to open a PR.
   - We do not enforce any branch naming convention.
   - All PRs should be submitted towards the `devel` branch.
 
 #### Reporting Bugs
 
-- First, ensure that you're running the [latest stable version](https://github.com/aristanetworks/avd/releases) of AVD. If you're running an older version, it's possible that the bug has already been fixed.
+- First, ensure that you're running the [latest development version](../installation/collection-installation.md#install-latest-devel-version-from-avd-github) of AVD. If you're running an older version, it's possible that the bug has already been fixed.
 
 - Next, check the GitHub [issues list](https://github.com/aristanetworks/avd/issues) to see if the bug you've found has already been reported. If you think you may be experiencing a reported issue that hasn't already been resolved, please click "add a reaction" in the top right corner of the issue and add a thumbs up (+1). Also, add a comment describing how it's affecting your installation. This will allow us to prioritize bugs based on how many users are affected.
 
