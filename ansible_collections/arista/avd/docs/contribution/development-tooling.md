@@ -7,9 +7,12 @@
 # Development Tooling
 
 - To assist the AVD development community, we provide guidance to develop with two primary methods: VSCode dev containers or local Python environment.
-  - You may choose your also choose your own development methodology, however we may not be able to provide assistance in a timely manner.
-- This guide provides additional information about the development tools leverage in the project: pre-commit, Molecule, ansible-test
+  - You may also choose your own development methodology, however we may not be able to provide assistance in a timely manner.
+- This guide provides additional information about the development tools leveraged in the project: pre-commit, Molecule and ansible-test.
 - Please report any issues and optimization suggestions regarding the development workflow via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
+
+!!! note
+    This guide doesn't got into details on how to install common development tooling: Git, Make, Docker and Python virtualenv, as this differs from operating system to operating system.
 
 ## Development environments
 
@@ -19,11 +22,11 @@
 - Before you can leverage the Dev Container ensure to have [Docker](https://docs.docker.com/engine/install/) and [Visual Studio Code](https://code.visualstudio.com/) installed.
 - Follow the instruction to customize a and leverage the [AVD Dev Container](../containers/overview.md#how-to-use-dev-containers)
 
-### Python environments
+### Local Python environments
 
 - Developing with your local Python environment requires you to configure and install the AVD project development tools and dependencies.
 - The development environment requires a minimum version of **Python 3.10**.
-- Additionally to Python you must have the following Git, Make, Docker and additional Python requirements dependencies.
+- Additionally to Python you must have the following tools installed on your workstation: Git, Make, Docker, Python virtualenv and additional Python dependencies required by the AVD project.
 
 Recommend steps with Python virtual environment:
 
@@ -31,13 +34,13 @@ Recommend steps with Python virtual environment:
 2. Install Python requirements located in the AVD repository: [requirements-dev.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements-dev.txt) and [requirements.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements.txt).
 
 ```shell
-# Create virtual environment `python -m venv <virtual-environment-name>`.
+# Create a Python virtual environment `python -m venv <virtual-environment-name>`.
 python -m venv avd-development
 
-# Activate virtual environment `source <virtual-environment-name>/bin/activate`.
+# Activate Python virtual environment `source <virtual-environment-name>/bin/activate`.
 source avd-development/bin/activate
 
-# Install AVD project requirements-dev.txt and requirements.txt
+# Install AVD project requirements-dev.txt and requirements.txt in your Python Virtual environment.
 # Requirements files are located in `ansible_collections/arista/avd` of the avd repository.
 pip install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade
 ```
@@ -45,7 +48,7 @@ pip install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_co
 !!! note
     It is important to confirm the Python interpreter Ansible is using.
     You may be required to set `ansible_python_interpreter` in your Ansible inventory.
-    For more information consult with the [Ansible documentation](https://docs.ansible.com/ansible/latest/reference_appendices/python_3_support.html#using-python-3-on-the-managed-machines-with-commands-and-playbooks)
+    For more information consult with the [Ansible documentation](https://docs.ansible.com/ansible/latest/reference_appendices/python_3_support.html#using-python-3-on-the-managed-machines-with-commands-and-playbooks).
 
 ## Pre-commit
 
