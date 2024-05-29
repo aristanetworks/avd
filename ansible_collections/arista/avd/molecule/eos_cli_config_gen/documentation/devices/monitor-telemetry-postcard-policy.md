@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
-  - [Monitor Telemetry Postcard Policy](#monitor-telemetry-postcard-policy)
+  - [Monitor Telemetry Postcard Policy](#monitor-telemetry-postcard-policy-1)
 
 ## Management
 
