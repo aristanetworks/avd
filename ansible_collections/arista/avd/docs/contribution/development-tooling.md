@@ -123,7 +123,7 @@ The AVD project leverages Molecule for:
   - `eos_cli_config_gen`
   - `eos_validate_state`
   - `eos_config_deploy_cvp`
-  - `dhcp_provisioner`
+  - `dhcp_provisioner` (requires docker)
 - End-to-end systems integration tests on the following CloudVision role and module:
   - `cv_deploy`
   - `cv_workflow`
@@ -194,9 +194,6 @@ molecule converge -s eos_cli_config_gen -- --limit logging
 # Run eos_designs unit_test scenario with verbosity
 molecule converge -s eos_designs_unit_tests -- -vvv
 ```
-
-!!! note
-    Some of the molecule scenarios may require docker.
 
 ## Ansible-test
 
