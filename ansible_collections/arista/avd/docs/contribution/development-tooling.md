@@ -86,6 +86,7 @@ pre-commit run schemas --all
 
 !!! note
     This process is also implemented in the project CI to ensure code quality and compliance.
+    All pre-commit checks must pass, therefore we highly recommend running this workflow before committing changes!
 
 ## Molecule
 
