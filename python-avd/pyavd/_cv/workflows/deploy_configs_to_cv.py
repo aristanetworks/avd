@@ -128,7 +128,12 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
         LOGGER.info("deploy_configs_to_cv: %s existing device containers under AVD root container.", len(existing_device_containers))
         # Create dict keyed by container id with value of tuple containing key container parameters. Used later to detect changes.
         existing_device_containers_by_id = {
-            cv_container.key.configlet_assignment_id: (cv_container.display_name, cv_container.description, cv_container.query, cv_container.configlet_ids.values)
+            cv_container.key.configlet_assignment_id: (
+                cv_container.display_name,
+                cv_container.description,
+                cv_container.query,
+                cv_container.configlet_ids.values,
+            )
             for cv_container in existing_device_containers
         }
     else:
