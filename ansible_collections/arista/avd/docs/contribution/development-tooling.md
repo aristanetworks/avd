@@ -37,7 +37,7 @@ The AVD repository contains a devcontainer definition at the root of the project
 This will be executed automatically by VSCode by following these steps:
 
 1. Start VSCode on your worksation
-2. Select "File/Open Folder..." and open the cloned avd GitHub repository (Your fork).
+2. Select "File/Open Folder..." and open the cloned avd GitHub repository (your fork).
 3. A pop up will appear with "Folder contains a Dev Container configuration file. Reopen folder to develop in a container." Select "Reopen in Container".
 4. VScode will re-open and start in the AVD Dev Container.
 
